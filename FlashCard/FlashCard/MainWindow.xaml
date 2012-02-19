@@ -1,0 +1,24 @@
+﻿<Window x:Class="FlashCard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow"
+        Height="350"
+        Width="525"
+        xmlns:notifyIcon="http://www.hardcodet.net/taskbar">
+
+    <Grid>
+        <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
+                                IconSource="/Icons/Error.ico"
+                                ToolTipText="Balloon Sample Icon">
+            <notifyIcon:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="First Menu Item" />
+                    <MenuItem Header="Second Menu Item" />
+                </ContextMenu>
+            </notifyIcon:TaskbarIcon.ContextMenu>
+        </notifyIcon:TaskbarIcon>
+        <TextBlock HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="25"> Welcome to Flash Card</TextBlock>
+    </Grid>
+</Window>

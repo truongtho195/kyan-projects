@@ -1,0 +1,17 @@
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\bin\Debug\FlashCard.exe
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
+F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
