@@ -15,6 +15,8 @@ using System.Windows.Controls.Primitives;
 using System.Threading;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Data;
+using System.Data.SQLite;
 
 namespace FlashCard
 {
@@ -32,6 +34,7 @@ namespace FlashCard
         {
             InitializeComponent();
 
+            MainViewModel();
             tipList.Add("An gi hom nay ?");
             tipList.Add("Bạn đang suy nghĩ gì?");
             tipList.Add("Cố lên bạn nhé!");
@@ -53,14 +56,14 @@ namespace FlashCard
             balloon = new FancyBalloon();
             balloon.MouseEnter += new MouseEventHandler(balloon_MouseEnter);
             balloon.MouseLeave += new MouseEventHandler(balloon_MouseLeave);
-               int ram=  random.Next(0,tipList.Count());
-               Debug.WriteLine(ram);
+            int ram = random.Next(0, tipList.Count());
+            Debug.WriteLine(ram);
             balloon.BalloonText = tipList[ram];
             timer.Stop();
             MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 10000);
             timer.Start();
             //Thread.Sleep(4000);
-           // MyNotifyIcon.CloseBalloon();
+            // MyNotifyIcon.CloseBalloon();
             Debug.WriteLine("Show end");
         }
 
@@ -92,6 +95,61 @@ namespace FlashCard
                 MyNotifyIcon.HideBalloonTip();
 
             }
+        }
+
+
+        string sqlConnection;
+        private void MainViewModel()
+        {
+            sqlConnection = "Data Source=SmartFlashCardDB.s3db";
+            DataTable dt = new DataTable();
+
+            try
+            {
+
+                SQLiteConnection cnn = new SQLiteConnection(sqlConnection);
+                cnn.Open();
+
+                SQLiteCommand mycommand = new SQLiteCommand(cnn);
+
+                mycommand.CommandText = "select * from Users";
+
+                SQLiteDataReader reader = mycommand.ExecuteReader();
+
+                dt.Load(reader);
+
+                reader.Close();
+
+                cnn.Close();
+
+            }
+
+            catch (Exception e)
+            {
+                CatchException(e);
+            }
+
+
+
+
+
+        }
+
+        private void CatchException(Exception ex)
+        {
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("\n\n||========Flash Card Error==========");
+            builder.Append("\n||Source : ");
+            builder.Append(ex.Source);
+            builder.Append("\n||");
+            builder.Append("\n||Message :");
+            builder.Append(ex.Message);
+            builder.Append("\n||");
+            builder.Append("\n||All :");
+            builder.Append(ex.Message);
+            builder.Append("\n||");
+            Debug.WriteLine(builder.ToString());
         }
 
 
