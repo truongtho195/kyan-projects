@@ -1,0 +1,5 @@
+D:\Projects\POSSource 2\Output\Debug\WpfApplicationFramework.dll
+D:\Projects\POSSource 2\Output\Debug\WpfApplicationFramework.pdb
+D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
+D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
+D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
