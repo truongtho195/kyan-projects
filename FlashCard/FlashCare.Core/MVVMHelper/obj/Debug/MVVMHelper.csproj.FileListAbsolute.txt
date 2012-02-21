@@ -1,0 +1,17 @@
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\MVVMHelper.dll
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\MVVMHelper.pdb
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\WpfApplicationFramework.dll
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\WpfApplicationFramework.pdb
+D:\Projects\POSSource 2\MVVMHelper\bin\Debug\WpfApplicationFramework.xml
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\ResolveAssemblyReference.cache
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.resources
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.vi.resources
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.zh-CN.resources
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\GenerateResource.read.1.tlog
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\GenerateResource.write.1.tlog
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\vi\MVVMHelper.resources.dll
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.dll
+D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.pdb
