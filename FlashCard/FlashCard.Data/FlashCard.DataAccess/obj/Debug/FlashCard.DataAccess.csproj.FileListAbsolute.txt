@@ -1,0 +1,5 @@
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.pdb
