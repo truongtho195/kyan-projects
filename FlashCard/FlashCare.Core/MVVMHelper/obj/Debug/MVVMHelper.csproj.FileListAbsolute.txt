@@ -15,3 +15,11 @@ D:\Projects\POSSource 2\MVVMHelper\obj\Debug\vi\MVVMHelper.resources.dll
 D:\Projects\POSSource 2\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.dll
 D:\Projects\POSSource 2\MVVMHelper\obj\Debug\MVVMHelper.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.vi.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.zh-CN.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.read.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.write.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
