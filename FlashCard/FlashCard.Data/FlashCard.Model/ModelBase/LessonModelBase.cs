@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlashCard.Model
 {
-    class LessonModelBase : ModelBase
+    public class LessonModelBase : ModelBase
     {
         #region Constructors
         public LessonModelBase()
