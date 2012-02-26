@@ -31,8 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anito.Data, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Anito.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Anito.Data.SqliteClient, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Anito.Data.SqliteClient.dll</HintPath>
+    </Reference>
+    <Reference Include="SqliteORM, Version=1.1.4341.40003, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SqliteORM.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +53,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\LessonDataAccess.cs" />
     <Compile Include="DataAccess\DataAccessBase.cs" />
     <Compile Include="DataAccess\UserDataAccess.cs" />
     <Compile Include="Data\ConnectionStringBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\FlashCare.Core\MVVMHelper\MVVMHelper.csproj">
+      <Project>{92A71D19-F6AE-47CC-9E23-D65BCBB03F8A}</Project>
+      <Name>MVVMHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlashCard.Model\FlashCard.Model.csproj">
+      <Project>{B8E967AC-4DF6-4247-83E6-BC9589AD2E15}</Project>
+      <Name>FlashCard.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
