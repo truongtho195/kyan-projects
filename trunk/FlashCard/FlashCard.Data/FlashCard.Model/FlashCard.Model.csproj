@@ -12,6 +12,8 @@
     <AssemblyName>FlashCard.Model</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,13 +44,13 @@
   <ItemGroup>
     <Compile Include="ModelBase\SettingModelBase.cs" />
     <Compile Include="ModelBase\LessonModelBase.cs" />
-    <Compile Include="ModelBase\LessonBackSideModelBase.cs" />
+    <Compile Include="ModelBase\BackSideModelBase.cs" />
     <Compile Include="Model\CategoryModel.cs" />
     <Compile Include="ModelBase\CategoryModelBase.cs" />
     <Compile Include="ModelBase\ModelBase.cs" />
     <Compile Include="ModelBase\TypeModelBase.cs" />
     <Compile Include="ModelBase\UserModelBase.cs" />
-    <Compile Include="Model\LessonBackSideModel.cs" />
+    <Compile Include="Model\BackSideModel.cs" />
     <Compile Include="Model\LessonModel.cs" />
     <Compile Include="Model\SettingModel.cs" />
     <Compile Include="Model\TypeModel.cs" />

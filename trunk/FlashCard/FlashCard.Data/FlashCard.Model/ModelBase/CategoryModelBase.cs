@@ -65,28 +65,28 @@ namespace FlashCard.Model
         protected virtual void OnCategoryNameChanged() { }
 
 
-
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private TypeModel _typeModel;
-        public TypeModel TypeModel
+        private List<LessonModel> _lessonCollection;
+        public List<LessonModel> LessonCollection
         {
-            get { return _typeModel; }
+            get { return _lessonCollection; }
             set
             {
-                if (_typeModel != value)
+                if (_lessonCollection != value)
                 {
-                    this.OnTypeModelChanging(value);
-                    _typeModel = value;
-                    RaisePropertyChanged(() => TypeModel);
-                    this.OnTypeModelChanged();
+                    this.OnLessonCollectionChanging(value);
+                    _lessonCollection = value;
+                    RaisePropertyChanged(() => LessonCollection);
+                    this.OnLessonCollectionChanged();
                 }
             }
         }
 
-        protected virtual void OnTypeModelChanging(TypeModel value) { }
-        protected virtual void OnTypeModelChanged() { }
+        protected virtual void OnLessonCollectionChanging(List<LessonModel> value) { }
+        protected virtual void OnLessonCollectionChanged() { }
+
 
 
 

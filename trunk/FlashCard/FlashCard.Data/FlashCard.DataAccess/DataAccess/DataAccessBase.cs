@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Diagnostics;
 
 namespace FlashCard.DataAccess
 {
@@ -13,7 +14,8 @@ namespace FlashCard.DataAccess
             get
             {
                 //string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;//SecurityLib.AESSecurity.Decrypt(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
-                string connectionString = "Data Source=SmartFlashCardDB.s3db";
+                //string connectionString = "Data Source=SmartFlashCardDB.s3db";
+                string connectionString = @"Data Source=F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\SmartFlashCardDB.s3db";//
                 if (string.IsNullOrEmpty(connectionString) || connectionString.Trim().Length == 0)
                 {
                     return string.Empty;
@@ -37,12 +39,12 @@ namespace FlashCard.DataAccess
             builder.Append("\n|| Data :");
             foreach (DictionaryEntry item in ex.Data)
             {
-                builder.AppendFormat("\n||     {0} : {1}",item.Key,item.Value);
+                builder.AppendFormat("\n||     {0} : {1}", item.Key, item.Value);
             }
             builder.Append("\n|| All :");
             builder.Append(ex.ToString().Replace("\n", "\n||"));
-
             builder.AppendFormat("\n|| Data {0}", ex.Data);
+            Debug.WriteLine(builder.ToString());
         }
     }
 }

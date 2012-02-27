@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FlashCard.Model;
 using System.Data.SQLite;
+using FlashCard.Model;
 
-namespace FlashCard.DataAccess.DataAccess
+namespace FlashCard.DataAccess
 {
     public class UserDataAccess : DataAccessBase
     {

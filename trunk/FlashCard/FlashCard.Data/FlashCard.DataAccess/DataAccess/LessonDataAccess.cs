@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FlashCard.Model;
 using System.Data.SQLite;
-using Anito.Data;
-
+using FlashCard.Model;
 
 namespace FlashCard.DataAccess
 {
@@ -20,17 +18,7 @@ namespace FlashCard.DataAccess
 
         #region Properties
 
-        private ISession m_dataSession = null;
 
-        private ISession DataSession
-        {
-            get
-            {
-                if (m_dataSession == null)
-                    m_dataSession = ProviderFactory.GetSession();
-                return m_dataSession;
-            }
-        }
         #endregion
 
         #region Methods
@@ -42,9 +30,8 @@ namespace FlashCard.DataAccess
                 using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
                     SQLiteCommand myCommand = new SQLiteCommand(sqlConnect);
-                    myCommand.CommandText = "select * From Lesson "
-                                             + " inner join Categories on Lesson.CategoryID == Categories.CategoryID"
-                                            + " inner join Types on Types.TypeID == Categories.TypeID ";
+                    myCommand.CommandText = "select LessonID,LessonName,Cate, Cate.CategoryID as CategoryID, From Lesson as le "
+                                             + " inner join Categories as Cate on Lesson.CategoryID == Categories.CategoryID";
                     SQLiteDataReader reader = myCommand.ExecuteReader();
                     while (reader.Read())
                     {
@@ -52,10 +39,9 @@ namespace FlashCard.DataAccess
                         lessonModel.LessonID = (int)reader["LessonID"];
                         lessonModel.LessonName = reader["LessonName"].ToString();
                         lessonModel.CategoryID = (int)reader["CategoryID"];
+                        lessonModel.CategoryModel = (CategoryModel)reader["Cate"];
                         list.Add(lessonModel);
                     }
-
-                 
                 }
             }
             catch (Exception ex)
