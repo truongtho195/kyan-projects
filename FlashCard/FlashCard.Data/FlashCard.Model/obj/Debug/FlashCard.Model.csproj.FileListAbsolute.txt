@@ -1,4 +1,3 @@
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.dll
@@ -9,5 +8,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashC
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\vi\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-CN\MVVMHelper.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb

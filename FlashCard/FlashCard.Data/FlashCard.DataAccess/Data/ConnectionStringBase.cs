@@ -11,7 +11,7 @@ namespace FlashCard.DataAccess
         {
             get
             {
-                string connectionString = "string";//
+                string connectionString = @"F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\SmartFlashCardDB.s3db";//
                 if (string.IsNullOrEmpty(connectionString) || connectionString.Trim().Length == 0)
                 {
                     return string.Empty;

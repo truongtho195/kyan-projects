@@ -5,10 +5,10 @@ using System.Text;
 
 namespace FlashCard.Model
 {
-    public class LessonBackSideModelBase : ModelBase
+    public class BackSideModelBase : ModelBase
     {
         #region Constructors
-        public LessonBackSideModelBase()
+        public BackSideModelBase()
         {
 
         }
@@ -19,17 +19,17 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private int _lessonBackSideID;
-        public int LessonBackSideID
+        private int _backSideID;
+        public int BackSideID
         {
-            get { return _lessonBackSideID; }
+            get { return _backSideID; }
             set
             {
-                if (_lessonBackSideID != value)
+                if (_backSideID != value)
                 {
                     this.OnLessonBackSideIDChanging(value);
-                    _lessonBackSideID = value;
-                    RaisePropertyChanged(() => LessonBackSideID);
+                    _backSideID = value;
+                    RaisePropertyChanged(() => BackSideID);
                     this.OnLessonBackSideIDChanged();
                 }
             }
@@ -44,7 +44,7 @@ namespace FlashCard.Model
         /// Gets or sets the property value.
         /// </summary>
         private int _lessonID;
-        public int LessonId
+        public int LessonID
         {
             get { return _lessonID; }
             set
@@ -53,7 +53,7 @@ namespace FlashCard.Model
                 {
                     this.OnLessonIdChanging(value);
                     _lessonID = value;
-                    RaisePropertyChanged(() => LessonId);
+                    RaisePropertyChanged(() => LessonID);
                     this.OnLessonIdChanged();
                 }
             }

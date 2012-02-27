@@ -5,10 +5,10 @@ using System.Text;
 
 namespace FlashCard.Model
 {
-    public class LessonBackSideModel : LessonBackSideModelBase
+    public class BackSideModel : BackSideModelBase
     {
         #region Constructors
-        public LessonBackSideModel()
+        public BackSideModel()
         {
 
         }

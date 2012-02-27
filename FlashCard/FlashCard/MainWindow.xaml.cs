@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using System.Data;
 using System.Data.SQLite;
+using FlashCard.DataAccess;
 
 namespace FlashCard
 {
@@ -101,33 +102,37 @@ namespace FlashCard
         string sqlConnection;
         private void MainViewModel()
         {
-            sqlConnection = "Data Source=SmartFlashCardDB.s3db";
-            DataTable dt = new DataTable();
 
-            try
-            {
+            CategoryDataAccess cate = new CategoryDataAccess();
+            cate.GetAll();
 
-                SQLiteConnection cnn = new SQLiteConnection(sqlConnection);
-                cnn.Open();
+            //sqlConnection = "Data Source=SmartFlashCardDB.s3db";
+            //DataTable dt = new DataTable();
 
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
+            //try
+            //{
 
-                mycommand.CommandText = "select * from Users";
+            //    SQLiteConnection cnn = new SQLiteConnection(sqlConnection);
+            //    cnn.Open();
 
-                SQLiteDataReader reader = mycommand.ExecuteReader();
+            //    SQLiteCommand mycommand = new SQLiteCommand(cnn);
 
-                dt.Load(reader);
+            //    mycommand.CommandText = "select * from Users";
 
-                reader.Close();
+            //    SQLiteDataReader reader = mycommand.ExecuteReader();
 
-                cnn.Close();
+            //    dt.Load(reader);
 
-            }
+            //    reader.Close();
 
-            catch (Exception e)
-            {
-                CatchException(e);
-            }
+            //    cnn.Close();
+
+            //}
+
+            //catch (Exception e)
+            //{
+            //    CatchException(e);
+            //}
 
 
 

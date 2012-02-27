@@ -110,6 +110,52 @@ namespace FlashCard.Model
         protected virtual void OnCategoryModelChanged() { }
 
 
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private int _typeID;
+        public int TypeID
+        {
+            get { return _typeID; }
+            set
+            {
+                if (_typeID != value)
+                {
+                    this.OnTypeIDChanging(value);
+                    _typeID = value;
+                    RaisePropertyChanged(() => TypeID);
+                    this.OnTypeIDChanged();
+                }
+            }
+        }
+
+        protected virtual void OnTypeIDChanging(int value) { }
+        protected virtual void OnTypeIDChanged() { }
+
+
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private TypeModel _typeModel;
+        public TypeModel TypeModel
+        {
+            get { return _typeModel; }
+            set
+            {
+                if (_typeModel != value)
+                {
+                    this.OnTypeModelChanging(value);
+                    _typeModel = value;
+                    RaisePropertyChanged(() => TypeModel);
+                    this.OnTypeModelChanged();
+                }
+            }
+        }
+
+        protected virtual void OnTypeModelChanging(TypeModel value) { }
+        protected virtual void OnTypeModelChanged() { }
+
+
 
 
 
