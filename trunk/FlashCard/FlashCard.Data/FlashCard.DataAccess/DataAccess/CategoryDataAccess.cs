@@ -31,13 +31,31 @@ namespace FlashCard.DataAccess
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
                 SQLiteCommand myCommand = new SQLiteCommand(sqlConnect);
-                myCommand.CommandText = "select Categories.CategoryID,CategoryName,Lessons  as lesson From Categories inner join Lessons on Categories.CategoryID = Lessons.CategoryID";
+                myCommand.CommandText = "select * From Categories";
                 SQLiteDataReader reader = myCommand.ExecuteReader();
                 while (reader.Read())
                 {
+                    SQLiteCommand sqlLessonCmd = new SQLiteCommand(sqlConnect);
+                    sqlLessonCmd.CommandText = "select * from Lessons where CategoryID ==@cateID";
                     CategoryModel categoryModel = new CategoryModel();
-                    categoryModel.CategoryID = (int)reader["CategoryID"];
+                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
                     categoryModel.CategoryName = reader["CategoryName"].ToString();
+
+                    SQLiteParameter param = new SQLiteParameter("@cateID", categoryModel.CategoryID);
+                    sqlLessonCmd.Parameters.Add(param);
+                    SQLiteDataReader reader1 = sqlLessonCmd.ExecuteReader();
+
+                    categoryModel.LessonCollection = new List<LessonModel>();
+                    while (reader1.Read())
+                    {
+                        LessonModel lessonModel = new LessonModel();
+                        lessonModel.CategoryID = int.Parse(reader1["CategoryID"].ToString());
+                        lessonModel.LessonID = int.Parse(reader1["LessonID"].ToString());
+                        lessonModel.TypeID = int.Parse(reader1["TypeID"].ToString());
+                        lessonModel.CategoryModel = categoryModel;
+                        lessonModel.LessonName = reader1["LessonName"].ToString();
+                        categoryModel.LessonCollection.Add(lessonModel);
+                    }
                     list.Add(categoryModel);
                 }
 
@@ -49,7 +67,7 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-               
+
             }
             return list;
         }
