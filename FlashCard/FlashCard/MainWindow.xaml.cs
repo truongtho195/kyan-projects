@@ -104,7 +104,7 @@ namespace FlashCard
         {
 
             CategoryDataAccess cate = new CategoryDataAccess();
-            cate.GetAll();
+            cate.GetAllWithRelation();
 
             //sqlConnection = "Data Source=SmartFlashCardDB.s3db";
             //DataTable dt = new DataTable();
