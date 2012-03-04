@@ -1,0 +1,157 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.SQLite;
+using FlashCard.Model;
+
+
+namespace FlashCard.DataAccess
+{
+    public class TypeDataAccess : DataAccessBase
+    {
+        #region Contructors
+        public TypeDataAccess()
+        {
+
+        }
+        #endregion
+
+        #region Properties
+
+
+        #endregion
+
+        #region Methods
+        public TypeModel Get(int typeID)
+        {
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteParameter param = null;
+            SQLiteDataReader reader = null;
+            TypeModel typeModel = new TypeModel();
+            string sql = "select * from Types where TypeID==@typeID";
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                param = new SQLiteParameter("@typeID", typeID);
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    typeModel.Name = reader["Name"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return typeModel;
+        }
+
+        public IList<TypeModel> GetAll()
+        {
+            List<TypeModel> list = new List<TypeModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            string sql = "select * From Types ";
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                reader = sqlCommand.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    TypeModel typeModel = new TypeModel();
+                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    typeModel.Name = reader["Name"].ToString();
+                    list.Add(typeModel);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;             
+        }
+
+        public IList<TypeModel> GetAll(TypeModel type)
+        {
+            List<TypeModel> list = new List<TypeModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            string sql = "select * from Types";
+
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                string sqlcondition = string.Empty;
+                if (type.TypeID > -1)
+                {
+                    if (string.IsNullOrWhiteSpace(sqlcondition))
+                        sqlcondition += "where TypeID==@typeID";
+                    else
+                        sqlcondition += "&& TypeID==@typeID";
+                    SQLiteParameter param = new SQLiteParameter("@typeID", type.TypeID);
+                    sqlCommand.Parameters.Add(param);
+                }
+                sqlCommand.CommandText = sql + sqlcondition;
+                reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    TypeModel typeModel = new TypeModel();
+                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    typeModel.Name = reader["Name"].ToString();
+                    list.Add(typeModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
+        }
+
+        public IList<TypeModel> GetAllWithRelation()
+        {
+            return null; 
+        }
+
+
+        #endregion
+    }
+}
