@@ -8,3 +8,4 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.xml

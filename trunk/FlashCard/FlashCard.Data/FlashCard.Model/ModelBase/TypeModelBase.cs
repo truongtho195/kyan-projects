@@ -26,11 +26,42 @@ namespace FlashCard.Model
            {
                if (_typeID != value)
                {
+                   this.OnTypeIDChanging(value);
                    _typeID = value;
                    RaisePropertyChanged(() => TypeID);
+                   this.OnTypeIDChanged();
                }
            }
        }
+
+       protected virtual void OnTypeIDChanging(int value) { }
+       protected virtual void OnTypeIDChanged() { }
+
+       /// <summary>
+       /// Gets or sets the property value.
+       /// </summary>
+       private string _name;
+       public string Name
+       {
+           get { return _name; }
+           set
+           {
+               if (_name != value)
+               {
+                   this.OnNameChanging(value);
+                   _name = value;
+                   RaisePropertyChanged(() => Name);
+                   this.OnNameChanged();
+               }
+           }
+       }
+
+       protected virtual void OnNameChanging(string value) { }
+       protected virtual void OnNameChanged() { }
+
+
+
+
 
        #endregion
    }

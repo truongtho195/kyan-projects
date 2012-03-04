@@ -22,40 +22,161 @@ namespace FlashCard.DataAccess
         #endregion
 
         #region Methods
-        public IList<CategoryModel> GetAll()
+        public CategoryModel Get(int categoryID)
         {
-            List<CategoryModel> list = new List<CategoryModel>();
             SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteParameter param = null;
+            SQLiteDataReader reader = null;
+            CategoryModel categoryModel = new CategoryModel();
+            string sql = "select * From Categories where CategoryID==@categoryID";
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
-                SQLiteCommand myCommand = new SQLiteCommand(sqlConnect);
-                myCommand.CommandText = "select * From Categories";
-                SQLiteDataReader reader = myCommand.ExecuteReader();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                param = new SQLiteParameter("@categoryID", categoryID);
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return categoryModel;
+        }
+
+
+        public IList<CategoryModel> GetAll()
+        {
+            List<CategoryModel> list = new List<CategoryModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            string sql = "select * From Categories ";
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                reader = sqlCommand.ExecuteReader();
+                CategoryModel categoryModel;
                 while (reader.Read())
                 {
-                    SQLiteCommand sqlLessonCmd = new SQLiteCommand(sqlConnect);
-                    sqlLessonCmd.CommandText = "select * from Lessons where CategoryID ==@cateID";
+                    categoryModel = new CategoryModel();
+                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    list.Add(categoryModel);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
+        }
+
+        public IList<CategoryModel> GetAll(CategoryModel category)
+        {
+            List<CategoryModel> list = new List<CategoryModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            string sql = "select * from Categories";
+            
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                string sqlcondition = string.Empty;
+                if (category.CategoryID > -1)
+                {
+                    if (string.IsNullOrWhiteSpace(sqlcondition))
+                        sqlcondition += "where CategoryID==@categoryID";
+                    else
+                        sqlcondition += "&& CategoryID==@categoryID";
+                    SQLiteParameter param = new SQLiteParameter("@categoryID", category.CategoryID);
+                    sqlCommand.Parameters.Add(param);
+                }
+                sqlCommand.CommandText = sql + sqlcondition;
+                reader = sqlCommand.ExecuteReader();
+                CategoryModel categoryModel;
+                while (reader.Read())
+                {
+                    categoryModel = new CategoryModel();
+                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    list.Add(categoryModel);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
+        }
+
+        public IList<CategoryModel> GetAllWithRelation()
+        {
+            List<CategoryModel> list = new List<CategoryModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand;
+            SQLiteDataReader reader;
+            string sqlCategories = "select * From Categories";
+            try
+            {
+                //Categories
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sqlCategories;
+                reader = sqlCommand.ExecuteReader();
+
+                //Initialize Lesson
+                while (reader.Read())
+                {
                     CategoryModel categoryModel = new CategoryModel();
                     categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
                     categoryModel.CategoryName = reader["CategoryName"].ToString();
 
-                    SQLiteParameter param = new SQLiteParameter("@cateID", categoryModel.CategoryID);
-                    sqlLessonCmd.Parameters.Add(param);
-                    SQLiteDataReader reader1 = sqlLessonCmd.ExecuteReader();
-
-                    categoryModel.LessonCollection = new List<LessonModel>();
-                    while (reader1.Read())
-                    {
-                        LessonModel lessonModel = new LessonModel();
-                        lessonModel.CategoryID = int.Parse(reader1["CategoryID"].ToString());
-                        lessonModel.LessonID = int.Parse(reader1["LessonID"].ToString());
-                        lessonModel.TypeID = int.Parse(reader1["TypeID"].ToString());
-                        lessonModel.CategoryModel = categoryModel;
-                        lessonModel.LessonName = reader1["LessonName"].ToString();
-                        categoryModel.LessonCollection.Add(lessonModel);
-                    }
+                    //Lesson
+                    LessonDataAccess lessonDA = new LessonDataAccess();
+                    LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
+                    lesson.CategoryID = categoryModel.CategoryID;
+                    categoryModel.LessonCollection= new List<LessonModel>(lessonDA.GetAll(lesson));
                     list.Add(categoryModel);
                 }
 
@@ -71,6 +192,8 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
+       
+      
 
         #endregion
     }
