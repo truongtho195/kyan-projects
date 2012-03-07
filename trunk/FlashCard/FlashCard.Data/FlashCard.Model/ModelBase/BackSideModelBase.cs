@@ -108,6 +108,29 @@ namespace FlashCard.Model
         protected virtual void OnIsCorrectChanged() { }
 
 
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private LessonModel _lessonModel;
+        public LessonModel LessonModel
+        {
+            get { return _lessonModel; }
+            set
+            {
+                if (_lessonModel != value)
+                {
+                    this.OnLessonModelChanging(value);
+                    _lessonModel = value;
+                    RaisePropertyChanged(() => LessonModel);
+                    this.OnLessonModelChanged();
+                }
+            }
+        }
+
+        protected virtual void OnLessonModelChanging(LessonModel value) { }
+        protected virtual void OnLessonModelChanged() { }
+
+
 
 
 

@@ -156,6 +156,29 @@ namespace FlashCard.Model
         protected virtual void OnTypeModelChanged() { }
 
 
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private List<BackSideModel> _backSideCollection;
+        public List<BackSideModel> BackSideCollection
+        {
+            get { return _backSideCollection; }
+            set
+            {
+                if (_backSideCollection != value)
+                {
+                    this.OnBackSideCollectionChanging(value);
+                    _backSideCollection = value;
+                    RaisePropertyChanged(() => BackSideCollection);
+                    this.OnBackSideCollectionChanged();
+                }
+            }
+        }
+
+        protected virtual void OnBackSideCollectionChanging(List<BackSideModel> value) { }
+        protected virtual void OnBackSideCollectionChanged() { }
+
+
 
 
 

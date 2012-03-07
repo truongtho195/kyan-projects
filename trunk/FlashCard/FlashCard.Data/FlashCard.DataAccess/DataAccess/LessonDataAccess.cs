@@ -174,8 +174,11 @@ namespace FlashCard.DataAccess
         {
             List<LessonModel> list = new List<LessonModel>();
             SQLiteConnection sqlConnect = null;
-            SQLiteCommand sqlCommand;
-            SQLiteDataReader reader;
+            SQLiteCommand sqlCommand=null;
+            SQLiteDataReader reader=null;
+            CategoryDataAccess categoryDA = new CategoryDataAccess();
+            TypeDataAccess typeDA = new TypeDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
             string sql = "select * from Lessons";
             try
             {
@@ -187,17 +190,19 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    CategoryDataAccess categoryDA = new CategoryDataAccess();
-                    
                     LessonModel lessonModel = new LessonModel();
-
                     lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
                     lessonModel.LessonName = reader["LessonName"].ToString();
                     lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
                     lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    //CategoryModel
                     lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
-                    //lessonModel.TypeModel
-                    
+                    //TypeMode
+                    lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
+                    var backSideModel = new BackSideModel() { BackSideID = -1 };
+                    backSideModel.LessonID = lessonModel.LessonID;
+                    //BackSideCollection
+                    lessonModel.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
                     list.Add(lessonModel);
                 }
 
@@ -209,7 +214,63 @@ namespace FlashCard.DataAccess
             }
             finally
             {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                reader.Dispose();
+            }
+            return list;
+        }
 
+        public IList<LessonModel> GetAllWithRelation(int lessonID)
+        {
+            List<LessonModel> list = new List<LessonModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand =null;
+            SQLiteDataReader reader=null;
+            SQLiteParameter param = null;
+            CategoryDataAccess categoryDA = new CategoryDataAccess();
+            TypeDataAccess typeDA = new TypeDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            string sql = "select * from Lessons where LessonID==@lessonID";
+            try
+            {
+                //Categories
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                param = new SQLiteParameter("@lessonID", lessonID);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    LessonModel lessonModel = new LessonModel();
+                    lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
+                    lessonModel.LessonName = reader["LessonName"].ToString();
+                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    //CategoryModel
+                    lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
+                    //TypeMode
+                    lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
+                    var backSideModel = new BackSideModel() { BackSideID = -1 };
+                    backSideModel.LessonID = lessonModel.LessonID;
+                    //BackSideCollection
+                    lessonModel.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    list.Add(lessonModel);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                reader.Dispose();
             }
             return list;
         }

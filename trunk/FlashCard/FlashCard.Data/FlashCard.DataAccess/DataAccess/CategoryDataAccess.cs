@@ -106,6 +106,7 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
+            SQLiteParameter param = null;
             string sql = "select * from Categories";
             
             try
@@ -120,7 +121,7 @@ namespace FlashCard.DataAccess
                         sqlcondition += "where CategoryID==@categoryID";
                     else
                         sqlcondition += "&& CategoryID==@categoryID";
-                    SQLiteParameter param = new SQLiteParameter("@categoryID", category.CategoryID);
+                    param = new SQLiteParameter("@categoryID", category.CategoryID);
                     sqlCommand.Parameters.Add(param);
                 }
                 sqlCommand.CommandText = sql + sqlcondition;
@@ -153,8 +154,11 @@ namespace FlashCard.DataAccess
         {
             List<CategoryModel> list = new List<CategoryModel>();
             SQLiteConnection sqlConnect = null;
-            SQLiteCommand sqlCommand;
-            SQLiteDataReader reader;
+            SQLiteCommand sqlCommand= null;
+            SQLiteDataReader reader=null;
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            TypeDataAccess typeDA = new TypeDataAccess();
             string sqlCategories = "select * From Categories";
             try
             {
@@ -164,22 +168,27 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sqlCategories;
                 reader = sqlCommand.ExecuteReader();
-
                 //Initialize Lesson
                 while (reader.Read())
                 {
                     CategoryModel categoryModel = new CategoryModel();
                     categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
                     categoryModel.CategoryName = reader["CategoryName"].ToString();
-
                     //Lesson
-                    LessonDataAccess lessonDA = new LessonDataAccess();
                     LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
                     lesson.CategoryID = categoryModel.CategoryID;
-                    categoryModel.LessonCollection= new List<LessonModel>(lessonDA.GetAll(lesson));
+                    var lessonCollection = new List<LessonModel>();
+                    foreach (var item in lessonDA.GetAll(lesson))
+                    {
+                        var backSideModel = new BackSideModel(){BackSideID=-1};
+                        backSideModel.LessonID=item.LessonID;
+                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.TypeModel = typeDA.Get(item.TypeID);
+                        lessonCollection.Add(item);
+                    }
+                    categoryModel.LessonCollection = lessonCollection;
                     list.Add(categoryModel);
                 }
-
             }
             catch (Exception ex)
             {
@@ -188,11 +197,71 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
             }
             return list;
         }
-       
+
+
+        public IList<CategoryModel> GetAllWithRelation(int categoryID)
+        {
+            List<CategoryModel> list = new List<CategoryModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand= null;
+            SQLiteDataReader reader= null;
+            SQLiteParameter param = null;
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            TypeDataAccess typeDA = new TypeDataAccess();
+            string sqlCategories = "select * From Categories where CategoryID==@categoryID";
+            try
+            {
+                //Categories
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sqlCategories;
+                param = new SQLiteParameter("@categoryID", categoryID);
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+                //Initialize Lesson
+                while (reader.Read())
+                {
+                    CategoryModel categoryModel = new CategoryModel();
+                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+
+                    //Lesson
+                    LessonModel lesson = new LessonModel() { TypeID = -1, LessonID = -1 };
+                    lesson.CategoryID = categoryModel.CategoryID;
+                    var lessonCollection = new List<LessonModel>();
+                    foreach (var item in lessonDA.GetAll(lesson))
+                    {
+                        var backSideModel = new BackSideModel() { BackSideID = -1 };
+                        backSideModel.LessonID = item.LessonID;
+                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.TypeModel = typeDA.Get(item.TypeID);
+                        lessonCollection.Add(item);
+                    }
+                    categoryModel.LessonCollection = lessonCollection;
+                    list.Add(categoryModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
+        }
       
 
         #endregion
