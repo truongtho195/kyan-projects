@@ -83,7 +83,6 @@ namespace FlashCard.DataAccess
                     typeModel.Name = reader["Name"].ToString();
                     list.Add(typeModel);
                 }
-
             }
             catch (Exception ex)
             {
@@ -148,9 +147,113 @@ namespace FlashCard.DataAccess
 
         public IList<TypeModel> GetAllWithRelation()
         {
-            return null; 
+            List<TypeModel> list = new List<TypeModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            CategoryDataAccess categoryDA = new CategoryDataAccess();
+
+            string sql = "select * from Types";
+
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql ;
+                reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    TypeModel typeModel = new TypeModel();
+                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    typeModel.Name = reader["Name"].ToString();
+                    //Lesson
+                    LessonModel lesson = new LessonModel() { CategoryID = -1, LessonID = -1 };
+                    lesson.TypeID = typeModel.TypeID;
+                    var lessonCollection = new List<LessonModel>();
+                    foreach (var item in lessonDA.GetAll(lesson))
+                    {
+                        var backSideModel = new BackSideModel() { BackSideID = -1 };
+                        backSideModel.LessonID = item.LessonID;
+                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.CategoryModel = categoryDA.Get(item.TypeID);
+                        lessonCollection.Add(item);
+                    }
+                    typeModel.LessonCollection = lessonCollection;
+                    list.Add(typeModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
         }
 
+        public IList<TypeModel> GetAllWithRelation(int typeID)
+        {
+            List<TypeModel> list = new List<TypeModel>();
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            SQLiteParameter param = null;
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            CategoryDataAccess categoryDA = new CategoryDataAccess();
+
+            string sql = "select * from Types where TypeID==@typeID";
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                param = new SQLiteParameter("@typeID", typeID);
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    TypeModel typeModel = new TypeModel();
+                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    typeModel.Name = reader["Name"].ToString();
+                    //Lesson
+                    LessonModel lesson = new LessonModel() { CategoryID = -1, LessonID = -1 };
+                    lesson.TypeID = typeModel.TypeID;
+                    var lessonCollection = new List<LessonModel>();
+                    foreach (var item in lessonDA.GetAll(lesson))
+                    {
+                        var backSideModel = new BackSideModel() { BackSideID = -1 };
+                        backSideModel.LessonID = item.LessonID;
+                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.CategoryModel = categoryDA.Get(item.TypeID);
+                        lessonCollection.Add(item);
+                    }
+                    typeModel.LessonCollection = lessonCollection;
+                    list.Add(typeModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                reader.Dispose();
+                sqlCommand.Dispose();
+            }
+            return list;
+        }
 
         #endregion
     }

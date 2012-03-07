@@ -60,6 +60,29 @@ namespace FlashCard.Model
        protected virtual void OnNameChanged() { }
 
 
+       /// <summary>
+       /// Gets or sets the property value.
+       /// </summary>
+       private List<LessonModel> _lessonCollection;
+       public List<LessonModel> LessonCollection
+       {
+           get { return _lessonCollection; }
+           set
+           {
+               if (_lessonCollection != value)
+               {
+                   this.OnLessonCollectionChanging(value);
+                   _lessonCollection = value;
+                   RaisePropertyChanged(() => LessonCollection);
+                   this.OnLessonCollectionChanged();
+               }
+           }
+       }
+
+       protected virtual void OnLessonCollectionChanging(List<LessonModel> value) { }
+       protected virtual void OnLessonCollectionChanged() { }
+
+
 
 
 
