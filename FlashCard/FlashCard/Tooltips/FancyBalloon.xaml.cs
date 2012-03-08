@@ -46,6 +46,21 @@ namespace FlashCard
       set { SetValue(BalloonTextProperty, value); }
     }
 
+
+
+
+
+    public string Word
+    {
+        get { return (string)GetValue(WordProperty); }
+        set { SetValue(WordProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Word.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty WordProperty =
+        DependencyProperty.Register("Word", typeof(string), typeof(FancyBalloon), new FrameworkPropertyMetadata(""));
+
+
     #endregion
 
 

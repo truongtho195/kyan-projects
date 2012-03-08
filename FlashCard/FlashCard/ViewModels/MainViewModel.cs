@@ -4,46 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using System.Data;
+using System.Waf.Applications;
 
 
 namespace FlashCard.ViewModels
 {
-    class MainViewModel
+    public partial class MainViewModel : ViewModel<MainWindow>
     {
-        string sqlConnection;
-        public MainViewModel()
+        public MainViewModel(MainWindow view)
+            : base(view)
         {
-            sqlConnection = "Data Source=SmartFlashCardDB";
-            DataTable dt = new DataTable();
-           
-            try
-            {
-
-                SQLiteConnection cnn = new SQLiteConnection(sqlConnection);
-                cnn.Open();
-
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
-
-                mycommand.CommandText = "select * from users";
-
-                SQLiteDataReader reader = mycommand.ExecuteReader();
-
-                dt.Load(reader);
-
-                reader.Close();
-
-                cnn.Close();
-
-            }
-
-            catch (Exception e)
-            {
-
-                throw new Exception(e.Message);
-
-            }
-
-
 
         }
 
