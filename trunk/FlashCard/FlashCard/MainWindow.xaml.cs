@@ -18,38 +18,49 @@ using System.Diagnostics;
 using System.Data;
 using System.Data.SQLite;
 using FlashCard.DataAccess;
+using System.Waf.Applications;
+using FlashCard.ViewModels;
 
 namespace FlashCard
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow :IView
     {
         FancyBalloon balloon;
-        DispatcherTimer timer;
 
-        List<string> tipList = new List<string>();
-        Random random = new Random();
+        DispatcherTimer timer;
+        private readonly Lazy<MainViewModel> viewModel;
+
+//        List<string> tipList = new List<string>();
+  //      Random random = new Random();
+       
         public MainWindow()
         {
             InitializeComponent();
 
-            MainViewModel();
-            tipList.Add("An gi hom nay ?");
-            tipList.Add("Bạn đang suy nghĩ gì?");
-            tipList.Add("Cố lên bạn nhé!");
-            tipList.Add("Chúc bạn luôn may mắn nhé");
+            viewModel = new Lazy<MainViewModel>(() => ViewHelper.GetViewModel<MainViewModel>(this));
 
-            //balloon.BalloonText = "Custom Balloon";
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 20);
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
-            this.Hide();
+            //MainViewModel();
+            //tipList.Add("An gi hom nay ?");
+            //tipList.Add("Bạn đang suy nghĩ gì?");
+            //tipList.Add("Cố lên bạn nhé!");
+            //tipList.Add("Chúc bạn luôn may mắn nhé");
+
+            ////balloon.BalloonText = "Custom Balloon";
+            //timer = new DispatcherTimer();
+            //timer.Interval = new TimeSpan(0, 0, 20);
+            //timer.Tick += new EventHandler(timer_Tick);
+            //timer.Start();
+            //this.Hide();
             //MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 4000);
         }
 
+
+        #region Properties
+        private MainViewModel ViewModel { get { return viewModel.Value; } }
+        #endregion
 
         void timer_Tick(object sender, EventArgs e)
         {
@@ -57,9 +68,9 @@ namespace FlashCard
             balloon = new FancyBalloon();
             balloon.MouseEnter += new MouseEventHandler(balloon_MouseEnter);
             balloon.MouseLeave += new MouseEventHandler(balloon_MouseLeave);
-            int ram = random.Next(0, tipList.Count());
-            Debug.WriteLine(ram);
-            balloon.BalloonText = tipList[ram];
+           // int ram = random.Next(0, tipList.Count());
+            //Debug.WriteLine(ram);
+            //balloon.BalloonText = tipList[ram];
             timer.Stop();
             MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 10000);
             timer.Start();
@@ -105,44 +116,10 @@ namespace FlashCard
 
             CategoryDataAccess cate = new CategoryDataAccess();
             cate.GetAllWithRelation();
-
-            //sqlConnection = "Data Source=SmartFlashCardDB.s3db";
-            //DataTable dt = new DataTable();
-
-            //try
-            //{
-
-            //    SQLiteConnection cnn = new SQLiteConnection(sqlConnection);
-            //    cnn.Open();
-
-            //    SQLiteCommand mycommand = new SQLiteCommand(cnn);
-
-            //    mycommand.CommandText = "select * from Users";
-
-            //    SQLiteDataReader reader = mycommand.ExecuteReader();
-
-            //    dt.Load(reader);
-
-            //    reader.Close();
-
-            //    cnn.Close();
-
-            //}
-
-            //catch (Exception e)
-            //{
-            //    CatchException(e);
-            //}
-
-
-
-
-
         }
 
         private void CatchException(Exception ex)
         {
-
             StringBuilder builder = new StringBuilder();
             builder.Append("\n\n||========Flash Card Error==========");
             builder.Append("\n||Source : ");
