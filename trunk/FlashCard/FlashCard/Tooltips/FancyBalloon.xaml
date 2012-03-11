@@ -5,10 +5,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
+             xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+             xmlns:converter="clr-namespace:FlashCard.Converters"
              x:Name="me"
              Height="150"
              Width="300">
     <UserControl.Resources>
+        <!--#Region Converters-->
+        <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
+        <!--#End Region-->
+        <!--#region Storyboard-->
         <Storyboard x:Key="FadeIn">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                            Storyboard.TargetName="grid"
@@ -63,6 +70,7 @@
                                       Value="0.2" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <!--#end region Storyboard-->
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonShowing">
@@ -167,7 +175,7 @@
         <TextBlock x:Name="tbInformation"
                    HorizontalAlignment="Left"
                    TextWrapping="Wrap"
-                   Text="{Binding ElementName=me,Path=BalloonText}"
+                   Text="{Binding Path=SelectedLesson.TypeModel.Name}"
                    VerticalAlignment="Top"
                    Margin="6,6,0,0"
                    Foreground="#FFFDFDFD"
@@ -175,15 +183,37 @@
         <Grid x:Name="grdGrammard"
               Grid.Row="1" />
         <Grid x:Name="grdVocabulary"
-              Grid.Row="1">
+              Grid.Row="1"
+              Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="36.949" />
+            </Grid.RowDefinitions>
             <TextBlock x:Name="tbWords"
+                       Text="{Binding Path=SelectedLesson.LessonName}"
+                       Visibility="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=false}"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"
-                       Text="TextBlock"
                        VerticalAlignment="Center"
                        FontWeight="Bold"
                        Foreground="White"
                        FontSize="16" />
+            <Button x:Name="btnBackSide"
+                    Content="{Binding SelectedLesson.SideName,UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding ChangeSideCommand}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Width="75"
+                    Grid.Row="1"
+                    Margin="4,5,0,0" />
+            <TextBlock x:Name="tblWordBackSide"
+                       Text="{Binding Path=SelectedLesson.BackSideCollection[0].Content}"
+                       Visibility="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=true}"
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Top"
+                       Foreground="White"
+                       Margin="10,5,0,0" />
         </Grid>
     </Grid>
 </UserControl>
