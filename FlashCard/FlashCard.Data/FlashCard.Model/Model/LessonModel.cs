@@ -14,5 +14,51 @@ namespace FlashCard.Model
         }
         #endregion
 
+
+
+        #region Properties
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private bool _isBackSide;
+        public bool IsBackSide
+        {
+            get { return _isBackSide; }
+            set
+            {
+                if (_isBackSide != value)
+                {
+                    _isBackSide = value;
+                    RaisePropertyChanged(() => IsBackSide);
+                    RaisePropertyChanged(() => SideName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private string _sideName;
+        public string SideName
+        {
+            get {
+                if (!IsBackSide)
+                    _sideName = "Front Side";
+                else
+                    _sideName = "Back Side";
+                return _sideName; }
+            set
+            {
+                if (_sideName != value)
+                {
+                    _sideName = value;
+                    RaisePropertyChanged(() => SideName);
+                }
+            }
+        }
+
+
+        #endregion
+
     }
 }

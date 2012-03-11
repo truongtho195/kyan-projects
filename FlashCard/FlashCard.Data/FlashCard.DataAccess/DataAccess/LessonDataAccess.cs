@@ -30,7 +30,7 @@ namespace FlashCard.DataAccess
             SQLiteParameter param = null;
             LessonModel lessonModel = new LessonModel();
 
-            string sql = "select * From Lesson where LessonID == @lessonID";
+            string sql = "select * From Lessons where LessonID == @lessonID";
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
@@ -66,13 +66,13 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
-            string sql = "select * From Lesson";
+            string sql1 = "select * from Lessons";
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sql;
+                sqlCommand.CommandText = sql1;
                 reader = sqlCommand.ExecuteReader();
                 LessonModel lessonModel;
                 while (reader.Read())
@@ -105,7 +105,7 @@ namespace FlashCard.DataAccess
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             //SQLiteParameter param = null;
-            string sql = "select * from Lessons ";
+            string sql = "select * from Lessons";
 
 
             try

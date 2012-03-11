@@ -29,21 +29,21 @@ namespace FlashCard
     /// <summary>
     /// Description
     /// </summary>
-    public static readonly DependencyProperty BalloonTextProperty =
-        DependencyProperty.Register("BalloonText",
+    public static readonly DependencyProperty InformationTextProperty =
+        DependencyProperty.Register("InformationText",
                                     typeof (string),
                                     typeof (FancyBalloon),
                                     new FrameworkPropertyMetadata(""));
 
     /// <summary>
-    /// A property wrapper for the <see cref="BalloonTextProperty"/>
+    /// A property wrapper for the <see cref="InformationTextProperty"/>
     /// dependency property:<br/>
     /// Description
     /// </summary>
-    public string BalloonText
+    public string InformationText
     {
-      get { return (string) GetValue(BalloonTextProperty); }
-      set { SetValue(BalloonTextProperty, value); }
+        get { return (string)GetValue(InformationTextProperty); }
+        set { SetValue(InformationTextProperty, value); }
     }
 
 
@@ -68,6 +68,7 @@ namespace FlashCard
     {
       InitializeComponent();
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
+    
     }
 
 
@@ -118,7 +119,7 @@ namespace FlashCard
     {
       Popup pp = (Popup)Parent;
       pp.IsOpen = false;
+     
     }
-
   }
 }
