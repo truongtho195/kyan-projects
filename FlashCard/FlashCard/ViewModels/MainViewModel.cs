@@ -32,7 +32,6 @@ namespace FlashCard.ViewModels
         }
         private void _timer_Tick(object sender, EventArgs e)
         {
-
             _balloon = new FancyBalloon();
             _timer.Stop();
             if (_count < LessonCollection.Count - 1)
@@ -40,19 +39,20 @@ namespace FlashCard.ViewModels
             else
                 _count = 0;
             SelectedLesson = LessonCollection[_count];
-            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Slide, 4000);
+            SelectedLesson.IsBackSide = false;
+            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Slide, null);
             _timer.Start();
-            //_balloon.MouseEnter += new System.Windows.Input.MouseEventHandler(_balloon_MouseEnter);
-            //_balloon.MouseLeave += new System.Windows.Input.MouseEventHandler(_balloon_MouseLeave);
+            _balloon.MouseEnter += new System.Windows.Input.MouseEventHandler(_balloon_MouseEnter);
+            _balloon.MouseLeave += new System.Windows.Input.MouseEventHandler(_balloon_MouseLeave);
         }
 
         void _balloon_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            _timer.Start();
-            if (ViewCore.MyNotifyIcon.IsLoaded)
+            if (_balloon.IsLoaded)
             {
                 Thread.Sleep(4000);
                 ViewCore.MyNotifyIcon.CloseBalloon();
+                _timer.Start();
             }
         }
 
