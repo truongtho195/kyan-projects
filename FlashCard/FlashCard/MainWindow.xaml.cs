@@ -28,14 +28,7 @@ namespace FlashCard
     /// </summary>
     public partial class MainWindow :IView
     {
-        //FancyBalloon balloon;
-
-        //DispatcherTimer timer;
         private readonly Lazy<MainViewModel> viewModel;
-
-//        List<string> tipList = new List<string>();
-  //      Random random = new Random();
-       
         public MainWindow()
         {
             InitializeComponent();
