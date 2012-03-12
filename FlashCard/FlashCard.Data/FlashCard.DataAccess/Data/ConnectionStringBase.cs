@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace FlashCard.DataAccess
 {
@@ -11,7 +12,7 @@ namespace FlashCard.DataAccess
         {
             get
             {
-                string connectionString = @"F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\SmartFlashCardDB.s3db";//
+                string connectionString = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath)+@"\SmartFlashCardDB.s3db";//
                 if (string.IsNullOrEmpty(connectionString) || connectionString.Trim().Length == 0)
                 {
                     return string.Empty;
