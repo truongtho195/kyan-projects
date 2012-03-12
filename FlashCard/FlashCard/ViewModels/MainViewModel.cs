@@ -25,7 +25,7 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(0, 0, 20);
+            _timer.Interval = new TimeSpan(0, 0, 10);
             _timer.Tick += new EventHandler(_timer_Tick);
             _timer.Start();
             ViewCore.Hide();
@@ -33,7 +33,6 @@ namespace FlashCard.ViewModels
         private void _timer_Tick(object sender, EventArgs e)
         {
             _balloon = new FancyBalloon();
-            _timer.Stop();
             if (_count < LessonCollection.Count - 1)
                 _count++;
             else
@@ -41,25 +40,9 @@ namespace FlashCard.ViewModels
             SelectedLesson = LessonCollection[_count];
             SelectedLesson.IsBackSide = false;
             ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Slide, null);
-            _timer.Start();
-            _balloon.MouseEnter += new System.Windows.Input.MouseEventHandler(_balloon_MouseEnter);
-            _balloon.MouseLeave += new System.Windows.Input.MouseEventHandler(_balloon_MouseLeave);
+            CloseBalloon();
         }
 
-        void _balloon_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (_balloon.IsLoaded)
-            {
-                Thread.Sleep(4000);
-                ViewCore.MyNotifyIcon.CloseBalloon();
-                _timer.Start();
-            }
-        }
-
-        void _balloon_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            _timer.Stop();
-        }
         #endregion
 
         #region Variables
@@ -67,6 +50,7 @@ namespace FlashCard.ViewModels
         DispatcherTimer _timer;
         FancyBalloon _balloon;
         int _count = 0;
+        public bool IsMouseEnter { get; set; }
         #endregion
 
         #region Properties
@@ -133,6 +117,65 @@ namespace FlashCard.ViewModels
         private void ChangeSideExecute(object param)
         {
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
+        }
+
+        /// <summary>
+        /// SaveCommand
+        /// <summary>
+        private ICommand _fancyBallonMouseLeaveCommand;
+        public ICommand FancyBallonMouseLeaveCommand
+        {
+            get
+            {
+                if (_fancyBallonMouseLeaveCommand == null)
+                {
+                    _fancyBallonMouseLeaveCommand = new RelayCommand(this.FancyBallonMouseLeaveExecute, this.CanFancyBallonMouseLeaveExecute);
+                }
+                return _fancyBallonMouseLeaveCommand;
+            }
+        }
+
+        private bool CanFancyBallonMouseLeaveExecute(object param)
+        {
+            return true;
+        }
+
+        private void FancyBallonMouseLeaveExecute(object param)
+        {
+            CloseBalloon();
+        }
+
+        private void CloseBalloon()
+        {
+            if (_balloon.IsLoaded)
+            {
+                Thread.Sleep(4000);
+                ViewCore.MyNotifyIcon.CloseBalloon();
+            }
+        }
+
+
+        private ICommand _fancyBallonMouseEnterCommand;
+        public ICommand FancyBallonMouseEnterCommand
+        {
+            get
+            {
+                if (_fancyBallonMouseEnterCommand == null)
+                {
+                    _fancyBallonMouseEnterCommand = new RelayCommand(this.FancyBallonMouseEnterExecute, this.CanFancyBallonMouseEnterExecute);
+                }
+                return _fancyBallonMouseEnterCommand;
+            }
+        }
+
+        private bool CanFancyBallonMouseEnterExecute(object param)
+        {
+            return true;
+        }
+
+        private void FancyBallonMouseEnterExecute(object param)
+        {
+            _timer.Stop();
         }
         #endregion
 
