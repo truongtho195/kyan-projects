@@ -101,6 +101,12 @@
           MinHeight="120"
           MinWidth="240"
           MouseEnter="grid_MouseEnter">
+        <attachedCmd:CommandBehaviorCollection.Behaviors>
+            <attachedCmd:BehaviorBinding Event="MouseEnter"
+                                         Command="{Binding FancyBallonMouseEnterCommand}" />
+            <attachedCmd:BehaviorBinding Event="MouseLeave"
+                                         Command="{Binding FancyBallonMouseLeaveCommand}" />
+        </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
