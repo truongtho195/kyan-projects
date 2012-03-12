@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Diagnostics;
+using System.IO;
 
 namespace FlashCard.DataAccess
 {
@@ -15,7 +16,8 @@ namespace FlashCard.DataAccess
             {
                 //string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;//SecurityLib.AESSecurity.Decrypt(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
                 //string connectionString = "Data Source=SmartFlashCardDB.s3db";
-                string connectionString = @"Data Source=F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\SmartFlashCardDB.s3db";//
+                string connectionString = "Data Source=" + Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) + @"\SmartFlashCardDB.s3db";//
+                //string connectionString = @"Data Source=F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\SmartFlashCardDB.s3db";//
                 if (string.IsNullOrEmpty(connectionString) || connectionString.Trim().Length == 0)
                 {
                     return string.Empty;
