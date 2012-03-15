@@ -120,6 +120,17 @@
     <Resource Include="Images\Remove.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Error.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FlashCard.Data\FlashCard.DataAccess\FlashCard.DataAccess.csproj">
       <Project>{2660BA4D-E3AF-4038-855D-AB1F2C045ECD}</Project>
       <Name>FlashCard.DataAccess</Name>
@@ -140,17 +151,6 @@
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
       <Name>WpfApplicationFramework</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Error.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

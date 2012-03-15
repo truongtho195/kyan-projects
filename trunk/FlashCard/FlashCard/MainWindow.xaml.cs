@@ -26,7 +26,7 @@ namespace FlashCard
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow :IView
+    public partial class MainWindow : IView
     {
         private readonly Lazy<MainViewModel> viewModel;
         public MainWindow()
@@ -34,7 +34,14 @@ namespace FlashCard
             InitializeComponent();
 
             viewModel = new Lazy<MainViewModel>(() => ViewHelper.GetViewModel<MainViewModel>(this));
-            var a= new MainViewModel(this).View;
+            var a = new MainViewModel(this).View;
+            this.Closed += new EventHandler(MainWindow_Closed);
+        }
+
+        void MainWindow_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+
         }
 
 
@@ -42,7 +49,7 @@ namespace FlashCard
         private MainViewModel ViewModel { get { return viewModel.Value; } }
         #endregion
 
-     
+
 
         void balloon_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -56,7 +63,7 @@ namespace FlashCard
 
         void balloon_MouseEnter(object sender, MouseEventArgs e)
         {
-         //   timer.Stop();
+            //   timer.Stop();
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)

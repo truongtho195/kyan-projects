@@ -110,6 +110,7 @@ namespace FlashCard.DataAccess
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             string sql = "select * from BackSide ";
+            
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
@@ -122,7 +123,16 @@ namespace FlashCard.DataAccess
                         sqlcondition += "where BackSideID==@backSideID";
                     else
                         sqlcondition += "&& BackSideID==@backSideID";
-                    SQLiteParameter param = new SQLiteParameter("@categoryID", backSide.BackSideID);
+                    SQLiteParameter param = new SQLiteParameter("@backSideID", backSide.BackSideID);
+                    sqlCommand.Parameters.Add(param);
+                }
+                if (backSide.LessonID > -1)
+                {
+                    if (string.IsNullOrWhiteSpace(sqlcondition))
+                        sqlcondition += "where LessonID==@lessonID";
+                    else
+                        sqlcondition += "&& LessonID==@lessonID";
+                    SQLiteParameter param = new SQLiteParameter("@lessonID", backSide.LessonID);
                     sqlCommand.Parameters.Add(param);
                 }
                 sqlCommand.CommandText = sql + sqlcondition;
@@ -134,7 +144,9 @@ namespace FlashCard.DataAccess
                     backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
                     backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
                     backSideModel.Content = reader["Content"].ToString();
-                    backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    var isCorrect = reader["IsCorrect"];
+                    if (isCorrect != System.DBNull.Value)
+                        backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
                     list.Add(backSideModel);
                 }
             }
