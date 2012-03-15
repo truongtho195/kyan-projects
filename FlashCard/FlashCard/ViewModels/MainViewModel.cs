@@ -25,7 +25,7 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(0, 0, 10);
+            _timer.Interval = _timerOut;
             _timer.Tick += new EventHandler(_timer_Tick);
             _timer.Start();
             ViewCore.Hide();
@@ -39,8 +39,11 @@ namespace FlashCard.ViewModels
                 _count = 0;
             SelectedLesson = LessonCollection[_count];
             SelectedLesson.IsBackSide = false;
-            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Slide, null);
-            CloseBalloon();
+            if (!_balloon.IsLoaded)
+            {
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade,(int) _timerOut.TotalMilliseconds);
+            }
+            //CloseBalloon();
         }
 
         #endregion
@@ -49,6 +52,7 @@ namespace FlashCard.ViewModels
         LessonDataAccess _lessonDA;
         DispatcherTimer _timer;
         FancyBalloon _balloon;
+        TimeSpan _timerOut = new TimeSpan(0, 0, 10);
         int _count = 0;
         public bool IsMouseEnter { get; set; }
         #endregion
@@ -143,15 +147,18 @@ namespace FlashCard.ViewModels
         private void FancyBallonMouseLeaveExecute(object param)
         {
             CloseBalloon();
+            _timer.Start();
         }
 
         private void CloseBalloon()
         {
             if (_balloon.IsLoaded)
             {
-                Thread.Sleep(4000);
+                var timeSleep = _timerOut.TotalMilliseconds / 2;
+                Thread.Sleep((int)timeSleep);
                 ViewCore.MyNotifyIcon.CloseBalloon();
             }
+
         }
 
 
@@ -187,8 +194,8 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-     
 
-       
+
+
     }
 }
