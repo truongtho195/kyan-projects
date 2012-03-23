@@ -11,3 +11,16 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashC
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-CN\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.pdb
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MessageBoxControl.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.pdb
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.pdb
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.xml
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\vi\MVVMHelper.resources.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-CN\MVVMHelper.resources.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
+X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb

@@ -50,38 +50,6 @@ namespace FlashCard
         #endregion
 
 
-
-        void balloon_MouseLeave(object sender, MouseEventArgs e)
-        {
-            //timer.Start();
-            if (MyNotifyIcon.IsLoaded)
-            {
-                //Thread.Sleep(4000);
-                MyNotifyIcon.CloseBalloon();
-            }
-        }
-
-        void balloon_MouseEnter(object sender, MouseEventArgs e)
-        {
-            //   timer.Stop();
-        }
-
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            for (int i = 0; i < 5; i++)
-            {
-
-                Thread.Sleep(1000);
-                //balloon.inform = "Custom Balloon";
-                //MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, null);
-                Thread.Sleep(6000);
-                MyNotifyIcon.HideBalloonTip();
-
-            }
-        }
-
-
         private void MainViewModel()
         {
             CategoryDataAccess cate = new CategoryDataAccess();

@@ -14,7 +14,9 @@ namespace FlashCard.Model
         }
         #endregion
 
-
+        #region Variables
+        //LessonType 1: Phrase | 2: SingleChoice | 3: MultiChoice
+        #endregion
 
         #region Properties
         /// <summary>
@@ -57,6 +59,8 @@ namespace FlashCard.Model
             }
         }
 
+        
+      
 
         #endregion
 
