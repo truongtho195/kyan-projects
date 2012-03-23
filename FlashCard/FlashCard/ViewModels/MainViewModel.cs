@@ -12,6 +12,7 @@ using System.Threading;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MVVMHelper.Commands;
+using System.Diagnostics;
 
 
 namespace FlashCard.ViewModels
@@ -25,25 +26,37 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             _timer = new DispatcherTimer();
-            _timer.Interval = _timerOut;
+            var t = _timerOut;
+
+            _timer.Interval = new TimeSpan(0,0,0,1,0);
             _timer.Tick += new EventHandler(_timer_Tick);
             _timer.Start();
             ViewCore.Hide();
         }
         private void _timer_Tick(object sender, EventArgs e)
         {
-            _balloon = new FancyBalloon();
-            if (_count < LessonCollection.Count - 1)
-                _count++;
-            else
-                _count = 0;
-            SelectedLesson = LessonCollection[_count];
-            SelectedLesson.IsBackSide = false;
-            if (!_balloon.IsLoaded)
+            if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade,(int) _timerOut.TotalMilliseconds);
+                if (_count < LessonCollection.Count - 1)
+                    _count++;
+                else
+                    _count = 0;
+
+                SelectedLesson = LessonCollection[_count];
+                SelectedLesson.IsBackSide = false;
+                _balloon = new FancyBalloon();
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade,8000);
+                Thread.Sleep(5000);
             }
-            //CloseBalloon();
+        }
+
+        private void CloseBalloon()
+        {
+            _timer.Stop();
+            Thread.SpinWait((int)_timerOut.TotalMilliseconds/2);
+             ViewCore.MyNotifyIcon.CloseBalloon();
+            _timer.Start();
+
         }
 
         #endregion
@@ -54,6 +67,7 @@ namespace FlashCard.ViewModels
         FancyBalloon _balloon;
         TimeSpan _timerOut = new TimeSpan(0, 0, 10);
         int _count = 0;
+        public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
         #endregion
 
@@ -146,21 +160,19 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            CloseBalloon();
-            _timer.Start();
+            // WaitBalloon();
         }
 
-        private void CloseBalloon()
+        private void WaitBalloon()
         {
-            if (_balloon.IsLoaded)
+            if (ViewCore.MyNotifyIcon.IsLoaded)
             {
                 var timeSleep = _timerOut.TotalMilliseconds / 2;
                 Thread.Sleep((int)timeSleep);
                 ViewCore.MyNotifyIcon.CloseBalloon();
+                _timer.Start();
             }
-
         }
-
 
         private ICommand _fancyBallonMouseEnterCommand;
         public ICommand FancyBallonMouseEnterCommand
@@ -182,7 +194,7 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseEnterExecute(object param)
         {
-            _timer.Stop();
+            //_timer.Stop();
         }
         #endregion
 

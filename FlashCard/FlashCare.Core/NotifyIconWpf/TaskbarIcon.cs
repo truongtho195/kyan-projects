@@ -94,7 +94,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// <summary>
     /// Checks whether a non-tooltip popup is currently opened.
     /// </summary>
-    private bool IsPopupOpen
+    public  bool IsPopupOpen
     {
       get
       {
@@ -907,6 +907,8 @@ namespace Hardcodet.Wpf.TaskbarNotification
     #endregion
 
     #region Dispose / Exit
+
+    public bool IsClosed { get; set; }
 
     /// <summary>
     /// Set to true as soon as <see cref="Dispose"/>

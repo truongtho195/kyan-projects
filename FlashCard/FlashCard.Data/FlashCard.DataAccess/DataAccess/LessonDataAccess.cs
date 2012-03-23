@@ -44,6 +44,8 @@ namespace FlashCard.DataAccess
                 {
                     lessonModel.LessonID = (int)reader["LessonID"];
                     lessonModel.LessonName = reader["LessonName"].ToString();
+                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
                 }
             }
             catch (Exception ex)
@@ -81,6 +83,7 @@ namespace FlashCard.DataAccess
                     lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
                     lessonModel.LessonName = reader["LessonName"].ToString();
                     lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
                     list.Add(lessonModel);
                 }
             }
@@ -152,6 +155,7 @@ namespace FlashCard.DataAccess
                     lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
                     lessonModel.LessonName = reader["LessonName"].ToString();
                     lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
                     list.Add(lessonModel);
                 }
             }
@@ -195,6 +199,7 @@ namespace FlashCard.DataAccess
                     lessonModel.LessonName = reader["LessonName"].ToString();
                     lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
                     lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
                     //CategoryModel
                     lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
                     //TypeMode

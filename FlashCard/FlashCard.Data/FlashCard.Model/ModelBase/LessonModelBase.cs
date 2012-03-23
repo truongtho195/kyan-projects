@@ -180,6 +180,29 @@ namespace FlashCard.Model
 
 
 
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private int _lessonType;
+        public int LessonType
+        {
+            get { return _lessonType; }
+            set
+            {
+                if (_lessonType != value)
+                {
+                    this.OnLessonTypeChanging(value);
+                    _lessonType = value;
+                    RaisePropertyChanged(() => LessonType);
+                    this.OnLessonTypeChanged();
+                }
+            }
+        }
+
+        protected virtual void OnLessonTypeChanging(int value) { }
+        protected virtual void OnLessonTypeChanged() { }
+
+
 
 
 

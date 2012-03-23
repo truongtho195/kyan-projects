@@ -70,6 +70,15 @@
                                       Value="0.2" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+        <DataTemplate x:Key="DataTemplate1">
+        	<Grid>
+        		<Grid.ColumnDefinitions>
+        			<ColumnDefinition />
+        		</Grid.ColumnDefinitions>
+				<CheckBox Grid.Column="0" Content="{Binding Content}"/>
+        	</Grid>
+        </DataTemplate>
         <!--#end region Storyboard-->
     </UserControl.Resources>
     <UserControl.Triggers>
@@ -115,7 +124,8 @@
             <RowDefinition />
             <RowDefinition Height="37.5" />
         </Grid.RowDefinitions>
-        <Border x:Name="bdContent" HorizontalAlignment="Stretch"
+        <Border x:Name="bdContent"
+                HorizontalAlignment="Stretch"
                 Margin="3,0,3,3"
                 BorderThickness="1,1,1,1"
                 BorderBrush="Gray"
@@ -125,13 +135,18 @@
                 <DropShadowEffect Color="#FF747474" />
             </Border.Effect>
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1"
-                                     StartPoint="0.5,0">
-                    <GradientStop Color="#FF31889F"
-                                  Offset="0" />
-                    <GradientStop Color="#FF26C9DE"
-                                  Offset="1" />
-                </LinearGradientBrush>
+            	<RadialGradientBrush RadiusY="0.582" RadiusX="0.582" GradientOrigin="0.814,0.205">
+            		<RadialGradientBrush.RelativeTransform>
+            			<TransformGroup>
+            				<ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="1" ScaleX="1"/>
+            				<SkewTransform AngleY="0" AngleX="0" CenterY="0.5" CenterX="0.5"/>
+            				<RotateTransform Angle="-95.19" CenterY="0.5" CenterX="0.5"/>
+            				<TranslateTransform/>
+            			</TransformGroup>
+            		</RadialGradientBrush.RelativeTransform>
+            		<GradientStop Color="#FF9EE9C2" Offset="0"/>
+            		<GradientStop Color="#FF26C9DE" Offset="1"/>
+            	</RadialGradientBrush>
             </Border.Background>
         </Border>
         <Path Fill="#FFFFFFFF"
@@ -140,7 +155,9 @@
               VerticalAlignment="Bottom"
               Height="1"
               Data="M26,107 L220.04123,107"
-              SnapsToDevicePixels="True" d:IsHidden="True" Visibility="Collapsed">
+              SnapsToDevicePixels="True"
+              d:IsHidden="True"
+              Visibility="Collapsed">
             <Path.Stroke>
                 <LinearGradientBrush EndPoint="0.973,0.5"
                                      StartPoint="0.005,0.5">
@@ -167,17 +184,8 @@
                     Width="51" />
 
         </StackPanel>
-        <TextBlock x:Name="tbInformation"
-                   HorizontalAlignment="Left"
-                   TextWrapping="Wrap"
-                   Text="{Binding Path=SelectedLesson.TypeModel.Name}"
-                   VerticalAlignment="Top"
-                   Margin="6,6,0,0"
-                   Foreground="#FFFDFDFD"
-                   FontWeight="Bold" />
-        <Grid x:Name="grdGrammard"
-              Grid.Row="1" />
-        <Grid x:Name="grdVocabulary"
+        <Grid x:Name="grdPhrase"
+              Visibility="{Binding SelectedLesson.LessonType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
               Grid.Row="1"
               Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -210,26 +218,44 @@
                        Foreground="White"
                        Margin="10,5,0,0" />
         </Grid>
-        <Grid x:Name="grdSingleChoice" Grid.RowSpan="2" Grid.Row="1" d:IsHidden="True" Visibility="Collapsed">
-        	<ListBox HorizontalAlignment="Left" Margin="0,0,0,2.637" Width="100">
-        		     	
-			</ListBox>
+        <Grid x:Name="grdListChoice"
+              Visibility="{Binding SelectedLesson.LessonType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+              Grid.Row="1"
+              Margin="0,1,0,0">
+            <ListBox Margin="10,0"
+                     ItemsSource="{Binding SelectedLesson.BackSideCollection}" ItemTemplate="{DynamicResource DataTemplate1}">
+                
+            </ListBox>
         </Grid>
-        <Grid x:Name="grdMultiChoice" Grid.RowSpan="2" Grid.Row="1"/>
-        <Border x:Name="bdHeader" BorderBrush="#4C333332" BorderThickness="1" Margin="8,0,8,4" CornerRadius="0,0,5,5" Opacity="0.5">
-        	<Border.Background>
-        		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-        			<GradientStop Color="#CCF3F0F0" Offset="0.071"/>
-        			<GradientStop Color="#BFB8B5B5" Offset="0.129"/>
-        			<GradientStop Color="#CCB1B1B1" Offset="0.957"/>
-        			<GradientStop Color="#FFB1B1B1" Offset="1"/>
-        			<GradientStop Color="#E56A6969" Offset="0"/>
-        			<GradientStop Color="#C1B7B4B4" Offset="0.886"/>
-        		</LinearGradientBrush>
-        	</Border.Background>
-        	<Border.Effect>
-        		<DropShadowEffect BlurRadius="3" ShadowDepth="4" Opacity="0.5" Direction="292"/>
-        	</Border.Effect>
+        <Border x:Name="bdHeader"
+                BorderBrush="#4C333332"
+                BorderThickness="1"
+                Margin="8,0,8,4"
+                CornerRadius="0,0,5,5"
+                Opacity="0.5">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1"
+                                     StartPoint="0.5,0">
+                    <GradientStop Color="#CCF3F0F0"
+                                  Offset="0.071" />
+                    <GradientStop Color="#BFB8B5B5"
+                                  Offset="0.129" />
+                    <GradientStop Color="#CCB1B1B1"
+                                  Offset="0.957" />
+                    <GradientStop Color="#FFB1B1B1"
+                                  Offset="1" />
+                    <GradientStop Color="#E56A6969"
+                                  Offset="0" />
+                    <GradientStop Color="#C1B7B4B4"
+                                  Offset="0.886" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="3"
+                                  ShadowDepth="4"
+                                  Opacity="0.5"
+                                  Direction="292" />
+            </Border.Effect>
         </Border>
         <Image HorizontalAlignment="Right"
                Margin="0,10,15,21.333"
@@ -239,5 +265,13 @@
                ToolTip="Close Balloon"
                x:Name="imgClose"
                MouseDown="imgClose_MouseDown" />
+        <TextBlock x:Name="tbInformation"
+                   HorizontalAlignment="Left"
+                   TextWrapping="Wrap"
+                   Text="{Binding SelectedLesson.TypeModel.Name}"
+                   VerticalAlignment="Top"
+                   Margin="6,6,0,0"
+                   Foreground="#FFFDFDFD"
+                   FontWeight="Bold" />
     </Grid>
 </UserControl>
