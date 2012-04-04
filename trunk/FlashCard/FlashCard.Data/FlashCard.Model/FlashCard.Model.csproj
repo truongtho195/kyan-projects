@@ -46,6 +46,7 @@
     <Compile Include="ModelBase\SettingModelBase.cs" />
     <Compile Include="ModelBase\LessonModelBase.cs" />
     <Compile Include="ModelBase\BackSideModelBase.cs" />
+    <Compile Include="ModelBase\SetupModelBase.cs" />
     <Compile Include="Model\CategoryModel.cs" />
     <Compile Include="ModelBase\CategoryModelBase.cs" />
     <Compile Include="ModelBase\ModelBase.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Model\BackSideModel.cs" />
     <Compile Include="Model\LessonModel.cs" />
     <Compile Include="Model\SettingModel.cs" />
+    <Compile Include="Model\SetupModel.cs" />
     <Compile Include="Model\TypeModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

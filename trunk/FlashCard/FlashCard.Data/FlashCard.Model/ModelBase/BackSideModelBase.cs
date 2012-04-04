@@ -30,6 +30,7 @@ namespace FlashCard.Model
                     this.OnLessonBackSideIDChanging(value);
                     _backSideID = value;
                     RaisePropertyChanged(() => BackSideID);
+                    this.OnChanged();
                     this.OnLessonBackSideIDChanged();
                 }
             }
@@ -54,6 +55,7 @@ namespace FlashCard.Model
                     this.OnLessonIdChanging(value);
                     _lessonID = value;
                     RaisePropertyChanged(() => LessonID);
+                    this.OnChanged();
                     this.OnLessonIdChanged();
                 }
             }
@@ -77,6 +79,7 @@ namespace FlashCard.Model
                     this.OnContentChanging(value);
                     _content = value;
                     RaisePropertyChanged(() => Content);
+                    this.OnChanged();
                     this.OnContentChanged();
                 }
             }
@@ -99,6 +102,7 @@ namespace FlashCard.Model
                     this.OnIsCorrectChanging(value);
                     _isCorrect = value;
                     RaisePropertyChanged(() => IsCorrect);
+                    this.OnChanged();
                     this.OnIsCorrectChanged();
                 }
             }
@@ -122,13 +126,15 @@ namespace FlashCard.Model
                     this.OnLessonModelChanging(value);
                     _lessonModel = value;
                     RaisePropertyChanged(() => LessonModel);
+                    this.OnModelChanged(LessonModel.IsEdit);
                     this.OnLessonModelChanged();
                 }
             }
         }
 
         protected virtual void OnLessonModelChanging(LessonModel value) { }
-        protected virtual void OnLessonModelChanged() { }
+        protected virtual void OnLessonModelChanged() {
+        }
 
 
 

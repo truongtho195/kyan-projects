@@ -3,14 +3,14 @@ D:\Projects\POSSource 2\Output\Debug\WpfApplicationFramework.pdb
 D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 D:\Projects\POSSource 2\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.xml
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.dll
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.pdb
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb

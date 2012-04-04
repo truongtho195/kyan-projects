@@ -84,6 +84,31 @@ namespace FlashCard.Model
 
 
 
+       private int _typeOf;
+       /// <summary>
+       /// Gets or sets the property value.
+       /// </summary>
+       public int TypeOf
+       {
+           get { return _typeOf; }
+           set
+           {
+               if (_typeOf != value)
+               {
+                   this.OnTypeOfChanging(value);
+                   _typeOf = value;
+                   RaisePropertyChanged(() => TypeOf);
+                   this.OnTypeOfChanged();
+               }
+           }
+       }
+
+       protected virtual void OnTypeOfChanging(int value) { }
+       protected virtual void OnTypeOfChanged() { }
+
+
+
+
 
 
        #endregion

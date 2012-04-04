@@ -31,6 +31,7 @@ namespace FlashCard.Model
                     this.OnCategoryIDChanging(value);
                     _categoryID = value;
                     RaisePropertyChanged(() => CategoryID);
+                    this.OnChanged();
                     this.OnCategoryIDChanged();
                 }
             }
@@ -56,6 +57,7 @@ namespace FlashCard.Model
                     this.OnCategoryNameChanging(value);
                     _categoryName = value;
                     RaisePropertyChanged(() => CategoryName);
+                    this.OnChanged();
                     this.OnCategoryNameChanged();
                 }
             }
@@ -79,6 +81,7 @@ namespace FlashCard.Model
                     this.OnLessonCollectionChanging(value);
                     _lessonCollection = value;
                     RaisePropertyChanged(() => LessonCollection);
+                    this.OnChanged();
                     this.OnLessonCollectionChanged();
                 }
             }
