@@ -7,15 +7,6 @@ F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCare.Core\Not
 F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\ResGen.write.1.tlog
 F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 F:\Workplace\WPF-WCF\SourceProject\Software Project\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\ResolveAssemblyReference.cache
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.g.resources
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\GenerateResource.read.1.tlog
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\GenerateResource.write.1.tlog
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\ResolveAssemblyReference.cache
@@ -25,3 +16,12 @@ X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Notify
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\GenerateResource.write.1.tlog
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.g.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.Properties.Resources.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\GenerateResource.read.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\GenerateResource.write.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\NotifyIconWpf\obj\Debug\Hardcodet.Wpf.TaskbarNotification.pdb

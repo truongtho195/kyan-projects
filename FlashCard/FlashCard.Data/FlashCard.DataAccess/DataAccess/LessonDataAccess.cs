@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
+using System.Collections.ObjectModel;
 
 namespace FlashCard.DataAccess
 {
@@ -42,10 +43,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
-                    lessonModel.LessonID = (int)reader["LessonID"];
-                    lessonModel.LessonName = reader["LessonName"].ToString();
-                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
+                    lessonModel = GetLessonModel(reader);
                 }
             }
             catch (Exception ex)
@@ -79,11 +77,7 @@ namespace FlashCard.DataAccess
                 LessonModel lessonModel;
                 while (reader.Read())
                 {
-                    lessonModel = new LessonModel();
-                    lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    lessonModel.LessonName = reader["LessonName"].ToString();
-                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
+                    lessonModel = GetLessonModel(reader);
                     list.Add(lessonModel);
                 }
             }
@@ -100,6 +94,8 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
+
+       
 
         public IList<LessonModel> GetAll(LessonModel lesson)
         {
@@ -151,11 +147,7 @@ namespace FlashCard.DataAccess
                 LessonModel lessonModel;
                 while (reader.Read())
                 {
-                    lessonModel = new LessonModel();
-                    lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    lessonModel.LessonName = reader["LessonName"].ToString();
-                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
+                    lessonModel = GetLessonModel(reader);
                     list.Add(lessonModel);
                 }
             }
@@ -178,8 +170,8 @@ namespace FlashCard.DataAccess
         {
             List<LessonModel> list = new List<LessonModel>();
             SQLiteConnection sqlConnect = null;
-            SQLiteCommand sqlCommand=null;
-            SQLiteDataReader reader=null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
             CategoryDataAccess categoryDA = new CategoryDataAccess();
             TypeDataAccess typeDA = new TypeDataAccess();
             BackSideDataAccess backSideDA = new BackSideDataAccess();
@@ -194,12 +186,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    LessonModel lessonModel = new LessonModel();
-                    lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    lessonModel.LessonName = reader["LessonName"].ToString();
-                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    lessonModel.LessonType = int.Parse(reader["LessonType"].ToString());
+                    LessonModel lessonModel = GetLessonModel(reader);
                     //CategoryModel
                     lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
                     //TypeMode
@@ -207,7 +194,10 @@ namespace FlashCard.DataAccess
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
-                    lessonModel.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    lessonModel.IsNew = false;
+                    lessonModel.IsEdit = false;
+                    lessonModel.IsDelete = false;
                     list.Add(lessonModel);
                 }
 
@@ -230,8 +220,8 @@ namespace FlashCard.DataAccess
         {
             List<LessonModel> list = new List<LessonModel>();
             SQLiteConnection sqlConnect = null;
-            SQLiteCommand sqlCommand =null;
-            SQLiteDataReader reader=null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
             SQLiteParameter param = null;
             CategoryDataAccess categoryDA = new CategoryDataAccess();
             TypeDataAccess typeDA = new TypeDataAccess();
@@ -249,11 +239,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    LessonModel lessonModel = new LessonModel();
-                    lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    lessonModel.LessonName = reader["LessonName"].ToString();
-                    lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+                    LessonModel lessonModel = GetLessonModel(reader);
                     //CategoryModel
                     lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
                     //TypeMode
@@ -261,7 +247,10 @@ namespace FlashCard.DataAccess
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
-                    lessonModel.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    lessonModel.IsEdit = false;
+                    lessonModel.IsNew = false;
+                    lessonModel.IsDelete = false;
                     list.Add(lessonModel);
                 }
 
@@ -278,6 +267,104 @@ namespace FlashCard.DataAccess
                 reader.Dispose();
             }
             return list;
+        }
+
+
+        public bool Insert(LessonModel lessonModel)
+        {
+            bool result = false;
+            string sql = "insert into Lessons (LessonName,TypeID,CategoryID) values (@LessonName,@TypeID,@CategoryID)";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", lessonModel.LessonName));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeID));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryID));
+                sqlCommand.ExecuteNonQuery();
+                BackSideDataAccess backSideDataAccess = new BackSideDataAccess();
+                lessonModel.LessonID = (int)sqlConnect.LastInsertRowId;
+                foreach (var item in lessonModel.BackSideCollection)
+                {
+                    item.LessonID = lessonModel.LessonID;
+                    backSideDataAccess.Insert(item);
+                }
+                lessonModel.IsNew = false;
+                lessonModel.IsDelete = false;
+                lessonModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+        public bool Update(LessonModel lessonModel)
+        {
+            bool result = false;
+            string sql = "update Lessons set LessonName=@LessonName,TypeID=@TypeID,CategoryID=@CategoryID where LessonID = @LessonID";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", lessonModel.LessonName));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeID));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryID));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", lessonModel.LessonID));
+                sqlCommand.ExecuteNonQuery();
+                BackSideDataAccess backSideDataAccess = new BackSideDataAccess();
+                foreach (var item in lessonModel.BackSideCollection.ToList())
+                {
+                    item.LessonID = lessonModel.LessonID;
+                    if (item.IsDelete)
+                    {
+                        backSideDataAccess.Delete(item);
+                        lessonModel.BackSideCollection.Remove(item);
+                    }
+                    else if (item.IsNew)
+                        backSideDataAccess.Insert(item);
+                    else
+                        backSideDataAccess.Update(item);
+
+                }
+                lessonModel.IsNew = false;
+                lessonModel.IsDelete = false;
+                lessonModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+
+        private LessonModel GetLessonModel(SQLiteDataReader reader)
+        {
+            LessonModel lessonModel;
+            lessonModel = new LessonModel();
+            lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
+            lessonModel.LessonName = reader["LessonName"].ToString();
+            lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+            lessonModel.IsDelete = false;
+            lessonModel.IsEdit = false;
+            lessonModel.IsNew = false;
+            return lessonModel;
         }
 
 

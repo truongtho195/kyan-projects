@@ -42,10 +42,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
-                    backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
-                    backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    backSideModel.Content = reader["Content"].ToString();
-                    backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    backSideModel = GetBackSideModel(reader);
                 }
             }
             catch (Exception ex)
@@ -78,14 +75,10 @@ namespace FlashCard.DataAccess
                 sqlCommand.CommandText = sql;
                 
                 reader = sqlCommand.ExecuteReader();
-                BackSideModel backSideModel;
+                
                 while (reader.Read())
                 {
-                    backSideModel = new BackSideModel();
-                    backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
-                    backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    backSideModel.Content = reader["Content"].ToString();
-                    backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    BackSideModel backSideModel = GetBackSideModel(reader);
                     list.Add(backSideModel);
                 }
             }
@@ -137,16 +130,10 @@ namespace FlashCard.DataAccess
                 }
                 sqlCommand.CommandText = sql + sqlcondition;
                 reader = sqlCommand.ExecuteReader();
-                BackSideModel backSideModel;
+                
                 while (reader.Read())
                 {
-                    backSideModel = new BackSideModel();
-                    backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
-                    backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    backSideModel.Content = reader["Content"].ToString();
-                    var isCorrect = reader["IsCorrect"];
-                    if (isCorrect != System.DBNull.Value)
-                        backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    BackSideModel backSideModel = GetBackSideModel(reader);
                     list.Add(backSideModel);
                 }
             }
@@ -163,6 +150,8 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
+
+       
 
 
         public IList<BackSideModel> GetAllWithRelation()
@@ -182,15 +171,10 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 reader = sqlCommand.ExecuteReader();
-                BackSideModel backSideModel;
                 while (reader.Read())
                 {
                     //BackSideModel
-                    backSideModel = new BackSideModel();
-                    backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
-                    backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    backSideModel.Content = reader["Content"].ToString();
-                    backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    BackSideModel backSideModel = GetBackSideModel(reader);
                     //LessonModel
                     backSideModel.LessonModel = lessonDA.Get(backSideModel.LessonID);
                     //CategoryModel
@@ -266,6 +250,115 @@ namespace FlashCard.DataAccess
             return list;
         }
 
+
+        public bool Insert(BackSideModel backSideModel)
+        {
+            bool result = false;
+            string sql = "insert into BackSide (LessonID,Content,IsCorrect) values (@LessonID,@Content,@IsCorrect)";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", backSideModel.Content));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", backSideModel.IsCorrect));
+                sqlCommand.ExecuteNonQuery();
+                backSideModel.BackSideID = (int)sqlConnect.LastInsertRowId;
+                backSideModel.IsNew = false;
+                backSideModel.IsDelete = false;
+                backSideModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+
+        public bool Update(BackSideModel backSideModel)
+        {
+            bool result = false;
+            string sql = "Update BackSide set LessonID=@LessonID,Content=@Content,IsCorrect=@IsCorrect where BackSideID = @BackSideID";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", backSideModel.Content));
+                var correct = backSideModel.IsCorrect.HasValue ? backSideModel.IsCorrect : false;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", correct));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@BackSideID", backSideModel.BackSideID));
+                sqlCommand.ExecuteNonQuery();
+                backSideModel.IsNew = false;
+                backSideModel.IsDelete = false;
+                backSideModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+        public bool Delete(BackSideModel backSideModel)
+        {
+            bool result = false;
+            string sql = "Delete BackSide where BackSideID = @BackSideID";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(new SQLiteParameter("@BackSideID", backSideModel.BackSideID));
+                sqlCommand.ExecuteNonQuery();
+                backSideModel.IsNew = false;
+                backSideModel.IsDelete = false;
+                backSideModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+
+        private BackSideModel GetBackSideModel(SQLiteDataReader reader)
+        {
+            BackSideModel backSideModel = new BackSideModel();
+            backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
+            backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
+            backSideModel.Content = reader["Content"].ToString();
+            var isCorrect = reader["IsCorrect"];
+            if (isCorrect != System.DBNull.Value)
+                backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+
+            backSideModel.IsEdit = false;
+            backSideModel.IsNew = false;
+            backSideModel.IsDelete = false;
+            return backSideModel;
+        }
         #endregion
     }
 }

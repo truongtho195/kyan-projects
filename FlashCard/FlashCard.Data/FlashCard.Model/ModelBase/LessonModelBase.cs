@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace FlashCard.Model
 {
@@ -30,6 +31,7 @@ namespace FlashCard.Model
                     this.OnLessonIDChanging(value);
                     _lessonID = value;
                     RaisePropertyChanged(() => LessonID);
+                    this.OnChanged();
                     this.OnLessonIDChanged();
                 }
             }
@@ -53,6 +55,7 @@ namespace FlashCard.Model
                     this.OnLessonNameChanging(value);
                     _lessonName = value;
                     RaisePropertyChanged(() => LessonName);
+                    this.OnChanged();
                     this.OnLessonNameChanged();
                 }
             }
@@ -77,6 +80,7 @@ namespace FlashCard.Model
                     this.OnCategoryIDChanging(value);
                     _categoryID = value;
                     RaisePropertyChanged(() => CategoryID);
+                    this.OnChanged();
                     this.OnCategoryIDChanged();
                 }
             }
@@ -101,6 +105,7 @@ namespace FlashCard.Model
                     this.OnCategoryModelChanging(value);
                     _categoryModel = value;
                     RaisePropertyChanged(() => CategoryModel);
+                    this.OnModelChanged(CategoryModel.IsEdit);
                     this.OnCategoryModelChanged();
                 }
             }
@@ -147,6 +152,7 @@ namespace FlashCard.Model
                     this.OnTypeModelChanging(value);
                     _typeModel = value;
                     RaisePropertyChanged(() => TypeModel);
+                    this.OnModelChanged(TypeModel.IsEdit);
                     this.OnTypeModelChanged();
                 }
             }
@@ -159,8 +165,8 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private List<BackSideModel> _backSideCollection;
-        public List<BackSideModel> BackSideCollection
+        private ObservableCollection<BackSideModel> _backSideCollection;
+        public ObservableCollection<BackSideModel> BackSideCollection
         {
             get { return _backSideCollection; }
             set
@@ -170,41 +176,15 @@ namespace FlashCard.Model
                     this.OnBackSideCollectionChanging(value);
                     _backSideCollection = value;
                     RaisePropertyChanged(() => BackSideCollection);
+                    if (BackSideCollection != null)
+                        this.OnModelChanged(BackSideCollection.Any(x => x.IsEdit));
                     this.OnBackSideCollectionChanged();
                 }
             }
         }
 
-        protected virtual void OnBackSideCollectionChanging(List<BackSideModel> value) { }
+        protected virtual void OnBackSideCollectionChanging(ObservableCollection<BackSideModel> value) { }
         protected virtual void OnBackSideCollectionChanged() { }
-
-
-
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        private int _lessonType;
-        public int LessonType
-        {
-            get { return _lessonType; }
-            set
-            {
-                if (_lessonType != value)
-                {
-                    this.OnLessonTypeChanging(value);
-                    _lessonType = value;
-                    RaisePropertyChanged(() => LessonType);
-                    this.OnLessonTypeChanged();
-                }
-            }
-        }
-
-        protected virtual void OnLessonTypeChanging(int value) { }
-        protected virtual void OnLessonTypeChanged() { }
-
-
-
-
 
 
 

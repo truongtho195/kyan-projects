@@ -13,6 +13,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MVVMHelper.Commands;
 using System.Diagnostics;
+using Hardcodet.Wpf.TaskbarNotification;
 
 
 namespace FlashCard.ViewModels
@@ -26,15 +27,19 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             _timer = new DispatcherTimer();
-            var t = _timerOut;
 
-            _timer.Interval = new TimeSpan(0,0,0,1,0);
+            _timer.Interval = SetupModel.TimeOut;
             _timer.Tick += new EventHandler(_timer_Tick);
+            _stopWatch.Start();
             _timer.Start();
             ViewCore.Hide();
         }
+
+        Stopwatch _stopWatch = new Stopwatch();
         private void _timer_Tick(object sender, EventArgs e)
         {
+            Console.WriteLine("Stop watch :" + _stopWatch.ElapsedMilliseconds);
+            _stopWatch.Restart();
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
                 if (_count < LessonCollection.Count - 1)
@@ -45,27 +50,17 @@ namespace FlashCard.ViewModels
                 SelectedLesson = LessonCollection[_count];
                 SelectedLesson.IsBackSide = false;
                 _balloon = new FancyBalloon();
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade,8000);
-                Thread.Sleep(5000);
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, (int)SetupModel.ViewTime.TotalMilliseconds);
+                Console.WriteLine(".....Showing .....");
             }
-        }
-
-        private void CloseBalloon()
-        {
-            _timer.Stop();
-            Thread.SpinWait((int)_timerOut.TotalMilliseconds/2);
-             ViewCore.MyNotifyIcon.CloseBalloon();
-            _timer.Start();
-
         }
 
         #endregion
 
         #region Variables
-        LessonDataAccess _lessonDA;
         DispatcherTimer _timer;
+        Timer _waitForClose;
         FancyBalloon _balloon;
-        TimeSpan _timerOut = new TimeSpan(0, 0, 10);
         int _count = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
@@ -85,6 +80,25 @@ namespace FlashCard.ViewModels
                 {
                     _selectedLesson = value;
                     RaisePropertyChanged(() => SelectedLesson);
+                }
+            }
+        }
+
+
+
+        private SetupModel _setupModel;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public SetupModel SetupModel
+        {
+            get { return _setupModel; }
+            set
+            {
+                if (_setupModel != value)
+                {
+                    _setupModel = value;
+                    RaisePropertyChanged(() => SetupModel);
                 }
             }
         }
@@ -160,19 +174,19 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            // WaitBalloon();
+            _waitForClose = new Timer(WaitBalloon);
+            _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
         }
 
-        private void WaitBalloon()
+        private void WaitBalloon(object state)
         {
-            if (ViewCore.MyNotifyIcon.IsLoaded)
-            {
-                var timeSleep = _timerOut.TotalMilliseconds / 2;
-                Thread.Sleep((int)timeSleep);
+            var action = new Action(() => {
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 _timer.Start();
-            }
+            });
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
+
 
         private ICommand _fancyBallonMouseEnterCommand;
         public ICommand FancyBallonMouseEnterCommand
@@ -194,15 +208,19 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseEnterExecute(object param)
         {
-            //_timer.Stop();
+            _timer.Stop();
         }
         #endregion
 
         #region Methods
         private void Initialize()
         {
-            _lessonDA = new LessonDataAccess();
-            LessonCollection = new List<LessonModel>(_lessonDA.GetAllWithRelation());
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            LessonCollection = new List<LessonModel>(lessonDA.GetAllWithRelation());
+            SetupModel = new SetupModel();
+            SetupModel.DistanceTime = new TimeSpan(0, 0, 3);
+            SetupModel.ViewTime = new TimeSpan(0, 0, 7);
+
         }
         #endregion
 

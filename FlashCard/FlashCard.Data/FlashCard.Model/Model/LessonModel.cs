@@ -59,9 +59,48 @@ namespace FlashCard.Model
             }
         }
 
-        
+        private BackSideModel _backSideModel;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public BackSideModel BackSideModel
+        {
+            get { return _backSideModel; }
+            set
+            {
+                if (_backSideModel != value)
+                {
+                    _backSideModel = value;
+                    RaisePropertyChanged(() => BackSideModel);
+                }
+            }
+        }
+
+
+        private bool _isEditing;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public bool IsEditing
+        {
+            get { return _isEditing; }
+            set
+            {
+                if (_isEditing != value)
+                {
+                    _isEditing = value;
+                    RaisePropertyChanged(() => IsEditing);
+                }
+            }
+        }
+
       
 
+        #endregion
+
+
+        #region Overide Changed
+       
         #endregion
 
     }

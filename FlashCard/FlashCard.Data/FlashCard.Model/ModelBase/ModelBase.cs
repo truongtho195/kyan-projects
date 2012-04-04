@@ -143,6 +143,10 @@ namespace FlashCard.Model
         {
             if (!IsEdit) IsEdit = true;
         }
+        protected virtual void OnModelChanged(object value)
+        {
+            if (!IsEdit) IsEdit = (bool)value;
+        }
 
         #endregion
     }

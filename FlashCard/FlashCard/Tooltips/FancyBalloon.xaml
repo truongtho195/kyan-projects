@@ -185,7 +185,7 @@
 
         </StackPanel>
         <Grid x:Name="grdPhrase"
-              Visibility="{Binding SelectedLesson.LessonType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+              Visibility="{Binding SelectedLesson.TypeModel.TypeOf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
               Grid.Row="1"
               Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -219,7 +219,7 @@
                        Margin="10,5,0,0" />
         </Grid>
         <Grid x:Name="grdListChoice"
-              Visibility="{Binding SelectedLesson.LessonType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+              Visibility="{Binding SelectedLesson.TypeModel.TypeOf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
               Grid.Row="1"
               Margin="0,1,0,0">
             <ListBox Margin="10,0"

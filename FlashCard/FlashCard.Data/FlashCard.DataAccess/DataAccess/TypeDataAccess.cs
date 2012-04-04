@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
+using System.Collections.ObjectModel;
 
 
 namespace FlashCard.DataAccess
@@ -43,8 +44,7 @@ namespace FlashCard.DataAccess
 
                 if (reader.Read())
                 {
-                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    typeModel.Name = reader["Name"].ToString();
+                    typeModel = GetTypeModel(reader);
                 }
             }
             catch (Exception ex)
@@ -61,13 +61,14 @@ namespace FlashCard.DataAccess
             return typeModel;
         }
 
+
         public IList<TypeModel> GetAll()
         {
             List<TypeModel> list = new List<TypeModel>();
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
-            string sql = "select * From Types ";
+            string sql = "select * From Types";
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
@@ -78,9 +79,7 @@ namespace FlashCard.DataAccess
                 
                 while (reader.Read())
                 {
-                    TypeModel typeModel = new TypeModel();
-                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    typeModel.Name = reader["Name"].ToString();
+                    TypeModel typeModel = GetTypeModel(reader);
                     list.Add(typeModel);
                 }
             }
@@ -125,9 +124,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    TypeModel typeModel = new TypeModel();
-                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    typeModel.Name = reader["Name"].ToString();
+                    TypeModel typeModel = GetTypeModel(reader);
                     list.Add(typeModel);
                 }
             }
@@ -144,6 +141,8 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
+
+      
 
         public IList<TypeModel> GetAllWithRelation()
         {
@@ -177,7 +176,7 @@ namespace FlashCard.DataAccess
                     {
                         var backSideModel = new BackSideModel() { BackSideID = -1 };
                         backSideModel.LessonID = item.LessonID;
-                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
                         item.CategoryModel = categoryDA.Get(item.TypeID);
                         lessonCollection.Add(item);
                     }
@@ -222,9 +221,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    TypeModel typeModel = new TypeModel();
-                    typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
-                    typeModel.Name = reader["Name"].ToString();
+                    TypeModel typeModel = GetTypeModel(reader);
                     //Lesson
                     LessonModel lesson = new LessonModel() { CategoryID = -1, LessonID = -1 };
                     lesson.TypeID = typeModel.TypeID;
@@ -233,7 +230,7 @@ namespace FlashCard.DataAccess
                     {
                         var backSideModel = new BackSideModel() { BackSideID = -1 };
                         backSideModel.LessonID = item.LessonID;
-                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
                         item.CategoryModel = categoryDA.Get(item.TypeID);
                         lessonCollection.Add(item);
                     }
@@ -256,5 +253,18 @@ namespace FlashCard.DataAccess
         }
 
         #endregion
+
+
+        private TypeModel GetTypeModel(SQLiteDataReader reader)
+        {
+            TypeModel typeModel = new TypeModel();
+            typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
+            typeModel.Name = reader["Name"].ToString();
+            typeModel.TypeOf = int.Parse(reader["TypeOf"].ToString());
+            typeModel.IsEdit = false;
+            typeModel.IsNew = false;
+            typeModel.IsDelete = false;
+            return typeModel;
+        }
     }
 }

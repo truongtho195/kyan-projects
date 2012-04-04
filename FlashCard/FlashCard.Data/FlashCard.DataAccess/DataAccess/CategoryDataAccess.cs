@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
+using System.Collections.ObjectModel;
 
 namespace FlashCard.DataAccess
 {
@@ -182,7 +183,7 @@ namespace FlashCard.DataAccess
                     {
                         var backSideModel = new BackSideModel(){BackSideID=-1};
                         backSideModel.LessonID=item.LessonID;
-                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
                         item.TypeModel = typeDA.Get(item.TypeID);
                         lessonCollection.Add(item);
                     }
@@ -241,7 +242,7 @@ namespace FlashCard.DataAccess
                     {
                         var backSideModel = new BackSideModel() { BackSideID = -1 };
                         backSideModel.LessonID = item.LessonID;
-                        item.BackSideCollection = new List<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
                         item.TypeModel = typeDA.Get(item.TypeID);
                         lessonCollection.Add(item);
                     }
