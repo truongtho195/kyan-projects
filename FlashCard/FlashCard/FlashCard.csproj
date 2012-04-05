@@ -164,6 +164,10 @@
       <Project>{7AC63864-7638-41C4-969C-D3197EF2BED9}</Project>
       <Name>NotifyIconWpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FlashCare.Core\Planerator\Planerator.csproj">
+      <Project>{E7D5C246-122C-42E5-89B2-A7A704136B12}</Project>
+      <Name>Planerator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
       <Name>WpfApplicationFramework</Name>

@@ -1,0 +1,178 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="FlashCard.LessonManageView"
+        x:Name="Window"
+        Title="LessonManage"
+        Width="640"
+        Height="480"
+        xmlns:converter="clr-namespace:FlashCard.Converters">
+    <Window.Resources>
+        <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
+        <converter:ReverseBooleanConverter x:Key="reverseBooleanConverter" />
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.266*" />
+            <ColumnDefinition Width="0.734*" />
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="lstLesson"
+                  ItemsSource="{Binding LessonCollection}"
+                  SelectedItem="{Binding SelectedLesson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding SelectedLesson.IsEditing,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource reverseBooleanConverter}}"
+                  >
+            <ListView.View>
+                <GridView>
+                    <!--<GridViewColumn Header="#"
+                                    DisplayMemberBinding="{Binding}"
+                                    Width="30" />-->
+                    <GridViewColumn Header="Lesson Name"
+                                    DisplayMemberBinding="{Binding LessonName}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid x:Name="grdContent"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.102*" />
+                <RowDefinition Height="0.898*" />
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="stkControl"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right">
+                <Button x:Name="btnNew"
+                        Command="{Binding NewCommand}"
+                        Content="New"
+                        Width="70" />
+                <Button x:Name="btnSave"
+                        Command="{Binding SaveCommand}"
+                        Content="Save"
+                        Width="70" />
+                <Button x:Name="btnEdit"
+                        Command="{Binding EditCommand}"
+                        Content="Edit"
+                        Width="70" />
+            </StackPanel>
+            <Grid Grid.Row="1" IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.15*" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="0.538*" />
+                    <RowDefinition Height="0.312*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85.191" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="tbLesson"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Lesson Management"
+                           VerticalAlignment="Center"
+                           Grid.Column="1"
+                           FontSize="20" />
+                <TextBlock x:Name="tbType"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Type :"
+                           VerticalAlignment="Center"
+                           Grid.Row="1" />
+                <TextBlock x:Name="tbCategory"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Category :"
+                           VerticalAlignment="Center"
+                           Grid.Row="2" />
+                <TextBlock x:Name="tbLessonContent"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Lesson :"
+                           VerticalAlignment="Top"
+                           Grid.Row="3"
+                           Margin="0,4.999,0,0" />
+                <TextBlock x:Name="tbBackSide"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Back Side :"
+                           VerticalAlignment="Top"
+                           Grid.Row="4"
+                           Margin="0,5,0,0" />
+                <ComboBox x:Name="cmbType"
+                          ItemsSource="{Binding LessonTypeCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding SelectedLesson.TypeID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="TypeID"
+                          DisplayMemberPath="Name"
+                          Grid.Column="1"
+                          HorizontalAlignment="Left"
+                          Grid.Row="1"
+                          Width="120"
+                          d:LayoutOverrides="Height"
+                          Margin="10,0,0,0" />
+                <ComboBox x:Name="cmbCategory"
+                          ItemsSource="{Binding CategoryCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValue="{Binding SelectedLesson.CategoryID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="CategoryID"
+                          DisplayMemberPath="CategoryName"
+                          Grid.Column="1"
+                          HorizontalAlignment="Left"
+                          Grid.Row="2"
+                          VerticalAlignment="Bottom"
+                          Width="120"
+                          Margin="10,0,0,0" />
+                <TextBox x:Name="txtLessonContent"
+                         Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Column="1"
+                         Margin="10,8,8,8"
+                         Grid.Row="3" />
+                <DataGrid x:Name="dgBackSide"
+                          Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+                          ItemsSource="{Binding SelectedLesson.BackSideCollection}"
+                          SelectedItem="{Binding SelectedBackSideModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Grid.Column="1"
+                          Grid.Row="4"
+                          Margin="10,8,8,8">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Content">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox x:Name="tbContent"
+                                             Text="{Binding Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridCheckBoxColumn Header="Is Correct"
+                                                Width="80"
+                                                Binding="{Binding IsCorrect}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <TextBox x:Name="txtBackSide"
+                         Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                         Grid.Column="1"
+                         Grid.Row="4"
+                         Margin="10,8,8,8" />
+                <Button x:Name="btnAddBackSide"
+                        Command="{Binding AddBackSideCommand}"
+                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+                        Content="Add Back Side"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Width="100"
+                        Height="25"
+                        IsDefault="True"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

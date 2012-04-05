@@ -1,0 +1,8 @@
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\bin\Debug\Planerator.dll
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\bin\Debug\Planerator.pdb
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\Planerator.Properties.Resources.resources
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\ResGen.read.1.tlog
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\ResGen.write.1.tlog
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\Planerator.dll
+C:\Users\Truong Tho\Desktop\Planerator\Planerator\obj\Debug\Planerator.pdb
