@@ -7,6 +7,7 @@
              x:Class="FlashCard.FancyBalloon"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:converter="clr-namespace:FlashCard.Converters"
+             xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              x:Name="me"
              Height="150"
              Width="300">
@@ -70,14 +71,16 @@
                                       Value="0.2" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+        <SolidColorBrush x:Key="ListBorder"
+                         Color="#828790" />
         <DataTemplate x:Key="DataTemplate1">
-        	<Grid>
-        		<Grid.ColumnDefinitions>
-        			<ColumnDefinition />
-        		</Grid.ColumnDefinitions>
-				<CheckBox Grid.Column="0" Content="{Binding Content}"/>
-        	</Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0"
+                          Content="{Binding Content}" />
+            </Grid>
         </DataTemplate>
         <!--#end region Storyboard-->
     </UserControl.Resources>
@@ -135,18 +138,30 @@
                 <DropShadowEffect Color="#FF747474" />
             </Border.Effect>
             <Border.Background>
-            	<RadialGradientBrush RadiusY="0.582" RadiusX="0.582" GradientOrigin="0.814,0.205">
-            		<RadialGradientBrush.RelativeTransform>
-            			<TransformGroup>
-            				<ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="1" ScaleX="1"/>
-            				<SkewTransform AngleY="0" AngleX="0" CenterY="0.5" CenterX="0.5"/>
-            				<RotateTransform Angle="-95.19" CenterY="0.5" CenterX="0.5"/>
-            				<TranslateTransform/>
-            			</TransformGroup>
-            		</RadialGradientBrush.RelativeTransform>
-            		<GradientStop Color="#FF9EE9C2" Offset="0"/>
-            		<GradientStop Color="#FF26C9DE" Offset="1"/>
-            	</RadialGradientBrush>
+                <RadialGradientBrush RadiusY="0.582"
+                                     RadiusX="0.582"
+                                     GradientOrigin="0.814,0.205">
+                    <RadialGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5"
+                                            CenterX="0.5"
+                                            ScaleY="1"
+                                            ScaleX="1" />
+                            <SkewTransform AngleY="0"
+                                           AngleX="0"
+                                           CenterY="0.5"
+                                           CenterX="0.5" />
+                            <RotateTransform Angle="-95.19"
+                                             CenterY="0.5"
+                                             CenterX="0.5" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </RadialGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FF9EE9C2"
+                                  Offset="0" />
+                    <GradientStop Color="#FF26C9DE"
+                                  Offset="1" />
+                </RadialGradientBrush>
             </Border.Background>
         </Border>
         <Path Fill="#FFFFFFFF"
@@ -209,22 +224,24 @@
                     Width="75"
                     Grid.Row="1"
                     Margin="4,5,0,0" />
-            <TextBlock x:Name="tblWordBackSide"
-                       Text="{Binding Path=SelectedLesson.BackSideCollection[0].Content}"
-                       Visibility="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=true}"
-                       HorizontalAlignment="Left"
-                       TextWrapping="Wrap"
-                       VerticalAlignment="Top"
-                       Foreground="White"
-                       Margin="10,5,0,0" />
+            <wpfToolkit:RichTextBox x:Name="tblWordBackSide"
+                                    Text="{Binding Path=SelectedLesson.BackSideCollection[0].Content}"
+                                    Visibility="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=true}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    IsReadOnly="True"
+                                    BorderBrush="Transparent"
+                                    Background="Transparent"
+                                    Margin="10,5,5,0" />
         </Grid>
         <Grid x:Name="grdListChoice"
               Visibility="{Binding SelectedLesson.TypeModel.TypeOf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
               Grid.Row="1"
               Margin="0,1,0,0">
             <ListBox Margin="10,0"
-                     ItemsSource="{Binding SelectedLesson.BackSideCollection}" ItemTemplate="{DynamicResource DataTemplate1}">
-                
+                     ItemsSource="{Binding SelectedLesson.BackSideCollection}"
+                     ItemTemplate="{DynamicResource DataTemplate1}">
+
             </ListBox>
         </Grid>
         <Border x:Name="bdHeader"
