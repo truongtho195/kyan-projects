@@ -432,56 +432,7 @@
                 </EventTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <Storyboard x:Key="sbBackSide">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                                           Storyboard.TargetName="plFrontSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2"
-                                      Value="0.9" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
-                                           Storyboard.TargetName="plFrontSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2"
-                                      Value="0.9" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(planerator:Planerator.RotationY)"
-                                           Storyboard.TargetName="plFrontSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="90" />
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="plFrontSide">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.2"
-                                        Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.7"
-                                        Value="{x:Static Visibility.Collapsed}" />
-            </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="plBackSide">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.7"
-                                        Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(planerator:Planerator.RotationY)"
-                                           Storyboard.TargetName="plBackSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="90" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1.5"
-                                      Value="180" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                                           Storyboard.TargetName="plBackSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="0.9" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1.5"
-                                      Value="1" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
-                                           Storyboard.TargetName="plBackSide">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="0.9" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1.5"
-                                      Value="1" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="sbBackSide" />
         <!--#Endregion DataTemplate-->
     </UserControl.Resources>
     <UserControl.Triggers>
@@ -513,40 +464,35 @@
     	</EventTrigger>
     	<EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="btnFrontSide">
     		  		<BeginStoryboard Storyboard="{StaticResource sbBackSide}"/>
-		</EventTrigger>-->
+		</EventTrigger>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource sbBackSide}" />
+        </EventTrigger>-->
+        <EventTrigger RoutedEvent="Mouse.MouseEnter"
+                      SourceName="imgClose">
+            <BeginStoryboard Storyboard="{StaticResource HighlightCloseButton}"
+                             x:Name="HighlightCloseButton_BeginStoryboard" />
         </EventTrigger>
     </UserControl.Triggers>
     <Grid x:Name="Layout">
-        <planerator:Planerator x:Name="plFrontSide"
-                               RenderTransformOrigin="0.5,0.5">
-            <planerator:Planerator.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </planerator:Planerator.RenderTransform>
-            <Grid x:Name="grdFrontSide"
-                  MinWidth="300"
-                  Height="200"
-                  MouseEnter="grid_MouseEnter">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <Grid x:Name="FrontSideWrapper"
+              MinHeight="150"
+              MinWidth="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="47.363" />
+                    <RowDefinition Height="50" />
                     <RowDefinition />
-                    <RowDefinition Height="37.5" />
                 </Grid.RowDefinitions>
-                <Border x:Name="bdContentFronSide"
+                <Border x:Name="bdContent"
                         HorizontalAlignment="Stretch"
                         BorderThickness="1,1,1,1"
                         BorderBrush="Gray"
                         Opacity="0.75"
-                        Grid.RowSpan="3">
+                        Grid.RowSpan="2">
                     <Border.Effect>
                         <DropShadowEffect Color="#FF747474" />
                     </Border.Effect>
@@ -570,69 +516,17 @@
                                     <TranslateTransform />
                                 </TransformGroup>
                             </RadialGradientBrush.RelativeTransform>
-                            <GradientStop Color="#FF9EE9C2"
+                            <GradientStop Color="#FF1E71BE"
                                           Offset="0" />
-                            <GradientStop Color="#FF26C9DE"
+                            <GradientStop Color="#FF152895"
                                           Offset="1" />
                         </RadialGradientBrush>
                     </Border.Background>
                 </Border>
-                <Path Fill="#FFFFFFFF"
-                      Stretch="Fill"
-                      Margin="71.98,0,33.92,8.133"
-                      VerticalAlignment="Bottom"
-                      Height="1"
-                      Data="M26,107 L220.04123,107"
-                      SnapsToDevicePixels="True"
-                      Visibility="Collapsed"
-                      d:IsHidden="True">
-                    <Path.Stroke>
-                        <LinearGradientBrush EndPoint="0.973,0.5"
-                                             StartPoint="0.005,0.5">
-                            <GradientStop Color="#00ECAD25"
-                                          Offset="1" />
-                            <GradientStop Color="#87ECAD25"
-                                          Offset="0" />
-                        </LinearGradientBrush>
-                    </Path.Stroke>
-                </Path>
-                <Grid x:Name="grdPhraseFrontSide"
-                      Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
-                      Grid.Row="1"
-                      Grid.RowSpan="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="36.949" />
-                    </Grid.RowDefinitions>
-                    <TextBlock x:Name="tbWords"
-                               Text="{Binding SelectedLesson.LessonName}"
-                               Visibility="{Binding SelectedLesson.IsBackSide, ConverterParameter=false, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
-                               HorizontalAlignment="Center"
-                               TextWrapping="Wrap"
-                               VerticalAlignment="Center"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               FontSize="16" />
-                    <Button x:Name="btnFrontSide"
-                            Content="Back Side"
-                            Command="thriple:ContentControl3D.RotateCommand"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Width="75"
-                            Grid.Row="1"
-                            Margin="4,5,0,0" />
-                </Grid>
-                <Grid x:Name="grdListChoice"
-                      Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                      Grid.Row="1">
-                    <ListBox Margin="10,0"
-                             ItemsSource="{Binding SelectedLesson.BackSideCollection}"
-                             ItemTemplate="{DynamicResource DataTemplate1}" />
-                </Grid>
-                <Border x:Name="bdHeaderFrontSide"
+                <Border x:Name="bdHeader"
                         BorderBrush="#4C333332"
                         BorderThickness="1"
-                        Margin="8,0,8,4"
+                        Margin="5,0"
                         CornerRadius="0,0,5,5"
                         Opacity="0.5">
                     <Border.Background>
@@ -660,44 +554,119 @@
                     </Border.Effect>
                 </Border>
                 <Image HorizontalAlignment="Right"
-                       Margin="0,10,15,21.333"
+                       Margin="0,10,23,24"
                        Width="16"
-                       Source="/Images/Close.png"
+                       Source="/FlashCard;component/Images/Close.png"
                        Stretch="Fill"
                        ToolTip="Close Balloon"
-                       x:Name="imgCloseFrontSide"
+                       x:Name="imgClose"
                        MouseDown="imgClose_MouseDown" />
-                <TextBlock x:Name="tbInformationFrontSide"
+                <TextBlock x:Name="tbInformation"
                            HorizontalAlignment="Left"
                            TextWrapping="Wrap"
                            Text="{Binding SelectedLesson.TypeModel.Name}"
                            VerticalAlignment="Top"
-                           Margin="6,6,0,0"
+                           Margin="10,6,0,0"
                            Foreground="#FFFDFDFD"
-                           FontWeight="Bold" />
+                           FontWeight="Bold"
+                           Height="20" />
             </Grid>
-
-        </planerator:Planerator>
-        <planerator:Planerator x:Name="plBackSide"
-                               Visibility="Collapsed"
-                               RotationY="90"
-                               RenderTransformOrigin="0.5,0.5"
-                               Width="300"
-                               Height="200">
-            <planerator:Planerator.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="0.9"
-                                    ScaleY="0.9" />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </planerator:Planerator.RenderTransform>
-            <Grid x:Name="grdBackSide"
-                  Background="Aqua">
-
+        </Grid>
+        <Grid x:Name="BackSideWrapper">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border x:Name="bdContent1"
+                        HorizontalAlignment="Stretch"
+                        BorderThickness="1,1,1,1"
+                        BorderBrush="Gray"
+                        Opacity="0.75"
+                        Grid.RowSpan="2">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#FF747474" />
+                    </Border.Effect>
+                    <Border.Background>
+                        <RadialGradientBrush RadiusY="0.582"
+                                             RadiusX="0.582"
+                                             GradientOrigin="0.814,0.205">
+                            <RadialGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5"
+                                                    CenterX="0.5"
+                                                    ScaleY="1"
+                                                    ScaleX="1" />
+                                    <SkewTransform AngleY="0"
+                                                   AngleX="0"
+                                                   CenterY="0.5"
+                                                   CenterX="0.5" />
+                                    <RotateTransform Angle="-95.19"
+                                                     CenterY="0.5"
+                                                     CenterX="0.5" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </RadialGradientBrush.RelativeTransform>
+                            <GradientStop Color="#FF1E71BE"
+                                          Offset="0" />
+                            <GradientStop Color="#FF152895"
+                                          Offset="1" />
+                        </RadialGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="bdHeader1"
+                        BorderBrush="#4C333332"
+                        BorderThickness="1"
+                        Margin="5,0"
+                        CornerRadius="0,0,5,5"
+                        Opacity="0.5">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1"
+                                             StartPoint="0.5,0">
+                            <GradientStop Color="#CCF3F0F0"
+                                          Offset="0.071" />
+                            <GradientStop Color="#BFB8B5B5"
+                                          Offset="0.129" />
+                            <GradientStop Color="#CCB1B1B1"
+                                          Offset="0.957" />
+                            <GradientStop Color="#FFB1B1B1"
+                                          Offset="1" />
+                            <GradientStop Color="#E56A6969"
+                                          Offset="0" />
+                            <GradientStop Color="#C1B7B4B4"
+                                          Offset="0.886" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="3"
+                                          ShadowDepth="4"
+                                          Opacity="0.5"
+                                          Direction="292" />
+                    </Border.Effect>
+                </Border>
+                <Image HorizontalAlignment="Right"
+                       Margin="0,10,23,24"
+                       Width="16"
+                       Source="/FlashCard;component/Images/Close.png"
+                       Stretch="Fill"
+                       ToolTip="Close Balloon"
+                       x:Name="imgClose1"
+                       MouseDown="imgClose_MouseDown" />
+                <TextBlock x:Name="tbInformation1"
+                           HorizontalAlignment="Left"
+                           TextWrapping="Wrap"
+                           Text="{Binding SelectedLesson.TypeModel.Name}"
+                           VerticalAlignment="Top"
+                           Margin="10,6,0,0"
+                           Foreground="#FFFDFDFD"
+                           FontWeight="Bold"
+                           Height="20" />
             </Grid>
-        </planerator:Planerator>
+        </Grid>
     </Grid>
 
 
