@@ -1,0 +1,10 @@
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\bin\Debug\Thriple.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\bin\Debug\Thriple.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple_MarkupCompile.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple_MarkupCompile.lref
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Themes\Generic.baml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.g.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.pdb

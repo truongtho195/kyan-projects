@@ -8,6 +8,7 @@
         Title="LessonManage"
         Width="640"
         Height="480"
+        xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:converter="clr-namespace:FlashCard.Converters">
     <Window.Resources>
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
@@ -22,8 +23,7 @@
         <ListView x:Name="lstLesson"
                   ItemsSource="{Binding LessonCollection}"
                   SelectedItem="{Binding SelectedLesson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                  IsEnabled="{Binding SelectedLesson.IsEditing,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource reverseBooleanConverter}}"
-                  >
+                  IsEnabled="{Binding SelectedLesson.IsEditing,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource reverseBooleanConverter}}">
             <ListView.View>
                 <GridView>
                     <!--<GridViewColumn Header="#"
@@ -56,8 +56,13 @@
                         Command="{Binding EditCommand}"
                         Content="Edit"
                         Width="70" />
+                <Button x:Name="btnDelete"
+                        Command="{Binding DeleteCommand}"
+                        Content="Delete"
+                        Width="70" />
             </StackPanel>
-            <Grid Grid.Row="1" IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <Grid Grid.Row="1"
+                  IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.15*" />
                     <RowDefinition Height="25" />
@@ -145,7 +150,10 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBox x:Name="tbContent"
+                                             Width="auto"
+                                             MinWidth="200px"
                                              Text="{Binding Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -154,13 +162,16 @@
                                                 Binding="{Binding IsCorrect}" />
                     </DataGrid.Columns>
                 </DataGrid>
-
-                <TextBox x:Name="txtBackSide"
-                         Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
-                         Grid.Column="1"
-                         Grid.Row="4"
-                         Margin="10,8,8,8" />
+                <wpfToolkit:RichTextBox x:Name="txtBackSide"
+                                        Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                        Grid.Column="1"
+                                        Grid.Row="4"
+                                        Margin="10,8,8,8">
+                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                        <wpfToolkit:RichTextBoxFormatBar />
+                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                </wpfToolkit:RichTextBox>
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"
                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
