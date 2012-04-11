@@ -44,8 +44,11 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson != null)
             {
-                if(SelectedLesson.BackSideCollection!=null && SelectedLesson.BackSideCollection.Any())
+                if (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Any())
+                {
                     this.SelectedLesson.BackSideModel = SelectedLesson.BackSideCollection.FirstOrDefault();
+                    this.SelectedLesson.BackSideModel.IsEdit = false;
+                }
                 SelectedLesson.IsEditing = false;
             }
 
@@ -275,6 +278,40 @@ namespace FlashCard.ViewModels
             this.SelectedLesson.BackSideModel = new BackSideModel() { IsCorrect = false, IsNew = true };
             this.SelectedLesson.BackSideCollection.Add(this.SelectedLesson.BackSideModel); ;
         }
+        #endregion
+
+        #region DeletedCommand
+
+        #region DeleteCommand
+        private ICommand _deleteCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_deleteCommand == null)
+                {
+                    _deleteCommand = new RelayCommand(this.DeleteExecute, this.CanDeleteExecute);
+                }
+                return _deleteCommand;
+            }
+        }
+
+        private bool CanDeleteExecute(object param)
+        {
+            if (SelectedLesson == null)
+                return false;
+            return true;
+        }
+
+        private void DeleteExecute(object param)
+        {
+            
+        }
+        #endregion
+
+
         #endregion
 
 

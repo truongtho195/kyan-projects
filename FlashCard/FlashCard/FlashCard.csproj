@@ -60,6 +60,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -67,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\FormatTextConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Tooltips\FancyBalloon_2.xaml.cs">
@@ -167,6 +172,10 @@
     <ProjectReference Include="..\FlashCare.Core\Planerator\Planerator.csproj">
       <Project>{E7D5C246-122C-42E5-89B2-A7A704136B12}</Project>
       <Name>Planerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlashCare.Core\Thriple\Thriple.csproj">
+      <Project>{50FBA188-212A-400B-803E-D891527CEB15}</Project>
+      <Name>Thriple</Name>
     </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
