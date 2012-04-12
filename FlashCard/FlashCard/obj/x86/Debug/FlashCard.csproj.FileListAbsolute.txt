@@ -94,3 +94,45 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\P
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\Copy of FancyBalloon.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.Model.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\MVVMHelper.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Planerator.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Thriple.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\MessageBoxControl.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.Model.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\MVVMHelper.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Planerator.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Thriple.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\WpfApplicationFramework.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\WpfApplicationFramework.xml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.Linq.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\vi\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon_2.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.lref
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon_2.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
