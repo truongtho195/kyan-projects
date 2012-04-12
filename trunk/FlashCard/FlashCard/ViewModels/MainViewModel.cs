@@ -50,7 +50,10 @@ namespace FlashCard.ViewModels
                 SelectedLesson = LessonCollection[_count];
                 SelectedLesson.IsBackSide = false;
                 _balloon = new FancyBalloon();
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, (int)SetupModel.ViewTime.TotalMilliseconds);
+                //(int)SetupModel.ViewTime.TotalMilliseconds
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                _waitForClose = new Timer(WaitBalloon);
+                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
                 Console.WriteLine(".....Showing .....");
             }
         }
@@ -208,6 +211,7 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseEnterExecute(object param)
         {
+            _waitForClose.Dispose();
             _timer.Stop();
         }
         #endregion

@@ -196,6 +196,12 @@ namespace FlashCard.ViewModels
 
         private void EditExecute(object param)
         {
+            if (SelectedLesson.BackSideModel == null)
+            {
+                SelectedLesson.BackSideModel = new BackSideModel();
+                RaisePropertyChanged(() => SelectedLesson);
+            }
+
             SelectedLesson.IsEditing = true;
         }
         #endregion
