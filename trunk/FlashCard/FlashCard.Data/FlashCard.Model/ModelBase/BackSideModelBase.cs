@@ -126,7 +126,7 @@ namespace FlashCard.Model
                     this.OnLessonModelChanging(value);
                     _lessonModel = value;
                     RaisePropertyChanged(() => LessonModel);
-                    this.OnModelChanged(LessonModel.IsEdit);
+                    //this.OnModelChanged(LessonModel.IsEdit);
                     this.OnLessonModelChanged();
                 }
             }
