@@ -93,7 +93,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\P
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Planerator.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\Copy of FancyBalloon.baml
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb

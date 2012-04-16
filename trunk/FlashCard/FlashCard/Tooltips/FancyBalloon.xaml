@@ -8,8 +8,6 @@
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
-             xmlns:planerator="clr-namespace:Planerator;assembly=Planerator"
-             xmlns:thriple="clr-namespace:Thriple.Controls;assembly=Thriple"
              x:Name="me">
     <UserControl.Resources>
         <!--#Region Converters-->
@@ -61,7 +59,7 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5"
                                       Value="316" />
                 <EasingDoubleKeyFrame KeyTime="0:0:1"
-                	Value="0" />
+                                      Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
                                            Storyboard.TargetName="FrontSideWrapper">
@@ -83,10 +81,12 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5"
                                       Value="316" />
                 <EasingDoubleKeyFrame KeyTime="0:0:1"
-                	Value="0" />
+                                      Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grdListChoice">
-            	<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                           Storyboard.TargetName="grdListChoice">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
+                                      Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <DataTemplate x:Key="DataTemplate1">
@@ -99,25 +99,35 @@
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="sbChangeToFront">
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-        		Storyboard.TargetName="grdFrame">
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.5"
-        			Value="316" />
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="BackSideWrapper">
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="316"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="BackSideWrapper">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Collapsed}"/>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FrontSideWrapper">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Visible}"/>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="FrontSideWrapper">
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="316"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                                           Storyboard.TargetName="grdFrame">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="316" />
+                <EasingDoubleKeyFrame KeyTime="0:0:1"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                                           Storyboard.TargetName="BackSideWrapper">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="316" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="BackSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                                        Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="FrontSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                                        Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                                           Storyboard.TargetName="FrontSideWrapper">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="316" />
+                <EasingDoubleKeyFrame KeyTime="0:0:1"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
         <!--#end region Storyboard-->
@@ -287,9 +297,11 @@
             </Button>
         </Grid>
         <Grid x:Name="FrontSideWrapper"
-              MinHeight="150"
-              MinWidth="300"
-              RenderTransformOrigin="0.5,0.5">
+              MinHeight="300"
+              MinWidth="500"
+              RenderTransformOrigin="0.5,0.5"
+              d:IsHidden="True"
+              Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -304,15 +316,16 @@
                 <RowDefinition Height="28" />
             </Grid.RowDefinitions>
             <Grid x:Name="grdPhrase"
-                  Visibility="{Binding SelectedLesson.TypeModel.LessonType, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  Grid.Row="1" Background="#FFADADAD" Margin="5">
+                  Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.Row="1"
+                  Background="#FFADADAD"
+                  Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition Height="36.949" />
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="tbWords"
                            Text="{Binding SelectedLesson.LessonName}"
-                           Visibility="{Binding SelectedLesson.IsBackSide, ConverterParameter=false, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                            HorizontalAlignment="Center"
                            TextWrapping="Wrap"
                            VerticalAlignment="Center"
@@ -321,25 +334,26 @@
                            FontSize="16" />
             </Grid>
             <Grid x:Name="grdListChoice"
-                  Visibility="{Binding SelectedLesson.TypeModel.LessonType, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  Grid.Row="1" RenderTransformOrigin="0.5,0.5">
-            	<Grid.RenderTransform>
-            		<TransformGroup>
-            			<ScaleTransform/>
-            			<SkewTransform/>
-            			<RotateTransform/>
-            			<TranslateTransform/>
-            		</TransformGroup>
-            	</Grid.RenderTransform>
+                  Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.Row="1"
+                  RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Grid.RenderTransform>
                 <ListBox Margin="10,0"
                          ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                          ItemTemplate="{DynamicResource DataTemplate1}" />
             </Grid>
         </Grid>
         <Grid x:Name="BackSideWrapper"
-              MinWidth="300"
-              MinHeight="150"
-              RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+              MinWidth="500"
+              MinHeight="300"
+              RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -353,15 +367,15 @@
                 <RowDefinition />
                 <RowDefinition Height="27" />
             </Grid.RowDefinitions>
-            <TextBlock x:Name="tblWordBackSide"
-                       Text="{Binding SelectedLesson.BackSideCollection[0].Content}"
-                       Visibility="{Binding SelectedLesson.IsBackSide, ConverterParameter=true, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                       HorizontalAlignment="Left"
-                       TextWrapping="Wrap"
-                       VerticalAlignment="Bottom"
-                       Foreground="White"
-                       Margin="10,0,0,-18.277"
-                       Grid.Row="2" />
+            <wpfToolkit:RichTextBox x:Name="tblWordBackSide"
+                                    Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    IsReadOnly="False"
+                                    Margin="5"
+                                    Grid.Row="1">
+                <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                    <wpfToolkit:RichTextBoxFormatBar />
+                </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+            </wpfToolkit:RichTextBox>
         </Grid>
     </Grid>
 

@@ -50,11 +50,15 @@ namespace FlashCard.ViewModels
 
                 SelectedLesson = LessonCollection[_count];
                 SelectedLesson.IsBackSide = false;
+                
                 _balloon = new FancyBalloon();
                 //(int)SetupModel.ViewTime.TotalMilliseconds
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                RaisePropertyChanged(() => SelectedLesson);
                 _waitForClose = new Timer(WaitBalloon);
                 _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
+                if (SelectedLesson.BackSideModel!=null)
+                    Console.WriteLine(SelectedLesson.BackSideModel.Content);  
                 Console.WriteLine(".....Showing .....");
             }
         }
