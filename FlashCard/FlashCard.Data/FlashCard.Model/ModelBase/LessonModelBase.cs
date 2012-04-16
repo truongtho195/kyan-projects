@@ -105,7 +105,7 @@ namespace FlashCard.Model
                     this.OnCategoryModelChanging(value);
                     _categoryModel = value;
                     RaisePropertyChanged(() => CategoryModel);
-                    this.OnModelChanged(CategoryModel.IsEdit);
+                    ////this.OnModelChanged(CategoryModel.IsEdit);
                     this.OnCategoryModelChanged();
                 }
             }
@@ -152,7 +152,7 @@ namespace FlashCard.Model
                     this.OnTypeModelChanging(value);
                     _typeModel = value;
                     RaisePropertyChanged(() => TypeModel);
-                    this.OnModelChanged(TypeModel.IsEdit);
+                    ////this.OnModelChanged(TypeModel.IsEdit);
                     this.OnTypeModelChanged();
                 }
             }
@@ -177,7 +177,7 @@ namespace FlashCard.Model
                     _backSideCollection = value;
                     RaisePropertyChanged(() => BackSideCollection);
                     if (BackSideCollection != null)
-                        this.OnModelChanged(BackSideCollection.Any(x => x.IsEdit));
+                        ////this.OnModelChanged(BackSideCollection.Any(x => x.IsEdit));
                     this.OnBackSideCollectionChanged();
                 }
             }
