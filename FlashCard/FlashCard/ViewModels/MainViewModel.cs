@@ -14,6 +14,7 @@ using System.Windows.Input;
 using MVVMHelper.Commands;
 using System.Diagnostics;
 using Hardcodet.Wpf.TaskbarNotification;
+using System.Windows.Media.Animation;
 
 
 namespace FlashCard.ViewModels
@@ -151,7 +152,16 @@ namespace FlashCard.ViewModels
 
         private void ChangeSideExecute(object param)
         {
+            //sbChangeToFront
+            
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
+            Storyboard sb;
+            if (SelectedLesson.IsBackSide)
+                sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+            else
+                sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
+
+            _balloon.BeginStoryboard(sb);
         }
 
         /// <summary>

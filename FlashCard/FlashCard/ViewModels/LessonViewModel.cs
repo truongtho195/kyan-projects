@@ -167,7 +167,6 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
             SelectedLesson.IsEditing = true;
-
         } 
         #endregion
 
@@ -234,11 +233,14 @@ namespace FlashCard.ViewModels
             LessonDataAccess lessonDataAccess = new LessonDataAccess();
             switch (SelectedLesson.TypeID)
             {
-                case 1:
-                case 3:
+                case 1://Vocalulary
+                case 3://Idom
                     if (SelectedLesson.BackSideCollection == null)
                         SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
                     SelectedLesson.BackSideCollection.Clear();
+                    SelectedLesson.BackSideModel.LessonID = SelectedLesson.LessonID;
+                    if (SelectedLesson.BackSideModel.BackSideID == 0)
+                        SelectedLesson.BackSideModel.IsNew = true;
                     SelectedLesson.BackSideCollection.Add(SelectedLesson.BackSideModel);
                     break;
             }
