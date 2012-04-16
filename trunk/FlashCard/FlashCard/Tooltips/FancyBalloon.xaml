@@ -55,7 +55,7 @@
         </Storyboard>
         <SolidColorBrush x:Key="ListBorder"
                          Color="#828790" />
-        <Storyboard x:Key="sbChangeFace">
+        <Storyboard x:Key="sbChangeToBack">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
                                            Storyboard.TargetName="grdFrame">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5"
@@ -98,7 +98,7 @@
                           Content="{Binding Content}" />
             </Grid>
         </DataTemplate>
-        <Storyboard x:Key="sbChangeFace_Copy1">
+        <Storyboard x:Key="sbChangeToFront">
         	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
         		Storyboard.TargetName="grdFrame">
         		<EasingDoubleKeyFrame KeyTime="0:0:0.5"
@@ -304,10 +304,8 @@
                 <RowDefinition Height="28" />
             </Grid.RowDefinitions>
             <Grid x:Name="grdPhrase"
-                  Visibility="{Binding SelectedLesson.LessonType, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  Grid.Row="1"
-                  Grid.RowSpan="2"
-                  Margin="0,-2.637,0,0">
+                  Visibility="{Binding SelectedLesson.TypeModel.LessonType, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.Row="1" Background="#FFADADAD" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition Height="36.949" />
@@ -323,7 +321,7 @@
                            FontSize="16" />
             </Grid>
             <Grid x:Name="grdListChoice"
-                  Visibility="{Binding SelectedLesson.LessonType, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  Visibility="{Binding SelectedLesson.TypeModel.LessonType, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="1" RenderTransformOrigin="0.5,0.5">
             	<Grid.RenderTransform>
             		<TransformGroup>
