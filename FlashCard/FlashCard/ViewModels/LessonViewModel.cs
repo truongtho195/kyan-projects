@@ -44,11 +44,11 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson != null)
             {
-                if (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Any())
-                {
-                    this.SelectedLesson.BackSideModel = SelectedLesson.BackSideCollection.FirstOrDefault();
-                    this.SelectedLesson.BackSideModel.IsEdit = false;
-                }
+                //if (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Any() && SelectedLesson.)
+                //{
+                //    this.SelectedLesson.BackSideModel = SelectedLesson.BackSideCollection.FirstOrDefault();
+                //    this.SelectedLesson.BackSideModel.IsEdit = false;
+                //}
                 SelectedLesson.IsEditing = false;
             }
 
@@ -231,10 +231,9 @@ namespace FlashCard.ViewModels
         private void SaveExecute(object param)
         {
             LessonDataAccess lessonDataAccess = new LessonDataAccess();
-            switch (SelectedLesson.TypeID)
+            switch (SelectedLesson.TypeModel.TypeOf)
             {
-                case 1://Vocalulary
-                case 3://Idom
+                case 1:// Is A list
                     if (SelectedLesson.BackSideCollection == null)
                         SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
                     SelectedLesson.BackSideCollection.Clear();
@@ -248,7 +247,7 @@ namespace FlashCard.ViewModels
             if (SelectedLesson.IsNew)
             {
                 lessonDataAccess.Insert(SelectedLesson);
-                LessonCollection.Add(SelectedLesson);
+                //LessonCollection.Add(SelectedLesson);
             }
             else
             {
