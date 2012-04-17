@@ -130,64 +130,6 @@
                                       Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True" />
-        </ItemsPanelTemplate>
-        <Style x:Key="ListBoxItemStyle1"
-               TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Background"
-                    Value="Transparent" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-            <Setter Property="Padding"
-                    Value="2,0,0,0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Bd"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="true">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected"
-                                     Value="true">
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected"
-                                               Value="true" />
-                                    <Condition Property="Selector.IsSelectionActive"
-                                               Value="false" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-                            </MultiTrigger>
-                            <Trigger Property="IsEnabled"
-                                     Value="false">
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <!--#end region Storyboard-->
         <!--#Region DataTemplate-->
@@ -236,8 +178,16 @@
         </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid x:Name="grdFrame"
               RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Grid.RenderTransform>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
+                <RowDefinition Height="34" />
                 <RowDefinition />
                 <RowDefinition Height="25" />
             </Grid.RowDefinitions>
@@ -245,14 +195,14 @@
                     HorizontalAlignment="Stretch"
                     BorderThickness="1,1,1,1"
                     BorderBrush="Gray"
-                    Opacity="0.71"
+                    Opacity="0.75"
                     Grid.RowSpan="3">
                 <Border.Effect>
                     <DropShadowEffect Color="#FF747474" />
                 </Border.Effect>
                 <Border.Background>
-                    <RadialGradientBrush RadiusY="0.609"
-                                         RadiusX="0.609"
+                    <RadialGradientBrush RadiusY="0.582"
+                                         RadiusX="0.582"
                                          GradientOrigin="0.814,0.205">
                         <RadialGradientBrush.RelativeTransform>
                             <TransformGroup>
@@ -270,8 +220,8 @@
                                 <TranslateTransform />
                             </TransformGroup>
                         </RadialGradientBrush.RelativeTransform>
-                        <GradientStop Color="#FF2A81D2"
-                                      Offset="0.089" />
+                        <GradientStop Color="#FF1E71BE"
+                                      Offset="0" />
                         <GradientStop Color="#FF152895"
                                       Offset="1" />
                     </RadialGradientBrush>
@@ -288,14 +238,14 @@
                                          StartPoint="0.5,0">
                         <GradientStop Color="#CCF3F0F0"
                                       Offset="0.071" />
-                        <GradientStop Color="#99B8B5B5"
+                        <GradientStop Color="#BFB8B5B5"
                                       Offset="0.129" />
                         <GradientStop Color="#CCB1B1B1"
                                       Offset="0.957" />
                         <GradientStop Color="#FFB1B1B1"
                                       Offset="1" />
-                        <GradientStop Color="#E5878585"
-                                      Offset="0.206" />
+                        <GradientStop Color="#E56A6969"
+                                      Offset="0" />
                         <GradientStop Color="#C1B7B4B4"
                                       Offset="0.886" />
                     </LinearGradientBrush>
@@ -308,14 +258,13 @@
                 </Border.Effect>
             </Border>
             <Image HorizontalAlignment="Right"
-                   Margin="0,8,15,8"
+                   Margin="0,0,14,0"
                    Width="18"
                    Source="/FlashCard;component/Images/Close.png"
                    Stretch="Fill"
                    ToolTip="Close Balloon"
                    x:Name="imgClose1"
-                   MouseDown="imgClose_MouseDown"
-                   Height="18" />
+                   MouseDown="imgClose_MouseDown" Height="18" />
             <TextBlock x:Name="tbInformation1"
                        HorizontalAlignment="Left"
                        TextWrapping="Wrap"
@@ -332,8 +281,7 @@
                     VerticalAlignment="Top"
                     Width="55"
                     Grid.Row="3"
-                    Height="20"
-                    Margin="0,0,10,0">
+                    Height="20" Margin="0,0,10,0">
                 <!--<Button.Triggers>
                     <DataTrigger Binding="{Binding SelectedLesson.IsBackSide}" Value="True">
                         <DataTrigger.EnterActions>
@@ -354,11 +302,18 @@
               MinWidth="300"
               RenderTransformOrigin="0.5,0.5"
               Visibility="Visible">
-            
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Grid.RenderTransform>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
+                <RowDefinition Height="36" />
                 <RowDefinition />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="28" />
             </Grid.RowDefinitions>
             <Grid x:Name="grdPhrase"
                   Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -392,21 +347,25 @@
                 <ListBox Margin="5,0"
                          Background="Transparent"
                          ItemsSource="{Binding SelectedLesson.BackSideCollection}"
-                         ItemTemplate="{DynamicResource DataTemplate1}"
-                         ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle1}" />
+                         ItemTemplate="{DynamicResource DataTemplate1}" />
             </Grid>
         </Grid>
         <Grid x:Name="BackSideWrapper"
               MinWidth="300"
               MinHeight="150"
-              RenderTransformOrigin="0.5,0.5"
-              Visibility="Collapsed">
-           
+              RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Grid.RenderTransform>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
+                <RowDefinition Height="36" />
                 <RowDefinition />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="27" />
             </Grid.RowDefinitions>
             <wpfToolkit:RichTextBox x:Name="tblWordBackSide"
                                     Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
