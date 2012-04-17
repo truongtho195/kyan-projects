@@ -160,12 +160,7 @@ namespace FlashCard.ViewModels
             else
                 sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
 
-            var action = new Action(() =>
-            {
-                _balloon.BeginStoryboard(sb);
-            });
-            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
-            
+            _balloon.BeginStoryboard(sb);
         }
 
         /// <summary>
