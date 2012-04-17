@@ -168,8 +168,12 @@
                                         Grid.Column="1"
                                         Grid.Row="4"
                                         Margin="10,8,8,8">
+                    <wpfToolkit:RichTextBox.TextFormatter>
+                        <wpfToolkit:XamlFormatter />
+                    </wpfToolkit:RichTextBox.TextFormatter>
                     <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
                         <wpfToolkit:RichTextBoxFormatBar />
+                        
                     </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
                 </wpfToolkit:RichTextBox>
                 <Button x:Name="btnAddBackSide"
