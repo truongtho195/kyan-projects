@@ -39,8 +39,6 @@ namespace FlashCard.ViewModels
         Stopwatch _stopWatch = new Stopwatch();
         private void _timer_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("Stop watch :" + _stopWatch.ElapsedMilliseconds);
-            _stopWatch.Restart();
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
                 if (_count < LessonCollection.Count - 1)
@@ -50,14 +48,12 @@ namespace FlashCard.ViewModels
 
                 SelectedLesson = LessonCollection[_count];
                 SelectedLesson.IsBackSide = false;
-                
+
                 _balloon = new FancyBalloon();
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                 RaisePropertyChanged(() => SelectedLesson);
                 _waitForClose = new Timer(WaitBalloon);
                 _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
-                if (SelectedLesson.BackSideModel!=null)
-                    Console.WriteLine(SelectedLesson.BackSideModel.Content);  
                 Console.WriteLine(".....Showing .....");
             }
         }
@@ -156,7 +152,7 @@ namespace FlashCard.ViewModels
         private void ChangeSideExecute(object param)
         {
             //sbChangeToFront
-            
+
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             Storyboard sb;
             if (SelectedLesson.IsBackSide)
@@ -164,7 +160,12 @@ namespace FlashCard.ViewModels
             else
                 sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
 
-            _balloon.BeginStoryboard(sb);
+            var action = new Action(() =>
+            {
+                _balloon.BeginStoryboard(sb);
+            });
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+            
         }
 
         /// <summary>
@@ -196,8 +197,10 @@ namespace FlashCard.ViewModels
 
         private void WaitBalloon(object state)
         {
-            var action = new Action(() => {
+            var action = new Action(() =>
+            {
                 ViewCore.MyNotifyIcon.CloseBalloon();
+                Console.WriteLine("Closed.......");
                 _timer.Start();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
@@ -224,8 +227,12 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseEnterExecute(object param)
         {
-            _waitForClose.Dispose();
-            _timer.Stop();
+            var action = new Action(() =>
+            {
+                _waitForClose.Dispose();
+                _timer.Stop();
+            });
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
         #endregion
 
