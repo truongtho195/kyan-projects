@@ -93,6 +93,7 @@ namespace FlashCard
       //the tray icon assigned this attached property to simplify access
       TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
       taskbarIcon.CloseBalloon();
+        
     }
 
     /// <summary>
