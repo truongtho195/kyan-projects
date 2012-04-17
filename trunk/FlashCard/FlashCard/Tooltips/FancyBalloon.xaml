@@ -369,13 +369,11 @@
             </Grid.RowDefinitions>
             <wpfToolkit:RichTextBox x:Name="tblWordBackSide"
                                     Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                    IsReadOnly="False"
+                                    MinWidth="200"
                                     Margin="5"
-                                    Grid.Row="1">
-                <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                    <wpfToolkit:RichTextBoxFormatBar />
-                </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-            </wpfToolkit:RichTextBox>
+                       
+                                    Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}"/>
+               
         </Grid>
     </Grid>
 
