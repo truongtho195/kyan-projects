@@ -52,7 +52,6 @@ namespace FlashCard.ViewModels
                 SelectedLesson.IsBackSide = false;
                 
                 _balloon = new FancyBalloon();
-                //(int)SetupModel.ViewTime.TotalMilliseconds
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                 RaisePropertyChanged(() => SelectedLesson);
                 _waitForClose = new Timer(WaitBalloon);
