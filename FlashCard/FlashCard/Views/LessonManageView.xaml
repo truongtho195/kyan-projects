@@ -8,6 +8,7 @@
         Title="LessonManage"
         Width="640"
         Height="480"
+        xmlns:richControl="clr-namespace:Microsoft.Windows.Controls;assembly=U2UConsult.RichHtmlTextBlock"
         xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:converter="clr-namespace:FlashCard.Converters">
     <Window.Resources>
@@ -110,6 +111,7 @@
                            Margin="0,5,0,0" />
                 <ComboBox x:Name="cmbType"
                           ItemsSource="{Binding LessonTypeCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedLesson.TypeModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding SelectedLesson.TypeID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                           SelectedValuePath="TypeID"
                           DisplayMemberPath="Name"
@@ -122,6 +124,7 @@
                 <ComboBox x:Name="cmbCategory"
                           ItemsSource="{Binding CategoryCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                           SelectedValue="{Binding SelectedLesson.CategoryID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedLesson.CategoryModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                           SelectedValuePath="CategoryID"
                           DisplayMemberPath="CategoryName"
                           Grid.Column="1"
@@ -130,11 +133,20 @@
                           VerticalAlignment="Bottom"
                           Width="120"
                           Margin="10,0,0,0" />
-                <TextBox x:Name="txtLessonContent"
-                         Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         Grid.Column="1"
-                         Margin="10,8,8,8"
-                         Grid.Row="3" />
+                <wpfToolkit:RichTextBox x:Name="txtLessonContent"
+                                        Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        Grid.Column="1"
+                                        IsReadOnly="False"
+                                        IsEnabled="True"
+                                        Margin="10,8,8,8"
+                                        Grid.Row="3">
+                    <wpfToolkit:RichTextBox.TextFormatter>
+                        <wpfToolkit:PlainTextFormatter />
+                    </wpfToolkit:RichTextBox.TextFormatter>
+                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                        <wpfToolkit:RichTextBoxFormatBar />
+                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                </wpfToolkit:RichTextBox>
                 <DataGrid x:Name="dgBackSide"
                           Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
                           ItemsSource="{Binding SelectedLesson.BackSideCollection}"
@@ -162,20 +174,13 @@
                                                 Binding="{Binding IsCorrect}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <wpfToolkit:RichTextBox x:Name="txtBackSide"
-                                        Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
-                                        Grid.Column="1"
-                                        Grid.Row="4"
-                                        Margin="10,8,8,8">
-                    <wpfToolkit:RichTextBox.TextFormatter>
-                        <wpfToolkit:XamlFormatter />
-                    </wpfToolkit:RichTextBox.TextFormatter>
-                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                        <wpfToolkit:RichTextBoxFormatBar />
-                        
-                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                </wpfToolkit:RichTextBox>
+                <richControl:RichTextBox x:Name="txtBackSide"
+                                         Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                         Grid.Column="1"
+                                         Grid.Row="4"
+                                         Margin="10,8,8,8" />
+
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"
                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"

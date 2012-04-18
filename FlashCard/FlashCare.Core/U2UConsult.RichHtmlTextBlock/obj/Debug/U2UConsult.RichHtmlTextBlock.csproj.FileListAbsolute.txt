@@ -1,0 +1,5 @@
+C:\Users\Truong Tho\Desktop\U2UConsult.HtmlTextBlock.Sample\U2UConsult.RichHtmlTextBlock\bin\Debug\U2UConsult.RichHtmlTextBlock.dll
+C:\Users\Truong Tho\Desktop\U2UConsult.HtmlTextBlock.Sample\U2UConsult.RichHtmlTextBlock\bin\Debug\U2UConsult.RichHtmlTextBlock.pdb
+C:\Users\Truong Tho\Desktop\U2UConsult.HtmlTextBlock.Sample\U2UConsult.RichHtmlTextBlock\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Truong Tho\Desktop\U2UConsult.HtmlTextBlock.Sample\U2UConsult.RichHtmlTextBlock\obj\Debug\U2UConsult.RichHtmlTextBlock.dll
+C:\Users\Truong Tho\Desktop\U2UConsult.HtmlTextBlock.Sample\U2UConsult.RichHtmlTextBlock\obj\Debug\U2UConsult.RichHtmlTextBlock.pdb

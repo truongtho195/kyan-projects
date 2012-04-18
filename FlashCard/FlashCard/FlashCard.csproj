@@ -169,13 +169,9 @@
       <Project>{7AC63864-7638-41C4-969C-D3197EF2BED9}</Project>
       <Name>NotifyIconWpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FlashCare.Core\Planerator\Planerator.csproj">
-      <Project>{E7D5C246-122C-42E5-89B2-A7A704136B12}</Project>
-      <Name>Planerator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FlashCare.Core\Thriple\Thriple.csproj">
-      <Project>{50FBA188-212A-400B-803E-D891527CEB15}</Project>
-      <Name>Thriple</Name>
+    <ProjectReference Include="..\FlashCare.Core\U2UConsult.RichHtmlTextBlock\U2UConsult.RichHtmlTextBlock.csproj">
+      <Project>{0FE10AA6-D73E-4C3D-A331-258F21B220E3}</Project>
+      <Name>U2UConsult.RichHtmlTextBlock</Name>
     </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
