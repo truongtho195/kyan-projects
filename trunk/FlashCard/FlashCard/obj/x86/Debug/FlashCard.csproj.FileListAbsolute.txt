@@ -89,10 +89,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Deb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Planerator.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Planerator.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\Thriple.pdb
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
@@ -135,3 +131,5 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.rea
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.pdb

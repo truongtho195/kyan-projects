@@ -264,7 +264,8 @@
                    Stretch="Fill"
                    ToolTip="Close Balloon"
                    x:Name="imgClose1"
-                   MouseDown="imgClose_MouseDown" Height="18" />
+                   MouseDown="imgClose_MouseDown"
+                   Height="18" />
             <TextBlock x:Name="tbInformation1"
                        HorizontalAlignment="Left"
                        TextWrapping="Wrap"
@@ -281,7 +282,8 @@
                     VerticalAlignment="Top"
                     Width="55"
                     Grid.Row="3"
-                    Height="20" Margin="0,0,10,0">
+                    Height="20"
+                    Margin="0,0,10,0">
                 <!--<Button.Triggers>
                     <DataTrigger Binding="{Binding SelectedLesson.IsBackSide}" Value="True">
                         <DataTrigger.EnterActions>
@@ -323,27 +325,26 @@
                     <RowDefinition />
                     <RowDefinition Height="36.949" />
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="tbWords"
-                           Text="{Binding SelectedLesson.LessonName}"
-                           HorizontalAlignment="Center"
-                           TextWrapping="Wrap"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           FontSize="16" />
+                <wpfToolkit:RichTextBox x:Name="tbWords"
+                                        Text="{Binding SelectedLesson.LessonName}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        Foreground="White"
+                                        FontSize="16">
+                    <wpfToolkit:RichTextBox.TextFormatter>
+                        <wpfToolkit:XamlFormatter />
+                    </wpfToolkit:RichTextBox.TextFormatter>
+                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                        <wpfToolkit:RichTextBoxFormatBar />
+                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                </wpfToolkit:RichTextBox>
             </Grid>
             <Grid x:Name="grdListChoice"
                   Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="1"
                   RenderTransformOrigin="0.5,0.5">
-                <Grid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Grid.RenderTransform>
                 <ListBox Margin="5,0"
                          Background="Transparent"
                          ItemsSource="{Binding SelectedLesson.BackSideCollection}"
@@ -353,7 +354,8 @@
         <Grid x:Name="BackSideWrapper"
               MinWidth="300"
               MinHeight="150"
-              RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+              RenderTransformOrigin="0.5,0.5"
+              Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

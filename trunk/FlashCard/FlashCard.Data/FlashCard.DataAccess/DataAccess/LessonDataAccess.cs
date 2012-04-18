@@ -195,6 +195,15 @@ namespace FlashCard.DataAccess
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
                     lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    switch (lessonModel.TypeModel.TypeOf)
+                    {
+                        case 1:
+                            if (lessonModel.BackSideCollection != null && lessonModel.BackSideCollection.Count > 0)
+                                lessonModel.BackSideModel = lessonModel.BackSideCollection.FirstOrDefault();
+                            else
+                                lessonModel.BackSideModel = new BackSideModel();
+                            break;
+                    }
                     lessonModel.IsNew = false;
                     lessonModel.IsEdit = false;
                     lessonModel.IsDelete = false;

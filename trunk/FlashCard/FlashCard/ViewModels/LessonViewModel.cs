@@ -159,10 +159,11 @@ namespace FlashCard.ViewModels
         {
             SelectedLesson = new LessonModel();
             SelectedLesson.TypeID = LessonTypeCollection.First().TypeID;
-            SelectedLesson.CategoryID = CategoryCollection.First().CategoryID;
             SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
             SelectedLesson.BackSideModel = new BackSideModel();
             SelectedLesson.BackSideModel.IsCorrect = false;
+            SelectedLesson.CategoryModel = CategoryCollection.First();
+            SelectedLesson.TypeModel = LessonTypeCollection.First();
             SelectedLesson.IsEdit = false;
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
@@ -247,7 +248,7 @@ namespace FlashCard.ViewModels
             if (SelectedLesson.IsNew)
             {
                 lessonDataAccess.Insert(SelectedLesson);
-                //LessonCollection.Add(SelectedLesson);
+                LessonCollection.Add(SelectedLesson);
             }
             else
             {
@@ -339,7 +340,10 @@ namespace FlashCard.ViewModels
             if (LessonCollection.Any())
                 SelectedLesson = LessonCollection.FirstOrDefault();
             else
+            {
+                LessonCollection = new ObservableCollection<LessonModel>();
                 NewExecute(null);
+            }
         }
         #endregion
     }
