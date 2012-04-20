@@ -244,6 +244,7 @@ namespace FlashCard.ViewModels
                     SelectedLesson.BackSideCollection.Add(SelectedLesson.BackSideModel);
                     break;
             }
+
             
             if (SelectedLesson.IsNew)
             {

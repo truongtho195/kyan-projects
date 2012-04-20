@@ -40,3 +40,20 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.xml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\ResolveAssemblyReference.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.vi.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.zh-CN.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.read.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.write.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\vi\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb

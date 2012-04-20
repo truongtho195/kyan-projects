@@ -24,3 +24,16 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashC
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MessageBoxControl.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.xml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\vi\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-CN\MVVMHelper.resources.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb
