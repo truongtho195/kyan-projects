@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 
 namespace FlashCard.Model
 {
@@ -68,8 +69,8 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private string _content;
-        public string Content
+        private FlowDocument _content;
+        public FlowDocument Content
         {
             get { return _content; }
             set
@@ -85,7 +86,7 @@ namespace FlashCard.Model
             }
         }
 
-        protected virtual void OnContentChanging(string value) { }
+        protected virtual void OnContentChanging(FlowDocument value) { }
         protected virtual void OnContentChanged() { }
 
         /// <summary>
