@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 namespace FlashCard.Model
 {
@@ -44,8 +45,8 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private string _lessonName;
-        public string LessonName
+        private FlowDocument _lessonName;
+        public FlowDocument LessonName
         {
             get { return _lessonName; }
             set
@@ -61,7 +62,7 @@ namespace FlashCard.Model
             }
         }
 
-        protected virtual void OnLessonNameChanging(string value) { }
+        protected virtual void OnLessonNameChanging(FlowDocument value) { }
         protected virtual void OnLessonNameChanged() { }
 
 

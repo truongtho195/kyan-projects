@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
+             
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
@@ -13,7 +14,7 @@
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
-        <converter:FormatTextConverter x:Key="formatTextConverter" />
+        
         <!--#End Region-->
         <!--#region Storyboard-->
         <Storyboard x:Key="FadeIn">

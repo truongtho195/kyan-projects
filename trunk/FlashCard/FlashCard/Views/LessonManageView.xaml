@@ -8,12 +8,14 @@
         Title="LessonManage"
         Width="640"
         Height="480"
-        xmlns:richControl="clr-namespace:Microsoft.Windows.Controls;assembly=U2UConsult.RichHtmlTextBlock"
         xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+        xmlns:uc="clr-namespace:FlashCard.UserControls"
         xmlns:converter="clr-namespace:FlashCard.Converters">
     <Window.Resources>
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
         <converter:ReverseBooleanConverter x:Key="reverseBooleanConverter" />
+        <converter:XamlHtmlFormaterConverter x:Key="xamlHtmlFormaterConverter" />
+        <converter:FlowDocumentToXamlConverter x:Key="flowDocumentToXamlConverter" />
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -133,21 +135,17 @@
                           VerticalAlignment="Bottom"
                           Width="120"
                           Margin="10,0,0,0" />
-                <wpfToolkit:RichTextBox x:Name="txtLessonContent"
-                                        Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+
+                <uc:RichTextBoxControl x:Name="txtLessonContent"
+                                        Content="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                         Grid.Column="1"
-                                        IsReadOnly="False"
-                                        IsEnabled="True"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                         Margin="10,8,8,8"
                                         Grid.Row="3">
-                    <wpfToolkit:RichTextBox.TextFormatter>
-                        <wpfToolkit:PlainTextFormatter />
-                    </wpfToolkit:RichTextBox.TextFormatter>
-                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                        <wpfToolkit:RichTextBoxFormatBar />
-                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                </wpfToolkit:RichTextBox>
-                <DataGrid x:Name="dgBackSide"
+                </uc:RichTextBoxControl>
+
+
+                    <DataGrid x:Name="dgBackSide"
                           Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
                           ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                           SelectedItem="{Binding SelectedBackSideModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -174,12 +172,19 @@
                                                 Binding="{Binding IsCorrect}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <richControl:RichTextBox x:Name="txtBackSide"
-                                         Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
-                                         Grid.Column="1"
-                                         Grid.Row="4"
-                                         Margin="10,8,8,8" />
+                <wpfToolkit:RichTextBox x:Name="txtBackSide"
+                                        Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                        Grid.Column="1"
+                                        Grid.Row="4"
+                                        Margin="10,8,8,8">
+                    <wpfToolkit:RichTextBox.TextFormatter>
+                        <wpfToolkit:XamlFormatter />
+                    </wpfToolkit:RichTextBox.TextFormatter>
+                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                        <wpfToolkit:RichTextBoxFormatBar />
+                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
+                </wpfToolkit:RichTextBox>
 
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"

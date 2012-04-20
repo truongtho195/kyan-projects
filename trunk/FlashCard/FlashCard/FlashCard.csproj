@@ -44,6 +44,7 @@
       <HintPath>bin\Debug\AttachedCommandBehavior.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
@@ -71,15 +72,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\FormatTextConverter.cs" />
+    <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
+    <Compile Include="Converters\HtmlFormatConverter.cs" />
+    <Compile Include="Converters\XamlHtmlFormaterConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
-    <Compile Include="Tooltips\FancyBalloon_2.xaml.cs">
-      <DependentUpon>FancyBalloon_2.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RichTextBoxControl.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\LessonManageView.xaml.cs">
@@ -97,10 +98,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Tooltips\FancyBalloon_2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Tooltips\FancyBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -168,10 +165,6 @@
     <ProjectReference Include="..\FlashCare.Core\NotifyIconWpf\NotifyIconWpf.csproj">
       <Project>{7AC63864-7638-41C4-969C-D3197EF2BED9}</Project>
       <Name>NotifyIconWpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FlashCare.Core\U2UConsult.RichHtmlTextBlock\U2UConsult.RichHtmlTextBlock.csproj">
-      <Project>{0FE10AA6-D73E-4C3D-A331-258F21B220E3}</Project>
-      <Name>U2UConsult.RichHtmlTextBlock</Name>
     </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
