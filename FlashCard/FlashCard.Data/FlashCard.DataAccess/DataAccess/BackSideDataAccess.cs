@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
+using MVVMHelper.Common;
 
 
 namespace FlashCard.DataAccess
@@ -64,7 +65,7 @@ namespace FlashCard.DataAccess
             List<BackSideModel> list = new List<BackSideModel>();
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
-           
+
             SQLiteDataReader reader = null;
             string sql = "select * From BackSide";
             try
@@ -73,9 +74,9 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                
+
                 reader = sqlCommand.ExecuteReader();
-                
+
                 while (reader.Read())
                 {
                     BackSideModel backSideModel = GetBackSideModel(reader);
@@ -103,7 +104,7 @@ namespace FlashCard.DataAccess
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             string sql = "select * from BackSide ";
-            
+
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
@@ -130,7 +131,7 @@ namespace FlashCard.DataAccess
                 }
                 sqlCommand.CommandText = sql + sqlcondition;
                 reader = sqlCommand.ExecuteReader();
-                
+
                 while (reader.Read())
                 {
                     BackSideModel backSideModel = GetBackSideModel(reader);
@@ -151,7 +152,7 @@ namespace FlashCard.DataAccess
             return list;
         }
 
-       
+
 
 
         public IList<BackSideModel> GetAllWithRelation()
@@ -222,11 +223,7 @@ namespace FlashCard.DataAccess
                 while (reader.Read())
                 {
                     //BackSideModel
-                    backSideModel = new BackSideModel();
-                    backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
-                    backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-                    backSideModel.Content = reader["Content"].ToString();
-                    backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());
+                    backSideModel = GetBackSideModel(reader);
                     //LessonModel
                     backSideModel.LessonModel = lessonDA.Get(backSideModel.LessonID);
                     //CategoryModel
@@ -264,7 +261,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", backSideModel.Content));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Content)));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", backSideModel.IsCorrect));
                 sqlCommand.ExecuteNonQuery();
                 backSideModel.BackSideID = (int)sqlConnect.LastInsertRowId;
@@ -296,7 +293,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", backSideModel.Content));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Content)));
                 var correct = backSideModel.IsCorrect.HasValue ? backSideModel.IsCorrect : false;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", correct));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@BackSideID", backSideModel.BackSideID));
@@ -349,7 +346,7 @@ namespace FlashCard.DataAccess
             BackSideModel backSideModel = new BackSideModel();
             backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
             backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-            backSideModel.Content = reader["Content"].ToString();
+            backSideModel.Content = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Content"].ToString());
             var isCorrect = reader["IsCorrect"];
             if (isCorrect != System.DBNull.Value)
                 backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());

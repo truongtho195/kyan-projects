@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Markup;
 using System.Windows.Documents;
 using System.Xml;
+using MVVMHelper.Common;
 
 namespace FlashCard.DataAccess
 {
@@ -295,7 +296,7 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", ConvertFlowDocumentToSUBStringFormat(lessonModel.LessonName)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(lessonModel.LessonName)));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeID));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryID));
                 sqlCommand.ExecuteNonQuery();
@@ -332,7 +333,7 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName",ConvertFlowDocumentToSUBStringFormat(lessonModel.LessonName)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(lessonModel.LessonName)));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeID));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryID));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", lessonModel.LessonID));
@@ -372,7 +373,7 @@ namespace FlashCard.DataAccess
             LessonModel lessonModel;
             lessonModel = new LessonModel();
             lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-            lessonModel.LessonName = ConvertXMLToFlowDocument(reader["LessonName"].ToString());
+            lessonModel.LessonName = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["LessonName"].ToString());
             lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
             lessonModel.IsDelete = false;
             lessonModel.IsEdit = false;
@@ -380,26 +381,7 @@ namespace FlashCard.DataAccess
             return lessonModel;
         }
 
-        private string ConvertFlowDocumentToSUBStringFormat(object flowDocument)
-        {
-            //take the flow document and change all of its images into a base64 string
-            //apply the XamlWriter to the newly transformed flowdocument
-            using (StringWriter stringwriter = new StringWriter())
-            {
-                using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(stringwriter))
-                {
-                    XamlWriter.Save(flowDocument, writer);
-                }
-                return stringwriter.ToString();
-            }
-        }
-
-        private FlowDocument ConvertXMLToFlowDocument(string XmlContent)
-        {
-            var stringReader = new StringReader(XmlContent);
-            var xmlTextReader = new XmlTextReader(stringReader);
-            return (FlowDocument)XamlReader.Load(xmlTextReader);
-        }
+      
 
         #endregion
     }
