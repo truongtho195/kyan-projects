@@ -164,6 +164,7 @@ namespace FlashCard.ViewModels
             SelectedLesson.BackSideModel.IsCorrect = false;
             SelectedLesson.CategoryModel = CategoryCollection.First();
             SelectedLesson.TypeModel = LessonTypeCollection.First();
+            SelectedLesson.Description = null;
             SelectedLesson.IsEdit = false;
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
