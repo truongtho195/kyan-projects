@@ -196,6 +196,7 @@
                         VerticalAlignment="Top" />
                 <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
                                                        Document="{Binding SelectedLesson.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                       IsReadOnly="False"
                                                        Grid.Column="1"
                                                        Margin="10,8,8,8"
                                                        Grid.Row="4" />
