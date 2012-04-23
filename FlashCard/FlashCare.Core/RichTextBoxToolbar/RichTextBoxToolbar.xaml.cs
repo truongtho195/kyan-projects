@@ -97,7 +97,7 @@ namespace RichTextBoxControl
 
         // Using a DependencyProperty as the backing store for Document.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(FlowDocument), typeof(RichTextBoxToolbar), new PropertyMetadata(new PropertyChangedCallback(OnDocumentChanged)));
+            DependencyProperty.Register("Document", typeof(FlowDocument), typeof(RichTextBoxToolbar), new UIPropertyMetadata(OnDocumentChanged));
 
 
         // CodeControlsVisibility property
@@ -171,20 +171,20 @@ namespace RichTextBoxControl
             try
             {
                 RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
-                if (thisControl.IsFocused) return;
+                if (thisControl.rtContent.IsFocused) return;
                 if (e.NewValue == null)
                 {
                     //Document is not amused by null :)
-                    thisControl.Document.Blocks.Clear();
+                    thisControl.rtContent.Document.Blocks.Clear();
                     return;
                 }
                 else if (e.NewValue != e.OldValue)
                 {
-                    thisControl.Document.Blocks.Clear();
+                    thisControl.rtContent.Document.Blocks.Clear();
                     MemoryStream ms = new MemoryStream();
                     XamlWriter.Save(e.NewValue as FlowDocument, ms);
                     ms.Seek(0, SeekOrigin.Begin);
-                    thisControl.Document = XamlReader.Load(ms) as FlowDocument;
+                    thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
                 }
             }
             catch (Exception ex)
@@ -200,18 +200,18 @@ namespace RichTextBoxControl
         {
 
             if (e.NewValue == null)
-                (d as RichTextBoxToolbar).rtContent.ContextMenu.Visibility = Visibility.Visible;
+                (d as RichTextBoxToolbar).popup.Visibility = Visibility.Visible;
             else
                 if (e.NewValue != e.OldValue)
                 {
                     var t = bool.Parse(e.NewValue.ToString());
                     if (t)
                     {
-                        (d as RichTextBoxToolbar).rtContent.ContextMenu.Visibility = Visibility.Collapsed;
+                        (d as RichTextBoxToolbar).popup.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
-                        (d as RichTextBoxToolbar).rtContent.ContextMenu.Visibility = Visibility.Visible;
+                        (d as RichTextBoxToolbar).popup.Visibility = Visibility.Visible;
                     }
                 }
 
@@ -222,8 +222,8 @@ namespace RichTextBoxControl
             try
             {
                 SetToolbar();
-                if (!this.IsFocused) return;
-                this.Content = this.Document;
+                 if (!this.rtContent.IsFocused) return;
+                this.Document = this.rtContent.Document;
 
             }
             catch (Exception ex)
