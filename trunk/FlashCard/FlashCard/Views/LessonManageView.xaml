@@ -8,6 +8,7 @@
         Title="LessonManage"
         Width="640"
         Height="480"
+        xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
         xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:uc="clr-namespace:FlashCard.UserControls"
         xmlns:converter="clr-namespace:FlashCard.Converters">
@@ -67,12 +68,13 @@
             <Grid Grid.Row="1"
                   IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.15*" />
+                    <RowDefinition Height="0.178*" />
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
-                    <RowDefinition Height="100" />
-                    <RowDefinition Height="0.538*" />
-                    <RowDefinition Height="0.312*" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="92.78" />
+                    <RowDefinition Height="0.48*" />
+                    <RowDefinition Height="0.342*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="85.191" />
@@ -103,13 +105,13 @@
                            Text="Lesson :"
                            VerticalAlignment="Top"
                            Grid.Row="3"
-                           Margin="0,4.999,0,0" />
+                           Margin="0,5,0,0" />
                 <TextBlock x:Name="tbBackSide"
                            HorizontalAlignment="Right"
                            TextWrapping="Wrap"
                            Text="Back Side :"
                            VerticalAlignment="Top"
-                           Grid.Row="4"
+                           Grid.Row="5"
                            Margin="0,5,0,0" />
                 <ComboBox x:Name="cmbType"
                           ItemsSource="{Binding LessonTypeCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
@@ -136,16 +138,16 @@
                           Width="120"
                           Margin="10,0,0,0" />
 
-                <uc:RichTextBoxControl x:Name="txtLessonContent"
-                                        Content="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                        Grid.Column="1"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        Margin="10,8,8,8"
-                                        Grid.Row="3">
-                </uc:RichTextBoxControl>
+                <TextBox x:Name="txtLessonContent"
+                         Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Column="1"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         Margin="10,6,8,6"
+                         Grid.Row="3" />
 
 
-                    <DataGrid x:Name="dgBackSide"
+
+                <DataGrid x:Name="dgBackSide"
                           Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
                           ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                           SelectedItem="{Binding SelectedBackSideModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -153,7 +155,7 @@
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
                           Grid.Column="1"
-                          Grid.Row="4"
+                          Grid.Row="5"
                           Margin="10,8,8,8">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Content">
@@ -172,31 +174,34 @@
                                                 Binding="{Binding IsCorrect}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <wpfToolkit:RichTextBox x:Name="txtBackSide"
-                                        Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
-                                        Grid.Column="1"
-                                        Grid.Row="4"
-                                        Margin="10,8,8,8">
-                    <wpfToolkit:RichTextBox.TextFormatter>
-                        <wpfToolkit:XamlFormatter />
-                    </wpfToolkit:RichTextBox.TextFormatter>
-                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                        <wpfToolkit:RichTextBoxFormatBar />
-                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                </wpfToolkit:RichTextBox>
+                <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
+                                       Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                       Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                       Grid.Column="1"
+                                       Grid.Row="5"
+                                       Margin="10,8,8,8"/>
+
+
 
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"
                         Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
                         Content="Add Back Side"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="1"
                         Width="100"
                         Height="25"
                         IsDefault="True"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top" />
+                <richTextBoxControl:RichTextBoxToolbar Grid.Column="1" Margin="10,8,8,8" Grid.Row="4"/>
+                <TextBlock x:Name="tbLessonContent_Copy"
+                	HorizontalAlignment="Right"
+                	TextWrapping="Wrap"
+                	Text="Decription :"
+                	VerticalAlignment="Top"
+                	Grid.Row="4"
+                	Margin="0,6,0,0" d:LayoutOverrides="VerticalAlignment" />
             </Grid>
         </Grid>
     </Grid>
