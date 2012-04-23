@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using RichTextBoxToolbar;
 using System.IO;
 using System.Windows.Markup;
 using System.Windows.Controls.Primitives;
@@ -123,7 +116,8 @@ namespace RichTextBoxControl
 
         // Using a DependencyProperty as the backing store for ToolbarBackgrourd.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ToolbarBackgrourdProperty =
-            DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(RichTextBoxToolbar));
+            DependencyProperty.Register("ToolbarBackground", typeof(Brush), 
+            typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.White));
 
         // ToolbarBorderBrush property
         public Brush ToolbarBorderBrush
@@ -133,17 +127,17 @@ namespace RichTextBoxControl
         }
         public static readonly DependencyProperty ToolbarBorderBrushProperty =
             DependencyProperty.Register("ToolbarBorderBrush", typeof(Brush),
-            typeof(RichTextBoxToolbar));
+            typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
 
         // ToolbarBorderThickness property
-        public Brush ToolbarBorderThickness
+        public Thickness ToolbarBorderThickness
         {
-            get { return (Brush)GetValue(ToolbarBorderThicknessProperty); }
+            get { return (Thickness)GetValue(ToolbarBorderThicknessProperty); }
             set { SetValue(ToolbarBorderThicknessProperty, value); }
         }
         public static readonly DependencyProperty ToolbarBorderThicknessProperty =
             DependencyProperty.Register("ToolbarBorderThickness", typeof(Thickness),
-            typeof(RichTextBoxToolbar),new PropertyMetadata());
+            typeof(RichTextBoxToolbar), new PropertyMetadata());
 
 
 
@@ -160,10 +154,10 @@ namespace RichTextBoxControl
 
 
 
-      
 
 
-        
+
+
 
         #endregion
 

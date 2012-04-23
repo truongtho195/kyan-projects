@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows;
 
-namespace RichTextBoxToolbar.Converters
+namespace RichTextBoxControl.Converters
 {
     public class BooleanToVisibilityConverter : IValueConverter
     {
