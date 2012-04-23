@@ -1,0 +1,385 @@
+﻿<UserControl x:Class="RichTextBoxControl.RichTextBoxToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             x:Name="ucControl">
+    <UserControl.Resources>
+        <!-- Flat Button -->
+        <ControlTemplate x:Key="FlatButtonControlTemplate"
+                         TargetType="{x:Type Button}">
+            <Border x:Name="OuterBorder"
+                    BorderBrush="Transparent"
+                    BorderThickness="1"
+                    CornerRadius="2">
+                <Border x:Name="InnerBorder"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="1"
+                        CornerRadius="2">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"
+                                      Margin="{TemplateBinding Padding}" />
+                </Border>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter TargetName="OuterBorder"
+                            Property="BorderBrush"
+                            Value="#FF7CA0CC" />
+                    <Setter TargetName="InnerBorder"
+                            Property="BorderBrush"
+                            Value="#FFE4EFFD" />
+                    <Setter TargetName="InnerBorder"
+                            Property="Background"
+                            Value="#FFDAE7F5" />
+                </Trigger>
+                <Trigger Property="IsPressed"
+                         Value="True">
+                    <Setter TargetName="OuterBorder"
+                            Property="BorderBrush"
+                            Value="#FF2E4E76" />
+                    <Setter TargetName="InnerBorder"
+                            Property="BorderBrush"
+                            Value="#FF116EE4" />
+                    <Setter TargetName="InnerBorder"
+                            Property="Background"
+                            Value="#FF3272B8" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Flat Toggle Button -->
+        <ControlTemplate x:Key="FlatToggleButtonControlTemplate"
+                         TargetType="{x:Type ToggleButton}">
+            <Border x:Name="OuterBorder"
+                    BorderBrush="Transparent"
+                    BorderThickness="1"
+                    CornerRadius="2">
+                <Border x:Name="InnerBorder"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="1"
+                        CornerRadius="2">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"
+                                      Margin="{TemplateBinding Padding}" />
+                </Border>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter TargetName="OuterBorder"
+                            Property="BorderBrush"
+                            Value="#FF7CA0CC" />
+                    <Setter TargetName="InnerBorder"
+                            Property="BorderBrush"
+                            Value="#FFE4EFFD" />
+                    <Setter TargetName="InnerBorder"
+                            Property="Background"
+                            Value="#FFDAE7F5" />
+                </Trigger>
+                <Trigger Property="IsPressed"
+                         Value="True">
+                    <Setter TargetName="OuterBorder"
+                            Property="BorderBrush"
+                            Value="#FF2E4E76" />
+                    <Setter TargetName="InnerBorder"
+                            Property="BorderBrush"
+                            Value="#FF116EE4" />
+                    <Setter TargetName="InnerBorder"
+                            Property="Background"
+                            Value="#FF3272B8" />
+                </Trigger>
+                <Trigger Property="IsChecked"
+                         Value="True">
+                    <Setter TargetName="OuterBorder"
+                            Property="BorderBrush"
+                            Value="#FFFFC00A" />
+                    <Setter TargetName="InnerBorder"
+                            Property="BorderBrush"
+                            Value="#FFFFDE7F" />
+                    <Setter TargetName="InnerBorder"
+                            Property="Background"
+                            Value="#FFFFD458" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+        <RichTextBox x:Name="rtContent"
+                     d:IsHidden="True"
+                     IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+        </RichTextBox>
+        <Popup x:Name="popup"
+               Placement="Mouse">
+            <Border Margin="0"
+                    Width="282"
+                    BorderThickness="{Binding ElementName=ucControl, Path=ToolbarBorderThickness}"
+                    BorderBrush="{Binding ElementName=ucControl, Path=ToolbarBorderBrush}"
+                    Background="{Binding ElementName=ucControl, Path=ToolbarBackground}"
+                    SnapsToDevicePixels="True">
+                <WrapPanel Orientation="Horizontal"
+                           Height="73">
+                    <!-- Font family combo box  -->
+                    <ComboBox x:Name="FontFamilyCombo"
+                              Height="23"
+                              Width="100"
+                              Margin="5,2,0,2"
+                              IsEditable="True"
+                              d:LayoutOverrides="Height">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Width="250" />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="15"
+                                           Height="20" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Font size combo box -->
+                    <ComboBox x:Name="FontSizeCombo"
+                              Height="23"
+                              Width="40"
+                              Margin="5,2,5,2"
+                              IsEditable="True"
+                              d:LayoutOverrides="Height" />
+
+                    <Button Command="ApplicationCommands.Cut"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            ToolTip="Cut"
+                            Height="22">
+                        <Image Source="Images\editcut.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button Command="ApplicationCommands.Copy"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Copy"
+                            Height="22">
+                        <Image Source="Images\editcopy.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button Command="ApplicationCommands.Paste"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Paste"
+                            Height="22">
+                        <Image Source="Images\editpaste.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button Command="ApplicationCommands.Undo"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Undo"
+                            Height="22">
+                        <Image Source="Images\editundo.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button Command="ApplicationCommands.Redo"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Redo"
+                            Height="22">
+                        <Image Source="Images\editredo.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Image Source="Images\separator.png"
+                           Stretch="None"
+                           SnapsToDevicePixels="True"
+                           Height="24" />
+
+                    <ToggleButton x:Name="BoldButton"
+                                  Command="EditingCommands.ToggleBold"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Bold"
+                                  Height="22">
+                        <Image Source="Images\fontbold.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="ItalicButton"
+                                  Command="EditingCommands.ToggleItalic"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Italic"
+                                  Height="22">
+                        <Image Source="Images\fontitalic.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="UnderlineButton"
+                                  Command="EditingCommands.ToggleUnderline"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Underline"
+                                  Height="22">
+                        <Image Source="Images\fontunderline.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+                    <Image Source="Images\separator.png"
+                           Stretch="None"
+                           SnapsToDevicePixels="True"
+                           Height="24" />
+
+                    <Button x:Name="btnNormalText"
+                            ToolTip="Format as normal (non-code) text"
+                            Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            Height="22">
+                        <Image Source="Images\normaltext.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button x:Name="btnCodeBlock"
+                            ToolTip="Format as code block"
+                            Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            Height="22">
+                        <Image Source="Images\codeblock.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button x:Name="btnInlineCode"
+                            ToolTip="Format as inline code"
+                            Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            Height="22">
+                        <Image Source="Images\codeinline.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Image Source="Images\separator.png"
+                           Stretch="None"
+                           SnapsToDevicePixels="True"
+                           Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                           Height="24" />
+
+                    <ToggleButton x:Name="btnLeftButton"
+                                  Click="OnAlignmentButtonClick"
+                                  Command="EditingCommands.AlignLeft"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Align Left"
+                                  Height="22">
+                        <Image Source="Images\alignleft.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="btnCenterButton"
+                                  Click="OnAlignmentButtonClick"
+                                  Command="EditingCommands.AlignCenter"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Align Center"
+                                  Height="22">
+                        <Image Source="Images\aligncenter.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="btnRightButton"
+                                  Click="OnAlignmentButtonClick"
+                                  Command="EditingCommands.AlignRight"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Align Right"
+                                  Height="22">
+                        <Image Source="Images\alignright.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="JustifyButton"
+                                  Command="EditingCommands.AlignJustify"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Align Justify"
+                                  Height="22">
+                        <Image Source="Images\alignjustify.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+                    <Image Source="Images\separator.png"
+                           Stretch="None"
+                           SnapsToDevicePixels="True"
+                           Height="24" />
+
+                    <ToggleButton x:Name="btnBulletsButton"
+                                  Command="EditingCommands.ToggleBullets"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Bullets"
+                                  Height="22">
+                        <Image Source="Images\listbullets.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="btnNumberingButton"
+                                  Command="EditingCommands.ToggleNumbering"
+                                  CommandTarget="{Binding ElementName=rtContent}"
+                                  Template="{StaticResource FlatToggleButtonControlTemplate}"
+                                  ToolTip="Numbering"
+                                  Height="22">
+                        <Image Source="Images\listnumbers.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </ToggleButton>
+
+                    <Image Source="Images\separator.png"
+                           Stretch="None"
+                           Height="24" />
+
+                    <Button Command="EditingCommands.IncreaseIndentation"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Increase Indentation"
+                            Height="22">
+                        <Image Source="Images\indentincrease.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                    <Button Command="EditingCommands.DecreaseIndentation"
+                            CommandTarget="{Binding ElementName=rtContent}"
+                            Template="{StaticResource FlatButtonControlTemplate}"
+                            ToolTip="Decrease Indentation"
+                            Height="22">
+                        <Image Source="Images\indentdecrease.png"
+                               Stretch="None"
+                               SnapsToDevicePixels="True" />
+                    </Button>
+
+                </WrapPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>
