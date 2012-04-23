@@ -117,6 +117,7 @@
                      IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
         </RichTextBox>
         <Popup x:Name="popup"
+               PopupAnimation="Scroll"
                Placement="Mouse">
             <Border Margin="0"
                     Width="282"

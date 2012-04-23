@@ -11,3 +11,16 @@ D:\Test\wpf\TestControl\RichTextBoxToolbar\bin\Debug\RichTextBoxToolbar.exe
 D:\Test\wpf\TestControl\RichTextBoxToolbar\bin\Debug\RichTextBoxToolbar.pdb
 D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.exe
 D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\App.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.exe
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl_MarkupCompile.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.g.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.Properties.Resources.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.exe
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.pdb

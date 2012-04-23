@@ -8,8 +8,8 @@
     <ProjectGuid>{25DBEF3D-6D99-4A28-B345-C53B9074DB98}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RichTextBoxToolbar</RootNamespace>
-    <AssemblyName>RichTextBoxToolbar</AssemblyName>
+    <RootNamespace>RichTextBoxControl</RootNamespace>
+    <AssemblyName>RichTextBoxControl</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
