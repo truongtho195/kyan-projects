@@ -373,7 +373,8 @@ namespace FlashCard.DataAccess
             LessonModel lessonModel;
             lessonModel = new LessonModel();
             lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
-            lessonModel.LessonName = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["LessonName"].ToString());
+            lessonModel.LessonName = reader["LessonName"].ToString();
+            lessonModel.Description = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Description"].ToString());
             lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
             lessonModel.IsDelete = false;
             lessonModel.IsEdit = false;

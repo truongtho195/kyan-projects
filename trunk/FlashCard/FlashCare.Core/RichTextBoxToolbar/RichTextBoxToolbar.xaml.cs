@@ -116,8 +116,8 @@ namespace RichTextBoxControl
 
         // Using a DependencyProperty as the backing store for ToolbarBackgrourd.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ToolbarBackgrourdProperty =
-            DependencyProperty.Register("ToolbarBackground", typeof(Brush), 
-            typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.White));
+            DependencyProperty.Register("ToolbarBackground", typeof(Brush),
+            typeof(RichTextBoxToolbar), new PropertyMetadata(SystemColors.MenuBrush));
 
         // ToolbarBorderBrush property
         public Brush ToolbarBorderBrush
@@ -127,7 +127,7 @@ namespace RichTextBoxControl
         }
         public static readonly DependencyProperty ToolbarBorderBrushProperty =
             DependencyProperty.Register("ToolbarBorderBrush", typeof(Brush),
-            typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
+            typeof(RichTextBoxToolbar), new PropertyMetadata(SystemColors.MenuBarBrush));
 
         // ToolbarBorderThickness property
         public Thickness ToolbarBorderThickness

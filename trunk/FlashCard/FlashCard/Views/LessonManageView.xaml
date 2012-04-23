@@ -175,11 +175,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                       Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                       Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
-                                       Grid.Column="1"
-                                       Grid.Row="5"
-                                       Margin="10,8,8,8"/>
+                                                       Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                       Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                                       Grid.Column="1"
+                                                       Grid.Row="5"
+                                                       Margin="10,8,8,8" />
 
 
 
@@ -194,14 +194,19 @@
                         IsDefault="True"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top" />
-                <richTextBoxControl:RichTextBoxToolbar Grid.Column="1" Margin="10,8,8,8" Grid.Row="4"/>
+                <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
+                                                       Document="{Binding SelectedLesson.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                       Grid.Column="1"
+                                                       Margin="10,8,8,8"
+                                                       Grid.Row="4" />
                 <TextBlock x:Name="tbLessonContent_Copy"
-                	HorizontalAlignment="Right"
-                	TextWrapping="Wrap"
-                	Text="Decription :"
-                	VerticalAlignment="Top"
-                	Grid.Row="4"
-                	Margin="0,6,0,0" d:LayoutOverrides="VerticalAlignment" />
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap"
+                           Text="Decription :"
+                           VerticalAlignment="Top"
+                           Grid.Row="4"
+                           Margin="0,6,0,0"
+                           d:LayoutOverrides="VerticalAlignment" />
             </Grid>
         </Grid>
     </Grid>
