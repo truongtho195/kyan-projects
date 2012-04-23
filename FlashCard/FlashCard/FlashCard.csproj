@@ -166,6 +166,10 @@
       <Project>{7AC63864-7638-41C4-969C-D3197EF2BED9}</Project>
       <Name>NotifyIconWpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FlashCare.Core\RichTextBoxToolbar\RichTextBoxControl.csproj">
+      <Project>{25DBEF3D-6D99-4A28-B345-C53B9074DB98}</Project>
+      <Name>RichTextBoxControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
       <Name>WpfApplicationFramework</Name>

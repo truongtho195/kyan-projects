@@ -45,8 +45,8 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private FlowDocument _lessonName;
-        public FlowDocument LessonName
+        private string _lessonName;
+        public string LessonName
         {
             get { return _lessonName; }
             set
@@ -62,8 +62,32 @@ namespace FlashCard.Model
             }
         }
 
-        protected virtual void OnLessonNameChanging(FlowDocument value) { }
+        protected virtual void OnLessonNameChanging(string value) { }
         protected virtual void OnLessonNameChanged() { }
+
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        private FlowDocument _description;
+        public FlowDocument Description
+        {
+            get { return _description; }
+            set
+            {
+                if (_description != value)
+                {
+                    this.OnDescriptionChanging(value);
+                    _description = value;
+                    RaisePropertyChanged(() => Description);
+                    this.OnChanged();
+                    this.OnDescriptionChanged();
+                }
+            }
+        }
+
+        protected virtual void OnDescriptionChanging(FlowDocument value) { }
+        protected virtual void OnDescriptionChanged() { }
+
 
 
 

@@ -127,3 +127,5 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb

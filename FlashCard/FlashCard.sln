@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thriple", "FlashCare.Core\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "U2UConsult.RichHtmlTextBlock", "FlashCare.Core\U2UConsult.RichHtmlTextBlock\U2UConsult.RichHtmlTextBlock.csproj", "{0FE10AA6-D73E-4C3D-A331-258F21B220E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextBoxControl", "FlashCare.Core\RichTextBoxToolbar\RichTextBoxControl.csproj", "{25DBEF3D-6D99-4A28-B345-C53B9074DB98}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FlashCard.vsmdi
@@ -275,6 +277,31 @@ Global
 		{0FE10AA6-D73E-4C3D-A331-258F21B220E3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0FE10AA6-D73E-4C3D-A331-258F21B220E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0FE10AA6-D73E-4C3D-A331-258F21B220E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Debug|x86.ActiveCfg = Debug|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Debug|x86.Build.0 = Debug|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Full|Any CPU.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Full|Mixed Platforms.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Full|Mixed Platforms.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Full|x86.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Full|x86.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Incremental|Any CPU.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Incremental|Mixed Platforms.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Incremental|Mixed Platforms.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Incremental|x86.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Incremental|x86.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.JustRun|Any CPU.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.JustRun|Mixed Platforms.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.JustRun|Mixed Platforms.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.JustRun|x86.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.JustRun|x86.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|Any CPU.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|Mixed Platforms.Build.0 = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|x86.ActiveCfg = Release|x86
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -286,6 +313,7 @@ Global
 		{E7D5C246-122C-42E5-89B2-A7A704136B12} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
 		{50FBA188-212A-400B-803E-D891527CEB15} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
 		{0FE10AA6-D73E-4C3D-A331-258F21B220E3} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
+		{25DBEF3D-6D99-4A28-B345-C53B9074DB98} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
 		{2660BA4D-E3AF-4038-855D-AB1F2C045ECD} = {AB064C38-F98E-4118-91C6-29DF7DC5E0FA}
 		{B8E967AC-4DF6-4247-83E6-BC9589AD2E15} = {AB064C38-F98E-4118-91C6-29DF7DC5E0FA}
 	EndGlobalSection

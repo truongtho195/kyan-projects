@@ -136,6 +136,7 @@
     <Compile Include="Common\DateCompare.cs" />
     <Compile Include="Common\Designer.cs" />
     <Compile Include="Common\ErrorLog.cs" />
+    <Compile Include="Common\FlowDocumentConverter.cs" />
     <Compile Include="Common\HtmlXamlConversion\htmlcssparser.cs" />
     <Compile Include="Common\HtmlXamlConversion\htmlfromxamlconverter.cs" />
     <Compile Include="Common\HtmlXamlConversion\htmllexicalanalyzer.cs" />
