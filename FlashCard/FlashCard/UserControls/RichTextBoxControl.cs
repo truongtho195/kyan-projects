@@ -42,7 +42,7 @@ namespace FlashCard.UserControls
         }
         // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(FlowDocument), typeof(RichTextBoxControl), new UIPropertyMetadata(OnDocumentChanged));
+            DependencyProperty.Register("Content", typeof(FlowDocument), typeof(RichTextBoxControl), new PropertyMetadata(OnDocumentChanged));
 
         private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
