@@ -11,6 +11,10 @@ using System.Windows.Controls.Primitives;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Threading;
+using System.Threading;
+using System.Windows.Data;
+using System.Windows.Automation.Peers;
 
 
 namespace RichTextBoxControl
@@ -23,6 +27,9 @@ namespace RichTextBoxControl
         // Static member variables
         private static ToggleButton m_SelectedAlignmentButton;
         private static ToggleButton m_SelectedListButton;
+
+        protected bool IsDocumentChanged = false;
+
 
         #region Destructor & Constructors
         public RichTextBoxToolbar()
@@ -38,8 +45,38 @@ namespace RichTextBoxControl
             this.btnBulletsButton.Click += new RoutedEventHandler(btnListsButton_Click);
             this.btnNumberingButton.Click += new RoutedEventHandler(btnListsButton_Click);
             this.rtContent.MouseRightButtonUp += new MouseButtonEventHandler(rtContent_MouseRightButtonUp);
+            this.FontFamilyCombo.SelectionChanged += new SelectionChangedEventHandler(FontFamilyCombo_SelectionChanged);
+            this.FontSizeCombo.SelectionChanged += new SelectionChangedEventHandler(FontSizeCombo_SelectionChanged);
+            
             this.rtContent.ContextMenu = null;
 
+        }
+
+        void FontSizeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Exit if no selection
+            if (FontSizeCombo.SelectedItem == null) return;
+
+            // clear selection if value unset
+            if (FontSizeCombo.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
+            {
+                FontSizeCombo.SelectedItem = null;
+                return;
+            }
+
+            // Process selection
+            var pointSize = FontSizeCombo.SelectedItem.ToString();
+            var pixelSize = Convert.ToDouble(pointSize) * (96 / 72);
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            textRange.ApplyPropertyValue(TextElement.FontSizeProperty, pixelSize);
+        }
+
+        void FontFamilyCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontFamilyCombo.SelectedItem == null) return;
+            var fontFamily = FontFamilyCombo.SelectedItem.ToString();
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, fontFamily);
         }
 
         void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -97,7 +134,7 @@ namespace RichTextBoxControl
 
         // Using a DependencyProperty as the backing store for Document.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(FlowDocument), typeof(RichTextBoxToolbar), new UIPropertyMetadata(OnDocumentChanged));
+            DependencyProperty.Register("Document", typeof(FlowDocument), typeof(RichTextBoxToolbar), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnDocumentChanged)));
 
 
         // CodeControlsVisibility property
@@ -170,12 +207,16 @@ namespace RichTextBoxControl
         {
             try
             {
+
                 RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
-                if (thisControl.rtContent.IsFocused) return;
+                //
+                if (thisControl.IsDocumentChanged) return;
+                thisControl.IsDocumentChanged = true;
                 if (e.NewValue == null)
                 {
                     //Document is not amused by null :)
-                    thisControl.rtContent.Document.Blocks.Clear();
+                    thisControl.rtContent.Document = new FlowDocument();
+                    //thisControl.rtContent.Document.Blocks.Clear();
                     return;
                 }
                 else if (e.NewValue != e.OldValue)
@@ -185,7 +226,9 @@ namespace RichTextBoxControl
                     XamlWriter.Save(e.NewValue as FlowDocument, ms);
                     ms.Seek(0, SeekOrigin.Begin);
                     thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
+
                 }
+                thisControl.IsDocumentChanged = false;
             }
             catch (Exception ex)
             {
@@ -217,14 +260,22 @@ namespace RichTextBoxControl
 
         }
 
+
         private void rtContent_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
+                if (this.IsDocumentChanged) return;
+                this.IsDocumentChanged = true;
                 SetToolbar();
-                 if (!this.rtContent.IsFocused) return;
-                this.Document = this.rtContent.Document;
 
+                TextRange textRange = new TextRange(this.rtContent.Document.ContentStart, this.rtContent.Document.ContentEnd);
+                var test = GetImagesXML(this.rtContent.Document);
+
+                SetValue(DocumentProperty, this.rtContent.Document);
+                this.IsDocumentChanged = false;
+                //this.Document = this.rtContent.Document;
+                // SetValue(DocumentProperty,this.rtContent.Document);
             }
             catch (Exception ex)
             {
@@ -338,6 +389,75 @@ namespace RichTextBoxControl
             btnCenterButton.IsChecked = textRange.GetPropertyValue(FlowDocument.TextAlignmentProperty).Equals(TextAlignment.Center);
             btnRightButton.IsChecked = textRange.GetPropertyValue(FlowDocument.TextAlignmentProperty).Equals(TextAlignment.Right);
             JustifyButton.IsChecked = textRange.GetPropertyValue(FlowDocument.TextAlignmentProperty).Equals(TextAlignment.Justify);
+        }
+
+
+
+        private string GetImagesXML(FlowDocument flowDocument)
+        {
+
+            using (StringWriter stringwriter = new StringWriter())
+            {
+                using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(stringwriter))
+                {
+
+                    Type inlineType;
+                    InlineUIContainer uic;
+                    System.Windows.Controls.Image replacementImage;
+                    byte[] bytes;
+                    System.Text.ASCIIEncoding enc;
+
+                    //loop through replacing images in the flowdoc with the byte versions
+                    foreach (Block b in flowDocument.Blocks)
+                    {
+                        foreach (Inline i in ((Paragraph)b).Inlines)
+                        {
+                            inlineType = i.GetType();
+
+                            if (inlineType == typeof(Run))
+                            {
+                                //The inline is TEXT!!!
+                            }
+                            else if (inlineType == typeof(InlineUIContainer))
+                            {
+                                //The inline has an object, likely an IMAGE!!!
+                                uic = ((InlineUIContainer)i);
+
+                                //if it is an image
+                                if (uic.Child.GetType() == typeof(System.Windows.Controls.Image))
+                                {
+                                    //grab the image
+                                    replacementImage = (System.Windows.Controls.Image)uic.Child;
+
+                                    //get its byte array
+                                    bytes = GetImageByteArray((System.Windows.Media.Imaging.BitmapImage)replacementImage.Source);
+                                    //write the element
+                                    writer.WriteStartElement("Image");
+                                    //put the bytes into the tag
+                                    enc = new System.Text.ASCIIEncoding();
+                                    writer.WriteString(enc.GetString(bytes));
+                                    //close the element
+                                    writer.WriteEndElement();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return stringwriter.ToString();
+            }
+        }
+        //This function is where the problem is, i need a way to get the byte array
+        private byte[] GetImageByteArray(System.Windows.Media.Imaging.BitmapImage bi)
+        {
+            byte[] result = new byte[0];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                XamlWriter.Save(bi, ms);
+                //result = new byte[ms.Length];
+                result = ms.ToArray();
+            }
+            return result;
         }
         #endregion
 

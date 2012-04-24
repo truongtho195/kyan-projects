@@ -18,7 +18,7 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
-        } 
+        }
         #endregion
 
         #region Properties
@@ -126,8 +126,8 @@ namespace FlashCard.ViewModels
             }
         }
 
-        
-        
+
+
 
 
         #endregion
@@ -152,7 +152,7 @@ namespace FlashCard.ViewModels
 
         private bool CanNewExecute(object param)
         {
-            return SelectedLesson!=null && !SelectedLesson.IsEditing ;
+            return SelectedLesson != null && !SelectedLesson.IsEditing;
         }
 
         private void NewExecute(object param)
@@ -169,7 +169,7 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
             SelectedLesson.IsEditing = true;
-        } 
+        }
         #endregion
 
         #region EditCommand
@@ -192,7 +192,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return !SelectedLesson.IsEditing ;
+            return !SelectedLesson.IsEditing;
         }
 
         private void EditExecute(object param)
@@ -227,7 +227,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return SelectedLesson.IsEdit || (SelectedLesson.BackSideCollection!=null && SelectedLesson.BackSideCollection.Count(x=>x.IsEdit)>0);
+            return SelectedLesson.IsEdit || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsEdit) > 0);
         }
 
         private void SaveExecute(object param)
@@ -246,7 +246,7 @@ namespace FlashCard.ViewModels
                     break;
             }
 
-            
+
             if (SelectedLesson.IsNew)
             {
                 lessonDataAccess.Insert(SelectedLesson);
@@ -317,7 +317,7 @@ namespace FlashCard.ViewModels
 
         private void DeleteExecute(object param)
         {
-            
+
         }
         #endregion
 
