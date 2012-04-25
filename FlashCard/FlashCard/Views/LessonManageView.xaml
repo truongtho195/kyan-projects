@@ -15,7 +15,6 @@
     <Window.Resources>
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
         <converter:ReverseBooleanConverter x:Key="reverseBooleanConverter" />
-        <converter:XamlHtmlFormaterConverter x:Key="xamlHtmlFormaterConverter" />
         <converter:FlowDocumentToXamlConverter x:Key="flowDocumentToXamlConverter" />
     </Window.Resources>
 
