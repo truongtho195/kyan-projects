@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
-             
+             xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
@@ -14,7 +14,7 @@
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
-        
+
         <!--#End Region-->
         <!--#region Storyboard-->
         <Storyboard x:Key="FadeIn">
@@ -326,21 +326,24 @@
                     <RowDefinition />
                     <RowDefinition Height="36.949" />
                 </Grid.RowDefinitions>
-                <wpfToolkit:RichTextBox x:Name="tbWords"
-                                        Text="{Binding SelectedLesson.LessonName}"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
-                                        Foreground="White"
-                                        FontSize="16">
-                    <wpfToolkit:RichTextBox.TextFormatter>
-                        <wpfToolkit:XamlFormatter />
-                    </wpfToolkit:RichTextBox.TextFormatter>
-                    <wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                        <wpfToolkit:RichTextBoxFormatBar />
-                    </wpfToolkit:RichTextBoxFormatBarManager.FormatBar>
-                </wpfToolkit:RichTextBox>
+                <StackPanel d:LayoutOverrides="Width"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock TextWrapping="Wrap"
+                               VerticalAlignment="Center"
+                               Text="{Binding SelectedLesson.LessonName}" Foreground="White" HorizontalAlignment="Center" FontSize="21.333" />
+
+                    <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+                                                           Document="{Binding SelectedLesson.Description}"
+                                                           IsReadOnly="True"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Background="Transparent"
+                                                           BorderBrush="Transparent"
+                                                           Foreground="White"
+                                                           FontSize="16" />
+                </StackPanel>
+
             </Grid>
             <Grid x:Name="grdListChoice"
                   Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -370,17 +373,14 @@
                 <RowDefinition />
                 <RowDefinition Height="27" />
             </Grid.RowDefinitions>
-            <wpfToolkit:RichTextBox x:Name="tblWordBackSide"
-                                    Text="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    MinWidth="200"
-                                    MinHeight="50"
-                                    Margin="5"
-                                    Grid.Row="1"
-                                    Background="Transparent">
-                <wpfToolkit:RichTextBox.TextFormatter>
-                    <wpfToolkit:XamlFormatter />
-                </wpfToolkit:RichTextBox.TextFormatter>
-            </wpfToolkit:RichTextBox>
+            <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+                                                   Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   MinWidth="200"
+                                                   MinHeight="50"
+                                                   Margin="5"
+                                                   Grid.Row="1"
+                                                   Background="Transparent" />
+
 
         </Grid>
     </Grid>
