@@ -194,6 +194,32 @@ namespace RichTextBoxControl
 
 
 
+        public Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata());
+
+
+
+
+        public Brush Foreground
+        {
+            get { return (Brush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Foreground.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
+
+
+
+
 
 
         #endregion
@@ -216,6 +242,7 @@ namespace RichTextBoxControl
                 {
                     //Document is not amused by null :)
                     thisControl.rtContent.Document = new FlowDocument();
+                    thisControl.IsDocumentChanged = false;
                     //thisControl.rtContent.Document.Blocks.Clear();
                     return;
                 }
@@ -339,6 +366,7 @@ namespace RichTextBoxControl
             FontSizeCombo.Items.Add("18");
             FontSizeCombo.Items.Add("24");
             FontSizeCombo.Items.Add("36");
+            
         }
         private void SetButtonGroupSelection(ToggleButton clickedButton, ToggleButton currentSelectedButton, IEnumerable<ToggleButton> buttonGroup, bool ignoreClickWhenSelected)
         {
