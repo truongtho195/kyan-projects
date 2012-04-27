@@ -322,13 +322,8 @@
                   Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="1"
                   Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="36.949" />
-                </Grid.RowDefinitions>
-                <StackPanel d:LayoutOverrides="Width"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
+                
+                <StackPanel d:LayoutOverrides="Width">
                     <TextBlock TextWrapping="Wrap"
                                VerticalAlignment="Center"
                                Text="{Binding SelectedLesson.LessonName}" Foreground="White" HorizontalAlignment="Center" FontSize="21.333" />
@@ -336,8 +331,6 @@
                     <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                            Document="{Binding SelectedLesson.Description}"
                                                            IsReadOnly="True"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
                                                            Background="Transparent"
                                                            BorderBrush="Transparent"
                                                            Foreground="White"
@@ -348,7 +341,7 @@
             <Grid x:Name="grdListChoice"
                   Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="1"
-                  RenderTransformOrigin="0.5,0.5">
+                  RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
                 <ListBox Margin="5,0"
                          Background="Transparent"
                          ItemsSource="{Binding SelectedLesson.BackSideCollection}"
