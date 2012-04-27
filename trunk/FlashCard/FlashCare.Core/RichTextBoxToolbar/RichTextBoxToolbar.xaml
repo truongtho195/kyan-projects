@@ -114,6 +114,8 @@
     <Grid>
         <RichTextBox x:Name="rtContent"
                      d:IsHidden="True"
+                     Foreground="{Binding Foreground,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     Background="{Binding Background,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
         </RichTextBox>
         <Popup x:Name="popup"
