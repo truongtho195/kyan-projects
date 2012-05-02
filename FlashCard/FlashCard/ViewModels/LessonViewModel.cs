@@ -365,7 +365,6 @@ namespace FlashCard.ViewModels
             if (this.IsFromPopup)
             {
                 MainWindow mainView = new MainWindow();
-               // mainView.Show();
             }
             ViewCore.Close();
         }
