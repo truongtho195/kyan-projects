@@ -15,6 +15,7 @@ using MVVMHelper.Commands;
 using System.Diagnostics;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Media.Animation;
+using System.Windows;
 
 
 namespace FlashCard.ViewModels
@@ -29,6 +30,10 @@ namespace FlashCard.ViewModels
             Initialize();
             _timer = new DispatcherTimer();
 
+            if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
+            {
+                ViewCore.MyNotifyIcon = new TaskbarIcon();
+            }
             _timer.Interval = SetupModel.TimeOut;
             _timer.Tick += new EventHandler(_timer_Tick);
             _stopWatch.Start();
@@ -125,6 +130,8 @@ namespace FlashCard.ViewModels
         }
 
 
+        public bool  IsLessonManagerExecute { get; set; }
+
         #endregion
 
         #region Commands
@@ -186,14 +193,19 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            _waitForClose = new Timer(WaitBalloon);
-            _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
+            if (!IsLessonManagerExecute)
+            {
+                _waitForClose = new Timer(WaitBalloon);
+                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
+            }
         }
 
         private void WaitBalloon(object state)
         {
             var action = new Action(() =>
             {
+                //if (ViewCore.MyNotifyIcon.IsDisposed)
+                    //ViewCore.MyNotifyIcon.IsDisposed = false;
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 Console.WriteLine("Closed.......");
                 _timer.Start();
@@ -229,6 +241,82 @@ namespace FlashCard.ViewModels
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
+
+        /// <summary>
+        /// Gets the Exit Command.
+        /// <summary>
+        private ICommand _exitCommand;
+        public ICommand ExitCommand
+        {
+            get
+            {
+                if (_exitCommand == null)
+                    _exitCommand = new RelayCommand(this.OnExitExecute, this.OnExitCanExecute);
+                return _exitCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the Exit command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnExitCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Exit command is executed.
+        /// </summary>
+        private void OnExitExecute(object param)
+        {
+            Application.Current.Shutdown();
+        }
+
+
+
+
+
+        /// <summary>
+        /// Gets the LessonManager Command.
+        /// <summary>
+        private ICommand _lessonManagerCommand;
+        public ICommand LessonManagerCommand
+        {
+            get
+            {
+                if (_lessonManagerCommand == null)
+                    _lessonManagerCommand = new RelayCommand(this.OnLessonManagerExecute, this.OnLessonManagerCanExecute);
+                return _lessonManagerCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the LessonManager command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLessonManagerCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the LessonManager command is executed.
+        /// </summary>
+        private void OnLessonManagerExecute(object param)
+        {
+            IsLessonManagerExecute = true;
+            LessonManageView lessonManager = new LessonManageView(true);
+            _waitForClose.Dispose();
+            ViewCore.MyNotifyIcon.CloseBalloon();
+            ViewCore.MyNotifyIcon.Dispose();
+            this._timer.Stop();
+            ViewCore.Hide();
+            lessonManager.Show();
+        }
+
+
+
         #endregion
 
         #region Methods
@@ -240,6 +328,11 @@ namespace FlashCard.ViewModels
             SetupModel.DistanceTime = new TimeSpan(0, 0, 3);
             SetupModel.ViewTime = new TimeSpan(0, 0, 7);
 
+        }
+
+        public void Close()
+        {
+            this.ViewCore.Close();
         }
         #endregion
 

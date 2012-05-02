@@ -19,6 +19,13 @@ namespace FlashCard.ViewModels
         {
             Initialize();
         }
+
+        public LessonViewModel(LessonManageView view,bool isFromPopup)
+            : this(view)
+        {
+            IsFromPopup = isFromPopup;
+
+        }
         #endregion
 
         #region Properties
@@ -127,6 +134,7 @@ namespace FlashCard.ViewModels
         }
 
 
+        public bool IsFromPopup { get; set; }
 
 
 
@@ -325,6 +333,42 @@ namespace FlashCard.ViewModels
         #endregion
 
 
+
+        /// <summary>
+        /// Gets the Close Command.
+        /// <summary>
+        private ICommand _closeCommand;
+        public ICommand CloseCommand
+        {
+            get
+            {
+                if (_closeCommand == null)
+                    _closeCommand = new RelayCommand(this.OnCloseExecute, this.OnCloseCanExecute);
+                return _closeCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the Close command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCloseCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Close command is executed.
+        /// </summary>
+        private void OnCloseExecute(object param)
+        {
+            if (this.IsFromPopup)
+            {
+                MainWindow mainView = new MainWindow();
+               // mainView.Show();
+            }
+            ViewCore.Close();
+        }
         #endregion
 
         #region Methods

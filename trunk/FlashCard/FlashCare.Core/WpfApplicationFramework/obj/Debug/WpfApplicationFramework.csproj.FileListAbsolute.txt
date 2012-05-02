@@ -19,3 +19,8 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFr
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb

@@ -12,8 +12,10 @@
                                 ToolTipText="Balloon Sample Icon">
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="First Menu Item" />
-                    <MenuItem Header="Second Menu Item" />
+                    <MenuItem Header="Lesson Management"
+                              Command="{Binding LessonManagerCommand}" />
+                    <MenuItem Header="Exit"
+                              Command="{Binding ExitCommand}" />
                 </ContextMenu>
             </notifyIcon:TaskbarIcon.ContextMenu>
         </notifyIcon:TaskbarIcon>

@@ -16,3 +16,13 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Generate
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\ResGen.write.1.tlog
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Planerator.dll
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Planerator.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\bin\Debug\Planerator.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\bin\Debug\Planerator.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Planerator.Properties.Resources.resources
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\GenerateResource.read.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\ResGen.read.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\GenerateResource.write.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\ResGen.write.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Planerator.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Planerator\obj\Debug\Planerator.pdb

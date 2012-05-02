@@ -884,6 +884,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
           messageSink.Version = (NotifyIconVersion) iconData.VersionOrTimeout;
 
           IsTaskbarIconCreated = true;
+          IsDisposed = false;
         }
       }
     }
