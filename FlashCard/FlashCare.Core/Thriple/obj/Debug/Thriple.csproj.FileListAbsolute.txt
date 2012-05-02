@@ -18,3 +18,13 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Themes\Gene
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.g.resources
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.dll
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\bin\Debug\Thriple.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\bin\Debug\Thriple.pdb
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\GeneratedInternalTypeHelper.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple_MarkupCompile.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple_MarkupCompile.lref
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Themes\Generic.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.g.resources
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Thriple\obj\Debug\Thriple.pdb

@@ -26,6 +26,13 @@ namespace FlashCard
             var a = new LessonViewModel(this).View;
         }
 
+        public LessonManageView(bool isFromPopup)
+        {
+            this.InitializeComponent();
+            viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
+            var a = new LessonViewModel(this, isFromPopup).View;
+        }
+
         #region Variables
         private readonly Lazy<LessonViewModel> viewModel;
         #endregion

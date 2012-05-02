@@ -114,6 +114,14 @@
     <Grid>
         <RichTextBox x:Name="rtContent"
                      d:IsHidden="True"
+                     BorderBrush="{Binding BorderBrush,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     BorderThickness="{Binding BorderThickness,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     MinWidth="{Binding MinWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     MinHeight="{Binding MinHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     MaxHeight="{Binding MaxHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     MaxWidth="{Binding MaxWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     Width="{Binding Width,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     Height="{Binding Height,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      Foreground="{Binding Foreground,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      Background="{Binding Background,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">

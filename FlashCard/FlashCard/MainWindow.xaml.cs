@@ -41,21 +41,12 @@ namespace FlashCard
         void MainWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
-
         }
 
 
         #region Properties
         private MainViewModel ViewModel { get { return viewModel.Value; } }
         #endregion
-
-
-        private void MainViewModel()
-        {
-            CategoryDataAccess cate = new CategoryDataAccess();
-            cate.GetAllWithRelation();
-        }
-
 
     }
 }

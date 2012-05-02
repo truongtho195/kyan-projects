@@ -19,6 +19,10 @@
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.266*" />
             <ColumnDefinition Width="0.734*" />
@@ -210,5 +214,13 @@
                            d:LayoutOverrides="VerticalAlignment" />
             </Grid>
         </Grid>
+        <Button x:Name="btnClose"
+                Command="{Binding CloseCommand}"
+                Content="Close"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Width="75"
+                Grid.Row="1"
+                Grid.Column="1" />
     </Grid>
 </Window>
