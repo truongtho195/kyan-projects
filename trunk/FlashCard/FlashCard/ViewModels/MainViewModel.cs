@@ -158,8 +158,6 @@ namespace FlashCard.ViewModels
 
         private void ChangeSideExecute(object param)
         {
-            //sbChangeToFront
-
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             Storyboard sb;
             if (SelectedLesson.IsBackSide)
@@ -204,8 +202,6 @@ namespace FlashCard.ViewModels
         {
             var action = new Action(() =>
             {
-                //if (ViewCore.MyNotifyIcon.IsDisposed)
-                    //ViewCore.MyNotifyIcon.IsDisposed = false;
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 Console.WriteLine("Closed.......");
                 _timer.Start();
@@ -274,9 +270,6 @@ namespace FlashCard.ViewModels
         }
 
 
-
-
-
         /// <summary>
         /// Gets the LessonManager Command.
         /// <summary>
@@ -322,6 +315,9 @@ namespace FlashCard.ViewModels
         #region Methods
         private void Initialize()
         {
+
+            List<UserModel> UserLessonCollection = new List<UserModel>();
+
             LessonDataAccess lessonDA = new LessonDataAccess();
             LessonCollection = new List<LessonModel>(lessonDA.GetAllWithRelation());
             SetupModel = new SetupModel();
