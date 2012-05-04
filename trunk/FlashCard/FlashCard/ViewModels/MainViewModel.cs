@@ -56,6 +56,7 @@ namespace FlashCard.ViewModels
 
                 _balloon = new FancyBalloon();
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                this.IsStarted = true;
                 RaisePropertyChanged(() => SelectedLesson);
                 _waitForClose = new Timer(WaitBalloon);
                 _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
@@ -92,8 +93,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-
-
         private SetupModel _setupModel;
         /// <summary>
         /// Gets or sets the property value.
@@ -110,7 +109,6 @@ namespace FlashCard.ViewModels
                 }
             }
         }
-
 
         /// <summary>
         /// Gets or sets the property value.
@@ -130,7 +128,9 @@ namespace FlashCard.ViewModels
         }
 
 
-        public bool  IsLessonManagerExecute { get; set; }
+        public bool IsLessonManagerExecute { get; set; }
+
+        public bool IsStarted { get; set; }
 
         #endregion
 
@@ -191,10 +191,10 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            if (!IsLessonManagerExecute)
+            if (!IsLessonManagerExecute && this.IsStarted)
             {
                 _waitForClose = new Timer(WaitBalloon);
-                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
+                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds / 2, Timeout.Infinite);
             }
         }
 
@@ -207,6 +207,7 @@ namespace FlashCard.ViewModels
                 _timer.Start();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+
         }
 
 
@@ -308,6 +309,58 @@ namespace FlashCard.ViewModels
             lessonManager.Show();
         }
 
+
+
+        /// <summary>
+        /// Gets the PlayPause Command.
+        /// <summary>
+        private ICommand _playPauseCommand;
+        public ICommand PlayPauseCommand
+        {
+            get
+            {
+                if (_playPauseCommand == null)
+                    _playPauseCommand = new RelayCommand(this.OnPlayPauseExecute, this.OnPlayPauseCanExecute);
+                return _playPauseCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the PlayPause command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnPlayPauseCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the PlayPause command is executed.
+        /// </summary>
+        private void OnPlayPauseExecute(object param)
+        {
+            if (this.IsStarted)
+            {
+                var action = new Action(() =>
+                {
+                    ViewCore.MyNotifyIcon.CloseBalloon();
+                    _waitForClose.Dispose();
+                    _timer.Stop();
+                });
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+                this.IsStarted = false;
+            }
+            else
+            {
+                if (!IsLessonManagerExecute)
+                {
+                    _waitForClose = new Timer(WaitBalloon);
+                    _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds / 2, Timeout.Infinite);
+                }
+            }
+
+
+        }
 
 
         #endregion
