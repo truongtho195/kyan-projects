@@ -325,10 +325,10 @@
                   Grid.Row="1"
                   Margin="5">
                 
-                <StackPanel d:LayoutOverrides="Width">
+                <StackPanel d:LayoutOverrides="Width" VerticalAlignment="Center">
                     <TextBlock TextWrapping="Wrap"
                                VerticalAlignment="Center"
-                               Text="{Binding SelectedLesson.LessonName}" Foreground="White" HorizontalAlignment="Center" FontSize="21.333" />
+                               Text="{Binding SelectedLesson.LessonName}" Foreground="White" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" />
                     <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                            Document="{Binding SelectedLesson.Description}"
                                                            IsReadOnly="True"
