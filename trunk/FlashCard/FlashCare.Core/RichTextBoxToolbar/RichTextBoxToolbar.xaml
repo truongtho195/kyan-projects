@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
              mc:Ignorable="d"
              x:Name="ucControl">
     <UserControl.Resources>
@@ -115,7 +116,7 @@
         <RichTextBox x:Name="rtContent"
                      d:IsHidden="True"
                      BorderBrush="{Binding BorderBrush,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     BorderThickness="{Binding BorderThickness,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     BorderThickness="{Binding Path=BorderThickness,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      MinWidth="{Binding MinWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      MinHeight="{Binding MinHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      MaxHeight="{Binding MaxHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
