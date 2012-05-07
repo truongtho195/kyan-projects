@@ -38,7 +38,7 @@ namespace FlashCard
             this.Closed += new EventHandler(MainWindow_Closed);
         }
 
-        void MainWindow_Closed(object sender, EventArgs e)
+        private void MainWindow_Closed(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
         }

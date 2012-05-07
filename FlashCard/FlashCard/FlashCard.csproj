@@ -43,6 +43,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\AttachedCommandBehavior.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Luna" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -133,6 +134,8 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\1336360291_Add.png" />
+    <Resource Include="Images\1336360382_Delete.png" />
     <Resource Include="Images\Add.png" />
     <Resource Include="Images\Close.png" />
     <Resource Include="Images\Info.png" />
