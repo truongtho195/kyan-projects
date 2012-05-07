@@ -177,7 +177,7 @@ namespace FlashCard.DataAccess
                     categoryModel.CategoryName = reader["CategoryName"].ToString();
                     //Lesson
                     LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
-                    lesson.CategoryID = categoryModel.CategoryID;
+                    //lesson.CategoryID = categoryModel.CategoryID;
                     var lessonCollection = new List<LessonModel>();
                     foreach (var item in lessonDA.GetAll(lesson))
                     {
@@ -236,7 +236,6 @@ namespace FlashCard.DataAccess
 
                     //Lesson
                     LessonModel lesson = new LessonModel() { TypeID = -1, LessonID = -1 };
-                    lesson.CategoryID = categoryModel.CategoryID;
                     var lessonCollection = new List<LessonModel>();
                     foreach (var item in lessonDA.GetAll(lesson))
                     {
@@ -263,8 +262,70 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
-      
 
+        public bool Insert(CategoryModel categoryModel)
+        {
+            bool result = false;
+            string sql = "insert into Categories (CategoryName) values (@CategoryName)";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                Edit(categoryModel, sqlCommand);
+                sqlCommand.ExecuteNonQuery();
+                categoryModel.CategoryID = (int)sqlConnect.LastInsertRowId;
+                categoryModel.IsNew = false;
+                categoryModel.IsDelete = false;
+                categoryModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+        public bool Update(CategoryModel categoryModel)
+        {
+            bool result = false;
+            string sql = "update Categories set CategoryName=@CategoryName where CategoryID = @CategoryID";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                Edit(categoryModel, sqlCommand);
+                sqlCommand.ExecuteNonQuery();
+                categoryModel.IsNew = false;
+                categoryModel.IsDelete = false;
+                categoryModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                throw;
+            }
+
+            return result;
+        }
+
+        private void Edit(CategoryModel categoryModel, SQLiteCommand sqlCommand)
+        {
+            sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryName", categoryModel.CategoryName));
+        }
         #endregion
     }
 }

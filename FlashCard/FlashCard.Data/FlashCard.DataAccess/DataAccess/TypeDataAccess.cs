@@ -169,7 +169,7 @@ namespace FlashCard.DataAccess
                     typeModel.TypeID = int.Parse(reader["TypeID"].ToString());
                     typeModel.Name = reader["Name"].ToString();
                     //Lesson
-                    LessonModel lesson = new LessonModel() { CategoryID = -1, LessonID = -1 };
+                    LessonModel lesson = new LessonModel() { LessonID = -1 };
                     lesson.TypeID = typeModel.TypeID;
                     var lessonCollection = new List<LessonModel>();
                     foreach (var item in lessonDA.GetAll(lesson))
@@ -223,7 +223,7 @@ namespace FlashCard.DataAccess
                 {
                     TypeModel typeModel = GetTypeModel(reader);
                     //Lesson
-                    LessonModel lesson = new LessonModel() { CategoryID = -1, LessonID = -1 };
+                    LessonModel lesson = new LessonModel() {LessonID = -1 };
                     lesson.TypeID = typeModel.TypeID;
                     var lessonCollection = new List<LessonModel>();
                     foreach (var item in lessonDA.GetAll(lesson))

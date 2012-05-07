@@ -110,21 +110,19 @@ namespace FlashCard.DataAccess
             SQLiteDataReader reader = null;
             //SQLiteParameter param = null;
             string sql = "select * from Lessons";
-
-
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 string sqlcondition = string.Empty;
-                if (lesson.CategoryID > -1)
+                if (lesson.CategoryModel.CategoryID > -1)
                 {
                     if (string.IsNullOrWhiteSpace(sqlcondition))
                         sqlcondition += "where CategoryID==@categoryID";
                     else
                         sqlcondition += "&& CategoryID==@categoryID";
-                    SQLiteParameter param = new SQLiteParameter("@categoryID", lesson.CategoryID);
+                    SQLiteParameter param = new SQLiteParameter("@categoryID", lesson.CategoryModel.CategoryID);
                     sqlCommand.Parameters.Add(param);
                 }
                 if (lesson.LessonID > -1)
@@ -177,8 +175,7 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
-            CategoryDataAccess categoryDA = new CategoryDataAccess();
-            TypeDataAccess typeDA = new TypeDataAccess();
+            
             BackSideDataAccess backSideDA = new BackSideDataAccess();
             string sql = "select * from Lessons";
             try
@@ -192,10 +189,7 @@ namespace FlashCard.DataAccess
                 while (reader.Read())
                 {
                     LessonModel lessonModel = GetLessonModel(reader);
-                    //CategoryModel
-                    lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
-                    //TypeMode
-                    lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
+                    
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
@@ -254,10 +248,7 @@ namespace FlashCard.DataAccess
                 while (reader.Read())
                 {
                     LessonModel lessonModel = GetLessonModel(reader);
-                    //CategoryModel
-                    lessonModel.CategoryModel = categoryDA.Get(lessonModel.CategoryID);
-                    //TypeMode
-                    lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
+                    
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
@@ -292,6 +283,7 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             try
             {
+                CheckExitsCategory(lessonModel);
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
@@ -311,8 +303,10 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
+                CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
+                
                 throw;
             }
 
@@ -327,6 +321,8 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             try
             {
+                CheckExitsCategory(lessonModel);
+
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
@@ -354,6 +350,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
+                CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -362,16 +359,34 @@ namespace FlashCard.DataAccess
             return result;
         }
 
+        /// <summary>
+        /// Insert if have a new category
+        /// </summary>
+        /// <param name="lessonModel"></param>
+        private void CheckExitsCategory(LessonModel lessonModel)
+        {
+            if (lessonModel.CategoryModel.IsNew)
+            {
+                CategoryDataAccess catedataaccess = new CategoryDataAccess();
+                catedataaccess.Insert(lessonModel.CategoryModel);
+            }
+        }
 
         private LessonModel GetLessonModel(SQLiteDataReader reader)
         {
             LessonModel lessonModel;
+            CategoryDataAccess categoryDA = new CategoryDataAccess();
+            TypeDataAccess typeDA = new TypeDataAccess();
             lessonModel = new LessonModel();
             lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
             lessonModel.LessonName = reader["LessonName"].ToString();
             lessonModel.Description = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Description"].ToString());
             lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
-            lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+            //CategoryModel
+            lessonModel.CategoryModel = categoryDA.Get(int.Parse(reader["CategoryID"].ToString()));
+            //TypeMode
+            lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
+            //lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
             lessonModel.IsDelete = false;
             lessonModel.IsEdit = false;
             lessonModel.IsNew = false;
@@ -383,8 +398,8 @@ namespace FlashCard.DataAccess
         {
             sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", lessonModel.LessonName));
             sqlCommand.Parameters.Add(new SQLiteParameter("@Description", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(lessonModel.Description)));
-            sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeID));
-            sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryID));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeModel.TypeID));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryModel.CategoryID));
             sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", lessonModel.LessonID));
         }
 
