@@ -197,21 +197,15 @@
                               d:LayoutOverrides="Height"
                               Width="120" />
                 </Grid>
-
                 <Grid x:Name="grdCategory"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       Grid.Row="2"
                       Margin="10,0,0,0">
-
                     <Grid.ColumnDefinitions>
-
                         <ColumnDefinition />
-
                         <ColumnDefinition />
-
                     </Grid.ColumnDefinitions>
-
                     <ComboBox x:Name="cmbCategory"
                               ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValue="{Binding SelectedLesson.CategoryModel.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -258,7 +252,6 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
                     </Button>
-
                 </Grid>
 
                 <TextBox x:Name="txtLessonContent"
@@ -267,8 +260,6 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          Margin="10,6,8,6"
                          Grid.Row="3" />
-
-
 
                 <DataGrid x:Name="dgBackSide"
                           Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -305,8 +296,6 @@
                                                        BorderThickness="1"
                                                        Grid.Row="5"
                                                        Margin="10,8,8,8" />
-
-
 
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"
