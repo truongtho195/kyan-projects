@@ -91,28 +91,28 @@ namespace FlashCard.Model
 
 
 
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        private int _categoryID;
-        public int CategoryID
-        {
-            get { return _categoryID; }
-            set
-            {
-                if (_categoryID != value)
-                {
-                    this.OnCategoryIDChanging(value);
-                    _categoryID = value;
-                    RaisePropertyChanged(() => CategoryID);
-                    this.OnChanged();
-                    this.OnCategoryIDChanged();
-                }
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets the property value.
+        ///// </summary>
+        //private int _categoryID;
+        //public int CategoryID
+        //{
+        //    get { return _categoryID; }
+        //    set
+        //    {
+        //        if (_categoryID != value)
+        //        {
+        //            this.OnCategoryIDChanging(value);
+        //            _categoryID = value;
+        //            RaisePropertyChanged(() => CategoryID);
+        //            this.OnChanged();
+        //            this.OnCategoryIDChanged();
+        //        }
+        //    }
+        //}
 
-        protected virtual void OnCategoryIDChanging(int value) { }
-        protected virtual void OnCategoryIDChanged() { }
+        //protected virtual void OnCategoryIDChanging(int value) { }
+        //protected virtual void OnCategoryIDChanged() { }
 
 
 

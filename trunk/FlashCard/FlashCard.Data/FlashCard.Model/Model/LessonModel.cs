@@ -76,7 +76,6 @@ namespace FlashCard.Model
             }
         }
 
-
         private bool _isEditing;
         /// <summary>
         /// Gets or sets the property value.
@@ -94,7 +93,45 @@ namespace FlashCard.Model
             }
         }
 
-      
+        #region IsNewType
+        private bool _isNewType;
+        /// <summary>
+        /// Gets or sets the IsNewType.
+        /// </summary>
+        public bool IsNewType
+        {
+            get { return _isNewType; }
+            set
+            {
+                if (_isNewType != value)
+                {
+                    _isNewType = value;
+                    RaisePropertyChanged(() => IsNewType);
+                }
+            }
+        }
+        #endregion
+
+        #region IsNewCate
+        private bool _isNewCate;
+        /// <summary>
+        /// Gets or sets the IsNewCate.
+        /// </summary>
+        public bool IsNewCate
+        {
+            get { return _isNewCate; }
+            set
+            {
+                if (_isNewCate != value)
+                {
+                    _isNewCate = value;
+                    RaisePropertyChanged(() => IsNewCate);
+                }
+            }
+        }
+        #endregion
+
+        
 
         #endregion
 

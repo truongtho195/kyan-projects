@@ -179,9 +179,9 @@ namespace FlashCard.DataAccess
                     //LessonModel
                     backSideModel.LessonModel = lessonDA.Get(backSideModel.LessonID);
                     //CategoryModel
-                    backSideModel.LessonModel.CategoryModel = categoryDA.Get(backSideModel.LessonModel.CategoryID);
+                    backSideModel.LessonModel.CategoryModel = categoryDA.Get(backSideModel.LessonModel.CategoryModel.CategoryID);
                     //TypeModel
-                    backSideModel.LessonModel.TypeModel = typeDA.Get(backSideModel.LessonModel.CategoryID);
+                    backSideModel.LessonModel.TypeModel = typeDA.Get(backSideModel.LessonModel.CategoryModel.CategoryID);
                     list.Add(backSideModel);
                 }
             }
@@ -227,9 +227,9 @@ namespace FlashCard.DataAccess
                     //LessonModel
                     backSideModel.LessonModel = lessonDA.Get(backSideModel.LessonID);
                     //CategoryModel
-                    backSideModel.LessonModel.CategoryModel = categoryDA.Get(backSideModel.LessonModel.CategoryID);
+                    backSideModel.LessonModel.CategoryModel = categoryDA.Get(backSideModel.LessonModel.CategoryModel.CategoryID);
                     //TypeModel
-                    backSideModel.LessonModel.TypeModel = typeDA.Get(backSideModel.LessonModel.CategoryID);
+                    backSideModel.LessonModel.TypeModel = typeDA.Get(backSideModel.LessonModel.CategoryModel.CategoryID);
                     list.Add(backSideModel);
                 }
             }
