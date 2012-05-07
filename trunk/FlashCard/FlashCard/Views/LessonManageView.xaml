@@ -2,20 +2,82 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
+        xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+        xmlns:uc="clr-namespace:FlashCard.UserControls"
+        xmlns:converter="clr-namespace:FlashCard.Converters"
+        xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
         mc:Ignorable="d"
         x:Class="FlashCard.LessonManageView"
         x:Name="Window"
         Title="LessonManage"
         Width="640"
-        Height="480"
-        xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
-        xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
-        xmlns:uc="clr-namespace:FlashCard.UserControls"
-        xmlns:converter="clr-namespace:FlashCard.Converters">
+        Height="480">
     <Window.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
         <converter:ReverseBooleanConverter x:Key="reverseBooleanConverter" />
         <converter:FlowDocumentToXamlConverter x:Key="flowDocumentToXamlConverter" />
+        <Style x:Key="ButtonFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="3"
+                                   SnapsToDevicePixels="true"
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                   StrokeThickness="1"
+                                   StrokeDashArray="1 2" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="ButtonNormalBackgroundFill"
+                             EndPoint="0.5,1"
+                             StartPoint="0.5,0">
+            <GradientStop Color="#FFFFFFFF"
+                          Offset="0" />
+            <GradientStop Color="#FFF0F0EA"
+                          Offset="0.9" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ButtonBorder"
+                         Color="#FF003C74" />
+        <Style x:Key="EmtyButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="Background"
+                    Value="{StaticResource ButtonNormalBackgroundFill}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource ButtonBorder}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true" />
+                            <Trigger Property="ToggleButton.IsChecked"
+                                     Value="true" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -29,8 +91,8 @@
         </Grid.ColumnDefinitions>
         <ListView x:Name="lstLesson"
                   ItemsSource="{Binding LessonCollection}"
-                  SelectedItem="{Binding SelectedLesson,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                  IsEnabled="{Binding SelectedLesson.IsEditing,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource reverseBooleanConverter}}">
+                  SelectedItem="{Binding SelectedLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding SelectedLesson.IsEditing, Converter={StaticResource reverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
                     <!--<GridViewColumn Header="#"
@@ -116,33 +178,91 @@
                            VerticalAlignment="Top"
                            Grid.Row="5"
                            Margin="0,5,0,0" />
-                <ComboBox x:Name="cmbType"
-                          ItemsSource="{Binding LessonTypeCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedLesson.TypeModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValue="{Binding SelectedLesson.TypeID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValuePath="TypeID"
-                          DisplayMemberPath="Name"
-                          Grid.Column="1"
-                          HorizontalAlignment="Left"
-                          Grid.Row="1"
-                          Width="120"
-                          d:LayoutOverrides="Height"
-                          Margin="10,0,0,0" />
-                <ComboBox x:Name="cmbCategory"
-                          ItemsSource="{Binding CategoryCollection,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValue="{Binding SelectedLesson.CategoryID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedLesson.CategoryModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValuePath="CategoryID"
-                          DisplayMemberPath="CategoryName"
-                          Grid.Column="1"
-                          HorizontalAlignment="Left"
-                          Grid.Row="2"
-                          VerticalAlignment="Bottom"
-                          Width="120"
-                          Margin="10,0,0,0" />
+                <Grid x:Name="grdType"
+                      Grid.Column="1"
+                      Margin="10,0,0,0"
+                      Grid.Row="1"
+                      HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="cmbType"
+                              ItemsSource="{Binding LessonTypeCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedLesson.TypeModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValue="{Binding SelectedLesson.TypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Visibility="{Binding SelectedLesson.IsNewType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                              SelectedValuePath="TypeID"
+                              DisplayMemberPath="Name"
+                              d:LayoutOverrides="Height"
+                              Width="120" />
+                </Grid>
+
+                <Grid x:Name="grdCategory"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      Grid.Row="2"
+                      Margin="10,0,0,0">
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition />
+
+                        <ColumnDefinition />
+
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox x:Name="cmbCategory"
+                              ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValue="{Binding SelectedLesson.CategoryModel.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Visibility="{Binding SelectedLesson.IsNewCate,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                              SelectedValuePath="CategoryID"
+                              DisplayMemberPath="CategoryName"
+                              VerticalAlignment="Center"
+                              Width="120" Height="20" />
+                    <TextBox x:Name="tblCateName"
+                             Text="{Binding SelectedLesson.CategoryModel.CategoryName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding SelectedLesson.IsNewCate,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"
+                             HorizontalAlignment="Left"
+                             TextWrapping="Wrap"
+                             VerticalAlignment="Center"
+                             Width="120"
+                             Height="20" />
+                    <Button x:Name="btnRemoveCate"
+                            Command="{Binding NewCategoryCommand}"
+                            CommandParameter="Remove"
+                            Style="{DynamicResource EmtyButtonStyle}"
+                            Grid.Column="1"
+                            Height="25"
+                            Width="25"
+                            Visibility="{Binding Path=Visibility, ElementName=tblCateName, UpdateSourceTrigger=PropertyChanged}">
+                        <Image Source="/FlashCard;component/Images/1336360382_Delete.png"
+                               Stretch="Fill"
+                               Width="20"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                    </Button>
+                    <Button x:Name="btnAddCate"
+                            Command="{Binding NewCategoryCommand}"
+                            CommandParameter="Add"
+                            Style="{DynamicResource EmtyButtonStyle}"
+                            Grid.Column="1"
+                            Height="25"
+                            Width="25"
+                            Visibility="{Binding Path=Visibility, ElementName=cmbCategory, UpdateSourceTrigger=PropertyChanged}">
+                        <Image Source="/FlashCard;component/Images/1336360291_Add.png"
+                               Stretch="Fill"
+                               Width="20"
+                               Height="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    </Button>
+
+                </Grid>
 
                 <TextBox x:Name="txtLessonContent"
-                         Text="{Binding SelectedLesson.LessonName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="1"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          Margin="10,6,8,6"
@@ -151,9 +271,9 @@
 
 
                 <DataGrid x:Name="dgBackSide"
-                          Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+                          Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                           ItemsSource="{Binding SelectedLesson.BackSideCollection}"
-                          SelectedItem="{Binding SelectedBackSideModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
@@ -167,7 +287,7 @@
                                     <TextBox x:Name="tbContent"
                                              Width="auto"
                                              MinWidth="200px"
-                                             Text="{Binding Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -178,9 +298,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                       Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                       Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=1}"
+                                                       Document="{Binding SelectedLesson.BackSideModel.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                       Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                        Grid.Column="1"
+                                                       BorderBrush="#FF7F9DB9"
+                                                       BorderThickness="1"
                                                        Grid.Row="5"
                                                        Margin="10,8,8,8" />
 
@@ -188,7 +310,7 @@
 
                 <Button x:Name="btnAddBackSide"
                         Command="{Binding AddBackSideCommand}"
-                        Visibility="{Binding SelectedItem.TypeOf,ElementName=cmbType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource valueToVisibilityConverter}, ConverterParameter=2}"
+                        Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Content="Add Back Side"
                         Grid.Row="6"
                         Grid.Column="1"
@@ -198,12 +320,14 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top" />
                 <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
-                                                       Document="{Binding SelectedLesson.Description,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                       Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        IsReadOnly="False"
                                                        Foreground="Black"
                                                        Grid.Column="1"
                                                        Margin="10,8,8,8"
-                                                       Grid.Row="4" />
+                                                       Grid.Row="4"
+                                                       BorderBrush="#FF7F9DB9"
+                                                       BorderThickness="1" />
                 <TextBlock x:Name="tbLessonContent_Copy"
                            HorizontalAlignment="Right"
                            TextWrapping="Wrap"
