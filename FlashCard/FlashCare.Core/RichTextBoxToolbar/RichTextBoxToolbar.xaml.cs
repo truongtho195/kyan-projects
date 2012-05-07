@@ -36,6 +36,9 @@ namespace RichTextBoxControl
         {
             InitializeComponent();
             this.Initialize();
+            //Initialize UI
+            this.BorderThickness = new Thickness(1, 1, 1, 1);
+
 
             //Events
             this.rtContent.TextChanged += new TextChangedEventHandler(rtContent_TextChanged);
@@ -194,28 +197,28 @@ namespace RichTextBoxControl
 
 
 
-        public Brush Background
-        {
-            get { return (Brush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
-        }
+        //public Brush Background
+        //{
+        //    get { return (Brush)GetValue(BackgroundProperty); }
+        //    set { SetValue(BackgroundProperty, value); }
+        //}
 
-        // Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata());
-
-
+        //// Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty BackgroundProperty =
+        //    DependencyProperty.Register("Background", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata());
 
 
-        public Brush Foreground
-        {
-            get { return (Brush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
-        }
 
-        // Using a DependencyProperty as the backing store for Foreground.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
+
+        //public Brush Foreground
+        //{
+        //    get { return (Brush)GetValue(ForegroundProperty); }
+        //    set { SetValue(ForegroundProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for Foreground.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty ForegroundProperty =
+        //    DependencyProperty.Register("Foreground", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
 
 
 
