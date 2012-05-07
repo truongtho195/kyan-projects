@@ -51,14 +51,8 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson != null)
             {
-                //if (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Any() && SelectedLesson.)
-                //{
-                //    this.SelectedLesson.BackSideModel = SelectedLesson.BackSideCollection.FirstOrDefault();
-                //    this.SelectedLesson.BackSideModel.IsEdit = false;
-                //}
                 SelectedLesson.IsEditing = false;
             }
-
         }
 
 
@@ -254,7 +248,6 @@ namespace FlashCard.ViewModels
                     break;
             }
 
-
             if (SelectedLesson.IsNew)
             {
                 lessonDataAccess.Insert(SelectedLesson);
@@ -264,6 +257,13 @@ namespace FlashCard.ViewModels
             {
                 lessonDataAccess.Update(SelectedLesson);
             }
+
+            if (SelectedLesson.IsNewCate)
+            {
+                SelectedLesson.IsNewCate = false;
+                CategoryCollection.Add(SelectedLesson.CategoryModel);
+            }
+
             SelectedLesson.IsEditing = false;
         }
         #endregion
@@ -367,6 +367,97 @@ namespace FlashCard.ViewModels
                 MainWindow mainView = new MainWindow();
             }
             ViewCore.Close();
+        }
+
+
+
+        /// <summary>
+        /// Gets the NewCategory Command.
+        /// <summary>
+        private ICommand _newCategoryCommand;
+        public ICommand NewCategoryCommand
+        {
+            get
+            {
+                if (_newCategoryCommand == null)
+                    _newCategoryCommand = new RelayCommand(this.OnNewCategoryExecute, this.OnNewCategoryCanExecute);
+                return _newCategoryCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the NewCategory command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnNewCategoryCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the NewCategory command is executed.
+        /// </summary>
+        private void OnNewCategoryExecute(object param)
+        {
+            if ("Add".Equals(param.ToString()))
+            {
+                SelectedLesson.IsNewCate = true;
+                SelectedLesson.CategoryModel = new CategoryModel();
+                SelectedLesson.CategoryModel.IsNew = true;
+                SelectedLesson.CategoryModel.CategoryID = -2;
+            }
+            else
+            {
+                SelectedLesson.IsNewCate = false;
+                SelectedLesson.CategoryModel = CategoryCollection.First();
+            }
+            //RaisePropertyChanged(() => SelectedLesson);
+        }
+
+
+
+        /// <summary>
+        /// Gets the NewType Command.
+        /// <summary>
+        private ICommand _newTypeCommand;
+        public ICommand NewTypeCommand
+        {
+            get
+            {
+                if (_newTypeCommand == null)
+                    _newTypeCommand = new RelayCommand(this.OnNewTypeExecute, this.OnNewTypeCanExecute);
+                return _newTypeCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the NewType command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnNewTypeCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the NewType command is executed.
+        /// </summary>
+        private void OnNewTypeExecute(object param)
+        {
+            if ("Add".Equals(param.ToString()))
+            {
+                SelectedLesson.IsNewType = true;
+                SelectedLesson.TypeModel = new TypeModel();
+                SelectedLesson.TypeModel.IsNew = true;
+                SelectedLesson.TypeModel.TypeID = -1;
+            }
+            else
+            {
+                SelectedLesson.IsNewType = false;
+                SelectedLesson.TypeModel = LessonTypeCollection.First();
+                SelectedLesson.TypeModel.IsNew = false;
+            }
+            RaisePropertyChanged(() => SelectedLesson);
         }
         #endregion
 
