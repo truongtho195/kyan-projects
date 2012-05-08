@@ -12,7 +12,7 @@
         x:Name="Window"
         Title="LessonManage"
         Width="640"
-        Height="480">
+        Height="480" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
@@ -78,6 +78,71 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
+        <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="{x:Type ScrollViewer}">
+        	<Setter Property="Focusable" Value="false"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type ScrollViewer}">
+        				<Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+        					<Grid.ColumnDefinitions>
+        						<ColumnDefinition Width="*"/>
+        						<ColumnDefinition Width="Auto"/>
+        					</Grid.ColumnDefinitions>
+        					<Grid.RowDefinitions>
+        						<RowDefinition Height="*"/>
+        						<RowDefinition Height="Auto"/>
+        					</Grid.RowDefinitions>
+        					<DockPanel Margin="{TemplateBinding Padding}">
+        						<ScrollViewer DockPanel.Dock="Top" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+        							<GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}" Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}" ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        						</ScrollViewer>
+        						<ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" KeyboardNavigation.DirectionalNavigation="Local" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        					</DockPanel>
+        					<ScrollBar x:Name="PART_HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0.0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+        					<ScrollBar x:Name="PART_VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0.0" Orientation="Vertical" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+        					<DockPanel Background="{Binding Background, ElementName=PART_VerticalScrollBar}" Grid.Column="1" LastChildFill="false" Grid.Row="1">
+        						<Rectangle DockPanel.Dock="Left" Fill="White" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Width="1"/>
+        						<Rectangle DockPanel.Dock="Top" Fill="White" Height="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+        					</DockPanel>
+        				</Grid>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <Style x:Key="ListViewStyle" TargetType="{x:Type ListView}">
+        	<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        	<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+        	<Setter Property="BorderThickness" Value="1"/>
+        	<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        	<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        	<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        	<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+        	<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        	<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type ListView}">
+        				<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+        					<ScrollViewer Padding="{TemplateBinding Padding}" Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+        						<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        					</ScrollViewer>
+        				</Border>
+        				<ControlTemplate.Triggers>
+        					<Trigger Property="IsGrouping" Value="true">
+        						<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+        					</Trigger>
+        					<Trigger Property="IsEnabled" Value="false">
+        						<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+        					</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
+        	<VirtualizingStackPanel IsItemsHost="True"/>
+        </ItemsPanelTemplate>
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -92,13 +157,14 @@
         <ListView x:Name="lstLesson"
                   ItemsSource="{Binding LessonCollection}"
                   SelectedItem="{Binding SelectedLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  IsEnabled="{Binding SelectedLesson.IsEditing, Converter={StaticResource reverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                  IsEnabled="{Binding SelectedLesson.IsEditing, Converter={StaticResource reverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFCDE8FD" Style="{DynamicResource ListViewStyle}" ItemsPanel="{DynamicResource ItemsPanelTemplate}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <!--<GridViewColumn Header="#"
                                     DisplayMemberBinding="{Binding}"
                                     Width="30" />-->
                     <GridViewColumn Header="Lesson Name"
+                                    Width="auto"
                                     DisplayMemberBinding="{Binding LessonName}" />
                 </GridView>
             </ListView.View>
@@ -109,41 +175,42 @@
                 <RowDefinition Height="0.102*" />
                 <RowDefinition Height="0.898*" />
             </Grid.RowDefinitions>
-            <StackPanel x:Name="stkControl"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right">
-                <Button x:Name="btnNew"
-                        Command="{Binding NewCommand}"
-                        Content="New"
-                        Width="70" />
-                <Button x:Name="btnSave"
-                        Command="{Binding SaveCommand}"
-                        Content="Save"
-                        Width="70" />
-                <Button x:Name="btnEdit"
-                        Command="{Binding EditCommand}"
-                        Content="Edit"
-                        Width="70" />
-                <Button x:Name="btnDelete"
-                        Command="{Binding DeleteCommand}"
-                        Content="Delete"
-                        Width="70" />
-            </StackPanel>
+            <Border Background="#FF95BDF3">
+        		<StackPanel x:Name="stkControl"
+        			Orientation="Horizontal"
+                        Height="21.277" Width="280" HorizontalAlignment="Right" VerticalAlignment="Center">
+        			<Button x:Name="btnNew"
+        				Command="{Binding NewCommand}"
+        				Content="New"
+        				Width="70" />
+        			<Button x:Name="btnSave"
+        				Command="{Binding SaveCommand}"
+        				Content="Save"
+        				Width="70" />
+        			<Button x:Name="btnEdit"
+        				Command="{Binding EditCommand}"
+        				Content="Edit"
+        				Width="70" />
+        			<Button x:Name="btnDelete"
+        				Command="{Binding DeleteCommand}"
+        				Content="Delete"
+        				Width="70" />
+        		</StackPanel>
+        	</Border>
             <Grid Grid.Row="1"
-                  IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                  IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFCDE8FD">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.178*" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="92.78" />
-                    <RowDefinition Height="0.48*" />
-                    <RowDefinition Height="0.342*" />
+                	<RowDefinition Height="0.178*" />
+                	<RowDefinition Height="25" />
+                	<RowDefinition Height="25" />
+                	<RowDefinition Height="35" />
+                	<RowDefinition Height="92.78" />
+                	<RowDefinition Height="0.48*" />
+                	<RowDefinition Height="0.342*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="85.191" />
-                    <ColumnDefinition />
+                	<ColumnDefinition Width="85.191" />
+                	<ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock x:Name="tbLesson"
                            HorizontalAlignment="Right"
@@ -151,7 +218,7 @@
                            Text="Lesson Management"
                            VerticalAlignment="Center"
                            Grid.Column="1"
-                           FontSize="20" />
+                           FontSize="20" Margin="0,0,13,0" />
                 <TextBlock x:Name="tbType"
                            HorizontalAlignment="Right"
                            TextWrapping="Wrap"
@@ -191,7 +258,7 @@
                               ItemsSource="{Binding LessonTypeCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedLesson.TypeModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValue="{Binding SelectedLesson.TypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Visibility="{Binding SelectedLesson.IsNewType,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                              Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="TypeID"
                               DisplayMemberPath="Name"
                               d:LayoutOverrides="Height"
@@ -209,14 +276,14 @@
                     <ComboBox x:Name="cmbCategory"
                               ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValue="{Binding SelectedLesson.CategoryModel.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Visibility="{Binding SelectedLesson.IsNewCate,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                              Visibility="{Binding SelectedLesson.IsNewCate, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="CategoryID"
                               DisplayMemberPath="CategoryName"
                               VerticalAlignment="Center"
                               Width="120" Height="20" />
                     <TextBox x:Name="tblCateName"
-                             Text="{Binding SelectedLesson.CategoryModel.CategoryName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding SelectedLesson.IsNewCate,Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"
+                             Text="{Binding SelectedLesson.CategoryModel.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding SelectedLesson.IsNewCate, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                              HorizontalAlignment="Left"
                              TextWrapping="Wrap"
                              VerticalAlignment="Center"
@@ -229,7 +296,7 @@
                             Grid.Column="1"
                             Height="25"
                             Width="25"
-                            Visibility="{Binding Path=Visibility, ElementName=tblCateName, UpdateSourceTrigger=PropertyChanged}">
+                            Visibility="{Binding Visibility, ElementName=tblCateName, UpdateSourceTrigger=PropertyChanged}">
                         <Image Source="/FlashCard;component/Images/1336360382_Delete.png"
                                Stretch="Fill"
                                Width="20"
@@ -244,7 +311,7 @@
                             Grid.Column="1"
                             Height="25"
                             Width="25"
-                            Visibility="{Binding Path=Visibility, ElementName=cmbCategory, UpdateSourceTrigger=PropertyChanged}">
+                            Visibility="{Binding Visibility, ElementName=cmbCategory, UpdateSourceTrigger=PropertyChanged}">
                         <Image Source="/FlashCard;component/Images/1336360291_Add.png"
                                Stretch="Fill"
                                Width="20"
@@ -327,13 +394,13 @@
                            d:LayoutOverrides="VerticalAlignment" />
             </Grid>
         </Grid>
-        <Button x:Name="btnClose"
-                Command="{Binding CloseCommand}"
-                Content="Close"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Width="75"
-                Grid.Row="1"
-                Grid.Column="1" />
+        <Border
+        	Grid.Row="1" Grid.ColumnSpan="2" Background="#FF95BDF3"
+                >
+        	<Button x:Name="btnClose"
+        		Command="{Binding CloseCommand}"
+        		Content="Close"
+                Height="21.277" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,17,0" Width="75" />
+        </Border>
     </Grid>
 </Window>

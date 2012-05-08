@@ -7,7 +7,7 @@ using System.Windows.Documents;
 
 namespace FlashCard.Model
 {
-    public class LessonModelBase : ModelBase
+    public class LessonModelBase : ModelBase 
     {
         #region Constructors
         public LessonModelBase()
@@ -131,6 +131,7 @@ namespace FlashCard.Model
                     _categoryModel = value;
                     RaisePropertyChanged(() => CategoryModel);
                     ////this.OnModelChanged(CategoryModel.IsEdit);
+                    this.OnChanged();
                     this.OnCategoryModelChanged();
                 }
             }
