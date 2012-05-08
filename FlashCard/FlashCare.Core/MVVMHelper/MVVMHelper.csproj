@@ -108,6 +108,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -149,6 +150,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\Serializer.cs" />
+    <Compile Include="Common\WindowClosingBehavior.cs" />
     <Compile Include="Enums\EnumFunction.cs" />
     <Compile Include="Enums\EnumParameter.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
