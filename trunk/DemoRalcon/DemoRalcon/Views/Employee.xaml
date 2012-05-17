@@ -579,8 +579,7 @@
                     Grid.Column="2"
                     Height="25"
                     Orientation="Horizontal"
-                    Grid.ColumnSpan="2"
-                    Margin="0,2.5" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
             <Button x:Name="btnNew"
                     Content="Thêm"
                     Width="80"
