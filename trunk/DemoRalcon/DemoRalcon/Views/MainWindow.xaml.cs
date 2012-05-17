@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using System.Threading;
+using System.Windows.Interop;
 
 namespace DemoRalcon
 {
@@ -30,30 +33,26 @@ namespace DemoRalcon
             this.PreviewKeyDown += new KeyEventHandler(MainWindow_PreviewKeyDown);
         }
 
-        void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
-            {
-             //   AltDown = true;
-            }
-            else if (e.SystemKey == Key.F4)
-            {
-               ExitApplication(e);
-            }
-        }
 
-        
 
-       
 
-        
+
+
         #endregion
 
         #region Events
         private void bdHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ClickCount == 2)
+            {
+                if (this.WindowState.Equals(WindowState.Maximized))
+                    this.WindowState = WindowState.Normal;
+                else
+                    MaximinzedScreen();
+            }
             this.DragMove();
         }
+
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
@@ -69,9 +68,8 @@ namespace DemoRalcon
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
-            {
                 Application.Current.Shutdown();
-            } else{ e.Handled = true; }
+            else e.Handled = true;
         }
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
@@ -79,7 +77,34 @@ namespace DemoRalcon
             if (this.WindowState.Equals(WindowState.Maximized))
                 this.WindowState = WindowState.Normal;
             else
-                this.WindowState = WindowState.Maximized;
+                MaximinzedScreen();
+
+        }
+
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                //   AltDown = true;
+            }
+            else if (e.SystemKey == Key.LeftAlt && e.SystemKey == Key.F4)
+            {
+                ExitApplication(e);
+            }
+        }
+
+
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Set maximized for form with Current Screen
+        /// </summary>
+        private void MaximinzedScreen()
+        {
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+            WindowState = WindowState.Maximized;
         }
         #endregion
     }

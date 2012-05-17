@@ -17,7 +17,7 @@ namespace DemoRalcon.Views
     /// <summary>
     /// Interaction logic for DepartmentView.xaml
     /// </summary>
-    public partial class DepartmentView : UserControl
+    public partial class DepartmentView : Window
     {
         public DepartmentView()
         {
