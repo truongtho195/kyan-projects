@@ -21,6 +21,24 @@ namespace DemoRalcon.Views
         public Employee()
         {
             InitializeComponent();
+            for (int i = 0; i < 100; i++)
+            {
+                EmployeeModel em = new EmployeeModel();
+                em.FirstName = string.Format("FirstName {0}", i);
+                em.LastName = string.Format("LastName {0}", i);
+                em.MiddelName = string.Format("MiddelName {0}", i);
+                list.Add(em);
+            }
+            this.dgEmployee.ItemsSource = list;
         }
+        List<EmployeeModel> list = new List<EmployeeModel>();
+        
+    }
+
+    public class EmployeeModel
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddelName { get; set; }
     }
 }
