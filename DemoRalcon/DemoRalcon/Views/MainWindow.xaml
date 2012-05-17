@@ -89,11 +89,7 @@
                 </StackPanel>
             </Border>
             <Grid x:Name="grdContent"
-                  Grid.Row="1">
-                <Rectangle Fill="Red"
-                           Height="5"
-                           VerticalAlignment="Bottom" />
-            </Grid>
+                  Grid.Row="1"/>
             
         </Grid>
     </Border>
