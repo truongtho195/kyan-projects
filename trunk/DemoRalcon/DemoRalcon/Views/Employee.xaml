@@ -632,7 +632,7 @@
                     <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="128.216" />
+                    <ColumnDefinition Width="100.8" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label x:Name="lblFirstName"
@@ -645,57 +645,52 @@
                 <Label x:Name="lbMiddleName"
                        Content="Tên Đệm :"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Grid.Row="2"
+                       Grid.Row="1"
                        Foreground="{DynamicResource TextBrush2}"
-                       FontWeight="Bold" />
+                       FontWeight="Bold" Grid.Column="1" Margin="198,3.361,0,3.36" d:LayoutOverrides="Height" />
                 <Label x:Name="lblLastName"
                        Content="Tên :"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Grid.Row="3"
+                       Grid.Row="2"
                        FontWeight="Bold"
-                       Foreground="#FF565656" />
+                       Foreground="#FF565656" d:LayoutOverrides="Height" VerticalAlignment="Center" />
                 <Label x:Name="lblGender"
                        Content="Giới Tính :"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Grid.Row="4"
+                       Grid.Row="2"
                        FontWeight="Bold"
-                       Foreground="#FF565656" />
+                       Foreground="#FF565656" Grid.Column="1" Margin="207,3.723,0,3" d:LayoutOverrides="Height" />
                 <Label x:Name="lblBirthDate"
                        Content="Ngày Sinh : "
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Grid.Row="5"
+                       Grid.Row="3"
                        FontWeight="Bold"
-                       Foreground="#FF565656" />
+                       Foreground="#FF565656" d:LayoutOverrides="Height" VerticalAlignment="Center" />
                 <Label x:Name="lblPhone"
                        Content="Số điện thoại :"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Grid.Row="6"
+                       Grid.Row="4"
                        FontWeight="Bold"
-                       Foreground="#FF565656" />
+                       Foreground="#FF565656" d:LayoutOverrides="Height" VerticalAlignment="Center" />
                 <Label x:Name="lblEmail"
                        Content="Email :"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
-                       Grid.Row="7"
+                       Grid.Row="5"
                        FontWeight="Bold"
                        Foreground="#FF565656" />
                 <Label x:Name="lblAddress"
                        Content="Địa chỉ tạm trú :"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
-                       Grid.Row="8"
+                       Grid.Row="6"
                        FontWeight="Bold"
                        Foreground="#FF565656" />
                 <Label x:Name="lblHomeTown"
                        Content="Quê quán :"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
-                       Grid.Row="9"
+                       Grid.Row="7"
                        FontWeight="Bold"
                        Foreground="#FF565656" />
                 <Label x:Name="lblNote"
@@ -713,60 +708,54 @@
                          Grid.Row="1"
                          Grid.Column="1"
                          VerticalAlignment="Center"
-                         Width="200"
+                         Width="190"
                          Height="25"
                          Style="{DynamicResource TextBoxStyle}"
-                         BorderBrush="#FF90A1B1" />
+                         BorderBrush="#FF90A1B1" d:LayoutOverrides="HorizontalAlignment" />
                 <TextBox x:Name="txtMiddleName"
+                         HorizontalAlignment="Left"
+                         TextWrapping="Wrap"
+                         Text="TextBox"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         Width="98"
+                         BorderBrush="#FF90A1B1"
+                         Style="{DynamicResource TextBoxStyle}" VerticalAlignment="Center" Margin="268,0,0,0" />
+                <TextBox x:Name="txtLastName"
                          HorizontalAlignment="Left"
                          TextWrapping="Wrap"
                          Text="TextBox"
                          Grid.Row="2"
                          Grid.Column="1"
-                         VerticalAlignment="Center"
                          Width="200"
-                         Height="25"
                          BorderBrush="#FF90A1B1"
-                         Style="{DynamicResource TextBoxStyle}" />
-                <TextBox x:Name="txtLastName"
-                         HorizontalAlignment="Left"
-                         TextWrapping="Wrap"
-                         Text="TextBox"
-                         Grid.Row="3"
-                         Grid.Column="1"
-                         VerticalAlignment="Center"
-                         Width="200"
-                         Height="25"
-                         BorderBrush="#FF90A1B1"
-                         Style="{DynamicResource TextBoxStyle}" />
+                         Style="{DynamicResource TextBoxStyle}" VerticalAlignment="Center" Height="25" />
                 <ComboBox x:Name="cmbGender"
-                          Grid.Row="4"
+                          Grid.Row="2"
                           Grid.Column="1"
-                          Width="200"
+                          Width="91.283"
                           HorizontalAlignment="Left"
                           Height="25"
-                          Style="{DynamicResource MetroComboxStyle}" />
-                <DatePicker Grid.Row="5"
+                          Style="{DynamicResource MetroComboxStyle}" Margin="274,2,0,3" />
+                <DatePicker Grid.Row="3"
                             Grid.Column="1"
-                            Width="200"
+                            Width="161"
                             Height="25"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left" VerticalAlignment="Center" d:LayoutOverrides="HorizontalAlignment" />
                 <TextBox x:Name="txtPhone"
                          HorizontalAlignment="Left"
                          TextWrapping="Wrap"
                          Text="TextBox"
-                         Grid.Row="6"
+                         Grid.Row="4"
                          Grid.Column="1"
-                         VerticalAlignment="Center"
                          Width="200"
-                         Height="25"
                          BorderBrush="#FF90A1B1"
-                         Style="{DynamicResource TextBoxStyle}" />
+                         Style="{DynamicResource TextBoxStyle}" Margin="0,1.5,0,3.5" VerticalAlignment="Center" Height="25" />
                 <TextBox x:Name="txtEmail"
                          HorizontalAlignment="Left"
                          TextWrapping="Wrap"
                          Text="TextBox"
-                         Grid.Row="7"
+                         Grid.Row="5"
                          Grid.Column="1"
                          VerticalAlignment="Center"
                          Width="200"
@@ -777,15 +766,15 @@
                          HorizontalAlignment="Left"
                          TextWrapping="Wrap"
                          Text="TextBox"
-                         Grid.Row="8"
+                         Grid.Row="6"
                          Grid.Column="1"
                          VerticalAlignment="Center"
-                         Width="200"
+                         Width="369.283"
                          Height="25"
                          BorderBrush="#FF90A1B1"
                          Style="{DynamicResource TextBoxStyle}" />
                 <ComboBox x:Name="cmbHomeTown"
-                          Grid.Row="9"
+                          Grid.Row="7"
                           Grid.Column="1"
                           Width="200"
                           HorizontalAlignment="Left"
@@ -800,6 +789,21 @@
                          Margin="0,5,5,5"
                          Style="{DynamicResource TextBoxStyle}"
                          BorderBrush="#FF90A1B1" />
+                <Label x:Name="lblAddress_Copy"
+                	Content="Phòng ban :"
+                	HorizontalAlignment="Left"
+                	Grid.Row="8"
+                	FontWeight="Bold"
+                	Foreground="#FF565656" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                <TextBox x:Name="txtAddress_Copy"
+                	HorizontalAlignment="Left"
+                	TextWrapping="Wrap"
+                	Text="TextBox"
+                	Grid.Row="8"
+                	Grid.Column="1"
+                	Width="227.283"
+                	BorderBrush="#FF90A1B1"
+                	Style="{DynamicResource TextBoxStyle}" VerticalAlignment="Center" Height="25" />
             </Grid>
         </GroupBox>
         <Rectangle Grid.Column="1"
