@@ -570,7 +570,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Horizontal" Background="#FF9F9F9F">
+        <StackPanel Orientation="Horizontal" Background="#FFBABABA">
             <TextBlock Text="Fitler :"
                    VerticalAlignment="Center" Width="32" HorizontalAlignment="Left" />
             <TextBox x:Name="txtFitler" Style="{DynamicResource TextBoxStyle}" MinWidth="150" MinHeight="25" Height="25" Margin="0,2.5" HorizontalAlignment="Left" />
@@ -580,7 +580,7 @@
                     Height="25"
                     Orientation="Horizontal"
                     Grid.ColumnSpan="2"
-                    Margin="0,2.5">
+                    Margin="0,2.5" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button x:Name="btnNew"
                     Content="Thêm"
                     Width="80"
