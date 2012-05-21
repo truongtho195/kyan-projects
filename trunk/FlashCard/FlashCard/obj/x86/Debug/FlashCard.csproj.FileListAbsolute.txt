@@ -52,7 +52,6 @@ X:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Deb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon_2.g.cs
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
@@ -80,7 +79,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\S
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.Linq.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\vi\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\zh-CN\MVVMHelper.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon_2.baml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.baml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
@@ -125,8 +123,6 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.rea
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\U2UConsult.RichHtmlTextBlock.pdb
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
@@ -167,3 +163,5 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.rea
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb

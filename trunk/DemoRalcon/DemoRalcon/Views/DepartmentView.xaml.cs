@@ -11,17 +11,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DemoFalcon.ViewModels;
 
-namespace DemoRalcon.Views
+namespace DemoFalcon.Views
 {
     /// <summary>
     /// Interaction logic for DepartmentView.xaml
     /// </summary>
-    public partial class DepartmentView : Window
+    public partial class DepartmentView : UserControl
     {
         public DepartmentView()
         {
             InitializeComponent();
+            this.DataContext = new DepartmentViewModel();
         }
     }
 }

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\
-DemoRalcon
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\obj\x86\Debug\
+DemoFalcon
 none
 false
 DEBUG;TRACE
-E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\App.xaml
-4-888489253
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\App.xaml
+51891119960
 
-91596816069
-14-1141172624
-Views\DepartmentView.xaml;Views\Employee.xaml;Views\EmployeeView.xaml;Views\MainWindow.xaml;
+34-628075946
+201356351064
+Views\DepartmentView.xaml;Views\EmployeeList.xaml;Views\EmployeeView.xaml;Views\EmplyeeInfo.xaml;Views\MainWindow.xaml;
 
-False
+True
 

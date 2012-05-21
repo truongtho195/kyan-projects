@@ -85,3 +85,14 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ja\Syste
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ko\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\de\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\en\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\es\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\it\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll

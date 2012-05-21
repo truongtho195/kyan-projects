@@ -14,8 +14,9 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Interop;
+using DemoFalcon.ViewModels;
 
-namespace DemoRalcon
+namespace DemoFalcon
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -31,13 +32,25 @@ namespace DemoRalcon
             this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
             this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
             this.PreviewKeyDown += new KeyEventHandler(MainWindow_PreviewKeyDown);
+            MainViewModel main = new MainViewModel();
+            this.DataContext = main;
+            StaticMainView = this;
+
         }
+        
+        
 
 
 
 
+        #endregion
 
-
+        #region Properties
+        public static MainWindow StaticMainView
+        {
+            get;
+            set;
+        }
         #endregion
 
         #region Events

@@ -75,7 +75,6 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
     <Compile Include="Converters\HtmlFormatConverter.cs" />
-    <Compile Include="Converters\XamlHtmlFormaterConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">

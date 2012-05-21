@@ -3,21 +3,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        x:Class="DemoRalcon.MainWindow"
+        x:Name="wMainWindow"
+        x:Class="DemoFalcon.MainWindow"
         Title="MainWindow"
         MinWidth="1024"
         MinHeight="768"
         ResizeMode="NoResize"
         WindowStyle="None"
         Margin="-1"
-      
-        WindowStartupLocation="CenterScreen"
-        >
+        WindowStartupLocation="CenterScreen">
     <Border BorderBrush="#FF666666"
             BorderThickness="0.5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="31" />
+                <RowDefinition Height="45" />
+                <RowDefinition Height="5.954" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
@@ -25,72 +26,137 @@
                     BorderThickness="1"
                     Background="#FF34A7DE"
                     BorderBrush="#FF34A7DE">
-                <StackPanel x:Name="stSystemControl"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                    <Button x:Name="btnMinimize"
-                            Width="25"
-                            Height="25"
-                            Style="{DynamicResource EmptyButton}"
-                            BorderBrush="#FFEBD5D5"
-                            Background="{x:Null}"
-                            VerticalContentAlignment="Bottom"
-                            Padding="1,1,1,3"
-                            RenderTransformOrigin="0.5,0.5">
-                        <Button.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleY="0.9" />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Button.RenderTransform>
-                        <Rectangle Fill="#FFF4F4F5"
-                                   Height="4"
-                                   Width="15"
-                                   VerticalAlignment="Bottom"
-                                   Margin="0" />
-                    </Button>
-                    <Button x:Name="btnMaximize"
-                            Width="25"
-                            Height="25"
-                            Style="{DynamicResource EmptyButton}"
-                            Margin="3,0,0,0">
-                        <Path Data="M0,3.7964999 L19,3.7964999 19,22.796499 0,22.796499 z M3.9635001,0 L22.9635,0 22.9635,19 20.251,19 20.251,2.8375 3.9635001,2.8375 z"
-                              Fill="White"
-                              Stretch="Fill"
-                              Height="15"
-                              Width="15" />
-                    </Button>
-                    <Button x:Name="btnExit"
-                            Width="25"
-                            Height="25"
-                            Style="{DynamicResource EmptyButton}"
-                            Margin="3,0,0,0">
-                        <Path Data="M8.5,0 L12.5,0 12.5,8.5000001 21,8.5000001 21,12.5 12.5,12.5 12.5,21 8.5,21 8.5,12.5 0,12.5 0,8.5000001 8.5,8.5000001 z"
-                              Fill="White"
-                              Height="15"
-                              RenderTransformOrigin="0.5,0.5"
-                              Stretch="Fill"
-                              VerticalAlignment="Center"
-                              d:LayoutOverrides="GridBox"
-                              Width="15">
-                            <Path.RenderTransform>
+                <Grid Margin="0,2">
+                    <StackPanel x:Name="stSystemControl"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                d:LayoutOverrides="Width"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,5,0">
+                        <Button x:Name="btnMinimize"
+                                Width="25"
+                                Height="25"
+                                Style="{DynamicResource EmptyButton}"
+                                BorderBrush="#FFEBD5D5"
+                                Background="{x:Null}"
+                                VerticalContentAlignment="Bottom"
+                                Padding="1,1,1,3"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
                                 <TransformGroup>
-                                    <ScaleTransform />
+                                    <ScaleTransform ScaleY="0.9" />
                                     <SkewTransform />
-                                    <RotateTransform Angle="45" />
+                                    <RotateTransform />
                                     <TranslateTransform />
                                 </TransformGroup>
-                            </Path.RenderTransform>
-                        </Path>
-                    </Button>
-                </StackPanel>
+                            </Button.RenderTransform>
+                            <Rectangle Fill="#FFF4F4F5"
+                                       Height="4"
+                                       Width="15"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0" />
+                        </Button>
+                        <Button x:Name="btnMaximize"
+                                Width="25"
+                                Height="25"
+                                Style="{DynamicResource EmptyButton}"
+                                Margin="3,0,0,0">
+                            <Path Data="M0,3.7964999 L19,3.7964999 19,22.796499 0,22.796499 z M3.9635001,0 L22.9635,0 22.9635,19 20.251,19 20.251,2.8375 3.9635001,2.8375 z"
+                                  Fill="White"
+                                  Stretch="Fill"
+                                  Height="15"
+                                  Width="15" />
+                        </Button>
+                        <Button x:Name="btnExit"
+                                Width="25"
+                                Height="25"
+                                Style="{DynamicResource EmptyButton}"
+                                Margin="3,0,0,0">
+                            <Path Data="M8.5,0 L12.5,0 12.5,8.5000001 21,8.5000001 21,12.5 12.5,12.5 12.5,21 8.5,21 8.5,12.5 0,12.5 0,8.5000001 8.5,8.5000001 z"
+                                  Fill="White"
+                                  Height="15"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  VerticalAlignment="Center"
+                                  d:LayoutOverrides="GridBox"
+                                  Width="15">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="45" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Button>
+                    </StackPanel>
+                    <TextBlock x:Name="tbTitle"
+                               Text="{Binding Path=Titles}"
+                        TextWrapping="Wrap"
+                               d:LayoutOverrides="Width, Height"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                </Grid>
             </Border>
+            <StackPanel Orientation="Horizontal"
+                        d:LayoutOverrides="Height"
+                        Grid.Row="1">
+                <Button x:Name="btnEmployeeForm"
+                        Command="{Binding OpenFormCommand}"
+                        CommandParameter="Employee"
+                        Content="Nhân Viên"
+                        Style="{DynamicResource MetroButtonStyle}"
+                        Background="White"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        Height="44"
+                        Margin="1,1,0,1" />
+                <Button x:Name="btnEmployeeForm_Copy"
+                        Command="{Binding OpenFormCommand}"
+                        CommandParameter="Department"
+                        Content="Phòng Ban"
+                        Style="{DynamicResource MetroButtonStyle}"
+                        Background="White"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        Height="44"
+                        Margin="1,1,0,1" />
+                <Button x:Name="btnEmployeeForm_Copy1"
+                	Command="{Binding OpenFormCommand}"
+                	CommandParameter="EmployeeInfo"
+                	Content="Thông Tin"
+                	Style="{DynamicResource MetroButtonStyle}"
+                	Background="White"
+                	Width="150"
+                	HorizontalAlignment="Left"
+                	Height="44"
+                	Margin="1,1,0,0" />
+            </StackPanel>
             <Grid x:Name="grdContent"
-                  Grid.Row="1"/>
-            
+                  Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+            </Grid>
+            <Rectangle Grid.Row="2"
+                       Height="1"
+                       VerticalAlignment="Top"
+                       Margin="0,1,0,0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="1.112,1.996"
+                                         StartPoint="-0.052,0.568">
+                        <GradientStop Color="#4CFFFFFF"
+                                      Offset="1" />
+                        <GradientStop Color="#B70E0E0E"
+                                      Offset="0.332" />
+                        <GradientStop Color="#97E6E6E6"
+                                      Offset="0.003" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
         </Grid>
     </Border>
 </Window>

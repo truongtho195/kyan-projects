@@ -40,3 +40,5 @@ E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.r
 E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.read.0.tlog
 E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.write.0.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.exe
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.pdb
