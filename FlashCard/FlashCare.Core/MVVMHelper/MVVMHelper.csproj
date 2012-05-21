@@ -138,13 +138,6 @@
     <Compile Include="Common\Designer.cs" />
     <Compile Include="Common\ErrorLog.cs" />
     <Compile Include="Common\FlowDocumentConverter.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmlcssparser.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmlfromxamlconverter.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmllexicalanalyzer.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmlparser.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmlschema.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmltokentype.cs" />
-    <Compile Include="Common\HtmlXamlConversion\htmltoxamlconverter.cs" />
     <Compile Include="Common\Misc.cs" />
     <Compile Include="Common\NotifyPropertyChangedBase.cs">
       <SubType>Code</SubType>
