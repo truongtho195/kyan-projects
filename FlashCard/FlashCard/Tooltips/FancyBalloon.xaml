@@ -197,7 +197,7 @@
                     HorizontalAlignment="Stretch"
                     BorderThickness="1,1,1,1"
                     BorderBrush="Gray"
-                    Opacity="0.75"
+                    Opacity="0.7"
                     Grid.RowSpan="3">
                 <Border.Effect>
                     <DropShadowEffect Color="#FF747474" />
