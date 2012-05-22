@@ -301,7 +301,9 @@ namespace FlashCard.ViewModels
         {
             IsLessonManagerExecute = true;
             LessonManageView lessonManager = new LessonManageView(true);
-            _waitForClose.Dispose();
+            if (_waitForClose!=null)
+                _waitForClose.Dispose();
+
             ViewCore.MyNotifyIcon.CloseBalloon();
             ViewCore.MyNotifyIcon.Dispose();
             this._timer.Stop();
