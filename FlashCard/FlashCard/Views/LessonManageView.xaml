@@ -178,23 +178,23 @@
             <Border Background="#FF95BDF3">
         		<StackPanel x:Name="stkControl"
         			Orientation="Horizontal"
-                        Height="21.277" Width="280" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Height="21.277" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0">
         			<Button x:Name="btnNew"
         				Command="{Binding NewCommand}"
         				Content="New"
-        				Width="70" />
+        				Width="70" Background="White" BorderBrush="{x:Null}" Margin="0,0,10,0" />
         			<Button x:Name="btnSave"
         				Command="{Binding SaveCommand}"
         				Content="Save"
-        				Width="70" />
+        				Width="70" BorderBrush="{x:Null}" Background="White" Margin="0,0,10,0" />
         			<Button x:Name="btnEdit"
         				Command="{Binding EditCommand}"
         				Content="Edit"
-        				Width="70" />
+        				Width="70" BorderBrush="{x:Null}" Background="White" Margin="0,0,10,0" />
         			<Button x:Name="btnDelete"
         				Command="{Binding DeleteCommand}"
         				Content="Delete"
-        				Width="70" />
+        				Width="70" BorderBrush="{x:Null}" Background="White" />
         		</StackPanel>
         	</Border>
             <Grid Grid.Row="1"
@@ -262,7 +262,7 @@
                               SelectedValuePath="TypeID"
                               DisplayMemberPath="Name"
                               d:LayoutOverrides="Height"
-                              Width="120" />
+                              Width="120" Template="{DynamicResource ComboBoxEditableTemplate}" Style="{DynamicResource MetroComboxStyle}" />
                 </Grid>
                 <Grid x:Name="grdCategory"
                       Grid.Column="1"
@@ -322,7 +322,7 @@
                 </Grid>
 
                 <TextBox x:Name="txtLessonContent"
-                         Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                          Grid.Column="1"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
                          Margin="10,6,8,6"
@@ -374,7 +374,7 @@
                         Height="25"
                         IsDefault="True"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Top" />
+                        VerticalAlignment="Top" Background="White" BorderBrush="{x:Null}" Margin="0,0,8,0" />
                 <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
                                                        Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        IsReadOnly="False"
@@ -400,7 +400,7 @@
         	<Button x:Name="btnClose"
         		Command="{Binding CloseCommand}"
         		Content="Close"
-                Height="21.277" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,17,0" Width="75" />
+                Height="21.277" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Width="75" Background="White" BorderBrush="{x:Null}" />
         </Border>
     </Grid>
 </Window>
