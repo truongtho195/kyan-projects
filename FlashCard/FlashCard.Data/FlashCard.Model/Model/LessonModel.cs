@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace FlashCard.Model
 {
-    public class LessonModel : LessonModelBase
+    public class LessonModel : LessonModelBase, IDataErrorInfo
     {
         #region Constructors
         public LessonModel()
@@ -43,12 +44,14 @@ namespace FlashCard.Model
         private string _sideName;
         public string SideName
         {
-            get {
+            get
+            {
                 if (!IsBackSide)
                     _sideName = "Front Side";
                 else
                     _sideName = "Back Side";
-                return _sideName; }
+                return _sideName;
+            }
             set
             {
                 if (_sideName != value)
@@ -131,13 +134,58 @@ namespace FlashCard.Model
         }
         #endregion
 
-        
+
 
         #endregion
 
 
         #region Overide Changed
-       
+
+        #endregion
+
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    OnChanged();
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
+                    case "LessonName":
+                        if (string.IsNullOrWhiteSpace(LessonName))
+                            message = "Lesson Name is required!";
+                        break;
+
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
         #endregion
 
     }
