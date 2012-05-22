@@ -35,7 +35,7 @@ namespace FlashCard.UserControls
         #endregion
 
         #region DependencyProperties
-        public new FlowDocument Content
+        public FlowDocument Content
         {
             get { return (FlowDocument)GetValue(ContentProperty); }
             set { SetValue(ContentProperty, value); }
