@@ -3,6 +3,93 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+    	<Style x:Key="ButtonFocusVisual">
+    		<Setter Property="Control.Template">
+    			<Setter.Value>
+    				<ControlTemplate>
+    					<Rectangle Margin="3"
+    						SnapsToDevicePixels="true"
+    						Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+    						StrokeThickness="1"
+    						StrokeDashArray="1 2" />
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    	<LinearGradientBrush x:Key="ButtonNormalBackgroundFill"
+    		EndPoint="0.5,1"
+    		StartPoint="0.5,0">
+    		<GradientStop Color="#FFFFFFFF"
+    			Offset="0" />
+    		<GradientStop Color="#FFF0F0EA"
+    			Offset="0.9" />
+    	</LinearGradientBrush>
+    	<SolidColorBrush x:Key="ButtonBorder"
+    		Color="#FF003C74" />
+    	<Style x:Key="MetroButtonStyle"
+    		TargetType="{x:Type Button}">
+    		<Setter Property="FocusVisualStyle"
+    			Value="{StaticResource ButtonFocusVisual}" />
+    		<Setter Property="Background"
+    			Value="{StaticResource ButtonNormalBackgroundFill}" />
+    		<Setter Property="BorderBrush"
+    			Value="{StaticResource ButtonBorder}" />
+    		<Setter Property="Foreground"
+    			Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+    		<Setter Property="HorizontalContentAlignment"
+    			Value="Center" />
+    		<Setter Property="VerticalContentAlignment"
+    			Value="Center" />
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="{x:Type Button}">
+    					<Border x:Name="border"
+    						HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+    						Margin="{TemplateBinding Padding}"
+    						VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+    						Width="{TemplateBinding Width}"
+    						Height="{TemplateBinding Height}"
+    						BorderThickness="1.5"
+    						Cursor="Hand"
+    						Background="White" BorderBrush="#FF4D4D4D" Padding="1">
+    						<ContentPresenter x:Name="contentPresenter"
+    							RecognizesAccessKey="True"
+    							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+    							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+    							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+    							Margin="0" />
+    					</Border>
+    					<ControlTemplate.Triggers>
+    						<Trigger Property="IsMouseOver"
+    							Value="True">
+    							<Setter Property="Background"
+    								TargetName="border"
+    								Value="#FFDEDEDE" />
+    						</Trigger>
+    						<Trigger Property="IsKeyboardFocused"
+    							Value="true" />
+    						<Trigger Property="ToggleButton.IsChecked"
+    							Value="true" />
+    						<Trigger Property="IsEnabled"
+    							Value="false">
+    							<Setter Property="Foreground"
+    								Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+    						</Trigger>
+    						<Trigger Property="IsPressed"
+    							Value="True">
+    							<Setter Property="Background"
+    								TargetName="border"
+    								Value="#FF72B1EB" />
+    							<Setter Property="Foreground"
+    								Value="White" />
+
+    						</Trigger>
+    					</ControlTemplate.Triggers>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
          
     </Application.Resources>
 </Application>
