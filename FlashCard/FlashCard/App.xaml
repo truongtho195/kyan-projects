@@ -53,7 +53,7 @@
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
-                                BorderThickness="1.5"
+                                BorderThickness="1"
                                 Cursor="Hand"
                                 Background="White"
                                 BorderBrush="#FF4D4D4D"
@@ -615,6 +615,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <SolidColorBrush x:Key="brBackgroundColor" Color="#FFCDE8FD"/>
         <!--#Endrgion "ComboboxMetro Style"-->
     </Application.Resources>
 </Application>
