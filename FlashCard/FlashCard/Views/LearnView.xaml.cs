@@ -29,13 +29,6 @@ namespace FlashCard.Views
         #region Events
         private void bdHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //if (e.ClickCount == 2)
-            //{
-            //    if (this.WindowState.Equals(WindowState.Maximized))
-            //        this.WindowState = WindowState.Normal;
-            //    //else
-            //        //MaximinzedScreen();
-            //}
             this.DragMove();
         }
 
