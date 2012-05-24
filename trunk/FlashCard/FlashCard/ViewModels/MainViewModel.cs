@@ -16,6 +16,7 @@ using System.Diagnostics;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Media.Animation;
 using System.Windows;
+using FlashCard.Views;
 
 
 namespace FlashCard.ViewModels
@@ -23,52 +24,19 @@ namespace FlashCard.ViewModels
     public partial class MainViewModel : ViewModel<MainWindow>
     {
         #region Constructors
-
         public MainViewModel(MainWindow view)
             : base(view)
         {
             Initialize();
-            _timer = new DispatcherTimer();
-
-            if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
-            {
-                ViewCore.MyNotifyIcon = new TaskbarIcon();
-            }
-            _timer.Interval = SetupModel.TimeOut;
-            _timer.Tick += new EventHandler(_timer_Tick);
-            _stopWatch.Start();
-            _timer.Start();
+            InitialTimer();
             ViewCore.Hide();
         }
-
-        Stopwatch _stopWatch = new Stopwatch();
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            if (!ViewCore.MyNotifyIcon.IsPopupOpen)
-            {
-                if (_count < LessonCollection.Count - 1)
-                    _count++;
-                else
-                    _count = 0;
-
-                SelectedLesson = LessonCollection[_count];
-                SelectedLesson.IsBackSide = false;
-
-                _balloon = new FancyBalloon();
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
-                this.IsStarted = true;
-                RaisePropertyChanged(() => SelectedLesson);
-                _waitForClose = new Timer(WaitBalloon);
-                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds, Timeout.Infinite);
-                Console.WriteLine(".....Showing .....");
-            }
-        }
-
         #endregion
 
         #region Variables
         DispatcherTimer _timer;
-        Timer _waitForClose;
+        DispatcherTimer _timerViewFullScreen;
+        DispatcherTimer _waitForClose;
         FancyBalloon _balloon;
         int _count = 0;
         public int TimerCount { get; set; }
@@ -135,6 +103,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
+        #region "Change Side Command"
         /// <summary>
         /// SaveCommand
         /// <summary>
@@ -167,7 +136,9 @@ namespace FlashCard.ViewModels
 
             _balloon.BeginStoryboard(sb);
         }
+        #endregion
 
+        #region "Fancy Ballon Mouse Leave Command"
         /// <summary>
         /// SaveCommand
         /// <summary>
@@ -193,24 +164,32 @@ namespace FlashCard.ViewModels
         {
             if (!IsLessonManagerExecute && this.IsStarted)
             {
-                _waitForClose = new Timer(WaitBalloon);
-                _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds / 2, Timeout.Infinite);
+                var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds / 2));
+                InitialWaitForClose(timerSpan);
             }
         }
 
-        private void WaitBalloon(object state)
+
+        private void _waitForClose_Tick(object sender, EventArgs e)
+        {
+            WaitBalloon();
+        }
+
+        private void WaitBalloon()
         {
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 Console.WriteLine("Closed.......");
                 _timer.Start();
+                _waitForClose.Stop();
+
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
-
         }
+        #endregion
 
-
+        #region "Fancy Ballon Mouse Enter Command"
         private ICommand _fancyBallonMouseEnterCommand;
         public ICommand FancyBallonMouseEnterCommand
         {
@@ -233,12 +212,14 @@ namespace FlashCard.ViewModels
         {
             var action = new Action(() =>
             {
-                _waitForClose.Dispose();
+                _waitForClose.Stop();
                 _timer.Stop();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
+        #endregion
 
+        #region "Exit Command"
         /// <summary>
         /// Gets the Exit Command.
         /// <summary>
@@ -269,8 +250,9 @@ namespace FlashCard.ViewModels
         {
             Application.Current.Shutdown();
         }
+        #endregion
 
-
+        #region "Lesson Manager Command"
         /// <summary>
         /// Gets the LessonManager Command.
         /// <summary>
@@ -301,18 +283,13 @@ namespace FlashCard.ViewModels
         {
             IsLessonManagerExecute = true;
             LessonManageView lessonManager = new LessonManageView(true);
-            if (_waitForClose!=null)
-                _waitForClose.Dispose();
-
-            ViewCore.MyNotifyIcon.CloseBalloon();
-            ViewCore.MyNotifyIcon.Dispose();
-            this._timer.Stop();
-            ViewCore.Hide();
+            StopPopupNotify();
             lessonManager.Show();
         }
 
+        #endregion
 
-
+        #region "Play Pause Command"
         /// <summary>
         /// Gets the PlayPause Command.
         /// <summary>
@@ -346,7 +323,7 @@ namespace FlashCard.ViewModels
                 var action = new Action(() =>
                 {
                     ViewCore.MyNotifyIcon.CloseBalloon();
-                    _waitForClose.Dispose();
+                    _waitForClose.Stop();
                     _timer.Stop();
                 });
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
@@ -356,34 +333,158 @@ namespace FlashCard.ViewModels
             {
                 if (!IsLessonManagerExecute)
                 {
-                    _waitForClose = new Timer(WaitBalloon);
-                    _waitForClose.Change((int)SetupModel.ViewTime.TotalMilliseconds / 2, Timeout.Infinite);
+                    var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds / 2));
+                    InitialWaitForClose(timerSpan);
                 }
             }
+        }
+        #endregion
 
+        #region "Full Screen Command"
 
+        /// <summary>
+        /// Gets the FullScreen Command.
+        /// <summary>
+        private ICommand _fullScreenCommand;
+        public ICommand FullScreenCommand
+        {
+            get
+            {
+                if (_fullScreenCommand == null)
+                    _fullScreenCommand = new RelayCommand(this.OnFullScreenExecute, this.OnFullScreenCanExecute);
+                return _fullScreenCommand;
+            }
         }
 
+        /// <summary>
+        /// Method to check whether the FullScreen command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnFullScreenCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the FullScreen command is executed.
+        /// </summary>
+        private void OnFullScreenExecute(object param)
+        {
+
+
+            LearnView learnView = new LearnView();
+            //learnView.DataContext = this;
+            StopPopupNotify();
+            _timerViewFullScreen = new DispatcherTimer();
+            _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
+            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
+            _timerViewFullScreen.Start();
+            learnView.Show();
+        }
+
+        private void _timerViewFullScreen_Tick(object sender, EventArgs e)
+        {
+            SetLesson();
+        }
+        #endregion
 
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Initial data
+        /// </summary>
         private void Initialize()
         {
-
             List<UserModel> UserLessonCollection = new List<UserModel>();
-
             LessonDataAccess lessonDA = new LessonDataAccess();
             LessonCollection = new List<LessonModel>(lessonDA.GetAllWithRelation());
             SetupModel = new SetupModel();
             SetupModel.DistanceTime = new TimeSpan(0, 0, 3);
             SetupModel.ViewTime = new TimeSpan(0, 0, 7);
+        }
 
+        /// <summary>
+        /// Start Timer & notify popup
+        /// </summary>
+        private void InitialTimer()
+        {
+            _timer = new DispatcherTimer();
+            if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
+                ViewCore.MyNotifyIcon = new TaskbarIcon();
+
+            _timer.Interval = SetupModel.TimeOut;
+            _timer.Tick += new EventHandler(_timer_Tick);
+            _timer.Start();
+        }
+
+        /// <summary>
+        /// Startup timer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            if (!ViewCore.MyNotifyIcon.IsPopupOpen)
+            {
+                SetLesson();
+
+                _balloon = new FancyBalloon();
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                this.IsStarted = true;
+                RaisePropertyChanged(() => SelectedLesson);
+
+                var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds));
+                InitialWaitForClose(timerSpan);
+                Console.WriteLine(".....Showing .....");
+            }
+        }
+
+        /// <summary>
+        /// Method to set lesson to show in popup or fullscreen
+        /// </summary>
+        private void SetLesson()
+        {
+            if (_count < LessonCollection.Count - 1)
+                _count++;
+            else
+                _count = 0;
+
+            SelectedLesson = LessonCollection[_count];
+            SelectedLesson.IsBackSide = false;
         }
 
         public void Close()
         {
             this.ViewCore.Close();
+        }
+
+        /// <summary>
+        /// Initial For Wait to close
+        /// </summary>
+        /// <param name="timeSpan"></param>
+        private void InitialWaitForClose(TimeSpan timeSpan)
+        {
+            _waitForClose = new DispatcherTimer();
+            _waitForClose.Interval = timeSpan;
+            _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
+            _waitForClose.Start();
+        }
+
+        /// <summary>
+        /// Method For Stop Popup Notify for another to show
+        /// </summary>
+        private void StopPopupNotify()
+        {
+
+            if (_waitForClose != null)
+                _waitForClose.Stop();
+
+            ViewCore.MyNotifyIcon.CloseBalloon();
+            ViewCore.MyNotifyIcon.Dispose();
+            _timer.Stop();
+            
+            //ViewCore.Hide();
         }
         #endregion
 
