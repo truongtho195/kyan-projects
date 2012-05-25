@@ -40,7 +40,7 @@ namespace FlashCard.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            ExitApplication(e);
+           // ExitApplication(e);
         }
 
         private static void ExitApplication(RoutedEventArgs e)
@@ -82,7 +82,7 @@ namespace FlashCard.Views
             this.bdHeader.MouseLeftButtonDown += new MouseButtonEventHandler(bdHeader_MouseLeftButtonDown);
             this.btnMinimize.Click += new RoutedEventHandler(btnMinimize_Click);
             this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
-            this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
+           // this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
             this.PreviewKeyDown += new KeyEventHandler(MainWindow_PreviewKeyDown);
         }
         #endregion

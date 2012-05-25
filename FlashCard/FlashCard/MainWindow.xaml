@@ -12,6 +12,8 @@
                                 ToolTipText="Balloon Sample Icon">
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Full Learning"
+                              Command="{Binding FullScreenCommand}" />
                     <MenuItem Header="Lesson Management"
                               Command="{Binding LessonManagerCommand}" />
                     <MenuItem Header="Play/Pause"
