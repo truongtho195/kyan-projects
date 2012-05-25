@@ -6,7 +6,7 @@ using System.Windows.Interactivity;
 using System.Windows.Input;
 using System.Windows;
 
-namespace Tims.Toolkit
+namespace MVVMHelper.Commands
 {
     /// <summary>
     /// This <see cref="System.Windows.Interactivity.TriggerAction" /> can be
