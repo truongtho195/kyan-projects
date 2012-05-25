@@ -64,7 +64,6 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\FlashCare.Core\MVVMHelper\MVVMHelper.csproj">
       <Project>{92A71D19-F6AE-47CC-9E23-D65BCBB03F8A}</Project>
