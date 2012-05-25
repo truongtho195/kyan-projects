@@ -5,7 +5,7 @@ using System.Windows.Interactivity;
 using System;
 using System.ComponentModel;
 
-namespace POS.Libraries
+namespace MVVMHelper.Common
 {
     public class WindowClosingBehavior
     {
