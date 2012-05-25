@@ -96,9 +96,9 @@ namespace FlashCard.ViewModels
         }
 
 
-        public bool IsLessonManagerExecute { get; set; }
+        public bool IsLOtherFormShow { get; set; }
 
-        public bool IsStarted { get; set; }
+        public bool? IsStarted { get; set; }
 
         #endregion
 
@@ -162,31 +162,13 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            if (!IsLessonManagerExecute && this.IsStarted)
+            if (!IsLOtherFormShow && this.IsStarted == true)
             {
                 var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds / 2));
                 InitialWaitForClose(timerSpan);
             }
         }
 
-
-        private void _waitForClose_Tick(object sender, EventArgs e)
-        {
-            WaitBalloon();
-        }
-
-        private void WaitBalloon()
-        {
-            var action = new Action(() =>
-            {
-                ViewCore.MyNotifyIcon.CloseBalloon();
-                Console.WriteLine("Closed.......");
-                _timer.Start();
-                _waitForClose.Stop();
-
-            });
-            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
-        }
         #endregion
 
         #region "Fancy Ballon Mouse Enter Command"
@@ -281,7 +263,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnLessonManagerExecute(object param)
         {
-            IsLessonManagerExecute = true;
+            IsLOtherFormShow = true;
             LessonManageView lessonManager = new LessonManageView(true);
             StopPopupNotify();
             lessonManager.Show();
@@ -318,12 +300,15 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-            if (this.IsStarted)
+
+
+            if (this.IsStarted == null || this.IsStarted == true)
             {
                 var action = new Action(() =>
                 {
                     ViewCore.MyNotifyIcon.CloseBalloon();
-                    _waitForClose.Stop();
+                    if (_waitForClose!=null)
+                        _waitForClose.Stop();
                     _timer.Stop();
                 });
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
@@ -331,9 +316,9 @@ namespace FlashCard.ViewModels
             }
             else
             {
-                if (!IsLessonManagerExecute)
+                if (!IsLOtherFormShow)
                 {
-                    var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds / 2));
+                    var timerSpan = new TimeSpan(0, 0, 0, 0, ((int)SetupModel.ViewTime.TotalMilliseconds));
                     InitialWaitForClose(timerSpan);
                 }
             }
@@ -341,7 +326,6 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region "Full Screen Command"
-
         /// <summary>
         /// Gets the FullScreen Command.
         /// <summary>
@@ -365,27 +349,75 @@ namespace FlashCard.ViewModels
             return true;
         }
 
+        LearnView _learnView = new LearnView();
         /// <summary>
         /// Method to invoke when the FullScreen command is executed.
         /// </summary>
         private void OnFullScreenExecute(object param)
         {
-
-
-            LearnView learnView = new LearnView();
-            //learnView.DataContext = this;
-            StopPopupNotify();
+            IsLOtherFormShow = true;
+            _learnView = new LearnView();
+            _learnView.DataContext = this;
             _timerViewFullScreen = new DispatcherTimer();
             _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
             _timerViewFullScreen.Start();
-            learnView.Show();
+            Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
+            _learnView.BeginStoryboard(sb);
+            _learnView.Show();
+            OnPlayPauseExecute(null);
+
+        }
+        #endregion
+
+        #region "ClosingFormCommand"
+
+        /// <summary>
+        /// Gets the ClosingForm Command.
+        /// <summary>
+        private ICommand _closeCommand;
+        public ICommand CloseCommand
+        {
+            get
+            {
+                if (_closeCommand == null)
+                    _closeCommand = new DelegateCommand(this.OnCloseExecute, this.OnCloseCanExecute);
+                return _closeCommand;
+            }
+        }
+        /// <summary>
+        /// Method to check whether the ClosingForm command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCloseCanExecute()
+        {
+            return true;
         }
 
-        private void _timerViewFullScreen_Tick(object sender, EventArgs e)
+
+        /// <summary>
+        /// Method to invoke when the ClosingForm command is executed.
+        /// </summary>
+        private void OnCloseExecute()
         {
-            SetLesson();
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
+                sb.Completed += new EventHandler(sb_Completed);
+                _learnView.BeginStoryboard(sb);
+                IsLOtherFormShow = false;
+                _timerViewFullScreen.Stop();
+                OnPlayPauseExecute(null);
+            }
         }
+
+        void sb_Completed(object sender, EventArgs e)
+        {
+            _learnView.Close();
+        }
+
+
         #endregion
 
         #endregion
@@ -412,7 +444,6 @@ namespace FlashCard.ViewModels
             _timer = new DispatcherTimer();
             if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
                 ViewCore.MyNotifyIcon = new TaskbarIcon();
-
             _timer.Interval = SetupModel.TimeOut;
             _timer.Tick += new EventHandler(_timer_Tick);
             _timer.Start();
@@ -441,6 +472,42 @@ namespace FlashCard.ViewModels
         }
 
         /// <summary>
+        /// wait time for close popup
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _waitForClose_Tick(object sender, EventArgs e)
+        {
+            WaitBalloon();
+        }
+
+        /// <summary>
+        /// Timer for show lesson of FullScreen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _timerViewFullScreen_Tick(object sender, EventArgs e)
+        {
+            SetLesson();
+        }
+
+        /// <summary>
+        /// Method for close ballon
+        /// </summary>
+        private void WaitBalloon()
+        {
+            var action = new Action(() =>
+            {
+                ViewCore.MyNotifyIcon.CloseBalloon();
+                Console.WriteLine("Closed.......");
+                _timer.Start();
+                _waitForClose.Stop();
+
+            });
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+        }
+
+        /// <summary>
         /// Method to set lesson to show in popup or fullscreen
         /// </summary>
         private void SetLesson()
@@ -454,10 +521,6 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = false;
         }
 
-        public void Close()
-        {
-            this.ViewCore.Close();
-        }
 
         /// <summary>
         /// Initial For Wait to close
@@ -479,14 +542,13 @@ namespace FlashCard.ViewModels
 
             if (_waitForClose != null)
                 _waitForClose.Stop();
-
             ViewCore.MyNotifyIcon.CloseBalloon();
             ViewCore.MyNotifyIcon.Dispose();
             _timer.Stop();
-            
-            //ViewCore.Hide();
         }
         #endregion
+
+
 
 
 

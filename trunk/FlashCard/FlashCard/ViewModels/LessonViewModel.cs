@@ -55,7 +55,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-
         private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -127,11 +126,7 @@ namespace FlashCard.ViewModels
             }
         }
 
-
         public bool IsFromPopup { get; set; }
-
-
-
         #endregion
 
         #region Commands
@@ -298,7 +293,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region DeletedCommand
+     
 
         #region DeleteCommand
         private ICommand _deleteCommand;
@@ -330,7 +325,7 @@ namespace FlashCard.ViewModels
         #endregion
 
 
-        #endregion
+       
 
 
 
