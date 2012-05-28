@@ -41,6 +41,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -108,7 +109,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -128,6 +129,7 @@
     <Compile Include="Commands\DelegateCommand.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\EventToCommand.cs" />
     <Compile Include="Commands\NonRoutedRibbonCommand.cs" />
     <Compile Include="Common\AutoGeneration.cs" />
     <Compile Include="Common\CacheObject.cs" />
