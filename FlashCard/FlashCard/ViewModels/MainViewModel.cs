@@ -98,7 +98,7 @@ namespace FlashCard.ViewModels
 
         public bool IsLOtherFormShow { get; set; }
 
-        public bool? IsStarted { get; set; }
+        public bool IsStarted { get; set; }
 
         #endregion
 
@@ -307,7 +307,7 @@ namespace FlashCard.ViewModels
                 var action = new Action(() =>
                 {
                     ViewCore.MyNotifyIcon.CloseBalloon();
-                    if (_waitForClose!=null)
+                    if (_waitForClose != null)
                         _waitForClose.Stop();
                     _timer.Stop();
                 });
