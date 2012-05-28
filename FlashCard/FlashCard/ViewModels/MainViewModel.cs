@@ -17,6 +17,7 @@ using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Media.Animation;
 using System.Windows;
 using FlashCard.Views;
+using System.Collections.ObjectModel;
 
 
 namespace FlashCard.ViewModels
@@ -81,8 +82,8 @@ namespace FlashCard.ViewModels
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private List<LessonModel> _lessonCollection;
-        public List<LessonModel> LessonCollection
+        private ObservableCollection<LessonModel> _lessonCollection;
+        public ObservableCollection<LessonModel> LessonCollection
         {
             get { return _lessonCollection; }
             set
@@ -420,6 +421,45 @@ namespace FlashCard.ViewModels
 
         #endregion
 
+        #region "ChooseLessonCommand"
+        /// <summary>
+        /// Gets the ChooseLesson Command.
+        /// <summary>
+        private ICommand _ChooseLessonCommand;
+        public ICommand ChooseLessonCommand
+        {
+            get
+            {
+                if (_ChooseLessonCommand == null)
+                    _ChooseLessonCommand = new RelayCommand(this.OnChooseLessonExecute, this.OnChooseLessonCanExecute);
+                return _ChooseLessonCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the ChooseLesson command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnChooseLessonCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the ChooseLesson command is executed.
+        /// </summary>
+        private void OnChooseLessonExecute(object param)
+        {
+            ChooseLessonView lessionView = new ChooseLessonView();
+            if (lessionView.ShowDialog()==true)
+            {
+                var viewModel = lessionView.GetViewModel<ChooseLessonViewModel>();
+                LessonCollection = viewModel.LessonCollection;
+            }
+            
+        }
+        #endregion
+
         #endregion
 
         #region Methods
@@ -430,7 +470,7 @@ namespace FlashCard.ViewModels
         {
             List<UserModel> UserLessonCollection = new List<UserModel>();
             LessonDataAccess lessonDA = new LessonDataAccess();
-            LessonCollection = new List<LessonModel>(lessonDA.GetAllWithRelation());
+            LessonCollection = new ObservableCollection<LessonModel>(lessonDA.GetAllWithRelation());
             SetupModel = new SetupModel();
             SetupModel.DistanceTime = new TimeSpan(0, 0, 3);
             SetupModel.ViewTime = new TimeSpan(0, 0, 7);
