@@ -95,8 +95,12 @@
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\RichTextBoxControl.cs" />
+    <Compile Include="ViewModels\ChooseLessonViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\ChooseLessonView.xaml.cs">
+      <DependentUpon>ChooseLessonView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LearnView.xaml.cs">
       <DependentUpon>LearnView.xaml</DependentUpon>
     </Compile>
@@ -118,6 +122,10 @@
     <Page Include="Tooltips\FancyBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ChooseLessonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LearnView.xaml">
       <SubType>Designer</SubType>

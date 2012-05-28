@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:FlashCard_Converters="clr-namespace:FlashCard.Converters" xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
         mc:Ignorable="d"
         x:Class="FlashCard.Views.LearnView"
         Title="LearnView"
@@ -12,124 +13,6 @@
         WindowState="Maximized"
         Topmost="True">
     <Window.Resources>
-        <LinearGradientBrush x:Key="ButtonNormalBackground"
-                             EndPoint="0,1"
-                             StartPoint="0,0">
-            <GradientStop Color="#F3F3F3"
-                          Offset="0" />
-            <GradientStop Color="#EBEBEB"
-                          Offset="0.5" />
-            <GradientStop Color="#DDDDDD"
-                          Offset="0.5" />
-            <GradientStop Color="#CDCDCD"
-                          Offset="1" />
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="ButtonNormalBorder"
-                         Color="#FF707070" />
-        <Style x:Key="EmptyButton"
-               TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle"
-                    Value="{StaticResource ButtonFocusVisual}" />
-            <Setter Property="Background"
-                    Value="{StaticResource ButtonNormalBackground}" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource ButtonNormalBorder}" />
-            <Setter Property="BorderThickness"
-                    Value="1" />
-            <Setter Property="Foreground"
-                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="Center" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="Center" />
-            <Setter Property="Padding"
-                    Value="1" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                RenderTransformOrigin="0.5,0.5"
-                                Cursor="Hand">
-                            <Border.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </Border.RenderTransform>
-                            <ContentPresenter x:Name="contentPresenter"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              Height="Auto"
-                                              Width="Auto"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}"
-                                              RenderTransformOrigin="0.5,0.5">
-                                <ContentPresenter.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform ScaleX="1" />
-                                        <SkewTransform />
-                                        <RotateTransform />
-                                        <TranslateTransform />
-                                    </TransformGroup>
-                                </ContentPresenter.RenderTransform>
-                            </ContentPresenter>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                     Value="True">
-                                <Setter Property="Background"
-                                        TargetName="border"
-                                        Value="#B2939393" />
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused"
-                                     Value="true" />
-                            <Trigger Property="ToggleButton.IsChecked"
-                                     Value="true">
-                                <Setter Property="RenderTransform"
-                                        TargetName="contentPresenter">
-                                    <Setter.Value>
-                                        <TransformGroup>
-                                            <ScaleTransform ScaleX="1"
-                                                            ScaleY="1" />
-                                            <SkewTransform />
-                                            <RotateTransform />
-                                            <TranslateTransform />
-                                        </TransformGroup>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="RenderTransform"
-                                        TargetName="border">
-                                    <Setter.Value>
-                                        <TransformGroup>
-                                            <ScaleTransform ScaleX="0.9"
-                                                            ScaleY="0.9" />
-                                            <SkewTransform />
-                                            <RotateTransform />
-                                            <TranslateTransform />
-                                        </TransformGroup>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsPressed"
-                                     Value="True" />
-                            <Trigger Property="IsEnabled"
-                                     Value="false">
-                                <Setter Property="Foreground"
-                                        Value="#ADADAD" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Storyboard x:Key="sbLoadForm">
         	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Layout">
         		<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
@@ -158,13 +41,19 @@
                                       Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+    	<FlashCard_Converters:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
+
+    	<DataTemplate x:Key="DataTemplate1">
+    		<Grid>
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition />
+    			</Grid.ColumnDefinitions>
+    			<CheckBox Grid.Column="0"
+    				Content="{Binding Content}" />
+    		</Grid>
+    	</DataTemplate>
     </Window.Resources>
-    <!--<Window.Triggers>
-		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-			<BeginStoryboard Storyboard="{StaticResource LoadForm}"/>
-			<BeginStoryboard Storyboard="{StaticResource UnLoadForm}"/>
-		</EventTrigger>
-	</Window.Triggers>-->
+   
     <Grid x:Name="Layout"
           RenderTransformOrigin="1,1" Opacity="0">
         <Grid.RenderTransform>
@@ -207,7 +96,7 @@
                 <Button x:Name="btnMinimize"
                         Width="25"
                         Height="25"
-                        Style="{DynamicResource EmptyButton}"
+                        Style="{StaticResource EmptyButton}"
                         BorderBrush="#FFEBD5D5"
                         Background="{x:Null}"
                         VerticalContentAlignment="Bottom"
@@ -266,7 +155,93 @@
             </StackPanel>
         </Border>
         <Grid x:Name="grdContent"
-              Grid.Row="1" />
+              Grid.Row="1" >
+        	<Grid x:Name="FrontSideWrapper"
+        		MinHeight="150"
+        		MinWidth="300"
+        		RenderTransformOrigin="0.5,0.5"
+        		Visibility="Visible" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="300">
+        		<Grid.RenderTransform>
+        			<TransformGroup>
+        				<ScaleTransform />
+        				<SkewTransform />
+        				<RotateTransform />
+        				<TranslateTransform />
+        			</TransformGroup>
+        		</Grid.RenderTransform>
+        		<Grid.RowDefinitions>
+        			<RowDefinition Height="36" />
+        			<RowDefinition />
+        			<RowDefinition Height="28" />
+        		</Grid.RowDefinitions>
+        		<Grid x:Name="grdPhrase"
+        			MinWidth="290"
+        			MinHeight="25"
+        			Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        			Grid.Row="1"
+        			Margin="5">
+
+        			<StackPanel d:LayoutOverrides="Width"
+        				VerticalAlignment="Center">
+        				<TextBlock TextWrapping="Wrap"
+        					VerticalAlignment="Center"
+        					Text="{Binding SelectedLesson.LessonName}"
+        					Foreground="White"
+        					HorizontalAlignment="Center"
+        					FontSize="21.333"
+        					FontWeight="Bold" />
+        				<RichTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+        					Document="{Binding SelectedLesson.Description}"
+        					IsReadOnly="True"
+        					Background="Transparent"
+        					BorderBrush="Transparent"
+        					Foreground="White"
+        					FontSize="16"
+        					Width="290"
+        					MinHeight="25" />
+        			</StackPanel>
+
+        		</Grid>
+        		<Grid x:Name="grdListChoice"
+        			Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        			Grid.Row="1"
+        			RenderTransformOrigin="0.5,0.5"
+        			d:IsHidden="True">
+        			<ListBox Margin="5,0"
+        				Background="Transparent"
+        				ItemsSource="{Binding SelectedLesson.BackSideCollection}"
+        				ItemTemplate="{DynamicResource DataTemplate1}" />
+        		</Grid>
+        	</Grid>
+        	<Grid x:Name="BackSideWrapper"
+        		MinWidth="300"
+        		MinHeight="150"
+        		RenderTransformOrigin="0.5,0.5"
+        		Visibility="Collapsed" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="300">
+        		<Grid.RenderTransform>
+        			<TransformGroup>
+        				<ScaleTransform />
+        				<SkewTransform />
+        				<RotateTransform />
+        				<TranslateTransform />
+        			</TransformGroup>
+        		</Grid.RenderTransform>
+        		<Grid.RowDefinitions>
+        			<RowDefinition Height="36" />
+        			<RowDefinition />
+        			<RowDefinition Height="27" />
+        		</Grid.RowDefinitions>
+        		<RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+        			Document="{Binding SelectedLesson.BackSideModel.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        			MinWidth="200"
+        			MinHeight="50"
+        			Margin="5"
+        			Grid.Row="1"
+        			Background="Transparent" />
+
+
+        	</Grid>
+        </Grid>
         <Border x:Name="bdBottom"
                 BorderBrush="#00000000"
                 BorderThickness="1"

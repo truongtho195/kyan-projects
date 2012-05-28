@@ -238,7 +238,7 @@
         </Style>
         <!--#Endregion "Textbox Style With Error Template"-->
         
-        <!--#Region "Combo Box MetroStyle" -->
+        <!--#region "Combo Box MetroStyle" -->
         <Style x:Key="ComboBoxFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -680,6 +680,129 @@
         		</Setter.Value>
         	</Setter>
         </Style>
-        <!--#Endrgion "ComboboxMetro Style"-->
+        <!--#Endregion "ComboboxMetro Style"-->
+
+        <!--#Region "EmptyButton Style"-->
+        <LinearGradientBrush x:Key="ButtonNormalBackground"
+                             EndPoint="0,1"
+                             StartPoint="0,0">
+            <GradientStop Color="#F3F3F3"
+                          Offset="0" />
+            <GradientStop Color="#EBEBEB"
+                          Offset="0.5" />
+            <GradientStop Color="#DDDDDD"
+                          Offset="0.5" />
+            <GradientStop Color="#CDCDCD"
+                          Offset="1" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ButtonNormalBorder"
+                         Color="#FF707070" />
+        <Style x:Key="EmptyButton"
+               TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource ButtonFocusVisual}" />
+            <Setter Property="Background"
+                    Value="{StaticResource ButtonNormalBackground}" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource ButtonNormalBorder}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                RenderTransformOrigin="0.5,0.5"
+                                Cursor="Hand">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Height="Auto"
+                                              Width="Auto"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RenderTransformOrigin="0.5,0.5">
+                                <ContentPresenter.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1" />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        TargetName="border"
+                                        Value="#B2939393" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true" />
+                            <Trigger Property="ToggleButton.IsChecked"
+                                     Value="true">
+                                <Setter Property="RenderTransform"
+                                        TargetName="contentPresenter">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"
+                                                            ScaleY="1" />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransform"
+                                        TargetName="border">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="0.9"
+                                                            ScaleY="0.9" />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="#ADADAD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#EndRegion "EmptyButton"-->
+
+
     </Application.Resources>
 </Application>
