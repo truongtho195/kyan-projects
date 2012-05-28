@@ -28,6 +28,7 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\App.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.g.cs
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\App.g.cs
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl_MarkupCompile.cache
