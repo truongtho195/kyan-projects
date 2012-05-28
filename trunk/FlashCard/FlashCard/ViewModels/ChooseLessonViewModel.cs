@@ -93,7 +93,6 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnOKExecute(object param)
         {
-            
             List<LessonModel> lst = new List<LessonModel>();
             LessonDataAccess lessonDA = new LessonDataAccess();
             foreach (var item in CategoryCollection.Where(x => x.IsChecked))
