@@ -5,10 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
-             xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+             xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              x:Name="me">
+    <!--
+       
+        -->
     <UserControl.Resources>
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
@@ -133,6 +136,7 @@
         </Storyboard>
 
         <!--#end region Storyboard-->
+        
         <!--#Region DataTemplate-->
         <!--<attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"

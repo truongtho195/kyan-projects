@@ -277,7 +277,7 @@ namespace FlashCard.DataAccess
                 sqlCommand.CommandText = sql;
                 Edit(categoryModel, sqlCommand);
                 sqlCommand.ExecuteNonQuery();
-                categoryModel.CategoryID = (int)sqlConnect.LastInsertRowId;
+                //categoryModel.CategoryID = (int)sqlConnect.LastInsertRowId;
                 categoryModel.IsNew = false;
                 categoryModel.IsDelete = false;
                 categoryModel.IsEdit = false;
