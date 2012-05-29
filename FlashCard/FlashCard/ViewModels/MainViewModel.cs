@@ -302,8 +302,7 @@ namespace FlashCard.ViewModels
         private void OnPlayPauseExecute(object param)
         {
 
-
-            if (this.IsStarted == null || this.IsStarted == true)
+            if(this.IsStarted)
             {
                 var action = new Action(() =>
                 {
