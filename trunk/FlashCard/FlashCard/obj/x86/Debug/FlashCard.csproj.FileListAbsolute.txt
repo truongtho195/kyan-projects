@@ -179,3 +179,4 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\R
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.dll

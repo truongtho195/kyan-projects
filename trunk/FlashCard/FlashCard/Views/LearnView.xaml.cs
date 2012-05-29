@@ -22,6 +22,25 @@ namespace FlashCard.Views
         {
             InitializeComponent();
             InitialEvent();
+            btnAdd.Click += new RoutedEventHandler(btnAdd_Click);
+            btnSubtract.Click += new RoutedEventHandler(btnSubtract_Click);
+            this.tbLessonName.FontSize *=2;
+            this.tbWords.FontSize *= 2;
+            this.tblWordBackSide.FontSize*=2;
+        }
+
+        void btnSubtract_Click(object sender, RoutedEventArgs e)
+        {
+            this.tbLessonName.FontSize -= 5;
+            this.tbWords.FontSize -= 5;
+            this.tblWordBackSide.FontSize -= 5;
+        }
+
+        void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            this.tbLessonName.FontSize+=5;
+            this.tbWords.FontSize+=5;
+            this.tblWordBackSide.FontSize+=5;
         }
 
 

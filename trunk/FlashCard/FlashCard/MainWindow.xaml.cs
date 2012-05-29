@@ -16,7 +16,6 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Data;
-using System.Data.SQLite;
 using System.Waf.Applications;
 using FlashCard.ViewModels;
 
