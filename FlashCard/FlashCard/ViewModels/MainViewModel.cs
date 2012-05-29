@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SQLite;
 using System.Data;
 using System.Waf.Applications;
 using FlashCard.DataAccess;
@@ -39,6 +38,7 @@ namespace FlashCard.ViewModels
         DispatcherTimer _timerViewFullScreen;
         DispatcherTimer _waitForClose;
         FancyBalloon _balloon;
+        LearnView _learnView = new LearnView();
         int _count = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
@@ -96,7 +96,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-
         public bool IsLOtherFormShow { get; set; }
 
         public bool IsStarted { get; set; }
@@ -129,13 +128,26 @@ namespace FlashCard.ViewModels
         private void ChangeSideExecute(object param)
         {
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
-            Storyboard sb;
-            if (SelectedLesson.IsBackSide)
-                sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+            if ("Popup".Equals(param.ToString()))
+            {
+                Storyboard sb;
+                if (SelectedLesson.IsBackSide)
+                    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+                else
+                    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
+                _balloon.BeginStoryboard(sb);
+            }
             else
-                sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
-
-            _balloon.BeginStoryboard(sb);
+            { 
+                //sbBackSide
+                //Storyboard sb;
+                //if (SelectedLesson.IsBackSide)
+                //    sb = (Storyboard)_learnView.FindResource("sbBackSide");
+                //else
+                //    sb = (Storyboard)_learnView.FindResource("sbFrontSide");
+                //_learnView.BeginStoryboard(sb);
+            }
+            
         }
         #endregion
 
@@ -301,7 +313,6 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-
             if(this.IsStarted)
             {
                 var action = new Action(() =>
@@ -322,51 +333,6 @@ namespace FlashCard.ViewModels
                     InitialWaitForClose(timerSpan);
                 }
             }
-        }
-        #endregion
-
-        #region "Full Screen Command"
-        /// <summary>
-        /// Gets the FullScreen Command.
-        /// <summary>
-        private ICommand _fullScreenCommand;
-        public ICommand FullScreenCommand
-        {
-            get
-            {
-                if (_fullScreenCommand == null)
-                    _fullScreenCommand = new RelayCommand(this.OnFullScreenExecute, this.OnFullScreenCanExecute);
-                return _fullScreenCommand;
-            }
-        }
-
-        /// <summary>
-        /// Method to check whether the FullScreen command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnFullScreenCanExecute(object param)
-        {
-            return true;
-        }
-
-        LearnView _learnView = new LearnView();
-        /// <summary>
-        /// Method to invoke when the FullScreen command is executed.
-        /// </summary>
-        private void OnFullScreenExecute(object param)
-        {
-            IsLOtherFormShow = true;
-            _learnView = new LearnView();
-            _learnView.DataContext = this;
-            _timerViewFullScreen = new DispatcherTimer();
-            _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
-            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
-            _timerViewFullScreen.Start();
-            Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
-            _learnView.BeginStoryboard(sb);
-            _learnView.Show();
-            OnPlayPauseExecute(null);
-
         }
         #endregion
 
@@ -449,13 +415,63 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnChooseLessonExecute(object param)
         {
+            IsLOtherFormShow = true;
+            OnPlayPauseExecute(null);
             ChooseLessonView lessionView = new ChooseLessonView();
             if (lessionView.ShowDialog()==true)
             {
                 var viewModel = lessionView.GetViewModel<ChooseLessonViewModel>();
                 LessonCollection = viewModel.LessonCollection;
             }
+            IsLOtherFormShow = false;
+            OnPlayPauseExecute(null);
             
+        }
+        #endregion
+
+        //Full Screen Region
+        #region "Full Screen Command"
+        /// <summary>
+        /// Gets the FullScreen Command.
+        /// <summary>
+        private ICommand _fullScreenCommand;
+        public ICommand FullScreenCommand
+        {
+            get
+            {
+                if (_fullScreenCommand == null)
+                    _fullScreenCommand = new RelayCommand(this.OnFullScreenExecute, this.OnFullScreenCanExecute);
+                return _fullScreenCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the FullScreen command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnFullScreenCanExecute(object param)
+        {
+            return true;
+        }
+
+        
+        /// <summary>
+        /// Method to invoke when the FullScreen command is executed.
+        /// </summary>
+        private void OnFullScreenExecute(object param)
+        {
+            IsLOtherFormShow = true;
+            _learnView = new LearnView();
+            _learnView.DataContext = this;
+            _timerViewFullScreen = new DispatcherTimer();
+            _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
+            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
+            _timerViewFullScreen.Start();
+            Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
+            _learnView.BeginStoryboard(sb);
+            _learnView.Show();
+            OnPlayPauseExecute(null);
+
         }
         #endregion
 
@@ -559,7 +575,6 @@ namespace FlashCard.ViewModels
             SelectedLesson = LessonCollection[_count];
             SelectedLesson.IsBackSide = false;
         }
-
 
         /// <summary>
         /// Initial For Wait to close
