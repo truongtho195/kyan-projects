@@ -146,6 +146,8 @@ namespace FlashCard.ViewModels
             ViewCore.DialogResult = false;
         }
         #endregion
+
+
         #endregion
 
         #region Methods

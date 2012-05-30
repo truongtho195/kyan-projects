@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Xml;
 using MVVMHelper.Common;
 
+
 namespace FlashCard.DataAccess
 {
     public class LessonDataAccess : DataAccessBase

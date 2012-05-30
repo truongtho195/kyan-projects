@@ -50,9 +50,28 @@ namespace RichTextBoxControl
             this.rtContent.MouseRightButtonUp += new MouseButtonEventHandler(rtContent_MouseRightButtonUp);
             this.FontFamilyCombo.SelectionChanged += new SelectionChangedEventHandler(FontFamilyCombo_SelectionChanged);
             this.FontSizeCombo.SelectionChanged += new SelectionChangedEventHandler(FontSizeCombo_SelectionChanged);
+            this.cbTextColor.SelectionChanged += new SelectionChangedEventHandler(cbTextColor_SelectionChanged);
             
             this.rtContent.ContextMenu = null;
 
+        }
+
+        void cbTextColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Exit if no selection
+            if (cbTextColor.SelectedItem == null) return;
+            // clear selection if value unset
+            if (cbTextColor.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
+            {
+                cbTextColor.SelectedItem = null;
+                return;
+            }
+
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            //System.Windows.Media.SolidColorBrush
+            var color = cbTextColor.SelectedValue.ToString().Replace("System.Windows.Media.SolidColorBrush", "");
+            var t=(Color)ColorConverter.ConvertFromString(color);
+            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(t));
         }
 
         void FontSizeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,6 +165,19 @@ namespace RichTextBoxControl
             typeof(RichTextBoxToolbar));
 
 
+        //// ToolbarBackground property
+        //public Brush Foreground
+        //{
+        //    get { return (Brush)GetValue(ForegroundProperty); }
+        //    set { SetValue(ForegroundProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for ToolbarBackgrourd.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty ForegroundProperty =
+        //    DependencyProperty.Register("Foreground", typeof(Brush),
+        //    typeof(RichTextBoxToolbar), new PropertyMetadata(SystemColors.MenuBrush));
+
+
 
         // ToolbarBackground property
         public Brush ToolbarBackground
@@ -192,39 +224,6 @@ namespace RichTextBoxControl
             DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(RichTextBoxToolbar), new PropertyMetadata(false, new PropertyChangedCallback(OnIsReadOnlyChanged)));
 
 
-
-
-
-
-
-        //public Brush Background
-        //{
-        //    get { return (Brush)GetValue(BackgroundProperty); }
-        //    set { SetValue(BackgroundProperty, value); }
-        //}
-
-        //// Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty BackgroundProperty =
-        //    DependencyProperty.Register("Background", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata());
-
-
-
-
-        //public Brush Foreground
-        //{
-        //    get { return (Brush)GetValue(ForegroundProperty); }
-        //    set { SetValue(ForegroundProperty, value); }
-        //}
-
-        //// Using a DependencyProperty as the backing store for Foreground.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty ForegroundProperty =
-        //    DependencyProperty.Register("Foreground", typeof(Brush), typeof(RichTextBoxToolbar), new PropertyMetadata(Brushes.Black));
-
-
-
-
-
-
         #endregion
 
         #region PropertyChanged Callback Methods
@@ -236,9 +235,7 @@ namespace RichTextBoxControl
         {
             try
             {
-
                 RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
-                //
                 if (thisControl.IsDocumentChanged) return;
                 thisControl.IsDocumentChanged = true;
                 if (e.NewValue == null)
@@ -303,8 +300,10 @@ namespace RichTextBoxControl
                 var test = GetImagesXML(this.rtContent.Document);
 
                 SetValue(DocumentProperty, this.rtContent.Document);
-                this.IsDocumentChanged = false;
                 //this.Document = this.rtContent.Document;
+               
+                this.IsDocumentChanged = false;
+                
                 // SetValue(DocumentProperty,this.rtContent.Document);
             }
             catch (Exception ex)
@@ -369,7 +368,8 @@ namespace RichTextBoxControl
             FontSizeCombo.Items.Add("18");
             FontSizeCombo.Items.Add("24");
             FontSizeCombo.Items.Add("36");
-            
+
+            cbTextColor.ItemsSource = typeof(Brushes).GetProperties();            
         }
         private void SetButtonGroupSelection(ToggleButton clickedButton, ToggleButton currentSelectedButton, IEnumerable<ToggleButton> buttonGroup, bool ignoreClickWhenSelected)
         {

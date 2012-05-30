@@ -75,14 +75,14 @@ namespace FlashCard.Model
             get { return _content; }
             set
             {
-                if (_content != value)
-                {
+                //if (_content != value)
+                //{
                     this.OnContentChanging(value);
                     _content = value;
                     RaisePropertyChanged(() => Content);
                     this.OnChanged();
                     this.OnContentChanged();
-                }
+                //}
             }
         }
 

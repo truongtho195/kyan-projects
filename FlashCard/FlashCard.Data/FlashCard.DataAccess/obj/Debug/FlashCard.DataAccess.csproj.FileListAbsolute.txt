@@ -45,10 +45,23 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debu
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\ResolveAssemblyReference.cache
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.dll
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\de\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\en\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\es\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\it\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.Model.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\MVVMHelper.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Data.SQLite.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\MessageBoxControl.dll
@@ -68,17 +81,5 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debu
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\ko\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\obj\Debug\FlashCard.DataAccess.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\de\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\en\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\es\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\it\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll

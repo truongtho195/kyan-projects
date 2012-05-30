@@ -341,8 +341,7 @@
                   Grid.Row="1"
                   Margin="5">
 
-                <StackPanel d:LayoutOverrides="Width"
-                            VerticalAlignment="Center">
+                <StackPanel d:LayoutOverrides="Width">
                     <TextBlock TextWrapping="Wrap"
                                VerticalAlignment="Center"
                                Text="{Binding SelectedLesson.LessonName}"
@@ -355,10 +354,9 @@
                                                            IsReadOnly="True"
                                                            Background="Transparent"
                                                            BorderBrush="Transparent"
-                                                           Foreground="White"
+                                                           Foreground="#FFAF2D2D"
                                                            FontSize="16"
-                                                           Width="290"
-                                                           MinHeight="25" />
+                                                           MinHeight="25" MinWidth="290" Width="290" />
                 </StackPanel>
 
             </Grid>
@@ -393,11 +391,11 @@
             </Grid.RowDefinitions>
             <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
                                                    Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   MinWidth="200"
+                                                   MinWidth="290"
                                                    MinHeight="50"
                                                    Margin="5"
                                                    Grid.Row="1"
-                                                   Background="Transparent" />
+                                                   Background="Transparent" Width="290" />
 
 
         </Grid>
