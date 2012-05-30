@@ -5,7 +5,7 @@
         xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
         mc:Ignorable="d"
         x:Class="FlashCard.Views.ChooseLessonView"
-        Title="ChooseLessonView">
+        Title="ChooseLessonView" WindowStyle="None">
     <Grid x:Name="Layout" Background="{DynamicResource brBackgroundColor}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>

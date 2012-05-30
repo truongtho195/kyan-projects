@@ -121,16 +121,48 @@ D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
 D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\de\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\en\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\es\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\it\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.baml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\App.baml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.g.cs
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.lref
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.Model.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\MVVMHelper.dll
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\MessageBoxControl.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.Model.pdb
@@ -151,19 +183,8 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\ja\System.Windows.Intera
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\ko\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.baml
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.lref
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
+E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
@@ -171,24 +192,3 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.rea
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.exe
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.baml
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.g.cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\bin\Debug\System.Data.SQLite.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\de\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\en\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\es\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\it\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.baml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\App.baml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\ChooseLessonView.g.cs
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml

@@ -10,7 +10,7 @@
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
                                 IconSource="/Icons/Error.ico"
                                 ToolTipText="Balloon Sample Icon">
-            <!--<notifyIcon:TaskbarIcon.ContextMenu>
+            <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Choose Lesson"
                               Command="{Binding ChooseLessonCommand}" />
@@ -23,7 +23,7 @@
                     <MenuItem Header="Exit"
                               Command="{Binding ExitCommand}" />
                 </ContextMenu>
-            </notifyIcon:TaskbarIcon.ContextMenu>-->
+            </notifyIcon:TaskbarIcon.ContextMenu>
         </notifyIcon:TaskbarIcon>
         <TextBlock HorizontalAlignment="Center"
                    VerticalAlignment="Center"

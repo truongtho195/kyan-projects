@@ -449,7 +449,7 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <Style x:Key="MetroComboxStyle"
+        <Style 
                TargetType="{x:Type ComboBox}">
             <Setter Property="FocusVisualStyle"
                     Value="{StaticResource ComboBoxFocusVisual}" />

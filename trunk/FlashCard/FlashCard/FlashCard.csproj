@@ -64,6 +64,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,6 +89,7 @@
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Commands\EventToCommand.cs" />
     <Compile Include="UserControls\RichTextBoxControl.cs" />
     <Compile Include="ViewModels\ChooseLessonViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />

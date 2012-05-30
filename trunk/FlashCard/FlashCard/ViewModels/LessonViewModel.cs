@@ -20,7 +20,7 @@ namespace FlashCard.ViewModels
             Initialize();
         }
 
-        public LessonViewModel(LessonManageView view,bool isFromPopup)
+        public LessonViewModel(LessonManageView view, bool isFromPopup)
             : this(view)
         {
             IsFromPopup = isFromPopup;
@@ -42,24 +42,16 @@ namespace FlashCard.ViewModels
                 {
                     _selectedLesson = value;
                     RaisePropertyChanged(() => SelectedLesson);
-                    SelectedLessonChanged();
                 }
             }
         }
 
-        private void SelectedLessonChanged()
-        {
-            if (SelectedLesson != null)
-            {
-                SelectedLesson.IsEditing = false;
-            }
-        }
-
-        private ObservableCollection<LessonModel> _lessonCollection;
+      
+        private List<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public ObservableCollection<LessonModel> LessonCollection
+        public List<LessonModel> LessonCollection
         {
             get { return _lessonCollection; }
             set
@@ -130,8 +122,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
-
-        #region NewCommand
+        #region "NewCommand"
         private ICommand _newCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -169,7 +160,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region EditCommand
+        #region "EditCommand"
         private ICommand _editCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -204,7 +195,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region SaveCommand
+        #region "SaveCommand"
         private ICommand _saveCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -263,7 +254,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region AddBackSideCommand
+        #region "AddBackSideCommand"
         private ICommand _addBackSideCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -293,9 +284,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-     
-
-        #region DeleteCommand
+        #region "DeleteCommand"
         private ICommand _deleteCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -324,11 +313,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
-       
-
-
-
+        #region "CloseCommand"
         /// <summary>
         /// Gets the Close Command.
         /// <summary>
@@ -362,10 +347,10 @@ namespace FlashCard.ViewModels
                 MainWindow mainView = new MainWindow();
             }
             ViewCore.Close();
-        }
+        } 
+        #endregion
 
-
-
+        #region "NewCategoryCommand"
         /// <summary>
         /// Gets the NewCategory Command.
         /// <summary>
@@ -407,10 +392,10 @@ namespace FlashCard.ViewModels
                 SelectedLesson.CategoryModel = CategoryCollection.First();
             }
             //RaisePropertyChanged(() => SelectedLesson);
-        }
+        } 
+        #endregion
 
-
-
+        #region "NewTypeCommand"
         /// <summary>
         /// Gets the NewType Command.
         /// <summary>
@@ -454,6 +439,45 @@ namespace FlashCard.ViewModels
             }
             RaisePropertyChanged(() => SelectedLesson);
         }
+
+        #endregion
+
+        #region "SelectionChangedCommand"
+        /// <summary>
+        /// Gets the SelectionChanged Command.
+        /// <summary>
+        private ICommand _selectionChangedCommand;
+        public ICommand SelectionChangedCommand
+        {
+            get
+            {
+                if (_selectionChangedCommand == null)
+                    _selectionChangedCommand = new RelayCommand(this.OnSelectionChangedExecute, this.OnSelectionChangedCanExecute);
+                return _selectionChangedCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the SelectionChanged command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSelectionChangedCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the SelectionChanged command is executed.
+        /// </summary>
+        private void OnSelectionChangedExecute(object param)
+        {
+            SelectedLesson = param as LessonModel;
+            SelectedLesson.IsEditing = false;
+        }
+
+        #endregion
         #endregion
 
         #region Methods
@@ -466,13 +490,13 @@ namespace FlashCard.ViewModels
             CategoryCollection = new List<CategoryModel>(categoryDataAccess.GetAll());
 
             LessonDataAccess lessonDataAccess = new LessonDataAccess();
-            LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
+            LessonCollection = new List<LessonModel>(lessonDataAccess.GetAllWithRelation());
 
             if (LessonCollection.Any())
                 SelectedLesson = LessonCollection.FirstOrDefault();
             else
             {
-                LessonCollection = new ObservableCollection<LessonModel>();
+                LessonCollection = new List<LessonModel>();
                 NewExecute(null);
             }
         }

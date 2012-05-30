@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             
              mc:Ignorable="d"
              x:Name="ucControl">
     <UserControl.Resources>
@@ -110,34 +109,86 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
+        <Style x:Key="{x:Type TextBoxBase}" TargetType="{x:Type TextBoxBase}">
+        	<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        	<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+        	<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        	<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        	<Setter Property="BorderThickness" Value="1"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="Padding" Value="2"/>
+        	<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        	<Setter Property="AllowDrop" Value="true"/>
+        	<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        	<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type TextBoxBase}">
+        				<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true" HorizontalAlignment="Center" VerticalAlignment="Center">
+        					<ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        				</Border>
+        				<ControlTemplate.Triggers>
+        					<Trigger Property="IsEnabled" Value="false">
+        						<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+        						<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+        					</Trigger>
+        				</ControlTemplate.Triggers>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+        <Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
+        	<Setter Property="Foreground" Value="Blue"/>
+        	<Setter Property="TextDecorations" Value="Underline"/>
+        	<Style.Triggers>
+        		<Trigger Property="IsMouseOver" Value="true">
+        			<Setter Property="Foreground" Value="Red"/>
+        		</Trigger>
+        		<Trigger Property="IsEnabled" Value="false">
+        			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+        		</Trigger>
+        		<Trigger Property="IsEnabled" Value="true">
+        			<Setter Property="Cursor" Value="Hand"/>
+        		</Trigger>
+        	</Style.Triggers>
+        </Style>
+        <Style x:Key="RichTextBoxStyle1" TargetType="{x:Type RichTextBox}">
+        	<Setter Property="MinWidth" Value="10"/>
+        	<Style.BasedOn>
+        		<StaticResource ResourceKey="{x:Type TextBoxBase}"/>
+        	</Style.BasedOn>
+        </Style>
 
     </UserControl.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="{Binding HorizontalAlignment, ElementName=ucControl}"
+          VerticalAlignment="{Binding VerticalAlignment, ElementName=ucControl}"
+          MinWidth="{Binding MinWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+          MinHeight="{Binding MinHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+          MaxHeight="{Binding MaxHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+          MaxWidth="{Binding MaxWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+          Width="{Binding Width,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+          Height="{Binding Height,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
         <RichTextBox x:Name="rtContent"
-                     d:IsHidden="True"
                      BorderBrush="{Binding BorderBrush,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      BorderThickness="{Binding Path=BorderThickness,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     MinWidth="{Binding MinWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     MinHeight="{Binding MinHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     MaxHeight="{Binding MaxHeight,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     MaxWidth="{Binding MaxWidth,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     Width="{Binding Width,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     Height="{Binding Height,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      Foreground="{Binding Foreground,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                      Background="{Binding Background,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                     IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
-        </RichTextBox>
+                     IsReadOnly="{Binding IsReadOnly,ElementName=ucControl,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                     HorizontalContentAlignment="Stretch"
+                     VerticalContentAlignment="Stretch" />
         <Popup x:Name="popup"
-               PopupAnimation="Scroll"
-               Placement="Mouse">
+               Placement="Mouse"
+               VerticalAlignment="Center">
             <Border Margin="0"
-                    Width="282"
+                    MinWidth="200"
                     BorderThickness="{Binding ElementName=ucControl, Path=ToolbarBorderThickness}"
                     BorderBrush="{Binding ElementName=ucControl, Path=ToolbarBorderBrush}"
                     Background="{Binding ElementName=ucControl, Path=ToolbarBackground}"
-                    SnapsToDevicePixels="True">
+                    SnapsToDevicePixels="True"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
                 <WrapPanel Orientation="Horizontal"
-                           Height="73">
+                           VerticalAlignment="Center">
                     <!-- Font family combo box  -->
                     <ComboBox x:Name="FontFamilyCombo"
                               Height="23"
@@ -391,6 +442,7 @@
                                Stretch="None"
                                SnapsToDevicePixels="True" />
                     </Button>
+                    <ComboBox x:Name="cbTextColor"/>
 
                 </WrapPanel>
             </Border>
