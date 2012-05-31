@@ -159,7 +159,39 @@
         		<StaticResource ResourceKey="{x:Type TextBoxBase}"/>
         	</Style.BasedOn>
         </Style>
-
+<Style x:Key="myComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+    		<Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    		<Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    		<Setter Property="Padding" Value="0"/>
+    		<Setter Property="Background" Value="#02FFFFFF"/>
+			
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="{x:Type ComboBoxItem}">
+    					<Border x:Name="Bd" SnapsToDevicePixels="true" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="#02B64141">
+    						<ToggleButton x:Name="tgbtnColor" ToolTip="{Binding Name}" Background="{Binding Name}" BorderBrush="{Binding Name}" IsChecked="{TemplateBinding IsSelected}" Click="tgbtnColor_Click"/>
+    					</Border>
+						
+						<ControlTemplate.Triggers>
+							<Trigger SourceName="tgbtnColor"  Property="IsChecked" Value="True">
+								<Setter Property="IsSelected" Value="True"/>
+							</Trigger>
+							<Trigger SourceName="tgbtnColor"  Property="IsChecked" Value="False">
+								<Setter Property="IsSelected" Value="False"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+						
+    				</ControlTemplate>
+					
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="Width" Value="20"/>
+    		<Setter Property="Height" Value="20"/>
+    		<Setter Property="Content" Value=""/>
+    		<Setter Property="ToolTip" Value="567565"/>
+			
+			
+    	</Style>
     </UserControl.Resources>
     <Grid HorizontalAlignment="{Binding HorizontalAlignment, ElementName=ucControl}"
           VerticalAlignment="{Binding VerticalAlignment, ElementName=ucControl}"
@@ -442,7 +474,13 @@
                                Stretch="None"
                                SnapsToDevicePixels="True" />
                     </Button>
-                    <ComboBox x:Name="cbTextColor"/>
+                    <ComboBox x:Name="cbTextColor" Style="{DynamicResource ComboBoxColorStyle}" ItemContainerStyle="{DynamicResource myComboBoxItemStyle}" MaxDropDownHeight="341.333333333333" HorizontalContentAlignment="Center" >
+                    	<ComboBox.ItemsPanel>    
+                    		<ItemsPanelTemplate>
+                    			<WrapPanel Width="200" />             		
+							</ItemsPanelTemplate>       	
+						</ComboBox.ItemsPanel>
+						</ComboBox>
 
                 </WrapPanel>
             </Border>
