@@ -38,8 +38,6 @@ namespace RichTextBoxControl
             this.Initialize();
             //Initialize UI
             this.BorderThickness = new Thickness(1, 1, 1, 1);
-
-
             //Events
             this.rtContent.TextChanged += new TextChangedEventHandler(rtContent_TextChanged);
             this.btnNormalText.Click += new RoutedEventHandler(btnNormalText_Click);
@@ -51,9 +49,7 @@ namespace RichTextBoxControl
             this.FontFamilyCombo.SelectionChanged += new SelectionChangedEventHandler(FontFamilyCombo_SelectionChanged);
             this.FontSizeCombo.SelectionChanged += new SelectionChangedEventHandler(FontSizeCombo_SelectionChanged);
             this.cbTextColor.SelectionChanged += new SelectionChangedEventHandler(cbTextColor_SelectionChanged);
-            
             this.rtContent.ContextMenu = null;
-
         }
 
         void cbTextColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -109,7 +105,6 @@ namespace RichTextBoxControl
 
         void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-
             this.popup.IsOpen = true;
             this.popup.StaysOpen = false;
         }
@@ -512,6 +507,11 @@ namespace RichTextBoxControl
                 throw new ArgumentException("propertyExpression must represent a valid Property on the object");
 
             handler(this, new PropertyChangedEventArgs(propertyInfo.Name));
+        }
+
+        private void tgbtnColor_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            cbTextColor.IsDropDownOpen = false;
         }
 
 
