@@ -801,6 +801,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <LinearGradientBrush x:Key="brBottomColor" EndPoint="0.5,1" StartPoint="0.5,0">
+        	<GradientStop Color="#FF5593EE" Offset="0.036"/>
+        	<GradientStop Color="#FF68A4EB" Offset="0.988"/>
+        	<GradientStop Color="White" Offset="1"/>
+        	<GradientStop Color="White" Offset="0.011"/>
+        </LinearGradientBrush>
         <!--#EndRegion "EmptyButton"-->
 
 

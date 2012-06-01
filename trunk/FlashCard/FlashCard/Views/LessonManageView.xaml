@@ -332,24 +332,30 @@
         </Style>
     </Window.Resources>
     <Grid>
+    	<Grid.RowDefinitions>
+    		<RowDefinition/>
+    		<RowDefinition Height="5"/>
+    	</Grid.RowDefinitions>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition/>
+    		<ColumnDefinition Width="Auto" MinWidth="5" x:Name="colShadowRight"/>
+    	</Grid.ColumnDefinitions>
 
-        <Border BorderThickness="1"
-                Margin="5,5,0,0"
-                Background="#E5494848" />
+        <Border BorderBrush="#FF257EE2" BorderThickness="1.5"/>
 
         <Grid x:Name="Layout"
               Background="{DynamicResource brBackgroundColor}"
-              Margin="0,0,5,5">
+              Margin="0,0,0,0.062">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition />
-                <RowDefinition Height="29.795" />
+            	<RowDefinition Height="30" />
+            	<RowDefinition />
+            	<RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
 
             <Border x:Name="bdHeader"
                     BorderThickness="1"
-                    Background="#FF93B8F5"
-                    BorderBrush="#FF62BDF7">
+                    Background="{DynamicResource brBottomColor}"
+                    BorderBrush="#FF62BDF7" Margin="1,0">
                 <Grid>
                     <StackPanel x:Name="stSystemControl"
                                 Orientation="Horizontal"
@@ -430,12 +436,12 @@
             <Grid x:Name="grdLayout"
                   Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                	<RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.266*" />
-                    <ColumnDefinition Width="0.013*" />
-                    <ColumnDefinition Width="0.721*" />
+                	<ColumnDefinition Width="0.266*" />
+                	<ColumnDefinition Width="0.013*" />
+                	<ColumnDefinition Width="0.721*" />
                 </Grid.ColumnDefinitions>
                 <ListView x:Name="lstLesson"
                           ItemsSource="{Binding LessonCollection}"
@@ -443,13 +449,13 @@
                           Background="#FFCDE8FD"
                           Style="{DynamicResource ListViewStyle}"
                           ItemsPanel="{DynamicResource ItemsPanelTemplate}"
-                          SelectionMode="Single">
+                          SelectionMode="Single" Margin="1,0,0,0">
 
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                                                         CommandParameter="{Binding Path=SelectedItem,ElementName=lstLesson}" />
-                        </i:EventTrigger>
+                    	<i:EventTrigger EventName="SelectionChanged">
+                    		<localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
+                    			CommandParameter="{Binding SelectedItem, ElementName=lstLesson}" />
+                    	</i:EventTrigger>
                     </i:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
@@ -466,8 +472,8 @@
                       Grid.Column="1"
                       Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="48.471" />
-                        <RowDefinition />
+                    	<RowDefinition Height="48.471" />
+                    	<RowDefinition />
                     </Grid.RowDefinitions>
                     <Border Background="#FFAACCFB"
                             BorderBrush="#00000000"
@@ -510,17 +516,17 @@
                     <Grid Grid.Row="1"
                           IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.178*" />
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="35" />
-                            <RowDefinition Height="92.78" />
-                            <RowDefinition Height="0.48*" />
-                            <RowDefinition Height="0.342*" />
+                        	<RowDefinition Height="0.178*" />
+                        	<RowDefinition Height="25" />
+                        	<RowDefinition Height="25" />
+                        	<RowDefinition Height="35" />
+                        	<RowDefinition Height="92.78" />
+                        	<RowDefinition Height="0.48*" />
+                        	<RowDefinition Height="0.342*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="85.191" />
-                            <ColumnDefinition />
+                        	<ColumnDefinition Width="85.191" />
+                        	<ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="tbLesson"
                                    HorizontalAlignment="Right"
@@ -562,8 +568,8 @@
                               Grid.Row="1"
                               HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
+                            	<ColumnDefinition />
+                            	<ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cmbType"
                                       ItemsSource="{Binding LessonTypeCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -583,8 +589,8 @@
                               Grid.Row="2"
                               Margin="10,0,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
+                            	<ColumnDefinition />
+                            	<ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cmbCategory"
                                       ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -653,24 +659,24 @@
                                   Grid.Row="5"
                                   Margin="10,8,8,8">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Content">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox x:Name="tbContent"
-                                                     Width="auto"
-                                                     MinWidth="200px"
-                                                     Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            	<DataGridTemplateColumn Header="Content">
+                            		<DataGridTemplateColumn.CellTemplate>
+                            			<DataTemplate>
+                            				<TextBox x:Name="tbContent"
+                            					Width="auto"
+                            					MinWidth="200px"
+                            					Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridCheckBoxColumn Header="Is Correct"
-                                                        Width="80"
-                                                        Binding="{Binding IsCorrect}" />
+                            			</DataTemplate>
+                            		</DataGridTemplateColumn.CellTemplate>
+                            	</DataGridTemplateColumn>
+                            	<DataGridCheckBoxColumn Header="Is Correct"
+                            		Width="80"
+                            		Binding="{Binding IsCorrect}" />
                             </DataGrid.Columns>
                         </DataGrid>
                         <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                               Document="{Binding SelectedLesson.BackSideModel.Content,  UpdateSourceTrigger=PropertyChanged}"
+                                                               Document="{Binding SelectedLesson.BackSideModel.Content, UpdateSourceTrigger=PropertyChanged}"
                                                                Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                Grid.Column="1"
                                                                BorderBrush="#FF7F9DB9"
@@ -678,7 +684,7 @@
                                                                Grid.Row="5"
                                                                Margin="10,8,8,8"
                                                                HorizontalAlignment="Stretch"
-                                                               VerticalAlignment="Stretch" />
+                                                               VerticalAlignment="Stretch" Background="#00000000" />
 
                         <Button x:Name="btnAddBackSide"
                                 Command="{Binding AddBackSideCommand}"
@@ -702,7 +708,7 @@
                                                                Margin="10,8,8,8"
                                                                Grid.Row="4"
                                                                BorderThickness="1"
-                                                               Background="White"
+                                                               Background="Transparent"
                                                                BorderBrush="#FF7F9DB9"
                                                                HorizontalAlignment="Stretch"
                                                                VerticalAlignment="Stretch" />
@@ -734,10 +740,7 @@
             </Grid>
             <Border x:Name="bdBottom"
                     Grid.Row="2"
-                    Background="#FFA1C4F3"
-                    Height="30"
-                    Margin="0,0,0,0.205"
-                    VerticalAlignment="Bottom">
+                    Height="30" Background="{DynamicResource brBottomColor}" Margin="1,0,1,1">
                 <Button x:Name="btnClose"
                         Command="{Binding CloseCommand}"
                         Content="Close"
@@ -750,5 +753,29 @@
                         BorderBrush="{x:Null}" />
             </Border>
         </Grid>
+        <Rectangle x:Name="rectShadowRight" Stroke="#00000000" Grid.Column="1" StrokeThickness="0" Margin="0,5,0,0" Width="5">
+        	<Rectangle.Fill>
+        		<LinearGradientBrush EndPoint="6.67,0.5" StartPoint="-0.643,0.5">
+        			<GradientStop Color="#CC000000" Offset="0.118"/>
+        			<GradientStop Offset="0.206" Color="#00000000"/>
+        		</LinearGradientBrush>
+        	</Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Stroke="#00000000" StrokeThickness="0" Grid.Row="1" Grid.Column="1">
+        	<Rectangle.Fill>
+        		<RadialGradientBrush GradientOrigin="-0.229,-0.235" RadiusY="1.117" RadiusX="1.117">
+        			<GradientStop Color="#CC000000" Offset="0.213"/>
+        			<GradientStop Color="#00000000" Offset="0.503"/>
+        		</RadialGradientBrush>
+        	</Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Stroke="#00000000" StrokeThickness="0" Grid.Row="1" Margin="5,0,0,0">
+        	<Rectangle.Fill>
+        		<LinearGradientBrush EndPoint="0.107,1.854" StartPoint="0.107,-0.248">
+        			<GradientStop Color="#CC000000" Offset="0.221"/>
+        			<GradientStop Offset="0.507" Color="#00000000"/>
+        		</LinearGradientBrush>
+        	</Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </Window>

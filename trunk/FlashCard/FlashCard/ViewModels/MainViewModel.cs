@@ -146,9 +146,22 @@ namespace FlashCard.ViewModels
                 //else
                 //    sb = (Storyboard)_learnView.FindResource("sbFrontSide");
                 //_learnView.BeginStoryboard(sb);
+                
+                DispatcherTimer stopChangeLesson = new DispatcherTimer();
+                stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 20, 0);
+                stopChangeLesson.Tick += new EventHandler(stopChangeLesson_Tick);
+                _timerViewFullScreen.Stop();
+                stopChangeLesson.Start();
             }
             
         }
+
+        void stopChangeLesson_Tick(object sender, EventArgs e)
+        {
+            DispatcherTimer t = sender as DispatcherTimer;
+            _timerViewFullScreen.Start();
+            t.Stop();
+        } 
         #endregion
 
         #region "Fancy Ballon Mouse Leave Command"
@@ -463,16 +476,14 @@ namespace FlashCard.ViewModels
             IsLOtherFormShow = true;
             _learnView = new LearnView();
             _learnView.DataContext = this;
-            _timerViewFullScreen = new DispatcherTimer();
-            _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
-            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
-            _timerViewFullScreen.Start();
+            StartLessonFullScreen();
             Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
             _learnView.BeginStoryboard(sb);
             _learnView.Show();
             OnPlayPauseExecute(null);
-
         }
+
+       
         #endregion
 
         #endregion
@@ -574,6 +585,17 @@ namespace FlashCard.ViewModels
 
             SelectedLesson = LessonCollection[_count];
             SelectedLesson.IsBackSide = false;
+        }
+
+        /// <summary>
+        /// Show lesson Full Screen
+        /// </summary>
+        private void StartLessonFullScreen()
+        {
+            _timerViewFullScreen = new DispatcherTimer();
+            _timerViewFullScreen.Interval = this.SetupModel.ViewTime;
+            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
+            _timerViewFullScreen.Start();
         }
 
         /// <summary>
