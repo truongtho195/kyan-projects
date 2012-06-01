@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Controls.Primitives;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Threading;
 using System.Threading;
@@ -49,73 +50,14 @@ namespace RichTextBoxControl
             this.FontFamilyCombo.SelectionChanged += new SelectionChangedEventHandler(FontFamilyCombo_SelectionChanged);
             this.FontSizeCombo.SelectionChanged += new SelectionChangedEventHandler(FontSizeCombo_SelectionChanged);
             this.cbTextColor.SelectionChanged += new SelectionChangedEventHandler(cbTextColor_SelectionChanged);
+            this.rtContent.SelectionChanged += new RoutedEventHandler(rtContent_SelectionChanged);
             this.rtContent.ContextMenu = null;
         }
 
-        void cbTextColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void rtContent_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            // Exit if no selection
-            if (cbTextColor.SelectedItem == null) return;
-            // clear selection if value unset
-            if (cbTextColor.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
-            {
-                cbTextColor.SelectedItem = null;
-                return;
-            }
-
-            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
-            //System.Windows.Media.SolidColorBrush
-            var color = cbTextColor.SelectedValue.ToString().Replace("System.Windows.Media.SolidColorBrush", "");
-            var t=(Color)ColorConverter.ConvertFromString(color);
-            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(t));
+            SetToolbar();
         }
-
-        void FontSizeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Exit if no selection
-            if (FontSizeCombo.SelectedItem == null) return;
-
-            // clear selection if value unset
-            if (FontSizeCombo.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
-            {
-                FontSizeCombo.SelectedItem = null;
-                return;
-            }
-
-            // Process selection
-            var pointSize = FontSizeCombo.SelectedItem.ToString();
-            var pixelSize = Convert.ToDouble(pointSize) * (96 / 72);
-            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
-            textRange.ApplyPropertyValue(TextElement.FontSizeProperty, pixelSize);
-        }
-
-        void FontFamilyCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (FontFamilyCombo.SelectedItem == null) return;
-            var fontFamily = FontFamilyCombo.SelectedItem.ToString();
-            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
-            textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, fontFamily);
-        }
-
-        void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.popup.IsOpen = true;
-            this.popup.StaysOpen = false;
-        }
-
-        void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.popup.IsOpen = true;
-            this.popup.StaysOpen = false;
-        }
-
-        void rtContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.popup.StaysOpen = false;
-            this.popup.IsOpen = true;
-        }
-
-
         #endregion
 
         #region Properties
@@ -283,6 +225,9 @@ namespace RichTextBoxControl
         }
 
 
+        #endregion
+
+        #region Events
         private void rtContent_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -296,9 +241,9 @@ namespace RichTextBoxControl
 
                 SetValue(DocumentProperty, this.rtContent.Document);
                 //this.Document = this.rtContent.Document;
-               
+
                 this.IsDocumentChanged = false;
-                
+
                 // SetValue(DocumentProperty,this.rtContent.Document);
             }
             catch (Exception ex)
@@ -323,7 +268,6 @@ namespace RichTextBoxControl
             this.SetButtonGroupSelection(clickedButton, m_SelectedListButton, buttonGroup, false);
             m_SelectedListButton = clickedButton;
         }
-
 
         private void OnAlignmentButtonClick(object sender, RoutedEventArgs e)
         {
@@ -350,7 +294,68 @@ namespace RichTextBoxControl
             textRange.ApplyPropertyValue(Block.MarginProperty, new Thickness(0));
         }
 
+        private void cbTextColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Exit if no selection
+            if (cbTextColor.SelectedItem == null) return;
+            // clear selection if value unset
+            if (cbTextColor.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
+            {
+                cbTextColor.SelectedItem = null;
+                return;
+            }
 
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            //System.Windows.Media.SolidColorBrush
+            var color = cbTextColor.SelectedValue.ToString().Replace("System.Windows.Media.SolidColorBrush", "");
+            var t = (Color)ColorConverter.ConvertFromString(color);
+            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(t));
+        }
+
+        private void FontSizeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Exit if no selection
+            if (FontSizeCombo.SelectedItem == null) return;
+
+            // clear selection if value unset
+            if (FontSizeCombo.SelectedItem.ToString() == "{DependencyProperty.UnsetValue}")
+            {
+                FontSizeCombo.SelectedItem = null;
+                return;
+            }
+
+            // Process selection
+            var pointSize = FontSizeCombo.SelectedItem.ToString();
+            var pixelSize = Convert.ToDouble(pointSize) * (96 / 72);
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            textRange.ApplyPropertyValue(TextElement.FontSizeProperty, pixelSize);
+        }
+
+        private void FontFamilyCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontFamilyCombo.SelectedItem == null) return;
+            var fontFamily = FontFamilyCombo.SelectedItem.ToString();
+            var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
+            textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, fontFamily);
+        }
+
+        private void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            this.popup.IsOpen = true;
+            this.popup.StaysOpen = false;
+        }
+
+        private void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.popup.IsOpen = true;
+            this.popup.StaysOpen = false;
+        }
+
+        private void rtContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.popup.StaysOpen = false;
+            this.popup.IsOpen = true;
+        }
         #endregion
 
         #region Methods
@@ -363,8 +368,10 @@ namespace RichTextBoxControl
             FontSizeCombo.Items.Add("18");
             FontSizeCombo.Items.Add("24");
             FontSizeCombo.Items.Add("36");
-
-            cbTextColor.ItemsSource = typeof(Brushes).GetProperties();            
+            BrushConverter converter = new BrushConverter();
+            //var  colors = (from p in typeof(Brushes).GetProperties()
+            //            select ((Brush)converter.ConvertFromString(p.Name)).Clone()).ToList();
+            cbTextColor.ItemsSource = typeof(Brushes).GetProperties();
         }
         private void SetButtonGroupSelection(ToggleButton clickedButton, ToggleButton currentSelectedButton, IEnumerable<ToggleButton> buttonGroup, bool ignoreClickWhenSelected)
         {
@@ -401,7 +408,11 @@ namespace RichTextBoxControl
             // Set font size combo
             var fontSize = textRange.GetPropertyValue(TextElement.FontSizeProperty);
             FontSizeCombo.Text = fontSize.ToString();
-
+            // Set Font Color
+            var foregroundColor = textRange.GetPropertyValue(TextElement.ForegroundProperty);
+            BrushConverter conv = new BrushConverter();
+            SolidColorBrush color = conv.ConvertFromString(foregroundColor.ToString()) as SolidColorBrush;
+            this.cbTextColor.SelectedItem = this.cbTextColor.ItemsSource.Cast<PropertyInfo>().SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
             // Set Font buttons
             if (!String.IsNullOrEmpty(textRange.Text))
             {
@@ -421,7 +432,6 @@ namespace RichTextBoxControl
 
         private string GetImagesXML(FlowDocument flowDocument)
         {
-
             using (StringWriter stringwriter = new StringWriter())
             {
                 using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(stringwriter))
