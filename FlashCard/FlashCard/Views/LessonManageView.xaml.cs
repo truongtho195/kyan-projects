@@ -14,14 +14,14 @@ using FlashCard.ViewModels;
 
 namespace FlashCard
 {
-	/// <summary>
-	/// Interaction logic for LessonManage.xaml
-	/// </summary>
-	public partial class LessonManageView : Window,IView
-	{
+    /// <summary>
+    /// Interaction logic for LessonManage.xaml
+    /// </summary>
+    public partial class LessonManageView : Window, IView
+    {
         public LessonManageView()
-		{
-			this.InitializeComponent();
+        {
+            this.InitializeComponent();
             viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
             var a = new LessonViewModel(this).View;
             InitialEvent();
@@ -109,8 +109,8 @@ namespace FlashCard
         /// </summary>
         private void MaximinzedScreen()
         {
-            this.MaxWidth = SystemParameters.WorkArea.Width;
-            this.MaxHeight = SystemParameters.WorkArea.Height;
+            this.MaxWidth = SystemParameters.WorkArea.Width + 5;
+            this.MaxHeight = SystemParameters.WorkArea.Height + 5;
             this.WindowState = WindowState.Maximized;
         }
 
