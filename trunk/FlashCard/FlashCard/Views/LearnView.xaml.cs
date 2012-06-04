@@ -22,27 +22,19 @@ namespace FlashCard.Views
         {
             InitializeComponent();
             InitialEvent();
-            btnAdd.Click += new RoutedEventHandler(btnAdd_Click);
-            btnSubtract.Click += new RoutedEventHandler(btnSubtract_Click);
-            this.tbLessonName.FontSize *=2;
-            this.tbWords.FontSize *= 2;
-            this.tblWordBackSide.FontSize*=2;
+            //Get & save fontsize
+            _lessonFontSize = this.tbLessonName.FontSize;
+            //Double current Fonsize
+            this.tbLessonName.FontSize *= 2;
+            
+            this.slIncrectTextSize.ValueChanged += new RoutedPropertyChangedEventHandler<double>(slIncrectTextSize_ValueChanged);
         }
 
-        void btnSubtract_Click(object sender, RoutedEventArgs e)
+        private double _lessonFontSize;
+        void slIncrectTextSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            this.tbLessonName.FontSize -= 5;
-            this.tbWords.FontSize -= 5;
-            this.tblWordBackSide.FontSize -= 5;
+            this.tbLessonName.FontSize = _lessonFontSize * (slIncrectTextSize.Value) / 100; ;
         }
-
-        void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            this.tbLessonName.FontSize+=5;
-            this.tbWords.FontSize+=5;
-            this.tblWordBackSide.FontSize+=5;
-        }
-
 
 
         #region Events
@@ -51,7 +43,6 @@ namespace FlashCard.Views
             this.DragMove();
         }
 
-
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -59,7 +50,7 @@ namespace FlashCard.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-           // ExitApplication(e);
+            // ExitApplication(e);
         }
 
         private static void ExitApplication(RoutedEventArgs e)
@@ -74,8 +65,6 @@ namespace FlashCard.Views
         {
             if (this.WindowState.Equals(WindowState.Maximized))
                 this.WindowState = WindowState.Normal;
-            //else
-                //MaximinzedScreen();
 
         }
 
@@ -101,7 +90,7 @@ namespace FlashCard.Views
             this.bdHeader.MouseLeftButtonDown += new MouseButtonEventHandler(bdHeader_MouseLeftButtonDown);
             this.btnMinimize.Click += new RoutedEventHandler(btnMinimize_Click);
             this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
-           // this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
+            // this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
             this.PreviewKeyDown += new KeyEventHandler(MainWindow_PreviewKeyDown);
         }
         #endregion

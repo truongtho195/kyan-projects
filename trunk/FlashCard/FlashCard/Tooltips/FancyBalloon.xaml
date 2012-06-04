@@ -9,9 +9,6 @@
              xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              x:Name="me">
-    <!--
-       
-        -->
     <UserControl.Resources>
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
@@ -350,7 +347,7 @@
                                FontSize="21.333"
                                FontWeight="Bold" />
                     <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
-                                                           Document="{Binding SelectedLesson.Description}"
+                                                           Document="{Binding SelectedLesson.Description,Mode=OneWay}"
                                                            IsReadOnly="True"
                                                            Background="Transparent"
                                                            BorderBrush="Transparent"
@@ -390,7 +387,7 @@
                 <RowDefinition Height="27" />
             </Grid.RowDefinitions>
             <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
-                                                   Document="{Binding SelectedLesson.BackSideModel.Content,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                    MinWidth="290"
                                                    MinHeight="50"
                                                    Margin="5"

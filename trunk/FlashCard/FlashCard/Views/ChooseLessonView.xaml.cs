@@ -25,9 +25,62 @@ namespace FlashCard.Views
             InitializeComponent();
             viewModel = new Lazy<ChooseLessonViewModel>(() => ViewHelper.GetViewModel<ChooseLessonViewModel>(this));
             var a = new ChooseLessonViewModel(this).View;
+            InitialEvent();
         }
         #region Variables
         private readonly Lazy<ChooseLessonViewModel> viewModel;
         #endregion
+
+        #region Events
+        private void bdHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                if (this.WindowState.Equals(WindowState.Maximized))
+                    this.WindowState = WindowState.Normal;
+                else
+                    MaximinzedScreen();
+            }
+            this.DragMove();
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+       
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState.Equals(WindowState.Maximized))
+                this.WindowState = WindowState.Normal;
+            else
+                MaximinzedScreen();
+
+        }
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Set maximized for form with Current Screen
+        /// </summary>
+        private void MaximinzedScreen()
+        {
+            this.MaxWidth = SystemParameters.WorkArea.Width + 5;
+            this.MaxHeight = SystemParameters.WorkArea.Height + 5;
+            this.WindowState = WindowState.Maximized;
+        }
+        private void InitialEvent()
+        {
+            this.bdHeader.MouseLeftButtonDown += new MouseButtonEventHandler(bdHeader_MouseLeftButtonDown);
+            this.btnMinimize.Click += new RoutedEventHandler(btnMinimize_Click);
+            this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
+            //this.btnExit.Click : call from command
+            //this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
+        }
+        #endregion
+
     }
 }

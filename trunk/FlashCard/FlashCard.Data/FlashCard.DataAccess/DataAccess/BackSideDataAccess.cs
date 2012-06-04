@@ -261,7 +261,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Content)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Detail)));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", backSideModel.IsCorrect));
                 sqlCommand.ExecuteNonQuery();
                 backSideModel.BackSideID = (int)sqlConnect.LastInsertRowId;
@@ -293,7 +293,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Content)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.Detail)));
                 var correct = backSideModel.IsCorrect.HasValue ? backSideModel.IsCorrect : false;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", correct));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@BackSideID", backSideModel.BackSideID));
@@ -346,7 +346,7 @@ namespace FlashCard.DataAccess
             BackSideModel backSideModel = new BackSideModel();
             backSideModel.BackSideID = int.Parse(reader["BackSideID"].ToString());
             backSideModel.LessonID = int.Parse(reader["LessonID"].ToString());
-            backSideModel.Content = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Content"].ToString());
+            backSideModel.Detail = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Content"].ToString());
             var isCorrect = reader["IsCorrect"];
             if (isCorrect != System.DBNull.Value)
                 backSideModel.IsCorrect = bool.Parse(reader["IsCorrect"].ToString());

@@ -96,6 +96,9 @@ namespace FlashCard.ViewModels
             }
         }
 
+        /// <summary>
+        /// Set value for scenario : When OnPlayPauseExecute call this form, create timer 
+        /// </summary>
         public bool IsLOtherFormShow { get; set; }
 
         public bool IsStarted { get; set; }
@@ -349,6 +352,52 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+        
+
+        #region "ChooseLessonCommand"
+        /// <summary>
+        /// Gets the ChooseLesson Command.
+        /// <summary>
+        private ICommand _ChooseLessonCommand;
+        public ICommand ChooseLessonCommand
+        {
+            get
+            {
+                if (_ChooseLessonCommand == null)
+                    _ChooseLessonCommand = new RelayCommand(this.OnChooseLessonExecute, this.OnChooseLessonCanExecute);
+                return _ChooseLessonCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the ChooseLesson command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnChooseLessonCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the ChooseLesson command is executed.
+        /// </summary>
+        private void OnChooseLessonExecute(object param)
+        {
+            IsLOtherFormShow = true;
+            OnPlayPauseExecute(null);
+            ChooseLessonView lessionView = new ChooseLessonView();
+            if (lessionView.ShowDialog()==true)
+            {
+                var viewModel = lessionView.GetViewModel<ChooseLessonViewModel>();
+                LessonCollection = viewModel.LessonCollection;
+            }
+            IsLOtherFormShow = false;
+            OnPlayPauseExecute(null);
+            
+        }
+        #endregion
+
+        //Full Screen Region
         #region "ClosingFormCommand"
 
         /// <summary>
@@ -399,50 +448,6 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region "ChooseLessonCommand"
-        /// <summary>
-        /// Gets the ChooseLesson Command.
-        /// <summary>
-        private ICommand _ChooseLessonCommand;
-        public ICommand ChooseLessonCommand
-        {
-            get
-            {
-                if (_ChooseLessonCommand == null)
-                    _ChooseLessonCommand = new RelayCommand(this.OnChooseLessonExecute, this.OnChooseLessonCanExecute);
-                return _ChooseLessonCommand;
-            }
-        }
-
-        /// <summary>
-        /// Method to check whether the ChooseLesson command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnChooseLessonCanExecute(object param)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the ChooseLesson command is executed.
-        /// </summary>
-        private void OnChooseLessonExecute(object param)
-        {
-            IsLOtherFormShow = true;
-            OnPlayPauseExecute(null);
-            ChooseLessonView lessionView = new ChooseLessonView();
-            if (lessionView.ShowDialog()==true)
-            {
-                var viewModel = lessionView.GetViewModel<ChooseLessonViewModel>();
-                LessonCollection = viewModel.LessonCollection;
-            }
-            IsLOtherFormShow = false;
-            OnPlayPauseExecute(null);
-            
-        }
-        #endregion
-
-        //Full Screen Region
         #region "Full Screen Command"
         /// <summary>
         /// Gets the FullScreen Command.
@@ -474,7 +479,6 @@ namespace FlashCard.ViewModels
         private void OnFullScreenExecute(object param)
         {
             IsLOtherFormShow = true;
-            _learnView = new LearnView();
             _learnView.DataContext = this;
             StartLessonFullScreen();
             Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
@@ -484,6 +488,44 @@ namespace FlashCard.ViewModels
         }
 
        
+        #endregion
+
+        #region MiniFullScreenCommand
+
+        /// <summary>
+        /// Gets the MiniFullScreen Command.
+        /// <summary>
+        private ICommand _miniFullScreenCommand;
+        public ICommand MiniFullScreenCommand
+        {
+            get
+            {
+                if (_miniFullScreenCommand == null)
+                    _miniFullScreenCommand = new RelayCommand(this.OnMiniFullScreenExecute, this.OnMiniFullScreenCanExecute);
+                return _miniFullScreenCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the MiniFullScreen command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnMiniFullScreenCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the MiniFullScreen command is executed.
+        /// </summary>
+        private void OnMiniFullScreenExecute(object param)
+        {
+            if("Maximize".Equals(param.ToString()))
+                this._timerViewFullScreen.Stop();
+            else
+                this._timerViewFullScreen.Start();
+
+        }
         #endregion
 
         #endregion

@@ -60,7 +60,6 @@ namespace FlashCard
             this.DragMove();
         }
 
-
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -69,14 +68,6 @@ namespace FlashCard
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             ExitApplication(e);
-        }
-
-        private static void ExitApplication(RoutedEventArgs e)
-        {
-            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (messageBoxResult == MessageBoxResult.Yes)
-                Application.Current.Shutdown();
-            else e.Handled = true;
         }
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
@@ -112,6 +103,14 @@ namespace FlashCard
             this.MaxWidth = SystemParameters.WorkArea.Width + 5;
             this.MaxHeight = SystemParameters.WorkArea.Height + 5;
             this.WindowState = WindowState.Maximized;
+        }
+
+        private void ExitApplication(RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+                Application.Current.Shutdown();
+            else e.Handled = true;
         }
 
         private void InitialEvent()

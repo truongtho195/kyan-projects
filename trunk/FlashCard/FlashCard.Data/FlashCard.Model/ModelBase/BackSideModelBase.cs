@@ -69,17 +69,17 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private FlowDocument _content;
-        public FlowDocument Content
+        private FlowDocument _detail;
+        public FlowDocument Detail
         {
-            get { return _content; }
+            get { return _detail; }
             set
             {
                 //if (_content != value)
                 //{
                     this.OnContentChanging(value);
-                    _content = value;
-                    RaisePropertyChanged(() => Content);
+                    _detail = value;
+                    RaisePropertyChanged(() => Detail);
                     this.OnChanged();
                     this.OnContentChanged();
                 //}
