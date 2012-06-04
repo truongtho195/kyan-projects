@@ -572,15 +572,14 @@
                             	<ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <ComboBox x:Name="cmbType"
-                                      ItemsSource="{Binding LessonTypeCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedItem="{Binding SelectedLesson.TypeModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding LessonTypeCollection}"
                                       SelectedValue="{Binding SelectedLesson.TypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValuePath="TypeID"
                                       DisplayMemberPath="Name"
                                       d:LayoutOverrides="Height"
                                       Width="120"
-                                      Template="{DynamicResource ComboBoxEditableTemplate}"
+                                      
                                        />
                         </Grid>
                         <Grid x:Name="grdCategory"

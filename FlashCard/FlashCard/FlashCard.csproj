@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\EventCommandBehaviour.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
