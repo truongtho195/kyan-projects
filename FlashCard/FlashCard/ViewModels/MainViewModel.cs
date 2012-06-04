@@ -520,7 +520,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnMiniFullScreenExecute(object param)
         {
-            if("Maximize".Equals(param.ToString()))
+            if("Minimize".Equals(param.ToString()))
                 this._timerViewFullScreen.Stop();
             else
                 this._timerViewFullScreen.Start();
