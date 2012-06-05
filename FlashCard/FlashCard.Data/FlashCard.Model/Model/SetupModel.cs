@@ -7,11 +7,17 @@ namespace FlashCard.Model
 {
     public class SetupModel : SetupModelBase
     {
+        /// <summary>
+        ///               TimeOut
+        /// |----------------|---------------------------|
+        ///    DistanceTime       ViewTime
+        /// </summary>
+
         public SetupModel()
         {
 
         }
-
+        
         #region Properties
         private TimeSpan _timeOut;
         /// <summary>
