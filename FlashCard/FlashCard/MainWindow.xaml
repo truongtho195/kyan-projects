@@ -8,14 +8,18 @@
 
     <Grid>
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
-                                IconSource="/Icons/Error.ico"
+                                IconSource="{Binding IconStatus}"
                                 ToolTipText="Balloon Sample Icon">
+
+           
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Choose Lesson"
                               Command="{Binding ChooseLessonCommand}" />
                     <MenuItem Header="Full Learning"
                               Command="{Binding FullScreenCommand}" />
+                    <MenuItem Header="User Config"
+                              Command="{Binding UserConfigCommand}" />
                     <MenuItem Header="Lesson Management"
                               Command="{Binding LessonManagerCommand}" />
                     <MenuItem Header="Play/Pause"

@@ -411,8 +411,15 @@ namespace RichTextBoxControl
             // Set Font Color
             var foregroundColor = textRange.GetPropertyValue(TextElement.ForegroundProperty);
             BrushConverter conv = new BrushConverter();
-            SolidColorBrush color = conv.ConvertFromString(foregroundColor.ToString()) as SolidColorBrush;
-            this.cbTextColor.SelectedItem = this.cbTextColor.ItemsSource.Cast<PropertyInfo>().SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
+            if (!"{DependencyProperty.UnsetValue}".Equals(foregroundColor.ToString()))
+            {
+                SolidColorBrush color = conv.ConvertFromString(foregroundColor.ToString()) as SolidColorBrush;
+                var colorInfo = this.cbTextColor.ItemsSource.Cast<PropertyInfo>();
+
+                this.cbTextColor.SelectedItem = colorInfo.Count() > 1 ? null : colorInfo.SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
+            }
+            else
+                this.cbTextColor.SelectedItem = null;
             // Set Font buttons
             if (!String.IsNullOrEmpty(textRange.Text))
             {

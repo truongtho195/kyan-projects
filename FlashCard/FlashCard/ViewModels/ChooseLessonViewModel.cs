@@ -144,11 +144,12 @@ namespace FlashCard.ViewModels
         private void OnCancelExecute(object param)
         {
             ViewCore.DialogResult = false;
+            ViewCore.Close();
         }
         #endregion
-
-
         #endregion
+
+        
 
         #region Methods
         private void InitialData()

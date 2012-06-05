@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/1337833571_full_screen.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icons/1338870517_circle_green.ico")]
 
 

@@ -19,57 +19,56 @@ namespace FlashCard.Model
         #region Properties
 
         #region ViewTime
-        private TimeSpan _viewTime;
+        private int _viewTimeSecond;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public TimeSpan ViewTime
+        public int ViewTimeSecond
         {
-            get { return _viewTime; }
+            get { return _viewTimeSecond; }
             set
             {
-                if (_viewTime != value)
+                if (_viewTimeSecond != value)
                 {
-                    this.OnViewTimeChanging(value);
-                    _viewTime = value;
-                    RaisePropertyChanged(() => ViewTime);
-                    this.OnViewTimeChanged();
+                    this.OnViewTimeSecondChanging(value);
+                    _viewTimeSecond = value;
+                    RaisePropertyChanged(() => ViewTimeSecond);
+                    this.OnViewTimeSecondChanged();
                 }
             }
         }
 
-        protected virtual void OnViewTimeChanging(TimeSpan value) { }
-        protected virtual void OnViewTimeChanged() { }
+        protected virtual void OnViewTimeSecondChanging(int value) { }
+        protected virtual void OnViewTimeSecondChanged() { }
         #endregion
 
         #region DistanceTime
 
-        private TimeSpan _distanceTime;
+        private int _distanceTimeSecond;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public TimeSpan DistanceTime
+        public int DistanceTimeSecond
         {
-            get { return _distanceTime; }
+            get { return _distanceTimeSecond; }
             set
             {
-                if (_distanceTime != value)
+                if (_distanceTimeSecond != value)
                 {
-                    this.OnDistanceTimeChanging(value);
-                    _distanceTime = value;
-                    RaisePropertyChanged(() => DistanceTime);
-                    this.OnDistanceTimeChanged();
+                    this.OnDistanceTimeSecondChanging(value);
+                    _distanceTimeSecond = value;
+                    RaisePropertyChanged(() => DistanceTimeSecond);
+                    this.OnDistanceTimeSecondChanged();
                 }
             }
         }
 
-        protected virtual void OnDistanceTimeChanging(TimeSpan value) { }
-        protected virtual void OnDistanceTimeChanged() { }
+        protected virtual void OnDistanceTimeSecondChanging(int value) { }
+        protected virtual void OnDistanceTimeSecondChanged() { }
 
 
 
         #endregion
-
 
         private ShowType _sideShow;
         /// <summary>
