@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\ChooseLessonViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\UserConfigViewModel.cs" />
     <Compile Include="Views\ChooseLessonView.xaml.cs">
       <DependentUpon>ChooseLessonView.xaml</DependentUpon>
     </Compile>
@@ -103,6 +104,9 @@
     </Compile>
     <Compile Include="Views\LessonManageView.xaml.cs">
       <DependentUpon>LessonManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserConfigView.xaml.cs">
+      <DependentUpon>UserConfigView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -131,6 +135,10 @@
     <Page Include="Views\LessonManageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UserConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +238,10 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Circle_Green.ico" />
+    <Resource Include="Icons\Circle_Red.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

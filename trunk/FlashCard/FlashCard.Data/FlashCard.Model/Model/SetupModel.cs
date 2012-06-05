@@ -5,17 +5,18 @@ using System.Text;
 
 namespace FlashCard.Model
 {
-    public class SetupModel:SetupModelBase
+    public class SetupModel : SetupModelBase
     {
         public SetupModel()
         {
-            
+
         }
 
         #region Properties
         private TimeSpan _timeOut;
         /// <summary>
-        /// Gets or sets the property value.
+        /// This is Extend Properties
+        ///<para> Gets or sets the property value.</para>
         /// </summary>
         public TimeSpan TimeOut
         {
@@ -30,24 +31,34 @@ namespace FlashCard.Model
             }
         }
 
+
+
+
+
         #endregion
 
         #region Overide
-        protected override void OnViewTimeChanged()
+        protected override void OnViewTimeSecondChanged()
         {
-            if (this.ViewTime != null && this.DistanceTime!=null)
+            if (this.ViewTimeSecond != null && this.DistanceTimeSecond != null)
             {
-                this._timeOut = this.ViewTime.Add(this.DistanceTime);
+                var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                this._timeOut = new TimeSpan(0,0,timeOutSecond);
             }
         }
 
-        protected override void OnDistanceTimeChanged()
+        protected override void OnDistanceTimeSecondChanged()
         {
-            if (this.ViewTime != null && this.DistanceTime != null)
+            if (this.ViewTimeSecond != null && this.DistanceTimeSecond != null)
             {
-                this._timeOut = this.ViewTime.Add(this.DistanceTime);
+                var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                this._timeOut = new TimeSpan(0, 0, timeOutSecond);
             }
         }
+        #endregion
+
+        #region Methods
+       
         #endregion
 
 

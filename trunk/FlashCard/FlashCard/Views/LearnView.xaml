@@ -6,6 +6,7 @@
         xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
         mc:Ignorable="d"
         x:Class="FlashCard.Views.LearnView"
+        x:Name="vLearnView"
         Title="LearnView"
         AllowsTransparency="True"
         WindowStyle="None"
@@ -19,7 +20,8 @@
         VerticalContentAlignment="Stretch">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="StateChanged">
-            <localCommand:EventToCommand Command="{Binding MiniFullScreenCommand,Mode=OneWay}" CommandParameter="Maximize"/>
+            <localCommand:EventToCommand Command="{Binding MiniFullScreenCommand,Mode=OneWay}"
+                                         CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
@@ -108,7 +110,7 @@
                         HorizontalAlignment="Right">
                 <Button x:Name="btnMinimize"
                         Command="{Binding MiniFullScreenCommand}"
-                        CommandParameter="Minimize"
+                        CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}"
                         Width="25"
                         Height="25"
                         Style="{StaticResource EmptyButton}"
@@ -291,7 +293,7 @@
                 Height="30">
             <StackPanel HorizontalAlignment="Right"
                         Orientation="Horizontal"
-                        d:LayoutOverrides="Height">
+                        d:LayoutOverrides="Height" Margin="0,0,10,0">
                 <Button x:Name="btnChangeFace"
                         Command="{Binding ChangeSideCommand}"
                         CommandParameter="FullScreen"
