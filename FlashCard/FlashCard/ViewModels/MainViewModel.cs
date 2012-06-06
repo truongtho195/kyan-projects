@@ -37,7 +37,6 @@ namespace FlashCard.ViewModels
                 SelectedLesson.IsBackSide = false;
                 _balloon = new FancyBalloon();
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
-
             }
             ViewCore.Hide();
 
@@ -283,14 +282,20 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            _swCountTimerTick.Stop();
             if (!IsOtherFormShow && this.IsPopupStarted == true)
             {
-                var time = _swCountTimerTick.Elapsed.Seconds < SetupModel.ViewTimeSecond ? SetupModel.ViewTimeSecond : (SetupModel.ViewTimeSecond) / 2;
+                _swCountTimerTick.Stop();
+                int time=0;
+                if (_swCountTimerTick.Elapsed.Seconds < SetupModel.ViewTimeSecond)
+                    time = SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds;
+                else
+                    time = 1;
+                 //= _swCountTimerTick.Elapsed.Seconds < SetupModel.ViewTimeSecond ? SetupModel.ViewTimeSecond : (SetupModel.ViewTimeSecond) / 2;
                 var timerSpan = new TimeSpan(0, 0, 0, time);
                 InitialWaitForClose(timerSpan);
+                _swCountTimerTick.Reset();
             }
-            _swCountTimerTick.Reset();
+            
         }
 
         #endregion
@@ -479,8 +484,24 @@ namespace FlashCard.ViewModels
                 //set time for ballon popup
                 if (_timerPopup != null)
                     _timerPopup.Interval = SetupModel.TimeOut;
+
+                if (SetupModel.IsEnableSlideShow)
+                    PlayPauseBallonPopup(false);
+                else
+                {
+                    SelectedLesson = LessonCollection.First();
+                    SelectedLesson.IsBackSide = false;
+                    _balloon = new FancyBalloon();
+                    _timerPopup.Stop();
+                    _waitForClose.Stop();
+                    ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                }
             }
-            PlayPauseBallonPopup(false);
+            else
+            {
+                PlayPauseBallonPopup(false);
+            }
+            
         }
         #endregion
 
@@ -700,7 +721,6 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void WaitBalloon()
         {
-
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
@@ -763,7 +783,7 @@ namespace FlashCard.ViewModels
         private void StopPopupNotify()
         {
 
-            if (_waitForClose != null)
+            //if (_waitForClose != null)
                 _waitForClose.Stop();
             ViewCore.MyNotifyIcon.CloseBalloon();
             ViewCore.MyNotifyIcon.Dispose();
@@ -804,6 +824,8 @@ namespace FlashCard.ViewModels
                 {
                     if (_timerPopup.IsEnabled)
                         _timerPopup.Stop();
+                    if (_waitForClose != null)
+                        _waitForClose.Stop();
                 }
             }
         }
