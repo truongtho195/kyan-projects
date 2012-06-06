@@ -128,7 +128,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            return true;
+            if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x=>x.IsChecked))
+                return true;
+            return false;
         }
 
         /// <summary>
