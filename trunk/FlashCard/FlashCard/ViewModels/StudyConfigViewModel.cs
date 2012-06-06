@@ -12,10 +12,10 @@ using MVVMHelper.Commands;
 
 namespace FlashCard.ViewModels
 {
-    public class ChooseLessonViewModel : ViewModel<ChooseLessonView>
+    public class StudyConfigViewModel : ViewModel<StudyConfigView>
     {
         #region Constructors
-        public ChooseLessonViewModel(ChooseLessonView view)
+        public StudyConfigViewModel(StudyConfigView view)
             : base(view)
         {
             InitialData();
@@ -56,6 +56,49 @@ namespace FlashCard.ViewModels
                 {
                     _lessonCollection = value;
                     RaisePropertyChanged(() => LessonCollection);
+                }
+            }
+        }
+        #endregion
+
+
+        #region "SetupModel"
+        private SetupModel _setupModel;
+        /// <summary>
+        /// Gets or sets the SetupModel.
+        /// <para>Property For communicate another class</para>
+        /// </summary>
+        public SetupModel SetupModel
+        {
+            get { return _setupModel; }
+            set
+            {
+                if (_setupModel != value)
+                {
+                    _setupModel = value;
+                    SelectedSetupModel = new SetupModel();
+                    SelectedSetupModel = _setupModel;
+                    RaisePropertyChanged(() => SetupModel);
+                }
+            }
+        }
+        #endregion
+
+        #region "SelectedSetupModel"
+        private SetupModel _selectedSetupModel;
+        /// <summary>
+        /// Gets or sets the SelectedSetupModel.
+        /// <para>Property For Binding in view</para>
+        /// </summary>
+        public SetupModel SelectedSetupModel
+        {
+            get { return _selectedSetupModel; }
+            set
+            {
+                if (_selectedSetupModel != value)
+                {
+                    _selectedSetupModel = value;
+                    RaisePropertyChanged(() => SelectedSetupModel);
                 }
             }
         }
@@ -107,9 +150,13 @@ namespace FlashCard.ViewModels
             if (lst != null && lst.Count>0)
             {
                 LessonCollection = new ObservableCollection<LessonModel>(lst);
-                ViewCore.DialogResult = true;
             }
-            ViewCore.Close();
+
+            //Handle Setup
+            SetupModel = SelectedSetupModel;
+            this.ViewCore.DialogResult = true;
+            this.ViewCore.Close();
+            
         }
         #endregion
 

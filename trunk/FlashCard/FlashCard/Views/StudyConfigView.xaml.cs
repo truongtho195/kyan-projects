@@ -16,19 +16,19 @@ using FlashCard.ViewModels;
 namespace FlashCard.Views
 {
     /// <summary>
-    /// Interaction logic for ChooseLessonView.xaml
+    /// Interaction logic for StudyConfigView.xaml
     /// </summary>
-    public partial class ChooseLessonView :  Window,IView
+    public partial class StudyConfigView :  Window,IView
     {
-        public ChooseLessonView()
+        public StudyConfigView()
         {
             InitializeComponent();
-            viewModel = new Lazy<ChooseLessonViewModel>(() => ViewHelper.GetViewModel<ChooseLessonViewModel>(this));
-            var a = new ChooseLessonViewModel(this).View;
+            viewModel = new Lazy<StudyConfigViewModel>(() => ViewHelper.GetViewModel<StudyConfigViewModel>(this));
+            var a = new StudyConfigViewModel(this).View;
             InitialEvent();
         }
         #region Variables
-        private readonly Lazy<ChooseLessonViewModel> viewModel;
+        private readonly Lazy<StudyConfigViewModel> viewModel;
         #endregion
 
         #region Events

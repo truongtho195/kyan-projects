@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\App.xaml
-6565118863
+5-261428300
 
-22-792470565
+20-553404131
 24-1196945334
-MainWindow.xaml;Tooltips\FancyBalloon.xaml;Views\ChooseLessonView.xaml;Views\LearnView.xaml;Views\LessonManageView.xaml;Views\UserConfigView.xaml;
+MainWindow.xaml;Tooltips\FancyBalloon.xaml;Views\StudyConfigView.xaml;Views\LearnView.xaml;Views\LessonManageView.xaml;
 
 True
 

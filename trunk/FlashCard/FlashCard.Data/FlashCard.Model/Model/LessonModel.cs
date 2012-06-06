@@ -160,7 +160,6 @@ namespace FlashCard.Model
                 if (_errors != value)
                 {
                     _errors = value;
-                    OnChanged();
                     RaisePropertyChanged(() => Errors);
                 }
             }

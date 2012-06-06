@@ -271,6 +271,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
+                CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -304,6 +305,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
+                CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -332,6 +334,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
+                CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;

@@ -10,9 +10,9 @@ namespace FlashCard.Model
 
         #region Variables
         public enum ShowType
-        { 
+        {
             FrontSide = 1,
-            BackSide=2
+            BackSide = 2
         }
         #endregion
 
@@ -70,6 +70,122 @@ namespace FlashCard.Model
 
         #endregion
 
+
+        #region IsLimitCard
+        private bool _isLimitCard;
+        /// <summary>
+        /// Gets or sets the IsLimitCard.
+        /// </summary>
+        public bool IsLimitCard
+        {
+            get { return _isLimitCard; }
+            set
+            {
+                if (_isLimitCard != value)
+                {
+                    this.OnIsLimitCardChanging(value);
+                    _isLimitCard = value;
+                    RaisePropertyChanged(() => IsLimitCard);
+                    this.OnIsLimitCardChanged();
+                }
+            }
+        }
+
+        protected virtual void OnIsLimitCardChanging(bool value) { }
+        protected virtual void OnIsLimitCardChanged()
+        {
+            OnChanged();
+        }
+        #endregion
+
+
+        #region LimitCardNum
+        private int _limitCardNum;
+        /// <summary>
+        /// Gets or sets the NumberLimitCard.
+        /// </summary>
+        public int LimitCardNum
+        {
+            get { return _limitCardNum; }
+            set
+            {
+                if (_limitCardNum != value)
+                {
+                    OnLimitCardNumChanging(value);
+                    _limitCardNum = value;
+                    RaisePropertyChanged(() => LimitCardNum);
+                    OnLimitCardNumChanged();
+                }
+            }
+        }
+
+        protected virtual void OnLimitCardNumChanging(int value) { }
+        protected virtual void OnLimitCardNumChanged()
+        {
+            OnChanged();
+        }
+        #endregion
+
+
+        #region IsEnableSlideShow
+        private bool _isEnableSlideShow;
+        /// <summary>
+        /// Gets or sets the IsEnableSlideShow.
+        /// </summary>
+        public bool IsEnableSlideShow
+        {
+            get { return _isEnableSlideShow; }
+            set
+            {
+                if (_isEnableSlideShow != value)
+                {
+                    OnIsEnableSlideShowhanging(value);
+                    _isEnableSlideShow = value;
+                    RaisePropertyChanged(() => IsEnableSlideShow);
+                    OnIsEnableSlideShowChanged();
+                }
+            }
+        }
+        protected virtual void OnIsEnableSlideShowhanging(bool value) { }
+        protected virtual void OnIsEnableSlideShowChanged()
+        {
+            OnChanged();
+        }
+        #endregion
+
+
+
+        #region IsEnableLoop
+        private bool _isEnableLoop;
+        /// <summary>
+        /// Gets or sets the IsEnableLoop.
+        /// </summary>
+        public bool IsEnableLoop
+        {
+            get { return _isEnableLoop; }
+            set
+            {
+                if (_isEnableLoop != value)
+                {
+                    OnIsEnableLoopChanging(value);
+                    _isEnableLoop = value;
+                    RaisePropertyChanged(() => IsEnableLoop);
+                    OnIsEnableLoophanged();
+                }
+            }
+        }
+
+        protected virtual void OnIsEnableLoopChanging(bool value) { }
+        protected virtual void OnIsEnableLoophanged()
+        {
+            OnChanged();
+        }
+        #endregion
+
+
+
+
+
         private ShowType _sideShow;
         /// <summary>
         /// Gets or sets the property value.
@@ -90,7 +206,7 @@ namespace FlashCard.Model
         }
 
         protected virtual void OnSideShowChanging(ShowType value) { }
-        protected virtual void OnSideShowChanged() { } 
+        protected virtual void OnSideShowChanged() { }
         #endregion
 
 

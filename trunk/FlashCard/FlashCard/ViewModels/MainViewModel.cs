@@ -28,8 +28,19 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
-            InitialTimer();
+            UserConfigStudies();
+            if (SetupModel.IsEnableSlideShow)
+                InitialTimer();
+            else
+            {
+                SelectedLesson = LessonCollection.First();
+                SelectedLesson.IsBackSide = false;
+                _balloon = new FancyBalloon();
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+
+            }
             ViewCore.Hide();
+
         }
         #endregion
 
@@ -265,6 +276,8 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseLeaveExecute(object param)
         {
+            if (!SetupModel.IsEnableSlideShow)
+                return false;
             return true;
         }
 
@@ -298,6 +311,8 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseEnterExecute(object param)
         {
+            if (!SetupModel.IsEnableSlideShow)
+                return false;
             return true;
         }
 
@@ -309,6 +324,7 @@ namespace FlashCard.ViewModels
                 _timerPopup.Stop();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, action);
+
         }
         #endregion
 
@@ -414,7 +430,7 @@ namespace FlashCard.ViewModels
             PlayPauseBallonPopup(false);
         }
 
-       
+
         #endregion
 
         #region "ChooseLessonCommand"
@@ -446,13 +462,23 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnChooseLessonExecute(object param)
         {
-            
+            UserConfigStudies();
+        }
+
+        private void UserConfigStudies()
+        {
             PlayPauseBallonPopup(true);
-            ChooseLessonView lessionView = new ChooseLessonView();
+            StudyConfigView lessionView = new StudyConfigView();
+            lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
             if (lessionView.ShowDialog() == true)
             {
-                var viewModel = lessionView.GetViewModel<ChooseLessonViewModel>();
+                var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
                 LessonCollection = viewModel.LessonCollection;
+
+                SetupModel = viewModel.SetupModel;
+                //set time for ballon popup
+                if (_timerPopup != null)
+                    _timerPopup.Interval = SetupModel.TimeOut;
             }
             PlayPauseBallonPopup(false);
         }
@@ -494,7 +520,7 @@ namespace FlashCard.ViewModels
                 Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
                 sb.Completed += new EventHandler(sb_Completed);
                 _learnView.BeginStoryboard(sb);
-                
+
                 _timerViewFullScreen.Stop();
                 PlayPauseBallonPopup(false);
             }
@@ -595,50 +621,7 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
-        
-        //User config
-        #region "UserConfigCommand"
-        /// <summary>
-        /// Gets the UserConfig Command.
-        /// <summary>
-        private ICommand _userConfigCommand;
-        public ICommand UserConfigCommand
-        {
-            get
-            {
-                if (_userConfigCommand == null)
-                    _userConfigCommand = new RelayCommand(this.OnUserConfigExecute, this.OnUserConfigCanExecute);
-                return _userConfigCommand;
-            }
-        }
 
-        /// <summary>
-        /// Method to check whether the UserConfig command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnUserConfigCanExecute(object param)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the UserConfig command is executed.
-        /// </summary>
-        private void OnUserConfigExecute(object param)
-        {
-            PlayPauseBallonPopup(true);
-            UserConfigView configView = new UserConfigView();
-            UserConfigViewModel userConfigViewmodel = new UserConfigViewModel(configView);
-            userConfigViewmodel.SetupModel = SetupModel;
-            if (configView.ShowDialog() == true)
-            {
-                SetupModel = userConfigViewmodel.SetupModel;
-                //set time for ballon popup
-                _timerPopup.Interval = SetupModel.TimeOut;
-            }
-            PlayPauseBallonPopup(false);
-        }
-        #endregion
         #endregion
 
         #region Methods
@@ -651,8 +634,6 @@ namespace FlashCard.ViewModels
             LessonDataAccess lessonDA = new LessonDataAccess();
             LessonCollection = new ObservableCollection<LessonModel>(lessonDA.GetAllWithRelation());
             SetupModel = new SetupModel();
-            SetupModel.DistanceTimeSecond = 3;
-            SetupModel.ViewTimeSecond = 7;
         }
 
         /// <summary>
@@ -719,15 +700,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void WaitBalloon()
         {
-            
+
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 testTimeView.Stop();
-                Console.WriteLine("|[Test] View Timer :{0}",testTimeView.Elapsed.Seconds);
+                Console.WriteLine("|[Test] View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();
                 Console.WriteLine("Closed.......");
-                _timerPopup.Start();
+                if (_timerPopup != null)
+                    _timerPopup.Start();
                 _waitForClose.Stop();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
@@ -767,7 +749,7 @@ namespace FlashCard.ViewModels
         {
             testTimerPopup.Stop();
             testTimeView.Start();
-            Debug.WriteLine("|[Test] testTimerPopup :{0}",testTimerPopup.Elapsed.Seconds);
+            Debug.WriteLine("|[Test] testTimerPopup :{0}", testTimerPopup.Elapsed.Seconds);
             testTimerPopup.Reset();
             _waitForClose = new DispatcherTimer();
             _waitForClose.Interval = timeSpan;
@@ -826,11 +808,5 @@ namespace FlashCard.ViewModels
             }
         }
         #endregion
-
-
-
-
-
-
     }
 }
