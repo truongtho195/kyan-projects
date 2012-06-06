@@ -92,21 +92,17 @@
     </Compile>
     <Compile Include="Commands\EventToCommand.cs" />
     <Compile Include="UserControls\RichTextBoxControl.cs" />
-    <Compile Include="ViewModels\ChooseLessonViewModel.cs" />
+    <Compile Include="ViewModels\StudyConfigViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\UserConfigViewModel.cs" />
-    <Compile Include="Views\ChooseLessonView.xaml.cs">
-      <DependentUpon>ChooseLessonView.xaml</DependentUpon>
+    <Compile Include="Views\StudyConfigView.xaml.cs">
+      <DependentUpon>StudyConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LearnView.xaml.cs">
       <DependentUpon>LearnView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LessonManageView.xaml.cs">
       <DependentUpon>LessonManageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserConfigView.xaml.cs">
-      <DependentUpon>UserConfigView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -124,7 +120,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ChooseLessonView.xaml">
+    <Page Include="Views\StudyConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,10 +131,6 @@
     <Page Include="Views\LessonManageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UserConfigView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
