@@ -8,6 +8,7 @@
 
     <Grid>
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
+                                DoubleClickCommand="{Binding ShowPopupCommand}"
                                 IconSource="{Binding IconStatus}"
                                 ToolTipText="Balloon Sample Icon">
 

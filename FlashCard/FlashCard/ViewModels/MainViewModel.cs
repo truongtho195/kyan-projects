@@ -35,8 +35,7 @@ namespace FlashCard.ViewModels
             {
                 SelectedLesson = LessonCollection.First();
                 SelectedLesson.IsBackSide = false;
-                _balloon = new FancyBalloon();
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                ShowPopupForm();
             }
             ViewCore.Hide();
 
@@ -290,7 +289,6 @@ namespace FlashCard.ViewModels
                     time = SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds;
                 else
                     time = 1;
-                 //= _swCountTimerTick.Elapsed.Seconds < SetupModel.ViewTimeSecond ? SetupModel.ViewTimeSecond : (SetupModel.ViewTimeSecond) / 2;
                 var timerSpan = new TimeSpan(0, 0, 0, time);
                 InitialWaitForClose(timerSpan);
                 _swCountTimerTick.Reset();
@@ -505,6 +503,33 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+        #region "ShowPopupCommand"
+        private ICommand _showPopupCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand ShowPopupCommand
+        {
+            get
+            {
+                if (_showPopupCommand == null)
+                {
+                    _showPopupCommand = new RelayCommand(this.ShowPopupExecute, this.CanShowPopupExecute);
+                }
+                return _showPopupCommand;
+            }
+        }
+
+        private bool CanShowPopupExecute(object param)
+        {
+            return true;
+        }
+
+        private void ShowPopupExecute(object param)
+        {
+            ShowPopupForm();
+        }
+        #endregion
+
         //Full Screen Region
         #region "ClosingFormCommand"
 
@@ -658,6 +683,33 @@ namespace FlashCard.ViewModels
         }
 
         /// <summary>
+        /// Method to set lesson to show in popup or fullscreen
+        /// </summary>
+        private void SetLesson()
+        {
+            if (_count < LessonCollection.Count - 1)
+                _count++;
+            else
+                _count = 0;
+
+            SelectedLesson = LessonCollection[_count];
+            SelectedLesson.IsBackSide = false;
+        }
+
+        //Timer Region
+
+        ///<summary>
+        ///Timer Tick
+        ///
+        ///  |-------------------Popup timer tick(_timerPopup)--------------------|
+        ///  |------Show & Close Timer(_waitForClose)------|
+        ///  
+        ///  {____________________View time________________}{_______Distance______}       
+        ///  
+        ///</summary>
+
+
+        /// <summary>
         /// Start Timer & notify popup
         /// </summary>
         private void InitialTimer()
@@ -697,6 +749,23 @@ namespace FlashCard.ViewModels
         }
 
         /// <summary>
+        /// Initial For Wait to close
+        /// </summary>
+        /// <param name="timeSpan"></param>
+        Stopwatch testTimeView = new Stopwatch();
+        private void InitialWaitForClose(TimeSpan timeSpan)
+        {
+            testTimerPopup.Stop();
+            testTimeView.Start();
+            Debug.WriteLine("|[Test] testTimerPopup :{0}", testTimerPopup.Elapsed.Seconds);
+            testTimerPopup.Reset();
+            _waitForClose = new DispatcherTimer();
+            _waitForClose.Interval = timeSpan;
+            _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
+            _waitForClose.Start();
+        }
+
+        /// <summary>
         /// wait time for close popup
         /// </summary>
         /// <param name="sender"></param>
@@ -704,16 +773,6 @@ namespace FlashCard.ViewModels
         private void _waitForClose_Tick(object sender, EventArgs e)
         {
             WaitBalloon();
-        }
-
-        /// <summary>
-        /// Timer for show lesson of FullScreen
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void _timerViewFullScreen_Tick(object sender, EventArgs e)
-        {
-            SetLesson();
         }
 
         /// <summary>
@@ -735,20 +794,7 @@ namespace FlashCard.ViewModels
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
 
-        /// <summary>
-        /// Method to set lesson to show in popup or fullscreen
-        /// </summary>
-        private void SetLesson()
-        {
-            if (_count < LessonCollection.Count - 1)
-                _count++;
-            else
-                _count = 0;
-
-            SelectedLesson = LessonCollection[_count];
-            SelectedLesson.IsBackSide = false;
-        }
-
+       
         /// <summary>
         /// Show lesson Full Screen
         /// </summary>
@@ -761,34 +807,15 @@ namespace FlashCard.ViewModels
         }
 
         /// <summary>
-        /// Initial For Wait to close
+        /// Timer for show lesson of FullScreen
         /// </summary>
-        /// <param name="timeSpan"></param>
-        Stopwatch testTimeView = new Stopwatch();
-        private void InitialWaitForClose(TimeSpan timeSpan)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _timerViewFullScreen_Tick(object sender, EventArgs e)
         {
-            testTimerPopup.Stop();
-            testTimeView.Start();
-            Debug.WriteLine("|[Test] testTimerPopup :{0}", testTimerPopup.Elapsed.Seconds);
-            testTimerPopup.Reset();
-            _waitForClose = new DispatcherTimer();
-            _waitForClose.Interval = timeSpan;
-            _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
-            _waitForClose.Start();
+            SetLesson();
         }
 
-        /// <summary>
-        /// Method For Stop Popup Notify for another to show
-        /// </summary>
-        private void StopPopupNotify()
-        {
-
-            //if (_waitForClose != null)
-                _waitForClose.Stop();
-            ViewCore.MyNotifyIcon.CloseBalloon();
-            ViewCore.MyNotifyIcon.Dispose();
-            _timerPopup.Stop();
-        }
 
         /// <summary>
         /// Play or Pause BallonPopup
@@ -829,6 +856,31 @@ namespace FlashCard.ViewModels
                 }
             }
         }
+      
+
+        /// <summary>
+        /// Method For Stop Popup Notify for another to show
+        /// </summary>
+        private void StopPopupNotify()
+        {
+
+            //if (_waitForClose != null)
+                _waitForClose.Stop();
+            ViewCore.MyNotifyIcon.CloseBalloon();
+            ViewCore.MyNotifyIcon.Dispose();
+            _timerPopup.Stop();
+        }
+
+        /// <summary>
+        /// Show popup without slide show
+        /// </summary>
+        private void ShowPopupForm()
+        {
+            _balloon = new FancyBalloon();
+            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+        }
+
+      
         #endregion
     }
 }
