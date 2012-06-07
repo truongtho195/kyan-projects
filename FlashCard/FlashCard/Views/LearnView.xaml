@@ -256,9 +256,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                 </Grid.RowDefinitions>
+
+                
                 <FlowDocumentScrollViewer x:Name="tblWordBackSide"
                                           Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                          Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
+                                          
                                           MaxZoom="500"
                                           Background="Transparent"
                                           Foreground="White"
@@ -267,8 +269,19 @@
                                           HorizontalContentAlignment="Center"
                                           VerticalContentAlignment="Center"
                                           HorizontalAlignment="Center"
-                                          VerticalAlignment="Center" />
-                <!--<RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+                                          VerticalAlignment="Center">
+                    <!--<FlowDocumentScrollViewer.Document>
+                        <FlowDocument>
+                            <Paragraph>
+                                Loi gi biet chet lien
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer.Document>-->
+                </FlowDocumentScrollViewer>
+                    <!--
+                Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
+                <RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+                Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                        Document="{Binding SelectedLesson.BackSideModel.Detail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        FontSize="28"
                                                        Background="Transparent"
