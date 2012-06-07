@@ -133,7 +133,7 @@
         </Storyboard>
 
         <!--#end region Storyboard-->
-        
+
         <!--#Region DataTemplate-->
         <!--<attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"
@@ -268,23 +268,43 @@
                        Foreground="#FFFDFDFD"
                        FontWeight="Bold"
                        Height="20" />
-            <Button x:Name="btnChangeFace"
-                    Command="{Binding ChangeSideCommand}"
-                    CommandParameter="Popup"
-                    Content="Detail"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Width="62"
-                    Grid.Row="3"
-                    Height="20"
-                    Margin="0,0,10,0" BorderBrush="{x:Null}" BorderThickness="29,0,0,0">
-            	<Button.Background>
-            		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            			<GradientStop Color="White" Offset="0"/>
-            			<GradientStop Color="White" Offset="0.9"/>
-            		</LinearGradientBrush>
-            	</Button.Background>
-            </Button>
+            <Grid x:Name="grdBottom"
+                  Grid.Row="2">
+                <Button x:Name="btnChangeFace"
+                        Command="{Binding ChangeSideCommand}"
+                        CommandParameter="Popup"
+                        Content="Detail"
+                        VerticalAlignment="Center"
+                        Height="20"
+                        BorderBrush="{x:Null}"
+                        d:LayoutOverrides="GridBox"
+                        HorizontalAlignment="Right"
+                        Width="60"
+                        Margin="0,0,5,0">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1"
+                                             StartPoint="0.5,0">
+                            <GradientStop Color="White"
+                                          Offset="0" />
+                            <GradientStop Color="White"
+                                          Offset="0.9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <StackPanel Visibility="{Binding SetupModel.IsEnableSlideShow,Mode=OneWay,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal"
+                            d:LayoutOverrides="Height"
+                            Margin="5,0,0,0">
+                    <Button x:Name="btnBack"
+                            Content="Back"
+                            Width="50" />
+                    <Button x:Name="btnNext"
+                            Content="Next"
+                            Width="50"
+                            Margin="7,0,0,0" />
+                </StackPanel>
+            </Grid>
             <StackPanel x:Name="stSystembutton"
                         Margin="0,8,14,8"
                         Orientation="Horizontal"
@@ -353,7 +373,9 @@
                                                            BorderBrush="Transparent"
                                                            Foreground="#FFAF2D2D"
                                                            FontSize="16"
-                                                           MinHeight="25" MinWidth="290" Width="290" />
+                                                           MinHeight="25"
+                                                           MinWidth="290"
+                                                           Width="290" />
                 </StackPanel>
 
             </Grid>
@@ -392,7 +414,8 @@
                                                    MinHeight="50"
                                                    Margin="5"
                                                    Grid.Row="1"
-                                                   Background="Transparent" Width="290" />
+                                                   Background="Transparent"
+                                                   Width="290" />
 
 
         </Grid>
