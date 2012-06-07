@@ -97,7 +97,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0"
-                          Content="{Binding Content}" />
+                          Content="{Binding Detail}" />
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="sbChangeToFront">
@@ -297,9 +297,13 @@
                             d:LayoutOverrides="Height"
                             Margin="5,0,0,0">
                     <Button x:Name="btnBack"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Back"
                             Content="Back"
                             Width="50" />
                     <Button x:Name="btnNext"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Next"
                             Content="Next"
                             Width="50"
                             Margin="7,0,0,0" />
@@ -367,15 +371,17 @@
                                FontSize="21.333"
                                FontWeight="Bold" />
                     <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
-                                                           Document="{Binding SelectedLesson.Description,Mode=OneWay}"
-                                                           IsReadOnly="True"
-                                                           Background="Transparent"
-                                                           BorderBrush="Transparent"
-                                                           Foreground="#FFAF2D2D"
-                                                           FontSize="16"
-                                                           MinHeight="25"
-                                                           MinWidth="290"
-                                                           Width="290" />
+                                              Document="{Binding SelectedLesson.Description,Mode=OneWay}"
+                                              Background="Transparent"
+                                              BorderBrush="Transparent"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Foreground="#FFAF2D2D"
+                                              FontSize="16"
+                                              MinHeight="25"
+                                              MinWidth="290"
+                                              Width="290"
+                                               />
                 </StackPanel>
 
             </Grid>
@@ -409,13 +415,17 @@
                 <RowDefinition Height="27" />
             </Grid.RowDefinitions>
             <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
-                                                   Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   MinWidth="290"
-                                                   MinHeight="50"
-                                                   Margin="5"
-                                                   Grid.Row="1"
-                                                   Background="Transparent"
-                                                   Width="290" />
+                                      Document="{Binding SelectedLesson.BackSideModel.Detail}"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Foreground="#FFAF2D2D"
+                                      MinWidth="290"
+                                      MinHeight="50"
+                                      Margin="5"
+                                      Grid.Row="1"
+                                      Width="290" />
 
 
         </Grid>
