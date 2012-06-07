@@ -21,10 +21,10 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="StateChanged">
             <localCommand:EventToCommand Command="{Binding MiniFullScreenCommand,Mode=OneWay}"
-                                         CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}"/>
+                                         CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <Window.Resources>
         <!--#region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
@@ -39,7 +39,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0"
-                          Content="{Binding Content}" />
+                          Content="{Binding Detail}" />
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="sbFrontSide">
@@ -195,7 +195,9 @@
                       Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Grid.Row="1"
                       Margin="5">
-                    <StackPanel d:LayoutOverrides="Width" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel d:LayoutOverrides="Width"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
                         <TextBlock x:Name="tbLessonName"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"
@@ -207,7 +209,7 @@
                         <FlowDocumentScrollViewer x:Name="tbDescription"
                                                   Foreground="White"
                                                   MaxZoom="500"
-                                                  Document="{Binding SelectedLesson.Description}"
+                                                  Document="{Binding SelectedLesson.Description,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                   Zoom="{Binding Path=Value,ElementName=slIncrectTextSize,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                   HorizontalScrollBarVisibility="Disabled"
                                                   VerticalScrollBarVisibility="Disabled"
@@ -224,9 +226,10 @@
                 			BorderBrush="Transparent"
                 			Foreground="White"
                 			FontSize="16" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" />-->
+							
                     </StackPanel>
                 </Grid>
-                <Grid x:Name="grdListChoice"
+                <!--<Grid x:Name="grdListChoice"
                       Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Grid.Row="1"
                       RenderTransformOrigin="0.5,0.5"
@@ -235,7 +238,7 @@
                              Background="Transparent"
                              ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                              ItemTemplate="{DynamicResource DataTemplate1}" />
-                </Grid>
+                </Grid>-->
             </Grid>
             <Grid x:Name="BackSideWrapper"
                   Visibility="{Binding SelectedLesson.IsBackSide, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}}"
@@ -254,15 +257,17 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <FlowDocumentScrollViewer x:Name="tblWordBackSide"
-                                          Document="{Binding SelectedLesson.BackSideModel.Detail}"
+                                          Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                           Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
                                           MaxZoom="500"
                                           Background="Transparent"
                                           Foreground="White"
-                                          HorizontalScrollBarVisibility="Auto"
-                                          VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                          VerticalScrollBarVisibility="Disabled"
                                           HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
                 <!--<RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
                                                        Document="{Binding SelectedLesson.BackSideModel.Detail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                        FontSize="28"
@@ -293,7 +298,8 @@
                 Height="30">
             <StackPanel HorizontalAlignment="Right"
                         Orientation="Horizontal"
-                        d:LayoutOverrides="Height" Margin="0,0,10,0">
+                        d:LayoutOverrides="Height"
+                        Margin="0,0,10,0">
                 <Button x:Name="btnChangeFace"
                         Command="{Binding ChangeSideCommand}"
                         CommandParameter="FullScreen"

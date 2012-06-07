@@ -664,7 +664,7 @@
                             				<TextBox x:Name="tbContent"
                             					Width="auto"
                             					MinWidth="200px"
-                            					Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					Text="{Binding Detail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             			</DataTemplate>
                             		</DataGridTemplateColumn.CellTemplate>
@@ -675,7 +675,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                               Document="{Binding SelectedLesson.BackSideModel.Content, UpdateSourceTrigger=PropertyChanged}"
+                                                               Document="{Binding SelectedLesson.BackSideModel.Detail, UpdateSourceTrigger=PropertyChanged}"
                                                                Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                Grid.Column="1"
                                                                BorderBrush="#FF7F9DB9"
