@@ -55,7 +55,6 @@ namespace FlashCard.ViewModels
                 ShowPopupForm();
             }
             ViewCore.Hide();
-
         }
         #endregion
 
@@ -72,7 +71,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Properties
-        #region "SelectedLesson"
+        #region "  SelectedLesson"
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
@@ -91,7 +90,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "SetupModel"
+        #region "  SetupModel"
         private SetupModel _setupModel;
         /// <summary>
         /// Gets or sets the property value.
@@ -110,7 +109,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "LessonCollection"
+        #region "  LessonCollection"
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
@@ -129,15 +128,18 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "IsOtherFormShow"
+        #region "  IsOtherFormShow"
         /// <summary>
         /// Set value for scenario : When OnPlayPauseExecute call this form, create timer 
         /// </summary>
         public bool IsOtherFormShow { get; set; }
         #endregion
 
-        #region "IsPopupStarted"
+        #region "  IsPopupStarted"
         private bool _isPopupStarted;
+        /// <summary>
+        /// This property Flag for PlayPause Popup
+        /// </summary>
         public bool IsPopupStarted
         {
             get { return _isPopupStarted; }
@@ -155,7 +157,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "IconStatus"
+        #region "  IconStatus"
         private string _iconStatus = @"/Icons/Circle_Green.ico";
         /// <summary>
         /// Gets or sets the IconStatus.
@@ -185,7 +187,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "IsCurrentStarted"
+        #region "  IsCurrentStarted"
         private bool _isCurrentStarted;
         /// <summary>
         /// Property for set icon Ballon in tasbar
@@ -211,7 +213,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
-        #region "Change Side Command"
+        #region "  Change Side Command"
         /// <summary>
         /// SaveCommand
         /// <summary>
@@ -255,11 +257,14 @@ namespace FlashCard.ViewModels
                 //    sb = (Storyboard)_learnView.FindResource("sbFrontSide");
                 //_learnView.BeginStoryboard(sb);
 
-                DispatcherTimer stopChangeLesson = new DispatcherTimer();
-                stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 10);
-                stopChangeLesson.Tick += new EventHandler(stopChangeLesson_Tick);
-                _timerViewFullScreen.Stop();
-                stopChangeLesson.Start();
+                if (SetupModel.IsEnableSlideShow)
+                {
+                    DispatcherTimer stopChangeLesson = new DispatcherTimer();
+                    stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 10);
+                    stopChangeLesson.Tick += new EventHandler(stopChangeLesson_Tick);
+                    _timerViewFullScreen.Stop();
+                    stopChangeLesson.Start();
+                }
             }
 
         }
@@ -272,7 +277,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "Fancy Ballon Mouse Leave Command"
+        #region "  Fancy Ballon Mouse Leave Command"
         /// <summary>
         /// SaveCommand
         /// <summary>
@@ -317,7 +322,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region "Fancy Ballon Mouse Enter Command"
+        #region "  Fancy Ballon Mouse Enter Command"
         private ICommand _fancyBallonMouseEnterCommand;
         public ICommand FancyBallonMouseEnterCommand
         {
@@ -350,7 +355,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "Exit Command"
+        #region "  Exit Command"
         /// <summary>
         /// Gets the Exit Command.
         /// <summary>
@@ -383,7 +388,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "Lesson Manager Command"
+        #region "  Lesson Manager Command"
         /// <summary>
         /// Gets the LessonManager Command.
         /// <summary>
@@ -412,15 +417,18 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnLessonManagerExecute(object param)
         {
-            IsOtherFormShow = true;
             LessonManageView lessonManager = new LessonManageView(true);
             PlayPauseBallonPopup(true);
-            lessonManager.Show();
+            //CloseTimerPopup();
+            if (lessonManager.ShowDialog() == true)
+            {
+                PlayPauseBallonPopup(false);
+            }
         }
 
         #endregion
 
-        #region "Play Pause Command"
+        #region "  Play Pause Command"
         /// <summary>
         /// Gets the PlayPause Command.
         /// <summary>
@@ -455,7 +463,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region "ChooseLessonCommand"
+        #region "  ChooseLessonCommand"
         /// <summary>
         /// Gets the ChooseLesson Command.
         /// <summary>
@@ -490,7 +498,6 @@ namespace FlashCard.ViewModels
         private void UserConfigStudies(bool isFirst)
         {
             PlayPauseBallonPopup(true);
-            
             StudyConfigView lessionView = new StudyConfigView();
             lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
             if (lessionView.ShowDialog() == true)
@@ -523,7 +530,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "ShowPopupCommand"
+        #region "  ShowPopupCommand"
         private ICommand _showPopupCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -550,7 +557,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region NextBackLessonCommand
+        #region "  NextBackLessonCommand"
 
         /// <summary>
         /// Gets the NextBackLesson Command.
@@ -610,7 +617,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         //Full Screen Region
-        #region "ClosingFormCommand"
+        #region "  ClosingFormCommand"
 
         /// <summary>
         /// Gets the ClosingForm Command.
@@ -645,8 +652,8 @@ namespace FlashCard.ViewModels
                 Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
                 sb.Completed += new EventHandler(sb_Completed);
                 _learnView.BeginStoryboard(sb);
-
-                _timerViewFullScreen.Stop();
+                if(SetupModel.IsEnableSlideShow)
+                    _timerViewFullScreen.Stop();
                 PlayPauseBallonPopup(false);
             }
         }
@@ -654,10 +661,11 @@ namespace FlashCard.ViewModels
         private void sb_Completed(object sender, EventArgs e)
         {
             _learnView.Close();
+            _learnView = null;
         }
         #endregion
 
-        #region "Full Screen Command"
+        #region "  Full Screen Command"
         /// <summary>
         /// Gets the FullScreen Command.
         /// <summary>
@@ -687,23 +695,24 @@ namespace FlashCard.ViewModels
         private void OnFullScreenExecute(object param)
         {
             CloseTimerPopup();
-            //if (_timerPopup.IsEnabled)
-            //    _timerPopup.Stop();
+
             if (_learnView == null)
                 _learnView = new LearnView();
-            
             _learnView.DataContext = this;
-            StartLessonFullScreen();
+            if (SetupModel.IsEnableSlideShow)
+                StartLessonFullScreen();
+            else
+                SetLesson();
             //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
             //_learnView.BeginStoryboard(sb);
             _learnView.Show();
             
-            //PlayPauseBallonPopup(true);
-            
+
+            PlayPauseBallonPopup(true);
         }
         #endregion
 
-        #region "MiniFullScreenCommand"
+        #region "  MiniFullScreenCommand"
 
         /// <summary>
         /// Gets the MiniFullScreen Command.
@@ -907,27 +916,17 @@ namespace FlashCard.ViewModels
         /// <param name="isOtherFormShow"></param>
         private void PlayPauseBallonPopup(bool isOtherFormShow)
         {
-            IsOtherFormShow = IsOtherFormShow;
             //If app is started => stop ballon popup 
             if (this.IsPopupStarted)
             {
-                var action = new Action(() =>
-                {
-                    if (_waitForClose != null)
-                        _waitForClose.Stop();
-                    if (_timerPopup != null)
-                        _timerPopup.Stop();
-
-                    ViewCore.MyNotifyIcon.CloseBalloon();
-                });
-                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, action);
+                CloseTimerPopup();
                 this.IsPopupStarted = false;
             }
             else
             {
                 //Popup is "Not started"
                 //Method call from this viewmodel => create timer for Ballon Popup
-                if (!IsOtherFormShow)
+                if (!isOtherFormShow)
                 {
                     var timerSpan = new TimeSpan(0, 0, 0, SetupModel.ViewTimeSecond);
                     CloseTimerPopup();
@@ -940,6 +939,7 @@ namespace FlashCard.ViewModels
                         _timerPopup.Stop();
                     if (_waitForClose != null)
                         _waitForClose.Stop();
+                    IsCurrentStarted = false;
                 }
             }
         }
@@ -950,13 +950,17 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void CloseTimerPopup()
         {
-
-            if (_timerPopup != null)
-                _timerPopup.Stop();
-            if (_waitForClose != null)
-                _waitForClose.Stop();
-            if (ViewCore.MyNotifyIcon.CustomBalloon != null)
-                ViewCore.MyNotifyIcon.CloseBalloon();
+            var action = new Action(() =>
+            {
+                if (_waitForClose != null)
+                    _waitForClose.Stop();
+                if (_timerPopup != null)
+                    _timerPopup.Stop();
+                IsCurrentStarted = false;
+                if (ViewCore.MyNotifyIcon.CustomBalloon != null)
+                    ViewCore.MyNotifyIcon.CloseBalloon();
+            });
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
 
         /// <summary>
@@ -965,6 +969,7 @@ namespace FlashCard.ViewModels
         private void ShowPopupForm()
         {
             _balloon = new FancyBalloon();
+            IsCurrentStarted = true;
             ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
         }
 

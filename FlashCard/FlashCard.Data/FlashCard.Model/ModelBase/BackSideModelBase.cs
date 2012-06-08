@@ -69,32 +69,32 @@ namespace FlashCard.Model
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        private FlowDocument _detail;
-        public FlowDocument Detail
+        private FlowDocument _backSideDetail;
+        public FlowDocument BackSideDetail
         {
-            get { return _detail; }
+            get { return _backSideDetail; }
             set
             {
                 //if (_content != value)
                 //{
-                    this.OnContentChanging(value);
-                    _detail = value;
-                    RaisePropertyChanged(() => Detail);
+                this.OnBackSideDetailChanging(value);
+                    _backSideDetail = value;
+                    RaisePropertyChanged(() => BackSideDetail);
                     this.OnChanged();
-                    this.OnContentChanged();
+                    this.OnBackSideDetailChanged();
                 //}
             }
         }
 
-        protected virtual void OnContentChanging(FlowDocument value) { }
-        protected virtual void OnContentChanged() { }
+        protected virtual void OnBackSideDetailChanging(FlowDocument value) { }
+        protected virtual void OnBackSideDetailChanged() { }
 
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
         private bool? _isCorrect;
         public bool? IsCorrect
-        {
+        { 
             get { return _isCorrect; }
             set
             {
