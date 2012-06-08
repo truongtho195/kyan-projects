@@ -98,7 +98,7 @@
        
         <!--#EndRegion "Metro Button Style"-->
         
-        <!--#region "Validation Template & Style"-->
+        <!--#region "  Validation Template & Style"-->
         <Storyboard x:Key="FlashErrorIcon">
             <ObjectAnimationUsingKeyFrames BeginTime="00:00:00"
                                            Storyboard.TargetProperty="(UIElement.Visibility)">
@@ -176,7 +176,7 @@
 
         <!--#Endregion "Validation Template & Style"-->
         
-        <!--#region "Textbox Style With Error Template"-->
+        <!--#region "  Textbox Style With Error Template"-->
         <Style BasedOn="{StaticResource myErrorTemplate}"
                TargetType="{x:Type TextBox}">
             <Setter Property="Background"
@@ -238,7 +238,7 @@
         </Style>
         <!--#Endregion "Textbox Style With Error Template"-->
         
-        <!--#region "Combo Box MetroStyle" -->
+        <!--#region "  Combo Box MetroStyle" -->
         <Style x:Key="ComboBoxFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>

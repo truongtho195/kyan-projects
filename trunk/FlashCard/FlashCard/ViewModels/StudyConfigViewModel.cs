@@ -23,7 +23,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Properties
-        #region "CategoryCollection"
+        #region "  CategoryCollection"
         private ObservableCollection<CategoryModel> _categoryCollection;
         /// <summary>
         /// Gets or sets the CategoryCollection.
@@ -42,7 +42,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "LessonCollection"
+        #region "  LessonCollection"
         private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the LessonCollection.
@@ -62,7 +62,7 @@ namespace FlashCard.ViewModels
         #endregion
 
 
-        #region "SetupModel"
+        #region "  SetupModel"
         private SetupModel _setupModel;
         /// <summary>
         /// Gets or sets the SetupModel.
@@ -84,7 +84,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "SelectedSetupModel"
+        #region "  SelectedSetupModel"
         private SetupModel _selectedSetupModel;
         /// <summary>
         /// Gets or sets the SelectedSetupModel.
@@ -107,7 +107,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
-        #region "OK Command"
+        #region "  OK Command"
         /// <summary>
         /// Gets the OK Command.
         /// <summary>
@@ -162,7 +162,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "CancelCommand"
+        #region "  CancelCommand"
 
         /// <summary>
         /// Gets the Cancel Command.

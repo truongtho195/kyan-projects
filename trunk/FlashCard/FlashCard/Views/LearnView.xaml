@@ -39,7 +39,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0"
-                          Content="{Binding Detail}" />
+                          Content="{Binding BackSideDetail}" />
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="sbFrontSide">
@@ -83,7 +83,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="0.89*" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
         <Border x:Name="bdBackground"
                 Opacity="0.98"
@@ -107,7 +107,8 @@
             <StackPanel x:Name="stSystemControl"
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Margin="0,0,10,0">
                 <Button x:Name="btnMinimize"
                         Command="{Binding MiniFullScreenCommand}"
                         CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}"
@@ -226,7 +227,7 @@
                 			BorderBrush="Transparent"
                 			Foreground="White"
                 			FontSize="16" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" />-->
-							
+
                     </StackPanel>
                 </Grid>
                 <!--<Grid x:Name="grdListChoice"
@@ -256,11 +257,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-
-                
                 <FlowDocumentScrollViewer x:Name="tblWordBackSide"
-                                          Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                          
+                                          Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                          Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
                                           MaxZoom="500"
                                           Background="Transparent"
                                           Foreground="White"
@@ -278,7 +277,7 @@
                         </FlowDocument>
                     </FlowDocumentScrollViewer.Document>-->
                 </FlowDocumentScrollViewer>
-                    <!--
+                <!--
                 Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
                 <RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
                 Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
@@ -309,27 +308,50 @@
                 BorderThickness="1"
                 Grid.Row="2"
                 Height="30">
-            <StackPanel HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        d:LayoutOverrides="Height"
-                        Margin="0,0,10,0">
-                <Button x:Name="btnChangeFace"
-                        Command="{Binding ChangeSideCommand}"
-                        CommandParameter="FullScreen"
-                        Content="Detail"
-                        Height="20"
-                        Width="70">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1"
-                                             StartPoint="0.5,0">
-                            <GradientStop Color="White"
-                                          Offset="0" />
-                            <GradientStop Color="White"
-                                          Offset="0.9" />
-                        </LinearGradientBrush>
-                    </Button.Background>
-                </Button>
-            </StackPanel>
+            <Grid Margin="0,0,10,0">
+                <StackPanel x:Name="stDetail"
+                            Orientation="Horizontal"
+                            d:LayoutOverrides="Width, Height"
+                            HorizontalAlignment="Right">
+                    <Button x:Name="btnChangeFace"
+                            Command="{Binding ChangeSideCommand}"
+                            CommandParameter="FullScreen"
+                            Content="Detail"
+                            Height="20"
+                            Width="70">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1"
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="White"
+                                              Offset="0" />
+                                <GradientStop Color="White"
+                                              Offset="0.9" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackPanel>
+                <StackPanel x:Name="stNextBack"
+                            Visibility="{Binding SetupModel.IsEnableSlideShow,Mode=OneWay,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=False}"
+                            Orientation="Horizontal"
+                            d:LayoutOverrides="Height"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,0">
+                    <Button x:Name="btnBack"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Back"
+                            Content="Back"
+                            Width="60"
+                            Height="25" />
+                    <Button x:Name="btnNext"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Next"
+                            Content="Next"
+                            Margin="5,0,0,0"
+                            Width="60"
+                            Height="25" />
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

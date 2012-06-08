@@ -122,7 +122,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
-        #region "NewCommand"
+        #region "  NewCommand"
         private ICommand _newCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -160,7 +160,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "EditCommand"
+        #region "  EditCommand"
         private ICommand _editCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -195,7 +195,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "SaveCommand"
+        #region "  SaveCommand"
         private ICommand _saveCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -254,7 +254,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "AddBackSideCommand"
+        #region "  AddBackSideCommand"
         private ICommand _addBackSideCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -284,7 +284,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "DeleteCommand"
+        #region "  DeleteCommand"
         private ICommand _deleteCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -313,7 +313,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "CloseCommand"
+        #region "  CloseCommand"
         /// <summary>
         /// Gets the Close Command.
         /// <summary>
@@ -342,15 +342,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute(object param)
         {
-            if (this.IsFromPopup)
-            {
-                MainWindow mainView = new MainWindow();
-            }
+            ViewCore.DialogResult = true;
+            //if (this.IsFromPopup)
+            //{
+            //    MainWindow mainView = new MainWindow();
+            //}
             ViewCore.Close();
         } 
         #endregion
 
-        #region "NewCategoryCommand"
+        #region "  NewCategoryCommand"
         /// <summary>
         /// Gets the NewCategory Command.
         /// <summary>
@@ -395,7 +396,7 @@ namespace FlashCard.ViewModels
         } 
         #endregion
 
-        #region "NewTypeCommand"
+        #region "  NewTypeCommand"
         /// <summary>
         /// Gets the NewType Command.
         /// <summary>
@@ -442,7 +443,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region "SelectionChangedCommand"
+        #region "  SelectionChangedCommand"
         /// <summary>
         /// Gets the SelectionChanged Command.
         /// <summary>
