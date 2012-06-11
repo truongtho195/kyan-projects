@@ -40,11 +40,11 @@ namespace FlashCard
         private readonly Lazy<LessonViewModel> viewModel;
         #endregion
 
-        #region Properties
+        
 
         #region Properties
         private LessonViewModel ViewModel { get { return viewModel.Value; } }
-        #endregion
+        
         #endregion
 
         #region Events

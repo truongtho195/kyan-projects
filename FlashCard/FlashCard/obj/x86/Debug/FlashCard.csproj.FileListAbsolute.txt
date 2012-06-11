@@ -194,3 +194,5 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.g.cs
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.baml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.g.cs
