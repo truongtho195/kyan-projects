@@ -22,20 +22,9 @@ namespace FlashCard.Views
         {
             InitializeComponent();
             InitialEvent();
-            //Get & save fontsize
-            _lessonFontSize = this.tbLessonName.FontSize;
             //Double current Fonsize
-            this.tbLessonName.FontSize *= 2;
-            
-            this.slIncrectTextSize.ValueChanged += new RoutedPropertyChangedEventHandler<double>(slIncrectTextSize_ValueChanged);
+            this.tbLessonName.FontSize *= 1.5;
         }
-
-        private double _lessonFontSize;
-        void slIncrectTextSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            this.tbLessonName.FontSize = _lessonFontSize * (slIncrectTextSize.Value) / 100; ;
-        }
-
 
         #region Events
         private void bdHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -206,20 +206,26 @@
                                    Foreground="White"
                                    HorizontalAlignment="Center"
                                    FontSize="21.333"
-                                   FontWeight="Bold" />
-                        
-                            <FlowDocumentScrollViewer x:Name="tbDescription"
-                                                      IsSelectionEnabled="False"
-                                                      Foreground="White"
-                                                      MaxZoom="500"
-                                                      Document="{Binding SelectedLesson.Description,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                                      Zoom="{Binding Path=Value,ElementName=slIncrectTextSize,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                                      HorizontalScrollBarVisibility="Disabled"
-                                                      VerticalScrollBarVisibility="Disabled"
-                                                      Background="#00000000"
-                                                      BorderBrush="Transparent"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center" />
+                                   FontWeight="Bold">
+                            <TextBlock.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding ElementName=slIncrectTextSize, Path=Value}"
+                                                ScaleY="{Binding ElementName=slIncrectTextSize, Path=Value}" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+
+                        <RichTextBoxControl:RichTextBoxToolbar x:Name="tbDescription"
+                                                  Foreground="White"
+                                                  Document="{Binding SelectedLesson.Description}"
+                                                  Background="#00000000"
+                                                  BorderBrush="Transparent"
+                                                  HorizontalAlignment="Center"
+                                                               IsReadOnly="True"
+                                                  VerticalAlignment="Center">
+                            <RichTextBoxControl:RichTextBoxToolbar.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding ElementName=slIncrectTextSize, Path=Value}"
+                                                ScaleY="{Binding ElementName=slIncrectTextSize, Path=Value}" />
+                            </RichTextBoxControl:RichTextBoxToolbar.LayoutTransform>
+                        </RichTextBoxControl:RichTextBoxToolbar>
 
                         <!--<RichTextBoxControl:RichTextBoxToolbar
                 			x:Name="tbWords"
@@ -259,31 +265,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <AdornerDecorator>
-                    <FlowDocumentScrollViewer x:Name="tblWordBackSide"
-                                              Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                              Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
-                                              VirtualizingStackPanel.IsVirtualizing="True"
-                                              VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                              MaxZoom="500"
-                                              Background="Transparent"
-                                              Foreground="White"
-                                              HorizontalScrollBarVisibility="Disabled"
-                                              VerticalScrollBarVisibility="Disabled"
-                                              HorizontalContentAlignment="Center"
-                                              VerticalContentAlignment="Center"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center">
-                        <!--<FlowDocumentScrollViewer.Document>
-                        <FlowDocument>
-                            <Paragraph>
-                                Loi gi biet chet lien
-                            </Paragraph>
-                        </FlowDocument>
-                    </FlowDocumentScrollViewer.Document>-->
-                    </FlowDocumentScrollViewer>
-                </AdornerDecorator>
-                <!--
+
+
+                <RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+                                                       Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                       Background="Transparent"
+                                                       Foreground="White"
+                                                       IsReadOnly="True"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center">
+                    <RichTextBoxControl:RichTextBoxToolbar.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding ElementName=slIncrectTextSize, Path=Value}"
+                                        ScaleY="{Binding ElementName=slIncrectTextSize, Path=Value}" />
+                    </RichTextBoxControl:RichTextBoxToolbar.LayoutTransform>
+                </RichTextBoxControl:RichTextBoxToolbar>
+
+
+                    <!--
                 Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
                 <RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
                 Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
@@ -305,9 +303,8 @@
                     Grid.Column="1"
                     Orientation="Vertical"
                     Height="150"
-                    Minimum="200"
-                    Maximum="500"
-                    SmallChange="10" />
+                    Minimum="2"
+                    SmallChange="0.5" Maximum="5" Value="2" />
         </Grid>
         <Border x:Name="bdBottom"
                 BorderBrush="#00000000"
@@ -319,6 +316,10 @@
                             Orientation="Horizontal"
                             d:LayoutOverrides="Width, Height"
                             HorizontalAlignment="Right">
+                    <Button Content="Pause"
+                            Height="20"
+                            Width="50"
+                            Command="{Binding PlayPauseCommand}" CommandParameter="FullScreen" />
                     <Button x:Name="btnChangeFace"
                             Command="{Binding ChangeSideCommand}"
                             CommandParameter="FullScreen"

@@ -22,7 +22,7 @@
                     <MenuItem Header="Lesson Management"
                               Command="{Binding LessonManagerCommand}" />
                     <MenuItem Header="Play/Pause"
-                              Command="{Binding PlayPauseCommand}" />
+                              Command="{Binding PlayPauseCommand}" CommandParameter="Popup" />
                     <MenuItem Header="Exit"
                               Command="{Binding ExitCommand}" />
                 </ContextMenu>

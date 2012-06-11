@@ -669,7 +669,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                               Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, UpdateSourceTrigger=PropertyChanged}"
+                                                               Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
                                                                Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                Grid.Column="1"
                                                                BorderBrush="#FF7F9DB9"
