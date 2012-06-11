@@ -341,8 +341,11 @@ namespace RichTextBoxControl
 
         private void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            this.popup.IsOpen = true;
-            this.popup.StaysOpen = false;
+            if (!this.IsReadOnly)
+            {
+                this.popup.IsOpen = true;
+                this.popup.StaysOpen = false;
+            }
         }
 
         private void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
