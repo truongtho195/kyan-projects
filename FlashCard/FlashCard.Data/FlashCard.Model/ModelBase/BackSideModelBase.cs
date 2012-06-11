@@ -75,9 +75,9 @@ namespace FlashCard.Model
             get { return _backSideDetail; }
             set
             {
-                //if (_content != value)
+                //if (_backSideDetail != value)
                 //{
-                this.OnBackSideDetailChanging(value);
+                    this.OnBackSideDetailChanging(value);
                     _backSideDetail = value;
                     RaisePropertyChanged(() => BackSideDetail);
                     this.OnChanged();
@@ -94,7 +94,7 @@ namespace FlashCard.Model
         /// </summary>
         private bool? _isCorrect;
         public bool? IsCorrect
-        { 
+        {
             get { return _isCorrect; }
             set
             {
@@ -134,7 +134,8 @@ namespace FlashCard.Model
         }
 
         protected virtual void OnLessonModelChanging(LessonModel value) { }
-        protected virtual void OnLessonModelChanged() {
+        protected virtual void OnLessonModelChanged()
+        {
         }
 
 
