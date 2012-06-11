@@ -17,6 +17,8 @@ using System.Windows.Media.Animation;
 using System.Windows;
 using FlashCard.Views;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
+using MVVMHelper.Common;
 
 
 namespace FlashCard.ViewModels
@@ -80,8 +82,10 @@ namespace FlashCard.ViewModels
         /// </summary>
         public string Titles
         {
-            get { 
-                return _titles; }
+            get
+            {
+                return _titles;
+            }
             set
             {
                 if (_titles != value)
@@ -93,6 +97,27 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
+
+
+        #region BackSideDetail
+        private FlowDocument _backSideDetail;
+        /// <summary>
+        /// Gets or sets the BackSideDetail.
+        /// </summary>
+        public FlowDocument BackSideDetail
+        {
+            get { return _backSideDetail; }
+            set
+            {
+                if (_backSideDetail != value)
+                {
+                    _backSideDetail = value;
+                    RaisePropertyChanged(() => BackSideDetail);
+                }
+            }
+        }
+        #endregion
+
 
         #region "  SelectedLesson"
         /// <summary>
@@ -280,6 +305,7 @@ namespace FlashCard.ViewModels
                 //    sb = (Storyboard)_learnView.FindResource("sbFrontSide");
                 //_learnView.BeginStoryboard(sb);
 
+                //BackSideDetail = CloneObject.Clone<FlowDocument>(SelectedLesson.BackSideModel.BackSideDetail);
                 if (SetupModel.IsEnableSlideShow)
                 {
                     DispatcherTimer stopChangeLesson = new DispatcherTimer();
@@ -480,9 +506,18 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-            PlayPauseBallonPopup(false);
+            if ("FullScreen".Equals(param.ToString()))
+            {
+                if (_timerViewFullScreen.IsEnabled)
+                    _timerViewFullScreen.Stop();
+                else
+                    _timerViewFullScreen.Start();
+            }
+            else
+            {
+                PlayPauseBallonPopup(false);
+            }
         }
-
 
         #endregion
 
@@ -515,10 +550,10 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnChooseLessonExecute(object param)
         {
-            UserConfigStudies(false);
+            UserConfigStudies();
         }
 
-        private void UserConfigStudies(bool isFirst)
+        private void UserConfigStudies()
         {
             PlayPauseBallonPopup(true);
             StudyConfigView lessionView = new StudyConfigView();
@@ -571,7 +606,9 @@ namespace FlashCard.ViewModels
 
         private bool CanShowPopupExecute(object param)
         {
-            return true;
+            if (!SetupModel.IsEnableSlideShow)
+                return true;
+            return false;
         }
 
         private void ShowPopupExecute(object param)
@@ -631,7 +668,7 @@ namespace FlashCard.ViewModels
 
             }
             SetLesson(false);
-           
+
         }
         #endregion
 
@@ -671,7 +708,7 @@ namespace FlashCard.ViewModels
                 Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
                 sb.Completed += new EventHandler(sb_Completed);
                 _learnView.BeginStoryboard(sb);
-                if(SetupModel.IsEnableSlideShow)
+                if (SetupModel.IsEnableSlideShow)
                     _timerViewFullScreen.Stop();
                 PlayPauseBallonPopup(false);
             }
@@ -725,9 +762,8 @@ namespace FlashCard.ViewModels
             //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
             //_learnView.BeginStoryboard(sb);
             _learnView.Show();
-            
-
             PlayPauseBallonPopup(true);
+
         }
         #endregion
 
@@ -798,7 +834,7 @@ namespace FlashCard.ViewModels
         /// <summary>
         /// Method to set lesson to show in popup or fullscreen
         /// </summary>
-        private void SetLesson(bool isLoop=true)
+        private void SetLesson(bool isLoop = true)
         {
             if (isLoop)
             {
@@ -911,7 +947,6 @@ namespace FlashCard.ViewModels
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
 
-
         /// <summary>
         /// Show lesson Full Screen
         /// </summary>
@@ -976,9 +1011,9 @@ namespace FlashCard.ViewModels
         {
             var action = new Action(() =>
             {
-                if (_waitForClose != null)
+                if (_waitForClose != null && _waitForClose.IsEnabled)
                     _waitForClose.Stop();
-                if (_timerPopup != null)
+                if (_timerPopup != null && _timerPopup.IsEnabled)
                     _timerPopup.Stop();
                 IsCurrentStarted = false;
                 if (ViewCore.MyNotifyIcon.CustomBalloon != null)

@@ -316,6 +316,7 @@
                         HorizontalAlignment="Right">
                 <Button x:Name="btnFullScreen"
                         Command="{Binding FullScreenCommand}"
+                        CommandParameter="Popup"
                         Width="18"
                         Style="{DynamicResource NullButtonStyle}"
                         Background="#00000000"
@@ -376,6 +377,7 @@
                                                            BorderBrush="Transparent"
                                                            HorizontalAlignment="Center"
                                                            VerticalAlignment="Center"
+                                                           IsReadOnly="True"
                                                            Foreground="#FFAF2D2D"
                                                            FontSize="16"
                                                            MinHeight="25"
@@ -417,6 +419,7 @@
                                                    Document="{Binding SelectedLesson.BackSideModel.BackSideDetail}"
                                                    Background="Transparent"
                                                    BorderBrush="Transparent"
+                                                   IsReadOnly="True"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="#FFAF2D2D"
