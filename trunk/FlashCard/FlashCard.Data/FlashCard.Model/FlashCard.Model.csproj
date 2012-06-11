@@ -46,7 +46,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelBase\FlowDocument.cs" />
     <Compile Include="ModelBase\SettingModelBase.cs" />
     <Compile Include="ModelBase\LessonModelBase.cs" />
     <Compile Include="ModelBase\BackSideModelBase.cs" />
