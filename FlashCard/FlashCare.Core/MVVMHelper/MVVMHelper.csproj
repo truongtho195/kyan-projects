@@ -127,6 +127,7 @@
     <Compile Include="Commands\NonRoutedRibbonCommand.cs" />
     <Compile Include="Common\AutoGeneration.cs" />
     <Compile Include="Common\CacheObject.cs" />
+    <Compile Include="Common\CloneObject.cs" />
     <Compile Include="Common\ConvertData.cs" />
     <Compile Include="Common\CrossThreadObservableCollection.cs" />
     <Compile Include="Common\CustomTimeZone.cs" />
