@@ -516,26 +516,19 @@
                     <Grid Grid.Row="1"
                           IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="0.178*" />
-                        	<RowDefinition Height="25" />
+                        	<RowDefinition Height="10" />
+							<!--Collapse Type: use only Vocabulary-->
+                        	<RowDefinition Height="0"  />
                         	<RowDefinition Height="25" />
                         	<RowDefinition Height="35" />
                         	<RowDefinition Height="92.78" />
-                        	<RowDefinition Height="0.48*" />
-                        	<RowDefinition Height="0.342*" />
+                        	<RowDefinition Height="0.525*" />
+                        	<RowDefinition Height="0.375*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                         	<ColumnDefinition Width="85.191" />
                         	<ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="tbLesson"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Lesson Management"
-                                   VerticalAlignment="Center"
-                                   Grid.Column="1"
-                                   FontSize="20"
-                                   Margin="0,0,13,0" />
                         <TextBlock x:Name="tbType"
                                    HorizontalAlignment="Right"
                                    TextWrapping="Wrap"
@@ -566,6 +559,7 @@
                               Grid.Column="1"
                               Margin="10,0,0,0"
                               Grid.Row="1"
+                              Visibility="Collapsed"
                               HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                             	<ColumnDefinition />
@@ -664,7 +658,7 @@
                             				<TextBox x:Name="tbContent"
                             					Width="auto"
                             					MinWidth="200px"
-                            					Text="{Binding Detail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					Text="{Binding BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             			</DataTemplate>
                             		</DataGridTemplateColumn.CellTemplate>

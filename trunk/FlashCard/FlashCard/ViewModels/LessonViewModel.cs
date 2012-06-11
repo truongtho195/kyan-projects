@@ -29,6 +29,31 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Properties
+        #region Views
+
+
+        private string _titles;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public string Titles
+        {
+            get
+            {
+                return _titles;
+            }
+            set
+            {
+                if (_titles != value)
+                {
+                    _titles = value;
+                    RaisePropertyChanged(() => Titles);
+                }
+            }
+        }
+
+        #endregion
+
         private LessonModel _selectedLesson;
         /// <summary>
         /// Gets or sets the property value.
@@ -484,6 +509,9 @@ namespace FlashCard.ViewModels
         #region Methods
         private void Initialize()
         {
+            //Set for form
+            this.Titles = "Lesson Management";
+
             TypeDataAccess typeDataAccess = new TypeDataAccess();
             LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
 

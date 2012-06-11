@@ -65,12 +65,35 @@ namespace FlashCard.ViewModels
         FancyBalloon _balloon;
         Stopwatch _swCountTimerTick = new Stopwatch();
         LearnView _learnView;
-        int _count = 0;
+        int _currentItemIndex = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
         #endregion
 
         #region Properties
+        #region Views
+
+
+        private string _titles;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public string Titles
+        {
+            get { 
+                return _titles; }
+            set
+            {
+                if (_titles != value)
+                {
+                    _titles = value;
+                    RaisePropertyChanged(() => Titles);
+                }
+            }
+        }
+
+        #endregion
+
         #region "  SelectedLesson"
         /// <summary>
         /// Gets or sets the property value.
@@ -581,11 +604,11 @@ namespace FlashCard.ViewModels
         {
             if ("Next".Equals(param.ToString()))
             {
-                return currentItemIndex < LessonCollection.Count() - 1;
+                return _currentItemIndex < LessonCollection.Count() - 1;
             }
             else
             {
-                return currentItemIndex != 0;
+                return _currentItemIndex != 0;
             }
         }
 
@@ -593,26 +616,22 @@ namespace FlashCard.ViewModels
         /// Method to invoke when the NextBackLesson command is executed.
         /// </summary>
         /// 
-        int currentItemIndex = 0;
         private void OnNextBackLessonExecute(object param)
         {
 
-            if (SelectedLesson != null)
-                currentItemIndex = LessonCollection.IndexOf(SelectedLesson);
-
             if ("Back".Equals(param.ToString()))
             {
-                if (currentItemIndex != 0)
-                    currentItemIndex--;
+                if (_currentItemIndex != 0)
+                    _currentItemIndex--;
             }
             else
             {
-                if (currentItemIndex < LessonCollection.Count() - 1)
-                    currentItemIndex++;
+                if (_currentItemIndex < LessonCollection.Count() - 1)
+                    _currentItemIndex++;
 
             }
-            SelectedLesson = LessonCollection[currentItemIndex];
-            SelectedLesson.IsBackSide = false;
+            SetLesson(false);
+           
         }
         #endregion
 
@@ -768,6 +787,8 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void Initialize()
         {
+            //Set For View
+
             List<UserModel> UserLessonCollection = new List<UserModel>();
             LessonDataAccess lessonDA = new LessonDataAccess();
             LessonCollection = new ObservableCollection<LessonModel>(lessonDA.GetAllWithRelation());
@@ -777,14 +798,17 @@ namespace FlashCard.ViewModels
         /// <summary>
         /// Method to set lesson to show in popup or fullscreen
         /// </summary>
-        private void SetLesson()
+        private void SetLesson(bool isLoop=true)
         {
-            if (_count < LessonCollection.Count - 1)
-                _count++;
-            else
-                _count = 0;
+            if (isLoop)
+            {
+                if (_currentItemIndex < LessonCollection.Count - 1)
+                    _currentItemIndex++;
+                else
+                    _currentItemIndex = 0;
+            }
 
-            SelectedLesson = LessonCollection[_count];
+            SelectedLesson = LessonCollection[_currentItemIndex];
             SelectedLesson.IsBackSide = false;
         }
 
@@ -972,8 +996,6 @@ namespace FlashCard.ViewModels
             IsCurrentStarted = true;
             ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
         }
-
-
         #endregion
     }
 }

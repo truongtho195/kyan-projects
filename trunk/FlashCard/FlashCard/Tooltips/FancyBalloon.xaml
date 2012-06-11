@@ -97,7 +97,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0"
-                          Content="{Binding Detail}" />
+                          Content="{Binding BackSideDetail}" />
             </Grid>
         </DataTemplate>
         <Storyboard x:Key="sbChangeToFront">
