@@ -109,9 +109,20 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Margin="0,0,10,0">
+                <Button x:Name="btnConfig"
+                        Style="{DynamicResource EmptyButton}"
+                        Margin="0,0,14,0"
+                        Command="{Binding ChooseLessonCommand}"
+                        CommandParameter="FullScreen">
+                    <Image Source="/FlashCard;component/Images/1339488847_Config-Tools.png"
+                           Stretch="Fill"
+                           HorizontalAlignment="Center"
+                           Width="25"
+                           Height="25" />
+                </Button>
                 <Button x:Name="btnMinimize"
                         Command="{Binding MiniFullScreenCommand}"
-                        CommandParameter="{Binding Path=WindowState,ElementName=vLearnView}"
+                        CommandParameter="{Binding WindowState, ElementName=vLearnView}"
                         Width="25"
                         Height="25"
                         Style="{StaticResource EmptyButton}"
@@ -214,13 +225,13 @@
                         </TextBlock>
 
                         <RichTextBoxControl:RichTextBoxToolbar x:Name="tbDescription"
-                                                  Foreground="White"
-                                                  Document="{Binding SelectedLesson.Description}"
-                                                  Background="#00000000"
-                                                  BorderBrush="Transparent"
-                                                  HorizontalAlignment="Center"
+                                                               Foreground="White"
+                                                               Document="{Binding SelectedLesson.Description}"
+                                                               Background="#00000000"
+                                                               BorderBrush="Transparent"
+                                                               HorizontalAlignment="Center"
                                                                IsReadOnly="True"
-                                                  VerticalAlignment="Center">
+                                                               VerticalAlignment="Center">
                             <RichTextBoxControl:RichTextBoxToolbar.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding ElementName=slIncrectTextSize, Path=Value}"
                                                 ScaleY="{Binding ElementName=slIncrectTextSize, Path=Value}" />
@@ -281,7 +292,7 @@
                 </RichTextBoxControl:RichTextBoxToolbar>
 
 
-                    <!--
+                <!--
                 Zoom="{Binding Path=Value,ElementName=slIncrectTextSize}"
                 <RichTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
                 Document="{Binding SelectedLesson.BackSideModel.Detail,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
@@ -304,7 +315,9 @@
                     Orientation="Vertical"
                     Height="150"
                     Minimum="2"
-                    SmallChange="0.5" Maximum="5" Value="2" />
+                    SmallChange="0.5"
+                    Maximum="5"
+                    Value="2" />
         </Grid>
         <Border x:Name="bdBottom"
                 BorderBrush="#00000000"
@@ -319,7 +332,8 @@
                     <Button Content="Pause"
                             Height="20"
                             Width="50"
-                            Command="{Binding PlayPauseCommand}" CommandParameter="FullScreen" />
+                            Command="{Binding PlayPauseCommand}"
+                            CommandParameter="FullScreen" />
                     <Button x:Name="btnChangeFace"
                             Command="{Binding ChangeSideCommand}"
                             CommandParameter="FullScreen"
