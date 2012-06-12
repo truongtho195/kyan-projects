@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icons/1338870517_circle_green.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/1339488847_config-tools.png")]
 
 

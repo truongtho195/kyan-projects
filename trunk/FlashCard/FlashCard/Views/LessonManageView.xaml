@@ -514,7 +514,8 @@
                         </StackPanel>
                     </Border>
                     <Grid Grid.Row="1"
-                          IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                          >
+                        <!--IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
                         <Grid.RowDefinitions>
                         	<RowDefinition Height="10" />
 							<!--Collapse Type: use only Vocabulary-->

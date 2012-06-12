@@ -4,32 +4,42 @@
         Title="MainWindow"
         Height="350"
         Width="525"
-        xmlns:notifyIcon="http://www.hardcodet.net/taskbar">
+        xmlns:userControl="clr-namespace:FlashCard.Views"
+        xmlns:notifyIcon="http://www.hardcodet.net/taskbar"
+        xmlns:converter="clr-namespace:FlashCard.Converters">
+    <Window.Resources>
+        <!--#region Converters-->
+        <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <!--#endregion Converters-->
 
-    <Grid>
+    </Window.Resources>
+        <Grid>
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
                                 DoubleClickCommand="{Binding ShowPopupCommand}"
                                 IconSource="{Binding IconStatus}"
                                 ToolTipText="Balloon Sample Icon">
 
-           
+
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Choose Lesson"
-                              Command="{Binding ChooseLessonCommand}" />
+                    <MenuItem Header="Config Lesson"
+                              
+                              Command="{Binding ChooseLessonCommand}"
+                              CommandParameter="Popup" />
                     <MenuItem Header="Full Learning"
                               Command="{Binding FullScreenCommand}" />
                     <MenuItem Header="Lesson Management"
                               Command="{Binding LessonManagerCommand}" />
                     <MenuItem Header="Play/Pause"
-                              Command="{Binding PlayPauseCommand}" CommandParameter="Popup" />
+                              Command="{Binding PlayPauseCommand}"
+                              CommandParameter="Popup" />
                     <MenuItem Header="Exit"
                               Command="{Binding ExitCommand}" />
                 </ContextMenu>
             </notifyIcon:TaskbarIcon.ContextMenu>
         </notifyIcon:TaskbarIcon>
-        <TextBlock HorizontalAlignment="Center"
+        <!--<TextBlock HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="25"> Welcome to Flash Card</TextBlock>
+                   FontSize="25"> Welcome to Flash Card</TextBlock>-->
     </Grid>
 </Window>

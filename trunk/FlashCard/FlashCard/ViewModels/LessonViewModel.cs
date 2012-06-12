@@ -210,13 +210,13 @@ namespace FlashCard.ViewModels
 
         private void EditExecute(object param)
         {
-            if (SelectedLesson.BackSideModel == null)
-            {
-                SelectedLesson.BackSideModel = new BackSideModel();
-                RaisePropertyChanged(() => SelectedLesson);
-            }
+            //if (SelectedLesson.BackSideModel == null)
+            //{
+            //    SelectedLesson.BackSideModel = new BackSideModel();
+            //    RaisePropertyChanged(() => SelectedLesson);
+            //}
 
-            SelectedLesson.IsEditing = true;
+            //SelectedLesson.IsEditing = true;
         }
         #endregion
 
@@ -500,7 +500,11 @@ namespace FlashCard.ViewModels
         private void OnSelectionChangedExecute(object param)
         {
             SelectedLesson = param as LessonModel;
-            SelectedLesson.IsEditing = false;
+            if (SelectedLesson.BackSideModel == null)
+            {
+                SelectedLesson.BackSideModel = new BackSideModel();
+                RaisePropertyChanged(() => SelectedLesson);
+            }
         }
 
         #endregion

@@ -20,7 +20,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using MVVMHelper.Common;
 
-
 namespace FlashCard.ViewModels
 {
     public partial class MainViewModel : ViewModel<MainWindow>
@@ -40,24 +39,8 @@ namespace FlashCard.ViewModels
                 ShowPopupForm();
             }
             ViewCore.Hide();
-
         }
 
-        public MainViewModel(MainWindow view, bool isCallFromOther)
-            : base(view)
-        {
-            Initialize();
-
-            if (SetupModel.IsEnableSlideShow)
-                InitialTimer();
-            else
-            {
-                SelectedLesson = LessonCollection.First();
-                SelectedLesson.IsBackSide = false;
-                ShowPopupForm();
-            }
-            ViewCore.Hide();
-        }
         #endregion
 
         #region Variables
@@ -70,12 +53,13 @@ namespace FlashCard.ViewModels
         int _currentItemIndex = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
+
+
         #endregion
 
         #region Properties
+
         #region Views
-
-
         private string _titles;
         /// <summary>
         /// Gets or sets the property value.
@@ -97,27 +81,6 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
-
-
-        #region BackSideDetail
-        private FlowDocument _backSideDetail;
-        /// <summary>
-        /// Gets or sets the BackSideDetail.
-        /// </summary>
-        public FlowDocument BackSideDetail
-        {
-            get { return _backSideDetail; }
-            set
-            {
-                if (_backSideDetail != value)
-                {
-                    _backSideDetail = value;
-                    RaisePropertyChanged(() => BackSideDetail);
-                }
-            }
-        }
-        #endregion
-
 
         #region "  SelectedLesson"
         /// <summary>
@@ -506,16 +469,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-            if ("FullScreen".Equals(param.ToString()))
+            if (IsPopupStarted)
+            {
+                PlayPauseBallonPopup(false);
+            }
+            else
             {
                 if (_timerViewFullScreen.IsEnabled)
                     _timerViewFullScreen.Stop();
                 else
                     _timerViewFullScreen.Start();
-            }
-            else
-            {
-                PlayPauseBallonPopup(false);
             }
         }
 
@@ -555,9 +518,19 @@ namespace FlashCard.ViewModels
 
         private void UserConfigStudies()
         {
-            PlayPauseBallonPopup(true);
+
+            if (IsPopupStarted)
+                PlayPauseBallonPopup(true);
+            else
+            {
+                if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
+                {
+                    _timerViewFullScreen.Stop();
+                }
+            }
             StudyConfigView lessionView = new StudyConfigView();
             lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
+
             if (lessionView.ShowDialog() == true)
             {
                 var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
@@ -567,10 +540,33 @@ namespace FlashCard.ViewModels
                 //set time for ballon popup
                 if (_timerPopup != null)
                     _timerPopup.Interval = SetupModel.TimeOut;
+                if(_timerViewFullScreen!=null)
+                    _timerViewFullScreen.Interval = new TimeSpan(0, 0, this.SetupModel.ViewTimeSecond);
 
-                if (SetupModel.IsEnableSlideShow)
+
+            }
+            //else
+            //{
+            //    PlayPauseBallonPopup(false);
+            //}
+
+            if (SetupModel.IsEnableSlideShow)
+            {
+                if (IsPopupStarted)
+                {
                     PlayPauseBallonPopup(false);
+                }
                 else
+                {
+                    if (_timerViewFullScreen != null && !_timerViewFullScreen.IsEnabled)
+                    {
+                        _timerViewFullScreen.Start();
+                    }
+                }
+            }
+            else
+            {
+                if (IsPopupStarted)
                 {
                     SelectedLesson = LessonCollection.First();
                     SelectedLesson.IsBackSide = false;
@@ -579,10 +575,6 @@ namespace FlashCard.ViewModels
                     _waitForClose.Stop();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                 }
-            }
-            else
-            {
-                PlayPauseBallonPopup(false);
             }
 
         }
@@ -895,7 +887,6 @@ namespace FlashCard.ViewModels
                 ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                 this.IsPopupStarted = true;
                 RaisePropertyChanged(() => SelectedLesson);
-
                 var timerSpan = new TimeSpan(0, 0, 0, SetupModel.ViewTimeSecond);
                 TimerForClosePopup(timerSpan);
                 Console.WriteLine(".....Showing .....");
