@@ -292,7 +292,7 @@ namespace FlashCard.DataAccess
                 Edit(lessonModel, sqlCommand);
                 sqlCommand.ExecuteNonQuery();
                 BackSideDataAccess backSideDataAccess = new BackSideDataAccess();
-                //lessonModel.LessonID = (int)sqlConnect.LastInsertRowId;
+                lessonModel.LessonID = (int)sqlConnect.LastInsertRowId;
                 foreach (var item in lessonModel.BackSideCollection)
                 {
                     item.LessonID = lessonModel.LessonID;

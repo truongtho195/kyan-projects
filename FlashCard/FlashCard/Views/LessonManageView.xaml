@@ -642,7 +642,7 @@
                                  Margin="10,6,8,6"
                                  Grid.Row="3" />
 
-                        <DataGrid x:Name="dgBackSide"
+                        <!--<DataGrid x:Name="dgBackSide"
                                   Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                   SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -659,7 +659,7 @@
                             				<TextBox x:Name="tbContent"
                             					Width="auto"
                             					MinWidth="200px"
-                            					Text="{Binding BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					Text="{Binding BackSideDetail, UpdateSourceTrigger=PropertyChanged}" />
 
                             			</DataTemplate>
                             		</DataGridTemplateColumn.CellTemplate>
@@ -668,9 +668,9 @@
                             		Width="80"
                             		Binding="{Binding IsCorrect}" />
                             </DataGrid.Columns>
-                        </DataGrid>
+                        </DataGrid>-->
                         <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                               Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                                               Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                                Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                Grid.Column="1"
                                                                BorderBrush="#FF7F9DB9"
@@ -695,7 +695,7 @@
                                 BorderBrush="{x:Null}"
                                 Margin="0,0,8,0" />
                         <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
-                                                               Document="{Binding SelectedLesson.Description, UpdateSourceTrigger=PropertyChanged}"
+                                                               Document="{Binding SelectedLesson.Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                IsReadOnly="False"
                                                                Foreground="Black"
                                                                Grid.Column="1"

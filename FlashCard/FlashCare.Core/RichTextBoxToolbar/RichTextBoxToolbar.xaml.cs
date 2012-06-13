@@ -31,6 +31,8 @@ namespace RichTextBoxControl
 
         protected bool IsDocumentChanged = false;
 
+        private int m_InternalUpdatePending;
+        private bool m_TextHasChanged;
 
         #region Destructor & Constructors
         public RichTextBoxToolbar()
@@ -52,6 +54,12 @@ namespace RichTextBoxControl
             this.cbTextColor.SelectionChanged += new SelectionChangedEventHandler(cbTextColor_SelectionChanged);
             this.rtContent.SelectionChanged += new RoutedEventHandler(rtContent_SelectionChanged);
             this.rtContent.ContextMenu = null;
+            rtContent.LostFocus += new RoutedEventHandler(rtContent_LostFocus);
+        }
+
+        void rtContent_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void rtContent_SelectionChanged(object sender, RoutedEventArgs e)
@@ -161,45 +169,6 @@ namespace RichTextBoxControl
             DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(RichTextBoxToolbar), new PropertyMetadata(false, new PropertyChangedCallback(OnIsReadOnlyChanged)));
 
 
-        #endregion
-
-        #region PropertyChanged Callback Methods
-
-        /// <summary>
-        /// Called when the Document property is changed
-        /// </summary>
-        private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            try
-            {
-                RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
-                if (thisControl.IsDocumentChanged) return;
-                thisControl.IsDocumentChanged = true;
-                if (e.NewValue == null)
-                {
-                    //Document is not amused by null :)
-                    thisControl.rtContent.Document = new FlowDocument();
-                    thisControl.IsDocumentChanged = false;
-                    //thisControl.rtContent.Document.Blocks.Clear();
-                    return;
-                }
-                else if (e.NewValue != e.OldValue)
-                {
-                    thisControl.rtContent.Document.Blocks.Clear();
-                    MemoryStream ms = new MemoryStream();
-                    XamlWriter.Save(e.NewValue as FlowDocument, ms);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
-
-                }
-                thisControl.IsDocumentChanged = false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<OnDocumentChanged>>>>>>>>>>>>>>>>>>" + ex.ToString());
-            }
-        }
-
         /// <summary>
         /// Called when the Document property is changed
         /// </summary>
@@ -221,8 +190,83 @@ namespace RichTextBoxControl
                         (d as RichTextBoxToolbar).popup.Visibility = Visibility.Visible;
                     }
                 }
-
         }
+
+        #endregion
+
+        #region PropertyChanged Callback Methods
+
+        /// <summary>
+        /// Called when the Document property is changed
+        /// </summary>
+        private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            //try
+            //{
+            //    RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
+            //    if (thisControl.IsDocumentChanged) return;
+            //    thisControl.IsDocumentChanged = true;
+            //    if (e.NewValue == null)
+            //    {
+            //        //Document is not amused by null :)
+            //        thisControl.rtContent.Document = new FlowDocument();
+            //        thisControl.IsDocumentChanged = false;
+            //        return;
+            //    }
+            //    else if (e.NewValue != e.OldValue)
+            //    {
+            //        thisControl.rtContent.Document.Blocks.Clear();
+            //        MemoryStream ms = new MemoryStream();
+            //        XamlWriter.Save(e.NewValue as FlowDocument, ms);
+            //        ms.Seek(0, SeekOrigin.Begin);
+
+            //        thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
+
+            //    }
+            //    thisControl.IsDocumentChanged = false;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<OnDocumentChanged>>>>>>>>>>>>>>>>>>" + ex.ToString());
+            //}
+
+
+
+            //ver 2
+            try
+            {
+                // Initialize
+                var thisControl = (RichTextBoxToolbar)d;
+
+                if (thisControl.IsDocumentChanged) return;
+                thisControl.IsDocumentChanged = true;
+
+                // Set Document property on RichTextBox
+
+                if (e.NewValue == null)
+                {
+                    //Document is not amused by null :)
+                    thisControl.rtContent.Document = new FlowDocument();
+                }
+                else if (e.NewValue != e.OldValue)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    XamlWriter.Save(e.NewValue as FlowDocument, ms);
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
+                }
+
+
+                thisControl.IsDocumentChanged = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("||=======================OnDocumentChanged=======================");
+                Console.WriteLine("||{0}", e.ToString());
+            }
+        }
+
 
 
         #endregion
@@ -234,23 +278,43 @@ namespace RichTextBoxControl
             {
                 if (this.IsDocumentChanged) return;
                 this.IsDocumentChanged = true;
-                SetToolbar();
+                //SetToolbar();
 
-                TextRange textRange = new TextRange(this.rtContent.Document.ContentStart, this.rtContent.Document.ContentEnd);
-                var test = GetImagesXML(this.rtContent.Document);
-
-                SetValue(DocumentProperty, this.rtContent.Document);
-                //this.Document = this.rtContent.Document;
-
+                //TextRange textRange = new TextRange(this.rtContent.Document.ContentStart, this.rtContent.Document.ContentEnd);
+                //var test = GetImagesXML(this.rtContent.Document);
+                m_InternalUpdatePending = 2;
+                this.Document = this.rtContent.Document;
                 this.IsDocumentChanged = false;
-
-                // SetValue(DocumentProperty,this.rtContent.Document);
             }
             catch (Exception ex)
             {
                 Console.Write("<<<<<<<<<<<<RichTextBoxControl_TextChanged>>>>>>>>>>>>>>>>>" + ex.ToString());
             }
+
+            //ver 2
+            //try
+            //{
+
+            //    //m_TextHasChanged = true;
+            //    if (this.IsDocumentChanged) return;
+            //    this.IsDocumentChanged = true;
+
+
+            //    // Set Document property
+            //    SetValue(DocumentProperty, this.rtContent.Document);
+            //    this.IsDocumentChanged = false;
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("||=======================rtContent_TextChanged=======================");
+            //    Console.WriteLine("||{0}", e.ToString());
+            //}
+
         }
+
+
+
 
         private void btnNormalText_Click(object sender, RoutedEventArgs e)
         {
