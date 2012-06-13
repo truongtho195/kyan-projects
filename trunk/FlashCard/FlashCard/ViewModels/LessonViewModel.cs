@@ -71,12 +71,12 @@ namespace FlashCard.ViewModels
             }
         }
 
-      
-        private List<LessonModel> _lessonCollection;
+
+        private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public List<LessonModel> LessonCollection
+        public ObservableCollection<LessonModel> LessonCollection
         {
             get { return _lessonCollection; }
             set
@@ -523,13 +523,13 @@ namespace FlashCard.ViewModels
             CategoryCollection = new List<CategoryModel>(categoryDataAccess.GetAll());
 
             LessonDataAccess lessonDataAccess = new LessonDataAccess();
-            LessonCollection = new List<LessonModel>(lessonDataAccess.GetAllWithRelation());
+            LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
 
             if (LessonCollection.Any())
                 SelectedLesson = LessonCollection.FirstOrDefault();
             else
             {
-                LessonCollection = new List<LessonModel>();
+                LessonCollection = new ObservableCollection<LessonModel>();
                 NewExecute(null);
             }
         }
