@@ -49,8 +49,6 @@ namespace FlashCard.ViewModels
                 SelectedLesson.IsBackSide = false;
                 ShowPopupForm();
             }
-            
-            
         }
 
         #endregion

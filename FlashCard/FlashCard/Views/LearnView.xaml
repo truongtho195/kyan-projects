@@ -330,6 +330,7 @@
                             d:LayoutOverrides="Width, Height"
                             HorizontalAlignment="Right">
                     <Button Content="Pause"
+                            Visibility="{Binding SetupModel.IsEnableSlideShow,Mode=OneWay,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"
                             Height="20"
                             Width="50"
                             Command="{Binding PlayPauseCommand}"
