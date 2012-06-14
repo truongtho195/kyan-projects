@@ -19,6 +19,9 @@ using FlashCard.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using MVVMHelper.Common;
+using System.Windows.Media;
+using FlashCard.Helper;
+using System.Speech.Synthesis;
 
 namespace FlashCard.ViewModels
 {
@@ -63,7 +66,7 @@ namespace FlashCard.ViewModels
         int _currentItemIndex = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
-
+        MediaPlayer _listenWord;
 
         #endregion
 
@@ -678,6 +681,58 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
+        #region "  ListenCommand"
+        private ICommand _listenCommand;
+        //Gets or sets the property value
+        public ICommand ListenCommand
+        {
+            get
+            {
+                if (_listenCommand == null)
+                {
+                    _listenCommand = new RelayCommand(this.ListenExecute, this.CanListenExecute);
+                }
+                return _listenCommand;
+            }
+        }
+
+        private bool CanListenExecute(object param)
+        {
+            return true;
+        }
+
+        private void ListenExecute(object param)
+        {
+            try
+            {
+                if (CheckConnectionInternet.IsConnectedToInternet())
+                {
+                    _listenWord = new MediaPlayer();
+                    string keyword = @"http://translate.google.com/translate_tts?q=" + SelectedLesson.LessonName;
+                    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
+                }
+                else
+                {
+                    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                    synthesizer.SpeakAsync(SelectedLesson.LessonName);
+                
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+            
+        }
+        #endregion
+
+
         //Full Screen Region
         #region "  ClosingFormCommand"
 
@@ -829,6 +884,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void Initialize()
         {
+            _listenWord = new MediaPlayer();
             //Set For View
 
             List<UserModel> UserLessonCollection = new List<UserModel>();

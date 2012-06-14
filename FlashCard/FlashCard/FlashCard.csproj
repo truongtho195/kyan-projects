@@ -64,6 +64,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,6 +88,7 @@
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
+    <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
@@ -245,6 +247,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\1339488847_Config-Tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\1339695682_audio-volume-high.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

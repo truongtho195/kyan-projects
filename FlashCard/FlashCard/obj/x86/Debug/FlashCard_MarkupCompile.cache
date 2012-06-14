@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\obj\x86\Debug\
 FlashCard
 none
 false
 DEBUG;TRACE
-E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\App.xaml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\App.xaml
 6-734107212
 
-21-315904243
-24-1196945334
+22-2116160597
+25-1163035446
 MainWindow.xaml;Tooltips\FancyBalloon.xaml;Views\StudyConfigView.xaml;Views\LearnView.xaml;Views\LessonManageView.xaml;Views\TestScrollView.xaml;
 
 False
