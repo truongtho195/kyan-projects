@@ -29,7 +29,18 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
-            //UserConfigStudies(true);
+
+            StudyConfigView lessionView = new StudyConfigView();
+            lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
+
+            ViewCore.Hide();
+            if (lessionView.ShowDialog() == true)
+            {
+                var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
+                LessonCollection = viewModel.LessonCollection;
+                SetupModel = viewModel.SetupModel;
+            }
+
             if (SetupModel.IsEnableSlideShow)
                 InitialTimer();
             else
@@ -38,7 +49,8 @@ namespace FlashCard.ViewModels
                 SelectedLesson.IsBackSide = false;
                 ShowPopupForm();
             }
-            ViewCore.Hide();
+            
+            
         }
 
         #endregion
@@ -576,8 +588,12 @@ namespace FlashCard.ViewModels
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                 }
             }
-
         }
+
+
+
+
+       
         #endregion
 
         #region "  ShowPopupCommand"
