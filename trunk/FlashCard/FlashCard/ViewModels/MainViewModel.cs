@@ -708,6 +708,7 @@ namespace FlashCard.ViewModels
             {
                 if (CheckConnectionInternet.IsConnectedToInternet())
                 {
+                    Console.WriteLine("Listen with google translate");
                     _listenWord = new MediaPlayer();
                     string keyword = @"http://translate.google.com/translate_tts?q=" + SelectedLesson.LessonName;
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
@@ -716,11 +717,10 @@ namespace FlashCard.ViewModels
                 }
                 else
                 {
+                    Console.WriteLine("Listen with Microsoft Speed");
                     SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                     synthesizer.SpeakAsync(SelectedLesson.LessonName);
-                
                 }
-
             }
             catch (Exception ex)
             {
