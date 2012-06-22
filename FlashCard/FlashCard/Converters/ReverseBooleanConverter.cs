@@ -17,7 +17,9 @@ namespace FlashCard.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null)
+                return false;
+            return !(bool)value;
         }
     }
 }

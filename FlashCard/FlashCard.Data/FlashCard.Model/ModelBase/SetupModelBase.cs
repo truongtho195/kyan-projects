@@ -98,7 +98,6 @@ namespace FlashCard.Model
         }
         #endregion
 
-
         #region LimitCardNum
         private int _limitCardNum;
         /// <summary>
@@ -126,7 +125,6 @@ namespace FlashCard.Model
         }
         #endregion
 
-
         #region IsEnableSlideShow
         private bool _isEnableSlideShow;
         /// <summary>
@@ -152,8 +150,6 @@ namespace FlashCard.Model
             OnChanged();
         }
         #endregion
-
-
 
         #region IsEnableLoop
         private bool _isEnableLoop;
@@ -207,6 +203,33 @@ namespace FlashCard.Model
 
         protected virtual void OnSideShowChanging(ShowType value) { }
         protected virtual void OnSideShowChanged() { }
+
+
+
+        private bool _IsShuffle;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public bool IsShuffle
+        {
+            get { return _IsShuffle; }
+            set
+            {
+                if (_IsShuffle != value)
+                {
+                    this.OnIsShuffleChanging(value);
+                    _IsShuffle = value;
+                    RaisePropertyChanged(() => IsShuffle);
+                    this.OnIsShuffleChanged();
+                }
+            }
+        }
+
+        protected virtual void OnIsShuffleChanging(bool value) { }
+        protected virtual void OnIsShuffleChanged() { }
+
+
+
         #endregion
 
 

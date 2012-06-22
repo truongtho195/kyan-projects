@@ -23,6 +23,7 @@ namespace FlashCard.Model
             this.IsEnableLoop = true;
             this.IsLimitCard = false;
             this.LimitCardNum = 0;
+            this.IsShuffle = false;
         }
 
         #region Properties
@@ -65,9 +66,6 @@ namespace FlashCard.Model
         #region Methods
 
         #endregion
-
-
-
 
 
         public string Error

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data;
 using System.Waf.Applications;
 using FlashCard.DataAccess;
 using FlashCard.Model;
 using System.Windows.Threading;
-using System.Threading;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MVVMHelper.Commands;
@@ -18,10 +15,10 @@ using System.Windows;
 using FlashCard.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
-using MVVMHelper.Common;
 using System.Windows.Media;
 using FlashCard.Helper;
 using System.Speech.Synthesis;
+using System.Threading;
 
 namespace FlashCard.ViewModels
 {
@@ -37,12 +34,19 @@ namespace FlashCard.ViewModels
             lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
 
             ViewCore.Hide();
-            if (lessionView.ShowDialog() == true)
-            {
+            //if (lessionView.ShowDialog() == true)
+            //{
                 var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
-                LessonCollection = viewModel.LessonCollection;
                 SetupModel = viewModel.SetupModel;
-            }
+                if (this.SetupModel.IsShuffle)
+                {
+                    var lessonShuffle = ShuffleList.Randomize<LessonModel>(viewModel.LessonCollection);
+                    LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
+                }
+                else
+                    LessonCollection = viewModel.LessonCollection;
+
+            //}
 
             if (SetupModel.IsEnableSlideShow)
                 InitialTimer();
@@ -374,9 +378,9 @@ namespace FlashCard.ViewModels
                 _swCountTimerTick.Stop();
                 int time = 0;
                 if (_swCountTimerTick.Elapsed.Seconds < SetupModel.ViewTimeSecond)
-                    time = SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds;
+                    time = SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 3;
                 else
-                    time = 1;
+                    time = 3;
                 var timerSpan = new TimeSpan(0, 0, 0, time);
                 TimerForClosePopup(timerSpan);
                 _swCountTimerTick.Reset();
@@ -455,6 +459,7 @@ namespace FlashCard.ViewModels
             //CloseTimerPopup();
             if (lessonManager.ShowDialog() == true)
             {
+                GetLesson();
                 PlayPauseBallonPopup(false);
             }
         }
@@ -551,13 +556,32 @@ namespace FlashCard.ViewModels
             }
             StudyConfigView lessionView = new StudyConfigView();
             lessionView.GetViewModel<StudyConfigViewModel>().SetupModel = SetupModel;
+            var cate = from x in LessonCollection
+                       group x by x.CategoryID into c
+                       select new CategoryModel
+                       {
 
-            if (lessionView.ShowDialog() == true)
-            {
+                           CategoryID = c.Select(k => k.CategoryModel.CategoryID).First(),
+                           CategoryName = c.Select(f => f.CategoryModel.CategoryName).First()
+
+                       };
+
+
+            lessionView.GetViewModel<StudyConfigViewModel>().CategoryList = cate.ToList();
+            //if (lessionView.ShowDialog() == true)
+            //{
                 var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
-                LessonCollection = viewModel.LessonCollection;
 
                 SetupModel = viewModel.SetupModel;
+                if (this.SetupModel.IsShuffle)
+                {
+                    var lessonShuffle = ShuffleList.Randomize<LessonModel>(viewModel.LessonCollection);
+                    LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
+                }
+                else
+                    LessonCollection = viewModel.LessonCollection;
+
+
                 //set time for ballon popup
                 if (_timerPopup != null)
                     _timerPopup.Interval = SetupModel.TimeOut;
@@ -565,7 +589,7 @@ namespace FlashCard.ViewModels
                     _timerViewFullScreen.Interval = new TimeSpan(0, 0, this.SetupModel.ViewTimeSecond);
 
 
-            }
+            //}
 
             if (SetupModel.IsEnableSlideShow)
             {
@@ -594,10 +618,6 @@ namespace FlashCard.ViewModels
                 }
             }
         }
-
-
-
-
 
         #endregion
 
@@ -702,9 +722,9 @@ namespace FlashCard.ViewModels
 
         private bool CanListenExecute(object param)
         {
-            return true;
+            return NotListen;
         }
-
+        bool NotListen = true;
         private void ListenExecute(object param)
         {
             try
@@ -727,7 +747,6 @@ namespace FlashCard.ViewModels
             }
             catch (Exception ex)
             {
-
                 throw;
             }
 
@@ -890,10 +909,33 @@ namespace FlashCard.ViewModels
             //Set For View
 
             List<UserModel> UserLessonCollection = new List<UserModel>();
-            LessonDataAccess lessonDA = new LessonDataAccess();
-            LessonCollection = new ObservableCollection<LessonModel>(lessonDA.GetAllWithRelation());
             SetupModel = new SetupModel();
+
+            GetLesson();
+
+            test.Interval = new TimeSpan(0, 0, 1);
+            test.Tick += new EventHandler(test_Tick);
+
         }
+
+        private void GetLesson()
+        {
+            LessonDataAccess lessonDA = new LessonDataAccess();
+            var lesson = lessonDA.GetAllWithRelation();
+            if (this.SetupModel.IsShuffle)
+            {
+                var lessonShuffle = ShuffleList.Randomize<LessonModel>(lesson);
+                LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
+            }
+            else
+            {
+                LessonCollection = new ObservableCollection<LessonModel>(lesson);
+            }
+
+
+        }
+
+
 
         /// <summary>
         /// Method to set lesson to show in popup or fullscreen
@@ -938,6 +980,7 @@ namespace FlashCard.ViewModels
             _timerPopup.Interval = SetupModel.TimeOut;
             _timerPopup.Tick += new EventHandler(_timer_Tick);
             _timerPopup.Start();
+            test.Start();
         }
 
         /// <summary>
@@ -979,7 +1022,6 @@ namespace FlashCard.ViewModels
         {
             testTimerPopup.Stop();
             testTimeView.Start();
-            Console.WriteLine("|| Timer For Close Popup");
             testTimerPopup.Reset();
             _waitForClose = new DispatcherTimer();
             _waitForClose.Interval = timeSpan;
@@ -994,6 +1036,7 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _waitForClose_Tick(object sender, EventArgs e)
         {
+            coutSecond = 0;
             WaitBalloon();
         }
 
@@ -1048,57 +1091,58 @@ namespace FlashCard.ViewModels
         {
 
             Console.WriteLine("|| Before Call PausePlay Of Lesson Management : {0}", _timerPopup.IsEnabled);
-            //If app is started => stop ballon popup 
-            if (this.IsPopupStarted)
-            {
-                CloseTimerPopup();
-                this.IsPopupStarted = false;
-            }
-            else
-            {
-                //Popup is "Not started"
-                //Method call from this viewmodel => create timer for Ballon Popup
-                if (!isOtherFormShow)
-                {
-                    var timerSpan = new TimeSpan(0, 0, 0, SetupModel.ViewTimeSecond);
-                    CloseTimerPopup();
-                    _timerPopup.Start();
-                    //TimerForClosePopup(timerSpan);
-                }
-                else //this case can Ballon popup is starting in proccess, => need to break timer call popup show to call another process
-                {
-                    if (_timerPopup.IsEnabled)
-                        _timerPopup.Stop();
-                    if (_waitForClose != null)
-                        _waitForClose.Stop();
-                    IsCurrentStarted = false;
-                }
-            }
-
-            ////Timer (popup flashcard ) is Started=> stop it
-            //if (_timerPopup != null && _timerPopup.IsEnabled)
+            ////If app is started => stop ballon popup 
+            //if (this.IsPopupStarted)
             //{
             //    CloseTimerPopup();
+            //    this.IsPopupStarted = false;
             //}
             //else
             //{
+            //    //Popup is "Not started"
+            //    //Method call from this viewmodel => create timer for Ballon Popup
             //    if (!isOtherFormShow)
             //    {
             //        var timerSpan = new TimeSpan(0, 0, 0, SetupModel.ViewTimeSecond);
             //        CloseTimerPopup();
+            //        _timerPopup.Start();
             //        //TimerForClosePopup(timerSpan);
             //    }
-            //    //else //this case can Ballon popup is starting in proccess, => need to break timer call popup show to call another process
-            //    //{
-            //    //    if (_timerPopup.IsEnabled)
-            //    //        _timerPopup.Stop();
-            //    //    if (_waitForClose != null)
-            //    //        _waitForClose.Stop();
-            //    //    IsCurrentStarted = false;
-            //    //}
-            //    _timerPopup.Start();
+            //    else //this case can Ballon popup is starting in proccess, => need to break timer call popup show to call another process
+            //    {
+            //        if (_timerPopup.IsEnabled)
+            //            _timerPopup.Stop();
+            //        if (_waitForClose != null)
+            //            _waitForClose.Stop();
+            //        IsCurrentStarted = false;
+            //    }
             //}
-                
+
+            //Timer (popup flashcard ) is Started=> stop it
+            if (_timerPopup != null && _timerPopup.IsEnabled)
+            {
+                CloseTimerPopup();
+                coutSecond = 0;
+            }
+            else
+            {
+                if (!isOtherFormShow)
+                {
+                    var timerSpan = new TimeSpan(0, 0, 0, SetupModel.ViewTimeSecond);
+                    CloseTimerPopup();
+                    //TimerForClosePopup(timerSpan);
+                }
+                //else //this case can Ballon popup is starting in proccess, => need to break timer call popup show to call another process
+                //{
+                //    if (_timerPopup.IsEnabled)
+                //        _timerPopup.Stop();
+                //    if (_waitForClose != null)
+                //        _waitForClose.Stop();
+                //    IsCurrentStarted = false;
+                //}
+                _timerPopup.Start();
+            }
+
         }
 
 
@@ -1137,7 +1181,23 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region Test
+        #region All For Test
+        //Variable
+        DispatcherTimer test = new DispatcherTimer();
+        int coutSecond = 0;
+
+        //Event
+        void test_Tick(object sender, EventArgs e)
+        {
+            coutSecond++;
+            if (_timerPopup != null)
+            {
+                Console.WriteLine("\n=====>>>>>>>[TEST TIMER] : {0} || Current second : {1} ", _timerPopup.IsEnabled, coutSecond);
+            }
+
+        }
+
+        //Methods
         private void TestPopup()
         {
             Console.WriteLine("=======================TestPopup=============================");
@@ -1146,6 +1206,9 @@ namespace FlashCard.ViewModels
             Console.WriteLine("||  MyNotifyIcon.IsMouseOver : {0}", ViewCore.MyNotifyIcon.IsMouseOver);
             Console.WriteLine("=============================================================");
         }
+
+
+
 
         #endregion
     }

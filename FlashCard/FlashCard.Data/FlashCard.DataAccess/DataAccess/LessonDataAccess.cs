@@ -49,7 +49,7 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 if (reader.Read())
                 {
-                    lessonModel = GetLessonModel(reader);
+                    lessonModel = MappingToModel(reader);
                 }
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace FlashCard.DataAccess
                 LessonModel lessonModel;
                 while (reader.Read())
                 {
-                    lessonModel = GetLessonModel(reader);
+                    lessonModel = MappingToModel(reader);
                     list.Add(lessonModel);
                 }
             }
@@ -101,7 +101,7 @@ namespace FlashCard.DataAccess
             return list;
         }
 
-       
+
 
         public IList<LessonModel> GetAll(LessonModel lesson)
         {
@@ -151,7 +151,7 @@ namespace FlashCard.DataAccess
                 LessonModel lessonModel;
                 while (reader.Read())
                 {
-                    lessonModel = GetLessonModel(reader);
+                    lessonModel = MappingToModel(reader);
                     list.Add(lessonModel);
                 }
             }
@@ -176,7 +176,7 @@ namespace FlashCard.DataAccess
             SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
-            
+
             BackSideDataAccess backSideDA = new BackSideDataAccess();
             string sql = "select * from Lessons";
             try
@@ -189,8 +189,8 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    LessonModel lessonModel = GetLessonModel(reader);
-                    
+                    LessonModel lessonModel = MappingToModel(reader);
+
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
@@ -248,8 +248,8 @@ namespace FlashCard.DataAccess
                 reader = sqlCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    LessonModel lessonModel = GetLessonModel(reader);
-                    
+                    LessonModel lessonModel = MappingToModel(reader);
+
                     var backSideModel = new BackSideModel() { BackSideID = -1 };
                     backSideModel.LessonID = lessonModel.LessonID;
                     //BackSideCollection
@@ -279,7 +279,7 @@ namespace FlashCard.DataAccess
         public bool Insert(LessonModel lessonModel)
         {
             bool result = false;
-            string sql = "insert into Lessons (LessonName,Description,TypeID,CategoryID) values (@LessonName,@Description,@TypeID,@CategoryID)";
+            string sql = "insert into Lessons (LessonName,Description,TypeID,CategoryID,IsActived) values (@LessonName,@Description,@TypeID,@CategoryID,@IsActived)";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -289,7 +289,7 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                Edit(lessonModel, sqlCommand);
+                MappingToEntity(lessonModel, sqlCommand);
                 sqlCommand.ExecuteNonQuery();
                 BackSideDataAccess backSideDataAccess = new BackSideDataAccess();
                 lessonModel.LessonID = (int)sqlConnect.LastInsertRowId;
@@ -307,7 +307,7 @@ namespace FlashCard.DataAccess
                 CatchException(ex);
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                
+
                 throw;
             }
 
@@ -317,7 +317,7 @@ namespace FlashCard.DataAccess
         public bool Update(LessonModel lessonModel)
         {
             bool result = false;
-            string sql = "update Lessons set LessonName=@LessonName,Description=@Description,TypeID=@TypeID,CategoryID=@CategoryID where LessonID = @LessonID";
+            string sql = "update Lessons set LessonName=@LessonName,Description=@Description,TypeID=@TypeID,CategoryID=@CategoryID,IsActived=@IsActived where LessonID = @LessonID";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -328,7 +328,7 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                Edit(lessonModel, sqlCommand);
+                MappingToEntity(lessonModel, sqlCommand);
                 sqlCommand.ExecuteNonQuery();
                 BackSideDataAccess backSideDataAccess = new BackSideDataAccess();
                 foreach (var item in lessonModel.BackSideCollection.ToList())
@@ -373,7 +373,10 @@ namespace FlashCard.DataAccess
             }
         }
 
-        private LessonModel GetLessonModel(SQLiteDataReader reader)
+        #endregion
+
+        #region Extend Methods
+        private LessonModel MappingToModel(SQLiteDataReader reader)
         {
             LessonModel lessonModel;
             CategoryDataAccess categoryDA = new CategoryDataAccess();
@@ -383,6 +386,7 @@ namespace FlashCard.DataAccess
             lessonModel.LessonName = reader["LessonName"].ToString();
             lessonModel.Description = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Description"].ToString());
             lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
+            lessonModel.IsActived = bool.Parse(reader["IsActived"].ToString());
             //CategoryModel
             lessonModel.CategoryModel = categoryDA.Get(int.Parse(reader["CategoryID"].ToString()));
             //TypeMode
@@ -395,17 +399,15 @@ namespace FlashCard.DataAccess
         }
 
 
-        private void Edit(LessonModel lessonModel, SQLiteCommand sqlCommand)
+        private void MappingToEntity(LessonModel lessonModel, SQLiteCommand sqlCommand)
         {
             sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", lessonModel.LessonName));
             sqlCommand.Parameters.Add(new SQLiteParameter("@Description", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(lessonModel.Description)));
             sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeModel.TypeID));
             sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", lessonModel.CategoryModel.CategoryID));
             sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", lessonModel.LessonID));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@IsActived", lessonModel.IsActived));
         }
-
-      
-
         #endregion
     }
 }
