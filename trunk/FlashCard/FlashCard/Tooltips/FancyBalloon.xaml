@@ -230,7 +230,6 @@
                 </Border.Background>
             </Border>
             <Border x:Name="bdHeader1"
-                    BorderBrush="#4C333332"
                     BorderThickness="1"
                     Margin="5,0"
                     CornerRadius="0,0,5,5">

@@ -44,8 +44,7 @@ namespace FlashCard.DataAccess
 
                 if (reader.Read())
                 {
-                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    categoryModel = MappingToModel(reader);
                 }
             }
             catch (Exception ex)
@@ -80,9 +79,7 @@ namespace FlashCard.DataAccess
                 CategoryModel categoryModel;
                 while (reader.Read())
                 {
-                    categoryModel = new CategoryModel();
-                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    categoryModel = MappingToModel(reader);
                     list.Add(categoryModel);
                 }
 
@@ -100,6 +97,8 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
+
+       
 
         public IList<CategoryModel> GetAll(CategoryModel category)
         {
@@ -130,9 +129,7 @@ namespace FlashCard.DataAccess
                 CategoryModel categoryModel;
                 while (reader.Read())
                 {
-                    categoryModel = new CategoryModel();
-                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    categoryModel = MappingToModel(reader);
                     list.Add(categoryModel);
                 }
 
@@ -172,9 +169,7 @@ namespace FlashCard.DataAccess
                 //Initialize Lesson
                 while (reader.Read())
                 {
-                    CategoryModel categoryModel = new CategoryModel();
-                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    categoryModel.CategoryName = reader["CategoryName"].ToString();
+                    CategoryModel categoryModel = MappingToModel(reader);
                     //Lesson
                     LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
                     //lesson.CategoryID = categoryModel.CategoryID;
@@ -230,10 +225,8 @@ namespace FlashCard.DataAccess
                 //Initialize Lesson
                 while (reader.Read())
                 {
-                    CategoryModel categoryModel = new CategoryModel();
-                    categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
-                    categoryModel.CategoryName = reader["CategoryName"].ToString();
-
+                    CategoryModel categoryModel= MappingToModel(reader);
+                    
                     //Lesson
                     LessonModel lesson = new LessonModel() { TypeID = -1, LessonID = -1 };
                     var lessonCollection = new List<LessonModel>();
@@ -266,7 +259,7 @@ namespace FlashCard.DataAccess
         public bool Insert(CategoryModel categoryModel)
         {
             bool result = false;
-            string sql = "insert into Categories (CategoryName) values (@CategoryName)";
+            string sql = "insert into Categories (CategoryName,Remark,IsActived) values (@CategoryName,@Remark,@IsActived)";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -275,9 +268,9 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                Edit(categoryModel, sqlCommand);
+                MappingToEntity(categoryModel, sqlCommand);
                 sqlCommand.ExecuteNonQuery();
-                //categoryModel.CategoryID = (int)sqlConnect.LastInsertRowId;
+                categoryModel.CategoryID = (int)sqlConnect.LastInsertRowId;
                 categoryModel.IsNew = false;
                 categoryModel.IsDelete = false;
                 categoryModel.IsEdit = false;
@@ -296,7 +289,7 @@ namespace FlashCard.DataAccess
         public bool Update(CategoryModel categoryModel)
         {
             bool result = false;
-            string sql = "update Categories set CategoryName=@CategoryName where CategoryID = @CategoryID";
+            string sql = "update Categories set CategoryName=@CategoryName,Remark=@Remark,IsActived=@IsActived where CategoryID = @CategoryID";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -305,7 +298,8 @@ namespace FlashCard.DataAccess
                 sqlConnect.Open();
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
-                Edit(categoryModel, sqlCommand);
+                MappingToEntity(categoryModel, sqlCommand);
+                sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", categoryModel.CategoryID));
                 sqlCommand.ExecuteNonQuery();
                 categoryModel.IsNew = false;
                 categoryModel.IsDelete = false;
@@ -322,9 +316,25 @@ namespace FlashCard.DataAccess
             return result;
         }
 
-        private void Edit(CategoryModel categoryModel, SQLiteCommand sqlCommand)
+        
+        #endregion
+
+        #region Extend methods
+
+        private void MappingToEntity(CategoryModel categoryModel, SQLiteCommand sqlCommand)
         {
             sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryName", categoryModel.CategoryName));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@IsActived", categoryModel.IsActived));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@Remark", categoryModel.Remark));
+        }
+        private CategoryModel MappingToModel(SQLiteDataReader reader)
+        {
+            CategoryModel categoryModel = new CategoryModel();
+            categoryModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+            categoryModel.CategoryName = reader["CategoryName"].ToString();
+            categoryModel.Remark = reader["Remark"].ToString();
+            categoryModel.IsActived = bool.Parse(reader["IsActived"].ToString());
+            return categoryModel;
         }
         #endregion
     }

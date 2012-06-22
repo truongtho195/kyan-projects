@@ -332,30 +332,37 @@
         </Style>
     </Window.Resources>
     <Grid>
-    	<Grid.RowDefinitions>
-    		<RowDefinition/>
-    		<RowDefinition Height="5"/>
-    	</Grid.RowDefinitions>
-    	<Grid.ColumnDefinitions>
-    		<ColumnDefinition/>
-    		<ColumnDefinition Width="Auto" MinWidth="5" x:Name="colShadowRight"/>
-    	</Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.119*" />
+            <RowDefinition Height="0.881*" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"
+                              MinWidth="5"
+                              x:Name="colShadowRight" />
+        </Grid.ColumnDefinitions>
 
-        <Border BorderBrush="#FF257EE2" BorderThickness="1.5"/>
+        <Border BorderBrush="#FF257EE2"
+                BorderThickness="1.5"
+                Grid.RowSpan="2" />
 
         <Grid x:Name="Layout"
               Background="{DynamicResource brBackgroundColor}"
-              Margin="0,0,0,0.062">
+              Margin="0,0,0,0.062"
+              Grid.RowSpan="2">
             <Grid.RowDefinitions>
-            	<RowDefinition Height="30" />
-            	<RowDefinition />
-            	<RowDefinition Height="29.795" />
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
 
             <Border x:Name="bdHeader"
                     BorderThickness="1"
                     Background="{DynamicResource brBottomColor}"
-                    BorderBrush="#FF62BDF7" Margin="1,0">
+                    BorderBrush="#FF62BDF7"
+                    Margin="1,0">
                 <Grid>
                     <StackPanel x:Name="stSystemControl"
                                 Orientation="Horizontal"
@@ -432,217 +439,212 @@
                                Margin="5,0,0,0" />
                 </Grid>
             </Border>
-
             <Grid x:Name="grdLayout"
                   Grid.Row="1">
                 <Grid.RowDefinitions>
-                	<RowDefinition />
+                    <RowDefinition Height="0.07*" />
+                    <RowDefinition Height="0.93*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                	<ColumnDefinition Width="0.266*" />
-                	<ColumnDefinition Width="0.013*" />
-                	<ColumnDefinition Width="0.721*" />
-                </Grid.ColumnDefinitions>
-                <ListView x:Name="lstLesson"
-                          ItemsSource="{Binding LessonCollection}"
-                          IsEnabled="{Binding SelectedLesson.IsEditing, Converter={StaticResource reverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                          Background="#FFCDE8FD"
-                          Style="{DynamicResource ListViewStyle}"
-                          ItemsPanel="{DynamicResource ItemsPanelTemplate}"
-                          SelectionMode="Single" Margin="1,0,0,0">
 
-                    <i:Interaction.Triggers>
-                    	<i:EventTrigger EventName="SelectionChanged">
-                    		<localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                    			CommandParameter="{Binding SelectedItem, ElementName=lstLesson}" />
-                    	</i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <ListView.View>
-                        <GridView>
-                            <!--<GridViewColumn Header="#"
+                <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
+
+                <Grid x:Name="grdControls">
+                    <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                d:LayoutOverrides="Width">
+                        <ToggleButton x:Name="tgLesson"
+                                      Content="Lesson"
+                                      Width="80"
+                                      Margin="0,0,10,0"
+                                      IsChecked="{Binding IsChecked, Converter={StaticResource reverseBooleanConverter}, ElementName=tgCategories, Mode=TwoWay}" />
+                        <ToggleButton x:Name="tgCategories"
+                                      Content="Categories"
+                                      Width="100" />
+                    </StackPanel>
+                    <Button Content="Study Now"
+                            Command="{Binding ShowStudyCommand}"
+                            HorizontalAlignment="Right"
+                            d:LayoutOverrides="Height"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"
+                            Width="97"
+                            BorderThickness="0.5" />
+
+                </Grid>
+
+                <Grid x:Name="grdLesson"
+                      Grid.Row="1"
+                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgLesson}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.266*" />
+                        <ColumnDefinition Width="0.013*" />
+                        <ColumnDefinition Width="0.721*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="lstLesson"
+                              ItemsSource="{Binding LessonCollection}"
+                              IsEnabled="{Binding SelectedLesson.IsEditing, Converter={StaticResource reverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                              Background="#FFCDE8FD"
+                              Style="{DynamicResource ListViewStyle}"
+                              ItemsPanel="{DynamicResource ItemsPanelTemplate}"
+                              SelectionMode="Single"
+                              Margin="1,0,0,0">
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
+                                                             CommandParameter="{Binding SelectedItem, ElementName=lstLesson}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListView.View>
+                            <GridView>
+                                <!--<GridViewColumn Header="#"
                                     DisplayMemberBinding="{Binding}"
                                     Width="30" />-->
-                            <GridViewColumn Header="Lesson Name"
-                                            Width="auto"
-                                            DisplayMemberBinding="{Binding LessonName}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Grid x:Name="grdContent"
-                      Grid.Column="1"
-                      Grid.ColumnSpan="2">
-                    <Grid.RowDefinitions>
-                    	<RowDefinition Height="48.471" />
-                    	<RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Border Background="#FFAACCFB"
-                            BorderBrush="#00000000"
-                            BorderThickness="0.5">
-                        <StackPanel x:Name="stkControl"
-                                    Orientation="Horizontal"
-                                    Height="21.277"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,8,0">
-                            <Button x:Name="btnNew"
-                                    Command="{Binding NewCommand}"
-                                    Content="New"
-                                    Width="70"
-                                    Background="White"
-                                    BorderBrush="{x:Null}"
-                                    Margin="0,0,10,0" />
-                            <Button x:Name="btnSave"
-                                    Command="{Binding SaveCommand}"
-                                    Content="Save"
-                                    Width="70"
-                                    BorderBrush="{x:Null}"
-                                    Background="White"
-                                    Margin="0,0,10,0" />
-                            <Button x:Name="btnEdit"
-                                    Command="{Binding EditCommand}"
-                                    Content="Edit"
-                                    Width="70"
-                                    BorderBrush="{x:Null}"
-                                    Background="White"
-                                    Margin="0,0,10,0" />
-                            <Button x:Name="btnDelete"
-                                    Command="{Binding DeleteCommand}"
-                                    Content="Delete"
-                                    Width="70"
-                                    BorderBrush="{x:Null}"
-                                    Background="White" />
-                        </StackPanel>
-                    </Border>
-                    <Grid Grid.Row="1"
-                          >
-                        <!--IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                <GridViewColumn Header="Lesson Name"
+                                                Width="auto"
+                                                DisplayMemberBinding="{Binding LessonName}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Grid x:Name="grdContent"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="10" />
-							<!--Collapse Type: use only Vocabulary-->
-                        	<RowDefinition Height="0"  />
-                        	<RowDefinition Height="25" />
-                        	<RowDefinition Height="35" />
-                        	<RowDefinition Height="92.78" />
-                        	<RowDefinition Height="0.525*" />
-                        	<RowDefinition Height="0.375*" />
+                            <RowDefinition Height="48.471" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                        	<ColumnDefinition Width="85.191" />
-                        	<ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="tbType"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Type :"
-                                   VerticalAlignment="Center"
-                                   Grid.Row="1" />
-                        <TextBlock x:Name="tbCategory"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Category :"
-                                   VerticalAlignment="Center"
-                                   Grid.Row="2" />
-                        <TextBlock x:Name="tbLessonContent"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Lesson :"
-                                   VerticalAlignment="Top"
-                                   Grid.Row="3"
-                                   Margin="0,5,0,0" />
-                        <TextBlock x:Name="tbBackSide"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Back Side :"
-                                   VerticalAlignment="Top"
-                                   Grid.Row="5"
-                                   Margin="0,5,0,0" />
-                        <Grid x:Name="grdType"
-                              Grid.Column="1"
-                              Margin="10,0,0,0"
-                              Grid.Row="1"
-                              Visibility="Collapsed"
-                              HorizontalAlignment="Left">
+                        <Border Background="#FFAACCFB"
+                                BorderBrush="#00000000"
+                                BorderThickness="0.5">
+                            <StackPanel x:Name="stkControl"
+                                        Orientation="Horizontal"
+                                        Height="21.277"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0">
+                                <Button x:Name="btnNew"
+                                        Command="{Binding NewCommand}"
+                                        Content="New"
+                                        Width="70"
+                                        Background="White"
+                                        BorderBrush="{x:Null}"
+                                        Margin="0,0,10,0" />
+                                <Button x:Name="btnSave"
+                                        Command="{Binding SaveCommand}"
+                                        Content="Save"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        Margin="0,0,10,0"
+                                        BorderThickness="0.5" />
+                                <Button x:Name="btnEdit"
+                                        Command="{Binding EditCommand}"
+                                        Content="Edit"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        Margin="0,0,10,0"
+                                        BorderThickness="0.5" />
+                                <Button x:Name="btnDelete"
+                                        Command="{Binding DeleteCommand}"
+                                        Content="Delete"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        BorderThickness="0.5" />
+                            </StackPanel>
+                        </Border>
+                        <Grid Grid.Row="1">
+                            <!--IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10" />
+                                <!--Collapse Type: use only Vocabulary-->
+                                <RowDefinition Height="0" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="92.78" />
+                                <RowDefinition Height="0.525*" />
+                                <RowDefinition Height="0.375*" />
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                            	<ColumnDefinition />
-                            	<ColumnDefinition />
+                                <ColumnDefinition Width="85.191" />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cmbType"
-                                      ItemsSource="{Binding LessonTypeCollection}"
-                                      SelectedValue="{Binding SelectedLesson.TypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValuePath="TypeID"
-                                      DisplayMemberPath="Name"
-                                      d:LayoutOverrides="Height"
-                                      Width="120"
-                                      
-                                       />
-                        </Grid>
-                        <Grid x:Name="grdCategory"
-                              Grid.Column="1"
-                              HorizontalAlignment="Left"
-                              Grid.Row="2"
-                              Margin="10,0,0,0">
-                            <Grid.ColumnDefinitions>
-                            	<ColumnDefinition />
-                            	<ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="tbType"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Type :"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="1" />
+                            <TextBlock x:Name="tbCategory"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Category :"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="2" />
+                            <TextBlock x:Name="tbLessonContent"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Lesson :"
+                                       VerticalAlignment="Top"
+                                       Grid.Row="3"
+                                       Margin="0,5,0,0" />
+                            <TextBlock x:Name="tbBackSide"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Back Side :"
+                                       VerticalAlignment="Top"
+                                       Grid.Row="5"
+                                       Margin="0,5,0,0" />
+                            <Grid x:Name="grdType"
+                                  Grid.Column="1"
+                                  Margin="10,0,0,0"
+                                  Grid.Row="1"
+                                  Visibility="Collapsed"
+                                  HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="cmbType"
+                                          ItemsSource="{Binding LessonTypeCollection}"
+                                          SelectedValue="{Binding SelectedLesson.TypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValuePath="TypeID"
+                                          DisplayMemberPath="Name"
+                                          d:LayoutOverrides="Height"
+                                          Width="120" />
+                            </Grid>
+
                             <ComboBox x:Name="cmbCategory"
                                       ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValue="{Binding SelectedLesson.CategoryModel.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Visibility="{Binding SelectedLesson.IsNewCate, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValuePath="CategoryID"
+                                      SelectedItem="{Binding SelectedLesson.CategoryModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       DisplayMemberPath="CategoryName"
+                                      SelectedValuePath="CategoryID"
                                       VerticalAlignment="Center"
                                       Width="120"
+                                      Grid.Column="1"
+                                      Margin="10,0,0,0"
+                                      HorizontalAlignment="Left"
+                                      Grid.Row="2"
                                       Height="20" />
-                            <TextBox x:Name="tblCateName"
-                                     Text="{Binding SelectedLesson.CategoryModel.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Visibility="{Binding SelectedLesson.IsNewCate, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     HorizontalAlignment="Left"
-                                     TextWrapping="Wrap"
-                                     VerticalAlignment="Center"
-                                     Width="120"
-                                     Height="20" />
-                            <Button x:Name="btnRemoveCate"
-                                    Command="{Binding NewCategoryCommand}"
-                                    CommandParameter="Remove"
-                                    Style="{DynamicResource EmtyButtonStyle}"
-                                    Grid.Column="1"
-                                    Height="25"
-                                    Width="25"
-                                    Visibility="{Binding Visibility, ElementName=tblCateName, UpdateSourceTrigger=PropertyChanged}">
-                                <Image Source="/FlashCard;component/Images/1336360382_Delete.png"
-                                       Stretch="Fill"
-                                       Width="20"
-                                       Height="20"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
-                            </Button>
-                            <Button x:Name="btnAddCate"
-                                    Command="{Binding NewCategoryCommand}"
-                                    CommandParameter="Add"
-                                    Style="{DynamicResource EmtyButtonStyle}"
-                                    Grid.Column="1"
-                                    Height="25"
-                                    Width="25"
-                                    Visibility="{Binding Visibility, ElementName=cmbCategory, UpdateSourceTrigger=PropertyChanged}">
-                                <Image Source="/FlashCard;component/Images/1336360291_Add.png"
-                                       Stretch="Fill"
-                                       Width="20"
-                                       Height="20"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" />
-                            </Button>
-                        </Grid>
 
-                        <TextBox x:Name="txtLessonContent"
-                                 Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 Grid.Column="1"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                 Margin="10,6,8,6"
-                                 Grid.Row="3" />
 
-                        <!--<DataGrid x:Name="dgBackSide"
+
+
+                            <TextBox x:Name="txtLessonContent"
+                                     Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     Grid.Column="1"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     Margin="10,6,8,6"
+                                     Grid.Row="3" />
+
+                            <!--<DataGrid x:Name="dgBackSide"
                                   Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                   SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -669,107 +671,320 @@
                             		Binding="{Binding IsCorrect}" />
                             </DataGrid.Columns>
                         </DataGrid>-->
-                        <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                               Document="{Binding SelectedLesson.BackSideModel.BackSideDetail,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                               Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                               Grid.Column="1"
-                                                               BorderBrush="#FF7F9DB9"
-                                                               BorderThickness="1"
-                                                               Grid.Row="5"
-                                                               Margin="10,8,8,8"
-                                                               HorizontalAlignment="Stretch"
-                                                               VerticalAlignment="Stretch" Background="#00000000" />
+                            <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
+                                                                   Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Grid.Column="1"
+                                                                   BorderBrush="#FF7F9DB9"
+                                                                   BorderThickness="1"
+                                                                   Grid.Row="5"
+                                                                   Margin="10,8,8,8"
+                                                                   HorizontalAlignment="Stretch"
+                                                                   VerticalAlignment="Stretch"
+                                                                   Background="#33A5A5A5" />
 
-                        <Button x:Name="btnAddBackSide"
-                                Command="{Binding AddBackSideCommand}"
-                                Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                Content="Add Back Side"
-                                Grid.Row="6"
-                                Grid.Column="1"
-                                Width="100"
-                                Height="25"
-                                IsDefault="True"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Background="White"
-                                BorderBrush="{x:Null}"
-                                Margin="0,0,8,0" />
-                        <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
-                                                               Document="{Binding SelectedLesson.Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                               IsReadOnly="False"
-                                                               Foreground="Black"
-                                                               Grid.Column="1"
-                                                               Margin="10,8,8,8"
-                                                               Grid.Row="4"
-                                                               BorderThickness="1"
-                                                               Background="Transparent"
-                                                               BorderBrush="#FF7F9DB9"
-                                                               HorizontalAlignment="Stretch"
-                                                               VerticalAlignment="Stretch" />
-                        <TextBlock x:Name="tbLessonContent_Copy"
-                                   HorizontalAlignment="Right"
-                                   TextWrapping="Wrap"
-                                   Text="Decription :"
-                                   VerticalAlignment="Top"
-                                   Grid.Row="4"
-                                   Margin="0,6,0,0"
-                                   d:LayoutOverrides="VerticalAlignment" />
+                            <Button x:Name="btnAddBackSide"
+                                    Command="{Binding AddBackSideCommand}"
+                                    Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Content="Add Back Side"
+                                    Grid.Row="6"
+                                    Grid.Column="1"
+                                    Width="100"
+                                    Height="25"
+                                    IsDefault="True"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Background="White"
+                                    BorderBrush="{x:Null}"
+                                    Margin="0,0,10,0"
+                                    BorderThickness="0.5" />
+                            <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
+                                                                   Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   IsReadOnly="False"
+                                                                   Foreground="Black"
+                                                                   Grid.Column="1"
+                                                                   Margin="10,8,8,8"
+                                                                   Grid.Row="4"
+                                                                   BorderThickness="1"
+                                                                   Background="#33A19F9F"
+                                                                   BorderBrush="#FF7F9DB9"
+                                                                   HorizontalAlignment="Stretch"
+                                                                   VerticalAlignment="Stretch" />
+                            <TextBlock x:Name="tbLessonContent_Copy"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Decription :"
+                                       VerticalAlignment="Top"
+                                       Grid.Row="4"
+                                       Margin="0,6,0,0"
+                                       d:LayoutOverrides="VerticalAlignment" />
+                        </Grid>
                     </Grid>
+                    <Rectangle Stroke="#00000000"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left"
+                               Width="10"
+                               Margin="-1,0,0,0">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="3.294,0.5"
+                                                 StartPoint="-0.454,0.5">
+                                <GradientStop Color="Black"
+                                              Offset="0.046" />
+                                <GradientStop Color="#003B3B3B"
+                                              Offset="0.3" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
                 </Grid>
-                <Rectangle Stroke="#00000000"
-                           Grid.Column="1"
-                           HorizontalAlignment="Left"
-                           Width="10"
-                           Margin="-1,0,0,0">
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="3.294,0.5"
-                                             StartPoint="-0.454,0.5">
-                            <GradientStop Color="Black"
-                                          Offset="0.046" />
-                            <GradientStop Color="#003B3B3B"
-                                          Offset="0.3" />
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
+                <Grid x:Name="grdCategories"
+                      Grid.Row="1"
+                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.266*" />
+                        <ColumnDefinition Width="0.013*" />
+                        <ColumnDefinition Width="0.721*" />
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="lstCategories"
+                              ItemsSource="{Binding CategoryCollection}"
+                              Background="#FFCDE8FD"
+                              Style="{DynamicResource ListViewStyle}"
+                              ItemsPanel="{DynamicResource ItemsPanelTemplate}"
+                              SelectionMode="Single"
+                              Margin="1,0,0,0">
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <localCommand:EventToCommand Command="{Binding SelectionCategoryChangedCommand}"
+                                                             CommandParameter="{Binding SelectedItem, ElementName=lstCategories}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListView.View>
+                            <GridView>
+                                <!--<GridViewColumn Header="#"
+                                    DisplayMemberBinding="{Binding}"
+                                    Width="30" />-->
+                                <GridViewColumn Header="Category Name"
+                                                Width="auto"
+                                                DisplayMemberBinding="{Binding CategoryName}" />
+                                <GridViewColumn Header="Status"
+                                                Width="auto"
+                                                DisplayMemberBinding="{Binding IsActived}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Grid x:Name="grdCateContent"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48.471" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Border Background="#FFAACCFB"
+                                BorderBrush="#00000000"
+                                BorderThickness="0.5">
+                            <StackPanel x:Name="stkControl1"
+                                        Orientation="Horizontal"
+                                        Height="21.277"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0">
+                                <Button x:Name="btnNew1"
+                                        Command="{Binding NewCategoryCommand}"
+                                        Content="New"
+                                        Width="70"
+                                        Background="White"
+                                        BorderBrush="{x:Null}"
+                                        Margin="0,0,10,0" />
+                                <Button x:Name="btnSave1"
+                                        Command="{Binding SaveCategoryCommand}"
+                                        Content="Save"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        Margin="0,0,10,0" />
+                                <Button x:Name="btnEdit1"
+                                        Command="{Binding EditCategoryCommand}"
+                                        Content="Edit"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        Margin="0,0,10,0" />
+                            </StackPanel>
+                        </Border>
+                        <Grid Grid.Row="1"
+                              VerticalAlignment="Top"
+                              Margin="0,10,0,0">
+                            <!--IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
+                            <Grid.RowDefinitions>
+                                <!--Collapse Type: use only Vocabulary-->
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="100" />
+                                <RowDefinition Height="35" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="85.191" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="tbCategory1"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Category :"
+                                       VerticalAlignment="Center" />
+                            <TextBox x:Name="tblCateName1"
+                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalAlignment="Left"
+                                     TextWrapping="Wrap"
+                                     VerticalAlignment="Center"
+                                     Width="250"
+                                     Height="20"
+                                     Grid.Column="1"
+                                     Margin="10,0,0,0" />
+                            <TextBlock x:Name="tbCategory1_Copy"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Remark :"
+                                       VerticalAlignment="Top"
+                                       Grid.Row="1"
+                                       Margin="0,10,0,0" />
+                            <TextBox x:Name="txtDescription"
+                                     Text="{Binding SelectedCategory.Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="Wrap"
+                                     Grid.Column="1"
+                                     Margin="10"
+                                     Grid.Row="1" />
+                            <TextBlock x:Name="tbCategory1_Copy1"
+                                       HorizontalAlignment="Right"
+                                       TextWrapping="Wrap"
+                                       Text="Is Actived :"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="2"
+                                       Margin="0"
+                                       Visibility="Collapsed" />
+                            <ToggleButton Content="Actived"
+                                          IsChecked="{Binding SelectedCategory.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          d:LayoutOverrides="Width, Height"
+                                          Grid.Row="2"
+                                          VerticalAlignment="Center"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="Left"
+                                          Margin="10,0,0,0"
+                                          Visibility="Collapsed" />
+
+                            <!--<DataGrid x:Name="dgBackSide"
+                                  Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding SelectedLesson.BackSideCollection}"
+                                  SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  Grid.Column="1"
+                                  Grid.Row="5"
+                                  Margin="10,8,8,8">
+                            <DataGrid.Columns>
+                            	<DataGridTemplateColumn Header="Content">
+                            		<DataGridTemplateColumn.CellTemplate>
+                            			<DataTemplate>
+                            				<TextBox x:Name="tbContent"
+                            					Width="auto"
+                            					MinWidth="200px"
+                            					Text="{Binding BackSideDetail, UpdateSourceTrigger=PropertyChanged}" />
+
+                            			</DataTemplate>
+                            		</DataGridTemplateColumn.CellTemplate>
+                            	</DataGridTemplateColumn>
+                            	<DataGridCheckBoxColumn Header="Is Correct"
+                            		Width="80"
+                            		Binding="{Binding IsCorrect}" />
+                            </DataGrid.Columns>
+                        </DataGrid>-->
+                        </Grid>
+                    </Grid>
+                    <Rectangle Stroke="#00000000"
+                               Grid.Column="1"
+                               HorizontalAlignment="Left"
+                               Width="10"
+                               Margin="-1,0,0,0">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="3.294,0.5"
+                                                 StartPoint="-0.454,0.5">
+                                <GradientStop Color="Black"
+                                              Offset="0.046" />
+                                <GradientStop Color="#003B3B3B"
+                                              Offset="0.3" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
+                <Grid x:Name="grdUserControl" Grid.Row="1" Background="#FFE2D5D5" Visibility="Collapsed">
+                	<Grid x:Name="grdControl" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                </Grid>
             </Grid>
             <Border x:Name="bdBottom"
                     Grid.Row="2"
-                    Height="30" Background="{DynamicResource brBottomColor}" Margin="1,0,1,1">
+                    Height="30"
+                    Background="{DynamicResource brBottomColor}"
+                    Margin="1,0,1,1">
                 <Button x:Name="btnClose"
                         Command="{Binding CloseCommand}"
                         Content="Close"
                         Height="21.277"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="0,0,8,0"
+                        Margin="0,0,10,0"
                         Width="75"
                         Background="White"
-                        BorderBrush="{x:Null}" />
+                        BorderBrush="{x:Null}"
+                        BorderThickness="0.5" />
             </Border>
         </Grid>
-        <Rectangle x:Name="rectShadowRight" Stroke="#00000000" Grid.Column="1" StrokeThickness="0" Margin="0,5,0,0" Width="5">
-        	<Rectangle.Fill>
-        		<LinearGradientBrush EndPoint="6.67,0.5" StartPoint="-0.643,0.5">
-        			<GradientStop Color="#CC000000" Offset="0.118"/>
-        			<GradientStop Offset="0.206" Color="#00000000"/>
-        		</LinearGradientBrush>
-        	</Rectangle.Fill>
+        <Rectangle x:Name="rectShadowRight"
+                   Stroke="#00000000"
+                   Grid.Column="1"
+                   StrokeThickness="0"
+                   Margin="0,5,0,0"
+                   Width="5"
+                   Grid.RowSpan="2">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="6.67,0.5"
+                                     StartPoint="-0.643,0.5">
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.119" />
+                    <GradientStop Offset="0.238"
+                                  Color="#00000000" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
         </Rectangle>
-        <Rectangle Stroke="#00000000" StrokeThickness="0" Grid.Row="1" Grid.Column="1">
-        	<Rectangle.Fill>
-        		<RadialGradientBrush GradientOrigin="-0.229,-0.235" RadiusY="1.117" RadiusX="1.117">
-        			<GradientStop Color="#CC000000" Offset="0.213"/>
-        			<GradientStop Color="#00000000" Offset="0.503"/>
-        		</RadialGradientBrush>
-        	</Rectangle.Fill>
+        <Rectangle Stroke="#00000000"
+                   StrokeThickness="0"
+                   Grid.Row="2"
+                   Grid.Column="1">
+            <Rectangle.Fill>
+                <RadialGradientBrush GradientOrigin="-0.229,-0.235"
+                                     RadiusY="1.117"
+                                     RadiusX="1.117">
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.213" />
+                    <GradientStop Color="#00000000"
+                                  Offset="0.503" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
         </Rectangle>
-        <Rectangle Stroke="#00000000" StrokeThickness="0" Grid.Row="1" Margin="5,0,0,0">
-        	<Rectangle.Fill>
-        		<LinearGradientBrush EndPoint="0.107,1.854" StartPoint="0.107,-0.248">
-        			<GradientStop Color="#CC000000" Offset="0.221"/>
-        			<GradientStop Offset="0.507" Color="#00000000"/>
-        		</LinearGradientBrush>
-        	</Rectangle.Fill>
+        <Rectangle Stroke="#00000000"
+                   StrokeThickness="0"
+                   Grid.Row="2"
+                   Margin="5,0,0,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.107,1.854"
+                                     StartPoint="0.107,-0.248">
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.221" />
+                    <GradientStop Offset="0.507"
+                                  Color="#00000000" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
         </Rectangle>
     </Grid>
 </Window>

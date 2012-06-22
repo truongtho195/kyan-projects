@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Waf.Applications;
 using FlashCard.Model;
 using System.Windows.Input;
 using MVVMHelper.Commands;
 using FlashCard.DataAccess;
 using System.Collections.ObjectModel;
+using FlashCard.Views;
 
 namespace FlashCard.ViewModels
 {
@@ -27,11 +26,12 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
+        #region Variables
+        StudyConfigView _studyConfigView;
+        #endregion
 
         #region Properties
-        #region Views
-
-
+        #region For Views
         private string _titles;
         /// <summary>
         /// Gets or sets the property value.
@@ -54,6 +54,9 @@ namespace FlashCard.ViewModels
 
         #endregion
 
+
+        //Lesson Region
+        #region SelectedLesson
         private LessonModel _selectedLesson;
         /// <summary>
         /// Gets or sets the property value.
@@ -69,9 +72,10 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => SelectedLesson);
                 }
             }
-        }
+        } 
+        #endregion
 
-
+        #region LessonCollection
         private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -87,9 +91,10 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => LessonCollection);
                 }
             }
-        }
+        } 
+        #endregion
 
-
+        #region LessonTypeCollection
         private List<TypeModel> _lessonTypeCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -105,9 +110,34 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => LessonTypeCollection);
                 }
             }
-        }
+        } 
+        #endregion
 
 
+        //Category Region
+
+        #region "   SelectedCategory"
+        private CategoryModel _selectedCategory;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public CategoryModel SelectedCategory
+        {
+            get { return _selectedCategory; }
+            set
+            {
+                if (_selectedCategory != value)
+                {
+                    _selectedCategory = value;
+                    
+                    RaisePropertyChanged(() => SelectedCategory);
+                }
+            }
+        } 
+        #endregion
+
+
+        #region"   CategoryCollection"
         private List<CategoryModel> _categoryCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -123,30 +153,16 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => CategoryCollection);
                 }
             }
-        }
+        } 
+        #endregion
 
-
-        private BackSideModel _selectedBackSideModel;
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public BackSideModel SelectedBackSideModel
-        {
-            get { return _selectedBackSideModel; }
-            set
-            {
-                if (_selectedBackSideModel != value)
-                {
-                    _selectedBackSideModel = value;
-                    RaisePropertyChanged(() => SelectedBackSideModel);
-                }
-            }
-        }
 
         public bool IsFromPopup { get; set; }
         #endregion
 
         #region Commands
+
+        //Lesson Command
         #region "  NewCommand"
         private ICommand _newCommand;
         //Relay Command In viewModel
@@ -367,7 +383,9 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute(object param)
         {
-            ViewCore.DialogResult = true;
+            
+                
+            //ViewCore.DialogResult = true;
             //if (this.IsFromPopup)
             //{
             //    MainWindow mainView = new MainWindow();
@@ -375,52 +393,7 @@ namespace FlashCard.ViewModels
             ViewCore.Close();
         } 
         #endregion
-
-        #region "  NewCategoryCommand"
-        /// <summary>
-        /// Gets the NewCategory Command.
-        /// <summary>
-        private ICommand _newCategoryCommand;
-        public ICommand NewCategoryCommand
-        {
-            get
-            {
-                if (_newCategoryCommand == null)
-                    _newCategoryCommand = new RelayCommand(this.OnNewCategoryExecute, this.OnNewCategoryCanExecute);
-                return _newCategoryCommand;
-            }
-        }
-
-        /// <summary>
-        /// Method to check whether the NewCategory command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnNewCategoryCanExecute(object param)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the NewCategory command is executed.
-        /// </summary>
-        private void OnNewCategoryExecute(object param)
-        {
-            if ("Add".Equals(param.ToString()))
-            {
-                SelectedLesson.IsNewCate = true;
-                SelectedLesson.CategoryModel = new CategoryModel();
-                SelectedLesson.CategoryModel.IsNew = true;
-                SelectedLesson.CategoryModel.CategoryID = -2;
-            }
-            else
-            {
-                SelectedLesson.IsNewCate = false;
-                SelectedLesson.CategoryModel = CategoryCollection.First();
-            }
-            //RaisePropertyChanged(() => SelectedLesson);
-        } 
-        #endregion
-
+        
         #region "  NewTypeCommand"
         /// <summary>
         /// Gets the NewType Command.
@@ -508,6 +481,198 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
+
+
+        //Category Command
+        #region "  NewCategoryCommand"
+        /// <summary>
+        /// Gets the NewCategory Command.
+        /// <summary>
+        private ICommand _newCategoryCommand;
+        public ICommand NewCategoryCommand
+        {
+            get
+            {
+                if (_newCategoryCommand == null)
+                    _newCategoryCommand = new RelayCommand(this.OnNewCategoryExecute, this.OnNewCategoryCanExecute);
+                return _newCategoryCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the NewCategory command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnNewCategoryCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the NewCategory command is executed.
+        /// </summary>
+        private void OnNewCategoryExecute(object param)
+        {
+            //if ("Add".Equals(param.ToString()))
+            //{
+            //    SelectedLesson.IsNewCate = true;
+            //    SelectedLesson.CategoryModel = new CategoryModel();
+            //    SelectedLesson.CategoryModel.IsNew = true;
+            //    SelectedLesson.CategoryModel.CategoryID = -2;
+            //}
+            //else
+            //{
+            //    SelectedLesson.IsNewCate = false;
+            //    SelectedLesson.CategoryModel = CategoryCollection.First();
+            //}
+            SelectedCategory = new CategoryModel();
+            SelectedCategory.IsNew = true;
+            SelectedCategory.CategoryID = -2;
+            //RaisePropertyChanged(() => SelectedLesson);
+        }
+        #endregion
+
+        #region"  EditCategoryCommand"
+        private ICommand _editCategoryCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand EditCategoryCommand
+        {
+            get
+            {
+                if (_editCategoryCommand == null)
+                {
+                    _editCategoryCommand = new RelayCommand(this.EditCategoryExecute, this.CanEditCategoryExecute);
+                }
+                return _editCategoryCommand;
+            }
+        }
+
+        private bool CanEditCategoryExecute(object param)
+        {
+            return true;
+        }
+
+        private void EditCategoryExecute(object param)
+        {
+            //Logic Code here
+        }
+        #endregion
+
+        #region"  SaveCategoryCommand"
+        private ICommand _saveCategoryCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand SaveCategoryCommand
+        {
+            get
+            {
+                if (_saveCategoryCommand == null)
+                {
+                    _saveCategoryCommand = new RelayCommand(this.SaveCategoryExecute, this.CanSaveCategoryExecute);
+                }
+                return _saveCategoryCommand;
+            }
+        }
+
+        private bool CanSaveCategoryExecute(object param)
+        {
+            return true;
+        }
+
+        private void SaveCategoryExecute(object param)
+        {
+            CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+            if (SelectedCategory.IsNew)
+            {
+                categoryDataAccess.Insert(SelectedCategory);
+                CategoryCollection.Add(SelectedCategory);
+                RaisePropertyChanged(() => CategoryCollection);
+            }
+            else
+            {
+                categoryDataAccess.Update(SelectedCategory);
+            }
+        }
+        #endregion
+
+        #region "  SelectionCategoryChangedCommand"
+        /// <summary>
+        /// Gets the SelectionChanged Command.
+        /// <summary>
+        private ICommand _selectionCategoryChangedCommand;
+        public ICommand SelectionCategoryChangedCommand
+        {
+            get
+            {
+                if (_selectionCategoryChangedCommand == null)
+                    _selectionCategoryChangedCommand = new RelayCommand(this.OnSelectionCategoryChangedExecute, this.OnSelectionCategoryChangedCanExecute);
+                return _selectionCategoryChangedCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the SelectionChanged command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSelectionCategoryChangedCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the SelectionChanged command is executed.
+        /// </summary>
+        private void OnSelectionCategoryChangedExecute(object param)
+        {
+            if (SelectedCategory!=null && SelectedCategory.IsNew)
+            {
+                
+                CategoryCollection.Remove(SelectedCategory);
+            }
+            SelectedCategory = param as CategoryModel;
+        }
+
+        #endregion
+
+        //Study Command
+        
+
+        #region ShowStudyCommand
+        private ICommand _showStudyCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand ShowStudyCommand
+        {
+            get
+            {
+                if (_showStudyCommand == null)
+                {
+                    _showStudyCommand = new RelayCommand(this.ShowStudyExecute, this.CanShowStudyExecute);
+                }
+                return _showStudyCommand;
+            }
+        }
+
+        private bool CanShowStudyExecute(object param)
+        {
+            return true;
+        }
+
+        private void ShowStudyExecute(object param)
+        {
+            ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+
+            _studyConfigView = new StudyConfigView();
+            ViewCore.grdControl.Children.Add(_studyConfigView);
+
+        }
+        #endregion
+
+
+
         #endregion
 
         #region Methods

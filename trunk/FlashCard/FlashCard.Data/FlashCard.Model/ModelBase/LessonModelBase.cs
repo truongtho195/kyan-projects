@@ -217,6 +217,33 @@ namespace FlashCard.Model
 
 
 
+        private bool _isActived;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public bool IsActived
+        {
+            get { return _isActived; }
+            set
+            {
+                if (_isActived != value)
+                {
+                    this.OnIsActivedChanging(value);
+                    _isActived = value;
+                    RaisePropertyChanged(() => IsActived);
+                    this.OnChanged();
+                    this.OnIsActivedChanged();
+                }
+            }
+        }
+
+        protected virtual void OnIsActivedChanging(bool value) { }
+        protected virtual void OnIsActivedChanged() { }
+
+
+
+
+
         #endregion
     }
 }

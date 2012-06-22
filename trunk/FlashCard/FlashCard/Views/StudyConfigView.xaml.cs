@@ -18,13 +18,13 @@ namespace FlashCard.Views
     /// <summary>
     /// Interaction logic for StudyConfigView.xaml
     /// </summary>
-    public partial class StudyConfigView :  Window,IView
+    public partial class StudyConfigView :  UserControl,IView
     {
         public StudyConfigView()
         {
             InitializeComponent();
             viewModel = new Lazy<StudyConfigViewModel>(() => ViewHelper.GetViewModel<StudyConfigViewModel>(this));
-            var a = new StudyConfigViewModel(this).View;
+            var a = new StudyConfigViewModel(this);
             InitialEvent();
         }
         #region Variables
@@ -34,29 +34,29 @@ namespace FlashCard.Views
         #region Events
         private void bdHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
-            {
-                if (this.WindowState.Equals(WindowState.Maximized))
-                    this.WindowState = WindowState.Normal;
-                else
-                    MaximinzedScreen();
-            }
-            this.DragMove();
+            //if (e.ClickCount == 2)
+            //{
+            //    if (this.WindowState.Equals(WindowState.Maximized))
+            //        this.WindowState = WindowState.Normal;
+            //    else
+            //        MaximinzedScreen();
+            //}
+            //this.DragMove();
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            //this.WindowState = WindowState.Minimized;
         }
 
        
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState.Equals(WindowState.Maximized))
-                this.WindowState = WindowState.Normal;
-            else
-                MaximinzedScreen();
+            //if (this.WindowState.Equals(WindowState.Maximized))
+            //    this.WindowState = WindowState.Normal;
+            //else
+            //    MaximinzedScreen();
 
         }
         #endregion
@@ -70,7 +70,7 @@ namespace FlashCard.Views
         {
             this.MaxWidth = SystemParameters.WorkArea.Width + 5;
             this.MaxHeight = SystemParameters.WorkArea.Height + 5;
-            this.WindowState = WindowState.Maximized;
+            //this.WindowState = WindowState.Maximized;
         }
         private void InitialEvent()
         {

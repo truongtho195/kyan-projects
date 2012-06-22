@@ -1,16 +1,18 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
-        mc:Ignorable="d"
-        x:Class="FlashCard.Views.StudyConfigView"
-        Title="StudyConfigView"
-        WindowStyle="None"
-        HorizontalContentAlignment="Stretch"
-        VerticalContentAlignment="Stretch"
-        ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
+             mc:Ignorable="d"
+             x:Class="FlashCard.Views.StudyConfigView"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch"
+             >
+    <!--Title="StudyConfigView"
+             WindowStyle="None"
+             ResizeMode="NoResize"
+             SizeToContent="WidthAndHeight"
+             WindowStartupLocation="CenterScreen"-->
     <Grid x:Name="Layout"
           Background="{DynamicResource brBackgroundColor}"
           HorizontalAlignment="Left">
@@ -30,7 +32,7 @@
                             VerticalAlignment="Center"
                             d:LayoutOverrides="Width"
                             HorizontalAlignment="Right"
-                            Margin="0,0,5,0">
+                            Margin="0,0,5,0" Visibility="Collapsed">
                     <Button x:Name="btnMinimize"
                             Width="25"
                             Height="25"
@@ -106,7 +108,7 @@
               Grid.Row="1"
               HorizontalAlignment="Left">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0"  />
+                <RowDefinition Height="0" />
                 <RowDefinition MinHeight="100" />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -114,10 +116,10 @@
                       ItemsSource="{Binding CategoryCollection}"
                       Grid.Row="1"
                       HorizontalAlignment="Left"
-                      Width="354.16">
+                      Width="500" Margin="5,5,5,0">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="#">
+                        <GridViewColumn Header="#" Width="auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox Content="{Binding CategoryName}"
@@ -130,14 +132,15 @@
             </ListView>
             <GroupBox Header="More Option"
                       BorderBrush="#FF3F7EE4"
-                      Margin="0.5,5,0.5,0"
+                      Margin="0.5,5"
                       Grid.Row="2"
                       VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0*" />
+                        <RowDefinition Height="25" />
                         <RowDefinition Height="80" />
-                        <RowDefinition />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
@@ -225,6 +228,12 @@
                               Grid.Row="2"
                               VerticalAlignment="Center"
                               Margin="5,0,0,0" />
+                    <CheckBox Content="Shuffle Study"
+                              IsChecked="{Binding SelectedSetupModel.IsShuffle}"
+                              HorizontalAlignment="Left"
+                              Grid.Row="3"
+                              VerticalAlignment="Center"
+                              Margin="5,0,0,0" />
                 </Grid>
             </GroupBox>
         </Grid>
@@ -254,4 +263,4 @@
             </StackPanel>
         </Border>
     </Grid>
-</Window>
+</UserControl>

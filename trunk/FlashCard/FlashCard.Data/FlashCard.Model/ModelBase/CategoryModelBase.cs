@@ -67,6 +67,60 @@ namespace FlashCard.Model
         protected virtual void OnCategoryNameChanged() { }
 
 
+
+        private string _remark;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public string Remark
+        {
+            get { return _remark; }
+            set
+            {
+                if (_remark != value)
+                {
+                    this.OnRemarkChanging(value);
+                    _remark = value;
+                    RaisePropertyChanged(() => Remark);
+                    this.OnChanged();
+                    this.OnRemarkChanged();
+                }
+            }
+        }
+
+        protected virtual void OnRemarkChanging(string value) { }
+        protected virtual void OnRemarkChanged() {  }
+
+
+
+        private bool _isActived;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public bool IsActived
+        {
+            get { return _isActived; }
+            set
+            {
+                if (_isActived != value)
+                {
+                    this.OnIsActivedChanging(value);
+                    _isActived = value;
+                    RaisePropertyChanged(() => IsActived);
+                    this.OnChanged();
+                    this.OnIsActivedChanged();
+                }
+            }
+        }
+
+        protected virtual void OnIsActivedChanging(bool value) { }
+        protected virtual void OnIsActivedChanged() { }
+
+
+
+
+
+
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>

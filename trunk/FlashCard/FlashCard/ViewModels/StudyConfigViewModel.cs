@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlashCard.Views;
 using System.Waf.Applications;
 using FlashCard.Model;
@@ -20,6 +18,7 @@ namespace FlashCard.ViewModels
         {
             InitialData();
         }
+
         #endregion
 
         #region Properties
@@ -76,8 +75,9 @@ namespace FlashCard.ViewModels
                 if (_setupModel != value)
                 {
                     _setupModel = value;
-                    SelectedSetupModel = new SetupModel();
-                    SelectedSetupModel = _setupModel;
+
+                    if (_setupModel != null)
+                        SelectedSetupModel = _setupModel;
                     RaisePropertyChanged(() => SetupModel);
                 }
             }
@@ -104,6 +104,35 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
+        private List<CategoryModel> _categoryList;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public List<CategoryModel> CategoryList
+        {
+            get { return _categoryList; }
+            set
+            {
+                if (_categoryList != value)
+                {
+                    _categoryList = value;
+                    RaisePropertyChanged(() => CategoryList);
+                    SetCheckedCategoryCollection();
+                }
+            }
+        }
+
+        private void SetCheckedCategoryCollection()
+        {
+            if (CategoryList != null)
+                foreach (var item in CategoryList)
+                {
+                    var cate = CategoryCollection.Where(x => x.CategoryID == item.CategoryID).SingleOrDefault();
+                    cate.IsChecked = true;
+                }
+        }
+
         #endregion
 
         #region Commands
@@ -128,7 +157,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x=>x.IsChecked))
+            if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x => x.IsChecked))
                 return true;
             return false;
         }
@@ -144,21 +173,21 @@ namespace FlashCard.ViewModels
             {
                 var lesson = lessonDA.GetAllWithRelation().Where(x => x.CategoryModel.CategoryID == item.CategoryID);
                 //Check condition if user set Lesson user Know => remove this item lesson
-                if (lesson != null && lesson.Count()>0)
+                if (lesson != null && lesson.Count() > 0)
                 {
                     lst.AddRange(lesson);
                 }
             }
-            if (lst != null && lst.Count>0)
+            if (lst != null && lst.Count > 0)
             {
                 LessonCollection = new ObservableCollection<LessonModel>(lst);
             }
 
             //Handle Setup
             SetupModel = SelectedSetupModel;
-            this.ViewCore.DialogResult = true;
-            this.ViewCore.Close();
-            
+            //this.ViewCore.DialogResult = true;
+            //this.ViewCore.Close();
+
         }
         #endregion
 
@@ -192,17 +221,19 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCancelExecute(object param)
         {
-            ViewCore.DialogResult = false;
-            ViewCore.Close();
+            //ViewCore.DialogResult = false;
+            //ViewCore.Close();
         }
         #endregion
         #endregion
 
-        
+
 
         #region Methods
         private void InitialData()
         {
+            SelectedSetupModel = new SetupModel();
+
             CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
             CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
         }

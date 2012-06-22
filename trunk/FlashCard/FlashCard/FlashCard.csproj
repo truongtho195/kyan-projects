@@ -90,6 +90,7 @@
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
+    <Compile Include="Helper\ShuffleList.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
@@ -106,9 +107,6 @@
     </Compile>
     <Compile Include="Views\LessonManageView.xaml.cs">
       <DependentUpon>LessonManageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TestScrollView.xaml.cs">
-      <DependentUpon>TestScrollView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -137,10 +135,6 @@
     <Page Include="Views\LessonManageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TestScrollView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -182,10 +182,6 @@
         				</Path>
         			</Button>
         		</StackPanel>
-        		<Button x:Name="btnListen"
-        			Command="{Binding ListenCommand}" HorizontalAlignment="Left" Margin="10,0,0,0" Width="25" VerticalAlignment="Center" Style="{DynamicResource EmptyButton}" Height="25">
-        			<Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        		</Button>
         	</Grid>
         </Border>
         <Grid x:Name="grdContent"
@@ -334,8 +330,12 @@
                             Orientation="Horizontal"
                             d:LayoutOverrides="Width, Height"
                             HorizontalAlignment="Right">
+                    <Button x:Name="btnListen"
+                		Command="{Binding ListenCommand}" Width="25" VerticalAlignment="Center" Style="{DynamicResource EmptyButton}" Height="25">
+                		<Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                	</Button>
                     <Button Content="Pause"
-                            Visibility="{Binding SetupModel.IsEnableSlideShow,Mode=OneWay,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"
+                            Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
                             Height="20"
                             Width="50"
                             Command="{Binding PlayPauseCommand}"
