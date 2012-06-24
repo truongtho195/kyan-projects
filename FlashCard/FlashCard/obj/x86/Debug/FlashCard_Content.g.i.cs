@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icons/1339695682_audio-volume-high.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("icons/1340559313_credit_card%20blue.ico")]
 
 

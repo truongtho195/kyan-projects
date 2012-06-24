@@ -28,13 +28,13 @@ namespace FlashCard
 
         }
 
-        public LessonManageView(bool isFromPopup)
-        {
-            this.InitializeComponent();
-            viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
-            var a = new LessonViewModel(this, isFromPopup).View;
-            InitialEvent();
-        }
+        //public LessonManageView(bool isFromPopup)
+        //{
+        //    this.InitializeComponent();
+        //    viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
+        //    var a = new LessonViewModel(this, isFromPopup).View;
+        //    InitialEvent();
+        //}
 
         #region Variables
         private readonly Lazy<LessonViewModel> viewModel;

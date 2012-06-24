@@ -245,6 +245,24 @@
   <ItemGroup>
     <Resource Include="Images\1339695682_audio-volume-high.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Hidden.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\credit_card.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\card_red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\card_green.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\card_blue.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

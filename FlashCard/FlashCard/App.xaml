@@ -805,6 +805,52 @@
         	<GradientStop Color="White" Offset="1"/>
         	<GradientStop Color="White" Offset="0.011"/>
         </LinearGradientBrush>
+        <RadialGradientBrush x:Key="FlashCardBG" RadiusY="0.582"
+        	RadiusX="0.582"
+        	GradientOrigin="0.814,0.205">
+        	<RadialGradientBrush.RelativeTransform>
+        		<TransformGroup>
+        			<ScaleTransform CenterY="0.5"
+        				CenterX="0.5"
+        				ScaleY="1"
+        				ScaleX="1" />
+        			<SkewTransform AngleY="0"
+        				AngleX="0"
+        				CenterY="0.5"
+        				CenterX="0.5" />
+        			<RotateTransform Angle="-95.19"
+        				CenterY="0.5"
+        				CenterX="0.5" />
+        			<TranslateTransform />
+        		</TransformGroup>
+        	</RadialGradientBrush.RelativeTransform>
+        	<GradientStop Color="#FF1E71BE"
+        		Offset="0" />
+        	<GradientStop Color="#FF152895"
+        		Offset="1" />
+        </RadialGradientBrush>
+        <LinearGradientBrush x:Key="FullFlashCardBg" EndPoint="0.5,1.243"
+        	MappingMode="RelativeToBoundingBox"
+        	StartPoint="0.5,0">
+        	<GradientStop Color="#F2000000"
+        		Offset="1" />
+        	<GradientStop Color="#F23D3B3B"
+        		Offset="0.703" />
+        	<GradientStop Color="#F2000000"
+        		Offset="0.079" />
+        </LinearGradientBrush>
+        <RadialGradientBrush x:Key="FullFlashCardBg2" GradientOrigin="0.242,0.2" RadiusY="0.668" RadiusX="0.529">
+        	<GradientStop Color="#DAEDE1E1"/>
+        	<GradientStop Color="#FF1F80BE" Offset="1"/>
+        </RadialGradientBrush>
+        <LinearGradientBrush x:Key="CoverBackground" EndPoint="-0.031,-0.057" StartPoint="0.974,1.005">
+        	<GradientStop Color="#FF212020" Offset="0"/>
+        	<GradientStop Color="#FF878181" Offset="0.41"/>
+        	<GradientStop Color="#E4262525" Offset="0.57"/>
+        	<GradientStop Color="#FE807A7A" Offset="1"/>
+        	<GradientStop Color="#FF767171" Offset="0.225"/>
+        	<GradientStop Color="#F36F6A6A" Offset="0.803"/>
+        </LinearGradientBrush>
         <!--#EndRegion "EmptyButton"-->
 
 

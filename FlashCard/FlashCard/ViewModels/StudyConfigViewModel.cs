@@ -17,9 +17,15 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             InitialData();
+            
+            
+             
         }
 
         #endregion
+        public delegate void handlerControl(string message);
+        public event handlerControl ButtonClickHandler;
+
 
         #region Properties
         #region "  CategoryCollection"
@@ -187,7 +193,8 @@ namespace FlashCard.ViewModels
             SetupModel = SelectedSetupModel;
             //this.ViewCore.DialogResult = true;
             //this.ViewCore.Close();
-
+            ButtonClickHandler.Invoke("OkExecute");
+        
         }
         #endregion
 
@@ -223,6 +230,9 @@ namespace FlashCard.ViewModels
         {
             //ViewCore.DialogResult = false;
             //ViewCore.Close();
+            ButtonClickHandler.Invoke("CancelExecute");
+            
+
         }
         #endregion
         #endregion
