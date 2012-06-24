@@ -22,7 +22,7 @@ namespace FlashCard
   /// </summary>
   public partial class FancyBalloon : UserControl
   {
-    private bool isClosing = false;
+    public bool isClosing = false;
 
     #region BalloonText dependency property
 
