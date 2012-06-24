@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using MVVMHelper.Common;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FlashCard.Model
 {
@@ -111,7 +113,7 @@ namespace FlashCard.Model
             }
         }
 
-        
+
         #endregion
 
         #region Extension Methods
@@ -149,5 +151,17 @@ namespace FlashCard.Model
         }
 
         #endregion
+
+        #region Methods
+        public void ResetModelBase()
+        {
+            IsEdit = false;
+            IsNew = false;
+            IsChecked = false;
+            IsDelete = false;
+            IsSelected = false;
+        }
+        #endregion
+
     }
 }

@@ -66,6 +66,57 @@ namespace FlashCard.DataAccess
             return lessonModel;
         }
 
+        public LessonModel GetItem(int lessonID)
+        {
+            SQLiteConnection sqlConnect = null;
+            SQLiteCommand sqlCommand = null;
+            SQLiteDataReader reader = null;
+            SQLiteParameter param = null;
+            LessonModel lessonModel = new LessonModel();
+            BackSideDataAccess backSideDA = new BackSideDataAccess();
+            string sql = "select * From Lessons where LessonID == @lessonID";
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                param = new SQLiteParameter("@lessonID", lessonID);
+                sqlCommand.Parameters.Add(param);
+                reader = sqlCommand.ExecuteReader();
+                if (reader.Read())
+                {
+                    lessonModel = MappingToModel(reader);
+                    var backSideModel = new BackSideModel() { BackSideID = -1 };
+                    backSideModel.LessonID = lessonModel.LessonID;
+                    //BackSideCollection
+                    lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                    switch (lessonModel.TypeModel.TypeOf)
+                    {
+                        case 1:
+                            if (lessonModel.BackSideCollection != null && lessonModel.BackSideCollection.Count > 0)
+                                lessonModel.BackSideModel = lessonModel.BackSideCollection.FirstOrDefault();
+                            else
+                                lessonModel.BackSideModel = new BackSideModel();
+                            break;
+                    }
+                    lessonModel.ResetModelBase();
+                }
+            }
+            catch (Exception ex)
+            {
+                CatchException(ex);
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                reader.Dispose();
+            }
+            return lessonModel;
+        }
+
         public IList<LessonModel> GetAll()
         {
             List<LessonModel> list = new List<LessonModel>();
@@ -391,7 +442,7 @@ namespace FlashCard.DataAccess
             lessonModel.CategoryModel = categoryDA.Get(int.Parse(reader["CategoryID"].ToString()));
             //TypeMode
             lessonModel.TypeModel = typeDA.Get(lessonModel.TypeID);
-            //lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
+            lessonModel.CategoryID = int.Parse(reader["CategoryID"].ToString());
             lessonModel.IsDelete = false;
             lessonModel.IsEdit = false;
             lessonModel.IsNew = false;

@@ -17,19 +17,13 @@
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
                                 DoubleClickCommand="{Binding ShowPopupCommand}"
                                 IconSource="{Binding IconStatus}"
-                                ToolTipText="Balloon Sample Icon">
-
-
+                                ToolTipText="Flash Card">
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Config Lesson"
-                              
-                              Command="{Binding ChooseLessonCommand}"
-                              CommandParameter="Popup" />
                     <MenuItem Header="Full Learning"
                               Command="{Binding FullScreenCommand}" />
-                    <MenuItem Header="Lesson Management"
-                              Command="{Binding LessonManagerCommand}" />
+                    <!--<MenuItem Header="Lesson Management"
+                              Command="{Binding LessonManagerCommand}" />-->
                     <MenuItem Header="Play/Pause"
                               Command="{Binding PlayPauseCommand}"
                               CommandParameter="Popup" />

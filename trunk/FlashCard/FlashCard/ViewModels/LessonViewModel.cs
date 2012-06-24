@@ -7,6 +7,7 @@ using MVVMHelper.Commands;
 using FlashCard.DataAccess;
 using System.Collections.ObjectModel;
 using FlashCard.Views;
+using MVVMHelper.Common;
 
 namespace FlashCard.ViewModels
 {
@@ -26,6 +27,7 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
+
         #region Variables
         StudyConfigView _studyConfigView;
         #endregion
@@ -54,7 +56,6 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-
         //Lesson Region
         #region SelectedLesson
         private LessonModel _selectedLesson;
@@ -72,7 +73,7 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => SelectedLesson);
                 }
             }
-        } 
+        }
         #endregion
 
         #region LessonCollection
@@ -91,7 +92,7 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => LessonCollection);
                 }
             }
-        } 
+        }
         #endregion
 
         #region LessonTypeCollection
@@ -110,7 +111,7 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => LessonTypeCollection);
                 }
             }
-        } 
+        }
         #endregion
 
 
@@ -129,13 +130,12 @@ namespace FlashCard.ViewModels
                 if (_selectedCategory != value)
                 {
                     _selectedCategory = value;
-                    
+
                     RaisePropertyChanged(() => SelectedCategory);
                 }
             }
-        } 
+        }
         #endregion
-
 
         #region"   CategoryCollection"
         private List<CategoryModel> _categoryCollection;
@@ -153,7 +153,7 @@ namespace FlashCard.ViewModels
                     RaisePropertyChanged(() => CategoryCollection);
                 }
             }
-        } 
+        }
         #endregion
 
 
@@ -174,6 +174,7 @@ namespace FlashCard.ViewModels
                 if (_newCommand == null)
                 {
                     _newCommand = new RelayCommand(this.NewExecute, this.CanNewExecute);
+
                 }
                 return _newCommand;
             }
@@ -383,17 +384,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute(object param)
         {
-            
-                
+
             //ViewCore.DialogResult = true;
             //if (this.IsFromPopup)
             //{
             //    MainWindow mainView = new MainWindow();
             //}
             ViewCore.Close();
-        } 
+        }
         #endregion
-        
+
         #region "  NewTypeCommand"
         /// <summary>
         /// Gets the NewType Command.
@@ -472,6 +472,24 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnSelectionChangedExecute(object param)
         {
+            if (SelectedLesson != null && SelectedLesson.IsNew)
+            {
+                LessonCollection.Remove(SelectedLesson);
+            }
+            else if (SelectedLesson != null && SelectedLesson.IsEdit)
+            {
+                LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
+
+                var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                if (lessonIndex > -1)
+                {
+                    LessonCollection.RemoveAt(lessonIndex);
+                    LessonCollection.Insert(lessonIndex, lessonModel);
+                }
+                RaisePropertyChanged(() => LessonCollection);
+            }
+
             SelectedLesson = param as LessonModel;
             if (SelectedLesson.BackSideModel == null)
             {
@@ -481,7 +499,6 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
-
 
         //Category Command
         #region "  NewCategoryCommand"
@@ -577,6 +594,7 @@ namespace FlashCard.ViewModels
 
         private bool CanSaveCategoryExecute(object param)
         {
+
             return true;
         }
 
@@ -627,10 +645,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnSelectionCategoryChangedExecute(object param)
         {
-            if (SelectedCategory!=null && SelectedCategory.IsNew)
+            if (SelectedCategory != null && SelectedCategory.IsNew)
             {
-                
                 CategoryCollection.Remove(SelectedCategory);
+            }
+            else if (SelectedCategory != null && SelectedCategory.IsEdit)
+            {
+                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
+                //reset data
+                SelectedCategory = cateModel;
             }
             SelectedCategory = param as CategoryModel;
         }
@@ -638,9 +662,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         //Study Command
-        
-
-        #region ShowStudyCommand
+        #region"  ShowStudyCommand"
         private ICommand _showStudyCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -663,15 +685,41 @@ namespace FlashCard.ViewModels
 
         private void ShowStudyExecute(object param)
         {
-            ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+            if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
+            {
+                _studyConfigView = new StudyConfigView();
+                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+                ViewCore.grdControl.Children.Add(_studyConfigView);
 
-            _studyConfigView = new StudyConfigView();
-            ViewCore.grdControl.Children.Add(_studyConfigView);
+                _studyConfigView.GetViewModel<StudyConfigViewModel>().ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+            }
+            else
+            {
+                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                ViewCore.grdControl.Children.Clear();
+            }
 
         }
+
+        private MainWindow staticMain;
+        private void LessonViewModel_DoNow(string message)
+        {
+            if ("OkExecute".Equals(message))
+            {
+                if (staticMain != null)
+                    staticMain = null;
+                staticMain = new MainWindow();
+                staticMain.GetViewModel<MainViewModel>().SetupModel = _studyConfigView.GetViewModel<StudyConfigViewModel>().SetupModel;
+                this.ViewCore.Close();
+                //main.Show();
+            }
+            else
+            {
+                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                ViewCore.grdControl.Children.Clear();
+            }
+        }
         #endregion
-
-
 
         #endregion
 

@@ -20,6 +20,7 @@ namespace FlashCard.Model
         #endregion
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
@@ -134,10 +135,9 @@ namespace FlashCard.Model
         }
         #endregion
 
-
-
         #endregion
 
+       
 
         #region Overide Changed
 
