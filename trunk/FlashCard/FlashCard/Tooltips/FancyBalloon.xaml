@@ -198,36 +198,11 @@
                     BorderThickness="1,1,1,1"
                     BorderBrush="Gray"
                     Opacity="0.7"
-                    Grid.RowSpan="3">
+                    Grid.RowSpan="3"
+                    Background="{DynamicResource FlashCardBG}">
                 <Border.Effect>
                     <DropShadowEffect Color="#FF747474" />
                 </Border.Effect>
-                <Border.Background>
-                    <RadialGradientBrush RadiusY="0.582"
-                                         RadiusX="0.582"
-                                         GradientOrigin="0.814,0.205">
-                        <RadialGradientBrush.RelativeTransform>
-                            <TransformGroup>
-                                <ScaleTransform CenterY="0.5"
-                                                CenterX="0.5"
-                                                ScaleY="1"
-                                                ScaleX="1" />
-                                <SkewTransform AngleY="0"
-                                               AngleX="0"
-                                               CenterY="0.5"
-                                               CenterX="0.5" />
-                                <RotateTransform Angle="-95.19"
-                                                 CenterY="0.5"
-                                                 CenterX="0.5" />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </RadialGradientBrush.RelativeTransform>
-                        <GradientStop Color="#FF1E71BE"
-                                      Offset="0" />
-                        <GradientStop Color="#FF152895"
-                                      Offset="1" />
-                    </RadialGradientBrush>
-                </Border.Background>
             </Border>
             <Border x:Name="bdHeader1"
                     BorderThickness="1"
@@ -239,38 +214,73 @@
                                       Opacity="0.5"
                                       Direction="292" />
                 </Border.Effect>
-            	<Grid>
-            		<StackPanel x:Name="stSystembutton"
-            			Orientation="Horizontal"
-            			VerticalAlignment="Center" d:LayoutOverrides="Width" HorizontalAlignment="Right" Margin="0,0,10,0">
-            			<Button x:Name="btnFullScreen"
-            				Command="{Binding FullScreenCommand}"
-            				CommandParameter="Popup"
-            				Width="18"
-            				Style="{DynamicResource NullButtonStyle}"
-            				Background="#00000000"
-            				BorderBrush="#00003C74"
-            				Height="18"
-            				Margin="0,0,8,0">
-            				<Image Source="/FlashCard;component/Images/1337833571_full_screen.png"
-            					Stretch="Fill"
-            					HorizontalAlignment="Center"
-            					VerticalAlignment="Center" />
-            			</Button>
-            			<Image Width="18"
-            				Source="/FlashCard;component/Images/Close.png"
-            				Stretch="Fill"
-            				ToolTip="Close Balloon"
-            				x:Name="imgClose1"
-            				MouseDown="imgClose_MouseDown"
-            				Height="18"
-            				d:LayoutOverrides="VerticalMargin" />
-            		</StackPanel>
+                <Grid>
+                    <StackPanel x:Name="stSystembutton"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                d:LayoutOverrides="Width"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,5,0">
+                        <Button x:Name="btnFullScreen"
+                                Command="{Binding FullScreenCommand}"
+                                CommandParameter="Popup"
+                                Width="18"
+                                Style="{DynamicResource NullButtonStyle}"
+                                Background="#00000000"
+                                BorderBrush="#00003C74"
+                                Height="18"
+                                Margin="0,0,5,0">
+                            <Image Source="/FlashCard;component/Images/1337833571_full_screen.png"
+                                   Stretch="Fill"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                        </Button>
+                        <Button x:Name="btnHiddenPopup"
+                                Command="{Binding HiddenPopupCommand}"
+                                CommandParameter="Hidden"
+                                Width="20"
+                                Style="{DynamicResource NullButtonStyle}"
+                                Background="#00000000"
+                                BorderBrush="#00003C74"
+                                Height="20"
+                                Margin="5,0,0,0">
+                            <Image Width="20"
+                                   Source="/Images/Hidden.png"
+                                   Stretch="Fill"
+                                   ToolTip="Hide Balloon"
+                                   x:Name="imgClose1"
+                                   Height="20"
+                                   d:LayoutOverrides="VerticalMargin" />
+                        </Button>
+                        <Button x:Name="btnClose"
+                                Command="{Binding CancelCommand}"
+                                CommandParameter="Popup"
+                                Width="20"
+                                Style="{DynamicResource EmptyButton}"
+                                Margin="5,0,0,0"
+                                Height="20">
+                            <Image Width="18"
+                                   Source="/Images/Close.png"
+                                   Stretch="Fill"
+                                   ToolTip="Close Balloon"
+                                   Height="20"
+                                   d:LayoutOverrides="VerticalMargin" />
+                        </Button>
+                    </StackPanel>
                     <Button x:Name="btnListen"
-                            Command="{Binding ListenCommand}" HorizontalAlignment="Left" Margin="10,0,0,0" Width="25" VerticalAlignment="Center" Style="{DynamicResource EmptyButton}" Height="25">
-            			<Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            		</Button>
-            	</Grid>
+                            Command="{Binding ListenCommand}"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,0,0"
+                            Width="25"
+                            VerticalAlignment="Center"
+                            Style="{DynamicResource EmptyButton}"
+                            Height="25">
+                        <Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png"
+                               Stretch="Fill"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    </Button>
+                </Grid>
             </Border>
             <TextBlock x:Name="tbInformation1"
                        HorizontalAlignment="Left"
@@ -280,7 +290,8 @@
                        Margin="15,10,0,0"
                        Foreground="#FFFDFDFD"
                        FontWeight="Bold"
-                       Height="20" Visibility="Collapsed" />
+                       Height="20"
+                       Visibility="Collapsed" />
             <Grid x:Name="grdBottom"
                   Grid.Row="2">
                 <Button x:Name="btnChangeFace"
