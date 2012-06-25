@@ -335,16 +335,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.119*" />
             <RowDefinition Height="0.881*" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto"
+                           x:Name="rowShdB" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="Auto"
-                              MinWidth="5"
-                              x:Name="colShadowRight" />
+                              x:Name="colShdR" />
         </Grid.ColumnDefinitions>
 
-        <Rectangle x:Name="rectShadowRight"
+        <Rectangle x:Name="rtShdR"
                    Stroke="#00000000"
                    Grid.Column="1"
                    StrokeThickness="0"
@@ -354,14 +354,15 @@
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="6.67,0.5"
                                      StartPoint="-0.643,0.5">
-                	<GradientStop Color="#CC000000"
-                		Offset="0.119" />
-                	<GradientStop Offset="0.238"
-                		Color="#00000000" />
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.119" />
+                    <GradientStop Offset="0.238"
+                                  Color="#00000000" />
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="rtShadowBR" Stroke="#00000000"
+        <Rectangle x:Name="rtShdBR"
+                   Stroke="#00000000"
                    StrokeThickness="0"
                    Grid.Row="2"
                    Grid.Column="1">
@@ -369,24 +370,26 @@
                 <RadialGradientBrush GradientOrigin="-0.229,-0.235"
                                      RadiusY="1.283"
                                      RadiusX="1.283">
-                	<GradientStop Color="#CC000000"
-                		Offset="0.213" />
-                	<GradientStop Color="#00000000"
-                		Offset="0.503" />
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.213" />
+                    <GradientStop Color="#00000000"
+                                  Offset="0.503" />
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle Stroke="#00000000"
+        <Rectangle x:Name="rtShdB"
+                   Stroke="#00000000"
                    StrokeThickness="0"
                    Grid.Row="2"
-                   Margin="5,0,0,0">
+                   Margin="5,0,0,0"
+                   Height="5">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.107,1.854"
                                      StartPoint="0.107,-0.248">
-                	<GradientStop Color="#CC000000"
-                		Offset="0.221" />
-                	<GradientStop Offset="0.507"
-                		Color="#00000000" />
+                    <GradientStop Color="#CC000000"
+                                  Offset="0.221" />
+                    <GradientStop Offset="0.507"
+                                  Color="#00000000" />
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
@@ -497,7 +500,8 @@
                     <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
-                                d:LayoutOverrides="Width" Margin="5,0,0,0">
+                                d:LayoutOverrides="Width"
+                                Margin="5,0,0,0">
                         <ToggleButton x:Name="tgLesson"
                                       Content="Lesson"
                                       Width="80"
@@ -557,6 +561,18 @@
                     <Grid x:Name="grdContent"
                           Grid.Column="1"
                           Grid.ColumnSpan="2">
+                    	 <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLesson}"
+                                             Value="{x:Null}">
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
@@ -592,21 +608,23 @@
                                         BorderBrush="{x:Null}"
                                         Background="White"
                                         Margin="0,0,10,0"
-                                        BorderThickness="0.5" Visibility="Collapsed" />
+                                        BorderThickness="0.5"
+                                        Visibility="Collapsed" />
                                 <Button x:Name="btnDelete"
                                         Command="{Binding DeleteCommand}"
                                         Content="Delete"
                                         Width="70"
                                         BorderBrush="{x:Null}"
                                         Background="White"
-                                        BorderThickness="0.5" Visibility="Collapsed" />
+                                        BorderThickness="0.5"
+                                        Visibility="Collapsed" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1">
                             <!--IsEnabled="{Binding SelectedLesson.IsEditing, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10" />
-                                <!--Collapse Type: use only Vocabulary-->
+                                <!--Collapse "Type": use only Vocabulary-->
                                 <RowDefinition Height="0" />
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="35" />
@@ -682,7 +700,7 @@
 
 
                             <TextBox x:Name="txtLessonContent"
-                                     Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedLesson.LessonName, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                      Margin="10,6,8,6"
@@ -716,7 +734,7 @@
                             </DataGrid.Columns>
                         </DataGrid>-->
                             <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                                   Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    Grid.Column="1"
                                                                    BorderBrush="#FF7F9DB9"
@@ -743,7 +761,7 @@
                                     Margin="0,0,10,0"
                                     BorderThickness="0.5" />
                             <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
-                                                                   Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                   Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    IsReadOnly="False"
                                                                    Foreground="Black"
                                                                    Grid.Column="1"
@@ -753,7 +771,7 @@
                                                                    Background="#33A19F9F"
                                                                    BorderBrush="#FF7F9DB9"
                                                                    HorizontalAlignment="Stretch"
-                                                                   VerticalAlignment="Stretch" />
+                                                                   VerticalAlignment="Stretch" Style="{DynamicResource RichTextBoxToolbarStyle}" />
                             <TextBlock x:Name="tbLessonContent_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
@@ -764,15 +782,15 @@
                                        d:LayoutOverrides="VerticalAlignment" />
                         </Grid>
                     </Grid>
-                    <Rectangle
-                               Grid.Column="1"
+                    <Rectangle Grid.Column="1"
                                HorizontalAlignment="Left"
                                Width="10"
                                Margin="0">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="3.294,0.5"
                                                  StartPoint="-0.454,0.5">
-                                <GradientStop Color="Black" Offset="0.076" />
+                                <GradientStop Color="Black"
+                                              Offset="0.076" />
                                 <GradientStop Color="#00000000"
                                               Offset="0.304" />
                             </LinearGradientBrush>
@@ -782,6 +800,7 @@
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
                       Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
+                   
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
@@ -821,6 +840,18 @@
                     <Grid x:Name="grdCateContent"
                           Grid.Column="1"
                           Grid.ColumnSpan="2">
+                    	 <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCategory}"
+                                             Value="{x:Null}">
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
@@ -854,7 +885,8 @@
                                         Width="70"
                                         BorderBrush="{x:Null}"
                                         Background="White"
-                                        Margin="0,0,10,0" Visibility="Collapsed" />
+                                        Margin="0,0,10,0"
+                                        Visibility="Collapsed" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1"
@@ -877,7 +909,7 @@
                                        Text="Category :"
                                        VerticalAlignment="Center" />
                             <TextBox x:Name="tblCateName1"
-                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                      HorizontalAlignment="Left"
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Center"
@@ -961,20 +993,30 @@
                         </Rectangle.Fill>
                     </Rectangle>
                 </Grid>
-                <Grid x:Name="grdUserControl" Grid.Row="1" Visibility="Collapsed">
-                	<Grid.RowDefinitions>
-                		<RowDefinition/>
-                	</Grid.RowDefinitions>
-                	<Border Grid.Row="1" Margin="1,0">
-                		<Border.Background>
-                			<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,-0.018">
-                				<GradientStop Color="Black" Offset="0.017"/>
-                				<GradientStop Color="#BF000000" Offset="1"/>
-                				<GradientStop Color="#BF000000" Offset="0.032"/>
-                			</LinearGradientBrush>
-                		</Border.Background>
-                	</Border>
-                	<Grid x:Name="grdControl" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                <Grid x:Name="grdUserControl"
+                      Grid.Row="1"
+                      Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="1"
+                            Margin="1,0">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1"
+                                                 StartPoint="0.5,-0.018">
+                                <GradientStop Color="Black"
+                                              Offset="0.017" />
+                                <GradientStop Color="#BF000000"
+                                              Offset="1" />
+                                <GradientStop Color="#BF000000"
+                                              Offset="0.032" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Grid x:Name="grdControl"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Margin="0" />
                 </Grid>
             </Grid>
             <Border x:Name="bdBottom"
@@ -983,9 +1025,8 @@
                     Background="{DynamicResource brBottomColor}"
                     Margin="1,0,1,1">
                 <Button x:Name="btnClose"
-                        Command="{Binding CloseCommand}"
-                        Content="Close"
                         Height="21.277"
+                        Content="Exit"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Margin="0,0,10,0"

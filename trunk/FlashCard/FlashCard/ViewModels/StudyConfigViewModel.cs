@@ -190,7 +190,8 @@ namespace FlashCard.ViewModels
             }
 
             //Handle Setup
-            SetupModel = SelectedSetupModel;
+            App.SetupModel = SelectedSetupModel;
+             //SetupModel = SelectedSetupModel;
             //this.ViewCore.DialogResult = true;
             //this.ViewCore.Close();
             ButtonClickHandler.Invoke("OkExecute");
@@ -242,10 +243,15 @@ namespace FlashCard.ViewModels
         #region Methods
         private void InitialData()
         {
-            SelectedSetupModel = new SetupModel();
+            if (App.SetupModel == null)
+                SelectedSetupModel = new SetupModel();
+            else
+                SelectedSetupModel = App.SetupModel;
 
             CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-            CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
+            var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
+            CategoryCollection = new ObservableCollection<CategoryModel>(cate);
+            
         }
         #endregion
 

@@ -137,7 +137,7 @@ namespace FlashCard.Model
 
         #endregion
 
-       
+
 
         #region Overide Changed
 
@@ -175,6 +175,16 @@ namespace FlashCard.Model
                     case "LessonName":
                         if (string.IsNullOrWhiteSpace(LessonName))
                             message = "Lesson Name is required!";
+                        break;
+                    case "Description":
+                        if (Description == null)
+                            message = "Description is required!";
+                        else
+                        {
+                            var range = new System.Windows.Documents.TextRange(Description.ContentStart, Description.ContentEnd);
+                            if (range.IsEmpty)
+                                message = "Description is required!";
+                        }
                         break;
 
                 }
