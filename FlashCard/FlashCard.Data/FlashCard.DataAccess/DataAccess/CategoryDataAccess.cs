@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
 using System.Collections.ObjectModel;
@@ -172,7 +170,7 @@ namespace FlashCard.DataAccess
                     CategoryModel categoryModel = MappingToModel(reader);
                     //Lesson
                     LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
-                    //lesson.CategoryID = categoryModel.CategoryID;
+                    lesson.CategoryModel = categoryModel;
                     var lessonCollection = new List<LessonModel>();
                     foreach (var item in lessonDA.GetAll(lesson))
                     {

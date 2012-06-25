@@ -40,8 +40,6 @@ namespace FlashCard
         private readonly Lazy<LessonViewModel> viewModel;
         #endregion
 
-        
-
         #region Properties
         private LessonViewModel ViewModel { get { return viewModel.Value; } }
         
@@ -73,9 +71,19 @@ namespace FlashCard
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
             if (this.WindowState.Equals(WindowState.Maximized))
+            {
                 this.WindowState = WindowState.Normal;
+                rtShdB.Visibility = Visibility.Visible;
+                rtShdBR.Visibility = Visibility.Visible;
+                rtShdR.Visibility = Visibility.Visible;
+            }
             else
+            {
+                rtShdB.Visibility =  Visibility.Collapsed;
+                rtShdBR.Visibility = Visibility.Collapsed;
+                rtShdR.Visibility =  Visibility.Collapsed;
                 MaximinzedScreen();
+            }
 
         }
 
@@ -100,8 +108,8 @@ namespace FlashCard
         /// </summary>
         private void MaximinzedScreen()
         {
-            this.MaxWidth = SystemParameters.WorkArea.Width + 5;
-            this.MaxHeight = SystemParameters.WorkArea.Height + 5;
+            this.MaxWidth = SystemParameters.WorkArea.Width;
+            this.MaxHeight = SystemParameters.WorkArea.Height;
             this.WindowState = WindowState.Maximized;
         }
 
@@ -119,8 +127,11 @@ namespace FlashCard
             this.btnMinimize.Click += new RoutedEventHandler(btnMinimize_Click);
             this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
             this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
+            this.btnClose.Click += new RoutedEventHandler(btnExit_Click);
             this.PreviewKeyDown += new KeyEventHandler(MainWindow_PreviewKeyDown);
         }
+
+        
         #endregion
     }
 }

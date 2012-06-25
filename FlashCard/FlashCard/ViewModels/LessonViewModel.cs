@@ -257,7 +257,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return SelectedLesson.IsEdit || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsEdit) > 0);
+            return SelectedLesson.IsEdit && SelectedLesson.Errors.Count==0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsEdit) > 0);
         }
 
         private void SaveExecute(object param)
@@ -594,8 +594,10 @@ namespace FlashCard.ViewModels
 
         private bool CanSaveCategoryExecute(object param)
         {
-
-            return true;
+            if (SelectedCategory == null)
+                return false;
+            
+            return SelectedCategory.IsEdit;
         }
 
         private void SaveCategoryExecute(object param)
@@ -709,7 +711,6 @@ namespace FlashCard.ViewModels
                 if (staticMain != null)
                     staticMain = null;
                 staticMain = new MainWindow();
-                staticMain.GetViewModel<MainViewModel>().SetupModel = _studyConfigView.GetViewModel<StudyConfigViewModel>().SetupModel;
                 this.ViewCore.Close();
                 //main.Show();
             }

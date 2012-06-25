@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using FlashCard.Model;
 
 namespace FlashCard
 {
@@ -12,5 +13,6 @@ namespace FlashCard
     /// </summary>
     public partial class App : Application
     {
+        public static SetupModel SetupModel;
     }
 }

@@ -79,6 +79,20 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="L"
+                    Command="{Binding KeyboardCommand}"
+                    CommandParameter="L" />
+        <KeyBinding Key="Left"
+                    Command="{Binding KeyboardCommand}"
+                    CommandParameter="Left" />
+        <KeyBinding Key="Right"
+                    Command="{Binding KeyboardCommand}"
+                    CommandParameter="Right" />
+        <KeyBinding Key="C"
+                    Command="{Binding KeyboardCommand}"
+                    CommandParameter="C" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -86,13 +100,20 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Border x:Name="bdBackground"
-                Grid.RowSpan="3" Opacity="0.6">
-        	<Border.Background>
-        		<RadialGradientBrush GradientOrigin="0.19,0.181" RadiusY="0.694" RadiusX="0.694">
-        			<GradientStop Color="#FF7D7D7E"/>
-        			<GradientStop Color="#FF3D4347" Offset="0.84"/>
-        		</RadialGradientBrush>
-        	</Border.Background>
+                Grid.RowSpan="3"
+                Opacity="0.95">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1"
+                                     MappingMode="RelativeToBoundingBox"
+                                     StartPoint="0.5,0">
+                    <GradientStop Color="Black"
+                                  Offset="0.045" />
+                    <GradientStop Color="#E5000000"
+                                  Offset="0.103" />
+                    <GradientStop Color="#E5000000"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
         </Border>
         <Border x:Name="bdHeader"
                 Background="#00000000"
@@ -105,7 +126,7 @@
                             VerticalAlignment="Center"
                             d:LayoutOverrides="Width"
                             HorizontalAlignment="Right">
-                   
+
                     <Button x:Name="btnPopup"
                             Command="{Binding CloseCommand}"
                             Width="25"
@@ -167,7 +188,7 @@
 
                     <Button x:Name="btnExit"
                             Command="{Binding CancelCommand}"
-							CommandParameter="FullScreen"
+                            CommandParameter="FullScreen"
                             ToolTip="Exit"
                             Width="25"
                             Height="25"
@@ -343,6 +364,7 @@
                             HorizontalAlignment="Right">
                     <Button x:Name="btnListen"
                             Command="{Binding ListenCommand}"
+                            CommandParameter="FullScreen"
                             Width="25"
                             VerticalAlignment="Center"
                             Style="{DynamicResource EmptyButton}"
@@ -382,21 +404,20 @@
                             Orientation="Horizontal"
                             d:LayoutOverrides="Height"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
                             Margin="10,0,0,0">
                     <Button x:Name="btnBack"
+							ToolTip="Back"
                             Command="{Binding NextBackLessonCommand}"
-                            CommandParameter="Back"
-                            Content="Back"
-                            Width="60"
-                            Height="25" />
+                            CommandParameter="Back" Style="{DynamicResource EmptyButton}" Margin="0,0,5,0" >
+                    	<Image Source="/FlashCard;component/Images/Back.png" Stretch="Fill"/>
+                    </Button>
                     <Button x:Name="btnNext"
+					ToolTip="Next"
                             Command="{Binding NextBackLessonCommand}"
                             CommandParameter="Next"
-                            Content="Next"
-                            Margin="5,0,0,0"
-                            Width="60"
-                            Height="25" />
+                            Margin="5,0,0,0" Style="{DynamicResource EmptyButton}" >
+                    	<Image Source="/FlashCard;component/Images/Next.png" Stretch="Fill"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

@@ -172,9 +172,6 @@
     <Resource Include="Images\Remove.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Error.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -236,10 +233,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Circle_Green.ico" />
-    <Resource Include="Icons\Circle_Red.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\1339488847_Config-Tools.png" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +255,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\card_blue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Back.png" />
+    <Resource Include="Images\Next.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

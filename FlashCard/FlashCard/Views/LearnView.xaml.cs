@@ -14,6 +14,7 @@ namespace FlashCard.Views
             InitialEvent();
             //Double current Fonsize
             this.tbLessonName.FontSize *= 1.5;
+            
         }
 
         #region Events

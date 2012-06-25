@@ -161,7 +161,7 @@ namespace FlashCard.DataAccess
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             //SQLiteParameter param = null;
-            string sql = "select * from Lessons";
+            string sql = "select * from Lessons ";
             try
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
