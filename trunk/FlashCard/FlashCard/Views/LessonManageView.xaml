@@ -333,8 +333,8 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.119*" />
-            <RowDefinition Height="0.881*" />
+            <RowDefinition Height="63.07" />
+            <RowDefinition />
             <RowDefinition Height="Auto"
                            x:Name="rowShdB" />
         </Grid.RowDefinitions>
@@ -490,8 +490,8 @@
             <Grid x:Name="grdLayout"
                   Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.07*" />
-                    <RowDefinition Height="0.93*" />
+                    <RowDefinition Height="32.91" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
@@ -771,7 +771,7 @@
                                                                    Background="#33A19F9F"
                                                                    BorderBrush="#FF7F9DB9"
                                                                    HorizontalAlignment="Stretch"
-                                                                   VerticalAlignment="Stretch" Style="{DynamicResource RichTextBoxToolbarStyle}" />
+                                                                   VerticalAlignment="Stretch" />
                             <TextBlock x:Name="tbLessonContent_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"

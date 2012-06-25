@@ -102,18 +102,19 @@
         <Border x:Name="bdBackground"
                 Grid.RowSpan="3"
                 Opacity="0.95">
-            <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1"
-                                     MappingMode="RelativeToBoundingBox"
-                                     StartPoint="0.5,0">
-                    <GradientStop Color="Black"
-                                  Offset="0.045" />
-                    <GradientStop Color="#E5000000"
-                                  Offset="0.103" />
-                    <GradientStop Color="#E5000000"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </Border.Background>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background"
+                            Value="{DynamicResource FullScreenBg1}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedLesson.IsBackSide,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"
+                                     Value="True">
+                            <Setter Property="Background"
+                                    Value="{DynamicResource FullScreenBg3}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
         </Border>
         <Border x:Name="bdHeader"
                 Background="#00000000"
@@ -406,17 +407,22 @@
                             HorizontalAlignment="Left"
                             Margin="10,0,0,0">
                     <Button x:Name="btnBack"
-							ToolTip="Back"
+                            ToolTip="Back"
                             Command="{Binding NextBackLessonCommand}"
-                            CommandParameter="Back" Style="{DynamicResource EmptyButton}" Margin="0,0,5,0" >
-                    	<Image Source="/FlashCard;component/Images/Back.png" Stretch="Fill"/>
+                            CommandParameter="Back"
+                            Style="{DynamicResource EmptyButton}"
+                            Margin="0,0,5,0">
+                        <Image Source="/FlashCard;component/Images/Back.png"
+                               Stretch="Fill" />
                     </Button>
                     <Button x:Name="btnNext"
-					ToolTip="Next"
+                            ToolTip="Next"
                             Command="{Binding NextBackLessonCommand}"
                             CommandParameter="Next"
-                            Margin="5,0,0,0" Style="{DynamicResource EmptyButton}" >
-                    	<Image Source="/FlashCard;component/Images/Next.png" Stretch="Fill"/>
+                            Margin="5,0,0,0"
+                            Style="{DynamicResource EmptyButton}">
+                        <Image Source="/FlashCard;component/Images/Next.png"
+                               Stretch="Fill" />
                     </Button>
                 </StackPanel>
             </Grid>
