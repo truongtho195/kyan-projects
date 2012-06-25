@@ -51,9 +51,19 @@ namespace FlashCard
             if (e.ClickCount == 2)
             {
                 if (this.WindowState.Equals(WindowState.Maximized))
+                {
                     this.WindowState = WindowState.Normal;
+                    rtShdB.Visibility = Visibility.Visible;
+                    rtShdBR.Visibility = Visibility.Visible;
+                    rtShdR.Visibility = Visibility.Visible;
+                }
                 else
+                {
+                    rtShdB.Visibility = Visibility.Collapsed;
+                    rtShdBR.Visibility = Visibility.Collapsed;
+                    rtShdR.Visibility = Visibility.Collapsed;
                     MaximinzedScreen();
+                }
             }
             this.DragMove();
         }

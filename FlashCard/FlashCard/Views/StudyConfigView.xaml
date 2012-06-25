@@ -179,14 +179,14 @@
                       VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
-                    	<RowDefinition Height="0" />
+                    	<RowDefinition Height="25" />
                     	<RowDefinition Height="80" />
                     	<RowDefinition Height="25" />
                     	<RowDefinition Height="25" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
-                                Margin="5,0,0,0" Visibility="Collapsed">
+                                Margin="5,0,0,0">
                         <CheckBox x:Name="chkLimitCard"
                                   IsChecked="{Binding SelectedSetupModel.IsLimitCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Content="Limit to"

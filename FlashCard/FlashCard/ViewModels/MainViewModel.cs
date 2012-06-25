@@ -32,23 +32,6 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             CurrentView = view;
-            //StudyConfigView lessionView = new StudyConfigView();
-            //lessionView.GetViewModel<StudyConfigViewModel>().App.SetupModel = App.SetupModel;
-
-            //  ViewCore.Hide();
-            //if (lessionView.ShowDialog() == true)
-            //{
-            //var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
-            //App.SetupModel = viewModel.App.SetupModel;
-            if (App.SetupModel.IsShuffle)
-            {
-                var lessonShuffle = ShuffleList.Randomize<LessonModel>(this.LessonCollection);
-                LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
-            }
-            //else
-            //    LessonCollection = viewModel.LessonCollection;
-
-            //}
 
             if (App.SetupModel.IsEnableSlideShow)
                 InitialTimer();
@@ -378,7 +361,6 @@ namespace FlashCard.ViewModels
             Console.WriteLine("||      FancyBallonMouseLeaveExecute");
             if (!IsOtherFormShow && this.IsPopupStarted == true)
             {
-
                 _swCountTimerTick.Stop();
                 int time = 0;
                 if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.ViewTimeSecond)
@@ -501,14 +483,15 @@ namespace FlashCard.ViewModels
         {
             if (App.SetupModel.IsEnableSlideShow)
             {
-                PlayPauseBallonPopup(false);
-            }
-            else
-            {
-                if (_timerViewFullScreen.IsEnabled)
-                    _timerViewFullScreen.Stop();
+                if ("FullScreen".Equals(param.ToString()))
+                {
+                    if (_timerViewFullScreen.IsEnabled)
+                        _timerViewFullScreen.Stop();
+                    else
+                        _timerViewFullScreen.Start();
+                }
                 else
-                    _timerViewFullScreen.Start();
+                    PlayPauseBallonPopup(false);
             }
         }
 
@@ -897,9 +880,9 @@ namespace FlashCard.ViewModels
         {
             _learnView.Close();
             _learnView = null;
+            IsPopupStarted = true;
             if (App.SetupModel.IsEnableSlideShow)
             {
-               
                 PlayPauseBallonPopup(false);
             }
             else
@@ -1091,9 +1074,16 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void SetLesson(bool isLoop = true)
         {
+            var LimitCardNum = LessonCollection.Count;
+            if (App.SetupModel.IsLimitCard)
+            {
+                if ( App.SetupModel.LimitCardNum <LimitCardNum )
+                    LimitCardNum = App.SetupModel.LimitCardNum;
+            }
+
             if (isLoop)
             {
-                if (_currentItemIndex < LessonCollection.Count - 1)
+                if (_currentItemIndex < LimitCardNum-1)
                     _currentItemIndex++;
                 else
                     _currentItemIndex = 0;
@@ -1197,7 +1187,7 @@ namespace FlashCard.ViewModels
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
-                this.IsPopupStarted = false;
+                //this.IsPopupStarted = false;
                 testTimeView.Stop();
                 Console.WriteLine("|| View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();
