@@ -411,48 +411,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "{R}  Lesson Manager Command"
-        ///// <summary>
-        ///// Gets the LessonManager Command.
-        ///// <summary>
-        //private ICommand _lessonManagerCommand;
-        //public ICommand LessonManagerCommand
-        //{
-        //    get
-        //    {
-        //        if (_lessonManagerCommand == null)
-        //            _lessonManagerCommand = new RelayCommand(this.OnLessonManagerExecute, this.OnLessonManagerCanExecute);
-        //        return _lessonManagerCommand;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Method to check whether the LessonManager command can be executed.
-        ///// </summary>
-        ///// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        //private bool OnLessonManagerCanExecute(object param)
-        //{
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Method to invoke when the LessonManager command is executed.
-        ///// </summary>
-        //private void OnLessonManagerExecute(object param)
-        //{
-        //    LessonManageView lessonManager = new LessonManageView(true);
-
-        //    PlayPauseBallonPopup(true);
-        //    //CloseTimerPopup();
-        //    if (lessonManager.ShowDialog() == true)
-        //    {
-        //        GetLesson();
-        //        PlayPauseBallonPopup(false);
-        //    }
-        //}
-
-        #endregion
-
         #region "  Play Pause Command"
         /// <summary>
         /// Gets the PlayPause Command.
@@ -1121,7 +1079,7 @@ namespace FlashCard.ViewModels
             _timerPopup.Interval = App.SetupModel.TimeOut;
             _timerPopup.Tick += new EventHandler(_timer_Tick);
             _timerPopup.Start();
-            test.Start();
+            //test.Start();
         }
 
         /// <summary>
@@ -1150,6 +1108,8 @@ namespace FlashCard.ViewModels
                 TimerForClosePopup(timerSpan);
                 Console.WriteLine("||=========================================");
                 Console.WriteLine("||.....Showing .....");
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 
@@ -1338,14 +1298,6 @@ namespace FlashCard.ViewModels
             ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
         }
         #endregion
-
-        /// <summary>
-        /// Closes the main window.
-        /// </summary>
-        public void Close()
-        {
-            ViewCore.Close();
-        }
 
         #region All For Test
         //Variable
