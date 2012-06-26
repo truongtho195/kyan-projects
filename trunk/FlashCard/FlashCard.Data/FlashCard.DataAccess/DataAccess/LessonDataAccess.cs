@@ -229,7 +229,7 @@ namespace FlashCard.DataAccess
             SQLiteDataReader reader = null;
 
             BackSideDataAccess backSideDA = new BackSideDataAccess();
-            string sql = "select * from Lessons";
+            string sql = "select * from Lessons ";
             try
             {
                 //Categories
@@ -255,9 +255,7 @@ namespace FlashCard.DataAccess
                                 lessonModel.BackSideModel = new BackSideModel();
                             break;
                     }
-                    lessonModel.IsNew = false;
-                    lessonModel.IsEdit = false;
-                    lessonModel.IsDelete = false;
+                    lessonModel.ResetModelBase();
                     list.Add(lessonModel);
                 }
 

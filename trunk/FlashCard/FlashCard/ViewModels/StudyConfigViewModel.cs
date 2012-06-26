@@ -239,7 +239,6 @@ namespace FlashCard.ViewModels
         #endregion
 
 
-
         #region Methods
         private void InitialData()
         {

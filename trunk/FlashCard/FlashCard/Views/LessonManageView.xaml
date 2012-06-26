@@ -517,8 +517,7 @@
                             d:LayoutOverrides="Height"
                             VerticalAlignment="Center"
                             Margin="0,0,10,0"
-                            Width="97"
-                            BorderThickness="0.5" />
+                            Width="97" />
 
                 </Grid>
 
@@ -555,6 +554,9 @@
                                 <GridViewColumn Header="Lesson Name"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding LessonName}" />
+                                <GridViewColumn Header="Category Name"
+                                                Width="auto"
+                                                DisplayMemberBinding="{Binding CategoryModel.CategoryName}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -599,8 +601,7 @@
                                         Width="70"
                                         BorderBrush="{x:Null}"
                                         Background="White"
-                                        Margin="0,0,10,0"
-                                        BorderThickness="0.5" />
+                                        Margin="0,0,10,0" />
                                 <Button x:Name="btnEdit"
                                         Command="{Binding EditCommand}"
                                         Content="Edit"
@@ -700,6 +701,7 @@
 
 
                             <TextBox x:Name="txtLessonContent"
+                                     Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                      Text="{Binding SelectedLesson.LessonName, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -734,6 +736,7 @@
                             </DataGrid.Columns>
                         </DataGrid>-->
                             <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
+                                                                   Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                                                    Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    Grid.Column="1"
@@ -758,9 +761,9 @@
                                     VerticalAlignment="Top"
                                     Background="White"
                                     BorderBrush="{x:Null}"
-                                    Margin="0,0,10,0"
-                                    BorderThickness="0.5" />
+                                    Margin="0,0,10,0" />
                             <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
+                                                                   Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                                                    Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    IsReadOnly="False"
                                                                    Foreground="Black"
@@ -771,7 +774,7 @@
                                                                    Background="#33A19F9F"
                                                                    BorderBrush="#FF7F9DB9"
                                                                    HorizontalAlignment="Stretch"
-                                                                   VerticalAlignment="Stretch" />
+                                                                   VerticalAlignment="Stretch" ToolbarBorderBrush="#FF565656" ToolbarBorderThickness="1" />
                             <TextBlock x:Name="tbLessonContent_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
@@ -1032,8 +1035,7 @@
                         Margin="0,0,10,0"
                         Width="75"
                         Background="White"
-                        BorderBrush="{x:Null}"
-                        BorderThickness="0.5" />
+                        BorderBrush="{x:Null}" />
             </Border>
         </Grid>
     </Grid>

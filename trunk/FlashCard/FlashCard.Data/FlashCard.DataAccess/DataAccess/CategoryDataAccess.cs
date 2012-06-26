@@ -43,6 +43,7 @@ namespace FlashCard.DataAccess
                 if (reader.Read())
                 {
                     categoryModel = MappingToModel(reader);
+                    categoryModel.ResetModelBase();
                 }
             }
             catch (Exception ex)
@@ -78,6 +79,7 @@ namespace FlashCard.DataAccess
                 while (reader.Read())
                 {
                     categoryModel = MappingToModel(reader);
+                    categoryModel.ResetModelBase();
                     list.Add(categoryModel);
                 }
 
@@ -128,6 +130,7 @@ namespace FlashCard.DataAccess
                 while (reader.Read())
                 {
                     categoryModel = MappingToModel(reader);
+                    categoryModel.ResetModelBase();
                     list.Add(categoryModel);
                 }
 
@@ -181,6 +184,7 @@ namespace FlashCard.DataAccess
                         lessonCollection.Add(item);
                     }
                     categoryModel.LessonCollection = lessonCollection;
+                    categoryModel.ResetModelBase();
                     list.Add(categoryModel);
                 }
             }
@@ -237,6 +241,7 @@ namespace FlashCard.DataAccess
                         lessonCollection.Add(item);
                     }
                     categoryModel.LessonCollection = lessonCollection;
+                    categoryModel.ResetModelBase();
                     list.Add(categoryModel);
                 }
             }

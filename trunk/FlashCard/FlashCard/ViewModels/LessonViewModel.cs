@@ -522,7 +522,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCategoryCanExecute(object param)
         {
-            return true;
+            if (CategoryCollection == null)
+                return true;
+            return SelectedCategory!=null && !SelectedCategory.IsNew;
         }
 
         /// <summary>
@@ -711,8 +713,11 @@ namespace FlashCard.ViewModels
                 if (staticMain != null)
                     staticMain = null;
                 staticMain = new MainWindow();
+                var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
+                var mainViewModel= staticMain.GetViewModel<MainViewModel>();
+                mainViewModel.GetLesson(lessonCollection.ToList());
+                mainViewModel.ExcuteMainForm();
                 this.ViewCore.Close();
-                //main.Show();
             }
             else
             {
@@ -729,7 +734,7 @@ namespace FlashCard.ViewModels
         {
             //Set for form
             this.Titles = "Lesson Management";
-
+            
             TypeDataAccess typeDataAccess = new TypeDataAccess();
             LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
 

@@ -147,6 +147,7 @@ namespace RichTextBoxControl
             typeof(RichTextBoxToolbar), new PropertyMetadata(SystemColors.MenuBarBrush));
 
         // ToolbarBorderThickness property
+        [CategoryAttribute("Appearance")]    
         public Thickness ToolbarBorderThickness
         {
             get { return (Thickness)GetValue(ToolbarBorderThicknessProperty); }
@@ -430,11 +431,16 @@ namespace RichTextBoxControl
         {
             FontFamilyCombo.ItemsSource = Fonts.SystemFontFamilies;
             FontSizeCombo.Items.Add("10");
+            FontSizeCombo.Items.Add("11");
             FontSizeCombo.Items.Add("12");
+            FontSizeCombo.Items.Add("13");
             FontSizeCombo.Items.Add("14");
+            FontSizeCombo.Items.Add("15");
+            FontSizeCombo.Items.Add("16");
+            FontSizeCombo.Items.Add("17");
             FontSizeCombo.Items.Add("18");
-            FontSizeCombo.Items.Add("24");
-            FontSizeCombo.Items.Add("36");
+            FontSizeCombo.Items.Add("20");
+            
             BrushConverter converter = new BrushConverter();
             //var  colors = (from p in typeof(Brushes).GetProperties()
             //            select ((Brush)converter.ConvertFromString(p.Name)).Clone()).ToList();
