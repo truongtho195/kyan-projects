@@ -563,18 +563,18 @@
                     <Grid x:Name="grdContent"
                           Grid.Column="1"
                           Grid.ColumnSpan="2">
-                    	 <Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedLesson}"
-                                             Value="{x:Null}">
-                                    <Setter Property="IsEnabled"
-                                            Value="False" />
-                                </DataTrigger>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLesson}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="IsEnabled"
+                                                Value="False" />
+                                    </DataTrigger>
 
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
@@ -774,7 +774,9 @@
                                                                    Background="#33A19F9F"
                                                                    BorderBrush="#FF7F9DB9"
                                                                    HorizontalAlignment="Stretch"
-                                                                   VerticalAlignment="Stretch" ToolbarBorderBrush="#FF565656" ToolbarBorderThickness="1" />
+                                                                   VerticalAlignment="Stretch"
+                                                                   ToolbarBorderBrush="#FF565656"
+                                                                   ToolbarBorderThickness="1" />
                             <TextBlock x:Name="tbLessonContent_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
@@ -803,7 +805,7 @@
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
                       Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
-                   
+
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
@@ -843,18 +845,18 @@
                     <Grid x:Name="grdCateContent"
                           Grid.Column="1"
                           Grid.ColumnSpan="2">
-                    	 <Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCategory}"
-                                             Value="{x:Null}">
-                                    <Setter Property="IsEnabled"
-                                            Value="False" />
-                                </DataTrigger>
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedCategory}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="IsEnabled"
+                                                Value="False" />
+                                    </DataTrigger>
 
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
