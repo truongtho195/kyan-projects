@@ -11,6 +11,59 @@
     StartupUri="MainWindow.xaml"
     -->
     <Application.Resources>
+
+        <!--#region Validation Template Error-->
+        <ControlTemplate x:Key="validationTemplate">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="myStoryboard"
+                            RepeatBehavior="1x">
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                   Storyboard.TargetName="dockPanel">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.2"
+                                                Value="{x:Static Visibility.Hidden}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
+                                                Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.6"
+                                                Value="{x:Static Visibility.Hidden}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.8"
+                                                Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1"
+                                                Value="{x:Static Visibility.Hidden}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.2"
+                                                Value="{x:Static Visibility.Visible}" />
+                    </ObjectAnimationUsingKeyFrames>
+                </Storyboard>
+            </ControlTemplate.Resources>
+            <DockPanel x:Name="dockPanel"
+                       LastChildFill="False">
+                <AdornedElementPlaceholder x:Name="errorAdorner" />
+                <Grid Margin="-20,0,0,0">
+                    <Ellipse Fill="Red"
+                             StrokeThickness="2"
+                             Width="14"
+                             Height="14" />
+                    <TextBlock TextWrapping="Wrap"
+                               Text="!"
+                               ToolTip="{Binding Path=AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"
+                               d:LayoutOverrides="Width, Height"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="#FFEBE3E3"
+                               FontSize="13.333"
+                               FontWeight="Bold" />
+                </Grid>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsVisible"
+                         Value="False">
+                    <Trigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource myStoryboard}" />
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion Validation Template Error-->
+
         <!--#Region "Metro Button Style" x:Key="MetroButtonStyle"-->
         <Style x:Key="ButtonFocusVisual">
             <Setter Property="Control.Template">
@@ -99,149 +152,6 @@
         </Style>
 
         <!--#EndRegion "Metro Button Style"-->
-
-        <!--#region "  Validation Template & Style"-->
-        <Storyboard x:Key="FlashErrorIcon">
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00"
-                                           Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00"
-                                        Value="{x:Static Visibility.Hidden}" />
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000"
-                                        Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000"
-                                        Value="{x:Static Visibility.Hidden}" />
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000"
-                                        Value="{x:Static Visibility.Visible}" />
-                <DiscreteObjectKeyFrame KeyTime="00:00:00.8000000"
-                                        Value="{x:Static Visibility.Hidden}" />
-                <DiscreteObjectKeyFrame KeyTime="00:00:01"
-                                        Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-
-        <Style x:Key="myErrorTemplate"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel LastChildFill="True">
-                            <Ellipse DockPanel.Dock="Right"
-                                     ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=myTextbox}"
-                                     Width="15"
-                                     Height="15"
-                                     Margin="-25,0,0,0"
-                                     StrokeThickness="1"
-                                     Fill="Red">
-                                <Ellipse.Stroke>
-                                    <LinearGradientBrush EndPoint="1,0.5"
-                                                         StartPoint="0,0.5">
-                                        <GradientStop Color="#FFFA0404"
-                                                      Offset="0" />
-                                        <GradientStop Color="#FFC9C7C7"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Ellipse.Stroke>
-                                <Ellipse.Triggers>
-                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                                        <BeginStoryboard Storyboard="{StaticResource FlashErrorIcon}" />
-                                    </EventTrigger>
-                                </Ellipse.Triggers>
-                            </Ellipse>
-                            <TextBlock DockPanel.Dock="Right"
-                                       ToolTip="{Binding AdornedElement.(Validation.Errors)[0].ErrorContent, ElementName=myControl}"
-                                       Foreground="White"
-                                       FontSize="11pt"
-                                       Margin="-15,5,0,0"
-                                       FontWeight="Bold"><TextBlock.Triggers>
-        							<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-        								<BeginStoryboard Storyboard="{StaticResource FlashErrorIcon}" />
-        							</EventTrigger>
-        						</TextBlock.Triggers><Run Text="!" /></TextBlock>
-                            <Border BorderBrush="Red"
-                                    BorderThickness="0">
-                                <AdornedElementPlaceholder x:Name="myControl" />
-                            </Border>
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError"
-                         Value="true">
-                    <Setter Property="ToolTip"
-                            Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <SolidColorBrush x:Key="ListBorder"
-                         Color="#FF7F9DB9" />
-
-
-        <!--#Endregion "Validation Template & Style"-->
-
-        <!--#region "  Textbox Style With Error Template"-->
-        
-        <Style BasedOn="{StaticResource myErrorTemplate}"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="Background"
-                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource ListBorder}" />
-            <Setter Property="Foreground"
-                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter Property="KeyboardNavigation.TabNavigation"
-                    Value="None" />
-            <Setter Property="BorderThickness"
-                    Value="1" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="Left" />
-            <Setter Property="Padding"
-                    Value="2" />
-            <Setter Property="FocusVisualStyle"
-                    Value="{x:Null}" />
-            <Setter Property="AllowDrop"
-                    Value="true" />
-            <Setter Property="ScrollViewer.PanningMode"
-                    Value="VerticalFirst" />
-            <Setter Property="Stylus.IsFlicksEnabled"
-                    Value="False" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="Bd"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="true"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}">
-                            <ScrollViewer x:Name="PART_ContentHost"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Width="{TemplateBinding Width}"
-                                          Height="{TemplateBinding Height}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled"
-                                     Value="false">
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                            </Trigger>
-                            <Trigger Property="IsFocused"
-                                     Value="True">
-                                <Setter Property="BorderBrush"
-                                        TargetName="Bd"
-                                        Value="#FF2B80F1" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <!--#Endregion "Textbox Style With Error Template"-->
-
 
 
 

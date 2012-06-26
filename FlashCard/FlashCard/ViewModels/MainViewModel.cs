@@ -26,13 +26,14 @@ namespace FlashCard.ViewModels
     public partial class MainViewModel : ViewModel<MainWindow>
     {
         #region Constructors
-        private Window CurrentView;
         public MainViewModel(MainWindow view)
             : base(view)
         {
             Initialize();
-            CurrentView = view;
+        }
 
+        public void ExcuteMainForm()
+        {
             if (App.SetupModel.IsEnableSlideShow)
                 InitialTimer();
             else
@@ -654,9 +655,8 @@ namespace FlashCard.ViewModels
 
         private bool CanListenExecute(object param)
         {
-            return NotListen;
+            return true;
         }
-        bool NotListen = true;
         private void ListenExecute(object param)
         {
             try
@@ -669,7 +669,7 @@ namespace FlashCard.ViewModels
 
                 if (CheckConnectionInternet.IsConnectedToInternet())
                 {
-                    Console.WriteLine("Listen with google translate");
+                    Console.WriteLine("Listen with google translate : {0}", SelectedLesson.LessonName);
                     _listenWord = new MediaPlayer();
                     string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", SelectedLesson.LessonName);
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
@@ -678,7 +678,7 @@ namespace FlashCard.ViewModels
                 }
                 else
                 {
-                    Console.WriteLine("Listen with Microsoft Speed");
+                    Console.WriteLine("Listen with Microsoft Speed : {0}", SelectedLesson.LessonName);
                     SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                     synthesizer.SpeakAsync(SelectedLesson.LessonName);
                 }
@@ -686,7 +686,6 @@ namespace FlashCard.ViewModels
 
                 if ("FullScreen".Equals(param.ToString()) && App.SetupModel.IsEnableSlideShow)
                 {
-                    
                     _timerViewFullScreen.Stop();
                     stopForListen.Start();
                 }
@@ -880,6 +879,10 @@ namespace FlashCard.ViewModels
         {
             _learnView.Close();
             _learnView = null;
+            if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
+            {
+                _timerViewFullScreen.Stop(); 
+            }
             IsPopupStarted = true;
             if (App.SetupModel.IsEnableSlideShow)
             {
@@ -973,15 +976,14 @@ namespace FlashCard.ViewModels
         private void OnMiniFullScreenExecute(object param)
         {
             //Debug.WriteLine("this._timerViewFullScreen IsEnabled : {0} | param : {1}", this._timerViewFullScreen.IsEnabled,param.ToString());
-            if ("Minimized".Equals(param.ToString()) && this._timerViewFullScreen.IsEnabled)
+            if ("Minimized".Equals(param.ToString()) &&_timerViewFullScreen!=null && this._timerViewFullScreen.IsEnabled)
             {
                 this._timerViewFullScreen.Stop();
                 IsCurrentStarted = false;
                 Console.WriteLine("|| FullScreen is Stoped!");
             }
-            else if (!this._timerViewFullScreen.IsEnabled)
+            else if (this._timerViewFullScreen!=null && !this._timerViewFullScreen.IsEnabled)
             {
-
                 this._timerViewFullScreen.Start();
                 IsCurrentStarted = true;
                 Console.WriteLine("|| FullScreen is Started!");
@@ -990,7 +992,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region KeyboardCommand
+        #region"  KeyboardCommand"
 
         /// <summary>
         /// Gets the Keyboard Command.
@@ -1048,24 +1050,24 @@ namespace FlashCard.ViewModels
         {
             _listenWord = new MediaPlayer();
 
-            GetLesson();
+            //GetLesson();
 
             test.Interval = new TimeSpan(0, 0, 1);
             test.Tick += new EventHandler(test_Tick);
         }
 
-        private void GetLesson()
+        public void GetLesson(List<LessonModel> listLesson)
         {
-            LessonDataAccess lessonDA = new LessonDataAccess();
-            var lesson = lessonDA.GetAllWithRelation();
+            //LessonDataAccess lessonDA = new LessonDataAccess();
+            //var lesson = lessonDA.GetAllWithRelation();
             if (App.SetupModel.IsShuffle)
             {
-                var lessonShuffle = ShuffleList.Randomize<LessonModel>(lesson);
+                var lessonShuffle = ShuffleList.Randomize<LessonModel>(listLesson);
                 LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
             }
             else
             {
-                LessonCollection = new ObservableCollection<LessonModel>(lesson);
+                LessonCollection = new ObservableCollection<LessonModel>(listLesson);
             }
         }
 
@@ -1148,7 +1150,6 @@ namespace FlashCard.ViewModels
                 TimerForClosePopup(timerSpan);
                 Console.WriteLine("||=========================================");
                 Console.WriteLine("||.....Showing .....");
-
             }
         }
 
@@ -1301,7 +1302,6 @@ namespace FlashCard.ViewModels
                 _timerPopup.Start();
             }
         }
-
 
         /// <summary>
         /// Method For Stop Popup Notify for another to show
