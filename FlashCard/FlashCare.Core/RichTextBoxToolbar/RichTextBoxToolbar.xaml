@@ -438,6 +438,7 @@
                      VerticalContentAlignment="Stretch" />
         <Popup x:Name="popup"
                Placement="Mouse"
+               PopupAnimation="Slide"
                VerticalAlignment="Center">
             <Border Margin="0"
                     MinWidth="200"

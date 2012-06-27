@@ -261,7 +261,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.BackSideDetail)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.BackSideDetail)));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", backSideModel.IsCorrect));
                 sqlCommand.ExecuteNonQuery();
                 backSideModel.BackSideID = (int)sqlConnect.LastInsertRowId;
@@ -272,9 +272,12 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                throw;
             }
 
             return result;
@@ -294,7 +297,7 @@ namespace FlashCard.DataAccess
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 sqlCommand.CommandText = sql;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", backSideModel.LessonID));
-                sqlCommand.Parameters.Add(new SQLiteParameter("@Content",FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.BackSideDetail)));
+                sqlCommand.Parameters.Add(new SQLiteParameter("@Content", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(backSideModel.BackSideDetail)));
                 var correct = backSideModel.IsCorrect.HasValue ? backSideModel.IsCorrect : false;
                 sqlCommand.Parameters.Add(new SQLiteParameter("@IsCorrect", correct));
                 sqlCommand.Parameters.Add(new SQLiteParameter("@BackSideID", backSideModel.BackSideID));
@@ -306,9 +309,13 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                throw;
             }
 
             return result;
@@ -335,9 +342,13 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+            
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                throw;
             }
 
             return result;

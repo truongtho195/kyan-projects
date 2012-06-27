@@ -8,6 +8,8 @@ using FlashCard.DataAccess;
 using System.Collections.ObjectModel;
 using FlashCard.Views;
 using MVVMHelper.Common;
+using System;
+using log4net;
 
 namespace FlashCard.ViewModels
 {
@@ -18,7 +20,9 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
+            this.Titles = "Lesson Management";
         }
+
 
         public LessonViewModel(LessonManageView view, bool isFromPopup)
             : this(view)
@@ -30,6 +34,7 @@ namespace FlashCard.ViewModels
 
         #region Variables
         StudyConfigView _studyConfigView;
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -57,7 +62,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         //Lesson Region
-        #region SelectedLesson
+        #region"  SelectedLesson"
         private LessonModel _selectedLesson;
         /// <summary>
         /// Gets or sets the property value.
@@ -76,7 +81,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region LessonCollection
+        #region"  LessonCollection"
         private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -95,7 +100,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region LessonTypeCollection
+        #region"  LessonTypeCollection"
         private List<TypeModel> _lessonTypeCollection;
         /// <summary>
         /// Gets or sets the property value.
@@ -114,10 +119,8 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         //Category Region
-
-        #region "   SelectedCategory"
+        #region "  SelectedCategory"
         private CategoryModel _selectedCategory;
         /// <summary>
         /// Gets or sets the property value.
@@ -137,12 +140,12 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region"   CategoryCollection"
-        private List<CategoryModel> _categoryCollection;
+        #region"  CategoryCollection"
+        private ObservableCollection<CategoryModel> _categoryCollection;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public List<CategoryModel> CategoryCollection
+        public ObservableCollection<CategoryModel> CategoryCollection
         {
             get { return _categoryCollection; }
             set
@@ -158,6 +161,26 @@ namespace FlashCard.ViewModels
 
 
         public bool IsFromPopup { get; set; }
+
+        #region"  IsCategoryHandle"
+        private bool _isCategoryHandle;
+        /// <summary>
+        /// Gets or sets the IsCategoryHandle.
+        /// </summary>
+        public bool IsCategoryHandle
+        {
+            get { return _isCategoryHandle; }
+            set
+            {
+                if (_isCategoryHandle != value)
+                {
+                    _isCategoryHandle = value;
+                    RaisePropertyChanged(() => IsCategoryHandle);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Commands
@@ -257,7 +280,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return SelectedLesson.IsEdit && SelectedLesson.Errors.Count==0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsEdit) > 0);
+            return SelectedLesson.IsEdit && SelectedLesson.Errors.Count == 0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsEdit) > 0);
         }
 
         private void SaveExecute(object param)
@@ -524,7 +547,7 @@ namespace FlashCard.ViewModels
         {
             if (CategoryCollection == null)
                 return true;
-            return SelectedCategory!=null && !SelectedCategory.IsNew;
+            return SelectedCategory != null && !SelectedCategory.IsNew;
         }
 
         /// <summary>
@@ -532,22 +555,9 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnNewCategoryExecute(object param)
         {
-            //if ("Add".Equals(param.ToString()))
-            //{
-            //    SelectedLesson.IsNewCate = true;
-            //    SelectedLesson.CategoryModel = new CategoryModel();
-            //    SelectedLesson.CategoryModel.IsNew = true;
-            //    SelectedLesson.CategoryModel.CategoryID = -2;
-            //}
-            //else
-            //{
-            //    SelectedLesson.IsNewCate = false;
-            //    SelectedLesson.CategoryModel = CategoryCollection.First();
-            //}
             SelectedCategory = new CategoryModel();
             SelectedCategory.IsNew = true;
             SelectedCategory.CategoryID = -2;
-            //RaisePropertyChanged(() => SelectedLesson);
         }
         #endregion
 
@@ -598,7 +608,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedCategory == null)
                 return false;
-            
+
             return SelectedCategory.IsEdit;
         }
 
@@ -689,13 +699,48 @@ namespace FlashCard.ViewModels
 
         private void ShowStudyExecute(object param)
         {
+            if (IsCategoryHandle)
+            {
+                if (SelectedCategory != null && SelectedCategory.IsNew)
+                {
+                    CategoryCollection.Remove(SelectedCategory);
+                }
+                else if (SelectedCategory != null && SelectedCategory.IsEdit)
+                {
+                    CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                    var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
+                    //reset data
+                    SelectedCategory = cateModel;
+                }
+            }
+            else
+            {
+                if (SelectedLesson != null && SelectedLesson.IsNew)
+                {
+                    LessonCollection.Remove(SelectedLesson);
+                }
+                else if (SelectedLesson != null && SelectedLesson.IsEdit)
+                {
+                    LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                    var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
+
+                    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                    if (lessonIndex > -1)
+                    {
+                        LessonCollection.RemoveAt(lessonIndex);
+                        LessonCollection.Insert(lessonIndex, lessonModel);
+                    }
+                    RaisePropertyChanged(() => LessonCollection);
+                }
+            }
+
+
             if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
             {
                 _studyConfigView = new StudyConfigView();
                 ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
-                ViewCore.grdControl.Children.Add(_studyConfigView);
-
                 _studyConfigView.GetViewModel<StudyConfigViewModel>().ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+                ViewCore.grdControl.Children.Add(_studyConfigView);
             }
             else
             {
@@ -714,7 +759,7 @@ namespace FlashCard.ViewModels
                     staticMain = null;
                 staticMain = new MainWindow();
                 var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
-                var mainViewModel= staticMain.GetViewModel<MainViewModel>();
+                var mainViewModel = staticMain.GetViewModel<MainViewModel>();
                 mainViewModel.GetLesson(lessonCollection.ToList());
                 mainViewModel.ExcuteMainForm();
                 this.ViewCore.Close();
@@ -727,19 +772,115 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+        #region"  ShortcutKeyNewItemCommand"
+        /// <summary>
+        /// Gets the ShortcutKeyNewItem Command.
+        /// <summary>
+        private ICommand _shortcutKeyNewItemCommand;
+        public ICommand ShortcutKeyNewItemCommand
+        {
+            get
+            {
+                if (_shortcutKeyNewItemCommand == null)
+                    _shortcutKeyNewItemCommand = new RelayCommand(this.OnShortcutKeyNewItemExecute, this.OnShortcutKeyNewItemCanExecute);
+                return _shortcutKeyNewItemCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the ShortcutKeyNewItem command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnShortcutKeyNewItemCanExecute(object param)
+        {
+            if (IsCategoryHandle)
+                return OnNewCategoryCanExecute(param);
+            else
+                return CanNewExecute(param);
+        }
+
+        /// <summary>
+        /// Method to invoke when the ShortcutKeyNewItem command is executed.
+        /// </summary>
+        private void OnShortcutKeyNewItemExecute(object param)
+        {
+            if (IsCategoryHandle)
+            {
+                if (OnNewCategoryCanExecute(null))
+                {
+                    OnNewCategoryExecute(null);
+                }
+            }
+            else
+            {
+                if (CanNewExecute(null))
+                {
+                    NewExecute(null);
+                }
+            }
+        }
+        #endregion
+
+        #region"  ShortCutKeySaveItemCommand"
+
+        /// <summary>
+        /// Gets the ShortCutKeySaveItem Command.
+        /// <summary>
+        private ICommand _shortcutKeySaveItemCommand;
+        public ICommand ShortcutKeySaveItemCommand
+        {
+            get
+            {
+                if (_shortcutKeySaveItemCommand == null)
+                    _shortcutKeySaveItemCommand = new RelayCommand(this.OnShortCutKeySaveItemExecute, this.OnShortCutKeySaveItemCanExecute);
+                return _shortcutKeySaveItemCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the ShortCutKeySaveItem command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnShortCutKeySaveItemCanExecute(object param)
+        {
+            if (IsCategoryHandle)
+                return CanSaveCategoryExecute(param);
+            else
+                return CanSaveExecute(param);
+        }
+
+        /// <summary>
+        /// Method to invoke when the ShortCutKeySaveItem command is executed.
+        /// </summary>
+        private void OnShortCutKeySaveItemExecute(object param)
+        {
+            if (IsCategoryHandle)
+            {
+                if (CanSaveCategoryExecute(param))
+                {
+                    SaveCategoryExecute(param);
+                }
+            }
+            else
+            {
+                if (CanSaveExecute(param))
+                {
+                    SaveExecute(param);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Methods
         private void Initialize()
         {
-            //Set for form
-            this.Titles = "Lesson Management";
-            
             TypeDataAccess typeDataAccess = new TypeDataAccess();
             LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
 
             CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-            CategoryCollection = new List<CategoryModel>(categoryDataAccess.GetAll());
+            CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
 
             LessonDataAccess lessonDataAccess = new LessonDataAccess();
             LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
@@ -750,6 +891,14 @@ namespace FlashCard.ViewModels
             {
                 LessonCollection = new ObservableCollection<LessonModel>();
                 NewExecute(null);
+            }
+
+            if (CategoryCollection.Any())
+                SelectedCategory = CategoryCollection.FirstOrDefault();
+            else
+            {
+                CategoryCollection = new ObservableCollection<CategoryModel>();
+                OnNewCategoryExecute(null);
             }
         }
         #endregion

@@ -111,7 +111,6 @@ namespace Hardcodet.Wpf.TaskbarNotification
 
     #endregion
 
-
     #region Construction
 
     /// <summary>
@@ -146,7 +145,6 @@ namespace Hardcodet.Wpf.TaskbarNotification
     }
 
     #endregion
-
 
     #region Custom Balloons
 

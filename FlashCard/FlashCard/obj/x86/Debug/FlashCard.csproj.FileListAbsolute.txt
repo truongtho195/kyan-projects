@@ -247,3 +247,4 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCa
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\log4net.xml
