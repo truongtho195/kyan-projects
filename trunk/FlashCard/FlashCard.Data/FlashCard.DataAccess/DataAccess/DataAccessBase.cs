@@ -8,6 +8,12 @@ namespace FlashCard.DataAccess
 {
     public class DataAccessBase
     {
+        public DataAccessBase()
+        {
+            DebugShowErrorMsg = true;
+        }
+        public bool DebugShowErrorMsg { get; set; }
+
         public static string ConnectionString
         {
             get
@@ -44,5 +50,7 @@ namespace FlashCard.DataAccess
             builder.AppendFormat("\n|| Data {0}", ex.Data);
             Debug.WriteLine(builder.ToString());
         }
+
+
     }
 }

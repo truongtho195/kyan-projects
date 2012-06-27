@@ -55,6 +55,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -106,6 +108,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -141,6 +145,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -209,6 +215,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -263,6 +271,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -313,6 +323,8 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -354,10 +366,16 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+            
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-
-                throw;
+            
             }
 
             return result;
@@ -401,9 +419,15 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 CatchException(ex);
+                if (this.DebugShowErrorMsg)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+            
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                throw;
             }
 
             return result;

@@ -331,6 +331,16 @@
             </Setter>
         </Style>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="S"
+                    Modifiers="Control"
+                    Command="{Binding ShortcutKeySaveItemCommand}" />
+        <KeyBinding Key="N"
+                    Modifiers="Control"
+                    Command="{Binding ShortcutKeyNewItemCommand}" />
+
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="63.07" />
@@ -509,6 +519,7 @@
                                       IsChecked="{Binding IsChecked, Converter={StaticResource reverseBooleanConverter}, ElementName=tgCategories, Mode=TwoWay}" />
                         <ToggleButton x:Name="tgCategories"
                                       Content="Categories"
+                                      IsChecked="{Binding IsCategoryHandle,Mode=OneWayToSource}"
                                       Width="100" />
                     </StackPanel>
                     <Button Content="Study Now"

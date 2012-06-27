@@ -80,6 +80,9 @@
         </Storyboard>
     </Window.Resources>
     <Window.InputBindings>
+        <KeyBinding Key="F4"
+                    Modifiers="Alt"
+                    Command="{Binding CancelCommand}" />
         <KeyBinding Key="L"
                     Command="{Binding KeyboardCommand}"
                     CommandParameter="L" />

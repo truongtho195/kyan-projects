@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using FlashCard.DataAccess;
 using System.Windows.Input;
 using MVVMHelper.Commands;
+using System;
+using log4net;
 
 namespace FlashCard.ViewModels
 {
@@ -17,17 +19,37 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             InitialData();
-            
-            
-             
         }
+
 
         #endregion
         public delegate void handlerControl(string message);
         public event handlerControl ButtonClickHandler;
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
         #region Properties
+
+        #region Titles
+        private string _titles = string.Empty;
+        /// <summary>
+        /// Gets or sets the Titles.
+        /// </summary>
+        public string Titles
+        {
+            get { return _titles; }
+            set
+            {
+                if (_titles != value)
+                {
+                    _titles = value;
+                    RaisePropertyChanged(() => Titles);
+                }
+            }
+        }
+        #endregion
+
+
         #region "  CategoryCollection"
         private ObservableCollection<CategoryModel> _categoryCollection;
         /// <summary>
@@ -65,7 +87,6 @@ namespace FlashCard.ViewModels
             }
         }
         #endregion
-
 
         #region "  SetupModel"
         private SetupModel _setupModel;
@@ -109,7 +130,6 @@ namespace FlashCard.ViewModels
             }
         }
         #endregion
-
 
         private List<CategoryModel> _categoryList;
         /// <summary>
@@ -173,29 +193,36 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnOKExecute(object param)
         {
-            List<LessonModel> lst = new List<LessonModel>();
-            LessonDataAccess lessonDA = new LessonDataAccess();
-            foreach (var item in CategoryCollection.Where(x => x.IsChecked))
+            log.DebugFormat("||{*} === OK Command Executed ===");
+            try
             {
-                var lesson = lessonDA.GetAllWithRelation().Where(x => x.CategoryModel.CategoryID == item.CategoryID);
-                //Check condition if user set Lesson user Know => remove this item lesson
-                if (lesson != null && lesson.Count() > 0)
+                List<LessonModel> lst = new List<LessonModel>();
+                LessonDataAccess lessonDA = new LessonDataAccess();
+                foreach (var item in CategoryCollection.Where(x => x.IsChecked))
                 {
-                    lst.AddRange(lesson);
+                    var lesson = lessonDA.GetAllWithRelation().Where(x => x.CategoryModel.CategoryID == item.CategoryID);
+                    //Check condition if user set Lesson user Know => remove this item lesson
+                    if (lesson != null && lesson.Count() > 0)
+                    {
+                        lst.AddRange(lesson);
+                    }
                 }
+                if (lst != null && lst.Count > 0)
+                {
+                    LessonCollection = new ObservableCollection<LessonModel>(lst);
+                }
+
+                //Handle Setup
+                App.SetupModel = SelectedSetupModel;
             }
-            if (lst != null && lst.Count > 0)
+            catch (Exception ex)
             {
-                LessonCollection = new ObservableCollection<LessonModel>(lst);
+                log.Error(ex);
+                throw;
             }
 
-            //Handle Setup
-            App.SetupModel = SelectedSetupModel;
-             //SetupModel = SelectedSetupModel;
-            //this.ViewCore.DialogResult = true;
-            //this.ViewCore.Close();
             ButtonClickHandler.Invoke("OkExecute");
-        
+
         }
         #endregion
 
@@ -229,28 +256,34 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCancelExecute(object param)
         {
-            //ViewCore.DialogResult = false;
-            //ViewCore.Close();
+            log.Info("||{*} === Cancel Command Executed ===");
             ButtonClickHandler.Invoke("CancelExecute");
-            
-
         }
         #endregion
         #endregion
 
-
         #region Methods
         private void InitialData()
         {
-            if (App.SetupModel == null)
-                SelectedSetupModel = new SetupModel();
-            else
-                SelectedSetupModel = App.SetupModel;
+            log.Info("|| {*} === InitialData ===");
+            try
+            {
+                if (App.SetupModel == null)
+                    SelectedSetupModel = new SetupModel();
+                else
+                    SelectedSetupModel = App.SetupModel;
 
-            CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-            var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
-            CategoryCollection = new ObservableCollection<CategoryModel>(cate);
-            
+                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
+                CategoryCollection = new ObservableCollection<CategoryModel>(cate);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                throw;
+            }
+
+
         }
         #endregion
 
