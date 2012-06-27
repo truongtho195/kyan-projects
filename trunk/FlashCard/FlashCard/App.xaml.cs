@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using FlashCard.Model;
+using log4net;
 
 namespace FlashCard
 {
@@ -13,6 +14,13 @@ namespace FlashCard
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            string filePath = "FlashCardLog" + DateTime.Now + ".txt";
+            log4net.GlobalContext.Properties["LogName"] = filePath;//String.Format("FlashCardLog{0}.txt",DateTime.Today);
+        }
         public static SetupModel SetupModel;
+
+
     }
 }
