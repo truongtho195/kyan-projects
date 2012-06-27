@@ -259,7 +259,7 @@ namespace FlashCard.ViewModels
 
         private void ChangeSideExecute(object param)
         {
-            log.InfoFormat("||{*} === Change Side Command Executed === ");
+            log.Info("||{*} === Change Side Command Executed === ");
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             if ("Popup".Equals(param.ToString()))
             {
@@ -321,7 +321,7 @@ namespace FlashCard.ViewModels
         {
             var action = new Action(() =>
             {
-                log.InfoFormat("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
+                log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
 
                 if (ViewCore.MyNotifyIcon.IsPopupOpen)
                 {
@@ -360,7 +360,7 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            log.InfoFormat("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
+            log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
             if (!IsOtherFormShow && this.IsPopupStarted == true)
             {
                 _swCountTimerTick.Stop();
@@ -441,7 +441,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-            log.InfoFormat("||{*} === Play Pause Command Executed === ");
+            log.Info("||{*} === Play Pause Command Executed === ");
             if (App.SetupModel.IsEnableSlideShow)
             {
                 if ("FullScreen".Equals(param.ToString()))
@@ -594,7 +594,7 @@ namespace FlashCard.ViewModels
 
         private void ShowPopupExecute(object param)
         {
-            log.InfoFormat("||{*} === Show Popup Command Executed === ");
+            log.Info("||{*} === Show Popup Command Executed === ");
             ShowPopupForm();
         }
         #endregion
@@ -622,7 +622,7 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                log.InfoFormat("||{*} === Listen Command Executed === ");
+                log.Info("||{*} === Listen Command Executed === ");
                 //waitUserClick_Tick
                 DispatcherTimer stopForListen = new DispatcherTimer();
                 stopForListen.Interval = new TimeSpan(0, 0, 0, 5);
@@ -684,7 +684,7 @@ namespace FlashCard.ViewModels
 
         private void HiddenPopupExecute(object param)
         {
-            log.InfoFormat("||{*} === Hidden Popup Command Executed === ");
+            log.Info("||{*} === Hidden Popup Command Executed === ");
             ViewCore.MyNotifyIcon.CloseBalloon();
             log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
         }
@@ -729,7 +729,7 @@ namespace FlashCard.ViewModels
         /// 
         private void OnNextBackLessonExecute(object param)
         {
-            log.InfoFormat("||{*} === Next Back Command Executed === ");
+            log.Info("||{*} === Next Back Command Executed === ");
             if (App.SetupModel.IsEnableSlideShow)
                 return;
             if ("Back".Equals(param.ToString()))
@@ -771,7 +771,7 @@ namespace FlashCard.ViewModels
 
         private void CancelExecute(object param)
         {
-            log.InfoFormat("||{*} === Cancel Command Executed === ");
+            log.Info("||{*} === Cancel Command Executed === ");
             var result = MessageBox.Show("Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
@@ -827,7 +827,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute()
         {
-            log.InfoFormat("||{*} === Close Command Executed === ");
+            log.Info("||{*} === Close Command Executed === ");
             MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
@@ -889,7 +889,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnFullScreenExecute(object param)
         {
-            log.InfoFormat("{*} === Full Screen Call ===");
+            log.Info("{*} === Full Screen Call ===");
             //CloseTimerPopup();
             this.IsPopupStarted = false;
 
@@ -988,7 +988,7 @@ namespace FlashCard.ViewModels
         private void OnKeyboardExecute(object param)
         {
 
-            log.InfoFormat("||{*} === Key Board Executed === ");
+            log.Info("||{*} === Key Board Executed === ");
             switch (param.ToString())
             {
                 case "L":

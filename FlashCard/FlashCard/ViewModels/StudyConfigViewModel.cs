@@ -193,7 +193,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnOKExecute(object param)
         {
-            log.DebugFormat("||{*} === OK Command Executed ===");
+            log.Info("||{*} === OK Command Executed ===");
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
