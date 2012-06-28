@@ -194,24 +194,7 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.baml
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\TestScrollView.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\StudyConfigView.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\StudyConfigView.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.lref
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.baml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\log4net.xml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\FlashCard.pdb
@@ -243,9 +226,25 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\ja\System.W
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\ko\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\StudyConfigView.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\StudyConfigView.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\App.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard_MarkupCompile.lref
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\MainWindow.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Tooltips\FancyBalloon.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LearnView.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Views\LessonManageView.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.g.resources
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\log4net.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\log4net.xml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
