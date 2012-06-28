@@ -254,6 +254,8 @@ namespace FlashCard.ViewModels
 
         private bool CanChangeSideExecute(object param)
         {
+            if (SelectedLesson == null)
+                return false;
             return true;
         }
 
@@ -614,6 +616,8 @@ namespace FlashCard.ViewModels
 
         private bool CanListenExecute(object param)
         {
+            if (SelectedLesson == null)
+                return false;
             return true;
         }
         private void ListenExecute(object param)
@@ -845,7 +849,6 @@ namespace FlashCard.ViewModels
             {
                 _timerViewFullScreen.Stop();
             }
-            IsPopupStarted = true;
             if (App.SetupModel.IsEnableSlideShow)
             {
                 PlayPauseBallonPopup(false);
@@ -878,6 +881,8 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnFullScreenCanExecute(object param)
         {
+            if (SelectedLesson == null)
+                return false;
             return true;
         }
 
@@ -889,7 +894,6 @@ namespace FlashCard.ViewModels
             log.Info("|| {*} === Full Screen Call ===");
             //CloseTimerPopup();
             this.IsPopupStarted = false;
-
             HiddenPopupExecute(null);
             CloseTimerPopup();
             //PlayPauseBallonPopup(true);
