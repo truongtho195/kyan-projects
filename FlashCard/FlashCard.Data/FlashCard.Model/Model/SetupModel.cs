@@ -18,8 +18,8 @@ namespace FlashCard.Model
         {
             //initial defaul data
             this.IsEnableSlideShow = true;
-            this.DistanceTimeSecond = 5;
-            this.ViewTimeSecond = 7;
+            this.DistanceTimeSecond = 7;
+            this.ViewTimeSecond = 8;
             this.IsEnableLoop = true;
             this.IsLimitCard = false;
             this.LimitCardNum = 0;
