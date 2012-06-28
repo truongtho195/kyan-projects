@@ -778,3 +778,5 @@ Parameter name: obj
 ||   at FlashCard.DataAccess.LessonDataAccess.MappingToEntity(LessonModel lessonModel, SQLiteCommand sqlCommand) in E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\DataAccess\LessonDataAccess.cs:line 479
 ||   at FlashCard.DataAccess.LessonDataAccess.Insert(LessonModel lessonModel) in E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\DataAccess\LessonDataAccess.cs:line 354
 || Data System.Collections.ListDictionaryInternal
+INFO  2012-06-28 16:43:39,632 42844ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-28 16:43:46,757 49969ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
