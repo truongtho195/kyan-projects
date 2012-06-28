@@ -248,3 +248,4 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\Generat
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard\bin\Debug\log4net.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCard\bin\Debug\log4net.xml

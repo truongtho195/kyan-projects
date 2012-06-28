@@ -193,7 +193,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnOKExecute(object param)
         {
-            log.Info("||{*} === OK Command Executed ===");
+            log.Info("|| {*} === OK Command Executed ===");
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
@@ -256,7 +256,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCancelExecute(object param)
         {
-            log.Info("||{*} === Cancel Command Executed ===");
+            log.Info("|| {*} === Cancel Command Executed ===");
             ButtonClickHandler.Invoke("CancelExecute");
         }
         #endregion

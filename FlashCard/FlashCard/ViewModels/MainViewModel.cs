@@ -322,13 +322,11 @@ namespace FlashCard.ViewModels
             var action = new Action(() =>
             {
                 log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
-
                 if (ViewCore.MyNotifyIcon.IsPopupOpen)
                 {
                     _waitForClose.Stop();
                     _timerPopup.Stop();
                 }
-
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
@@ -366,9 +364,9 @@ namespace FlashCard.ViewModels
                 _swCountTimerTick.Stop();
                 int time = 0;
                 if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.ViewTimeSecond)
-                    time = App.SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 3;
+                    time = App.SetupModel.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
                 else
-                    time = 3;
+                    time = 2;
                 var timerSpan = new TimeSpan(0, 0, 0, time);
                 TimerForClosePopup(timerSpan);
                 _swCountTimerTick.Reset();
@@ -780,7 +778,6 @@ namespace FlashCard.ViewModels
 
                 if ("FullScreen".Equals(param.ToString()))
                 {
-
                     _timerViewFullScreen = null;
                     _learnView.Close();
                 }
@@ -889,7 +886,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnFullScreenExecute(object param)
         {
-            log.Info("{*} === Full Screen Call ===");
+            log.Info("|| {*} === Full Screen Call ===");
             //CloseTimerPopup();
             this.IsPopupStarted = false;
 
@@ -940,18 +937,19 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnMiniFullScreenExecute(object param)
         {
+            log.Info("|| {*} === Mini Full Screen Execute Call ===");
             //Debug.WriteLine("this._timerViewFullScreen IsEnabled : {0} | param : {1}", this._timerViewFullScreen.IsEnabled,param.ToString());
             if ("Minimized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
             {
                 this._timerViewFullScreen.Stop();
                 IsCurrentStarted = false;
-                Console.WriteLine("|| FullScreen is Stoped!");
+                log.Debug("|| ==> FullScreen is Stoped!");
             }
             else if (this._timerViewFullScreen != null && !this._timerViewFullScreen.IsEnabled)
             {
                 this._timerViewFullScreen.Start();
                 IsCurrentStarted = true;
-                Console.WriteLine("|| FullScreen is Started!");
+                log.Debug("|| ==> FullScreen is Started!");
             }
 
         }
@@ -1015,9 +1013,8 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void Initialize()
         {
+            log.Info("|| {*} === Initialize MainViewModel ===");
             _listenWord = new MediaPlayer();
-
-            //GetLesson();
 
             test.Interval = new TimeSpan(0, 0, 1);
             test.Tick += new EventHandler(test_Tick);
@@ -1060,7 +1057,7 @@ namespace FlashCard.ViewModels
 
             SelectedLesson = LessonCollection[_currentItemIndex];
             SelectedLesson.IsBackSide = false;
-            log.DebugFormat("||== Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
+            log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
         }
 
         //Timer Region
@@ -1084,10 +1081,16 @@ namespace FlashCard.ViewModels
         {
             if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
                 ViewCore.MyNotifyIcon = new TaskbarIcon();
+
             if (_waitForClose == null)
                 _waitForClose = new DispatcherTimer();
-
+            _waitForClose.Interval = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
             _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
+            
+            if (_timerViewFullScreen==null)
+                _timerViewFullScreen = new DispatcherTimer();
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.ViewTimeSecond);
+            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
 
             if (_timerPopup == null)
                 _timerPopup = new DispatcherTimer();
@@ -1147,6 +1150,8 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _waitForClose_Tick(object sender, EventArgs e)
         {
+            log.Info("|| {*} === Initial Timer For Close Popup === ");
+            log.Info("|| ==> WaitBalloon() methods started ");
             countSecond = 0;
             WaitBalloon();
         }
@@ -1163,7 +1168,7 @@ namespace FlashCard.ViewModels
                 log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();
                 log.DebugFormat("|| ==> Popup Closed.......");
-                log.DebugFormat("||========================================= \n \n");
+                log.DebugFormat("|| ================================= \n");
                 _waitForClose.Stop();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
@@ -1174,9 +1179,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void StartLessonFullScreen()
         {
-            _timerViewFullScreen = new DispatcherTimer();
             _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.ViewTimeSecond);
-            _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
             _timerViewFullScreen.Start();
         }
 
@@ -1222,7 +1225,6 @@ namespace FlashCard.ViewModels
             }
             else
             {
-
                 log.DebugFormat("|| === Timer is current of Popup \"Stop\" ");
                 if (_timerPopup == null)
                 {
@@ -1244,7 +1246,7 @@ namespace FlashCard.ViewModels
                 //        _waitForClose.Stop();
                 //    IsCurrentStarted = false;
                 //}
-                log.DebugFormat("|| ===> Timer will be \"Started \" ");
+                log.DebugFormat("|| ==> Timer will be \"Started \" ");
                 _timerPopup.Start();
             }
         }
@@ -1264,8 +1266,8 @@ namespace FlashCard.ViewModels
                 if (ViewCore.MyNotifyIcon.CustomBalloon != null)
                 {
                     ViewCore.MyNotifyIcon.CloseBalloon();
-                    log.DebugFormat("||== Popup is current Stoped");
-                    log.DebugFormat("||==> CloseTimerPopup");
+                    log.DebugFormat("|| == Popup is current Stoped");
+                    log.DebugFormat("|| ==> CloseTimerPopup");
                 }
                 if (_timerPopup != null)
                     log.DebugFormat("|| == Timer tick (_timerPopup) Status : {0}", _timerPopup.IsEnabled);
