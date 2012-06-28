@@ -101,7 +101,6 @@ namespace FlashCard.Model
                        if(IsEnableSlideShow)
                            if (DistanceTimeSecond<0)
                                message = "Distance time is not accepted!";
-                        
                         break;
                     case "ViewTimeSecond":
                         if (IsEnableSlideShow)
