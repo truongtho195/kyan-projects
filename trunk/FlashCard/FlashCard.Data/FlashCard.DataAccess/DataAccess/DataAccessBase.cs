@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 
 namespace FlashCard.DataAccess
@@ -28,7 +27,7 @@ namespace FlashCard.DataAccess
             }
         }
 
-        protected void CatchException(Exception ex)
+        protected string CatchException(Exception ex)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("\n|| === Exception === ");
@@ -48,7 +47,7 @@ namespace FlashCard.DataAccess
             builder.Append("\n|| All :");
             builder.Append(ex.ToString().Replace("\n", "\n||"));
             builder.AppendFormat("\n|| Data {0}", ex.Data);
-            Debug.WriteLine(builder.ToString());
+            return builder.ToString();
         }
 
 

@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Documents;
-using System.ComponentModel;
-using System.Windows.Data;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
 using System.Windows.Controls;
 using System.Diagnostics;
-using System.Windows.Threading;
-using System.Threading;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows.Markup;
 

@@ -525,10 +525,9 @@
                     <Button Content="Study Now"
                             Command="{Binding ShowStudyCommand}"
                             HorizontalAlignment="Right"
-                            d:LayoutOverrides="Height"
                             VerticalAlignment="Center"
                             Margin="0,0,10,0"
-                            Width="97" />
+                            Width="97" Height="20" />
 
                 </Grid>
 
@@ -536,7 +535,8 @@
                       Grid.Row="1"
                       Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgLesson}">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="33.23" />
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.266*" />
@@ -549,7 +549,7 @@
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
                               SelectionMode="Single"
-                              Margin="1,0,0,0">
+                              Margin="5,0.91,0,0" Grid.Row="1">
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
@@ -559,21 +559,34 @@
                         </i:Interaction.Triggers>
                         <ListView.View>
                             <GridView>
-                                <!--<GridViewColumn Header="#"
-                                    DisplayMemberBinding="{Binding}"
-                                    Width="30" />-->
                                 <GridViewColumn Header="Lesson Name"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding LessonName}" />
                                 <GridViewColumn Header="Category Name"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding CategoryModel.CategoryName}" />
+                                <GridViewColumn Header="#">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Button Command="{Binding DataContext.DeleteLessonCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                        CommandParameter="{Binding .}"
+                                                        Width="20"
+                                                        Height="20"
+                                                        Style="{DynamicResource EmptyButton}"
+                                                        ToolTip="Delete">
+                                                    <Image Source="/Images/1336360382_Delete.png" />
+                                                </Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <Grid x:Name="grdContent"
                           Grid.Column="1"
-                          Grid.ColumnSpan="2">
+                          Grid.ColumnSpan="2" Grid.RowSpan="2">
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
@@ -605,31 +618,13 @@
                                         Width="70"
                                         Background="White"
                                         BorderBrush="{x:Null}"
-                                        Margin="0,0,10,0" />
+                                        Margin="0,0,10,0" Height="20" />
                                 <Button x:Name="btnSave"
                                         Command="{Binding SaveCommand}"
                                         Content="Save"
                                         Width="70"
                                         BorderBrush="{x:Null}"
-                                        Background="White"
-                                        Margin="0,0,10,0" />
-                                <Button x:Name="btnEdit"
-                                        Command="{Binding EditCommand}"
-                                        Content="Edit"
-                                        Width="70"
-                                        BorderBrush="{x:Null}"
-                                        Background="White"
-                                        Margin="0,0,10,0"
-                                        BorderThickness="0.5"
-                                        Visibility="Collapsed" />
-                                <Button x:Name="btnDelete"
-                                        Command="{Binding DeleteCommand}"
-                                        Content="Delete"
-                                        Width="70"
-                                        BorderBrush="{x:Null}"
-                                        Background="White"
-                                        BorderThickness="0.5"
-                                        Visibility="Collapsed" />
+                                        Background="White" Height="20" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1">
@@ -693,10 +688,9 @@
                                           d:LayoutOverrides="Height"
                                           Width="120" />
                             </Grid>
-
                             <ComboBox x:Name="cmbCategory"
-                                      ItemsSource="{Binding CategoryCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValue="{Binding SelectedLesson.CategoryModel.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding CategoryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValue="{Binding SelectedLesson.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedItem="{Binding SelectedLesson.CategoryModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       DisplayMemberPath="CategoryName"
                                       SelectedValuePath="CategoryID"
@@ -707,10 +701,6 @@
                                       HorizontalAlignment="Left"
                                       Grid.Row="2"
                                       Height="20" />
-
-
-
-
                             <TextBox x:Name="txtLessonContent"
                                      Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                      Text="{Binding SelectedLesson.LessonName, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
@@ -801,7 +791,7 @@
                     <Rectangle Grid.Column="1"
                                HorizontalAlignment="Left"
                                Width="10"
-                               Margin="0">
+                               Margin="0" Grid.RowSpan="2">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="3.294,0.5"
                                                  StartPoint="-0.454,0.5">
@@ -812,26 +802,41 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
+                    <TextBox x:Name="txtSearchLesson"
+                             TextWrapping="NoWrap"
+                             VerticalAlignment="Center"
+                             Height="25"
+                             Margin="5,0,0,0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                <localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
+                                                             CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        
+                    </TextBox>
+                    <Border x:Name="bdLeftLesson" BorderBrush="Black" BorderThickness="0,0.5,0,0" Margin="0" Grid.RowSpan="2"/>
                 </Grid>
                 <Grid x:Name="grdCategories"
-                      Grid.Row="1"
-                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
+                      Grid.Row="1" Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="0.073*" />
+                        <RowDefinition Height="0.927*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.266*" />
                         <ColumnDefinition Width="0.013*" />
                         <ColumnDefinition Width="0.721*" />
                     </Grid.ColumnDefinitions>
+                    <Border x:Name="bdLeftCate" BorderBrush="Black" BorderThickness="0,0.5,0,0" Grid.RowSpan="2"/>
                     <ListView x:Name="lstCategories"
                               ItemsSource="{Binding CategoryCollection}"
                               Background="#FFCDE8FD"
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
                               SelectionMode="Single"
-                              Margin="1,0,0,0">
+                              Margin="5,0.91,0,0" Grid.Row="1">
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
@@ -850,12 +855,24 @@
                                 <GridViewColumn Header="Status"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding IsActived}" />
+												
+								<GridViewColumn Header="#">
+									<GridViewColumn.CellTemplate>
+										<DataTemplate>
+											<Grid>
+                                                <Button Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" CommandParameter="{Binding .}" Width="20" Height="20" Style="{DynamicResource EmptyButton}" ToolTip="Delete">
+													<Image Source="/Images/1336360382_Delete.png"/>
+												</Button>
+											</Grid>
+										</DataTemplate>
+									</GridViewColumn.CellTemplate>
+								</GridViewColumn>											
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <Grid x:Name="grdCateContent"
                           Grid.Column="1"
-                          Grid.ColumnSpan="2">
+                          Grid.ColumnSpan="2" Grid.RowSpan="2">
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
@@ -925,7 +942,7 @@
                                        Text="Category :"
                                        VerticalAlignment="Center" />
                             <TextBox x:Name="tblCateName1"
-                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      HorizontalAlignment="Left"
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Center"
@@ -997,7 +1014,7 @@
                                Grid.Column="1"
                                HorizontalAlignment="Left"
                                Width="10"
-                               Margin="-1,0,0,0">
+                               Margin="-1,0,0,0" Grid.RowSpan="2">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="3.294,0.5"
                                                  StartPoint="-0.454,0.5">
@@ -1008,6 +1025,17 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
+                    <TextBox x:Name="txtSearchCategory"
+                             Margin="5,0,0,0"
+                             TextWrapping="Wrap"
+                             Height="25">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged">
+                                <localCommand:EventToCommand Command="{Binding SearchCategoryCommand}"
+                                                             CommandParameter="{Binding Text, ElementName=txtSearchCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </Grid>
                 <Grid x:Name="grdUserControl"
                       Grid.Row="1"
