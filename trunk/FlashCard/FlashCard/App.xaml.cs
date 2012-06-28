@@ -16,8 +16,8 @@ namespace FlashCard
     {
         public App()
         {
-            string filePath = "FlashCardLog" + DateTime.Now + ".txt";
-            log4net.GlobalContext.Properties["LogName"] = filePath;//String.Format("FlashCardLog{0}.txt",DateTime.Today);
+            string filePath = "FlashCardLog-" +DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            log4net.GlobalContext.Properties["LogName"] = filePath;
         }
         public static SetupModel SetupModel;
 
