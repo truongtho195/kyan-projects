@@ -111,7 +111,7 @@ namespace FlashCard.Model
                     case "LimitCardNum":
                         if (IsLimitCard)
                         { 
-                            if(LimitCardNum<0)
+                            if(LimitCardNum<=0)
                                 message = "Limit card number is not accepted!";
                         }
                         break;
