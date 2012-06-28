@@ -27,7 +27,6 @@ namespace FlashCard.ViewModels
         public event handlerControl ButtonClickHandler;
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-
         #region Properties
 
         #region Titles

@@ -12,10 +12,6 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Threading;
-using System.Threading;
-using System.Windows.Data;
-using System.Windows.Automation.Peers;
 
 
 namespace RichTextBoxControl

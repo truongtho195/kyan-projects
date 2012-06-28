@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using FlashCard.Model;
 using System.Collections.ObjectModel;
+using log4net;
 
 namespace FlashCard.DataAccess
 {
@@ -13,6 +14,10 @@ namespace FlashCard.DataAccess
         {
 
         }
+        #endregion
+
+        #region Variables
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -48,7 +53,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -59,7 +66,6 @@ namespace FlashCard.DataAccess
             }
             return categoryModel;
         }
-
 
         public IList<CategoryModel> GetAll()
         {
@@ -86,7 +92,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -97,8 +105,6 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
-
-       
 
         public IList<CategoryModel> GetAll(CategoryModel category)
         {
@@ -137,7 +143,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -190,7 +198,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
                 throw;
             }
             finally
@@ -201,7 +209,6 @@ namespace FlashCard.DataAccess
             }
             return list;
         }
-
 
         public IList<CategoryModel> GetAllWithRelation(int categoryID)
         {
@@ -247,7 +254,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
                 throw;
             }
             finally
@@ -280,7 +287,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -310,7 +317,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
+                log.Error(CatchException(ex));
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -319,6 +326,45 @@ namespace FlashCard.DataAccess
             return result;
         }
 
+        public bool DeleteWithRelation(CategoryModel categoryModel)
+        {
+            bool result = false;
+            string sql = "Delete from Categories WHERE (CategoryID = @CategoryID)";
+            SQLiteCommand sqlCommand = null;
+            SQLiteCommand sqlCommandLesson = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                //Lesson
+                string sqlLesson = "Delete from Lessons WHERE (CategoryID = @CategoryID)";
+                sqlCommandLesson = new SQLiteCommand(sqlConnect);
+                sqlCommandLesson.CommandText = sqlLesson;
+                sqlCommandLesson.Parameters.Add(new SQLiteParameter("@CategoryID", categoryModel.CategoryID));
+                sqlCommandLesson.ExecuteNonQuery();
+
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                sqlCommand.CommandText = sql;
+                MappingToEntity(categoryModel, sqlCommand);
+                sqlCommand.Parameters.Add(new SQLiteParameter("@CategoryID", categoryModel.CategoryID));
+                sqlCommand.ExecuteNonQuery();
+                categoryModel.IsNew = false;
+                categoryModel.IsDelete = false;
+                categoryModel.IsEdit = false;
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                log.Error(CatchException(ex));
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+                sqlCommandLesson.Dispose();
+                throw;
+            }
+            return result;
+        }
         
         #endregion
 

@@ -10,6 +10,9 @@ using FlashCard.Views;
 using MVVMHelper.Common;
 using System;
 using log4net;
+using System.ComponentModel;
+using System.Windows.Data;
+using System.Windows;
 
 namespace FlashCard.ViewModels
 {
@@ -34,6 +37,8 @@ namespace FlashCard.ViewModels
 
         #region Variables
         StudyConfigView _studyConfigView;
+        private ICollectionView _lessonCollectionView;
+        private ICollectionView _categoryCollectionView;
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
@@ -160,6 +165,28 @@ namespace FlashCard.ViewModels
         #endregion
 
 
+        #region CategoryList
+        private List<CategoryModel> _categoryList;
+        /// <summary>
+        /// Gets or sets the CategoryList.
+        /// </summary>
+        public List<CategoryModel> CategoryList
+        {
+            get { return _categoryList; }
+            set
+            {
+                if (_categoryList != value)
+                {
+                    _categoryList = value;
+                    RaisePropertyChanged(() => CategoryList);
+                }
+            }
+        }
+        #endregion
+
+
+
+
         public bool IsFromPopup { get; set; }
 
         #region"  IsCategoryHandle"
@@ -222,41 +249,6 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
             SelectedLesson.IsEditing = true;
-        }
-        #endregion
-
-        #region "  EditCommand"
-        private ICommand _editCommand;
-        //Relay Command In viewModel
-        //Gets or sets the property value
-        public ICommand EditCommand
-        {
-            get
-            {
-                if (_editCommand == null)
-                {
-                    _editCommand = new RelayCommand(this.EditExecute, this.CanEditExecute);
-                }
-                return _editCommand;
-            }
-        }
-
-        private bool CanEditExecute(object param)
-        {
-            if (SelectedLesson == null)
-                return false;
-            return !SelectedLesson.IsEditing;
-        }
-
-        private void EditExecute(object param)
-        {
-            //if (SelectedLesson.BackSideModel == null)
-            //{
-            //    SelectedLesson.BackSideModel = new BackSideModel();
-            //    RaisePropertyChanged(() => SelectedLesson);
-            //}
-
-            //SelectedLesson.IsEditing = true;
         }
         #endregion
 
@@ -349,35 +341,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "  DeleteCommand"
-        private ICommand _deleteCommand;
-        //Relay Command In viewModel
-        //Gets or sets the property value
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                if (_deleteCommand == null)
-                {
-                    _deleteCommand = new RelayCommand(this.DeleteExecute, this.CanDeleteExecute);
-                }
-                return _deleteCommand;
-            }
-        }
-
-        private bool CanDeleteExecute(object param)
-        {
-            if (SelectedLesson == null)
-                return false;
-            return true;
-        }
-
-        private void DeleteExecute(object param)
-        {
-
-        }
-        #endregion
-
         #region "  CloseCommand"
         /// <summary>
         /// Gets the Close Command.
@@ -407,12 +370,6 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute(object param)
         {
-
-            //ViewCore.DialogResult = true;
-            //if (this.IsFromPopup)
-            //{
-            //    MainWindow mainView = new MainWindow();
-            //}
             ViewCore.Close();
         }
         #endregion
@@ -495,23 +452,34 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnSelectionChangedExecute(object param)
         {
-            if (SelectedLesson != null && SelectedLesson.IsNew)
-            {
-                LessonCollection.Remove(SelectedLesson);
-            }
-            else if (SelectedLesson != null && SelectedLesson.IsEdit)
-            {
-                LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
 
-                var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
-                if (lessonIndex > -1)
+            try
+            {
+                if (SelectedLesson != null && SelectedLesson.IsNew)
                 {
-                    LessonCollection.RemoveAt(lessonIndex);
-                    LessonCollection.Insert(lessonIndex, lessonModel);
+                    LessonCollection.Remove(SelectedLesson);
                 }
-                RaisePropertyChanged(() => LessonCollection);
+                else if (SelectedLesson != null && SelectedLesson.IsEdit)
+                {
+                    LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                    var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
+
+                    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                    if (lessonIndex > -1)
+                    {
+                        LessonCollection.RemoveAt(lessonIndex);
+                        LessonCollection.Insert(lessonIndex, lessonModel);
+                    }
+                    RaisePropertyChanged(() => LessonCollection);
+                }
             }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                throw;
+            }
+
+
 
             SelectedLesson = param as LessonModel;
             if (SelectedLesson.BackSideModel == null)
@@ -521,6 +489,117 @@ namespace FlashCard.ViewModels
             }
         }
 
+        #endregion
+
+        #region SearchLesson
+
+        /// <summary>
+        /// Gets the SearchLesson Command.
+        /// <summary>
+        private ICommand _searchLessonCommand;
+        public ICommand SearchLessonCommand
+        {
+            get
+            {
+                if (_searchLessonCommand == null)
+                    _searchLessonCommand = new RelayCommand(this.OnSearchLessonExecute, this.OnSearchLessonCanExecute);
+                return _searchLessonCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the SearchLesson command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSearchLessonCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the SearchLesson command is executed.
+        /// </summary>
+        private void OnSearchLessonExecute(object param)
+        {
+            _lessonCollectionView = CollectionViewSource.GetDefaultView(this.LessonCollection);
+            string keywordLesson = string.Empty;
+
+            try
+            {
+                this._lessonCollectionView.Filter = (item) =>
+                {
+                    var lessonModel = item as LessonModel;
+                    if (lessonModel == null)
+                        return false;
+
+                    if (param == null)
+                        return false;
+                    else
+                        keywordLesson = param.ToString();
+
+                    if (string.IsNullOrWhiteSpace(keywordLesson))
+                        return true;
+                    else
+                    {
+                        if (lessonModel.LessonName.ToLower().Contains(keywordLesson.TrimStart().ToLower()) || lessonModel.CategoryModel.CategoryName.ToLower().Contains(keywordLesson.TrimStart().ToLower()))
+                            return true;
+                    }
+                    return false;
+                };
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
+        }
+        #endregion
+
+        #region DeleteLessonCommand
+
+        /// <summary>
+        /// Gets the DeleteLesson Command.
+        /// <summary>
+        private ICommand _deleteLessonCommand;
+        public ICommand DeleteLessonCommand
+        {
+            get
+            {
+                if (_deleteLessonCommand == null)
+                    _deleteLessonCommand = new RelayCommand(this.OnDeleteLessonExecute, this.OnDeleteLessonCanExecute);
+                return _deleteLessonCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the DeleteLesson command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeleteLessonCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeleteLesson command is executed.
+        /// </summary>
+        private void OnDeleteLessonExecute(object param)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to remove this Lesson", "Remove Lesson", MessageBoxButton.YesNo);
+            if (result.Equals(MessageBoxResult.Yes))
+            {
+                LessonModel lessonModel;
+               if (param != null)
+               {
+                   lessonModel = param as LessonModel;
+                   LessonDataAccess lessonDA = new LessonDataAccess();
+                   lessonDA.Delete(lessonModel);
+                   LessonCollection.Remove(lessonModel);
+               }
+            }
+        }
         #endregion
 
         //Category Command
@@ -561,33 +640,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region"  EditCategoryCommand"
-        private ICommand _editCategoryCommand;
-        //Relay Command In viewModel
-        //Gets or sets the property value
-        public ICommand EditCategoryCommand
-        {
-            get
-            {
-                if (_editCategoryCommand == null)
-                {
-                    _editCategoryCommand = new RelayCommand(this.EditCategoryExecute, this.CanEditCategoryExecute);
-                }
-                return _editCategoryCommand;
-            }
-        }
-
-        private bool CanEditCategoryExecute(object param)
-        {
-            return true;
-        }
-
-        private void EditCategoryExecute(object param)
-        {
-            //Logic Code here
-        }
-        #endregion
-
         #region"  SaveCategoryCommand"
         private ICommand _saveCategoryCommand;
         //Relay Command In viewModel
@@ -614,17 +666,28 @@ namespace FlashCard.ViewModels
 
         private void SaveCategoryExecute(object param)
         {
-            CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-            if (SelectedCategory.IsNew)
+            try
             {
-                categoryDataAccess.Insert(SelectedCategory);
-                CategoryCollection.Add(SelectedCategory);
-                RaisePropertyChanged(() => CategoryCollection);
+                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                if (SelectedCategory.IsNew)
+                {
+                    categoryDataAccess.Insert(SelectedCategory);
+                    CategoryCollection.Add(SelectedCategory);
+                    CategoryList.Add(SelectedCategory);
+                    
+                }
+                else
+                {
+                    categoryDataAccess.Update(SelectedCategory);
+                }
+                RaisePropertyChanged(() => CategoryList);
             }
-            else
+            catch (Exception ex)
             {
-                categoryDataAccess.Update(SelectedCategory);
+                log.Error(ex);
+                throw;
             }
+
         }
         #endregion
 
@@ -659,20 +722,158 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnSelectionCategoryChangedExecute(object param)
         {
-            if (SelectedCategory != null && SelectedCategory.IsNew)
+            try
             {
-                CategoryCollection.Remove(SelectedCategory);
+                if (SelectedCategory != null && SelectedCategory.IsNew)
+                {
+                    CategoryCollection.Remove(SelectedCategory);
+                    CategoryList.Remove(SelectedCategory);
+                    RaisePropertyChanged(() => CategoryList);
+                }
+                else if (SelectedCategory != null && SelectedCategory.IsEdit)
+                {
+                    CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                    var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
+                    //reset data
+                    SelectedCategory = cateModel;
+                }
+                SelectedCategory = param as CategoryModel;
             }
-            else if (SelectedCategory != null && SelectedCategory.IsEdit)
+            catch (Exception ex)
             {
-                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
-                //reset data
-                SelectedCategory = cateModel;
+                log.Error(ex);
+                throw;
             }
-            SelectedCategory = param as CategoryModel;
+
         }
 
+        #endregion
+
+        #region SearchCategory
+
+        /// <summary>
+        /// Gets the SearchCategory Command.
+        /// <summary>
+        private ICommand _searchCategoryCommand;
+        public ICommand SearchCategoryCommand
+        {
+            get
+            {
+                if (_searchCategoryCommand == null)
+                    _searchCategoryCommand = new RelayCommand(this.OnSearchCategoryExecute, this.OnSearchCategoryCanExecute);
+                return _searchCategoryCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the SearchCategory command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSearchCategoryCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the SearchCategory command is executed.
+        /// </summary>
+        private void OnSearchCategoryExecute(object param)
+        {
+            _categoryCollectionView = CollectionViewSource.GetDefaultView(this.CategoryCollection);
+            string keywordCategory = string.Empty;
+
+            try
+            {
+                this._categoryCollectionView.Filter = (item) =>
+                {
+                    var categoryModel = item as CategoryModel;
+                    if (categoryModel == null)
+                        return false;
+
+                    if (param == null)
+                        return false;
+                    else
+                        keywordCategory = param.ToString();
+
+                    if (string.IsNullOrWhiteSpace(keywordCategory))
+                        return true;
+                    else
+                    {
+                        if (categoryModel.CategoryName.ToLower().Contains(keywordCategory.TrimStart().ToLower()))
+                            return true;
+                    }
+                    return false;
+                };
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+        }
+        #endregion
+
+        #region " DeleteCategoryCommand"
+
+        /// <summary>
+        /// Gets the DeleteCategory Command.
+        /// <summary>
+        private ICommand _deleteCategoryCommand;
+        public ICommand DeleteCategoryCommand
+        {
+            get
+            {
+                if (_deleteCategoryCommand == null)
+                    _deleteCategoryCommand = new RelayCommand(this.OnDeleteCategoryExecute, this.OnDeleteCategoryCanExecute);
+                return _deleteCategoryCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the DeleteCategory command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeleteCategoryCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeleteCategory command is executed.
+        /// </summary>
+        private void OnDeleteCategoryExecute(object param)
+        {
+             MessageBoxResult result= MessageBox.Show("Do you want to remove this Category & Lesson relation","Remove Category",MessageBoxButton.YesNo);
+             if (result.Equals(MessageBoxResult.Yes))
+             {
+                 CategoryModel cateModel;
+                 if (param != null)
+                 {
+                     cateModel = param as CategoryModel;
+                     CategoryDataAccess cateDataAccess = new CategoryDataAccess();
+                     var resultDel = cateDataAccess.DeleteWithRelation(cateModel);
+                     if (resultDel)
+                     {
+                         foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cateModel.CategoryID)).ToList())
+                         {
+                             if (item != null)
+                             {
+                                 LessonCollection.Remove(item);
+                                 if (item == SelectedLesson)
+                                     SelectedLesson = LessonCollection.First();
+                             }
+
+                         }
+                         CategoryCollection.Remove(cateModel);
+                         if (cateModel == SelectedCategory)
+                             SelectedCategory = CategoryCollection.First();
+
+                         CategoryList.Remove(cateModel);
+                     }
+                 }
+             }
+        }
         #endregion
 
         //Study Command
@@ -699,76 +900,92 @@ namespace FlashCard.ViewModels
 
         private void ShowStudyExecute(object param)
         {
-            if (IsCategoryHandle)
+            try
             {
-                if (SelectedCategory != null && SelectedCategory.IsNew)
+                if (IsCategoryHandle)
                 {
-                    CategoryCollection.Remove(SelectedCategory);
-                }
-                else if (SelectedCategory != null && SelectedCategory.IsEdit)
-                {
-                    CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                    var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
-                    //reset data
-                    SelectedCategory = cateModel;
-                }
-            }
-            else
-            {
-                if (SelectedLesson != null && SelectedLesson.IsNew)
-                {
-                    LessonCollection.Remove(SelectedLesson);
-                }
-                else if (SelectedLesson != null && SelectedLesson.IsEdit)
-                {
-                    LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                    var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
-
-                    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
-                    if (lessonIndex > -1)
+                    if (SelectedCategory != null && SelectedCategory.IsNew)
                     {
-                        LessonCollection.RemoveAt(lessonIndex);
-                        LessonCollection.Insert(lessonIndex, lessonModel);
+                        CategoryCollection.Remove(SelectedCategory);
                     }
-                    RaisePropertyChanged(() => LessonCollection);
+                    else if (SelectedCategory != null && SelectedCategory.IsEdit)
+                    {
+                        CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                        var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
+                        //reset data
+                        SelectedCategory = cateModel;
+                    }
+                }
+                else
+                {
+                    if (SelectedLesson != null && SelectedLesson.IsNew)
+                    {
+                        LessonCollection.Remove(SelectedLesson);
+                    }
+                    else if (SelectedLesson != null && SelectedLesson.IsEdit)
+                    {
+                        LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                        var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
+
+                        var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                        if (lessonIndex > -1)
+                        {
+                            LessonCollection.RemoveAt(lessonIndex);
+                            LessonCollection.Insert(lessonIndex, lessonModel);
+                        }
+                        RaisePropertyChanged(() => LessonCollection);
+                    }
+                }
+
+
+                if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
+                {
+                    _studyConfigView = new StudyConfigView();
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+                    _studyConfigView.GetViewModel<StudyConfigViewModel>().ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+                    ViewCore.grdControl.Children.Add(_studyConfigView);
+                }
+                else
+                {
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                    ViewCore.grdControl.Children.Clear();
                 }
             }
-
-
-            if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
+            catch (Exception ex)
             {
-                _studyConfigView = new StudyConfigView();
-                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
-                _studyConfigView.GetViewModel<StudyConfigViewModel>().ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
-                ViewCore.grdControl.Children.Add(_studyConfigView);
+                log.Error(ex);
+                throw;
             }
-            else
-            {
-                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
-                ViewCore.grdControl.Children.Clear();
-            }
-
         }
 
         private MainWindow staticMain;
         private void LessonViewModel_DoNow(string message)
         {
-            if ("OkExecute".Equals(message))
+            try
             {
-                if (staticMain != null)
-                    staticMain = null;
-                staticMain = new MainWindow();
-                var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
-                var mainViewModel = staticMain.GetViewModel<MainViewModel>();
-                mainViewModel.GetLesson(lessonCollection.ToList());
-                mainViewModel.ExcuteMainForm();
-                this.ViewCore.Close();
+                if ("OkExecute".Equals(message))
+                {
+                    if (staticMain != null)
+                        staticMain = null;
+                    staticMain = new MainWindow();
+                    var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
+                    var mainViewModel = staticMain.GetViewModel<MainViewModel>();
+                    mainViewModel.GetLesson(lessonCollection.ToList());
+                    mainViewModel.ExcuteMainForm();
+                    this.ViewCore.Close();
+                }
+                else
+                {
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                    ViewCore.grdControl.Children.Clear();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
-                ViewCore.grdControl.Children.Clear();
+                log.Error(ex);
+                throw;
             }
+
         }
         #endregion
 
@@ -804,20 +1021,29 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnShortcutKeyNewItemExecute(object param)
         {
-            if (IsCategoryHandle)
+            try
             {
-                if (OnNewCategoryCanExecute(null))
+                if (IsCategoryHandle)
                 {
-                    OnNewCategoryExecute(null);
+                    if (OnNewCategoryCanExecute(null))
+                    {
+                        OnNewCategoryExecute(null);
+                    }
+                }
+                else
+                {
+                    if (CanNewExecute(null))
+                    {
+                        NewExecute(null);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (CanNewExecute(null))
-                {
-                    NewExecute(null);
-                }
+                log.Error(ex);
+                throw;
             }
+
         }
         #endregion
 
@@ -854,52 +1080,73 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnShortCutKeySaveItemExecute(object param)
         {
-            if (IsCategoryHandle)
+            try
             {
-                if (CanSaveCategoryExecute(param))
+                if (IsCategoryHandle)
                 {
-                    SaveCategoryExecute(param);
+                    if (CanSaveCategoryExecute(param))
+                    {
+                        SaveCategoryExecute(param);
+                    }
+                }
+                else
+                {
+                    if (CanSaveExecute(param))
+                    {
+                        SaveExecute(param);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (CanSaveExecute(param))
-                {
-                    SaveExecute(param);
-                }
+                log.Error(ex);
+                throw;
             }
+
         }
         #endregion
+
 
         #endregion
 
         #region Methods
         private void Initialize()
         {
-            TypeDataAccess typeDataAccess = new TypeDataAccess();
-            LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
-
-            CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-            CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
-
-            LessonDataAccess lessonDataAccess = new LessonDataAccess();
-            LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
-
-            if (LessonCollection.Any())
-                SelectedLesson = LessonCollection.FirstOrDefault();
-            else
+            try
             {
-                LessonCollection = new ObservableCollection<LessonModel>();
-                NewExecute(null);
+                TypeDataAccess typeDataAccess = new TypeDataAccess();
+                LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
+
+                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
+
+                CategoryList = CategoryCollection.ToList();
+
+                LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
+
+                if (LessonCollection.Any())
+                    SelectedLesson = LessonCollection.FirstOrDefault();
+                else
+                {
+                    LessonCollection = new ObservableCollection<LessonModel>();
+                    NewExecute(null);
+                }
+
+                if (CategoryCollection.Any())
+                    SelectedCategory = CategoryCollection.FirstOrDefault();
+                else
+                {
+                    CategoryCollection = new ObservableCollection<CategoryModel>();
+                    OnNewCategoryExecute(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                throw;
             }
 
-            if (CategoryCollection.Any())
-                SelectedCategory = CategoryCollection.FirstOrDefault();
-            else
-            {
-                CategoryCollection = new ObservableCollection<CategoryModel>();
-                OnNewCategoryExecute(null);
-            }
         }
         #endregion
     }

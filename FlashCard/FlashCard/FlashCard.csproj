@@ -64,17 +64,11 @@
     </Reference>
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -95,6 +89,7 @@
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
     <Compile Include="Helper\ShuffleList.cs" />
+    <Compile Include="Helper\VolumeControl.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
@@ -263,6 +258,15 @@
   <ItemGroup>
     <Resource Include="Images\Back.png" />
     <Resource Include="Images\Next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\abstract_lightbox.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\abstract_0049.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FCBg.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

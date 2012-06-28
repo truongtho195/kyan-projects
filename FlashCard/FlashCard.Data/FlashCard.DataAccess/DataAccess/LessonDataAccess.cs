@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.SQLite;
 using FlashCard.Model;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows.Markup;
 using System.Windows.Documents;
-using System.Xml;
 using MVVMHelper.Common;
+using log4net;
 
 
 namespace FlashCard.DataAccess
@@ -21,6 +18,10 @@ namespace FlashCard.DataAccess
         {
 
         }
+        #endregion
+
+        #region Variable
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -54,8 +55,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -107,8 +108,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -144,8 +145,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -214,8 +215,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -270,8 +271,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -322,8 +323,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
@@ -365,8 +366,8 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
             
                 throw;
@@ -418,10 +419,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                CatchException(ex);
-                if (this.DebugShowErrorMsg)
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
-            
                 throw;
             }
             finally
@@ -432,6 +432,48 @@ namespace FlashCard.DataAccess
 
             return result;
         }
+
+
+        public bool Delete(LessonModel lessonModel)
+        {
+            bool result = false;
+            string sql = "Delete From Lessons where (LessonID = @LessonID)";
+            SQLiteCommand sqlCommand = null;
+            SQLiteConnection sqlConnect = null;
+            try
+            {
+                sqlConnect = new SQLiteConnection(ConnectionString);
+                sqlConnect.Open();
+                
+                sqlCommand = new SQLiteCommand(sqlConnect);
+                SQLiteParameter param = new SQLiteParameter("@lessonID", lessonModel.LessonID);
+                sqlCommand.CommandText = sql;
+                sqlCommand.Parameters.Add(param);
+                sqlCommand.ExecuteNonQuery();
+
+                lessonModel.IsNew = false;
+                lessonModel.IsDelete = false;
+                lessonModel.IsEdit = false;
+            }
+            catch (Exception ex)
+            {
+                log.Error(CatchException(ex));
+                if (log.IsDebugEnabled)
+                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                throw;
+            }
+            finally
+            {
+                sqlConnect.Dispose();
+                sqlCommand.Dispose();
+            }
+
+            return result;
+        }
+
+
+
+
 
         /// <summary>
         /// Insert if have a new category
