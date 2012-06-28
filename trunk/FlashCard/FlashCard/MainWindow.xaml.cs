@@ -15,7 +15,6 @@ using System.Windows.Controls.Primitives;
 using System.Threading;
 using System.Windows.Threading;
 using System.Diagnostics;
-using System.Data;
 using System.Waf.Applications;
 using FlashCard.ViewModels;
 
