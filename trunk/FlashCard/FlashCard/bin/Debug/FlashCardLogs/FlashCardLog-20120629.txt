@@ -148,3 +148,322 @@ INFO  2012-06-29 08:29:18,515 194636ms MainViewModel          nMouseLeaveExecute
 DEBUG 2012-06-29 08:29:26,389 202510ms MainViewModel          SetLesson          - || == Current Item : 8/160
 INFO  2012-06-29 08:29:27,849 203970ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
 INFO  2012-06-29 08:29:29,886 206007ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 09:34:56,268  6468ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 09:35:02,627 12828ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 09:35:04,565 14766ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 09:35:19,581 29782ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 09:35:19,581 29782ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 09:35:19,581 29782ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 09:35:19,581 29782ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 09:35:19,596 29797ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 09:35:20,174 30375ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 09:35:20,174 30375ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 09:35:20,971 31172ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 09:35:21,612 31813ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 09:35:21,612 31813ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 09:35:21,612 31813ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 09:35:21,628 31828ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 09:35:22,049 32250ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-06-29 09:35:23,112 33313ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 09:40:50,539  6750ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 09:40:57,929 14140ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 09:40:59,820 16031ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 09:41:14,820 31031ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 09:41:14,820 31031ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 09:41:14,820 31031ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 09:41:14,820 31031ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 09:41:14,820 31031ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 09:41:15,086 31297ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 09:41:15,086 31297ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 09:41:17,273 33484ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 09:41:18,523 34734ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 09:41:18,523 34734ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 09:41:18,523 34734ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 09:41:18,586 34797ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 09:41:18,851 35062ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-06-29 09:41:19,945 36156ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+DEBUG 2012-06-29 09:41:26,679 42890ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 09:41:28,086 44297ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 09:41:32,930 49140ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+DEBUG 2012-06-29 09:41:36,258 52469ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 09:41:37,523 53734ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 11:22:27,777 11876ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:22:35,388 19486ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:22:36,091 20189ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:22:51,092 35191ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:22:51,108 35206ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:22:51,108 35206ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:22:51,108 35206ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:22:51,108 35206ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:22:51,342 35441ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:22:51,342 35441ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:22:59,343 43442ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-06-29 11:22:59,343 43442ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-06-29 11:22:59,343 43442ms MainViewModel          <WaitBalloon>b__1  - || == View Timer :8
+DEBUG 2012-06-29 11:22:59,343 43442ms MainViewModel          <WaitBalloon>b__1  - || ==> Popup Closed.......
+DEBUG 2012-06-29 11:22:59,359 43457ms MainViewModel          <WaitBalloon>b__1  - || ================================= 
+
+DEBUG 2012-06-29 11:23:06,344 50442ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:23:06,344 50442ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:23:06,344 50442ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:23:06,344 50442ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:23:06,360 50458ms MainViewModel          SetLesson          - || == Current Item : 2/160
+DEBUG 2012-06-29 11:23:06,453 50552ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:23:06,453 50552ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:23:10,173 54271ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:23:10,704 54802ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 11:23:10,704 54802ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 11:23:10,704 54802ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 11:23:10,766 54865ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:23:11,001 55099ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+DEBUG 2012-06-29 11:23:18,924 63022ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:23:23,596 67694ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:24,752 68851ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:26,971 71070ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:27,315 71414ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:27,815 71914ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,003 72101ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,190 72289ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,362 72461ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,550 72648ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,722 72820ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:28,909 73007ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:29,065 73164ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:29,237 73336ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:33,831 77930ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-06-29 11:23:33,847 77945ms MainViewModel          ListenExecute      - || == Listen with google translate : Me? Not likely! 
+INFO  2012-06-29 11:23:36,613 80711ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-06-29 11:23:36,613 80711ms MainViewModel          ListenExecute      - || == Listen with google translate : Me? Not likely! 
+INFO  2012-06-29 11:23:37,660 81758ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-06-29 11:23:37,660 81758ms MainViewModel          ListenExecute      - || == Listen with google translate : Me? Not likely! 
+INFO  2012-06-29 11:23:45,098 89197ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:51,880 95979ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:52,568 96666ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:52,990 97088ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:23:53,677 97776ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:23:56,662 100760ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:23:59,147 103245ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:00,381 104480ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:00,975 105073ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:01,506 105605ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+DEBUG 2012-06-29 11:24:09,538 113637ms MainViewModel          SetLesson          - || == Current Item : 4/160
+INFO  2012-06-29 11:24:13,633 117731ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:15,883 119981ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+DEBUG 2012-06-29 11:24:28,916 133014ms MainViewModel          SetLesson          - || == Current Item : 5/160
+DEBUG 2012-06-29 11:24:36,948 141046ms MainViewModel          SetLesson          - || == Current Item : 6/160
+DEBUG 2012-06-29 11:24:44,980 149078ms MainViewModel          SetLesson          - || == Current Item : 7/160
+INFO  2012-06-29 11:24:51,746 155844ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:53,199 157298ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:54,356 158454ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:55,106 159204ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:55,778 159876ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:56,418 160517ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:57,075 161173ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:57,637 161736ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:24:59,090 163189ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 11:25:01,575 165673ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 11:30:43,073  4218ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:30:50,386 11531ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:30:52,214 13359ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:31:07,214 28360ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:31:07,214 28360ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:31:07,214 28360ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:31:07,214 28360ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:31:07,214 28360ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:31:07,480 28625ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:31:07,480 28625ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:31:08,683 29829ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:31:08,761 29907ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-06-29 11:31:12,949 34094ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:31:13,043 34188ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-06-29 11:31:13,433 34579ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:31:13,964 35110ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 11:31:13,964 35110ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 11:31:13,964 35110ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 11:31:13,980 35126ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:31:14,386 35532ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+DEBUG 2012-06-29 11:31:22,105 43251ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 11:31:25,277 46423ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:31:44,419 65564ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:31:44,450 65595ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+INFO  2012-06-29 11:31:44,465 65611ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:31:44,465 65611ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Stoped!
+INFO  2012-06-29 11:31:45,575 66720ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:31:45,575 66720ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+DEBUG 2012-06-29 11:31:53,591 74736ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:31:55,497 76643ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 11:31:59,060 80205ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 11:41:26,975 64047ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:41:34,100 71172ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:41:36,022 73094ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:41:51,023 88094ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:41:51,023 88094ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:41:51,023 88094ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:41:51,023 88094ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:41:51,023 88094ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:41:51,257 88329ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:41:51,257 88329ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:41:59,257 96329ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-06-29 11:41:59,257 96329ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-06-29 11:41:59,257 96329ms MainViewModel          <WaitBalloon>b__1  - || == View Timer :8
+DEBUG 2012-06-29 11:41:59,257 96329ms MainViewModel          <WaitBalloon>b__1  - || ==> Popup Closed.......
+DEBUG 2012-06-29 11:41:59,257 96329ms MainViewModel          <WaitBalloon>b__1  - || ================================= 
+
+DEBUG 2012-06-29 11:42:06,257 103329ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:42:06,257 103329ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:42:06,257 103329ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:42:06,257 103329ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:42:06,273 103345ms MainViewModel          SetLesson          - || == Current Item : 2/160
+DEBUG 2012-06-29 11:42:06,367 103439ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:42:06,367 103439ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:42:08,757 105829ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:42:10,398 107470ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 11:42:10,398 107470ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 11:42:10,398 107470ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 11:42:10,429 107501ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:42:10,804 107876ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-06-29 11:42:13,820 110892ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:42:32,008 129080ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:42:32,039 129111ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+INFO  2012-06-29 11:42:32,039 129111ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:42:32,039 129111ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+INFO  2012-06-29 11:42:36,039 133111ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:42:36,039 133111ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+INFO  2012-06-29 11:42:58,774 155846ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 11:43:01,540 158612ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 11:44:30,449  7672ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:44:38,543 15766ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:44:40,386 17609ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:44:55,387 32610ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:44:55,387 32610ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:44:55,387 32610ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:44:55,387 32610ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:44:55,387 32610ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:44:55,605 32828ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:44:55,605 32828ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:45:03,606 40829ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-06-29 11:45:03,606 40829ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-06-29 11:45:03,606 40829ms MainViewModel          <WaitBalloon>b__1  - || == View Timer :7
+DEBUG 2012-06-29 11:45:03,606 40829ms MainViewModel          <WaitBalloon>b__1  - || ==> Popup Closed.......
+DEBUG 2012-06-29 11:45:03,606 40829ms MainViewModel          <WaitBalloon>b__1  - || ================================= 
+
+DEBUG 2012-06-29 11:45:10,606 47829ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:45:10,606 47829ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:45:10,606 47829ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:45:10,606 47829ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:45:10,621 47844ms MainViewModel          SetLesson          - || == Current Item : 2/160
+DEBUG 2012-06-29 11:45:10,700 47923ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:45:10,700 47923ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:45:12,371 49595ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:45:13,184 50407ms MainViewModel          nFullScreenExecute - || {*} === Full Screen Call ===
+INFO  2012-06-29 11:45:13,184 50407ms MainViewModel          HiddenPopupExecute - ||{*} === Hidden Popup Command Executed === 
+DEBUG 2012-06-29 11:45:13,184 50407ms MainViewModel          HiddenPopupExecute - || == Popup Icon Status Is Close : False
+DEBUG 2012-06-29 11:45:13,231 50454ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:45:13,622 50845ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+DEBUG 2012-06-29 11:45:21,403 58626ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:45:23,262 60485ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+INFO  2012-06-29 11:45:27,622 64845ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:45:27,622 64845ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+DEBUG 2012-06-29 11:45:27,638 64861ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+DEBUG 2012-06-29 11:45:27,638 64861ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+INFO  2012-06-29 11:45:27,653 64876ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:45:27,653 64876ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+DEBUG 2012-06-29 11:45:27,653 64876ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+DEBUG 2012-06-29 11:45:27,653 64876ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+INFO  2012-06-29 11:45:33,028 70251ms MainViewModel          iFullScreenExecute - || {*} === Mini Full Screen Execute Call ===
+DEBUG 2012-06-29 11:45:33,028 70251ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+DEBUG 2012-06-29 11:45:33,028 70251ms MainViewModel          iFullScreenExecute - || ==> FullScreen is Started!
+DEBUG 2012-06-29 11:45:33,028 70251ms MainViewModel          iFullScreenExecute - || == Is Full Screen Started : False
+INFO  2012-06-29 11:45:37,185 74408ms MainViewModel          OnPlayPauseExecute - ||{*} === Play Pause Command Executed === 
+DEBUG 2012-06-29 11:45:45,232 82455ms MainViewModel          SetLesson          - || == Current Item : 4/160
+DEBUG 2012-06-29 11:45:53,279 90502ms MainViewModel          SetLesson          - || == Current Item : 5/160
+DEBUG 2012-06-29 11:46:01,326 98549ms MainViewModel          SetLesson          - || == Current Item : 6/160
+INFO  2012-06-29 11:46:08,982 106205ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+DEBUG 2012-06-29 11:46:09,373 106596ms MainViewModel          SetLesson          - || == Current Item : 7/160
+INFO  2012-06-29 11:46:11,154 108377ms StudyConfigViewModel   OnCancelExecute    - || {*} === Cancel Command Executed ===
+INFO  2012-06-29 11:55:27,129  6875ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:55:33,707 13453ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:55:35,832 15578ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:55:50,832 30578ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:55:50,832 30578ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:55:50,832 30578ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:55:50,832 30578ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:55:50,832 30578ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:55:51,113 30859ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:55:51,113 30859ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:55:58,363 38109ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:55:59,770 39515ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 11:55:59,988 39734ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+DEBUG 2012-06-29 11:56:00,754 40500ms MainViewModel          oseTimerPopup>b__2 - || == Popup is current Stoped
+DEBUG 2012-06-29 11:56:00,754 40500ms MainViewModel          oseTimerPopup>b__2 - || ==> CloseTimerPopup
+DEBUG 2012-06-29 11:56:00,754 40500ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:56:03,582 43328ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:56:05,504 45250ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+INFO  2012-06-29 11:56:09,035 48781ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:10,848 50594ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:12,395 52140ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:13,801 53547ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:15,191 54937ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:16,551 56297ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:17,832 57578ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:19,551 59297ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:19,582 59328ms MainViewModel          SetLesson          - || == Current Item : 1/160
+INFO  2012-06-29 11:56:20,973 60719ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:23,348 63094ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-06-29 11:56:25,442 65187ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:25,457 65203ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 11:56:27,207 66953ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:27,238 66984ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:56:29,051 68797ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:29,067 68812ms MainViewModel          SetLesson          - || == Current Item : 4/160
+INFO  2012-06-29 11:56:30,738 70484ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:30,770 70516ms MainViewModel          SetLesson          - || == Current Item : 5/160
+INFO  2012-06-29 11:56:32,020 71766ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:32,035 71781ms MainViewModel          SetLesson          - || == Current Item : 6/160
+INFO  2012-06-29 11:56:33,192 72937ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:33,223 72969ms MainViewModel          SetLesson          - || == Current Item : 7/160
+INFO  2012-06-29 11:56:34,051 73797ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:56:34,067 73812ms MainViewModel          SetLesson          - || == Current Item : 8/160
+INFO  2012-06-29 11:57:33,254  4734ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-06-29 11:57:43,301 14781ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:57:45,145 16625ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-06-29 11:58:00,145 31625ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-06-29 11:58:00,145 31625ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-06-29 11:58:00,145 31625ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-06-29 11:58:00,145 31625ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-06-29 11:58:00,145 31625ms MainViewModel          SetLesson          - || == Current Item : 1/160
+DEBUG 2012-06-29 11:58:00,410 31890ms MainViewModel          _timer_Tick        - || =================================
+
+DEBUG 2012-06-29 11:58:00,410 31890ms MainViewModel          _timer_Tick        - || ==> Is Popup Showing
+INFO  2012-06-29 11:58:03,004 34484ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-06-29 11:58:04,067 35546ms MainViewModel          CancelExecute      - ||{*} === Cancel Command Executed === 
+INFO  2012-06-29 11:58:04,379 35859ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+DEBUG 2012-06-29 11:58:05,332 36812ms MainViewModel          oseTimerPopup>b__2 - || == Popup is current Stoped
+DEBUG 2012-06-29 11:58:05,348 36828ms MainViewModel          oseTimerPopup>b__2 - || ==> CloseTimerPopup
+DEBUG 2012-06-29 11:58:05,348 36828ms MainViewModel          oseTimerPopup>b__2 - || == Timer tick (_timerPopup) Status : False
+INFO  2012-06-29 11:58:08,910 40390ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-06-29 11:58:11,082 42562ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+INFO  2012-06-29 11:58:17,598 49078ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:17,613 49093ms MainViewModel          SetLesson          - || == Current Item : 1/160
+INFO  2012-06-29 11:58:19,473 50953ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:19,488 50968ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 11:58:20,754 52234ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:20,770 52250ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:58:21,301 52781ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:21,317 52796ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 11:58:21,629 53109ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:21,660 53140ms MainViewModel          SetLesson          - || == Current Item : 3/160
+INFO  2012-06-29 11:58:21,879 53359ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:21,910 53390ms MainViewModel          SetLesson          - || == Current Item : 2/160
+INFO  2012-06-29 11:58:22,113 53593ms MainViewModel          tBackLessonExecute - ||{*} === Next Back Command Executed === 
+DEBUG 2012-06-29 11:58:22,129 53609ms MainViewModel          SetLesson          - || == Current Item : 3/160
