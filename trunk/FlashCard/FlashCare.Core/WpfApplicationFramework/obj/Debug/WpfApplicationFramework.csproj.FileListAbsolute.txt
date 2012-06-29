@@ -24,9 +24,9 @@ E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFr
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.xml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.xml

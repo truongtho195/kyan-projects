@@ -143,7 +143,7 @@
                             Padding="1,1,1,3"
                             RenderTransformOrigin="0.5,0.5"
                             Margin="0,0,10,0">
-                        <Image Source="/Images/Minimize.png"
+                        <Image Source="/Images/NoFullScreen.png"
                                Stretch="Uniform"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
@@ -379,28 +379,55 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
                     </Button>
-                    <Button Content="Pause"
+                    <Button 
                             Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
-                            Height="20"
-                            Width="50"
                             Command="{Binding PlayPauseCommand}"
-                            CommandParameter="FullScreen" />
+                            CommandParameter="FullScreen" Style="{DynamicResource EmptyButton}">
+                        <Image Stretch="Fill">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source"
+                                            Value="/Images/button_blue_play.png" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFullScreenStarted,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                     Value="True">
+                                            <Setter Property="Source"
+                                                    Value="/Images/button_blue_pause.png" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+
+                        </Image>
+                    </Button>
                     <Button x:Name="btnChangeFace"
                             Command="{Binding ChangeSideCommand}"
                             CommandParameter="FullScreen"
-                            Content="Detail"
-                            Height="20"
-                            Width="70"
-                            Margin="10,0,0,0">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1"
-                                                 StartPoint="0.5,0">
-                                <GradientStop Color="White"
-                                              Offset="0" />
-                                <GradientStop Color="White"
-                                              Offset="0.9" />
-                            </LinearGradientBrush>
-                        </Button.Background>
+                            Width="35"
+                            Margin="10,0,0,0"
+                            Style="{DynamicResource EmptyButton}"
+                            BorderBrush="{x:Null}"
+                            Background="{x:Null}">
+
+                        <Image Stretch="Fill">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source"
+                                            Value="/Images/Arrow_Right.png" />
+                                    <Setter Property="ToolTip"
+                                            Value="Change to Back Side" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedLesson.IsBackSide}"
+                                                     Value="True">
+                                            <Setter Property="Source"
+                                                    Value="/Images/Arrow_Left.png" />
+                                            <Setter Property="ToolTip"
+                                                    Value="Change to Front Side" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                     </Button>
                 </StackPanel>
                 <StackPanel x:Name="stNextBack"
