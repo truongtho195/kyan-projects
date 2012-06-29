@@ -307,7 +307,7 @@
                         				VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         			<ToggleButton Grid.ColumnSpan="3"
                         				IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                        				Style="{StaticResource ComboBoxTransparentButtonStyle}" />
+                        				Style="{DynamicResource ComboBoxTransparentButtonStyle}" />
                         			<Rectangle Fill="{Binding SelectionBoxItem.Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
                         				Grid.Column="1" StrokeThickness="0.25" VerticalAlignment="Bottom" MinWidth="20" Margin="1,0,1,1" Stroke="#FF919191" Width="20" Height="4" />
                         			<TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="A" d:LayoutOverrides="Height" VerticalAlignment="Top" FontWeight="Bold" FontSize="14.667"/>

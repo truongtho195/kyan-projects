@@ -102,7 +102,7 @@
     	</Style>
     	<SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
          
-    	<Style x:Key="ComboBoxTransparentButtonStyle" TargetType="{x:Type ToggleButton}">
+    	<!--<Style x:Key="ComboBoxTransparentButtonStyle" TargetType="{x:Type ToggleButton}">
     		<Setter Property="MinWidth" Value="0"/>
     		<Setter Property="MinHeight" Value="0"/>
     		<Setter Property="Width" Value="Auto"/>
@@ -188,7 +188,7 @@
     				<Setter Property="Canvas.Left" TargetName="OpaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
     			</Trigger>
     		</ControlTemplate.Triggers>
-    	</ControlTemplate>
+    	</ControlTemplate>-->
          
     </Application.Resources>
 </Application>
