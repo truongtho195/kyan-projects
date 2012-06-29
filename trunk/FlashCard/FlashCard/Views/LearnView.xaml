@@ -157,7 +157,7 @@
                             ToolTip="Minimize"
                             Width="25"
                             Height="25"
-                            Style="{StaticResource EmptyButton}"
+                            Style="{DynamicResource EmptyButton}"
                             BorderBrush="#FFEBD5D5"
                             Background="{x:Null}"
                             VerticalContentAlignment="Bottom"

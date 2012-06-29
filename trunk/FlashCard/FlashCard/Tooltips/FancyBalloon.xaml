@@ -189,9 +189,9 @@
                 </TransformGroup>
             </Grid.RenderTransform>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="35" />
                 <RowDefinition />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <Grid x:Name="grWrapper" HorizontalAlignment="Stretch" Grid.RowSpan="3">
         		<Border BorderBrush="White" BorderThickness="0.5" Background="#FF346CA1"/>
@@ -255,7 +255,7 @@
         					Command="{Binding HiddenPopupCommand}"
         					CommandParameter="Hidden"
         					Width="20"
-        					Style="{DynamicResource NullButtonStyle}"
+        					Style="{DynamicResource EmptyButton}"
         					Background="#00000000"
         					BorderBrush="#00003C74"
         					Height="20"
@@ -393,14 +393,11 @@
         		<Button x:Name="btnChangeFace"
         			Command="{Binding ChangeSideCommand}"
         			CommandParameter="Popup"
-        			Content="Detail"
         			VerticalAlignment="Center"
-        			Height="20"
         			BorderBrush="{x:Null}"
         			d:LayoutOverrides="GridBox"
         			HorizontalAlignment="Right"
-        			Width="60"
-        			Margin="0,0,5,0">
+        			Margin="0,0,5,0" Style="{DynamicResource EmptyButton}">
         			<Button.Background>
         				<LinearGradientBrush EndPoint="0.5,1"
         					StartPoint="0.5,0">
@@ -410,6 +407,25 @@
         						Offset="0.9" />
         				</LinearGradientBrush>
         			</Button.Background>
+        			<Image Stretch="Fill">
+        				<Image.Style>
+        					<Style TargetType="{x:Type Image}">
+        						<Setter Property="Source"
+        							Value="/Images/Arrow_Right.png" />
+        						<Setter Property="ToolTip"
+        							Value="Change to Back Side" />
+        						<Style.Triggers>
+        							<DataTrigger Binding="{Binding SelectedLesson.IsBackSide}"
+        								Value="True">
+        								<Setter Property="Source"
+        									Value="/Images/Arrow_Left.png" />
+        								<Setter Property="ToolTip"
+        									Value="Change to Front Side" />
+        							</DataTrigger>
+        						</Style.Triggers>
+        					</Style>
+        				</Image.Style>
+        			</Image>
         		</Button>
         		<StackPanel Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
         			HorizontalAlignment="Left"
@@ -417,16 +433,23 @@
         			d:LayoutOverrides="Height"
         			Margin="5,0,0,0">
         			<Button x:Name="btnBack"
+        				ToolTip="Back"
         				Command="{Binding NextBackLessonCommand}"
         				CommandParameter="Back"
-        				Content="Back"
-        				Width="50" />
+        				Style="{DynamicResource EmptyButton}"
+        				Margin="0,0,5,0">
+        				<Image Source="/FlashCard;component/Images/Back.png"
+        					Stretch="Fill" />
+        			</Button>
         			<Button x:Name="btnNext"
+        				ToolTip="Next"
         				Command="{Binding NextBackLessonCommand}"
         				CommandParameter="Next"
-        				Content="Next"
-        				Width="50"
-        				Margin="7,0,0,0" />
+        				Margin="0"
+        				Style="{DynamicResource EmptyButton}">
+        				<Image Source="/FlashCard;component/Images/Next.png"
+        					Stretch="Fill" />
+        			</Button>
         		</StackPanel>
         	</Grid>
         </Grid>
