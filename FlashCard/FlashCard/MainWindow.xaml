@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow"
-        Height="350"
-        Width="525"
+        Height="10"
+        Width="10"
         xmlns:userControl="clr-namespace:FlashCard.Views"
         xmlns:notifyIcon="http://www.hardcodet.net/taskbar"
         xmlns:converter="clr-namespace:FlashCard.Converters">

@@ -491,7 +491,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region SearchLesson
+        #region"  SearchLesson"
 
         /// <summary>
         /// Gets the SearchLesson Command.
@@ -555,7 +555,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region DeleteLessonCommand
+        #region"  DeleteLessonCommand"
 
         /// <summary>
         /// Gets the DeleteLesson Command.
@@ -591,13 +591,13 @@ namespace FlashCard.ViewModels
             if (result.Equals(MessageBoxResult.Yes))
             {
                 LessonModel lessonModel;
-               if (param != null)
-               {
-                   lessonModel = param as LessonModel;
-                   LessonDataAccess lessonDA = new LessonDataAccess();
-                   lessonDA.Delete(lessonModel);
-                   LessonCollection.Remove(lessonModel);
-               }
+                if (param != null)
+                {
+                    lessonModel = param as LessonModel;
+                    LessonDataAccess lessonDA = new LessonDataAccess();
+                    lessonDA.Delete(lessonModel);
+                    LessonCollection.Remove(lessonModel);
+                }
             }
         }
         #endregion
@@ -674,7 +674,7 @@ namespace FlashCard.ViewModels
                     categoryDataAccess.Insert(SelectedCategory);
                     CategoryCollection.Add(SelectedCategory);
                     CategoryList.Add(SelectedCategory);
-                    
+
                 }
                 else
                 {
@@ -749,7 +749,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region SearchCategory
+        #region"  SearchCategory"
 
         /// <summary>
         /// Gets the SearchCategory Command.
@@ -812,7 +812,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region " DeleteCategoryCommand"
+        #region"  DeleteCategoryCommand"
 
         /// <summary>
         /// Gets the DeleteCategory Command.
@@ -844,35 +844,35 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnDeleteCategoryExecute(object param)
         {
-             MessageBoxResult result= MessageBox.Show("Do you want to remove this Category & Lesson relation","Remove Category",MessageBoxButton.YesNo);
-             if (result.Equals(MessageBoxResult.Yes))
-             {
-                 CategoryModel cateModel;
-                 if (param != null)
-                 {
-                     cateModel = param as CategoryModel;
-                     CategoryDataAccess cateDataAccess = new CategoryDataAccess();
-                     var resultDel = cateDataAccess.DeleteWithRelation(cateModel);
-                     if (resultDel)
-                     {
-                         foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cateModel.CategoryID)).ToList())
-                         {
-                             if (item != null)
-                             {
-                                 LessonCollection.Remove(item);
-                                 if (item == SelectedLesson)
-                                     SelectedLesson = LessonCollection.First();
-                             }
+            MessageBoxResult result = MessageBox.Show("Do you want to remove this Category & Lesson relation", "Remove Category", MessageBoxButton.YesNo);
+            if (result.Equals(MessageBoxResult.Yes))
+            {
+                CategoryModel cateModel;
+                if (param != null)
+                {
+                    cateModel = param as CategoryModel;
+                    CategoryDataAccess cateDataAccess = new CategoryDataAccess();
+                    var resultDel = cateDataAccess.DeleteWithRelation(cateModel);
+                    if (resultDel)
+                    {
+                        foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cateModel.CategoryID)).ToList())
+                        {
+                            if (item != null)
+                            {
+                                LessonCollection.Remove(item);
+                                if (item == SelectedLesson)
+                                    SelectedLesson = LessonCollection.First();
+                            }
 
-                         }
-                         CategoryCollection.Remove(cateModel);
-                         if (cateModel == SelectedCategory)
-                             SelectedCategory = CategoryCollection.First();
+                        }
+                        CategoryCollection.Remove(cateModel);
+                        if (cateModel == SelectedCategory)
+                            SelectedCategory = CategoryCollection.First();
 
-                         CategoryList.Remove(cateModel);
-                     }
-                 }
-             }
+                        CategoryList.Remove(cateModel);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -954,25 +954,21 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 log.Error(ex);
-                throw;
             }
         }
 
-        private MainWindow staticMain;
         private void LessonViewModel_DoNow(string message)
         {
             try
             {
                 if ("OkExecute".Equals(message))
                 {
-                    if (staticMain != null)
-                        staticMain = null;
-                    staticMain = new MainWindow();
+                    MainWindow mainWindow = new MainWindow();
                     var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
-                    var mainViewModel = staticMain.GetViewModel<MainViewModel>();
+                    var mainViewModel = mainWindow.GetViewModel<MainViewModel>();
                     mainViewModel.GetLesson(lessonCollection.ToList());
                     mainViewModel.ExcuteMainForm();
-                    this.ViewCore.Close();
+                    App.LessonMangeView.Hide();
                 }
                 else
                 {
@@ -1106,7 +1102,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         #endregion
 
         #region Methods
@@ -1144,7 +1139,6 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 log.Error(ex);
-                throw;
             }
 
         }

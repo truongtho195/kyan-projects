@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -79,10 +80,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commands\EventCommandBehaviour.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
     <Compile Include="Helper\ShuffleList.cs" />
+    <Compile Include="Helper\SingleInstance.cs" />
     <Compile Include="Helper\VolumeControl.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
@@ -109,19 +110,23 @@
     <Compile Include="Views\LessonManageView.xaml.cs">
       <DependentUpon>LessonManageView.xaml</DependentUpon>
     </Compile>
+    <Page Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Tooltips\FancyBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\ResourceDictionary1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

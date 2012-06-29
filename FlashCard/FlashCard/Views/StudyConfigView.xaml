@@ -59,7 +59,7 @@
         	</Rectangle.Fill>
         </Rectangle>
 
-        <Border BorderBrush="Black" Grid.RowSpan="3" Background="{DynamicResource brBackgroundColor}"/>
+        <Border BorderBrush="Black" Grid.RowSpan="3" Background="{StaticResource brBackgroundColor}"/>
 
         <Border x:Name="bdHeader"
                 BorderThickness="1"
@@ -193,10 +193,11 @@
                                   VerticalAlignment="Center"
                                   d:LayoutOverrides="Width" />
                         <TextBox x:Name="txtLimitCard"
+                                 Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                  Text="{Binding SelectedSetupModel.LimitCardNum, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                  IsEnabled="{Binding IsChecked, ElementName=chkLimitCard}"
                                  VerticalAlignment="Center"
-                                 Width="30"
+                                 Width="40"
                                  Height="20"
                                  Margin="3,0,0,0" />
                         <TextBlock TextWrapping="Wrap"
@@ -232,10 +233,11 @@
                             <TextBox x:Name="txtDistanceTime"
                                      Text="{Binding SelectedSetupModel.DistanceTimeSecond, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      IsEnabled="{Binding IsChecked, ElementName=chkEnableSlideShow}"
+                                     Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Center"
                                      Height="19.277"
-                                     Width="30" />
+                                     Width="35" />
 
                             <TextBlock x:Name="tbDistanceTime"
                                        TextWrapping="Wrap"
@@ -251,8 +253,9 @@
                             <TextBox x:Name="txtViewTime"
                                      Text="{Binding SelectedSetupModel.ViewTimeSecond, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      IsEnabled="{Binding IsChecked, ElementName=chkEnableSlideShow}"
+                                     Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                      TextWrapping="Wrap"
-                                     Width="30"
+                                     Width="35"
                                      VerticalAlignment="Center" />
 
                             <TextBlock x:Name="tbViewTime"

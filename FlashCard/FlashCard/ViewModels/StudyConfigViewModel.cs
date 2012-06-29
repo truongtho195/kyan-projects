@@ -21,7 +21,6 @@ namespace FlashCard.ViewModels
             InitialData();
         }
 
-
         #endregion
         public delegate void handlerControl(string message);
         public event handlerControl ButtonClickHandler;
