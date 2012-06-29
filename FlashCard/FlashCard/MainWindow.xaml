@@ -13,7 +13,7 @@
         <!--#endregion Converters-->
 
     </Window.Resources>
-        <Grid>
+    <Grid>
         <notifyIcon:TaskbarIcon x:Name="MyNotifyIcon"
                                 DoubleClickCommand="{Binding ShowPopupCommand}"
                                 IconSource="{Binding IconStatus}"
@@ -24,10 +24,23 @@
                               Command="{Binding FullScreenCommand}" />
                     <!--<MenuItem Header="Lesson Management"
                               Command="{Binding LessonManagerCommand}" />-->
-                    <MenuItem Header="Play/Pause"
-                              Visibility="{Binding IsPopupStarted,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"
-                              Command="{Binding PlayPauseCommand}"
-                              CommandParameter="Popup" />
+                    <!--Visibility="{Binding IsPopupStarted,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"-->
+                    <MenuItem Command="{Binding PlayPauseCommand}"
+                              CommandParameter="Popup">
+                        <MenuItem.Style>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header"
+                                        Value="Play" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsPopupStarted}"
+                                                 Value="True">
+                                        <Setter Property="Header"
+                                                Value="Pause" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
                     <MenuItem Header="Exit"
                               Command="{Binding ExitCommand}" />
                 </ContextMenu>
