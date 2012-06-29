@@ -29,7 +29,6 @@
         <!--#region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <!--#endregion Converters-->
-
         <Storyboard x:Key="sbLoadForm" />
         <Storyboard x:Key="sbUnLoadForm" />
         <FlashCard_Converters:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
@@ -136,7 +135,7 @@
                             Width="25"
                             Height="25"
                             ToolTip="Show in Popup"
-                            Style="{StaticResource EmptyButton}"
+                            Style="{DynamicResource EmptyButton}"
                             BorderBrush="#FFEBD5D5"
                             Background="{x:Null}"
                             VerticalContentAlignment="Bottom"
@@ -379,10 +378,10 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
                     </Button>
-                    <Button 
-                            Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                    <Button Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=True, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
                             Command="{Binding PlayPauseCommand}"
-                            CommandParameter="FullScreen" Style="{DynamicResource EmptyButton}">
+                            CommandParameter="FullScreen"
+                            Style="{DynamicResource EmptyButton}">
                         <Image Stretch="Fill">
                             <Image.Style>
                                 <Style TargetType="Image">

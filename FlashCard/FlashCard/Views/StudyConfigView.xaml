@@ -59,7 +59,7 @@
         	</Rectangle.Fill>
         </Rectangle>
 
-        <Border BorderBrush="Black" Grid.RowSpan="3" Background="{StaticResource brBackgroundColor}"/>
+        <Border BorderBrush="Black" Grid.RowSpan="3" Background="{DynamicResource brBackgroundColor}"/>
 
         <Border x:Name="bdHeader"
                 BorderThickness="1"

@@ -707,7 +707,6 @@
                                       Grid.Row="2"
                                       Height="20" />
                             <TextBox x:Name="txtLessonContent"
-                                     Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                      Text="{Binding SelectedLesson.LessonName, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -742,7 +741,6 @@
                             </DataGrid.Columns>
                         </DataGrid>-->
                             <richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                                   Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                                                    Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    Grid.Column="1"
@@ -769,7 +767,6 @@
                                     BorderBrush="{x:Null}"
                                     Margin="0,0,10,0" />
                             <richTextBoxControl:RichTextBoxToolbar x:Name="rtDescription"
-                                                                   Validation.ErrorTemplate="{DynamicResource validationTemplate}"
                                                                    Document="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
                                                                    IsReadOnly="False"
                                                                    Foreground="Black"

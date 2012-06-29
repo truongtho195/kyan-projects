@@ -27,8 +27,8 @@ namespace RichTextBoxControl
 
         protected bool IsDocumentChanged = false;
 
-        private int m_InternalUpdatePending;
-        private bool m_TextHasChanged;
+        //private int m_InternalUpdatePending;
+        //private bool m_TextHasChanged;
 
         #region Destructor & Constructors
         public RichTextBoxToolbar()
@@ -260,7 +260,7 @@ namespace RichTextBoxControl
             catch (Exception ex)
             {
                 Console.WriteLine("||=======================OnDocumentChanged=======================");
-                Console.WriteLine("||{0}", e.ToString());
+                Console.WriteLine("||{0}", ex.ToString());
             }
         }
 
@@ -279,7 +279,7 @@ namespace RichTextBoxControl
 
                 //TextRange textRange = new TextRange(this.rtContent.Document.ContentStart, this.rtContent.Document.ContentEnd);
                 //var test = GetImagesXML(this.rtContent.Document);
-                m_InternalUpdatePending = 2;
+                //m_InternalUpdatePending = 2;
                 this.Document = this.rtContent.Document;
                 this.IsDocumentChanged = false;
             }

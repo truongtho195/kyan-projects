@@ -3,11 +3,12 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d"
-                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
-                    >
+                    xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
+                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
 
     <!-- Resource dictionary entries should be defined here. -->
-
+    <SolidColorBrush x:Key="brBackgroundColor"
+                     Color="#FFCBE6FB" />
 
     <!--#region Validation Template Error-->
     <ControlTemplate x:Key="validationTemplate">
@@ -39,9 +40,10 @@
                          StrokeThickness="2"
                          Width="14"
                          Height="14" />
+                <!--ToolTip="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"-->
                 <TextBlock TextWrapping="Wrap"
                            Text="!"
-                           ToolTip="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"
+                           
                            d:LayoutOverrides="Width, Height"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
@@ -60,6 +62,43 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <!--#Endregion Validation Template Error-->
+
+    <!--#region Validation Style-->
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{DynamicResource validationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="false">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            
+            <Trigger Property="IsVisible"
+                     Value="true">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource validationTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type richTextBoxControl:RichTextBoxToolbar }">
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{DynamicResource validationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="false">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsVisible"
+                     Value="true">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource validationTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--#Endregion  Validation Style-->
 
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -524,73 +563,6 @@
                         Value="{StaticResource ComboBoxEditableTemplate}" />
             </Trigger>
         </Style.Triggers>
-    </Style>
-    <SolidColorBrush x:Key="brBackgroundColor"
-                     Color="#FFCDE8FD" />
-    <Style x:Key="NullButtonStyle"
-           TargetType="{x:Type Button}">
-        <Setter Property="FocusVisualStyle"
-                Value="{StaticResource ButtonFocusVisual}" />
-        <Setter Property="Background"
-                Value="{StaticResource ButtonNormalBackgroundFill}" />
-        <Setter Property="BorderBrush"
-                Value="{StaticResource ButtonBorder}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-        <Setter Property="HorizontalContentAlignment"
-                Value="Center" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Center" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="border"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            Margin="{TemplateBinding Padding}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Cursor="Hand"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            Padding="1">
-                        <ContentPresenter x:Name="contentPresenter"
-                                          RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Margin="0" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver"
-                                 Value="True">
-                            <Setter Property="Background"
-                                    TargetName="border"
-                                    Value="#FFDEDEDE" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused"
-                                 Value="true" />
-                        <Trigger Property="ToggleButton.IsChecked"
-                                 Value="true" />
-                        <Trigger Property="IsEnabled"
-                                 Value="false">
-                            <Setter Property="Foreground"
-                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                        </Trigger>
-                        <Trigger Property="IsPressed"
-                                 Value="True">
-                            <Setter Property="Background"
-                                    TargetName="border"
-                                    Value="#FF72B1EB" />
-                            <Setter Property="Foreground"
-                                    Value="White" />
-
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <!--#Region "EmptyButton Style"-->
