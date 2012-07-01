@@ -805,19 +805,25 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <TextBox x:Name="txtSearchLesson"
-                             TextWrapping="NoWrap"
-                             VerticalAlignment="Center"
-                             Height="25"
-                             Margin="5,0,0,0">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="TextChanged">
-                                <localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
-                                                             CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                    <Grid x:Name="grdSearchLesson" d:LayoutOverrides="Width" Margin="5,0" VerticalAlignment="Center" >
+                    	<Grid.ColumnDefinitions>
+                    		<ColumnDefinition Width="49.397"/>
+                    		<ColumnDefinition/>
+                    	</Grid.ColumnDefinitions>
+                    	<TextBlock TextWrapping="Wrap" Text="Search : " Margin="0" VerticalAlignment="Center" d:LayoutOverrides="Width" FontWeight="Bold"/>
+                    	<TextBox x:Name="txtSearchLesson"
+                    		TextWrapping="NoWrap"
+                    		VerticalAlignment="Center" Margin="0" Grid.Column="1"
+                             >
+                    		<i:Interaction.Triggers>
+                    			<i:EventTrigger EventName="TextChanged">
+                    				<localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
+                    					CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    			</i:EventTrigger>
+                    		</i:Interaction.Triggers>
 
-                    </TextBox>
+                    	</TextBox>
+                    </Grid>
                     <Border x:Name="bdLeftLesson"
                             BorderBrush="Black"
                             BorderThickness="0,0.5,0,0"
@@ -825,8 +831,7 @@
                             Grid.RowSpan="2" />
                 </Grid>
                 <Grid x:Name="grdCategories"
-                      Grid.Row="1"
-                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
+                      Grid.Row="1" Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.073*" />
@@ -930,14 +935,6 @@
                                         BorderBrush="{x:Null}"
                                         Background="White"
                                         Margin="0,0,10,0" />
-                                <Button x:Name="btnEdit1"
-                                        Command="{Binding EditCategoryCommand}"
-                                        Content="Edit"
-                                        Width="70"
-                                        BorderBrush="{x:Null}"
-                                        Background="White"
-                                        Margin="0,0,10,0"
-                                        Visibility="Collapsed" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1"
@@ -1044,17 +1041,22 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <TextBox x:Name="txtSearchCategory"
-                             Margin="5,0,0,0"
-                             TextWrapping="Wrap"
-                             Height="25">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="TextChanged">
-                                <localCommand:EventToCommand Command="{Binding SearchCategoryCommand}"
-                                                             CommandParameter="{Binding Text, ElementName=txtSearchCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
+                    <Grid x:Name="grdSearchCate" VerticalAlignment="Center" Margin="5,0">
+                    	<Grid.ColumnDefinitions>
+                    		<ColumnDefinition Width="49"/>
+                    		<ColumnDefinition/>
+                    	</Grid.ColumnDefinitions>
+                    	<TextBox x:Name="txtSearchCategory"
+                    		TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Column="1" VerticalAlignment="Center">
+                    		<i:Interaction.Triggers>
+                    			<i:EventTrigger EventName="TextChanged">
+                    				<localCommand:EventToCommand Command="{Binding SearchCategoryCommand}"
+                    					CommandParameter="{Binding Text, ElementName=txtSearchCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    			</i:EventTrigger>
+                    		</i:Interaction.Triggers>
+                    	</TextBox>
+                    	<TextBlock TextWrapping="Wrap" Text="Search : " d:LayoutOverrides="Width, Height" VerticalAlignment="Center" FontWeight="Bold"/>
+                    </Grid>
                 </Grid>
                 <Grid x:Name="grdUserControl"
                       Grid.Row="1"

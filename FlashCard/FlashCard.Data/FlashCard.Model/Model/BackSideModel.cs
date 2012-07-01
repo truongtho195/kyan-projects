@@ -50,7 +50,7 @@ namespace FlashCard.Model
                         else
                         {
                             var range = new System.Windows.Documents.TextRange(BackSideDetail.ContentStart, BackSideDetail.ContentEnd);
-                            if (range.IsEmpty)
+                             if (string.IsNullOrWhiteSpace( range.Text))
                                 message = "Back side Detail is required!";
                         }
                         break;

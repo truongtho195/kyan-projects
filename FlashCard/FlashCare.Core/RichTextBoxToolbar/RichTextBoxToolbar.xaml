@@ -283,7 +283,7 @@
                             <Border  x:Name="Bd"
                         		BorderBrush="{TemplateBinding BorderBrush}"
                         		BorderThickness="{TemplateBinding BorderThickness}"
-                        		Background="{TemplateBinding Background}"
+                        		Background="{TemplateBinding SelectionBoxItem}"
                         		Padding="1">
                         		<Grid Grid.IsSharedSizeScope="true">
                         			<Grid.ColumnDefinitions>
@@ -308,9 +308,7 @@
                         			<ToggleButton Grid.ColumnSpan="3"
                         				IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                         				Style="{DynamicResource ComboBoxTransparentButtonStyle}" />
-                        			<Rectangle Fill="{Binding SelectionBoxItem.Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}}"
-                        				Grid.Column="1" StrokeThickness="0.25" VerticalAlignment="Bottom" MinWidth="20" Margin="1,0,1,1" Stroke="#FF919191" Width="20" Height="4" />
-                        			<TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="A" d:LayoutOverrides="Height" VerticalAlignment="Top" FontWeight="Bold" FontSize="14.667"/>
+                        			<TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="A" d:LayoutOverrides="Height"  VerticalAlignment="Top" FontWeight="Bold" FontSize="14.667"/>
                         		</Grid>
                         	</Border>
                         	<Popup x:Name="PART_Popup"
@@ -429,6 +427,8 @@
           Width="{Binding Width, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           Height="{Binding Height, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         <RichTextBox x:Name="rtContent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                      BorderBrush="{Binding BorderBrush, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      BorderThickness="{Binding BorderThickness, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Foreground="{Binding Foreground, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -598,7 +598,7 @@
                                SnapsToDevicePixels="True" />
                     </Button>
 
-                    <Button x:Name="btnCodeBlock"
+                    <!--<Button x:Name="btnCodeBlock"
                             ToolTip="Format as code block"
                             Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                             Template="{StaticResource FlatButtonControlTemplate}"
@@ -606,9 +606,9 @@
                         <Image Source="Images\codeblock.png"
                                Stretch="None"
                                SnapsToDevicePixels="True" />
-                    </Button>
+                    </Button>-->
 
-                    <Button x:Name="btnInlineCode"
+                    <!--<Button x:Name="btnInlineCode"
                             ToolTip="Format as inline code"
                             Visibility="{Binding CodeControlsVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                             Template="{StaticResource FlatButtonControlTemplate}"
@@ -616,7 +616,7 @@
                         <Image Source="Images\codeinline.png"
                                Stretch="None"
                                SnapsToDevicePixels="True" />
-                    </Button>
+                    </Button>-->
 
                     <Image Source="Images\separator.png"
                            Stretch="None"

@@ -40,8 +40,8 @@ namespace RichTextBoxControl
             //Events
             this.rtContent.TextChanged += new TextChangedEventHandler(rtContent_TextChanged);
             this.btnNormalText.Click += new RoutedEventHandler(btnNormalText_Click);
-            this.btnCodeBlock.Click += new RoutedEventHandler(btnCodeBlock_Click);
-            this.btnInlineCode.Click += new RoutedEventHandler(btnInlineCode_Click);
+            //this.btnCodeBlock.Click += new RoutedEventHandler(btnCodeBlock_Click);
+            //this.btnInlineCode.Click += new RoutedEventHandler(btnInlineCode_Click);
             this.btnBulletsButton.Click += new RoutedEventHandler(btnListsButton_Click);
             this.btnNumberingButton.Click += new RoutedEventHandler(btnListsButton_Click);
             this.rtContent.MouseRightButtonUp += new MouseButtonEventHandler(rtContent_MouseRightButtonUp);
@@ -480,7 +480,10 @@ namespace RichTextBoxControl
 
             // Set font size combo
             var fontSize = textRange.GetPropertyValue(TextElement.FontSizeProperty);
-            FontSizeCombo.Text = fontSize.ToString();
+            if (fontSize != null)
+                FontSizeCombo.SelectedValue = fontSize.ToString(); 
+            else
+                FontSizeCombo.Text = null;
             // Set Font Color
             var foregroundColor = textRange.GetPropertyValue(TextElement.ForegroundProperty);
             BrushConverter conv = new BrushConverter();
