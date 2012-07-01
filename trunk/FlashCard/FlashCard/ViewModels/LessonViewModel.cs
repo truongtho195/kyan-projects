@@ -232,7 +232,10 @@ namespace FlashCard.ViewModels
 
         private bool CanNewExecute(object param)
         {
-            return SelectedLesson != null && !SelectedLesson.IsEditing;
+            var edit = LessonCollection.Count(x => x.IsEdit);
+            var ne = LessonCollection.Count(x => x.IsNew);
+
+            return LessonCollection!=null &&  (LessonCollection.Count(x => x.IsEdit) == 0 || LessonCollection.Count(x => x.IsNew)==0) && (SelectedLesson!=null && !SelectedLesson.IsNew);
         }
 
         private void NewExecute(object param)

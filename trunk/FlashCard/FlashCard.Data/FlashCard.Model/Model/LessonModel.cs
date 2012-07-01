@@ -137,8 +137,6 @@ namespace FlashCard.Model
 
         #endregion
 
-
-
         #region Overide Changed
 
         #endregion
@@ -182,7 +180,7 @@ namespace FlashCard.Model
                         else
                         {
                             var range = new System.Windows.Documents.TextRange(Description.ContentStart, Description.ContentEnd);
-                            if (range.IsEmpty)
+                            if (string.IsNullOrWhiteSpace(range.Text))
                                 message = "Description is required!";
                         }
                         break;
