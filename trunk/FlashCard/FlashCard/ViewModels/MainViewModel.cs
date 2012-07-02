@@ -294,12 +294,12 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             if ("Popup".Equals(param.ToString()))
             {
-                Storyboard sb;
-                if (SelectedLesson.IsBackSide)
-                    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
-                else
-                    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
-                _balloon.BeginStoryboard(sb);
+                //Storyboard sb;
+                //if (SelectedLesson.IsBackSide)
+                //    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+                //else
+                //    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
+                //_balloon.BeginStoryboard(sb);
             }
             else
             {
@@ -309,6 +309,7 @@ namespace FlashCard.ViewModels
                 else
                     sbF = (Storyboard)_learnView.FindResource("sbToFrontSide");
                 _learnView.BeginStoryboard(sbF);
+                
 
                 if (App.SetupModel.IsEnableSlideShow)
                 {
@@ -489,87 +490,6 @@ namespace FlashCard.ViewModels
                     PlayPauseBallonPopup(false);
             }
         }
-
-        #endregion
-
-        #region "{R}  ChooseLessonCommand"
-
-        //private void UserConfigStudies()
-        //{
-
-        //    if (IsPopupStarted)
-        //        PlayPauseBallonPopup(true);
-        //    else
-        //    {
-        //        if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
-        //        {
-        //            _timerViewFullScreen.Stop();
-        //        }
-        //    }
-        //    StudyConfigView lessionView = new StudyConfigView();
-        //    lessionView.GetViewModel<StudyConfigViewModel>().App.SetupModel = App.SetupModel;
-        //    var cate = from x in LessonCollection
-        //               group x by x.CategoryID into c
-        //               select new CategoryModel
-        //               {
-
-        //                   CategoryID = c.Select(k => k.CategoryModel.CategoryID).First(),
-        //                   CategoryName = c.Select(f => f.CategoryModel.CategoryName).First()
-
-        //               };
-
-
-        //    lessionView.GetViewModel<StudyConfigViewModel>().CategoryList = cate.ToList();
-        //    //if (lessionView.ShowDialog() == true)
-        //    //{
-        //    var viewModel = lessionView.GetViewModel<StudyConfigViewModel>();
-
-        //    App.SetupModel = viewModel.App.SetupModel;
-        //    if (this.App.SetupModel.IsShuffle)
-        //    {
-        //        var lessonShuffle = ShuffleList.Randomize<LessonModel>(viewModel.LessonCollection);
-        //        LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
-        //    }
-        //    else
-        //        LessonCollection = viewModel.LessonCollection;
-
-
-        //    //set time for ballon popup
-        //    if (_timerPopup != null)
-        //        _timerPopup.Interval = App.SetupModel.TimeOut;
-        //    if (_timerViewFullScreen != null)
-        //        _timerViewFullScreen.Interval = new TimeSpan(0, 0, this.App.SetupModel.ViewTimeSecond);
-
-
-        //    //}
-
-        //    if (App.SetupModel.IsEnableSlideShow)
-        //    {
-        //        if (IsPopupStarted)
-        //        {
-        //            PlayPauseBallonPopup(false);
-        //        }
-        //        else
-        //        {
-        //            if (_timerViewFullScreen != null && !_timerViewFullScreen.IsEnabled)
-        //            {
-        //                _timerViewFullScreen.Start();
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (IsPopupStarted)
-        //        {
-        //            SelectedLesson = LessonCollection.First();
-        //            SelectedLesson.IsBackSide = false;
-        //            _balloon = new FancyBalloon();
-        //            _timerPopup.Stop();
-        //            _waitForClose.Stop();
-        //            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
-        //        }
-        //    }
-        //}
 
         #endregion
 
@@ -1182,6 +1102,7 @@ namespace FlashCard.ViewModels
             log.Info("|| {*} === Initial Timer For Close Popup === ");
             log.Info("|| ==> WaitBalloon() methods started ");
             countSecond = 0;
+            (sender as DispatcherTimer).Stop();
             WaitBalloon();
         }
 
@@ -1199,7 +1120,6 @@ namespace FlashCard.ViewModels
                 testTimeView.Reset();
                 log.DebugFormat("|| ==> Popup Closed.......");
                 log.DebugFormat("|| ================================= \n");
-                _waitForClose.Stop();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }

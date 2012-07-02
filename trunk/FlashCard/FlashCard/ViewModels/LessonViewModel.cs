@@ -229,8 +229,8 @@ namespace FlashCard.ViewModels
 
         private bool CanNewExecute(object param)
         {
-            var edit = LessonCollection.Count(x => x.IsEdit);
-            var ne = LessonCollection.Count(x => x.IsNew);
+            //var edit = LessonCollection.Count(x => x.IsEdit);
+            //var ne = LessonCollection.Count(x => x.IsNew);
 
             return LessonCollection!=null &&  (LessonCollection.Count(x => x.IsEdit) == 0 || LessonCollection.Count(x => x.IsNew)==0) && (SelectedLesson!=null && !SelectedLesson.IsNew);
         }
@@ -963,6 +963,7 @@ namespace FlashCard.ViewModels
                 if ("OkExecute".Equals(message))
                 {
                     MainWindow mainWindow = new MainWindow();
+                    
                     var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
                     var mainViewModel = mainWindow.GetViewModel<MainViewModel>();
                     mainViewModel.GetLesson(lessonCollection.ToList());
