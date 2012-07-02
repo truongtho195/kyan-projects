@@ -30,24 +30,26 @@ namespace FlashCard.DataAccess
         public BackSideModel Get(int backSideID)
         {
             BackSideModel backSideModel = new BackSideModel();
-            SQLiteConnection sqlConnect = null;
+
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             SQLiteParameter param = null;
             string sql = "select * From BackSide where BackSideID ==@backSideID";
             try
             {
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sql;
-                param = new SQLiteParameter("@backSideID", backSideID);
-                sqlCommand.Parameters.Add(param);
-                reader = sqlCommand.ExecuteReader();
-                if (reader.Read())
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    backSideModel = GetBackSideModel(reader);
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    sqlCommand.CommandText = sql;
+                    param = new SQLiteParameter("@backSideID", backSideID);
+                    sqlCommand.Parameters.Add(param);
+                    reader = sqlCommand.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        backSideModel = GetBackSideModel(reader);
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -58,7 +60,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }
@@ -107,42 +108,43 @@ namespace FlashCard.DataAccess
         public IList<BackSideModel> GetAll(BackSideModel backSide)
         {
             List<BackSideModel> list = new List<BackSideModel>();
-            SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             string sql = "select * from BackSide ";
 
             try
             {
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                string sqlcondition = string.Empty;
-                if (backSide.BackSideID > -1)
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    if (string.IsNullOrWhiteSpace(sqlcondition))
-                        sqlcondition += "where BackSideID==@backSideID";
-                    else
-                        sqlcondition += "&& BackSideID==@backSideID";
-                    SQLiteParameter param = new SQLiteParameter("@backSideID", backSide.BackSideID);
-                    sqlCommand.Parameters.Add(param);
-                }
-                if (backSide.LessonID > -1)
-                {
-                    if (string.IsNullOrWhiteSpace(sqlcondition))
-                        sqlcondition += "where LessonID==@lessonID";
-                    else
-                        sqlcondition += "&& LessonID==@lessonID";
-                    SQLiteParameter param = new SQLiteParameter("@lessonID", backSide.LessonID);
-                    sqlCommand.Parameters.Add(param);
-                }
-                sqlCommand.CommandText = sql + sqlcondition;
-                reader = sqlCommand.ExecuteReader();
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    string sqlcondition = string.Empty;
+                    if (backSide.BackSideID > -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(sqlcondition))
+                            sqlcondition += "where BackSideID==@backSideID";
+                        else
+                            sqlcondition += "&& BackSideID==@backSideID";
+                        SQLiteParameter param = new SQLiteParameter("@backSideID", backSide.BackSideID);
+                        sqlCommand.Parameters.Add(param);
+                    }
+                    if (backSide.LessonID > -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(sqlcondition))
+                            sqlcondition += "where LessonID==@lessonID";
+                        else
+                            sqlcondition += "&& LessonID==@lessonID";
+                        SQLiteParameter param = new SQLiteParameter("@lessonID", backSide.LessonID);
+                        sqlCommand.Parameters.Add(param);
+                    }
+                    sqlCommand.CommandText = sql + sqlcondition;
+                    reader = sqlCommand.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    BackSideModel backSideModel = GetBackSideModel(reader);
-                    list.Add(backSideModel);
+                    while (reader.Read())
+                    {
+                        BackSideModel backSideModel = GetBackSideModel(reader);
+                        list.Add(backSideModel);
+                    }
                 }
             }
             catch (Exception ex)
@@ -154,7 +156,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }
@@ -360,7 +361,7 @@ namespace FlashCard.DataAccess
                 log.Error(CatchException(ex));
                 if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
-            
+
                 throw;
             }
             finally

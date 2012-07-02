@@ -160,7 +160,6 @@ namespace FlashCard.DataAccess
         public IList<CategoryModel> GetAllWithRelation()
         {
             List<CategoryModel> list = new List<CategoryModel>();
-            SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand= null;
             SQLiteDataReader reader=null;
             LessonDataAccess lessonDA = new LessonDataAccess();
@@ -169,31 +168,34 @@ namespace FlashCard.DataAccess
             string sqlCategories = "select * From Categories";
             try
             {
+                
                 //Categories
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sqlCategories;
-                reader = sqlCommand.ExecuteReader();
-                //Initialize Lesson
-                while (reader.Read())
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    CategoryModel categoryModel = MappingToModel(reader);
-                    //Lesson
-                    LessonModel lesson = new LessonModel() { TypeID=-1,LessonID=-1};
-                    lesson.CategoryModel = categoryModel;
-                    var lessonCollection = new List<LessonModel>();
-                    foreach (var item in lessonDA.GetAll(lesson))
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    sqlCommand.CommandText = sqlCategories;
+                    reader = sqlCommand.ExecuteReader();
+                    //Initialize Lesson
+                    while (reader.Read())
                     {
-                        var backSideModel = new BackSideModel(){BackSideID=-1};
-                        backSideModel.LessonID=item.LessonID;
-                        item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
-                        item.TypeModel = typeDA.Get(item.TypeID);
-                        lessonCollection.Add(item);
+                        CategoryModel categoryModel = MappingToModel(reader);
+                        //Lesson
+                        LessonModel lesson = new LessonModel() { TypeID = -1, LessonID = -1 };
+                        lesson.CategoryModel = categoryModel;
+                        var lessonCollection = new List<LessonModel>();
+                        foreach (var item in lessonDA.GetAll(lesson))
+                        {
+                            var backSideModel = new BackSideModel() { BackSideID = -1 };
+                            backSideModel.LessonID = item.LessonID;
+                            item.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                            item.TypeModel = typeDA.Get(item.TypeID);
+                            lessonCollection.Add(item);
+                        }
+                        categoryModel.LessonCollection = lessonCollection;
+                        categoryModel.ResetModelBase();
+                        list.Add(categoryModel);
                     }
-                    categoryModel.LessonCollection = lessonCollection;
-                    categoryModel.ResetModelBase();
-                    list.Add(categoryModel);
                 }
             }
             catch (Exception ex)
@@ -203,7 +205,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 reader.Dispose();
                 sqlCommand.Dispose();
             }

@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Threading;
 
 
 namespace RichTextBoxControl
@@ -53,13 +54,12 @@ namespace RichTextBoxControl
             this.rtContent.SelectionChanged += new RoutedEventHandler(rtContent_SelectionChanged);
             this.rtContent.PreviewKeyDown += new KeyEventHandler(rtContent_PreviewKeyDown);
             this.popup.PreviewKeyDown += new KeyEventHandler(Combobox_PreviewKeyDown);
-            
+
             this.rtContent.ContextMenu = null;
 
-            
         }
 
-      
+
         #endregion
 
         #region Properties
@@ -196,36 +196,6 @@ namespace RichTextBoxControl
         /// </summary>
         private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //try
-            //{
-            //    RichTextBoxToolbar thisControl = (RichTextBoxToolbar)d;
-            //    if (thisControl.IsDocumentChanged) return;
-            //    thisControl.IsDocumentChanged = true;
-            //    if (e.NewValue == null)
-            //    {
-            //        //Document is not amused by null :)
-            //        thisControl.rtContent.Document = new FlowDocument();
-            //        thisControl.IsDocumentChanged = false;
-            //        return;
-            //    }
-            //    else if (e.NewValue != e.OldValue)
-            //    {
-            //        thisControl.rtContent.Document.Blocks.Clear();
-            //        MemoryStream ms = new MemoryStream();
-            //        XamlWriter.Save(e.NewValue as FlowDocument, ms);
-            //        ms.Seek(0, SeekOrigin.Begin);
-
-            //        thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
-
-            //    }
-            //    thisControl.IsDocumentChanged = false;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("<<<<<<<<<<<<<<<<<<<<<<<<<<OnDocumentChanged>>>>>>>>>>>>>>>>>>" + ex.ToString());
-            //}
-
-
 
             //ver 2
             try
@@ -245,10 +215,11 @@ namespace RichTextBoxControl
                 }
                 else if (e.NewValue != e.OldValue)
                 {
+
                     MemoryStream ms = new MemoryStream();
                     XamlWriter.Save(e.NewValue as FlowDocument, ms);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
+                    ms.Position = 0;
+                    thisControl.rtContent.Document = (XamlReader.Load(ms) as FlowDocument);
                     ms.Dispose();
                 }
                 thisControl.IsDocumentChanged = false;
@@ -442,7 +413,7 @@ namespace RichTextBoxControl
             var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
             textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, fontFamily);
         }
-        
+
         #endregion
 
         #region Methods
@@ -504,7 +475,7 @@ namespace RichTextBoxControl
             // Set font size combo
             var fontSize = textRange.GetPropertyValue(TextElement.FontSizeProperty);
             if (fontSize != null)
-                FontSizeCombo.SelectedValue = fontSize.ToString(); 
+                FontSizeCombo.SelectedValue = fontSize.ToString();
             else
                 FontSizeCombo.Text = null;
             // Set Font Color
@@ -515,7 +486,7 @@ namespace RichTextBoxControl
                 SolidColorBrush color = conv.ConvertFromString(foregroundColor.ToString()) as SolidColorBrush;
                 var colorInfo = this.cbTextColor.ItemsSource.Cast<PropertyInfo>();
 
-                this.cbTextColor.SelectedItem = colorInfo.Count() ==0 ? null : colorInfo.SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
+                this.cbTextColor.SelectedItem = colorInfo.Count() == 0 ? null : colorInfo.SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
             }
             else
                 this.cbTextColor.SelectedItem = null;
@@ -624,7 +595,7 @@ namespace RichTextBoxControl
             handler(this, new PropertyChangedEventArgs(propertyInfo.Name));
         }
 
-      
+
 
 
 

@@ -32,7 +32,6 @@ namespace FlashCard.DataAccess
         #region Methods
         public LessonModel Get(int lessonID)
         {
-            SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             SQLiteParameter param = null;
@@ -41,16 +40,18 @@ namespace FlashCard.DataAccess
             string sql = "select * From Lessons where LessonID == @lessonID";
             try
             {
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sql;
-                param = new SQLiteParameter("@lessonID", lessonID);
-                sqlCommand.Parameters.Add(param);
-                reader = sqlCommand.ExecuteReader();
-                if (reader.Read())
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    lessonModel = MappingToModel(reader);
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    sqlCommand.CommandText = sql;
+                    param = new SQLiteParameter("@lessonID", lessonID);
+                    sqlCommand.Parameters.Add(param);
+                    reader = sqlCommand.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        lessonModel = MappingToModel(reader);
+                    }
                 }
             }
             catch (Exception ex)
@@ -62,7 +63,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }
@@ -125,22 +125,23 @@ namespace FlashCard.DataAccess
         public IList<LessonModel> GetAll()
         {
             List<LessonModel> list = new List<LessonModel>();
-            SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
             string sql1 = "select * from Lessons";
             try
             {
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sql1;
-                reader = sqlCommand.ExecuteReader();
-                LessonModel lessonModel;
-                while (reader.Read())
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    lessonModel = MappingToModel(reader);
-                    list.Add(lessonModel);
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    sqlCommand.CommandText = sql1;
+                    reader = sqlCommand.ExecuteReader();
+                    LessonModel lessonModel;
+                    while (reader.Read())
+                    {
+                        lessonModel = MappingToModel(reader);
+                        list.Add(lessonModel);
+                    }
                 }
             }
             catch (Exception ex)
@@ -152,7 +153,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }
@@ -164,53 +164,53 @@ namespace FlashCard.DataAccess
         public IList<LessonModel> GetAll(LessonModel lesson)
         {
             List<LessonModel> list = new List<LessonModel>();
-            SQLiteConnection sqlConnect = null;
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
-            //SQLiteParameter param = null;
             string sql = "select * from Lessons ";
             try
             {
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                string sqlcondition = string.Empty;
-                if (lesson.CategoryModel.CategoryID > -1)
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    if (string.IsNullOrWhiteSpace(sqlcondition))
-                        sqlcondition += "where CategoryID==@categoryID";
-                    else
-                        sqlcondition += "&& CategoryID==@categoryID";
-                    SQLiteParameter param = new SQLiteParameter("@categoryID", lesson.CategoryModel.CategoryID);
-                    sqlCommand.Parameters.Add(param);
-                }
-                if (lesson.LessonID > -1)
-                {
-                    if (string.IsNullOrWhiteSpace(sqlcondition))
-                        sqlcondition += "where LessonID == @lessonID";
-                    else
-                        sqlcondition += "&& LessonID == @lessonID";
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    string sqlcondition = string.Empty;
+                    if (lesson.CategoryModel.CategoryID > -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(sqlcondition))
+                            sqlcondition += "where CategoryID==@categoryID";
+                        else
+                            sqlcondition += "&& CategoryID==@categoryID";
+                        SQLiteParameter param = new SQLiteParameter("@categoryID", lesson.CategoryModel.CategoryID);
+                        sqlCommand.Parameters.Add(param);
+                    }
+                    if (lesson.LessonID > -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(sqlcondition))
+                            sqlcondition += "where LessonID == @lessonID";
+                        else
+                            sqlcondition += "&& LessonID == @lessonID";
 
-                    SQLiteParameter param = new SQLiteParameter("@lessonID", lesson.LessonID);
-                    sqlCommand.Parameters.Add(param);
-                }
-                if (lesson.TypeID > -1)
-                {
-                    if (string.IsNullOrWhiteSpace(sqlcondition))
-                        sqlcondition += "where TypeID == @typeID";
-                    else
-                        sqlcondition += "&& TypeID == @typeID";
-                    SQLiteParameter param = new SQLiteParameter("@typeID", lesson.TypeID);
+                        SQLiteParameter param = new SQLiteParameter("@lessonID", lesson.LessonID);
+                        sqlCommand.Parameters.Add(param);
+                    }
+                    if (lesson.TypeID > -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(sqlcondition))
+                            sqlcondition += "where TypeID == @typeID";
+                        else
+                            sqlcondition += "&& TypeID == @typeID";
+                        SQLiteParameter param = new SQLiteParameter("@typeID", lesson.TypeID);
 
-                    sqlCommand.Parameters.Add(param);
-                }
-                sqlCommand.CommandText = sql + sqlcondition;
-                reader = sqlCommand.ExecuteReader();
-                LessonModel lessonModel;
-                while (reader.Read())
-                {
-                    lessonModel = MappingToModel(reader);
-                    list.Add(lessonModel);
+                        sqlCommand.Parameters.Add(param);
+                    }
+                    sqlCommand.CommandText = sql + sqlcondition;
+                    reader = sqlCommand.ExecuteReader();
+                    LessonModel lessonModel;
+                    while (reader.Read())
+                    {
+                        lessonModel = MappingToModel(reader);
+                        list.Add(lessonModel);
+                    }
                 }
             }
             catch (Exception ex)
@@ -222,7 +222,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }
@@ -233,7 +232,7 @@ namespace FlashCard.DataAccess
         public List<LessonModel> GetAllWithRelation()
         {
             List<LessonModel> list = new List<LessonModel>();
-            SQLiteConnection sqlConnect = null;
+            
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
 
@@ -241,31 +240,32 @@ namespace FlashCard.DataAccess
             string sql = "select * from Lessons ";
             try
             {
-                //Categories
-                sqlConnect = new SQLiteConnection(ConnectionString);
-                sqlConnect.Open();
-                sqlCommand = new SQLiteCommand(sqlConnect);
-                sqlCommand.CommandText = sql;
-                reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
+                using (SQLiteConnection sqlConnect = new SQLiteConnection(ConnectionString))
                 {
-                    LessonModel lessonModel = MappingToModel(reader);
-
-                    var backSideModel = new BackSideModel() { BackSideID = -1 };
-                    backSideModel.LessonID = lessonModel.LessonID;
-                    //BackSideCollection
-                    lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
-                    switch (lessonModel.TypeModel.TypeOf)
+                    sqlConnect.Open();
+                    sqlCommand = new SQLiteCommand(sqlConnect);
+                    sqlCommand.CommandText = sql;
+                    reader = sqlCommand.ExecuteReader();
+                    while (reader.Read())
                     {
-                        case 1:
-                            if (lessonModel.BackSideCollection != null && lessonModel.BackSideCollection.Count > 0)
-                                lessonModel.BackSideModel = lessonModel.BackSideCollection.FirstOrDefault();
-                            else
-                                lessonModel.BackSideModel = new BackSideModel();
-                            break;
+                        LessonModel lessonModel = MappingToModel(reader);
+
+                        var backSideModel = new BackSideModel() { BackSideID = -1 };
+                        backSideModel.LessonID = lessonModel.LessonID;
+                        //BackSideCollection
+                        lessonModel.BackSideCollection = new ObservableCollection<BackSideModel>(backSideDA.GetAll(backSideModel));
+                        switch (lessonModel.TypeModel.TypeOf)
+                        {
+                            case 1:
+                                if (lessonModel.BackSideCollection != null && lessonModel.BackSideCollection.Count > 0)
+                                    lessonModel.BackSideModel = lessonModel.BackSideCollection.FirstOrDefault();
+                                else
+                                    lessonModel.BackSideModel = new BackSideModel();
+                                break;
+                        }
+                        lessonModel.ResetModelBase();
+                        list.Add(lessonModel);
                     }
-                    lessonModel.ResetModelBase();
-                    list.Add(lessonModel);
                 }
 
             }
@@ -278,7 +278,6 @@ namespace FlashCard.DataAccess
             }
             finally
             {
-                sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 reader.Dispose();
             }

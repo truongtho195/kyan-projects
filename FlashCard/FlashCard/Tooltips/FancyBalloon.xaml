@@ -26,11 +26,9 @@
                                       Value="0.95" />
                 <SplineDoubleKeyFrame KeyTime="00:00:03"
                                       Value="0.95" />
-                <!--				<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
+                				<!--<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="HighlightCloseButton" />
-        <Storyboard x:Key="FadeCloseButton" />
         <Storyboard x:Key="FadeBack">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
                                            Storyboard.TargetName="Layout"
@@ -159,7 +157,10 @@
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
             <BeginStoryboard Storyboard="{StaticResource FadeOut}"
                              x:Name="FadeOut_BeginStoryboard" />
+            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard"/>
+            
         </EventTrigger>
+
         <!--<EventTrigger RoutedEvent="FrameworkElement.Loaded">
         	<BeginStoryboard Storyboard="{StaticResource sbChangeFace}"/>
         </EventTrigger>-->
