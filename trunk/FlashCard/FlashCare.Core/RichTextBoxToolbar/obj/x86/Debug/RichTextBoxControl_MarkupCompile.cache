@@ -1,20 +1,20 @@
 ﻿RichTextBoxControl
 
 
-winexe
+library
 C#
 .cs
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\
 RichTextBoxControl
 none
 false
 DEBUG;TRACE
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\RichTextBoxToolbar\App.xaml
-1-1063453435
+
+2-695391319
 
 6-486698879
-9-1908145488
-RichTextBoxToolbar.xaml;
+9580767642
+App.xaml;RichTextBoxToolbar.xaml;
 
 False
 

@@ -13,7 +13,9 @@ namespace FlashCard
         [STAThread]
         public static void Main()
         {
-            if (SingleInstance<App>.InitializeAsFirstInstance("FlashCard"))
+            //string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
+            string appName = "FashCard";
+            if (SingleInstance<App>.InitializeAsFirstInstance(appName))
             {
                 var application = new App();
                 application.InitializeComponent();
@@ -45,7 +47,7 @@ namespace FlashCard
 
         protected void FlashCardDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show(e.Exception.StackTrace.ToString());
+            MessageBox.Show(e.Exception.ToString());
             e.Handled = true;
         }
 

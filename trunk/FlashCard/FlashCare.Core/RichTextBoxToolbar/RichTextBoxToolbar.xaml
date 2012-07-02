@@ -253,7 +253,7 @@
         <Style x:Key="ComboBoxColorStyle"
                TargetType="{x:Type ComboBox}">
             <Setter Property="FocusVisualStyle"
-                    Value="{StaticResource ComboBoxFocusVisual}" />
+                    Value="{DynamicResource ComboBoxFocusVisual}" />
             <Setter Property="Foreground"
                     Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
             <Setter Property="Background"
@@ -287,7 +287,7 @@
                         		Padding="1">
                         		<Grid Grid.IsSharedSizeScope="true">
                         			<Grid.ColumnDefinitions>
-                        				<ColumnDefinition Width="1" />
+                        				<ColumnDefinition Width="0" />
                         				<ColumnDefinition Width="*" />
                         				<ColumnDefinition SharedSizeGroup="ComboBoxButton"
                         					Width="Auto" />
@@ -295,7 +295,7 @@
                         			<Border x:Name="SelectedItemBorder"
                         				Grid.ColumnSpan="2"
                         				Margin="{TemplateBinding Padding}" />
-                        			<ContentPresenter Visibility="Collapsed"
+                        			<!--<ContentPresenter x:Name="contentPresent" Visibility="Collapsed"
                         				ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                         				ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                         				Content="{TemplateBinding SelectionBoxItem}"
@@ -304,11 +304,14 @@
                         				HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                         				Margin="{TemplateBinding Padding}"
                         				SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                        				VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        				VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
                         			<ToggleButton Grid.ColumnSpan="3"
                         				IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                         				Style="{DynamicResource ComboBoxTransparentButtonStyle}" />
-                        			<TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="A" d:LayoutOverrides="Height"  VerticalAlignment="Top" FontWeight="Bold" FontSize="14.667"/>
+                        			<StackPanel Grid.Column="1" Orientation="Vertical" d:LayoutOverrides="Height" VerticalAlignment="Center">
+                        				<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="A" VerticalAlignment="Top" FontWeight="Bold" FontSize="12" />
+                        				<Rectangle Fill="{Binding SelectedItem.Name, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ComboBox}}}" Height="4" Stroke="Black" StrokeThickness="0.15"/>
+                        			</StackPanel>
                         		</Grid>
                         	</Border>
                         	<Popup x:Name="PART_Popup"
@@ -452,7 +455,7 @@
             		<DropShadowEffect/>
             	</Border.Effect>
                 <WrapPanel Orientation="Horizontal"
-                           VerticalAlignment="Center" Width="320">
+                           VerticalAlignment="Center" Width="292">
                     <!-- Font family combo box  -->
                     <ComboBox x:Name="FontFamilyCombo"
                               Height="23"
@@ -487,7 +490,7 @@
                               MaxDropDownHeight="341.333333333333"
                               HorizontalContentAlignment="Center"
                               Style="{DynamicResource ComboBoxColorStyle}"
-                              Height="23">
+                              Height="23" Width="40">
 
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>

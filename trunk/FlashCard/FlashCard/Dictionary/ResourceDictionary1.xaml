@@ -40,11 +40,10 @@
                          StrokeThickness="2"
                          Width="14"
                          Height="14" />
-                <!--ToolTip="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"-->
+                <!--Tag="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"-->
                 <TextBlock TextWrapping="Wrap"
                            Text="!"
                            
-                           d:LayoutOverrides="Width, Height"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="#FFEBE3E3"

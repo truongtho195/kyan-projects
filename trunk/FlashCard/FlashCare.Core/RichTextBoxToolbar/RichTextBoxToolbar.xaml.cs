@@ -46,22 +46,20 @@ namespace RichTextBoxControl
             this.btnNumberingButton.Click += new RoutedEventHandler(btnListsButton_Click);
             this.rtContent.MouseRightButtonUp += new MouseButtonEventHandler(rtContent_MouseRightButtonUp);
             this.FontFamilyCombo.SelectionChanged += new SelectionChangedEventHandler(FontFamilyCombo_SelectionChanged);
+            this.FontFamilyCombo.PreviewKeyDown += new KeyEventHandler(Combobox_PreviewKeyDown);
             this.FontSizeCombo.SelectionChanged += new SelectionChangedEventHandler(FontSizeCombo_SelectionChanged);
+            this.FontSizeCombo.PreviewKeyDown += new KeyEventHandler(Combobox_PreviewKeyDown);
             this.cbTextColor.SelectionChanged += new SelectionChangedEventHandler(cbTextColor_SelectionChanged);
             this.rtContent.SelectionChanged += new RoutedEventHandler(rtContent_SelectionChanged);
+            this.rtContent.PreviewKeyDown += new KeyEventHandler(rtContent_PreviewKeyDown);
+            this.popup.PreviewKeyDown += new KeyEventHandler(Combobox_PreviewKeyDown);
+            
             this.rtContent.ContextMenu = null;
-            rtContent.LostFocus += new RoutedEventHandler(rtContent_LostFocus);
+
+            
         }
 
-        void rtContent_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void rtContent_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            SetToolbar();
-        }
+      
         #endregion
 
         #region Properties
@@ -250,11 +248,9 @@ namespace RichTextBoxControl
                     MemoryStream ms = new MemoryStream();
                     XamlWriter.Save(e.NewValue as FlowDocument, ms);
                     ms.Seek(0, SeekOrigin.Begin);
-
                     thisControl.rtContent.Document = XamlReader.Load(ms) as FlowDocument;
+                    ms.Dispose();
                 }
-
-
                 thisControl.IsDocumentChanged = false;
             }
             catch (Exception ex)
@@ -263,8 +259,6 @@ namespace RichTextBoxControl
                 Console.WriteLine("||{0}", ex.ToString());
             }
         }
-
-
 
         #endregion
 
@@ -310,8 +304,57 @@ namespace RichTextBoxControl
 
         }
 
+        private void rtContent_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            //Close popup when user press "Esc" Key in RichTextBox Toolbar
+            if (Key.Escape.Equals(e.Key) && this.popup.IsOpen)
+            {
+                this.popup.IsOpen = false;
+            }
+        }
+
+        private void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!this.IsReadOnly)
+            {
+                this.popup.IsOpen = true;
+                this.popup.StaysOpen = false;
+            }
+        }
+
+        private void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.popup.IsOpen = true;
+            this.popup.StaysOpen = false;
+        }
+
+        private void rtContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.popup.StaysOpen = false;
+            this.popup.IsOpen = true;
+        }
+
+        private void rtContent_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            SetToolbar();
+        }
+
+        private void Combobox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Key.Tab.Equals(e.Key)) return;
 
 
+            //Close popup when user press "Esc" or "Enter" Key in combobox of RichtextboxToolbar
+            if (Key.Escape.Equals(e.Key) || Key.Enter.Equals(e.Key))
+            {
+                this.popup.IsOpen = false;
+            }
+        }
+
+        private void tgbtnColor_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            cbTextColor.IsDropDownOpen = false;
+        }
 
         private void btnNormalText_Click(object sender, RoutedEventArgs e)
         {
@@ -399,27 +442,7 @@ namespace RichTextBoxControl
             var textRange = new TextRange(rtContent.Selection.Start, rtContent.Selection.End);
             textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, fontFamily);
         }
-
-        private void rtContent_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (!this.IsReadOnly)
-            {
-                this.popup.IsOpen = true;
-                this.popup.StaysOpen = false;
-            }
-        }
-
-        private void rtContent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.popup.IsOpen = true;
-            this.popup.StaysOpen = false;
-        }
-
-        private void rtContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.popup.StaysOpen = false;
-            this.popup.IsOpen = true;
-        }
+        
         #endregion
 
         #region Methods
@@ -492,7 +515,7 @@ namespace RichTextBoxControl
                 SolidColorBrush color = conv.ConvertFromString(foregroundColor.ToString()) as SolidColorBrush;
                 var colorInfo = this.cbTextColor.ItemsSource.Cast<PropertyInfo>();
 
-                this.cbTextColor.SelectedItem = colorInfo.Count() > 1 ? null : colorInfo.SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
+                this.cbTextColor.SelectedItem = colorInfo.Count() ==0 ? null : colorInfo.SingleOrDefault(x => (new BrushConverter().ConvertFromString(x.Name) as SolidColorBrush).Color == color.Color);
             }
             else
                 this.cbTextColor.SelectedItem = null;
@@ -510,7 +533,6 @@ namespace RichTextBoxControl
             btnRightButton.IsChecked = textRange.GetPropertyValue(FlowDocument.TextAlignmentProperty).Equals(TextAlignment.Right);
             JustifyButton.IsChecked = textRange.GetPropertyValue(FlowDocument.TextAlignmentProperty).Equals(TextAlignment.Justify);
         }
-
 
 
         private string GetImagesXML(FlowDocument flowDocument)
@@ -602,10 +624,7 @@ namespace RichTextBoxControl
             handler(this, new PropertyChangedEventArgs(propertyInfo.Name));
         }
 
-        private void tgbtnColor_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            cbTextColor.IsDropDownOpen = false;
-        }
+      
 
 
 

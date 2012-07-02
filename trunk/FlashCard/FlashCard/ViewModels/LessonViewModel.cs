@@ -183,10 +183,7 @@ namespace FlashCard.ViewModels
             }
         }
         #endregion
-
-
-
-
+        
         public bool IsFromPopup { get; set; }
 
         #region"  IsCategoryHandle"
@@ -247,7 +244,6 @@ namespace FlashCard.ViewModels
             SelectedLesson.BackSideModel.IsCorrect = false;
             SelectedLesson.CategoryModel = CategoryCollection.First();
             SelectedLesson.TypeModel = LessonTypeCollection.First();
-            SelectedLesson.Description = null;
             SelectedLesson.IsEdit = false;
             SelectedLesson.IsNew = true;
             SelectedLesson.IsDelete = false;
@@ -971,6 +967,8 @@ namespace FlashCard.ViewModels
                     var mainViewModel = mainWindow.GetViewModel<MainViewModel>();
                     mainViewModel.GetLesson(lessonCollection.ToList());
                     mainViewModel.ExcuteMainForm();
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                    ViewCore.grdControl.Children.Clear();
                     App.LessonMangeView.Hide();
                 }
                 else
@@ -982,7 +980,6 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 log.Error(ex);
-                throw;
             }
 
         }
