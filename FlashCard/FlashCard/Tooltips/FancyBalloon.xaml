@@ -247,14 +247,13 @@
         					Margin="0,0,5,0">
         					<Button.Style>
   
-        						<Style
-        							TargetType="{x:Type Button}">
+        						<Style TargetType="{x:Type Button}">
         							<Setter Property="FocusVisualStyle"
-        								Value="{StaticResource ButtonFocusVisual}" />
+        								Value="{DynamicResource ButtonFocusVisual}" />
         							<Setter Property="Background"
-        								Value="{StaticResource ButtonNormalBackgroundFill}" />
+                                            Value="{DynamicResource ButtonNormalBackgroundFill}" />
         							<Setter Property="BorderBrush"
-        								Value="{StaticResource ButtonBorder}" />
+                                            Value="{DynamicResource ButtonBorder}" />
         							<Setter Property="Foreground"
         								Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         							<Setter Property="HorizontalContentAlignment"

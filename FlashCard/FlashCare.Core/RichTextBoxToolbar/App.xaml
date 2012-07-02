@@ -5,7 +5,7 @@
              StartupUri="RichTextBoxToolbar.xaml">
     <Application.Resources>
 
-    	<Style x:Key="ButtonFocusVisual">
+    	<!--<Style x:Key="ButtonFocusVisual">
     		<Setter Property="Control.Template">
     			<Setter.Value>
     				<ControlTemplate>
@@ -100,7 +100,7 @@
     			</Setter.Value>
     		</Setter>
     	</Style>
-    	<SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
+    	<SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>-->
          
     	<!--<Style x:Key="ComboBoxTransparentButtonStyle" TargetType="{x:Type ToggleButton}">
     		<Setter Property="MinWidth" Value="0"/>

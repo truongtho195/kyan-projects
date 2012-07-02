@@ -22,7 +22,7 @@ namespace FlashCard.Model
             this.ViewTimeSecond = 8;
             this.IsEnableLoop = true;
             this.IsLimitCard = false;
-            this.LimitCardNum = 0;
+            this.LimitCardNum = 5;
             this.IsShuffle = false;
         }
 

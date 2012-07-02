@@ -303,13 +303,12 @@ namespace FlashCard.ViewModels
             }
             else
             {
-                //sbBackSide
-                //Storyboard sb;
-                //if (SelectedLesson.IsBackSide)
-                //    sb = (Storyboard)_learnView.FindResource("sbBackSide");
-                //else
-                //    sb = (Storyboard)_learnView.FindResource("sbFrontSide");
-                //_learnView.BeginStoryboard(sb);
+                Storyboard sbF;
+                if (SelectedLesson.IsBackSide)
+                    sbF = (Storyboard)_learnView.FindResource("sbToBackSide");
+                else
+                    sbF = (Storyboard)_learnView.FindResource("sbToFrontSide");
+                _learnView.BeginStoryboard(sbF);
 
                 if (App.SetupModel.IsEnableSlideShow)
                 {
@@ -320,7 +319,6 @@ namespace FlashCard.ViewModels
                     stopChangeLesson.Start();
                 }
             }
-
         }
 
 
@@ -625,15 +623,24 @@ namespace FlashCard.ViewModels
                 return false;
             return true;
         }
+
+        bool stopListen = false;
         private void ListenExecute(object param)
         {
             try
             {
+                if (stopListen) return;
+
                 log.Info("||{*} === Listen Command Executed === ");
                 DispatcherTimer stopForListen = new DispatcherTimer();
                 stopForListen = new DispatcherTimer();
                 stopForListen.Interval = new TimeSpan(0, 0, 0, 5);
                 stopForListen.Tick += new EventHandler(waitUserClick_Tick);
+
+                DispatcherTimer waitForListener = new DispatcherTimer();
+                waitForListener.Interval = new TimeSpan(0, 0, 0, 4);
+                waitForListener.Tick +=new EventHandler(waitForListener_Tick);
+
 
                 if (CheckConnectionInternet.IsConnectedToInternet())
                 {
@@ -641,8 +648,10 @@ namespace FlashCard.ViewModels
                     _listenWord = new MediaPlayer();
                     string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", SelectedLesson.LessonName);
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                    stopListen = true;
                     _listenWord.Open(ur);
                     _listenWord.Play();
+
                 }
                 else
                 {
@@ -650,6 +659,7 @@ namespace FlashCard.ViewModels
                     SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                     synthesizer.SpeakAsync(SelectedLesson.LessonName);
                 }
+                waitForListener.Start();
 
                 if ("FullScreen".Equals(param.ToString()) && App.SetupModel.IsEnableSlideShow)
                 {
@@ -659,11 +669,18 @@ namespace FlashCard.ViewModels
             }
             catch (Exception ex)
             {
-                if(log.IsDebugEnabled)
+                if (log.IsDebugEnabled)
                     MessageBox.Show(ex.ToString());
             }
 
 
+        }
+
+        void waitForListener_Tick(object sender, EventArgs e)
+        {
+            stopListen = false;
+            (sender as DispatcherTimer).Stop();
+            
         }
         #endregion
 
@@ -945,9 +962,9 @@ namespace FlashCard.ViewModels
         bool StatusAfterHidden = false;
         private void OnMiniFullScreenExecute(object param)
         {
-            StatusAfterHidden = _timerViewFullScreen != null? this._timerViewFullScreen.IsEnabled:false;
+            StatusAfterHidden = _timerViewFullScreen != null ? this._timerViewFullScreen.IsEnabled : false;
             log.Info("|| {*} === Mini Full Screen Execute Call ===");
-            log.Debug("|| == Is Full Screen Started : "+ IsFullScreenStarted);
+            log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
             if ("Minimized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
             {
                 this._timerViewFullScreen.Stop();
@@ -1091,6 +1108,11 @@ namespace FlashCard.ViewModels
             if (ViewCore.MyNotifyIcon == null || ViewCore.MyNotifyIcon.IsDisposed)
                 ViewCore.MyNotifyIcon = new TaskbarIcon();
 
+            if (_timerPopup == null)
+                _timerPopup = new DispatcherTimer();
+            _timerPopup.Interval = App.SetupModel.TimeOut;
+            _timerPopup.Tick += new EventHandler(_timer_Tick);
+
             if (_waitForClose == null)
                 _waitForClose = new DispatcherTimer();
             _waitForClose.Interval = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
@@ -1101,10 +1123,7 @@ namespace FlashCard.ViewModels
             _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.ViewTimeSecond);
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
 
-            if (_timerPopup == null)
-                _timerPopup = new DispatcherTimer();
-            _timerPopup.Interval = App.SetupModel.TimeOut;
-            _timerPopup.Tick += new EventHandler(_timer_Tick);
+            
 
             //test.Start();
         }
@@ -1117,6 +1136,8 @@ namespace FlashCard.ViewModels
         Stopwatch testTimerPopup = new Stopwatch();
         private void _timer_Tick(object sender, EventArgs e)
         {
+            if (ViewCore.MyNotifyIcon.IsDisposed)
+                ViewCore.MyNotifyIcon = new TaskbarIcon();
             log.DebugFormat("|| =============Summary=============");
             log.DebugFormat("|| == Timer tick : {0}", _timerPopup.IsEnabled);
             testTimerPopup.Start();
@@ -1172,6 +1193,7 @@ namespace FlashCard.ViewModels
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
+                _balloon = null;
                 testTimeView.Stop();
                 log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();
