@@ -294,6 +294,8 @@
                             </TextBlock.LayoutTransform>
                         </TextBlock>
 
+                        <!--<FlowDocumentReader x:Name="tbDescription"
+                                            Document="{Binding SelectedLesson.Description}" />-->
                         <RichTextBoxControl:RichTextBoxToolbar x:Name="tbDescription"
                                                                Foreground="White"
                                                                Document="{Binding SelectedLesson.Description}"

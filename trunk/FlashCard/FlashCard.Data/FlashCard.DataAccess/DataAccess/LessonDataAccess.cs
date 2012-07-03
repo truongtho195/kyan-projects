@@ -232,7 +232,7 @@ namespace FlashCard.DataAccess
         public List<LessonModel> GetAllWithRelation()
         {
             List<LessonModel> list = new List<LessonModel>();
-            
+
             SQLiteCommand sqlCommand = null;
             SQLiteDataReader reader = null;
 
@@ -368,14 +368,14 @@ namespace FlashCard.DataAccess
                 log.Error(CatchException(ex));
                 if (log.IsDebugEnabled)
                     System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
-            
+
                 throw;
             }
             finally
             {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-            
+
             }
 
             return result;
@@ -443,7 +443,7 @@ namespace FlashCard.DataAccess
             {
                 sqlConnect = new SQLiteConnection(ConnectionString);
                 sqlConnect.Open();
-                
+
                 sqlCommand = new SQLiteCommand(sqlConnect);
                 SQLiteParameter param = new SQLiteParameter("@lessonID", lessonModel.LessonID);
                 sqlCommand.CommandText = sql;
@@ -515,6 +515,8 @@ namespace FlashCard.DataAccess
 
         private void MappingToEntity(LessonModel lessonModel, SQLiteCommand sqlCommand)
         {
+            if (!lessonModel.IsNew)
+                sqlCommand.Parameters.Add(new SQLiteParameter("@LessonID", lessonModel.LessonID));
             sqlCommand.Parameters.Add(new SQLiteParameter("@LessonName", lessonModel.LessonName));
             sqlCommand.Parameters.Add(new SQLiteParameter("@Description", FlowDocumentConverter.ConvertFlowDocumentToSUBStringFormat(lessonModel.Description)));
             sqlCommand.Parameters.Add(new SQLiteParameter("@TypeID", lessonModel.TypeModel.TypeID));

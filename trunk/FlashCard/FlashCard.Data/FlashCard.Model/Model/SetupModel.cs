@@ -24,6 +24,7 @@ namespace FlashCard.Model
             this.IsLimitCard = false;
             this.LimitCardNum = 5;
             this.IsShuffle = false;
+            this.IsNew = true;
         }
 
         #region Properties
@@ -50,13 +51,14 @@ namespace FlashCard.Model
         #region Overide
         protected override void OnViewTimeSecondChanged()
         {
-
+            base.OnViewTimeSecondChanged();
             var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
             this._timeOut = new TimeSpan(0, 0, timeOutSecond);
         }
 
         protected override void OnDistanceTimeSecondChanged()
         {
+            base.OnDistanceTimeSecondChanged();
             var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
             this._timeOut = new TimeSpan(0, 0, timeOutSecond);
 

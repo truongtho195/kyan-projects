@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\BackSideDataAccess.cs" />
     <Compile Include="DataAccess\CategoryDataAccess.cs" />
+    <Compile Include="DataAccess\SetupDataAccess.cs" />
     <Compile Include="DataAccess\TypeDataAccess.cs" />
     <Compile Include="DataAccess\LessonDataAccess.cs" />
     <Compile Include="DataAccess\DataAccessBase.cs" />

@@ -68,11 +68,11 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region "  LessonCollection"
-        private ObservableCollection<LessonModel> _lessonCollection;
+        private List<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the LessonCollection.
         /// </summary>
-        public ObservableCollection<LessonModel> LessonCollection
+        public List<LessonModel> LessonCollection
         {
             get { return _lessonCollection; }
             set
@@ -129,33 +129,33 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        private List<CategoryModel> _categoryList;
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public List<CategoryModel> CategoryList
-        {
-            get { return _categoryList; }
-            set
-            {
-                if (_categoryList != value)
-                {
-                    _categoryList = value;
-                    RaisePropertyChanged(() => CategoryList);
-                    SetCheckedCategoryCollection();
-                }
-            }
-        }
+        //private List<CategoryModel> _categoryList;
+        ///// <summary>
+        ///// Gets or sets the property value.
+        ///// </summary>
+        //public List<CategoryModel> CategoryList
+        //{
+        //    get { return _categoryList; }
+        //    set
+        //    {
+        //        if (_categoryList != value)
+        //        {
+        //            _categoryList = value;
+        //            RaisePropertyChanged(() => CategoryList);
+        //            SetCheckedCategoryCollection();
+        //        }
+        //    }
+        //}
 
-        private void SetCheckedCategoryCollection()
-        {
-            if (CategoryList != null)
-                foreach (var item in CategoryList)
-                {
-                    var cate = CategoryCollection.Where(x => x.CategoryID == item.CategoryID).SingleOrDefault();
-                    cate.IsChecked = true;
-                }
-        }
+        //private void SetCheckedCategoryCollection()
+        //{
+        //    if (CategoryList != null)
+        //        foreach (var item in CategoryList)
+        //        {
+        //            var cate = CategoryCollection.Where(x => x.CategoryID == item.CategoryID).SingleOrDefault();
+        //            cate.IsChecked = true;
+        //        }
+        //}
 
         #endregion
 
@@ -195,10 +195,9 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                LessonDataAccess lessonDA = new LessonDataAccess();
                 foreach (var item in CategoryCollection.Where(x => x.IsChecked))
                 {
-                    var lesson = lessonDA.GetAllWithRelation().Where(x => x.CategoryModel.CategoryID == item.CategoryID);
+                    var lesson = LessonCollection.Where(x => x.CategoryModel.CategoryID == item.CategoryID);
                     //Check condition if user set Lesson user Know => remove this item lesson
                     if (lesson != null && lesson.Count() > 0)
                     {
@@ -207,16 +206,21 @@ namespace FlashCard.ViewModels
                 }
                 if (lst != null && lst.Count > 0)
                 {
-                    LessonCollection = new ObservableCollection<LessonModel>(lst);
+                    LessonCollection = new List<LessonModel>(lst);
                 }
 
                 //Handle Setup
                 App.SetupModel = SelectedSetupModel;
+                SetupDataAccess setupDA = new SetupDataAccess();
+
+                if (App.SetupModel.IsNew)
+                    setupDA.Insert(App.SetupModel);
+                else if (App.SetupModel.IsEdit)
+                    setupDA.Update(App.SetupModel);
             }
             catch (Exception ex)
             {
                 log.Error(ex);
-                throw;
             }
 
             ButtonClickHandler.Invoke("OkExecute");
@@ -266,11 +270,7 @@ namespace FlashCard.ViewModels
             log.Info("|| {*} === InitialData ===");
             try
             {
-                if (App.SetupModel == null)
-                    SelectedSetupModel = new SetupModel();
-                else
-                    SelectedSetupModel = App.SetupModel;
-
+                SelectedSetupModel = App.SetupModel;
                 CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
                 var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
                 CategoryCollection = new ObservableCollection<CategoryModel>(cate);
@@ -278,7 +278,6 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 log.Error(ex);
-                throw;
             }
 
 

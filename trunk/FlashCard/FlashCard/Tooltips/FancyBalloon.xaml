@@ -26,7 +26,7 @@
                                       Value="0.95" />
                 <SplineDoubleKeyFrame KeyTime="00:00:03"
                                       Value="0.95" />
-                				<!--<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
+                <!--<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="FadeBack">
@@ -157,8 +157,8 @@
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
             <BeginStoryboard Storyboard="{StaticResource FadeOut}"
                              x:Name="FadeOut_BeginStoryboard" />
-            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard"/>
-            
+            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
+
         </EventTrigger>
 
         <!--<EventTrigger RoutedEvent="FrameworkElement.Loaded">
@@ -194,330 +194,366 @@
                 <RowDefinition />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
-            <Grid x:Name="grWrapper" HorizontalAlignment="Stretch" Grid.RowSpan="3">
-        		<Border BorderBrush="White" BorderThickness="0.5" Background="#FF346CA1"/>
-        		<Border Margin="1">
-        			<Border.Background>
-        				<RadialGradientBrush Center="0.88,0.771" GradientOrigin="0.828,0.714" RadiusY="-2.229" RadiusX="-0.881">
-        					<RadialGradientBrush.RelativeTransform>
-        						<TransformGroup>
-        							<ScaleTransform CenterY="0.598" CenterX="0.872" ScaleY="1" ScaleX="1"/>
-        							<SkewTransform AngleY="0" AngleX="0" CenterY="0.598" CenterX="0.872"/>
-        							<RotateTransform Angle="0.378" CenterY="0.598" CenterX="0.872"/>
-        							<TranslateTransform X="-0.021" Y="0.043"/>
-        						</TransformGroup>
-        					</RadialGradientBrush.RelativeTransform>
-        					<GradientStop Color="#15000000" Offset="0.512"/>
-        					<GradientStop Offset="0.514" Color="#7FFFFFFF"/>
-        					<GradientStop Offset="0.856" Color="#06FFFFFF"/>
-        				</RadialGradientBrush>
-        			</Border.Background>
-        			<Border.OpacityMask>
-        				<LinearGradientBrush EndPoint="0.078,-0.192" StartPoint="0.667,1.154">
-        					<GradientStop Color="#00000000" Offset="0.482"/>
-        					<GradientStop Offset="0.838" Color="#7DFFFFFF"/>
-        				</LinearGradientBrush>
-        			</Border.OpacityMask>
-        		</Border>
-        	</Grid>
-          
-        	<Border x:Name="bdHeader1"
-        		BorderThickness="1"
-        		Margin="5,0"
-        		CornerRadius="0,0,5,5">
-        		<Border.Effect>
-        			<DropShadowEffect BlurRadius="3"
-        				ShadowDepth="4"
-        				Opacity="0.5"
-        				Direction="292" />
-        		</Border.Effect>
-        		<Grid>
-        			<StackPanel x:Name="stSystembutton"
-        				Orientation="Horizontal"
-        				VerticalAlignment="Center"
-        				d:LayoutOverrides="Width"
-        				HorizontalAlignment="Right"
-        				Margin="0,0,5,0">
-        				<Button x:Name="btnFullScreen"
-        					Command="{Binding FullScreenCommand}"
-        					CommandParameter="Popup"
-        					Width="20"
-        					Background="#00000000"
-        					BorderBrush="#00003C74"
-        					Height="20"
-        					Margin="0,0,5,0">
-        					<Button.Style>
-  
-        						<Style TargetType="{x:Type Button}">
-        							<Setter Property="FocusVisualStyle"
-        								Value="{DynamicResource ButtonFocusVisual}" />
-        							<Setter Property="Background"
+            <Grid x:Name="grWrapper"
+                  HorizontalAlignment="Stretch"
+                  Grid.RowSpan="3">
+                <Border BorderBrush="White"
+                        BorderThickness="0.5"
+                        Background="#FF346CA1" />
+                <Border Margin="1">
+                    <Border.Background>
+                        <RadialGradientBrush Center="0.88,0.771"
+                                             GradientOrigin="0.828,0.714"
+                                             RadiusY="-2.229"
+                                             RadiusX="-0.881">
+                            <RadialGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.598"
+                                                    CenterX="0.872"
+                                                    ScaleY="1"
+                                                    ScaleX="1" />
+                                    <SkewTransform AngleY="0"
+                                                   AngleX="0"
+                                                   CenterY="0.598"
+                                                   CenterX="0.872" />
+                                    <RotateTransform Angle="0.378"
+                                                     CenterY="0.598"
+                                                     CenterX="0.872" />
+                                    <TranslateTransform X="-0.021"
+                                                        Y="0.043" />
+                                </TransformGroup>
+                            </RadialGradientBrush.RelativeTransform>
+                            <GradientStop Color="#15000000"
+                                          Offset="0.512" />
+                            <GradientStop Offset="0.514"
+                                          Color="#7FFFFFFF" />
+                            <GradientStop Offset="0.856"
+                                          Color="#06FFFFFF" />
+                        </RadialGradientBrush>
+                    </Border.Background>
+                    <Border.OpacityMask>
+                        <LinearGradientBrush EndPoint="0.078,-0.192"
+                                             StartPoint="0.667,1.154">
+                            <GradientStop Color="#00000000"
+                                          Offset="0.482" />
+                            <GradientStop Offset="0.838"
+                                          Color="#7DFFFFFF" />
+                        </LinearGradientBrush>
+                    </Border.OpacityMask>
+                </Border>
+            </Grid>
+
+            <Border x:Name="bdHeader1"
+                    BorderThickness="1"
+                    Margin="5,0"
+                    CornerRadius="0,0,5,5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="3"
+                                      ShadowDepth="4"
+                                      Opacity="0.5"
+                                      Direction="292" />
+                </Border.Effect>
+                <Grid>
+                    <StackPanel x:Name="stSystembutton"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                d:LayoutOverrides="Width"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,5,0">
+                        <Button x:Name="btnFullScreen"
+                                Command="{Binding FullScreenCommand}"
+                                CommandParameter="Popup"
+                                Width="20"
+                                Background="#00000000"
+                                BorderBrush="#00003C74"
+                                Height="20"
+                                Margin="0,0,5,0">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="FocusVisualStyle"
+                                            Value="{DynamicResource ButtonFocusVisual}" />
+                                    <Setter Property="Background"
                                             Value="{DynamicResource ButtonNormalBackgroundFill}" />
-        							<Setter Property="BorderBrush"
+                                    <Setter Property="BorderBrush"
                                             Value="{DynamicResource ButtonBorder}" />
-        							<Setter Property="Foreground"
-        								Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-        							<Setter Property="HorizontalContentAlignment"
-        								Value="Center" />
-        							<Setter Property="VerticalContentAlignment"
-        								Value="Center" />
-        							<Setter Property="Template">
-        								<Setter.Value>
-        									<ControlTemplate TargetType="{x:Type Button}">
-        										<Border x:Name="border"
-        											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-        											Margin="{TemplateBinding Padding}"
-        											VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-        											Width="{TemplateBinding Width}"
-        											Height="{TemplateBinding Height}"
-        											BorderThickness="{TemplateBinding BorderThickness}"
-        											Cursor="Hand"
-        											Background="{TemplateBinding Background}"
-        											BorderBrush="{TemplateBinding BorderBrush}"
-        											Padding="1">
-        											<ContentPresenter x:Name="contentPresenter"
-        												RecognizesAccessKey="True"
-        												SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-        												HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-        												VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-        												Margin="0" />
-        										</Border>
-        										<ControlTemplate.Triggers>
-        											<Trigger Property="IsMouseOver"
-        												Value="True">
-        												<Setter Property="Background"
-        													TargetName="border"
-        													Value="#FFDEDEDE" />
-        											</Trigger>
-        											<Trigger Property="IsKeyboardFocused"
-        												Value="true" />
-        											<Trigger Property="ToggleButton.IsChecked"
-        												Value="true" />
-        											<Trigger Property="IsEnabled"
-        												Value="false">
-        												<Setter Property="Foreground"
-        													Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-        											</Trigger>
-        											<Trigger Property="IsPressed"
-        												Value="True">
-        												<Setter Property="Background"
-        													TargetName="border"
-        													Value="#FF72B1EB" />
-        												<Setter Property="Foreground"
-        													Value="White" />
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Center" />
+                                    <Setter Property="VerticalContentAlignment"
+                                            Value="Center" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="border"
+                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        Margin="{TemplateBinding Padding}"
+                                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                        Width="{TemplateBinding Width}"
+                                                        Height="{TemplateBinding Height}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Cursor="Hand"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        Padding="1">
+                                                    <ContentPresenter x:Name="contentPresenter"
+                                                                      RecognizesAccessKey="True"
+                                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                      Margin="0" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver"
+                                                             Value="True">
+                                                        <Setter Property="Background"
+                                                                TargetName="border"
+                                                                Value="#FFDEDEDE" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsKeyboardFocused"
+                                                             Value="true" />
+                                                    <Trigger Property="ToggleButton.IsChecked"
+                                                             Value="true" />
+                                                    <Trigger Property="IsEnabled"
+                                                             Value="false">
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed"
+                                                             Value="True">
+                                                        <Setter Property="Background"
+                                                                TargetName="border"
+                                                                Value="#FF72B1EB" />
+                                                        <Setter Property="Foreground"
+                                                                Value="White" />
 
-        											</Trigger>
-        										</ControlTemplate.Triggers>
-        									</ControlTemplate>
-        								</Setter.Value>
-        							</Setter>
-        						</Style>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Image Source="/FlashCard;component/Images/1337833571_full_screen.png"
+                                   Stretch="Fill" />
+                        </Button>
+                        <Button x:Name="btnHiddenPopup"
+                                Command="{Binding HiddenPopupCommand}"
+                                CommandParameter="Hidden"
+                                Width="20"
+                                Style="{DynamicResource EmptyButton}"
+                                Background="#00000000"
+                                BorderBrush="#00003C74"
+                                Height="20"
+                                Margin="5,0,0,0">
+                            <Image Width="20"
+                                   Source="/Images/Hidden.png"
+                                   Stretch="Fill"
+                                   ToolTip="Hide Balloon"
+                                   x:Name="imgClose1"
+                                   Height="20"
+                                   d:LayoutOverrides="VerticalMargin" />
+                        </Button>
+                        <Button x:Name="btnClose"
+                                Command="{Binding CancelCommand}"
+                                CommandParameter="Popup"
+                                Width="20"
+                                Style="{DynamicResource EmptyButton}"
+                                Margin="5,0,0,0"
+                                Height="20">
+                            <Image Width="16"
+                                   Source="/Images/Close.png"
+                                   Stretch="Fill"
+                                   ToolTip="Close Balloon"
+                                   Height="16"
+                                   d:LayoutOverrides="VerticalMargin" />
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="btnListen"
+                            Command="{Binding ListenCommand}"
+                            CommandParameter="Popup"
+                            HorizontalAlignment="Left"
+                            Margin="10,0,0,0"
+                            Width="25"
+                            VerticalAlignment="Center"
+                            Style="{DynamicResource EmptyButton}"
+                            Height="25">
+                        <Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png"
+                               Stretch="Fill"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid x:Name="grLayoutContent"
+                  Grid.Row="1">
+                <Grid x:Name="BackSideWrapper"
+                      MinHeight="100"
+                      RenderTransformOrigin="0.5,0.5"
+                      Visibility="Collapsed"
+                      d:IsHidden="True"
+                      Margin="0"
+                      VerticalAlignment="Center">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
+                                                           Document="{Binding SelectedLesson.BackSideModel.BackSideDetail}"
+                                                           Background="Transparent"
+                                                           BorderBrush="Transparent"
+                                                           IsReadOnly="True"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="White"
+                                                           MinWidth="290"
+                                                           MinHeight="50"
+                                                           Margin="5"
+                                                           Grid.Row="1"
+                                                           Width="290" />
 
-        					</Button.Style>
-        					<Image Source="/FlashCard;component/Images/1337833571_full_screen.png"
-        						Stretch="Fill" />
-        				</Button>
-        				<Button x:Name="btnHiddenPopup"
-        					Command="{Binding HiddenPopupCommand}"
-        					CommandParameter="Hidden"
-        					Width="20"
-        					Style="{DynamicResource EmptyButton}"
-        					Background="#00000000"
-        					BorderBrush="#00003C74"
-        					Height="20"
-        					Margin="5,0,0,0">
-        					<Image Width="20"
-        						Source="/Images/Hidden.png"
-        						Stretch="Fill"
-        						ToolTip="Hide Balloon"
-        						x:Name="imgClose1"
-        						Height="20"
-        						d:LayoutOverrides="VerticalMargin" />
-        				</Button>
-        				<Button x:Name="btnClose"
-        					Command="{Binding CancelCommand}"
-        					CommandParameter="Popup"
-        					Width="20"
-        					Style="{DynamicResource EmptyButton}"
-        					Margin="5,0,0,0"
-        					Height="20">
-        					<Image Width="16"
-        						Source="/Images/Close.png"
-        						Stretch="Fill"
-        						ToolTip="Close Balloon"
-        						Height="16"
-        						d:LayoutOverrides="VerticalMargin" />
-        				</Button>
-        			</StackPanel>
-        			<Button x:Name="btnListen"
-        				Command="{Binding ListenCommand}"
-        				CommandParameter="Popup"
-        				HorizontalAlignment="Left"
-        				Margin="10,0,0,0"
-        				Width="25"
-        				VerticalAlignment="Center"
-        				Style="{DynamicResource EmptyButton}"
-        				Height="25">
-        				<Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png"
-        					Stretch="Fill"
-        					HorizontalAlignment="Center"
-        					VerticalAlignment="Center" />
-        			</Button>
-        		</Grid>
-        	</Border>
-        	<Grid x:Name="grLayoutContent" Grid.Row="1">
-        		<Grid x:Name="BackSideWrapper"
-        			MinHeight="100"
-        			RenderTransformOrigin="0.5,0.5"
-        			Visibility="Collapsed" d:IsHidden="True" Margin="0" VerticalAlignment="Center">
-        			<Grid.RenderTransform>
-        				<TransformGroup>
-        					<ScaleTransform />
-        					<SkewTransform />
-        					<RotateTransform />
-        					<TranslateTransform />
-        				</TransformGroup>
-        			</Grid.RenderTransform>
-        			<Grid.RowDefinitions>
-        				<RowDefinition />
-        			</Grid.RowDefinitions>
-        			<richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
-        				Document="{Binding SelectedLesson.BackSideModel.BackSideDetail}"
-        				Background="Transparent"
-        				BorderBrush="Transparent"
-        				IsReadOnly="True"
-        				HorizontalAlignment="Center"
-        				VerticalAlignment="Center"
-        				Foreground="White"
-        				MinWidth="290"
-        				MinHeight="50"
-        				Margin="5"
-        				Grid.Row="1"
-        				Width="290" />
 
+                </Grid>
+                <Grid x:Name="FrontSideWrapper"
+                      MinHeight="100"
+                      RenderTransformOrigin="0.5,0.5"
+                      Visibility="Visible"
+                      VerticalAlignment="Center">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="grdPhrase"
+                          MinWidth="290"
+                          MinHeight="25"
+                          Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Grid.Row="1"
+                          Margin="5"
+                          VerticalAlignment="Center">
 
-        		</Grid>
-        		<Grid x:Name="FrontSideWrapper"
-        			MinHeight="100"
-        			RenderTransformOrigin="0.5,0.5"
-        			Visibility="Visible" VerticalAlignment="Center">
-        			<Grid.RenderTransform>
-        				<TransformGroup>
-        					<ScaleTransform />
-        					<SkewTransform />
-        					<RotateTransform />
-        					<TranslateTransform />
-        				</TransformGroup>
-        			</Grid.RenderTransform>
-        			<Grid.RowDefinitions>
-        				<RowDefinition />
-        			</Grid.RowDefinitions>
-        			<Grid x:Name="grdPhrase"
-        				MinWidth="290"
-        				MinHeight="25"
-        				Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-        				Grid.Row="1"
-        				Margin="5" VerticalAlignment="Center">
+                        <StackPanel d:LayoutOverrides="Width">
+                            <TextBlock TextWrapping="Wrap"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding SelectedLesson.LessonName}"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       FontSize="21.333"
+                                       FontWeight="Bold" />
 
-        				<StackPanel d:LayoutOverrides="Width">
-        					<TextBlock TextWrapping="Wrap"
-        						VerticalAlignment="Center"
-        						Text="{Binding SelectedLesson.LessonName}"
-        						Foreground="White"
-        						HorizontalAlignment="Center"
-        						FontSize="21.333"
-        						FontWeight="Bold" />
-        					<richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
-        						Document="{Binding SelectedLesson.Description, Mode=OneWay}"
-        						Background="Transparent"
-        						BorderBrush="Transparent"
-        						HorizontalAlignment="Center"
-        						VerticalAlignment="Center"
-        						IsReadOnly="True"
-        						Foreground="White"
-        						FontSize="16"
-        						MinHeight="25"
-        						MinWidth="290"
-        						Width="290" />
-        				</StackPanel>
+                            <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+                                                                   Document="{Binding SelectedLesson.Description, Mode=OneWay}"
+                                                                   Background="Transparent"
+                                                                   BorderBrush="Transparent"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   IsReadOnly="True"
+                                                                   Foreground="White"
+                                                                   FontSize="16"
+                                                                   MinHeight="25"
+                                                                   MinWidth="290"
+                                                                   Width="290" />
+                        </StackPanel>
 
-        			</Grid>
-        			<Grid x:Name="grdListChoice"
-        				Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-        				Grid.Row="1"
-        				RenderTransformOrigin="0.5,0.5" d:IsHidden="True">
-        				<ListBox Margin="5,0"
-        					Background="Transparent"
-        					ItemsSource="{Binding SelectedLesson.BackSideCollection}"
-        					ItemTemplate="{DynamicResource DataTemplate1}" />
-        			</Grid>
-        		</Grid>
-        	</Grid>
-          
-        	<Grid x:Name="grdBottom"
-        		Grid.Row="2">
-        		<Button x:Name="btnChangeFace"
-        			Command="{Binding ChangeSideCommand}"
-        			CommandParameter="Popup"
-        			VerticalAlignment="Center"
-        			BorderBrush="{x:Null}"
-        			d:LayoutOverrides="GridBox"
-        			HorizontalAlignment="Right"
-        			Margin="0,0,5,0" Style="{DynamicResource EmptyButton}" Width="26" Height="26">
-        			<Button.Background>
-        				<LinearGradientBrush EndPoint="0.5,1"
-        					StartPoint="0.5,0">
-        					<GradientStop Color="White"
-        						Offset="0" />
-        					<GradientStop Color="White"
-        						Offset="0.9" />
-        				</LinearGradientBrush>
-        			</Button.Background>
-        			<Image Stretch="Fill">
-        				<Image.Style>
-        					<Style TargetType="{x:Type Image}">
-        						<Setter Property="Source"
-        							Value="/Images/Arrow_Right.png" />
-        						<Setter Property="ToolTip"
-        							Value="Change to Back Side" />
-        						<Style.Triggers>
-        							<DataTrigger Binding="{Binding SelectedLesson.IsBackSide}"
-        								Value="True">
-        								<Setter Property="Source"
-        									Value="/Images/Arrow_Left.png" />
-        								<Setter Property="ToolTip"
-        									Value="Change to Front Side" />
-        							</DataTrigger>
-        						</Style.Triggers>
-        					</Style>
-        				</Image.Style>
-        			</Image>
-        		</Button>
-        		<StackPanel Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
-        			HorizontalAlignment="Left"
-        			Orientation="Horizontal"
-        			d:LayoutOverrides="Height"
-        			Margin="5,0,0,0" VerticalAlignment="Center">
-        			<Button x:Name="btnBack"
-        				ToolTip="Back"
-        				Command="{Binding NextBackLessonCommand}"
-        				CommandParameter="Back"
-        				Style="{DynamicResource EmptyButton}"
-        				Margin="0,0,5,0" Width="25" Height="25">
-        				<Image Source="/FlashCard;component/Images/Back.png"
-        					Stretch="Fill" />
-        			</Button>
-        			<Button x:Name="btnNext"
-        				ToolTip="Next"
-        				Command="{Binding NextBackLessonCommand}"
-        				CommandParameter="Next"
-        				Margin="0"
-        				Style="{DynamicResource EmptyButton}" Width="25" Height="25">
-        				<Image Source="/FlashCard;component/Images/Next.png"
-        					Stretch="Fill" />
-        			</Button>
-        		</StackPanel>
-        	</Grid>
+                    </Grid>
+                    <Grid x:Name="grdListChoice"
+                          Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Grid.Row="1"
+                          RenderTransformOrigin="0.5,0.5"
+                          d:IsHidden="True">
+                        <ListBox Margin="5,0"
+                                 Background="Transparent"
+                                 ItemsSource="{Binding SelectedLesson.BackSideCollection}"
+                                 ItemTemplate="{DynamicResource DataTemplate1}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="grdBottom"
+                  Grid.Row="2">
+                <Button x:Name="btnChangeFace"
+                        Command="{Binding ChangeSideCommand}"
+                        CommandParameter="Popup"
+                        VerticalAlignment="Center"
+                        BorderBrush="{x:Null}"
+                        d:LayoutOverrides="GridBox"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,5,0"
+                        Style="{DynamicResource EmptyButton}"
+                        Width="26"
+                        Height="26">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1"
+                                             StartPoint="0.5,0">
+                            <GradientStop Color="White"
+                                          Offset="0" />
+                            <GradientStop Color="White"
+                                          Offset="0.9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Image Stretch="Fill">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Source"
+                                        Value="/Images/Arrow_Right.png" />
+                                <Setter Property="ToolTip"
+                                        Value="Change to Back Side" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLesson.IsBackSide}"
+                                                 Value="True">
+                                        <Setter Property="Source"
+                                                Value="/Images/Arrow_Left.png" />
+                                        <Setter Property="ToolTip"
+                                                Value="Change to Front Side" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Button>
+                <StackPanel Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal"
+                            d:LayoutOverrides="Height"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center">
+                    <Button x:Name="btnBack"
+                            ToolTip="Back"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Back"
+                            Style="{DynamicResource EmptyButton}"
+                            Margin="0,0,5,0"
+                            Width="25"
+                            Height="25">
+                        <Image Source="/FlashCard;component/Images/Back.png"
+                               Stretch="Fill" />
+                    </Button>
+                    <Button x:Name="btnNext"
+                            ToolTip="Next"
+                            Command="{Binding NextBackLessonCommand}"
+                            CommandParameter="Next"
+                            Margin="0"
+                            Style="{DynamicResource EmptyButton}"
+                            Width="25"
+                            Height="25">
+                        <Image Source="/FlashCard;component/Images/Next.png"
+                               Stretch="Fill" />
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 

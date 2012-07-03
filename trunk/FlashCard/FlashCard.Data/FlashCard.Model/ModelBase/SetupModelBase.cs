@@ -7,7 +7,6 @@ namespace FlashCard.Model
 {
     public class SetupModelBase : ModelBase
     {
-
         #region Variables
         public enum ShowType
         {
@@ -17,6 +16,30 @@ namespace FlashCard.Model
         #endregion
 
         #region Properties
+
+        #region SetupID
+        private int _setupID;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public int SetupID
+        {
+            get { return _setupID; }
+            set
+            {
+                if (_setupID != value)
+                {
+                    this.OnSetupIDChanging(value);
+                    _setupID = value;
+                    RaisePropertyChanged(() => SetupID);
+                    this.OnSetupIDChanged();
+                }
+            }
+        }
+
+        protected virtual void OnSetupIDChanging(int value) { }
+        protected virtual void OnSetupIDChanged() { }
+        #endregion
 
         #region ViewTime
         private int _viewTimeSecond;
@@ -39,7 +62,7 @@ namespace FlashCard.Model
         }
 
         protected virtual void OnViewTimeSecondChanging(int value) { }
-        protected virtual void OnViewTimeSecondChanged() { }
+        protected virtual void OnViewTimeSecondChanged() { OnChanged(); }
         #endregion
 
         #region DistanceTime
@@ -64,12 +87,11 @@ namespace FlashCard.Model
         }
 
         protected virtual void OnDistanceTimeSecondChanging(int value) { }
-        protected virtual void OnDistanceTimeSecondChanged() { }
+        protected virtual void OnDistanceTimeSecondChanged() { OnChanged(); }
 
 
 
         #endregion
-
 
         #region IsLimitCard
         private bool _isLimitCard;
@@ -178,57 +200,59 @@ namespace FlashCard.Model
         }
         #endregion
 
-
-
-
-
-        private ShowType _sideShow;
+        #region IsShuffle
+        private bool _isShuffle;
         /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public ShowType SideShow
-        {
-            get { return _sideShow; }
-            set
-            {
-                if (_sideShow != value)
-                {
-                    this.OnSideShowChanging(value);
-                    _sideShow = value;
-                    RaisePropertyChanged(() => SideShow);
-                    this.OnSideShowChanged();
-                }
-            }
-        }
-
-        protected virtual void OnSideShowChanging(ShowType value) { }
-        protected virtual void OnSideShowChanged() { }
-
-
-
-        private bool _IsShuffle;
-        /// <summary>
-        /// Gets or sets the property value.
+        /// Gets or sets the IsEnableLoop.
         /// </summary>
         public bool IsShuffle
         {
-            get { return _IsShuffle; }
+            get { return _isShuffle; }
             set
             {
-                if (_IsShuffle != value)
+                if (_isShuffle != value)
                 {
-                    this.OnIsShuffleChanging(value);
-                    _IsShuffle = value;
+                    OnIsShuffleChanging(value);
+                    _isShuffle = value;
                     RaisePropertyChanged(() => IsShuffle);
-                    this.OnIsShuffleChanged();
+                    OnIsShufflechanged();
                 }
             }
         }
 
         protected virtual void OnIsShuffleChanging(bool value) { }
-        protected virtual void OnIsShuffleChanged() { }
+        protected virtual void OnIsShufflechanged()
+        {
+            OnChanged();
+        }
+        #endregion
 
+        #region IsEnableSoundForShow
+        private bool _isEnableSoundForShow;
+        /// <summary>
+        /// Gets or sets the IsEnableLoop.
+        /// </summary>
+        public bool IsEnableSoundForShow
+        {
+            get { return _isEnableSoundForShow; }
+            set
+            {
+                if (_isEnableSoundForShow != value)
+                {
+                    OnIsEnableSoundForShowChanging(value);
+                    _isEnableSoundForShow = value;
+                    RaisePropertyChanged(() => IsEnableSoundForShow);
+                    OnIsEnableSoundForShowchanged();
+                }
+            }
+        }
 
+        protected virtual void OnIsEnableSoundForShowChanging(bool value) { }
+        protected virtual void OnIsEnableSoundForShowchanged()
+        {
+            OnChanged();
+        }
+        #endregion
 
         #endregion
 
