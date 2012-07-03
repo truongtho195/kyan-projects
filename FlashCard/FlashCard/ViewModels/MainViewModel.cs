@@ -294,12 +294,12 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             if ("Popup".Equals(param.ToString()))
             {
-                //Storyboard sb;
-                //if (SelectedLesson.IsBackSide)
-                //    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
-                //else
-                //    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
-                //_balloon.BeginStoryboard(sb);
+                Storyboard sb;
+                if (SelectedLesson.IsBackSide)
+                    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+                else
+                    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
+                _balloon.BeginStoryboard(sb);
             }
             else
             {
@@ -1066,17 +1066,27 @@ namespace FlashCard.ViewModels
             log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                SetLesson();
-                _balloon = new FancyBalloon();
-                ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
-                this.IsPopupStarted = true;
-                //RaisePropertyChanged(() => SelectedLesson);
-                var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
-                TimerForClosePopup(timerSpan);
-                log.DebugFormat("|| =================================\n");
-                log.DebugFormat("|| ==> Is Popup Showing");
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    SetLesson();
+                    _balloon = new FancyBalloon();
+                    MediaPlayer media = new MediaPlayer();
+                    var ur = new Uri(@"/Sounds/Notification.wav");
+                    media.Open(ur);
+                    media.Play();
+                    ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                    this.IsPopupStarted = true;
+                    //RaisePropertyChanged(() => SelectedLesson);
+                    var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
+                    TimerForClosePopup(timerSpan);
+                    log.DebugFormat("|| =================================\n");
+                    log.DebugFormat("|| ==> Is Popup Showing");
+                }));
+                
             }
         }
+
+      
 
         /// <summary>
         /// Initial For Wait to close

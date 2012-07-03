@@ -940,8 +940,10 @@ namespace FlashCard.ViewModels
                 if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
                 {
                     _studyConfigView = new StudyConfigView();
+                    var studyConfigViewModel = _studyConfigView.GetViewModel<StudyConfigViewModel>();
+                    studyConfigViewModel.LessonCollection =  this.LessonCollection.ToList();
                     ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
-                    _studyConfigView.GetViewModel<StudyConfigViewModel>().ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+                    studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
                     ViewCore.grdControl.Children.Add(_studyConfigView);
                 }
                 else

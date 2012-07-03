@@ -314,7 +314,6 @@ namespace RichTextBoxControl
         {
             if (Key.Tab.Equals(e.Key)) return;
 
-
             //Close popup when user press "Esc" or "Enter" Key in combobox of RichtextboxToolbar
             if (Key.Escape.Equals(e.Key) || Key.Enter.Equals(e.Key))
             {

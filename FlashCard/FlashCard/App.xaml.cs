@@ -2,6 +2,8 @@
 using System.Windows;
 using FlashCard.Model;
 using Microsoft.Shell;
+using FlashCard.DataAccess;
+using System.Linq;
 
 namespace FlashCard
 {
@@ -30,6 +32,13 @@ namespace FlashCard
         {
             string filePath = "FlashCardLog-" +DateTime.Now.ToString("yyyyMMdd") + ".txt";
             log4net.GlobalContext.Properties["LogName"] = filePath;
+
+            SetupDataAccess setupDataAccess = new SetupDataAccess();
+            var setup= setupDataAccess.GetAll();
+            if (setup.Count==0)
+                SetupModel = new SetupModel();
+            else
+                SetupModel = setup.FirstOrDefault();
 
 
             LessonMangeView = new LessonManageView();
