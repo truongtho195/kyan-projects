@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Hardcodet.Wpf.TaskbarNotification;
 
 namespace FlashCard
@@ -70,6 +60,13 @@ namespace FlashCard
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
     
     }
+    ~ FancyBalloon()
+    {
+       
+            
+    }
+
+
 
 
     /// <summary>
@@ -81,6 +78,7 @@ namespace FlashCard
     {
       e.Handled = true;
       isClosing = true;
+      GC.SuppressFinalize(this);
     }
 
 
@@ -122,7 +120,6 @@ namespace FlashCard
       pp.IsOpen = false;
      
     }
-
-   
+  
   }
 }
