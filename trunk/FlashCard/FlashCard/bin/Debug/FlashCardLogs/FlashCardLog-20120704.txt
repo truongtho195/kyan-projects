@@ -276,3 +276,25 @@ DEBUG 2012-07-04 10:43:41,459 167221ms MainViewModel          SetLesson         
 DEBUG 2012-07-04 10:43:41,553 167315ms MainViewModel          <_timer_Tick>b__1  - || =================================
 
 DEBUG 2012-07-04 10:43:41,553 167315ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+This is HeaderINFO  2012-07-04 10:49:53,623 25828ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-04 10:49:58,232 30438ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-04 10:49:58,373 30578ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-04 10:50:29,764 61969ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-04 10:50:29,764 61969ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-04 10:50:29,764 61969ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-07-04 10:50:29,764 61969ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-07-04 10:50:29,764 61969ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-04 10:50:30,045 62251ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-04 10:50:30,061 62266ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+This is HeaderINFO  2012-07-04 10:52:12,297 29906ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-04 10:52:14,469 32078ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-04 10:52:14,594 32203ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-04 10:52:29,610 47219ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-04 10:52:29,610 47219ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-04 10:52:29,610 47219ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:15
+DEBUG 2012-07-04 10:52:29,610 47219ms MainViewModel          _timer_Tick        - || == TimeOut :15
+DEBUG 2012-07-04 10:52:29,610 47219ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-04 10:52:29,954 47563ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-04 10:52:29,954 47563ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing

@@ -965,6 +965,9 @@ namespace FlashCard.ViewModels
         {
             log.Info("|| {*} === Initialize MainViewModel ===");
             _listenWord = new MediaPlayer();
+            
+            
+            
 
             test.Interval = new TimeSpan(0, 0, 1);
             test.Tick += new EventHandler(test_Tick);
@@ -1068,14 +1071,12 @@ namespace FlashCard.ViewModels
             log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
                     if(App.SetupModel.IsEnableSoundForShow)
                         _soundForShow.Play();
-                    //media.Open(ur);
-                    //media.Play();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
