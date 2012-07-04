@@ -112,7 +112,7 @@ namespace FlashCard.DataAccess
         {
 
             bool result = false;
-            string sql = "insert into Setups(ViewTimeSecond,DistanceTimeSecond,IsLimitCard,LimitCardNum,IsEnableSlideShow,IsEnableLoop) values (@ViewTimeSecond,@DistanceTimeSecond,@IsLimitCard,@LimitCardNum,@IsEnableSlideShow,@IsEnableLoop)";
+            string sql = "insert into Setups(ViewTimeSecond,DistanceTimeSecond,IsLimitCard,LimitCardNum,IsEnableSlideShow,IsEnableLoop,IsEnableSoundForShow) values (@ViewTimeSecond,@DistanceTimeSecond,@IsLimitCard,@LimitCardNum,@IsEnableSlideShow,@IsEnableLoop,@IsEnableSoundForShow)";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -148,7 +148,7 @@ namespace FlashCard.DataAccess
         public bool Update(SetupModel setupModel)
         {
             bool result = false;
-            string sql = "update Setups set ViewTimeSecond=@ViewTimeSecond,DistanceTimeSecond=@DistanceTimeSecond,IsLimitCard=@IsLimitCard,LimitCardNum=@LimitCardNum,IsEnableSlideShow=@IsEnableSlideShow, IsEnableLoop = @IsEnableLoop where SetupID = @SetupID";
+            string sql = "update Setups set ViewTimeSecond=@ViewTimeSecond,DistanceTimeSecond=@DistanceTimeSecond,IsLimitCard=@IsLimitCard,LimitCardNum=@LimitCardNum,IsEnableSlideShow=@IsEnableSlideShow, IsEnableLoop = @IsEnableLoop,IsEnableSoundForShow=@IsEnableSoundForShow where SetupID = @SetupID";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -229,6 +229,7 @@ namespace FlashCard.DataAccess
             setupModel.LimitCardNum = int.Parse(reader["LimitCardNum"].ToString());
             setupModel.IsEnableSlideShow = bool.Parse(reader["IsEnableSlideShow"].ToString());
             setupModel.IsEnableLoop = bool.Parse(reader["IsEnableLoop"].ToString());
+            setupModel.IsEnableSlideShow = bool.Parse(reader["IsEnableSoundForShow"] == System.DBNull.Value ?"false" : reader["IsEnableSoundForShow"].ToString());
             setupModel.ResetModelBase();
             return setupModel;
         }
@@ -244,6 +245,7 @@ namespace FlashCard.DataAccess
             sqlCommand.Parameters.Add(new SQLiteParameter("@LimitCardNum", setupModel.LimitCardNum));
             sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableSlideShow", setupModel.IsEnableSlideShow));
             sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableLoop", setupModel.IsEnableLoop));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableSoundForShow", setupModel.IsEnableLoop));
         }
         #endregion
     }

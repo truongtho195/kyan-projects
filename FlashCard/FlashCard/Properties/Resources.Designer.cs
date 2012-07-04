@@ -59,5 +59,11 @@ namespace FlashCard.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.IO.UnmanagedMemoryStream Notification {
+            get {
+                return ResourceManager.GetStream("Notification", resourceCulture);
+            }
+        }
     }
 }

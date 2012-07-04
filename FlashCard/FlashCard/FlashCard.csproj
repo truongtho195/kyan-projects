@@ -98,7 +98,7 @@
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\EventToCommand.cs" />
-    <Compile Include="UserControls\RichTextBoxControl.cs" />
+    <Compile Include="UserControls\BindableRichTextBox.cs" />
     <Compile Include="ViewModels\StudyConfigViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

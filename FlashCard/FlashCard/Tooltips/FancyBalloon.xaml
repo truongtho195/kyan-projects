@@ -6,8 +6,10 @@
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+             xmlns:uc="clr-namespace:FlashCard.UserControls"
              xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:converter="clr-namespace:FlashCard.Converters"
+             xmlns:localHelper="clr-namespace:FlashCard.Helper"
              x:Name="me">
     <UserControl.Resources>
         <!--#Region Converters-->
@@ -454,6 +456,7 @@
                                        FontSize="21.333"
                                        FontWeight="Bold" />
 
+
                             <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
                                                                    Background="Transparent"
@@ -466,6 +469,23 @@
                                                                    MinHeight="25"
                                                                    MinWidth="290"
                                                                    Width="290" />
+
+
+                            <!--<uc:BindableRichTextBox x:Name="tbWords"
+                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
+                                                    VirtualizingStackPanel.IsVirtualizing="False"
+                                                    VirtualizingStackPanel.VirtualizationMode="Standard"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    IsReadOnly="True"
+                                                    Foreground="White"
+                                                    FontSize="16"
+                                                    MinHeight="25"
+                                                    MinWidth="290"
+                                                    Width="290" />-->
+
                         </StackPanel>
 
                     </Grid>
