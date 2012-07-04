@@ -4,6 +4,7 @@ using FlashCard.Model;
 using Microsoft.Shell;
 using FlashCard.DataAccess;
 using System.Linq;
+using FlashCard.Views;
 
 namespace FlashCard
 {
@@ -30,13 +31,13 @@ namespace FlashCard
 
         public App()
         {
-            var currentUserName= Environment.UserName;
+            var currentUserName = Environment.UserName;
 
-            log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt",currentUserName,DateTime.Now.ToString("yyyyMMdd")) ;
+            log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
 
             SetupDataAccess setupDataAccess = new SetupDataAccess();
-            var setup= setupDataAccess.GetAll();
-            if (setup.Count==0)
+            var setup = setupDataAccess.GetAll();
+            if (setup.Count == 0)
                 SetupModel = new SetupModel();
             else
                 SetupModel = setup.FirstOrDefault();
@@ -44,6 +45,10 @@ namespace FlashCard
 
             LessonMangeView = new LessonManageView();
             LessonMangeView.Show();
+
+            //Window1 window = new Window1();
+            //window.Show();
+
         }
         public static SetupModel SetupModel;
         public static LessonManageView LessonMangeView;

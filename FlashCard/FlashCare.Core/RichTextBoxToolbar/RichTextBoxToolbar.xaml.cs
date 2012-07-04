@@ -56,7 +56,6 @@ namespace RichTextBoxControl
             this.popup.PreviewKeyDown += new KeyEventHandler(Combobox_PreviewKeyDown);
 
             this.rtContent.ContextMenu = null;
-
         }
 
 
@@ -196,7 +195,6 @@ namespace RichTextBoxControl
         /// </summary>
         private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
             //ver 2
             try
             {

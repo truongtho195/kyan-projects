@@ -564,7 +564,6 @@ namespace FlashCard.ViewModels
                 waitForListener.Interval = new TimeSpan(0, 0, 0, 2);
                 waitForListener.Tick +=new EventHandler(waitForListener_Tick);
 
-
                 if (CheckConnectionInternet.IsConnectedToInternet())
                 {
                     log.DebugFormat("|| == Listen with google translate : {0}", SelectedLesson.LessonName);
@@ -574,7 +573,6 @@ namespace FlashCard.ViewModels
                     stopListen = true;
                     _listenWord.Open(ur);
                     _listenWord.Play();
-
                 }
                 else
                 {
@@ -965,10 +963,6 @@ namespace FlashCard.ViewModels
         {
             log.Info("|| {*} === Initialize MainViewModel ===");
             _listenWord = new MediaPlayer();
-            
-            
-            
-
             test.Interval = new TimeSpan(0, 0, 1);
             test.Tick += new EventHandler(test_Tick);
         }
@@ -1071,13 +1065,14 @@ namespace FlashCard.ViewModels
             log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
                     if(App.SetupModel.IsEnableSoundForShow)
                         _soundForShow.Play();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                    GC.Collect();
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
                     var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);

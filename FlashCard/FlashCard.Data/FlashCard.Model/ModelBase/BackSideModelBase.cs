@@ -86,7 +86,7 @@ namespace FlashCard.Model
             }
         }
 
-        protected virtual void OnBackSideDetailChanging(FlowDocument value) { }
+        protected virtual void OnBackSideDetailChanging(FlowDocument value) { if (_backSideDetail != null)_backSideDetail.Blocks.Clear(); }
         protected virtual void OnBackSideDetailChanged() { }
 
         /// <summary>

@@ -10,7 +10,9 @@
              xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:localHelper="clr-namespace:FlashCard.Helper"
-             x:Name="me">
+             x:Name="me"
+             Width="320"
+             Height="200">
     <UserControl.Resources>
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
@@ -57,33 +59,21 @@
         <Storyboard x:Key="sbChangeToBack">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
                                            Storyboard.TargetName="grdFrame">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1"
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3"
+                                      Value="350" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6"
                                       Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="FrontSideWrapper">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
                                            Storyboard.TargetName="FrontSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
-                                        Value="{x:Static Visibility.Collapsed}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Hidden}" />
             </ObjectAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
                                            Storyboard.TargetName="BackSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="BackSideWrapper">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1"
-                                      Value="0" />
-            </DoubleAnimationUsingKeyFrames>
             <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
                                            Storyboard.TargetName="grdListChoice">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7"
@@ -103,38 +93,43 @@
         <Storyboard x:Key="sbChangeToFront">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
                                            Storyboard.TargetName="grdFrame">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1"
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3"
+                                      Value="320" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6"
                                       Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="BackSideWrapper">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
             </DoubleAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
                                            Storyboard.TargetName="BackSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
-                                        Value="{x:Static Visibility.Collapsed}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Hidden}" />
             </ObjectAnimationUsingKeyFrames>
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
                                            Storyboard.TargetName="FrontSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.5"
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="FrontSideWrapper">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5"
-                                      Value="316" />
-                <EasingDoubleKeyFrame KeyTime="0:0:1"
-                                      Value="0" />
-            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
         <!--#end region Storyboard-->
 
         <!--#Region DataTemplate-->
+        <ControlTemplate x:Key="FlowDocumentPageViewerTemplate"
+                         TargetType="{x:Type FlowDocumentPageViewer}">
+            <Border Margin="{TemplateBinding Padding}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                <AdornerDecorator ClipToBounds="True">
+                    <DocumentPageView PageNumber="0"
+                                      DocumentViewerBase.IsMasterPage="True"
+                                      KeyboardNavigation.TabIndex="1"
+                                      KeyboardNavigation.TabNavigation="Local"
+                                      KeyboardNavigation.IsTabStop="False" />
+                </AdornerDecorator>
+            </Border>
+        </ControlTemplate>
+
         <!--<attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"
                                          Command="{Binding FancyBallonMouseEnterCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}},Path=me}" />
@@ -389,44 +384,8 @@
             </Border>
             <Grid x:Name="grLayoutContent"
                   Grid.Row="1">
-                <Grid x:Name="BackSideWrapper"
-                      MinHeight="100"
-                      RenderTransformOrigin="0.5,0.5"
-                      Visibility="Collapsed"
-                      d:IsHidden="True"
-                      Margin="0"
-                      VerticalAlignment="Center">
-                    <Grid.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </Grid.RenderTransform>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <richTextBoxControl:RichTextBoxToolbar x:Name="tblWordBackSide"
-                                                           Document="{Binding SelectedLesson.BackSideModel.BackSideDetail}"
-                                                           Background="Transparent"
-                                                           BorderBrush="Transparent"
-                                                           IsReadOnly="True"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           Foreground="White"
-                                                           MinWidth="290"
-                                                           MinHeight="50"
-                                                           Margin="5"
-                                                           Grid.Row="1"
-                                                           Width="290" />
-
-
-                </Grid>
                 <Grid x:Name="FrontSideWrapper"
-                      MinHeight="100"
                       RenderTransformOrigin="0.5,0.5"
-                      Visibility="Visible"
                       VerticalAlignment="Center">
                     <Grid.RenderTransform>
                         <TransformGroup>
@@ -449,6 +408,7 @@
 
                         <StackPanel d:LayoutOverrides="Width">
                             <TextBlock TextWrapping="Wrap"
+                                       x:Name="tbLessonName"
                                        VerticalAlignment="Center"
                                        Text="{Binding SelectedLesson.LessonName}"
                                        Foreground="White"
@@ -456,9 +416,9 @@
                                        FontSize="21.333"
                                        FontWeight="Bold" />
 
-
-                            <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+                            <!--<richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
+                                                                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                                                                    Background="Transparent"
                                                                    BorderBrush="Transparent"
                                                                    HorizontalAlignment="Center"
@@ -468,23 +428,21 @@
                                                                    FontSize="16"
                                                                    MinHeight="25"
                                                                    MinWidth="290"
-                                                                   Width="290" />
+                                                                   Width="290" />-->
 
-
-                            <!--<uc:BindableRichTextBox x:Name="tbWords"
-                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
-                                                    VirtualizingStackPanel.IsVirtualizing="False"
-                                                    VirtualizingStackPanel.VirtualizationMode="Standard"
-                                                    Background="Transparent"
-                                                    BorderBrush="Transparent"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    IsReadOnly="True"
-                                                    Foreground="White"
-                                                    FontSize="16"
-                                                    MinHeight="25"
-                                                    MinWidth="290"
-                                                    Width="290" />-->
+                            <FlowDocumentPageViewer  x:Name="tbWords"
+                                                     Document="{Binding SelectedLesson.Description,Mode=OneTime}"
+                                                     Background="Transparent"
+                                                     BorderBrush="Transparent"
+                                                     HorizontalAlignment="Center"
+                                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                                     VerticalAlignment="Center"
+                                                     Foreground="White"
+                                                     Margin="5"
+                                                     Grid.Row="1"
+                                                     Template="{StaticResource FlowDocumentPageViewerTemplate}"
+                                                     MinWidth="290"
+                                                     MinHeight="50" />
 
                         </StackPanel>
 
@@ -499,6 +457,52 @@
                                  ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                  ItemTemplate="{DynamicResource DataTemplate1}" />
                     </Grid>
+                </Grid>
+                <Grid x:Name="BackSideWrapper"
+                      MinHeight="100"
+                      RenderTransformOrigin="0.5,0.5"
+                      Margin="0"
+                      VerticalAlignment="Center"
+                      Visibility="Hidden">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--<richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
+                                                            Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            HorizontalAlignment="Stretch"
+                                                            VerticalAlignment="Stretch"
+                                                            VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                                            Foreground="White"
+                                                            Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
+                                                            Margin="5"
+                                                            Grid.Row="1"
+                                                            MinWidth="290"
+                                                            MinHeight="50" />-->
+                    <FlowDocumentPageViewer  x:Name="tblWordBackSide"
+                                             Background="Transparent"
+                                             BorderBrush="Transparent"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             Foreground="White"
+                                             VirtualizingStackPanel.IsVirtualizing="True"
+                                             Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="5"
+                                             Template="{StaticResource FlowDocumentPageViewerTemplate}"
+                                             Grid.Row="1"
+                                             MinWidth="290"
+                                             MinHeight="50" />
+
+
+
                 </Grid>
             </Grid>
 
