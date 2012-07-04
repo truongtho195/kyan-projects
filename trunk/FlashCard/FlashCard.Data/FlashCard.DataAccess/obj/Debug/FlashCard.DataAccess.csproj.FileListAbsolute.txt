@@ -90,7 +90,6 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAc
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.DataAccess.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\FlashCard.Model.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\log4net.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Data.SQLite.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCard.Data\FlashCard.DataAccess\bin\Debug\System.Windows.Interactivity.dll

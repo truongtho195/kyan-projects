@@ -41,6 +41,22 @@
                             </Style>
                         </MenuItem.Style>
                     </MenuItem>
+                    <MenuItem Header="Cancel Studey"
+                              Command="{Binding CancelCommand}">
+                        <MenuItem.Style>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="CommandParameter"
+                                        Value="Popup" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsPopupStarted}"
+                                                 Value="False">
+                                        <Setter Property="CommandParameter"
+                                                Value="FullScreen" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
                     <MenuItem Header="Exit"
                               Command="{Binding ExitCommand}" />
                 </ContextMenu>

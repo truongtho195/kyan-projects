@@ -276,13 +276,13 @@
                               VerticalAlignment="Center"
                               Margin="5,0,0,0" />
                     <CheckBox Content="Shuffle Study"
-                              IsChecked="{Binding SelectedSetupModel.IsShuffle}"
+                              IsChecked="{Binding SelectedSetupModel.IsShuffle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               HorizontalAlignment="Left"
                               Grid.Row="3"
                               VerticalAlignment="Center"
                               Margin="5,0,0,0" />
                     <CheckBox Content="Sound when popup show"
-                    	IsChecked="{Binding SelectedSetupModel.IsEnableSoundForShow}"
+                    	IsChecked="{Binding SelectedSetupModel.IsEnableSoundForShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     	HorizontalAlignment="Left"
                     	Grid.Row="4"
                     	VerticalAlignment="Center"
