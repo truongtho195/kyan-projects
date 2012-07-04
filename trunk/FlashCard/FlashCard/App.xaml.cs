@@ -30,8 +30,9 @@ namespace FlashCard
 
         public App()
         {
-            string filePath = "FlashCardLog-" +DateTime.Now.ToString("yyyyMMdd") + ".txt";
-            log4net.GlobalContext.Properties["LogName"] = filePath;
+            var currentUserName= Environment.UserName;
+
+            log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt",currentUserName,DateTime.Now.ToString("yyyyMMdd")) ;
 
             SetupDataAccess setupDataAccess = new SetupDataAccess();
             var setup= setupDataAccess.GetAll();

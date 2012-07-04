@@ -561,7 +561,7 @@ namespace FlashCard.ViewModels
                 stopForListen.Tick += new EventHandler(waitUserClick_Tick);
 
                 DispatcherTimer waitForListener = new DispatcherTimer();
-                waitForListener.Interval = new TimeSpan(0, 0, 0, 4);
+                waitForListener.Interval = new TimeSpan(0, 0, 0, 2);
                 waitForListener.Tick +=new EventHandler(waitForListener_Tick);
 
 
