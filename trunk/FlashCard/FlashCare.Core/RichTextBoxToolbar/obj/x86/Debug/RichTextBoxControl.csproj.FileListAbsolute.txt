@@ -65,6 +65,5 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.dll.config
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.dll.config
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\RichTextBoxToolbar\bin\Debug\RichTextBoxControl.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxControl.dll

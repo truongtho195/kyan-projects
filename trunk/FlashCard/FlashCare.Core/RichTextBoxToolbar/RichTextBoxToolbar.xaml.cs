@@ -212,6 +212,7 @@ namespace RichTextBoxControl
                 {
                     //Document is not amused by null :)
                     thisControl.rtContent.Document = new FlowDocument();
+                    
                 }
                 else if (e.NewValue != e.OldValue)
                 {

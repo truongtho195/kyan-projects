@@ -21,6 +21,8 @@ using System.Speech.Synthesis;
 using System.Threading;
 using System.ComponentModel;
 using log4net;
+using System.Reflection;
+using System.Media;
 
 namespace FlashCard.ViewModels
 {
@@ -61,7 +63,7 @@ namespace FlashCard.ViewModels
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
         private MediaPlayer _listenWord;
-
+        SoundPlayer _soundForShow = new SoundPlayer(FlashCard.Properties.Resources.Notification);
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -1070,10 +1072,11 @@ namespace FlashCard.ViewModels
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
-                    MediaPlayer media = new MediaPlayer();
-                    var ur = new Uri(@"/Sounds/Notification.wav");
-                    media.Open(ur);
-                    media.Play();
+                    App.SetupModel.IsEnableSoundForShow = true;
+                    if(App.SetupModel.IsEnableSoundForShow)
+                        _soundForShow.Play();
+                    //media.Open(ur);
+                    //media.Play();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
