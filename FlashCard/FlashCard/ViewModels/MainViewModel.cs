@@ -37,6 +37,7 @@ namespace FlashCard.ViewModels
 
         public void ExcuteMainForm()
         {
+            IsPopupStarted = true;
             if (App.SetupModel.IsEnableSlideShow)
             {
                 InitialTimer();
@@ -722,7 +723,6 @@ namespace FlashCard.ViewModels
             {
                 IsPopupStarted = false;
 
-
                 if ("FullScreen".Equals(param.ToString()))
                 {
                     _timerViewFullScreen = null;
@@ -1072,7 +1072,6 @@ namespace FlashCard.ViewModels
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
-                    App.SetupModel.IsEnableSoundForShow = true;
                     if(App.SetupModel.IsEnableSoundForShow)
                         _soundForShow.Play();
                     //media.Open(ur);
@@ -1085,7 +1084,6 @@ namespace FlashCard.ViewModels
                     log.DebugFormat("|| =================================\n");
                     log.DebugFormat("|| ==> Is Popup Showing");
                 }));
-                
             }
         }
 

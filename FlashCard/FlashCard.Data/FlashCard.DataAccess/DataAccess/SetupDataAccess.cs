@@ -6,8 +6,6 @@ using FlashCard.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using MVVMHelper.Common;
-using log4net;
-
 
 namespace FlashCard.DataAccess
 {
@@ -21,7 +19,7 @@ namespace FlashCard.DataAccess
         #endregion
 
         #region Variable
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -56,9 +54,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -94,9 +92,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -112,7 +110,7 @@ namespace FlashCard.DataAccess
         {
 
             bool result = false;
-            string sql = "insert into Setups(ViewTimeSecond,DistanceTimeSecond,IsLimitCard,LimitCardNum,IsEnableSlideShow,IsEnableLoop,IsEnableSoundForShow) values (@ViewTimeSecond,@DistanceTimeSecond,@IsLimitCard,@LimitCardNum,@IsEnableSlideShow,@IsEnableLoop,@IsEnableSoundForShow)";
+            string sql = "insert into Setups(ViewTimeSecond,DistanceTimeSecond,IsLimitCard,LimitCardNum,IsEnableSlideShow,IsEnableLoop,IsShuffle,IsEnableSoundForShow) values (@ViewTimeSecond,@DistanceTimeSecond,@IsLimitCard,@LimitCardNum,@IsEnableSlideShow,@IsEnableLoop,@IsShuffle,@IsEnableSoundForShow)";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -128,9 +126,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
 
                 throw;
             }
@@ -148,7 +146,7 @@ namespace FlashCard.DataAccess
         public bool Update(SetupModel setupModel)
         {
             bool result = false;
-            string sql = "update Setups set ViewTimeSecond=@ViewTimeSecond,DistanceTimeSecond=@DistanceTimeSecond,IsLimitCard=@IsLimitCard,LimitCardNum=@LimitCardNum,IsEnableSlideShow=@IsEnableSlideShow, IsEnableLoop = @IsEnableLoop,IsEnableSoundForShow=@IsEnableSoundForShow where SetupID = @SetupID";
+            string sql = "update Setups set ViewTimeSecond=@ViewTimeSecond,DistanceTimeSecond=@DistanceTimeSecond,IsLimitCard=@IsLimitCard,LimitCardNum=@LimitCardNum,IsEnableSlideShow=@IsEnableSlideShow, IsEnableLoop = @IsEnableLoop,IsShuffle=@IsShuffle,IsEnableSoundForShow=@IsEnableSoundForShow where SetupID = @SetupID";
             SQLiteCommand sqlCommand = null;
             SQLiteConnection sqlConnect = null;
             try
@@ -165,9 +163,9 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 result = false;
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -201,9 +199,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -229,7 +227,8 @@ namespace FlashCard.DataAccess
             setupModel.LimitCardNum = int.Parse(reader["LimitCardNum"].ToString());
             setupModel.IsEnableSlideShow = bool.Parse(reader["IsEnableSlideShow"].ToString());
             setupModel.IsEnableLoop = bool.Parse(reader["IsEnableLoop"].ToString());
-            setupModel.IsEnableSlideShow = bool.Parse(reader["IsEnableSoundForShow"] == System.DBNull.Value ?"false" : reader["IsEnableSoundForShow"].ToString());
+            setupModel.IsShuffle = bool.Parse(reader["IsShuffle"] == System.DBNull.Value ? "false" : reader["IsShuffle"].ToString());
+            setupModel.IsEnableSoundForShow = bool.Parse(reader["IsEnableSoundForShow"] == System.DBNull.Value ? "false" : reader["IsEnableSoundForShow"].ToString());
             setupModel.ResetModelBase();
             return setupModel;
         }
@@ -245,7 +244,8 @@ namespace FlashCard.DataAccess
             sqlCommand.Parameters.Add(new SQLiteParameter("@LimitCardNum", setupModel.LimitCardNum));
             sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableSlideShow", setupModel.IsEnableSlideShow));
             sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableLoop", setupModel.IsEnableLoop));
-            sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableSoundForShow", setupModel.IsEnableLoop));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@IsShuffle", setupModel.IsShuffle));
+            sqlCommand.Parameters.Add(new SQLiteParameter("@IsEnableSoundForShow", setupModel.IsEnableSoundForShow));
         }
         #endregion
     }

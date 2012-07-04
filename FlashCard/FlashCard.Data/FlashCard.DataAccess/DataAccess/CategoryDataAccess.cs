@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using FlashCard.Model;
 using System.Collections.ObjectModel;
-using log4net;
 
 namespace FlashCard.DataAccess
 {
@@ -17,7 +16,7 @@ namespace FlashCard.DataAccess
         #endregion
 
         #region Variables
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -53,10 +52,10 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
-                throw;
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //throw;
             }
             finally
             {
@@ -92,9 +91,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -143,9 +142,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -200,7 +199,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
+                //log.Error(CatchException(ex));
                 throw;
             }
             finally
@@ -255,7 +254,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
+                //log.Error(CatchException(ex));
                 throw;
             }
             finally
@@ -288,10 +287,14 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
+                //log.Error(CatchException(ex));
+            
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
-                throw;
             }
 
             return result;
@@ -318,7 +321,7 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
+                //log.Error(CatchException(ex));
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 throw;
@@ -358,11 +361,14 @@ namespace FlashCard.DataAccess
             catch (Exception ex)
             {
                 result = false;
-                log.Error(CatchException(ex));
+                //log.Error(CatchException(ex));
+                throw;
+            }
+            finally
+            {
                 sqlConnect.Dispose();
                 sqlCommand.Dispose();
                 sqlCommandLesson.Dispose();
-                throw;
             }
             return result;
         }

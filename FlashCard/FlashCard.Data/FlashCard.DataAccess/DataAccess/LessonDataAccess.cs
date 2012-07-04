@@ -6,7 +6,6 @@ using FlashCard.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using MVVMHelper.Common;
-using log4net;
 
 
 namespace FlashCard.DataAccess
@@ -21,7 +20,7 @@ namespace FlashCard.DataAccess
         #endregion
 
         #region Variable
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         #endregion
 
         #region Properties
@@ -56,9 +55,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -108,9 +107,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -146,9 +145,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -215,9 +214,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -271,9 +270,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -322,9 +321,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -365,9 +364,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
 
                 throw;
             }
@@ -418,9 +417,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally
@@ -456,9 +455,9 @@ namespace FlashCard.DataAccess
             }
             catch (Exception ex)
             {
-                log.Error(CatchException(ex));
-                if (log.IsDebugEnabled)
-                    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
+                //log.Error(CatchException(ex));
+                //if (log.IsDebugEnabled)
+                //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
                 throw;
             }
             finally

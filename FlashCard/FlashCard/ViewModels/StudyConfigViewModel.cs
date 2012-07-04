@@ -49,11 +49,11 @@ namespace FlashCard.ViewModels
 
 
         #region "  CategoryCollection"
-        private ObservableCollection<CategoryModel> _categoryCollection;
+        private List<CategoryModel> _categoryCollection;
         /// <summary>
         /// Gets or sets the CategoryCollection.
         /// </summary>
-        public ObservableCollection<CategoryModel> CategoryCollection
+        public List<CategoryModel> CategoryCollection
         {
             get { return _categoryCollection; }
             set
@@ -271,9 +271,9 @@ namespace FlashCard.ViewModels
             try
             {
                 SelectedSetupModel = App.SetupModel;
-                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
-                CategoryCollection = new ObservableCollection<CategoryModel>(cate);
+                //CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
+                //var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
+                //CategoryCollection = new ObservableCollection<CategoryModel>(cate);
             }
             catch (Exception ex)
             {

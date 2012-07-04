@@ -164,7 +164,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         #region CategoryList
         private List<CategoryModel> _categoryList;
         /// <summary>
@@ -942,6 +941,8 @@ namespace FlashCard.ViewModels
                     _studyConfigView = new StudyConfigView();
                     var studyConfigViewModel = _studyConfigView.GetViewModel<StudyConfigViewModel>();
                     studyConfigViewModel.LessonCollection =  this.LessonCollection.ToList();
+                    var cateWithHasLesson = this.CategoryCollection.Where(x => x.LessonNum > 0);
+                    studyConfigViewModel.CategoryCollection = cateWithHasLesson.ToList();
                     ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
                     studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
                     ViewCore.grdControl.Children.Add(_studyConfigView);
@@ -1116,7 +1117,7 @@ namespace FlashCard.ViewModels
                 LessonTypeCollection = new List<TypeModel>(typeDataAccess.GetAll());
 
                 CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAll());
+                CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAllWithRelation());
 
                 CategoryList = CategoryCollection.ToList();
 
