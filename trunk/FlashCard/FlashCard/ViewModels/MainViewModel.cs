@@ -1071,7 +1071,7 @@ namespace FlashCard.ViewModels
             log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
