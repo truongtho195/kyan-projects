@@ -1,0 +1,1162 @@
+This is HeaderINFO  2012-07-05 09:31:54,559 24714ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 09:31:57,223 27378ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 09:31:57,475 27630ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 09:32:22,725 52880ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:32:22,757 52912ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:32:22,757 52912ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:32:22,757 52912ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:32:22,757 52912ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 09:32:23,387 53542ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:32:23,387 53542ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:32:38,519 68674ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:32:38,519 68674ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:32:38,519 68674ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:32:38,534 68689ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:32:38,534 68689ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:32:47,976 78131ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:32:47,976 78131ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:32:47,976 78131ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:32:47,976 78131ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:32:47,976 78131ms MainViewModel          SetLesson          - || == Current Item : 2/93
+DEBUG 2012-07-05 09:32:48,055 78210ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:32:48,055 78210ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:33:03,176 93331ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:33:03,176 93331ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:33:03,176 93331ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:33:03,176 93331ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:33:03,176 93331ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:33:13,129 103284ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:33:13,129 103284ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:33:13,129 103284ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:33:13,129 103284ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:33:13,129 103284ms MainViewModel          SetLesson          - || == Current Item : 3/93
+DEBUG 2012-07-05 09:33:13,207 103362ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:33:13,207 103362ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:33:28,255 118410ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:33:28,255 118410ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:33:28,255 118410ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 09:33:28,255 118410ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:33:28,255 118410ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:33:38,208 128363ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:33:38,208 128363ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:33:38,208 128363ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:33:38,208 128363ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:33:38,208 128363ms MainViewModel          SetLesson          - || == Current Item : 4/93
+DEBUG 2012-07-05 09:33:38,286 128441ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:33:38,286 128441ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:33:53,333 143488ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:33:53,333 143488ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:33:53,333 143488ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:33:53,333 143488ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:33:53,333 143488ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:34:03,286 153441ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:34:03,286 153441ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:34:03,286 153441ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:34:03,286 153441ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:34:03,286 153441ms MainViewModel          SetLesson          - || == Current Item : 5/93
+DEBUG 2012-07-05 09:34:03,427 153582ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:34:03,427 153582ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+This is HeaderINFO  2012-07-05 09:43:07,073 22221ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 09:43:13,543 28691ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 09:43:13,699 28847ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 09:43:38,718 53866ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:43:38,718 53866ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:43:38,718 53866ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:43:38,718 53866ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:43:38,718 53866ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 09:43:39,046 54195ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:43:39,046 54195ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:43:47,813 62961ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:43:47,829 62977ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:43:48,095 63243ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:43:48,735 63883ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:43:49,017 64165ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:43:49,173 64321ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:43:50,876 66024ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:43:51,189 66337ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:43:51,329 66478ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:43:52,923 68072ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:43:53,080 68228ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:43:55,033 70181ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:43:55,314 70463ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:43:55,455 70603ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+This is HeaderINFO  2012-07-05 09:45:13,935 29769ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 09:45:16,169 32004ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 09:45:16,310 32145ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 09:45:41,327 57161ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:45:41,327 57161ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:45:41,327 57161ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:45:41,327 57161ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:45:41,327 57161ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 09:45:41,624 57458ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:45:41,624 57458ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:45:44,749 60583ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:45:46,811 62646ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:45:47,061 62896ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:45:47,420 63255ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:45:47,686 63521ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:45:47,874 63708ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:45:48,999 64833ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:45:49,202 65036ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:46:05,217 81052ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:46:05,217 81052ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:46:05,217 81052ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :23
+DEBUG 2012-07-05 09:46:05,217 81052ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:46:05,217 81052ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:46:14,218 90052ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:46:14,218 90052ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:46:14,218 90052ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:46:14,218 90052ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:46:14,218 90052ms MainViewModel          SetLesson          - || == Current Item : 2/93
+DEBUG 2012-07-05 09:46:14,296 90130ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:46:14,296 90130ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:46:29,296 105130ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:46:29,296 105130ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:46:29,296 105130ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:46:29,296 105130ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:46:29,296 105130ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:46:39,218 115052ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:46:39,218 115052ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:46:39,218 115052ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:46:39,218 115052ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:46:39,218 115052ms MainViewModel          SetLesson          - || == Current Item : 3/93
+DEBUG 2012-07-05 09:46:39,296 115130ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:46:39,296 115130ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:46:54,296 130130ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:46:54,296 130130ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:46:54,296 130130ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:46:54,296 130130ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:46:54,296 130130ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:47:04,218 140052ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:47:04,218 140052ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:47:04,218 140052ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:47:04,218 140052ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:47:04,218 140052ms MainViewModel          SetLesson          - || == Current Item : 4/93
+DEBUG 2012-07-05 09:47:04,327 140162ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:47:04,327 140162ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:47:19,327 155162ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:47:19,327 155162ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:47:19,327 155162ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:47:19,327 155162ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:47:19,327 155162ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:47:29,218 165053ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:47:29,218 165053ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:47:29,218 165053ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:47:29,218 165053ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:47:29,218 165053ms MainViewModel          SetLesson          - || == Current Item : 5/93
+DEBUG 2012-07-05 09:47:29,296 165131ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:47:29,296 165131ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:47:36,671 172506ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:47:36,718 172553ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:47:36,796 172631ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:47:36,921 172756ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:47:37,202 173037ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:47:37,734 173568ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:47:38,015 173850ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:47:38,171 174006ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:47:39,609 175443ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:47:39,874 175709ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:47:55,874 191709ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:47:55,874 191709ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:47:55,874 191709ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :26
+DEBUG 2012-07-05 09:47:55,874 191709ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:47:55,874 191709ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:48:04,874 200709ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:48:04,874 200709ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:48:04,874 200709ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:48:04,874 200709ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:48:04,874 200709ms MainViewModel          SetLesson          - || == Current Item : 6/93
+DEBUG 2012-07-05 09:48:04,968 200803ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:48:04,968 200803ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:48:19,968 215803ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:48:19,968 215803ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:48:19,968 215803ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:48:19,968 215803ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:48:19,968 215803ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:48:29,875 225709ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:48:29,875 225709ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:48:29,875 225709ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:48:29,875 225709ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:48:29,875 225709ms MainViewModel          SetLesson          - || == Current Item : 7/93
+DEBUG 2012-07-05 09:48:29,968 225803ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:48:29,968 225803ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:48:44,969 240803ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:48:44,969 240803ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:48:44,969 240803ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:48:44,969 240803ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:48:44,969 240803ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:48:54,890 250725ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:48:54,890 250725ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:48:54,890 250725ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:48:54,890 250725ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:48:54,890 250725ms MainViewModel          SetLesson          - || == Current Item : 8/93
+DEBUG 2012-07-05 09:48:54,984 250819ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:48:54,984 250819ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:49:09,984 265819ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:49:09,984 265819ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:49:09,984 265819ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 09:49:09,984 265819ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:49:09,984 265819ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:49:19,891 275725ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:49:19,891 275725ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:49:19,891 275725ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:49:19,891 275725ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:49:19,891 275725ms MainViewModel          SetLesson          - || == Current Item : 9/93
+DEBUG 2012-07-05 09:49:19,969 275803ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:49:19,969 275803ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:49:34,969 290803ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:49:34,969 290803ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:49:34,969 290803ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:49:34,969 290803ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:49:34,969 290803ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:49:44,891 300725ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:49:44,891 300725ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:49:44,891 300725ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:49:44,891 300725ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:49:44,891 300725ms MainViewModel          SetLesson          - || == Current Item : 10/93
+DEBUG 2012-07-05 09:49:44,985 300819ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:49:44,985 300819ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:49:59,985 315819ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:49:59,985 315819ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:49:59,985 315819ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:49:59,985 315819ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:49:59,985 315819ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:50:09,891 325725ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:50:09,891 325725ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:50:09,891 325725ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:50:09,891 325725ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:50:09,891 325725ms MainViewModel          SetLesson          - || == Current Item : 11/93
+DEBUG 2012-07-05 09:50:09,969 325804ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:50:09,969 325804ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:50:24,969 340804ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:50:24,969 340804ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:50:24,969 340804ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:50:24,969 340804ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:50:24,969 340804ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:50:34,891 350725ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:50:34,891 350725ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:50:34,891 350725ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:50:34,891 350725ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:50:34,891 350725ms MainViewModel          SetLesson          - || == Current Item : 12/93
+DEBUG 2012-07-05 09:50:34,984 350819ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:50:34,984 350819ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:50:49,984 365818ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:50:49,984 365818ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:50:49,984 365818ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 09:50:49,984 365818ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:50:49,984 365818ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:50:59,890 375724ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:50:59,890 375724ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:50:59,890 375724ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:50:59,890 375724ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:50:59,890 375724ms MainViewModel          SetLesson          - || == Current Item : 13/93
+DEBUG 2012-07-05 09:50:59,983 375818ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:50:59,983 375818ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:51:14,983 390817ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:51:14,983 390817ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:51:14,983 390817ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:51:14,983 390817ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:51:14,983 390817ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:51:24,889 400723ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:51:24,889 400723ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:51:24,889 400723ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:51:24,889 400723ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:51:24,889 400723ms MainViewModel          SetLesson          - || == Current Item : 14/93
+DEBUG 2012-07-05 09:51:24,967 400801ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:51:24,967 400801ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:51:39,966 415801ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:51:39,966 415801ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:51:39,966 415801ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:51:39,966 415801ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:51:39,966 415801ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:51:49,888 425722ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:51:49,888 425722ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:51:49,888 425722ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:51:49,888 425722ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:51:49,888 425722ms MainViewModel          SetLesson          - || == Current Item : 15/93
+DEBUG 2012-07-05 09:51:49,950 425785ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:51:49,950 425785ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:52:04,950 440784ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:52:04,950 440784ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:52:04,950 440784ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:52:04,950 440784ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:52:04,950 440784ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:52:14,887 450721ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:52:14,887 450721ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:52:14,887 450721ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:52:14,887 450721ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:52:14,887 450721ms MainViewModel          SetLesson          - || == Current Item : 16/93
+DEBUG 2012-07-05 09:52:14,965 450799ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:52:14,965 450799ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:52:29,964 465799ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:52:29,964 465799ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:52:29,964 465799ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:52:29,964 465799ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:52:29,964 465799ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:52:39,886 475720ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:52:39,886 475720ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:52:39,886 475720ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:52:39,886 475720ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:52:39,886 475720ms MainViewModel          SetLesson          - || == Current Item : 17/93
+DEBUG 2012-07-05 09:52:39,979 475814ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:52:39,979 475814ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:52:54,979 490813ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:52:54,979 490813ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:52:54,979 490813ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:52:54,979 490813ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:52:54,979 490813ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:53:04,885 500719ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:53:04,885 500719ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:53:04,885 500719ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:53:04,885 500719ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:53:04,885 500719ms MainViewModel          SetLesson          - || == Current Item : 18/93
+DEBUG 2012-07-05 09:53:04,947 500782ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:53:04,947 500782ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:53:19,947 515781ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:53:19,947 515781ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:53:19,947 515781ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:53:19,947 515781ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:53:19,947 515781ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:53:29,884 525718ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:53:29,884 525718ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:53:29,884 525718ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:53:29,884 525718ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:53:29,884 525718ms MainViewModel          SetLesson          - || == Current Item : 19/93
+DEBUG 2012-07-05 09:53:30,009 525843ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:53:30,009 525843ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:53:45,008 540843ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:53:45,008 540843ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:53:45,008 540843ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:53:45,008 540843ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:53:45,008 540843ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:53:54,883 550717ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:53:54,883 550717ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:53:54,883 550717ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:53:54,883 550717ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:53:54,883 550717ms MainViewModel          SetLesson          - || == Current Item : 20/93
+DEBUG 2012-07-05 09:53:54,945 550780ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:53:54,945 550780ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:54:09,945 565779ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:54:09,945 565779ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:54:09,945 565779ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:54:09,945 565779ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:54:09,945 565779ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:54:19,882 575716ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:54:19,882 575716ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:54:19,882 575716ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:54:19,882 575716ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:54:19,898 575732ms MainViewModel          SetLesson          - || == Current Item : 21/93
+DEBUG 2012-07-05 09:54:19,976 575810ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:54:19,976 575810ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:54:34,975 590810ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:54:34,975 590810ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:54:34,975 590810ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:54:34,975 590810ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:54:34,975 590810ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:54:44,881 600716ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:54:44,881 600716ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:54:44,881 600716ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:54:44,881 600716ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:54:44,881 600716ms MainViewModel          SetLesson          - || == Current Item : 22/93
+DEBUG 2012-07-05 09:54:45,037 600872ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:54:45,037 600872ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:55:00,037 615871ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:55:00,037 615871ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:55:00,037 615871ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:55:00,037 615871ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:55:00,037 615871ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:55:09,880 625715ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:55:09,880 625715ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:55:09,880 625715ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:55:09,880 625715ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:55:09,880 625715ms MainViewModel          SetLesson          - || == Current Item : 23/93
+DEBUG 2012-07-05 09:55:09,958 625793ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:55:09,958 625793ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:55:11,927 627761ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:55:12,599 628433ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-07-05 09:55:12,661 628496ms MainViewModel          ListenExecute      - || == Listen with google translate : substitution
+INFO  2012-07-05 09:55:13,395 629230ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:55:13,989 629824ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:55:16,848 632683ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-07-05 09:55:16,848 632683ms MainViewModel          ListenExecute      - || == Listen with google translate : substitution
+INFO  2012-07-05 09:55:19,020 634855ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:55:21,130 636964ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:55:21,817 637652ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 09:55:21,942 637777ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:55:22,520 638355ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:55:25,020 640855ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:55:26,129 641964ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 09:55:26,364 642198ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 09:55:42,363 658197ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:55:42,363 658197ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:55:42,363 658197ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :32
+DEBUG 2012-07-05 09:55:42,363 658197ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:55:42,363 658197ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:55:51,362 667197ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:55:51,362 667197ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:55:51,362 667197ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:55:51,362 667197ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:55:51,378 667213ms MainViewModel          SetLesson          - || == Current Item : 24/93
+DEBUG 2012-07-05 09:55:51,441 667275ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:55:51,441 667275ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:56:06,440 682274ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:56:06,440 682274ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:56:06,440 682274ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:56:06,440 682274ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:56:06,440 682274ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:56:16,361 692196ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:56:16,361 692196ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:56:16,361 692196ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:56:16,361 692196ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:56:16,361 692196ms MainViewModel          SetLesson          - || == Current Item : 25/93
+DEBUG 2012-07-05 09:56:16,424 692258ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:56:16,424 692258ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:56:31,423 707257ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:56:31,423 707257ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:56:31,423 707257ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:56:31,423 707257ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:56:31,423 707257ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:56:41,360 717194ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:56:41,360 717194ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:56:41,360 717194ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:56:41,360 717194ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:56:41,360 717194ms MainViewModel          SetLesson          - || == Current Item : 26/93
+DEBUG 2012-07-05 09:56:41,422 717257ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:56:41,422 717257ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:56:56,422 732256ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:56:56,422 732256ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:56:56,422 732256ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 09:56:56,422 732256ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:56:56,422 732256ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:57:06,359 742193ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:57:06,359 742193ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:57:06,359 742193ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:57:06,359 742193ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:57:06,359 742193ms MainViewModel          SetLesson          - || == Current Item : 27/93
+DEBUG 2012-07-05 09:57:06,437 742271ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:57:06,437 742271ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 09:57:21,436 757270ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 09:57:21,436 757270ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 09:57:21,436 757270ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 09:57:21,436 757270ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 09:57:21,436 757270ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 09:57:31,329 767163ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:57:31,329 767163ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:57:31,329 767163ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:57:31,329 767163ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:57:31,329 767163ms MainViewModel          SetLesson          - || == Current Item : 28/93
+DEBUG 2012-07-05 09:57:31,407 767241ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 09:57:31,407 767241ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+This is HeaderINFO  2012-07-05 09:58:13,624 22398ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 09:58:16,001 24774ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 09:58:16,141 24914ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 09:58:40,993 49766ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:58:40,993 49766ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:58:40,993 49766ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:58:40,993 49766ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:58:40,993 49766ms MainViewModel          SetLesson          - || == Current Item : 1/93
+This is HeaderINFO  2012-07-05 09:59:23,289 22149ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 09:59:25,386 24246ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 09:59:25,525 24386ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 09:59:50,393 49254ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 09:59:50,393 49254ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 09:59:50,393 49254ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 09:59:50,393 49254ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 09:59:50,393 49254ms MainViewModel          SetLesson          - || == Current Item : 1/93
+This is HeaderINFO  2012-07-05 10:00:50,551 22569ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:00:52,571 24588ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:00:52,710 24728ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:01:17,563 49580ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:01:17,563 49580ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:01:17,563 49580ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:01:17,563 49580ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:01:17,563 49580ms MainViewModel          SetLesson          - || == Current Item : 1/93
+This is HeaderINFO  2012-07-05 10:02:19,212 29931ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:02:25,599 36318ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:02:25,723 36443ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:02:50,675 61394ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:02:50,675 61394ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:02:50,675 61394ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:02:50,675 61394ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:02:50,675 61394ms MainViewModel          SetLesson          - || == Current Item : 1/93
+This is HeaderINFO  2012-07-05 10:04:04,719 24296ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:04:06,760 26338ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:04:06,901 26478ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:04:31,852 51430ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:04:31,852 51430ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:04:31,852 51430ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:04:31,852 51430ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:04:31,852 51430ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 10:04:32,148 51726ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:04:32,148 51726ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:04:47,110 66687ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:04:47,110 66687ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:04:47,110 66687ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:04:47,110 66687ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:04:47,110 66687ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:04:56,788 76366ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:04:56,788 76366ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:04:56,788 76366ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:04:56,788 76366ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:04:56,788 76366ms MainViewModel          SetLesson          - || == Current Item : 2/93
+DEBUG 2012-07-05 10:04:56,866 76443ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:04:56,866 76443ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:04:56,959 76537ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:04:57,396 76973ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:04:59,391 78968ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:04:59,391 78968ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:04:59,391 78968ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :2
+DEBUG 2012-07-05 10:04:59,391 78968ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:04:59,391 78968ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:05:22,332 101909ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:05:22,332 101909ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:05:22,332 101909ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:05:22,332 101909ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:05:22,332 101909ms MainViewModel          SetLesson          - || == Current Item : 3/93
+DEBUG 2012-07-05 10:05:22,409 101987ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:05:22,409 101987ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:05:37,371 116949ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:05:37,371 116949ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:05:37,371 116949ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:05:37,371 116949ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:05:37,371 116949ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:05:47,267 126845ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:05:47,267 126845ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:05:47,267 126845ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:05:47,267 126845ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:05:47,267 126845ms MainViewModel          SetLesson          - || == Current Item : 4/93
+DEBUG 2012-07-05 10:05:47,361 126939ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:05:47,361 126939ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:05:49,091 128668ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:05:49,122 128700ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:05:49,465 129042ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:05:49,839 129417ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:05:50,119 129697ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:05:50,260 129837ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:06:06,795 146373ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:06:06,873 146451ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:06:06,982 146560ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:06:07,029 146607ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:06:07,793 147370ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:06:08,385 147963ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:06:11,346 150924ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:06:11,673 151251ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:06:19,871 159449ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:06:35,830 175408ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:06:35,830 175408ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:06:35,830 175408ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :48
+DEBUG 2012-07-05 10:06:35,830 175408ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:06:35,830 175408ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:06:44,807 184384ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:06:44,807 184384ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:06:44,807 184384ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:06:44,807 184384ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:06:44,807 184384ms MainViewModel          SetLesson          - || == Current Item : 5/93
+DEBUG 2012-07-05 10:06:44,900 184478ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:06:44,900 184478ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:06:59,862 199439ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:06:59,862 199439ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:06:59,862 199439ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:06:59,862 199439ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:06:59,862 199439ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:07:09,743 209320ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:07:09,743 209320ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:07:09,743 209320ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:07:09,743 209320ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:07:09,743 209320ms MainViewModel          SetLesson          - || == Current Item : 6/93
+DEBUG 2012-07-05 10:07:09,821 209398ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:07:09,821 209398ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:07:24,783 224361ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:07:24,783 224361ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:07:24,783 224361ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 10:07:24,783 224361ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:07:24,783 224361ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:07:34,691 234269ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:07:34,691 234269ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:07:34,691 234269ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:07:34,691 234269ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:07:34,707 234285ms MainViewModel          SetLesson          - || == Current Item : 7/93
+DEBUG 2012-07-05 10:07:34,769 234347ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:07:34,769 234347ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:07:49,749 249326ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:07:49,749 249326ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:07:49,749 249326ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:07:49,749 249326ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:07:49,749 249326ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:07:59,657 259235ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:07:59,657 259235ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:07:59,657 259235ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:07:59,657 259235ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:07:59,657 259235ms MainViewModel          SetLesson          - || == Current Item : 8/93
+DEBUG 2012-07-05 10:07:59,735 259313ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:07:59,735 259313ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:08:14,715 274292ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:08:14,715 274292ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:08:14,715 274292ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:08:14,715 274292ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:08:14,715 274292ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:08:24,623 284200ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:08:24,623 284200ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:08:24,623 284200ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:08:24,623 284200ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:08:24,623 284200ms MainViewModel          SetLesson          - || == Current Item : 9/93
+DEBUG 2012-07-05 10:08:24,701 284279ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:08:24,701 284279ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:08:39,680 299258ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:08:39,680 299258ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:08:39,680 299258ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 10:08:39,680 299258ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:08:39,680 299258ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:08:49,589 309166ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:08:49,589 309166ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:08:49,589 309166ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:08:49,589 309166ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:08:49,589 309166ms MainViewModel          SetLesson          - || == Current Item : 10/93
+DEBUG 2012-07-05 10:08:49,651 309229ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:08:49,651 309229ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:09:04,631 324208ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:09:04,631 324208ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:09:04,631 324208ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:09:04,631 324208ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:09:04,631 324208ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:09:14,554 334132ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:09:14,554 334132ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:09:14,554 334132ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:09:14,554 334132ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:09:14,554 334132ms MainViewModel          SetLesson          - || == Current Item : 11/93
+DEBUG 2012-07-05 10:09:14,632 334210ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:09:14,632 334210ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:09:29,612 349189ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:09:29,612 349189ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:09:29,612 349189ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:09:29,612 349189ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:09:29,612 349189ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:09:39,520 359098ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:09:39,520 359098ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:09:39,520 359098ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:09:39,520 359098ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:09:39,520 359098ms MainViewModel          SetLesson          - || == Current Item : 12/93
+DEBUG 2012-07-05 10:09:39,598 359176ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:09:39,598 359176ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:09:54,578 374155ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:09:54,578 374155ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:09:54,578 374155ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:09:54,578 374155ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:09:54,578 374155ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+This is HeaderINFO  2012-07-05 10:13:33,261 25023ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:13:35,259 27021ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:13:35,400 27162ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:14:00,376 52138ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:14:00,376 52138ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:14:00,376 52138ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:14:00,376 52138ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:14:00,376 52138ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 10:14:00,704 52466ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:14:00,704 52466ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:14:02,203 53965ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:02,297 54058ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:02,609 54371ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:02,921 54683ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:14:03,202 54964ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:03,389 55151ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:04,810 56572ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:05,060 56821ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:06,074 57836ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:14:06,371 58133ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:06,496 58258ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:07,510 59272ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:14:07,791 59553ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:07,963 59725ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:08,229 59990ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:14:08,338 60100ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:14:08,385 60146ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+This is HeaderINFO  2012-07-05 10:14:51,482 31421ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:14:53,619 33557ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:14:53,759 33698ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:15:18,730 58668ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:15:18,730 58668ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:15:18,730 58668ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:15:18,730 58668ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:15:18,730 58668ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 10:15:19,026 58965ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:15:19,026 58965ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:15:25,639 65578ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:15:26,092 66030ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:15:26,357 66295ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:15:26,528 66467ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:15:28,260 68198ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+This is HeaderINFO  2012-07-05 10:19:47,552 205842ms StudyConfigViewModel   InitialData        - || {*} === InitialData ===
+INFO  2012-07-05 10:19:49,628 207918ms StudyConfigViewModel   OnOKExecute        - || {*} === OK Command Executed ===
+INFO  2012-07-05 10:19:49,831 208121ms MainViewModel          Initialize         - || {*} === Initialize MainViewModel ===
+DEBUG 2012-07-05 10:20:14,802 233092ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:20:14,802 233092ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:20:14,802 233092ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:20:14,802 233092ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:20:14,802 233092ms MainViewModel          SetLesson          - || == Current Item : 1/93
+DEBUG 2012-07-05 10:20:15,239 233529ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:20:15,239 233529ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:20:30,222 248512ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:20:30,222 248512ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:20:30,237 248527ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 10:20:30,237 248527ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:20:30,237 248527ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:20:39,773 258063ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:20:39,773 258063ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:20:39,773 258063ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:20:39,773 258063ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:20:39,773 258063ms MainViewModel          SetLesson          - || == Current Item : 2/93
+DEBUG 2012-07-05 10:20:39,867 258157ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:20:39,882 258172ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:20:54,850 273139ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:20:54,850 273139ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:20:54,850 273139ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:20:54,850 273139ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:20:54,850 273139ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:21:04,744 283034ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:21:04,744 283034ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:21:04,744 283034ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:21:04,744 283034ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:21:04,744 283034ms MainViewModel          SetLesson          - || == Current Item : 3/93
+DEBUG 2012-07-05 10:21:04,822 283112ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:21:04,822 283112ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:21:19,805 298095ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:21:19,805 298095ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:21:19,805 298095ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:21:19,805 298095ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:21:19,805 298095ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:21:29,716 308005ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:21:29,716 308005ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:21:29,716 308005ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:21:29,716 308005ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:21:29,716 308005ms MainViewModel          SetLesson          - || == Current Item : 4/93
+DEBUG 2012-07-05 10:21:29,809 308099ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:21:29,809 308099ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:21:43,200 321490ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:43,216 321505ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:21:43,341 321630ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:43,824 322114ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:21:44,043 322333ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:44,371 322660ms MainViewModel          ChangeSideExecute  - ||{*} === Change Side Command Executed === 
+INFO  2012-07-05 10:21:44,652 322941ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:21:44,792 323082ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:47,055 325345ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:21:47,383 325673ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:47,383 325673ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:21:47,508 325797ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:21:58,729 337019ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:22:14,711 353000ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:22:14,711 353000ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:22:14,711 353000ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :44
+DEBUG 2012-07-05 10:22:14,711 353000ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:22:14,711 353000ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:22:23,700 361990ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:22:23,700 361990ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:22:23,700 361990ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:22:23,700 361990ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:22:23,700 361990ms MainViewModel          SetLesson          - || == Current Item : 5/93
+DEBUG 2012-07-05 10:22:23,794 362084ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:22:23,794 362084ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:22:38,777 377066ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:22:38,777 377066ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:22:38,777 377066ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:22:38,777 377066ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:22:38,777 377066ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:22:48,671 386961ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:22:48,671 386961ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:22:48,671 386961ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:22:48,671 386961ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:22:48,671 386961ms MainViewModel          SetLesson          - || == Current Item : 6/93
+DEBUG 2012-07-05 10:22:48,765 387055ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:22:48,765 387055ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:23:03,748 402038ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:23:03,748 402038ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:23:03,748 402038ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:23:03,748 402038ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:23:03,748 402038ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:23:13,643 411932ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:23:13,643 411932ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:23:13,643 411932ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:23:13,643 411932ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:23:13,643 411932ms MainViewModel          SetLesson          - || == Current Item : 7/93
+DEBUG 2012-07-05 10:23:13,736 412026ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:23:13,736 412026ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:23:28,719 427009ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:23:28,719 427009ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:23:28,719 427009ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:23:28,719 427009ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:23:28,719 427009ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:23:38,614 436904ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:23:38,614 436904ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:23:38,614 436904ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:23:38,614 436904ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:23:38,614 436904ms MainViewModel          SetLesson          - || == Current Item : 8/93
+DEBUG 2012-07-05 10:23:38,707 436997ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:23:38,707 436997ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:23:53,690 451980ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:23:53,690 451980ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:23:53,690 451980ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:23:53,690 451980ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:23:53,690 451980ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:24:03,585 461875ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:24:03,585 461875ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:24:03,585 461875ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:24:03,585 461875ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:24:03,585 461875ms MainViewModel          SetLesson          - || == Current Item : 9/93
+DEBUG 2012-07-05 10:24:03,726 462015ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:24:03,726 462015ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:24:18,708 476998ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:24:18,708 476998ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:24:18,708 476998ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:24:18,708 476998ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:24:18,708 476998ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:24:28,556 486846ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:24:28,556 486846ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:24:28,556 486846ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:24:28,556 486846ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:24:28,556 486846ms MainViewModel          SetLesson          - || == Current Item : 10/93
+DEBUG 2012-07-05 10:24:28,650 486940ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:24:28,650 486940ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:24:43,636 501926ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:24:43,636 501926ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:24:43,636 501926ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:24:43,636 501926ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:24:43,636 501926ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:24:53,533 511823ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:24:53,533 511823ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:24:53,533 511823ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:24:53,533 511823ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:24:53,533 511823ms MainViewModel          SetLesson          - || == Current Item : 11/93
+DEBUG 2012-07-05 10:24:53,642 511932ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:24:53,642 511932ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:25:08,628 526918ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:25:08,628 526918ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:25:08,628 526918ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :15
+DEBUG 2012-07-05 10:25:08,628 526918ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:25:08,628 526918ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:25:18,510 536800ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:25:18,510 536800ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:25:18,510 536800ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:25:18,510 536800ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:25:18,510 536800ms MainViewModel          SetLesson          - || == Current Item : 12/93
+DEBUG 2012-07-05 10:25:18,619 536909ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:25:18,619 536909ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:25:33,605 551895ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:25:33,605 551895ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:25:33,605 551895ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:25:33,605 551895ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:25:33,605 551895ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:25:43,487 561777ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:25:43,487 561777ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:25:43,487 561777ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:25:43,487 561777ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:25:43,487 561777ms MainViewModel          SetLesson          - || == Current Item : 13/93
+DEBUG 2012-07-05 10:25:43,596 561886ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:25:43,596 561886ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:25:58,582 576872ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:25:58,582 576872ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:25:58,582 576872ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:25:58,582 576872ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:25:58,582 576872ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:26:08,464 586754ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:26:08,464 586754ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:26:08,464 586754ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:26:08,464 586754ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:26:08,464 586754ms MainViewModel          SetLesson          - || == Current Item : 14/93
+DEBUG 2012-07-05 10:26:08,573 586863ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:26:08,573 586863ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:26:23,559 601849ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:26:23,559 601849ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:26:23,559 601849ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:26:23,559 601849ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:26:23,559 601849ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:26:33,441 611731ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:26:33,441 611731ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:26:33,441 611731ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:26:33,441 611731ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:26:33,441 611731ms MainViewModel          SetLesson          - || == Current Item : 15/93
+DEBUG 2012-07-05 10:26:33,534 611824ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:26:33,550 611840ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:26:48,521 626810ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:26:48,521 626810ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:26:48,521 626810ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:26:48,521 626810ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:26:48,521 626810ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:26:58,418 636708ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:26:58,418 636708ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:26:58,418 636708ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:26:58,418 636708ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:26:58,418 636708ms MainViewModel          SetLesson          - || == Current Item : 16/93
+DEBUG 2012-07-05 10:26:58,527 636817ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:26:58,527 636817ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:27:13,513 651803ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:27:13,513 651803ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:27:13,513 651803ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:27:13,513 651803ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:27:13,513 651803ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:27:23,395 661684ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:27:23,395 661684ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:27:23,395 661684ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:27:23,395 661684ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:27:23,395 661684ms MainViewModel          SetLesson          - || == Current Item : 17/93
+DEBUG 2012-07-05 10:27:23,488 661778ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:27:23,488 661778ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:27:38,475 676764ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:27:38,475 676764ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:27:38,475 676764ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:27:38,475 676764ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:27:38,475 676764ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:27:48,372 686661ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:27:48,372 686661ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:27:48,372 686661ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:27:48,372 686661ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:27:48,372 686661ms MainViewModel          SetLesson          - || == Current Item : 18/93
+DEBUG 2012-07-05 10:27:48,465 686755ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:27:48,481 686771ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:28:03,452 701741ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:28:03,452 701741ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:28:03,452 701741ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:28:03,452 701741ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:28:03,452 701741ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:28:13,349 711638ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:28:13,349 711638ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:28:13,349 711638ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:28:13,349 711638ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:28:13,349 711638ms MainViewModel          SetLesson          - || == Current Item : 19/93
+DEBUG 2012-07-05 10:28:13,489 711779ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:28:13,489 711779ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:28:28,475 726765ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:28:28,475 726765ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:28:28,475 726765ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:28:28,475 726765ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:28:28,475 726765ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:28:38,326 736615ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:28:38,326 736615ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:28:38,326 736615ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:28:38,326 736615ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:28:38,326 736615ms MainViewModel          SetLesson          - || == Current Item : 20/93
+DEBUG 2012-07-05 10:28:38,435 736725ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:28:38,450 736740ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:28:53,421 751711ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:28:53,421 751711ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:28:53,421 751711ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:28:53,421 751711ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:28:53,421 751711ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:29:03,303 761592ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:29:03,303 761592ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:29:03,303 761592ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:29:03,303 761592ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:29:03,303 761592ms MainViewModel          SetLesson          - || == Current Item : 21/93
+DEBUG 2012-07-05 10:29:03,396 761686ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:29:03,396 761686ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:29:18,382 776672ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:29:18,382 776672ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:29:18,382 776672ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:29:18,382 776672ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:29:18,382 776672ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:29:28,280 786569ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:29:28,280 786569ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:29:28,280 786569ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:29:28,280 786569ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:29:28,280 786569ms MainViewModel          SetLesson          - || == Current Item : 22/93
+DEBUG 2012-07-05 10:29:28,373 786663ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:29:28,373 786663ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:29:43,361 801650ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:29:43,361 801650ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:29:43,361 801650ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:29:43,361 801650ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:29:43,361 801650ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:29:53,259 811548ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:29:53,259 811548ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:29:53,259 811548ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:29:53,259 811548ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:29:53,259 811548ms MainViewModel          SetLesson          - || == Current Item : 23/93
+DEBUG 2012-07-05 10:29:53,368 811658ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:29:53,368 811658ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:30:08,355 826645ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:30:08,355 826645ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:30:08,355 826645ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:30:08,355 826645ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:30:08,355 826645ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:30:18,238 836528ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:30:18,238 836528ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:30:18,238 836528ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:30:18,238 836528ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:30:18,238 836528ms MainViewModel          SetLesson          - || == Current Item : 24/93
+DEBUG 2012-07-05 10:30:18,332 836621ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:30:18,332 836621ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:30:33,319 851609ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:30:33,319 851609ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:30:33,319 851609ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:30:33,319 851609ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:30:33,319 851609ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:30:43,217 861507ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:30:43,217 861507ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:30:43,217 861507ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:30:43,217 861507ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:30:43,217 861507ms MainViewModel          SetLesson          - || == Current Item : 25/93
+DEBUG 2012-07-05 10:30:43,326 861616ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:30:43,326 861616ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:30:58,314 876604ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:30:58,314 876604ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:30:58,314 876604ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :14
+DEBUG 2012-07-05 10:30:58,314 876604ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:30:58,314 876604ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
+DEBUG 2012-07-05 10:31:08,196 886486ms MainViewModel          _timer_Tick        - || =============Summary=============
+DEBUG 2012-07-05 10:31:08,196 886486ms MainViewModel          _timer_Tick        - || == Timer tick : True
+DEBUG 2012-07-05 10:31:08,196 886486ms MainViewModel          _timer_Tick        - || == TimerPopup.Interval :00:00:25
+DEBUG 2012-07-05 10:31:08,196 886486ms MainViewModel          _timer_Tick        - || == TimeOut :25
+DEBUG 2012-07-05 10:31:08,196 886486ms MainViewModel          SetLesson          - || == Current Item : 26/93
+DEBUG 2012-07-05 10:31:08,321 886611ms MainViewModel          <_timer_Tick>b__1  - || =================================
+
+DEBUG 2012-07-05 10:31:08,321 886611ms MainViewModel          <_timer_Tick>b__1  - || ==> Is Popup Showing
+INFO  2012-07-05 10:31:10,991 889281ms MainViewModel          eEnterExecute>b__0 - ||{*} === Fancy Ballon Mouse Enter Command Executed === 
+INFO  2012-07-05 10:31:11,646 889936ms MainViewModel          ListenExecute      - ||{*} === Listen Command Executed === 
+DEBUG 2012-07-05 10:31:11,693 889983ms MainViewModel          ListenExecute      - || == Listen with google translate : recur
+INFO  2012-07-05 10:31:11,834 890124ms MainViewModel          nMouseLeaveExecute - ||{*} === Fancy Ballon Mouse Leave  Command Executed === 
+INFO  2012-07-05 10:31:13,832 892122ms MainViewModel          _waitForClose_Tick - || {*} === Initial Timer For Close Popup === 
+INFO  2012-07-05 10:31:13,832 892122ms MainViewModel          _waitForClose_Tick - || ==> WaitBalloon() methods started 
+DEBUG 2012-07-05 10:31:13,832 892122ms MainViewModel          <WaitBalloon>b__3  - || == View Timer :5
+DEBUG 2012-07-05 10:31:13,832 892122ms MainViewModel          <WaitBalloon>b__3  - || ==> Popup Closed.......
+DEBUG 2012-07-05 10:31:13,832 892122ms MainViewModel          <WaitBalloon>b__3  - || ================================= 
+
