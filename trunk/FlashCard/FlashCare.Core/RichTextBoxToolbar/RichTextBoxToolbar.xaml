@@ -430,8 +430,8 @@
           Width="{Binding Width, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           Height="{Binding Height, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         <RichTextBox x:Name="rtContent"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     VerticalScrollBarVisibility="Auto"
                      BorderBrush="{Binding BorderBrush, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      BorderThickness="{Binding BorderThickness, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Foreground="{Binding Foreground, ElementName=ucControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

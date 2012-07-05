@@ -561,7 +561,7 @@ namespace FlashCard.ViewModels
                 stopForListen.Tick += new EventHandler(waitUserClick_Tick);
 
                 DispatcherTimer waitForListener = new DispatcherTimer();
-                waitForListener.Interval = new TimeSpan(0, 0, 0, 2);
+                waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
                 waitForListener.Tick +=new EventHandler(waitForListener_Tick);
 
                 if (CheckConnectionInternet.IsConnectedToInternet())
@@ -734,6 +734,7 @@ namespace FlashCard.ViewModels
                 }
                 ViewCore.MyNotifyIcon.Dispose();
                 ViewCore.MyNotifyIcon = null;
+                GC.SuppressFinalize(this);
                 if (App.LessonMangeView != null)
                     App.LessonMangeView.Show();
             }
@@ -1005,6 +1006,7 @@ namespace FlashCard.ViewModels
             SelectedLesson = LessonCollection[_currentItemIndex];
             SelectedLesson.IsBackSide = false;
             log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
+            GC.Collect();
         }
 
         //Timer Region
@@ -1069,10 +1071,11 @@ namespace FlashCard.ViewModels
                 {
                     SetLesson();
                     _balloon = new FancyBalloon();
+                    //_balloon.tbWords.Document = SelectedLesson.Description;
+                    //_balloon.tblWordBackSide.Document = SelectedLesson.BackSideModel.BackSideDetail;
                     if(App.SetupModel.IsEnableSoundForShow)
                         _soundForShow.Play();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
-                    GC.Collect();
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
                     var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
@@ -1081,6 +1084,7 @@ namespace FlashCard.ViewModels
                     log.DebugFormat("|| ==> Is Popup Showing");
                 }));
             }
+            GC.Collect();
         }
 
       
@@ -1121,7 +1125,7 @@ namespace FlashCard.ViewModels
             var action = new Action(() =>
             {
                 ViewCore.MyNotifyIcon.CloseBalloon();
-                _balloon = null;
+                //_balloon = null;
                 testTimeView.Stop();
                 log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();
