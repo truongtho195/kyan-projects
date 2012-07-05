@@ -60,12 +60,7 @@ namespace FlashCard
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
     
     }
-    ~ FancyBalloon()
-    {
-       
-            
-    }
-
+ 
 
 
 
@@ -78,7 +73,6 @@ namespace FlashCard
     {
       e.Handled = true;
       isClosing = true;
-      GC.SuppressFinalize(this);
     }
 
 

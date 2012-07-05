@@ -386,7 +386,7 @@
                   Grid.Row="1">
                 <Grid x:Name="FrontSideWrapper"
                       RenderTransformOrigin="0.5,0.5"
-                      VerticalAlignment="Center">
+                      VerticalAlignment="Center" Margin="5,0">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -403,7 +403,6 @@
                           MinHeight="25"
                           Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Grid.Row="1"
-                          Margin="5"
                           VerticalAlignment="Center">
 
                         <StackPanel d:LayoutOverrides="Width">
@@ -416,33 +415,33 @@
                                        FontSize="21.333"
                                        FontWeight="Bold" />
 
-                            <!--<richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+                            <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
                                                                    VirtualizingStackPanel.VirtualizationMode="Recycling"
                                                                    Background="Transparent"
                                                                    BorderBrush="Transparent"
+                                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                                                    HorizontalAlignment="Center"
                                                                    VerticalAlignment="Center"
                                                                    IsReadOnly="True"
                                                                    Foreground="White"
                                                                    FontSize="16"
                                                                    MinHeight="25"
-                                                                   MinWidth="290"
-                                                                   Width="290" />-->
+                                                                   MinWidth="290" />
 
-                            <FlowDocumentPageViewer  x:Name="tbWords"
-                                                     Document="{Binding SelectedLesson.Description,Mode=OneTime}"
-                                                     Background="Transparent"
-                                                     BorderBrush="Transparent"
-                                                     HorizontalAlignment="Center"
-                                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="White"
-                                                     Margin="5"
-                                                     Grid.Row="1"
-                                                     Template="{StaticResource FlowDocumentPageViewerTemplate}"
-                                                     MinWidth="290"
-                                                     MinHeight="50" />
+                            <!--<FlowDocumentReader  x:Name="tbWords"
+                                                 Background="Transparent"
+                                                 BorderBrush="Transparent"
+                                                 HorizontalAlignment="Center"
+                                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="White"
+                                                 Margin="5"
+                                                 Grid.Row="1"
+                                                 MinWidth="290"
+                                                 MinHeight="50" />-->
+
+                            <!--Template="{StaticResource FlowDocumentPageViewerTemplate}"-->
 
                         </StackPanel>
 
@@ -450,8 +449,7 @@
                     <Grid x:Name="grdListChoice"
                           Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Grid.Row="1"
-                          RenderTransformOrigin="0.5,0.5"
-                          d:IsHidden="True">
+                          RenderTransformOrigin="0.5,0.5">
                         <ListBox Margin="5,0"
                                  Background="Transparent"
                                  ItemsSource="{Binding SelectedLesson.BackSideCollection}"
@@ -462,8 +460,7 @@
                       MinHeight="100"
                       RenderTransformOrigin="0.5,0.5"
                       Margin="0"
-                      VerticalAlignment="Center"
-                      Visibility="Hidden">
+                      VerticalAlignment="Center" Visibility="Hidden">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -475,31 +472,37 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <!--<richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
+                    <richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
                                                             Background="Transparent"
                                                             BorderBrush="Transparent"
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Stretch"
+                                                            HorizontalAlignment="Center"
+                                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                            VerticalAlignment="Center"
                                                             VirtualizingStackPanel.VirtualizationMode="Recycling"
                                                             Foreground="White"
                                                             Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
-                                                            Margin="5"
                                                             Grid.Row="1"
                                                             MinWidth="290"
-                                                            MinHeight="50" />-->
-                    <FlowDocumentPageViewer  x:Name="tblWordBackSide"
-                                             Background="Transparent"
-                                             BorderBrush="Transparent"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             Foreground="White"
-                                             VirtualizingStackPanel.IsVirtualizing="True"
-                                             Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Margin="5"
-                                             Template="{StaticResource FlowDocumentPageViewerTemplate}"
-                                             Grid.Row="1"
-                                             MinWidth="290"
-                                             MinHeight="50" />
+                                                            MinHeight="50" />
+                    <!--<FlowDocumentReader  x:Name="tblWordBackSide"
+                                         Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Background="Transparent"
+                                         BorderBrush="Transparent"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         Foreground="White"
+                                         VirtualizingStackPanel.IsVirtualizing="True"
+                                         Margin="5"
+                                         Grid.Row="1"
+                                         MinWidth="290"
+                                         IsFindEnabled="False"
+                                         IsPrintEnabled="False"
+                                         IsTwoPageViewEnabled="False"
+                                         ViewingMode="Page"
+                                         MinHeight="50" />-->
+                    <!--Template="{StaticResource FlowDocumentPageViewerTemplate}"
+                                                                 
+                    -->
 
 
 
