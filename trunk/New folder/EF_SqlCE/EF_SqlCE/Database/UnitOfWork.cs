@@ -21,13 +21,14 @@ namespace EF_SqlCE.Database
         }
         public UnitOfWork()
         {
-            if (_context == null)
-                _context = new EF_SqlCE.Database.BlogEngineDBEntities();
+        //    if (_context == null)
+        //        _context = new ObjectContext(@"data source=F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\bin\Debug\FalconHRDB.s3db");
         }
 
         public void Add(T entity)
         {
             this.Entities.AddObject(entity);
+            _context.SaveChanges();
         }
 
         public T Get()
