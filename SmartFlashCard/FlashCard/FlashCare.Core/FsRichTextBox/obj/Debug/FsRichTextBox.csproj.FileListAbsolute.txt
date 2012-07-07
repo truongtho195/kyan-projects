@@ -1,0 +1,12 @@
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\bin\Debug\FsRichTextBox.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\bin\Debug\FsRichTextBox.pdb
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\ResolveAssemblyReference.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox.baml
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox.g.cs
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox_MarkupCompile.cache
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox.g.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsWpfControls.FsRichTextBox.Properties.Resources.resources
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\GenerateResource.read.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\GenerateResource.write.1.tlog
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox.dll
+D:\Kyan DATA\Kyan\KyanPrj\FlashCard\FlashCare.Core\FsRichTextBox\obj\Debug\FsRichTextBox.pdb
