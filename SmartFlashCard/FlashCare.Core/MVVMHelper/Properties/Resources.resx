@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AlertCaption" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="QuestionCaption" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="SuccessfulCaption" xml:space="preserve">
+    <value>Successful</value>
+  </data>
+  <data name="Validate_AbsoluteField" xml:space="preserve">
+    <value>{0} absolute {1} greater than 15</value>
+  </data>
+  <data name="Validate_AllowNumber" xml:space="preserve">
+    <value>{0} accepts number value.</value>
+  </data>
+  <data name="Validate_ConfirmData" xml:space="preserve">
+    <value>Please confirm {0}</value>
+  </data>
+  <data name="Validate_CorrectFormatField" xml:space="preserve">
+    <value>{0} is not correct format "{1}"</value>
+  </data>
+  <data name="Validate_Equal" xml:space="preserve">
+    <value>{0} is equal to {1}</value>
+  </data>
+  <data name="Validate_EqualOrGreaterThanField" xml:space="preserve">
+    <value>{0} is equal or greater than {1}</value>
+  </data>
+  <data name="Validate_EqualOrSmallerField" xml:space="preserve">
+    <value>{0} is equal or less than {1}</value>
+  </data>
+  <data name="Validate_ExceptSpecialCharacter" xml:space="preserve">
+    <value>{0} except specially character.\nEx: @,#,!,=,|</value>
+  </data>
+  <data name="Validate_ExistsField" xml:space="preserve">
+    <value>{0} existed</value>
+  </data>
+  <data name="Validate_Format334" xml:space="preserve">
+    <value>xxx-xxx-xxxx</value>
+  </data>
+  <data name="Validate_FormatEmail" xml:space="preserve">
+    <value>Ex: abc@abc.com</value>
+  </data>
+  <data name="Validate_FormatIdentification" xml:space="preserve">
+    <value>Ex: C***4567</value>
+  </data>
+  <data name="Validate_FormatSSN" xml:space="preserve">
+    <value>Ex: x**-**-xxxx</value>
+  </data>
+  <data name="Validate_FormatTax" xml:space="preserve">
+    <value>xx-***xxxx</value>
+  </data>
+  <data name="Validate_FormatWebsite" xml:space="preserve">
+    <value>Ex: http://....</value>
+  </data>
+  <data name="Validate_FormatZip" xml:space="preserve">
+    <value>xxxxx-xxxx</value>
+  </data>
+  <data name="Validate_GreaterThanField" xml:space="preserve">
+    <value>{0} is greater than {1}</value>
+  </data>
+  <data name="Validate_GreaterThanSoMuchField" xml:space="preserve">
+    <value>{0} is not greater than {1} over one day</value>
+  </data>
+  <data name="Validate_HourPerdayBetween1and24" xml:space="preserve">
+    <value>Hour per day between 0.5 and 24</value>
+  </data>
+  <data name="Validate_InvalidField" xml:space="preserve">
+    <value>{0} is invalid.</value>
+  </data>
+  <data name="Validate_NotAllowPrivate" xml:space="preserve">
+    <value>{0} isn't named 'private'</value>
+  </data>
+  <data name="Validate_NotExistField" xml:space="preserve">
+    <value>{0} was not existed {1}</value>
+  </data>
+  <data name="Validate_NotNullField" xml:space="preserve">
+    <value>{0} is not null.</value>
+  </data>
+  <data name="Validate_NullField" xml:space="preserve">
+    <value>{0} is null</value>
+  </data>
+  <data name="Validate_OverSize" xml:space="preserve">
+    <value>Files of message must smaller than 4MB.</value>
+  </data>
+  <data name="Validate_RequiredChooseItem" xml:space="preserve">
+    <value>{0} must be choose</value>
+  </data>
+  <data name="Validate_RequiredInputText" xml:space="preserve">
+    <value>{0} is required</value>
+  </data>
+  <data name="Validate_SmallerThan" xml:space="preserve">
+    <value>{0} is less than {1}</value>
+  </data>
+  <data name="ViewMessage_ButtonForward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="ViewMessage_ButtonReplay" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="ViewMessage_ViewMail" xml:space="preserve">
+    <value>View Mail</value>
+  </data>
+  <data name="WarningCaption" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+</root>
