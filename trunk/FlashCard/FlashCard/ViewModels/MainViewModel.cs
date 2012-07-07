@@ -388,8 +388,10 @@ namespace FlashCard.ViewModels
         private void FancyBallonMouseLeaveExecute(object param)
         {
             log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
-            //Check after //&& this.IsPopupStarted == true
-            if (!IsOtherFormShow)
+
+            //IsPopupStarted== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
+            // IsPopupStarted know user not click on button fullScreen
+            if (!IsOtherFormShow && this.IsPopupStarted == true)
             {
                 _swCountTimerTick.Stop();
                 int time = 0;
@@ -832,8 +834,7 @@ namespace FlashCard.ViewModels
         private void OnFullScreenExecute(object param)
         {
             log.Info("|| {*} === Full Screen Call ===");
-            //CloseTimerPopup();
-            HiddenPopupExecute(null);
+            //HiddenPopupExecute(null);
             CloseTimerPopup();
             //PlayPauseBallonPopup(true);
             if (_learnView == null)
@@ -1055,8 +1056,6 @@ namespace FlashCard.ViewModels
         Stopwatch testTimerPopup = new Stopwatch();
         private void _timer_Tick(object sender, EventArgs e)
         {
-            if (ViewCore.MyNotifyIcon.IsDisposed)
-                ViewCore.MyNotifyIcon = new TaskbarIcon();
             log.DebugFormat("|| =============Summary=============");
             log.DebugFormat("|| == Timer tick : {0}", _timerPopup.IsEnabled);
             testTimerPopup.Start();
@@ -1110,18 +1109,10 @@ namespace FlashCard.ViewModels
         {
             log.Info("|| {*} === Initial Timer For Close Popup === ");
             log.Info("|| ==> WaitBalloon() methods started ");
-            countSecond = 0;
-            (sender as DispatcherTimer).Stop();
-            WaitBalloon();
-        }
-
-        /// <summary>
-        /// Method for close ballon
-        /// </summary>
-        private void WaitBalloon()
-        {
             var action = new Action(() =>
             {
+                countSecond = 0;
+                _waitForClose.Stop();
                 ViewCore.MyNotifyIcon.CloseBalloon();
                 //_balloon = null;
                 testTimeView.Stop();
