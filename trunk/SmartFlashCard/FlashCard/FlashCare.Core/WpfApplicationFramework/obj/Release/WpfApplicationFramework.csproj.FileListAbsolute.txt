@@ -1,8 +1,0 @@
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Release\WpfApplicationFramework.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Release\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Release\WpfApplicationFramework.dll.CodeAnalysisLog.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Release\WpfApplicationFramework.dll.lastcodeanalysissucceeded
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Release\ResolveAssemblyReference.cache
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Release\WpfApplicationFramework.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\WpfApplicationFramework\obj\Release\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\FlashCard\FlashCare.Core\Output\Release\WpfApplicationFramework.xml
