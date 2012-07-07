@@ -4,180 +4,52 @@
         <name>Hardcodet.Wpf.TaskbarNotification</name>
     </assembly>
     <members>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Util">
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode">
             <summary>
-            Util and extension methods.
+            Defines flags that define when a popup
+            is being displyed.
             </summary>
         </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.CreateHelperWindow">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftClick">
             <summary>
-            Creates an transparent window without dimension that
-            can be used to temporarily obtain focus and/or
-            be used as a window message sink.
-            </summary>
-            <returns>Empty window.</returns>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.WriteIconData(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand)">
-            <summary>
-            Updates the taskbar icons with data provided by a given
-            <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> instance.
-            </summary>
-            <param name="data">Configuration settings for the NotifyIcon.</param>
-            <param name="command">Operation on the icon (e.g. delete the icon).</param>
-            <returns>True if the data was successfully written.</returns>
-            <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.WriteIconData(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers)">
-            <summary>
-            Updates the taskbar icons with data provided by a given
-            <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> instance.
-            </summary>
-            <param name="data">Configuration settings for the NotifyIcon.</param>
-            <param name="command">Operation on the icon (e.g. delete the icon).</param>
-            <param name="flags">Defines which members of the <paramref name="data"/>
-            structure are set.</param>
-            <returns>True if the data was successfully written.</returns>
-            <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.GetBalloonFlag(Hardcodet.Wpf.TaskbarNotification.BalloonIcon)">
-            <summary>
-            Gets a <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags"/> enum value that
-            matches a given <see cref="T:Hardcodet.Wpf.TaskbarNotification.BalloonIcon"/>.
+            The item is displayed if the user clicks the
+            tray icon with the left mouse button.
             </summary>
         </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.ToIcon(System.Windows.Media.ImageSource)">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.RightClick">
             <summary>
-            Reads a given image resource into a WinForms icon.
-            </summary>
-            <param name="imageSource">Image source pointing to
-            an icon file (*.ico).</param>
-            <returns>An icon object that can be used with the
-            taskbar area.</returns>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.Is``1(``0,``0[])">
-            <summary>
-            Checks a list of candidates for equality to a given
-            reference value.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value">The evaluated value.</param>
-            <param name="candidates">A liste of possible values that are
-            regarded valid.</param>
-            <returns>True if one of the submitted <paramref name="candidates"/>
-            matches the evaluated value. If the <paramref name="candidates"/>
-            parameter itself is null, too, the method returns false as well,
-            which allows to check with null values, too.</returns>
-            <exception cref="T:System.ArgumentNullException">If <paramref name="candidates"/>
-            is a null reference.</exception>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.IsMatch(Hardcodet.Wpf.TaskbarNotification.Interop.MouseEvent,Hardcodet.Wpf.TaskbarNotification.PopupActivationMode)">
-            <summary>
-            Checks if a given <see cref="T:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode"/> is a match for
-            an effectively pressed mouse button.
+            The item is displayed if the user clicks the
+            tray icon with the right mouse button.
             </summary>
         </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.ExecuteIfEnabled(System.Windows.Input.ICommand,System.Object,System.Windows.IInputElement)">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.DoubleClick">
             <summary>
-            Executes a given command if its <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method
-            indicates it can run.
-            </summary>
-            <param name="command">The command to be executed, or a null reference.</param>
-            <param name="commandParameter">An optional parameter that is associated with
-            the command.</param>
-            <param name="target">The target element on which to raise the command.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.GetDispatcher(System.Windows.Threading.DispatcherObject)">
-            <summary>
-            Returns a dispatcher for multi-threaded scenarios
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.IsDataContextDataBound(System.Windows.FrameworkElement)">
-            <summary>
-            Checks whether the <see cref="F:System.Windows.FrameworkElement.DataContextProperty"/>
-             is bound or not.
-            </summary>
-            <param name="element">The element to be checked.</param>
-            <returns>True if the data context property is being managed by a
-            binding expression.</returns>
-            <exception cref="T:System.ArgumentNullException">If <paramref name="element"/>
-            is a null reference.</exception>
-        </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.Util.IsDesignMode">
-            <summary>
-            Checks whether the application is currently in design mode.
+            The item is displayed if the user double-clicks the
+            tray icon.
             </summary>
         </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.TrayInfo">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftOrRightClick">
             <summary>
-            Resolves the current tray position.
+            The item is displayed if the user clicks the
+            tray icon with the left or the right mouse button.
             </summary>
         </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Interop.TrayInfo.GetTrayLocation">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftOrDoubleClick">
             <summary>
-            Gets the position of the system tray.
-            </summary>
-            <returns>Tray coordinates.</returns>
-        </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers">
-            <summary>
-            Indicates which members of a <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> structure
-            were set, and thus contain valid data or provide additional information
-            to the ToolTip as to how it should display.
+            The item is displayed if the user clicks the
+            tray icon with the left mouse button or if a
+            double-click is being performed.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Message">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.MiddleClick">
             <summary>
-            The message ID is set.
+            The item is displayed if the user clicks the
+            tray icon with the middle mouse button.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Icon">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.All">
             <summary>
-            The notification icon is set.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Tip">
-            <summary>
-            The tooltip is set.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.State">
-            <summary>
-            State information (<see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconState"/>) is set. This
-            applies to both <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconState"/> and
-            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask"/>.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Info">
-            <summary>
-            The balloon ToolTip is set. Accordingly, the following
-            members are set: <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonText"/>,
-            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle"/>, <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonFlags"/>,
-            and <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.VersionOrTimeout"/>.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Realtime">
-            <summary>
-            Windows Vista (Shell32.dll version 6.0.6) and later. If the ToolTip
-            cannot be displayed immediately, discard it.<br/>
-            Use this flag for ToolTips that represent real-time information which
-            would be meaningless or misleading if displayed at a later time.
-            For example, a message that states "Your telephone is ringing."<br/>
-            This modifies and must be combined with the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Info"/> flag.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.UseLegacyToolTips">
-            <summary>
-            Windows Vista (Shell32.dll version 6.0.6) and later.
-            Use the standard ToolTip. Normally, when uVersion is set
-            to NOTIFYICON_VERSION_4, the standard ToolTip is replaced
-            by the application-drawn pop-up user interface (UI).
-            If the application wants to show the standard tooltip
-            in that case, regardless of whether the on-hover UI is showing,
-            it can specify NIF_SHOWTIP to indicate the standard tooltip
-            should still be shown.<br/>
-            Note that the NIF_SHOWTIP flag is effective until the next call 
-            to Shell_NotifyIcon.
+            The item is displayed whenever a click occurs.
             </summary>
         </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.MouseEvent">
@@ -231,68 +103,318 @@
             The balloon tip was clicked.
             </summary>
         </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode">
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconState">
             <summary>
-            Defines flags that define when a popup
-            is being displyed.
+            The state of the icon - can be set to
+            hide the icon.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftClick">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Visible">
             <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left mouse button.
+            The icon is visible.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.RightClick">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Hidden">
             <summary>
-            The item is displayed if the user clicks the
-            tray icon with the right mouse button.
+            Hide the icon.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.DoubleClick">
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper">
             <summary>
-            The item is displayed if the user double-clicks the
-            tray icon.
+            Helper class used by routed events of the
+            <see cref="T:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon"/> class.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftOrRightClick">
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.RaiseEvent(System.Windows.DependencyObject,System.Windows.RoutedEventArgs)">
             <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left or the right mouse button.
+            A static helper method to raise a routed event on a target UIElement or ContentElement.
             </summary>
+            <param name="target">UIElement or ContentElement on which to raise the event</param>
+            <param name="args">RoutedEventArgs to use when raising the event</param>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.LeftOrDoubleClick">
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.AddHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
             <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left mouse button or if a
-            double-click is being performed.
+            A static helper method that adds a handler for a routed event 
+            to a target UIElement or ContentElement.
             </summary>
+            <param name="element">UIElement or ContentElement that listens to the event</param>
+            <param name="routedEvent">Event that will be handled</param>
+            <param name="handler">Event handler to be added</param>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.MiddleClick">
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.RemoveHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
             <summary>
-            The item is displayed if the user clicks the
-            tray icon with the middle mouse button.
+            A static helper method that removes a handler for a routed event 
+            from a target UIElement or ContentElement.
             </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode.All">
-            <summary>
-            The item is displayed whenever a click occurs.
-            </summary>
+            <param name="element">UIElement or ContentElement that listens to the event</param>
+            <param name="routedEvent">Event that will no longer be handled</param>
+            <param name="handler">Event handler to be removed</param>
         </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon">
             <summary>
-            Contains declarations of WPF dependency properties
-            and events.
-            </summary>
-            <summary>
             A WPF proxy to for a taskbar icon (NotifyIcon) that sits in the system's
             taskbar notification area ("system tray").
+            </summary>
+            <summary>
+            Contains declarations of WPF dependency properties
+            and events.
             </summary>
         </member>
         <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CategoryName">
             <summary>
             Category name that is set on designer properties.
             </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.iconData">
+            <summary>
+            Represents the current icon data.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.messageSink">
+            <summary>
+            Receives messages from the taskbar icon.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.delayedTimerAction">
+            <summary>
+            An action that is being invoked if the
+            <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer"/> fires.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer">
+            <summary>
+            A timer that is used to differentiate between single
+            and double clicks.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.balloonCloseTimer">
+            <summary>
+            A timer that is used to close open balloon tooltips.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.#ctor">
+            <summary>
+            Inits the taskbar icon and registers a message listener
+            in order to receive events from the taskbar area.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowCustomBalloon(System.Windows.UIElement,System.Windows.Controls.Primitives.PopupAnimation,System.Nullable{System.Int32})">
+            <summary>
+            Shows a custom control as a tooltip in the tray location.
+            </summary>
+            <param name="balloon"></param>
+            <param name="animation">An optional animation for the popup.</param>
+            <param name="timeout">The time after which the popup is being closed.
+            Submit null in order to keep the balloon open inde
+            </param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="balloon"/>
+            is a null reference.</exception>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ResetBalloonCloseTimer">
+            <summary>
+            Resets the closing timeout, which effectively
+            keeps a displayed balloon message open until
+            it is either closed programmatically through
+            <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloon"/> or due to a new
+            message being displayed.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloon">
+            <summary>
+            Closes the current <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CustomBalloon"/>, if the
+            property is set.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloonCallback(System.Object)">
+            <summary>
+            Timer-invoke event which closes the currently open balloon and
+            resets the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CustomBalloon"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnMouseEvent(Hardcodet.Wpf.TaskbarNotification.Interop.MouseEvent)">
+            <summary>
+            Processes mouse events, which are bubbled
+            through the class' routed events, trigger
+            certain actions (e.g. show a popup), or
+            both.
+            </summary>
+            <param name="me">Event flag.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnToolTipChange(System.Boolean)">
+            <summary>
+            Displays a custom tooltip, if available. This method is only
+            invoked for Windows Vista and above.
+            </summary>
+            <param name="visible">Whether to show or hide the tooltip.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreateCustomToolTip">
+            <summary>
+            Creates a <see cref="T:System.Windows.Controls.ToolTip"/> control that either
+            wraps the currently set <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/>
+            control or the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ToolTipText"/> string.<br/>
+            If <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/> itself is already
+            a <see cref="T:System.Windows.Controls.ToolTip"/> instance, it will be used directly.
+            </summary>
+            <remarks>We use a <see cref="T:System.Windows.Controls.ToolTip"/> rather than
+            <see cref="T:System.Windows.Controls.Primitives.Popup"/> because there was no way to prevent a
+            popup from causing cyclic open/close commands if it was
+            placed under the mouse. ToolTip internally uses a Popup of
+            its own, but takes advance of Popup's internal <see cref="!:Popup.HitTestable"/>
+            property which prevents this issue.</remarks>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.WriteToolTipSettings">
+            <summary>
+            Sets tooltip settings for the class depending on defined
+            dependency properties and OS support.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreatePopup">
+            <summary>
+            Creates a <see cref="T:System.Windows.Controls.ToolTip"/> control that either
+            wraps the currently set <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/>
+            control or the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ToolTipText"/> string.<br/>
+            If <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/> itself is already
+            a <see cref="T:System.Windows.Controls.ToolTip"/> instance, it will be used directly.
+            </summary>
+            <remarks>We use a <see cref="T:System.Windows.Controls.ToolTip"/> rather than
+            <see cref="T:System.Windows.Controls.Primitives.Popup"/> because there was no way to prevent a
+            popup from causing cyclic open/close commands if it was
+            placed under the mouse. ToolTip internally uses a Popup of
+            its own, but takes advance of Popup's internal <see cref="!:Popup.HitTestable"/>
+            property which prevents this issue.</remarks>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowTrayPopup(Hardcodet.Wpf.TaskbarNotification.Interop.Point)">
+            <summary>
+            Displays the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayPopup"/> control if
+            it was set.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowContextMenu(Hardcodet.Wpf.TaskbarNotification.Interop.Point)">
+            <summary>
+            Displays the <see cref="T:System.Windows.Controls.ContextMenu"/> if
+            it was set.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnBalloonToolTipChanged(System.Boolean)">
+            <summary>
+            Bubbles events if a balloon ToolTip was displayed
+            or removed.
+            </summary>
+            <param name="visible">Whether the ToolTip was just displayed
+            or removed.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,Hardcodet.Wpf.TaskbarNotification.BalloonIcon)">
+            <summary>
+            Displays a balloon tip with the specified title,
+            text, and icon in the taskbar for the specified time period.
+            </summary>
+            <param name="title">The title to display on the balloon tip.</param>
+            <param name="message">The text to display on the balloon tip.</param>
+            <param name="symbol">A symbol that indicates the severity.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,System.Drawing.Icon)">
+            <summary>
+            Displays a balloon tip with the specified title,
+            text, and a custom icon in the taskbar for the specified time period.
+            </summary>
+            <param name="title">The title to display on the balloon tip.</param>
+            <param name="message">The text to display on the balloon tip.</param>
+            <param name="customIcon">A custom icon.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="customIcon"/>
+            is a null reference.</exception>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags,System.IntPtr)">
+            <summary>
+            Invokes <see cref="M:Hardcodet.Wpf.TaskbarNotification.Interop.WinApi.Shell_NotifyIcon(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@)"/> in order to display
+            a given balloon ToolTip.
+            </summary>
+            <param name="title">The title to display on the balloon tip.</param>
+            <param name="message">The text to display on the balloon tip.</param>
+            <param name="flags">Indicates what icon to use.</param>
+            <param name="balloonIconHandle">A handle to a custom icon, if any, or
+            <see cref="F:System.IntPtr.Zero"/>.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.HideBalloonTip">
+            <summary>
+            Hides a balloon ToolTip, if any is displayed.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.DoSingleClickAction(System.Object)">
+            <summary>
+            Performs a delayed action if the user requested an action
+            based on a single click of the left mouse.<br/>
+            This method is invoked by the <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer"/>.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.SetVersion">
+            <summary>
+            Sets the version flag for the <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.iconData"/>.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnTaskbarCreated">
+            <summary>
+            Recreates the taskbar icon if the whole taskbar was
+            recreated (e.g. because Explorer was shut down).
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreateTaskbarIcon">
+            <summary>
+            Creates the taskbar icon. This message is invoked during initialization,
+            if the taskbar is restarted, and whenever the icon is displayed.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.RemoveTaskbarIcon">
+            <summary>
+            Closes the taskbar icon if required.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.EnsureNotDisposed">
+            <summary>
+            Checks if the object has been disposed and
+            raises a <see cref="T:System.ObjectDisposedException"/> in case
+            the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed"/> flag is true.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnExit(System.Object,System.EventArgs)">
+            <summary>
+            Disposes the class if the application exits.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Finalize">
+            <summary>
+            This destructor will run only if the <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose"/>
+            method does not get called. This gives this base class the
+            opportunity to finalize.
+            <para>
+            Important: Do not provide destructors in types derived from
+            this class.
+            </para>
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose">
+            <summary>
+            Disposes the object.
+            </summary>
+            <remarks>This method is not virtual by design. Derived classes
+            should override <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose(System.Boolean)"/>.
+            </remarks>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose(System.Boolean)">
+            <summary>
+            Closes the tray and releases all resources.
+            </summary>
+            <summary>
+            <c>Dispose(bool disposing)</c> executes in two distinct scenarios.
+            If disposing equals <c>true</c>, the method has been called directly
+            or indirectly by a user's code. Managed and unmanaged resources
+            can be disposed.
+            </summary>
+            <param name="disposing">If disposing equals <c>false</c>, the method
+            has been called by the runtime from inside the finalizer and you
+            should not reference other objects. Only unmanaged resources can
+            be disposed.</param>
+            <remarks>Check the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed"/> property to determine whether
+            the method has already been called.</remarks>
         </member>
         <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayPopupResolvedPropertyKey">
             <summary>
@@ -954,256 +1076,28 @@
             Registers properties.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.iconData">
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsTaskbarIconCreated">
             <summary>
-            Represents the current icon data.
+            Indicates whether the taskbar icon has been created or not.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.messageSink">
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.SupportsCustomToolTips">
             <summary>
-            Receives messages from the taskbar icon.
+            Indicates whether custom tooltips are supported, which depends
+            on the OS. Windows Vista or higher is required in order to
+            support this feature.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.delayedTimerAction">
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsPopupOpen">
             <summary>
-            An action that is being invoked if the
-            <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer"/> fires.
+            Checks whether a non-tooltip popup is currently opened.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer">
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed">
             <summary>
-            A timer that is used to differentiate between single
-            and double clicks.
+            Set to true as soon as <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose"/>
+            has been invoked.
             </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.balloonCloseTimer">
-            <summary>
-            A timer that is used to close open balloon tooltips.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.#ctor">
-            <summary>
-            Inits the taskbar icon and registers a message listener
-            in order to receive events from the taskbar area.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowCustomBalloon(System.Windows.UIElement,System.Windows.Controls.Primitives.PopupAnimation,System.Nullable{System.Int32})">
-            <summary>
-            Shows a custom control as a tooltip in the tray location.
-            </summary>
-            <param name="balloon"></param>
-            <param name="animation">An optional animation for the popup.</param>
-            <param name="timeout">The time after which the popup is being closed.
-            Submit null in order to keep the balloon open inde
-            </param>
-            <exception cref="T:System.ArgumentNullException">If <paramref name="balloon"/>
-            is a null reference.</exception>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ResetBalloonCloseTimer">
-            <summary>
-            Resets the closing timeout, which effectively
-            keeps a displayed balloon message open until
-            it is either closed programmatically through
-            <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloon"/> or due to a new
-            message being displayed.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloon">
-            <summary>
-            Closes the current <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CustomBalloon"/>, if the
-            property is set.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CloseBalloonCallback(System.Object)">
-            <summary>
-            Timer-invoke event which closes the currently open balloon and
-            resets the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CustomBalloon"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnMouseEvent(Hardcodet.Wpf.TaskbarNotification.Interop.MouseEvent)">
-            <summary>
-            Processes mouse events, which are bubbled
-            through the class' routed events, trigger
-            certain actions (e.g. show a popup), or
-            both.
-            </summary>
-            <param name="me">Event flag.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnToolTipChange(System.Boolean)">
-            <summary>
-            Displays a custom tooltip, if available. This method is only
-            invoked for Windows Vista and above.
-            </summary>
-            <param name="visible">Whether to show or hide the tooltip.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreateCustomToolTip">
-            <summary>
-            Creates a <see cref="T:System.Windows.Controls.ToolTip"/> control that either
-            wraps the currently set <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/>
-            control or the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ToolTipText"/> string.<br/>
-            If <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/> itself is already
-            a <see cref="T:System.Windows.Controls.ToolTip"/> instance, it will be used directly.
-            </summary>
-            <remarks>We use a <see cref="T:System.Windows.Controls.ToolTip"/> rather than
-            <see cref="T:System.Windows.Controls.Primitives.Popup"/> because there was no way to prevent a
-            popup from causing cyclic open/close commands if it was
-            placed under the mouse. ToolTip internally uses a Popup of
-            its own, but takes advance of Popup's internal <see cref="!:Popup.HitTestable"/>
-            property which prevents this issue.</remarks>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.WriteToolTipSettings">
-            <summary>
-            Sets tooltip settings for the class depending on defined
-            dependency properties and OS support.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreatePopup">
-            <summary>
-            Creates a <see cref="T:System.Windows.Controls.ToolTip"/> control that either
-            wraps the currently set <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/>
-            control or the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ToolTipText"/> string.<br/>
-            If <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayToolTip"/> itself is already
-            a <see cref="T:System.Windows.Controls.ToolTip"/> instance, it will be used directly.
-            </summary>
-            <remarks>We use a <see cref="T:System.Windows.Controls.ToolTip"/> rather than
-            <see cref="T:System.Windows.Controls.Primitives.Popup"/> because there was no way to prevent a
-            popup from causing cyclic open/close commands if it was
-            placed under the mouse. ToolTip internally uses a Popup of
-            its own, but takes advance of Popup's internal <see cref="!:Popup.HitTestable"/>
-            property which prevents this issue.</remarks>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowTrayPopup(Hardcodet.Wpf.TaskbarNotification.Interop.Point)">
-            <summary>
-            Displays the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayPopup"/> control if
-            it was set.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowContextMenu(Hardcodet.Wpf.TaskbarNotification.Interop.Point)">
-            <summary>
-            Displays the <see cref="T:System.Windows.Controls.ContextMenu"/> if
-            it was set.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnBalloonToolTipChanged(System.Boolean)">
-            <summary>
-            Bubbles events if a balloon ToolTip was displayed
-            or removed.
-            </summary>
-            <param name="visible">Whether the ToolTip was just displayed
-            or removed.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,Hardcodet.Wpf.TaskbarNotification.BalloonIcon)">
-            <summary>
-            Displays a balloon tip with the specified title,
-            text, and icon in the taskbar for the specified time period.
-            </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
-            <param name="symbol">A symbol that indicates the severity.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,System.Drawing.Icon)">
-            <summary>
-            Displays a balloon tip with the specified title,
-            text, and a custom icon in the taskbar for the specified time period.
-            </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
-            <param name="customIcon">A custom icon.</param>
-            <exception cref="T:System.ArgumentNullException">If <paramref name="customIcon"/>
-            is a null reference.</exception>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.ShowBalloonTip(System.String,System.String,Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags,System.IntPtr)">
-            <summary>
-            Invokes <see cref="M:Hardcodet.Wpf.TaskbarNotification.Interop.WinApi.Shell_NotifyIcon(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@)"/> in order to display
-            a given balloon ToolTip.
-            </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
-            <param name="flags">Indicates what icon to use.</param>
-            <param name="balloonIconHandle">A handle to a custom icon, if any, or
-            <see cref="F:System.IntPtr.Zero"/>.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.HideBalloonTip">
-            <summary>
-            Hides a balloon ToolTip, if any is displayed.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.DoSingleClickAction(System.Object)">
-            <summary>
-            Performs a delayed action if the user requested an action
-            based on a single click of the left mouse.<br/>
-            This method is invoked by the <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.singleClickTimer"/>.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.SetVersion">
-            <summary>
-            Sets the version flag for the <see cref="F:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.iconData"/>.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnTaskbarCreated">
-            <summary>
-            Recreates the taskbar icon if the whole taskbar was
-            recreated (e.g. because Explorer was shut down).
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.CreateTaskbarIcon">
-            <summary>
-            Creates the taskbar icon. This message is invoked during initialization,
-            if the taskbar is restarted, and whenever the icon is displayed.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.RemoveTaskbarIcon">
-            <summary>
-            Closes the taskbar icon if required.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.EnsureNotDisposed">
-            <summary>
-            Checks if the object has been disposed and
-            raises a <see cref="T:System.ObjectDisposedException"/> in case
-            the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed"/> flag is true.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.OnExit(System.Object,System.EventArgs)">
-            <summary>
-            Disposes the class if the application exits.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Finalize">
-            <summary>
-            This destructor will run only if the <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose"/>
-            method does not get called. This gives this base class the
-            opportunity to finalize.
-            <para>
-            Important: Do not provide destructors in types derived from
-            this class.
-            </para>
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose">
-            <summary>
-            Disposes the object.
-            </summary>
-            <remarks>This method is not virtual by design. Derived classes
-            should override <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose(System.Boolean)"/>.
-            </remarks>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose(System.Boolean)">
-            <summary>
-            Closes the tray and releases all resources.
-            </summary>
-            <summary>
-            <c>Dispose(bool disposing)</c> executes in two distinct scenarios.
-            If disposing equals <c>true</c>, the method has been called directly
-            or indirectly by a user's code. Managed and unmanaged resources
-            can be disposed.
-            </summary>
-            <param name="disposing">If disposing equals <c>false</c>, the method
-            has been called by the runtime from inside the finalizer and you
-            should not reference other objects. Only unmanaged resources can
-            be disposed.</param>
-            <remarks>Check the <see cref="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed"/> property to determine whether
-            the method has already been called.</remarks>
         </member>
         <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.TrayPopupResolved">
             <summary>
@@ -1422,251 +1316,6 @@
             Tunneled event that occurs when a custom tooltip is being closed.
             </summary>
         </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsTaskbarIconCreated">
-            <summary>
-            Indicates whether the taskbar icon has been created or not.
-            </summary>
-        </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.SupportsCustomToolTips">
-            <summary>
-            Indicates whether custom tooltips are supported, which depends
-            on the OS. Windows Vista or higher is required in order to
-            support this feature.
-            </summary>
-        </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsPopupOpen">
-            <summary>
-            Checks whether a non-tooltip popup is currently opened.
-            </summary>
-        </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.IsDisposed">
-            <summary>
-            Set to true as soon as <see cref="M:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.Dispose"/>
-            has been invoked.
-            </summary>
-        </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconState">
-            <summary>
-            The state of the icon - can be set to
-            hide the icon.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Visible">
-            <summary>
-            The icon is visible.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Hidden">
-            <summary>
-            Hide the icon.
-            </summary>
-        </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper">
-            <summary>
-            Helper class used by routed events of the
-            <see cref="T:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon"/> class.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.RaiseEvent(System.Windows.DependencyObject,System.Windows.RoutedEventArgs)">
-            <summary>
-            A static helper method to raise a routed event on a target UIElement or ContentElement.
-            </summary>
-            <param name="target">UIElement or ContentElement on which to raise the event</param>
-            <param name="args">RoutedEventArgs to use when raising the event</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.AddHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
-            <summary>
-            A static helper method that adds a handler for a routed event 
-            to a target UIElement or ContentElement.
-            </summary>
-            <param name="element">UIElement or ContentElement that listens to the event</param>
-            <param name="routedEvent">Event that will be handled</param>
-            <param name="handler">Event handler to be added</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.RoutedEventHelper.RemoveHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
-            <summary>
-            A static helper method that removes a handler for a routed event 
-            from a target UIElement or ContentElement.
-            </summary>
-            <param name="element">UIElement or ContentElement that listens to the event</param>
-            <param name="routedEvent">Event that will no longer be handled</param>
-            <param name="handler">Event handler to be removed</param>
-        </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags">
-            <summary>
-            Flags that define the icon that is shown on a balloon
-            tooltip.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.None">
-            <summary>
-            No icon is displayed.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Info">
-            <summary>
-            An information icon is displayed.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Warning">
-            <summary>
-            A warning icon is displayed.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Error">
-            <summary>
-            An error icon is displayed.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.User">
-            <summary>
-            Windows XP Service Pack 2 (SP2) and later.
-            Use a custom icon as the title icon.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.NoSound">
-            <summary>
-            Windows XP (Shell32.dll version 6.0) and later.
-            Do not play the associated sound. Applies only to balloon ToolTips.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.LargeIcon">
-            <summary>
-            Windows Vista (Shell32.dll version 6.0.6) and later. The large version
-            of the icon should be used as the balloon icon. This corresponds to the
-            icon with dimensions SM_CXICON x SM_CYICON. If this flag is not set,
-            the icon with dimensions XM_CXSMICON x SM_CYSMICON is used.<br/>
-            - This flag can be used with all stock icons.<br/>
-            - Applications that use older customized icons (NIIF_USER with hIcon) must
-              provide a new SM_CXICON x SM_CYICON version in the tray icon (hIcon). These
-              icons are scaled down when they are displayed in the System Tray or
-              System Control Area (SCA).<br/>
-            - New customized icons (NIIF_USER with hBalloonIcon) must supply an
-              SM_CXICON x SM_CYICON version in the supplied icon (hBalloonIcon).
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.RespectQuietTime">
-            <summary>
-            Windows 7 and later.
-            </summary>
-        </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData">
-            <summary>
-            A struct that is submitted in order to configure
-            the taskbar icon. Provides various members that
-            can be configured partially, according to the
-            values of the <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers"/>
-            that were defined.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.cbSize">
-            <summary>
-            Size of this structure, in bytes.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.WindowHandle">
-            <summary>
-            Handle to the window that receives notification messages associated with an icon in the
-            taskbar status area. The Shell uses hWnd and uID to identify which icon to operate on
-            when Shell_NotifyIcon is invoked.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.TaskbarIconId">
-            <summary>
-            Application-defined identifier of the taskbar icon. The Shell uses hWnd and uID to identify
-            which icon to operate on when Shell_NotifyIcon is invoked. You can have multiple icons
-            associated with a single hWnd by assigning each a different uID. This feature, however
-            is currently not used.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.ValidMembers">
-            <summary>
-            Flags that indicate which of the other members contain valid data. This member can be
-            a combination of the NIF_XXX constants.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CallbackMessageId">
-            <summary>
-            Application-defined message identifier. The system uses this identifier to send
-            notifications to the window identified in hWnd.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconHandle">
-            <summary>
-            A handle to the icon that should be displayed. Just
-            <see cref="P:System.Drawing.Icon.Handle"/>.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.ToolTipText">
-            <summary>
-            String with the text for a standard ToolTip. It can have a maximum of 64 characters including
-            the terminating NULL. For Version 5.0 and later, szTip can have a maximum of
-            128 characters, including the terminating NULL.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconState">
-            <summary>
-            State of the icon. Remember to also set the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask"/>.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask">
-            <summary>
-            A value that specifies which bits of the state member are retrieved or modified.
-            For example, setting this member to <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Hidden"/>
-            causes only the item's hidden
-            state to be retrieved.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonText">
-            <summary>
-            String with the text for a balloon ToolTip. It can have a maximum of 255 characters.
-            To remove the ToolTip, set the NIF_INFO flag in uFlags and set szInfo to an empty string.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.VersionOrTimeout">
-            <summary>
-            Mainly used to set the version when <see cref="M:Hardcodet.Wpf.TaskbarNotification.Interop.WinApi.Shell_NotifyIcon(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@)"/> is invoked
-            with <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand.SetVersion"/>. However, for legacy operations,
-            the same member is also used to set timouts for balloon ToolTips.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle">
-            <summary>
-            String containing a title for a balloon ToolTip. This title appears in boldface
-            above the text. It can have a maximum of 63 characters.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonFlags">
-            <summary>
-            Adds an icon to a balloon ToolTip, which is placed to the left of the title. If the
-            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle"/> member is zero-length, the icon is not shown.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.TaskbarIconGuid">
-            <summary>
-            Windows XP (Shell32.dll version 6.0) and later.<br/>
-            - Windows 7 and later: A registered GUID that identifies the icon.
-              This value overrides uID and is the recommended method of identifying the icon.<br/>
-            - Windows XP through Windows Vista: Reserved.
-            </summary>
-        </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CustomBalloonIconHandle">
-            <summary>
-            Windows Vista (Shell32.dll version 6.0.6) and later. The handle of a customized
-            balloon icon provided by the application that should be used independently
-            of the tray icon. If this member is non-NULL and the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.User"/>
-            flag is set, this icon is used as the balloon icon.<br/>
-            If this member is NULL, the legacy behavior is carried out.
-            </summary>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CreateDefault(System.IntPtr)">
-            <summary>
-            Creates a default data structure that provides
-            a hidden taskbar icon without the icon being set.
-            </summary>
-            <param name="handle"></param>
-            <returns></returns>
-        </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconVersion">
             <summary>
             The notify icon version that is used. The higher
@@ -1691,6 +1340,67 @@
             for Vista and later.
             </summary>
         </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers">
+            <summary>
+            Indicates which members of a <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> structure
+            were set, and thus contain valid data or provide additional information
+            to the ToolTip as to how it should display.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Message">
+            <summary>
+            The message ID is set.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Icon">
+            <summary>
+            The notification icon is set.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Tip">
+            <summary>
+            The tooltip is set.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.State">
+            <summary>
+            State information (<see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconState"/>) is set. This
+            applies to both <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconState"/> and
+            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask"/>.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Info">
+            <summary>
+            The balloon ToolTip is set. Accordingly, the following
+            members are set: <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonText"/>,
+            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle"/>, <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonFlags"/>,
+            and <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.VersionOrTimeout"/>.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Realtime">
+            <summary>
+            Windows Vista (Shell32.dll version 6.0.6) and later. If the ToolTip
+            cannot be displayed immediately, discard it.<br/>
+            Use this flag for ToolTips that represent real-time information which
+            would be meaningless or misleading if displayed at a later time.
+            For example, a message that states "Your telephone is ringing."<br/>
+            This modifies and must be combined with the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Info"/> flag.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.UseLegacyToolTips">
+            <summary>
+            Windows Vista (Shell32.dll version 6.0.6) and later.
+            Use the standard ToolTip. Normally, when uVersion is set
+            to NOTIFYICON_VERSION_4, the standard ToolTip is replaced
+            by the application-drawn pop-up user interface (UI).
+            If the application wants to show the standard tooltip
+            in that case, regardless of whether the on-hover UI is showing,
+            it can specify NIF_SHOWTIP to indicate the standard tooltip
+            should still be shown.<br/>
+            Note that the NIF_SHOWTIP flag is effective until the next call 
+            to Shell_NotifyIcon.
+            </summary>
+        </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.WindowProcedureHandler">
             <summary>
             Callback delegate which is used by the Windows API to
@@ -1701,6 +1411,11 @@
             <summary>
             Win API WNDCLASS struct - represents a single window.
             Used to receive window messages.
+            </summary>
+        </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.Point">
+            <summary>
+            Win API struct providing coordinates for a single point.
             </summary>
         </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.WindowMessageSink">
@@ -1838,45 +1553,166 @@
             has been invoked.
             </summary>
         </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.BalloonIcon">
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags">
             <summary>
-             Supported icons for the tray's balloon messages.
+            Flags that define the icon that is shown on a balloon
+            tooltip.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.None">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.None">
             <summary>
-            The balloon message is displayed without an icon.
+            No icon is displayed.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Info">
             <summary>
-            An information is displayed.
+            An information icon is displayed.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Warning">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Warning">
             <summary>
-            A warning is displayed.
+            A warning icon is displayed.
             </summary>
         </member>
-        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Error">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.Error">
             <summary>
-            An error is displayed.
+            An error icon is displayed.
             </summary>
         </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Properties.Resources">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.User">
             <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
+            Windows XP Service Pack 2 (SP2) and later.
+            Use a custom icon as the title icon.
             </summary>
         </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.Properties.Resources.ResourceManager">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.NoSound">
             <summary>
-              Returns the cached ResourceManager instance used by this class.
+            Windows XP (Shell32.dll version 6.0) and later.
+            Do not play the associated sound. Applies only to balloon ToolTips.
             </summary>
         </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.Properties.Resources.Culture">
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.LargeIcon">
             <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
+            Windows Vista (Shell32.dll version 6.0.6) and later. The large version
+            of the icon should be used as the balloon icon. This corresponds to the
+            icon with dimensions SM_CXICON x SM_CYICON. If this flag is not set,
+            the icon with dimensions XM_CXSMICON x SM_CYSMICON is used.<br/>
+            - This flag can be used with all stock icons.<br/>
+            - Applications that use older customized icons (NIIF_USER with hIcon) must
+              provide a new SM_CXICON x SM_CYICON version in the tray icon (hIcon). These
+              icons are scaled down when they are displayed in the System Tray or
+              System Control Area (SCA).<br/>
+            - New customized icons (NIIF_USER with hBalloonIcon) must supply an
+              SM_CXICON x SM_CYICON version in the supplied icon (hBalloonIcon).
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.RespectQuietTime">
+            <summary>
+            Windows 7 and later.
+            </summary>
+        </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Util">
+            <summary>
+            Util and extension methods.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.CreateHelperWindow">
+            <summary>
+            Creates an transparent window without dimension that
+            can be used to temporarily obtain focus and/or
+            be used as a window message sink.
+            </summary>
+            <returns>Empty window.</returns>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.WriteIconData(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand)">
+            <summary>
+            Updates the taskbar icons with data provided by a given
+            <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> instance.
+            </summary>
+            <param name="data">Configuration settings for the NotifyIcon.</param>
+            <param name="command">Operation on the icon (e.g. delete the icon).</param>
+            <returns>True if the data was successfully written.</returns>
+            <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.WriteIconData(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers)">
+            <summary>
+            Updates the taskbar icons with data provided by a given
+            <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData"/> instance.
+            </summary>
+            <param name="data">Configuration settings for the NotifyIcon.</param>
+            <param name="command">Operation on the icon (e.g. delete the icon).</param>
+            <param name="flags">Defines which members of the <paramref name="data"/>
+            structure are set.</param>
+            <returns>True if the data was successfully written.</returns>
+            <remarks>See Shell_NotifyIcon documentation on MSDN for details.</remarks>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.GetBalloonFlag(Hardcodet.Wpf.TaskbarNotification.BalloonIcon)">
+            <summary>
+            Gets a <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags"/> enum value that
+            matches a given <see cref="T:Hardcodet.Wpf.TaskbarNotification.BalloonIcon"/>.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.ToIcon(System.Windows.Media.ImageSource)">
+            <summary>
+            Reads a given image resource into a WinForms icon.
+            </summary>
+            <param name="imageSource">Image source pointing to
+            an icon file (*.ico).</param>
+            <returns>An icon object that can be used with the
+            taskbar area.</returns>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.Is``1(``0,``0[])">
+            <summary>
+            Checks a list of candidates for equality to a given
+            reference value.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value">The evaluated value.</param>
+            <param name="candidates">A liste of possible values that are
+            regarded valid.</param>
+            <returns>True if one of the submitted <paramref name="candidates"/>
+            matches the evaluated value. If the <paramref name="candidates"/>
+            parameter itself is null, too, the method returns false as well,
+            which allows to check with null values, too.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="candidates"/>
+            is a null reference.</exception>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.IsMatch(Hardcodet.Wpf.TaskbarNotification.Interop.MouseEvent,Hardcodet.Wpf.TaskbarNotification.PopupActivationMode)">
+            <summary>
+            Checks if a given <see cref="T:Hardcodet.Wpf.TaskbarNotification.PopupActivationMode"/> is a match for
+            an effectively pressed mouse button.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.ExecuteIfEnabled(System.Windows.Input.ICommand,System.Object,System.Windows.IInputElement)">
+            <summary>
+            Executes a given command if its <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method
+            indicates it can run.
+            </summary>
+            <param name="command">The command to be executed, or a null reference.</param>
+            <param name="commandParameter">An optional parameter that is associated with
+            the command.</param>
+            <param name="target">The target element on which to raise the command.</param>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.GetDispatcher(System.Windows.Threading.DispatcherObject)">
+            <summary>
+            Returns a dispatcher for multi-threaded scenarios
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.IsDataContextDataBound(System.Windows.FrameworkElement)">
+            <summary>
+            Checks whether the <see cref="F:System.Windows.FrameworkElement.DataContextProperty"/>
+             is bound or not.
+            </summary>
+            <param name="element">The element to be checked.</param>
+            <returns>True if the data context property is being managed by a
+            binding expression.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="element"/>
+            is a null reference.</exception>
+        </member>
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.Util.IsDesignMode">
+            <summary>
+            Checks whether the application is currently in design mode.
             </summary>
         </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.WinApi">
@@ -1943,6 +1779,123 @@
             <param name="lpPoint"></param>
             <returns></returns>
         </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData">
+            <summary>
+            A struct that is submitted in order to configure
+            the taskbar icon. Provides various members that
+            can be configured partially, according to the
+            values of the <see cref="T:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers"/>
+            that were defined.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.cbSize">
+            <summary>
+            Size of this structure, in bytes.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.WindowHandle">
+            <summary>
+            Handle to the window that receives notification messages associated with an icon in the
+            taskbar status area. The Shell uses hWnd and uID to identify which icon to operate on
+            when Shell_NotifyIcon is invoked.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.TaskbarIconId">
+            <summary>
+            Application-defined identifier of the taskbar icon. The Shell uses hWnd and uID to identify
+            which icon to operate on when Shell_NotifyIcon is invoked. You can have multiple icons
+            associated with a single hWnd by assigning each a different uID. This feature, however
+            is currently not used.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.ValidMembers">
+            <summary>
+            Flags that indicate which of the other members contain valid data. This member can be
+            a combination of the NIF_XXX constants.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CallbackMessageId">
+            <summary>
+            Application-defined message identifier. The system uses this identifier to send
+            notifications to the window identified in hWnd.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconHandle">
+            <summary>
+            A handle to the icon that should be displayed. Just
+            <see cref="P:System.Drawing.Icon.Handle"/>.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.ToolTipText">
+            <summary>
+            String with the text for a standard ToolTip. It can have a maximum of 64 characters including
+            the terminating NULL. For Version 5.0 and later, szTip can have a maximum of
+            128 characters, including the terminating NULL.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.IconState">
+            <summary>
+            State of the icon. Remember to also set the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask"/>.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.StateMask">
+            <summary>
+            A value that specifies which bits of the state member are retrieved or modified.
+            For example, setting this member to <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconState.Hidden"/>
+            causes only the item's hidden
+            state to be retrieved.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonText">
+            <summary>
+            String with the text for a balloon ToolTip. It can have a maximum of 255 characters.
+            To remove the ToolTip, set the NIF_INFO flag in uFlags and set szInfo to an empty string.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.VersionOrTimeout">
+            <summary>
+            Mainly used to set the version when <see cref="M:Hardcodet.Wpf.TaskbarNotification.Interop.WinApi.Shell_NotifyIcon(Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand,Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData@)"/> is invoked
+            with <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand.SetVersion"/>. However, for legacy operations,
+            the same member is also used to set timouts for balloon ToolTips.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle">
+            <summary>
+            String containing a title for a balloon ToolTip. This title appears in boldface
+            above the text. It can have a maximum of 63 characters.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonFlags">
+            <summary>
+            Adds an icon to a balloon ToolTip, which is placed to the left of the title. If the
+            <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle"/> member is zero-length, the icon is not shown.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.TaskbarIconGuid">
+            <summary>
+            Windows XP (Shell32.dll version 6.0) and later.<br/>
+            - Windows 7 and later: A registered GUID that identifies the icon.
+              This value overrides uID and is the recommended method of identifying the icon.<br/>
+            - Windows XP through Windows Vista: Reserved.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CustomBalloonIconHandle">
+            <summary>
+            Windows Vista (Shell32.dll version 6.0.6) and later. The handle of a customized
+            balloon icon provided by the application that should be used independently
+            of the tray icon. If this member is non-NULL and the <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.BalloonFlags.User"/>
+            flag is set, this icon is used as the balloon icon.<br/>
+            If this member is NULL, the legacy behavior is carried out.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.CreateDefault(System.IntPtr)">
+            <summary>
+            Creates a default data structure that provides
+            a hidden taskbar icon without the icon being set.
+            </summary>
+            <param name="handle"></param>
+            <returns></returns>
+        </member>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyCommand">
             <summary>
             Main operations performed on the
@@ -1981,10 +1934,57 @@
             icon behavior should be used.
             </summary>
         </member>
-        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.Point">
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.BalloonIcon">
             <summary>
-            Win API struct providing coordinates for a single point.
+             Supported icons for the tray's balloon messages.
             </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.None">
+            <summary>
+            The balloon message is displayed without an icon.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info">
+            <summary>
+            An information is displayed.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Warning">
+            <summary>
+            A warning is displayed.
+            </summary>
+        </member>
+        <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Error">
+            <summary>
+            An error is displayed.
+            </summary>
+        </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Hardcodet.Wpf.TaskbarNotification.Interop.TrayInfo">
+            <summary>
+            Resolves the current tray position.
+            </summary>
+        </member>
+        <member name="M:Hardcodet.Wpf.TaskbarNotification.Interop.TrayInfo.GetTrayLocation">
+            <summary>
+            Gets the position of the system tray.
+            </summary>
+            <returns>Tray coordinates.</returns>
         </member>
     </members>
 </doc>
