@@ -1,9 +1,0 @@
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.baml
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.g.cs
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\App.g.cs
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar_MarkupCompile.cache
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.g.resources
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\RichTextBoxToolbar.Properties.Resources.resources
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\GenerateResource.read.1.tlog
-D:\Test\wpf\TestControl\RichTextBoxToolbar\obj\x86\Debug\GenerateResource.write.1.tlog
