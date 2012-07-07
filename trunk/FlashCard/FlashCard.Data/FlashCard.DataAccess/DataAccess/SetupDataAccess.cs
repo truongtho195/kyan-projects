@@ -95,7 +95,7 @@ namespace FlashCard.DataAccess
                 //log.Error(CatchException(ex));
                 //if (log.IsDebugEnabled)
                 //    System.Windows.MessageBox.Show(ex.ToString(), "Debug ! Error");
-                throw;
+                throw ex;
             }
             finally
             {
