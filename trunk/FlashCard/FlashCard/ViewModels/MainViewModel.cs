@@ -23,6 +23,7 @@ using System.ComponentModel;
 using log4net;
 using System.Reflection;
 using System.Media;
+using System.Windows.Controls;
 
 namespace FlashCard.ViewModels
 {
@@ -57,7 +58,7 @@ namespace FlashCard.ViewModels
         public DispatcherTimer _timerPopup;
         DispatcherTimer _timerViewFullScreen;
         DispatcherTimer _waitForClose;
-        FancyBalloon _balloon;
+        
         Stopwatch _swCountTimerTick = new Stopwatch();
         LearnView _learnView;
         private int _currentItemIndex = 0;
@@ -297,12 +298,13 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
             if ("Popup".Equals(param.ToString()))
             {
+                var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as UserControl;
                 Storyboard sb;
                 if (SelectedLesson.IsBackSide)
-                    sb = (Storyboard)_balloon.FindResource("sbChangeToBack");
+                    sb = (Storyboard)control.FindResource("sbChangeToBack");
                 else
-                    sb = (Storyboard)_balloon.FindResource("sbChangeToFront");
-                _balloon.BeginStoryboard(sb);
+                    sb = (Storyboard)control.FindResource("sbChangeToFront");
+                control.BeginStoryboard(sb);
             }
             else
             {
@@ -391,7 +393,8 @@ namespace FlashCard.ViewModels
         private void FancyBallonMouseLeaveExecute(object param)
         {
             log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
-            if (!IsOtherFormShow && this.IsPopupStarted == true)
+            //Check after //&& this.IsPopupStarted == true
+            if (!IsOtherFormShow)
             {
                 _swCountTimerTick.Stop();
                 int time = 0;
@@ -1070,12 +1073,12 @@ namespace FlashCard.ViewModels
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
                 {
                     SetLesson();
-                    _balloon = new FancyBalloon();
+                    FancyBalloon balloon = new FancyBalloon();
                     //_balloon.tbWords.Document = SelectedLesson.Description;
                     //_balloon.tblWordBackSide.Document = SelectedLesson.BackSideModel.BackSideDetail;
                     if(App.SetupModel.IsEnableSoundForShow)
                         _soundForShow.Play();
-                    ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+                    ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
                     var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
@@ -1236,9 +1239,9 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void ShowPopupForm()
         {
-            _balloon = new FancyBalloon();
+            FancyBalloon balloon = new FancyBalloon();
             IsCurrentStarted = true;
-            ViewCore.MyNotifyIcon.ShowCustomBalloon(_balloon, PopupAnimation.Fade, null);
+            ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
         }
         #endregion
 
