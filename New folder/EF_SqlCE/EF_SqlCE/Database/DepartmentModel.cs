@@ -12,12 +12,9 @@ namespace EF_SqlCE.Database.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Blog
+    public partial class Department
     {
-        public int BlogID { get; set; }
-        public string Title { get; set; }
-        public string BloggerName { get; set; }
-    
-        public virtual Post Post { get; set; }
+        public long DepartmentID { get; set; }
+        public string DepartmentName { get; set; }
     }
 }
