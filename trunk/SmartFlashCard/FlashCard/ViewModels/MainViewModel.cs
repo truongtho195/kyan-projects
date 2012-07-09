@@ -19,6 +19,7 @@ using FlashCard.Views;
 using Hardcodet.Wpf.TaskbarNotification;
 using log4net;
 using MVVMHelper.Commands;
+using FlashCard.Database;
 
 namespace FlashCard.ViewModels
 {
@@ -41,6 +42,7 @@ namespace FlashCard.ViewModels
             }
             else
             {
+                
                 SelectedLesson = LessonCollection.First();
                 SelectedLesson.IsBackSide = false;
                 ShowPopupForm();
