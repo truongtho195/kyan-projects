@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashCard", "FlashCard\Flas
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlashCard.Core", "FlashCard.Core", "{2C70907B-92F6-4E6F-A318-974324EED0B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyIconWpf", "FlashCare.Core\NotifyIconWpf\NotifyIconWpf.csproj", "{7AC63864-7638-41C4-969C-D3197EF2BED9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlashCard.Data", "FlashCard.Data", "{AB064C38-F98E-4118-91C6-29DF7DC5E0FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyIconWpf", "FlashCare.Core\NotifyIconWpf\NotifyIconWpf.csproj", "{7AC63864-7638-41C4-969C-D3197EF2BED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashCard.DataAccess", "FlashCard.Data\FlashCard.DataAccess\FlashCard.DataAccess.csproj", "{2660BA4D-E3AF-4038-855D-AB1F2C045ECD}"
 EndProject
@@ -43,30 +43,20 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Debug|x86.ActiveCfg = Debug|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Debug|x86.Build.0 = Debug|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|Any CPU.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|Any CPU.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|Mixed Platforms.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|Mixed Platforms.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|x86.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Full|x86.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Incremental|Any CPU.ActiveCfg = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Incremental|Mixed Platforms.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Incremental|Mixed Platforms.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Incremental|x86.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Incremental|x86.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.JustRun|Any CPU.ActiveCfg = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.JustRun|Mixed Platforms.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.JustRun|Mixed Platforms.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.JustRun|x86.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.JustRun|x86.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Release|Any CPU.ActiveCfg = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Release|Mixed Platforms.Build.0 = Release|x86
 		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Release|x86.ActiveCfg = Release|x86
-		{12E8717A-F3D1-4830-B3B9-C4141376D6A0}.Release|x86.Build.0 = Release|x86
 		{7AC63864-7638-41C4-969C-D3197EF2BED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7AC63864-7638-41C4-969C-D3197EF2BED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AC63864-7638-41C4-969C-D3197EF2BED9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
