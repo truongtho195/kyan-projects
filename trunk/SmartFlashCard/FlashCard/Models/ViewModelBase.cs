@@ -42,7 +42,7 @@ namespace FlashCard.Models
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
 
-            this.PropertyChangedCompleted(propertyName);
+            this.RaisePropertyChanged(propertyName);
         }
 
         protected virtual void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
