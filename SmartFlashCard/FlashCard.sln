@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplicationFramework", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextBoxControl", "FlashCare.Core\RichTextBoxToolbar\RichTextBoxControl.csproj", "{25DBEF3D-6D99-4A28-B345-C53B9074DB98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToText", "ConvertToText\ConvertToText.csproj", "{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FlashCard.vsmdi
@@ -218,6 +220,31 @@ Global
 		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|Mixed Platforms.Build.0 = Release|x86
 		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|x86.ActiveCfg = Release|x86
 		{25DBEF3D-6D99-4A28-B345-C53B9074DB98}.Release|x86.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Debug|x86.ActiveCfg = Debug|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Debug|x86.Build.0 = Debug|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Full|Any CPU.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Full|Mixed Platforms.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Full|Mixed Platforms.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Full|x86.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Full|x86.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Incremental|Any CPU.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Incremental|Mixed Platforms.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Incremental|Mixed Platforms.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Incremental|x86.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Incremental|x86.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.JustRun|Any CPU.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.JustRun|Mixed Platforms.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.JustRun|Mixed Platforms.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.JustRun|x86.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.JustRun|x86.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|Any CPU.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|Mixed Platforms.Build.0 = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|x86.ActiveCfg = Release|x86
+		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

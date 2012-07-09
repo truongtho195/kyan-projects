@@ -14,12 +14,12 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using FlashCard.Helper;
-using FlashCard.Model;
 using FlashCard.Views;
 using Hardcodet.Wpf.TaskbarNotification;
 using log4net;
 using MVVMHelper.Commands;
 using FlashCard.Database;
+using FlashCard.Models;
 
 namespace FlashCard.ViewModels
 {
@@ -35,7 +35,7 @@ namespace FlashCard.ViewModels
         public void ExcuteMainForm()
         {
             IsPopupStarted = true;
-            if (App.SetupModel.IsEnableSlideShow)
+            if (App.SetupModel.IsEnableSlideShow==true)
             {
                 InitialTimer();
                 _timerPopup.Start();
@@ -973,7 +973,7 @@ namespace FlashCard.ViewModels
         {
             //LessonDataAccess lessonDA = new LessonDataAccess();
             //var lesson = lessonDA.GetAllWithRelation();
-            if (App.SetupModel.IsShuffle)
+            if (App.SetupModel.IsShuffle==true)
             {
                 var lessonShuffle = ShuffleList.Randomize<LessonModel>(listLesson);
                 LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
@@ -1037,12 +1037,12 @@ namespace FlashCard.ViewModels
 
             if (_waitForClose == null)
                 _waitForClose = new DispatcherTimer();
-            _waitForClose.Interval = new TimeSpan(0, 0, 0, App.SetupModel.ViewTimeSecond);
+            _waitForClose.Interval = new TimeSpan(0, 0,(int)App.SetupModel.ViewTimeSecond.Value);
             _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
 
             if (_timerViewFullScreen == null)
                 _timerViewFullScreen = new DispatcherTimer();
-            _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.ViewTimeSecond);
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)App.SetupModel.ViewTimeSecond.Value);
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
 
             
