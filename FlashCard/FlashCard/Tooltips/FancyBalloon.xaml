@@ -143,6 +143,7 @@
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonShowing">
+            <StopStoryboard BeginStoryboardName="FadeOut_BeginStoryboard" />
             <BeginStoryboard Storyboard="{StaticResource FadeIn}"
                              x:Name="FadeIn_BeginStoryboard" />
         </EventTrigger>
@@ -152,9 +153,10 @@
                              Storyboard="{StaticResource FadeBack}" />
         </EventTrigger>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
+            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
             <BeginStoryboard Storyboard="{StaticResource FadeOut}"
                              x:Name="FadeOut_BeginStoryboard" />
-            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
+            
 
         </EventTrigger>
 
@@ -415,7 +417,7 @@
                                        FontSize="21.333"
                                        FontWeight="Bold" />
 
-                            <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
+                            <!--<richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
                                                                    Document="{Binding SelectedLesson.Description, Mode=OneWay}"
                                                                    VirtualizingStackPanel.VirtualizationMode="Recycling"
                                                                    Background="Transparent"
@@ -427,7 +429,7 @@
                                                                    Foreground="White"
                                                                    FontSize="16"
                                                                    MinHeight="25"
-                                                                   MinWidth="290" />
+                                                                   MinWidth="290" />-->
 
                             <!--<FlowDocumentReader  x:Name="tbWords"
                                                  Background="Transparent"
@@ -472,7 +474,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
+                    <!--<richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
                                                             Background="Transparent"
                                                             BorderBrush="Transparent"
                                                             HorizontalAlignment="Center"
@@ -483,7 +485,7 @@
                                                             Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
                                                             Grid.Row="1"
                                                             MinWidth="290"
-                                                            MinHeight="50" />
+                                                            MinHeight="50" />-->
                     <!--<FlowDocumentReader  x:Name="tblWordBackSide"
                                          Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                          Background="Transparent"
