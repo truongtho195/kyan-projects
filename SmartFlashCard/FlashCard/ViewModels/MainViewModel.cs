@@ -1046,7 +1046,7 @@ namespace FlashCard.ViewModels
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
 
             
-
+        
             //test.Start();
         }
 
