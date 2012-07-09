@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using FlashCard.Models;
 using FlashCard.Database;
 
 
@@ -72,7 +73,7 @@ namespace FlashCard.Models
                 }
             }
         }
-        public Nullable<long> ViewTimeSecond
+        public int ViewTimeSecond
         {
             get { return this.Setup.ViewTimeSecond; }
             set
@@ -85,7 +86,7 @@ namespace FlashCard.Models
                 }
             }
         }
-        public Nullable<long> DistanceTimeSecond
+        public int DistanceTimeSecond
         {
             get { return this.Setup.DistanceTimeSecond; }
             set
@@ -111,7 +112,7 @@ namespace FlashCard.Models
                 }
             }
         }
-        public Nullable<long> LimitCardNum
+        public Nullable<int> LimitCardNum
         {
             get { return this.Setup.LimitCardNum; }
             set
@@ -180,7 +181,7 @@ namespace FlashCard.Models
         #endregion
 
         #region all the custom code
-        #region Extend Properties
+        #region.   Extend Properties
         private TimeSpan _timeOut;
         /// <summary>
         /// This is Extend Properties
@@ -197,6 +198,31 @@ namespace FlashCard.Models
                     RaisePropertyChanged(() => TimeOut);
                 }
             }
+        }
+
+        #endregion
+
+        #region.   Override Changed
+        protected override void RaisePropertyChangedCompleted(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "ViewTimeSecond":
+                    {
+                        var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                        this._timeOut = new TimeSpan(0, 0, (int)timeOutSecond);
+                    }
+                    break;
+                case "DistanceTimeSecond":
+                    {
+                        var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                        this._timeOut = new TimeSpan(0, 0, (int)timeOutSecond);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            base.RaisePropertyChangedCompleted(propertyName);
         }
 
         #endregion

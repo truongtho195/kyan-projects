@@ -39,7 +39,9 @@ namespace FlashCard
             if (setup.Count == 0)
                 SetupModel = new SetupModel();
             else
-                SetupModel = setup.FirstOrDefault();
+            {
+             //!!!!   SetupModel = setup.FirstOrDefault();
+            }
 
 
             LessonMangeView = new LessonManageView();

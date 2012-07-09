@@ -19,30 +19,30 @@ using FlashCard.Database;
 namespace FlashCard.Models
 {
     /// <summary>
-    /// Model for table Type 
+    /// Model for table Kind 
     /// </summary>
-    public partial class TypeModel : ViewModelBase
+    public partial class KindModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public TypeModel()
+        public KindModel()
         {
             this.IsNew = true;
-            this.Type = new Type();
+            this.Kind = new Kind();
         }
 
         // Default contructor that set entity to field
-        public TypeModel(Type type)
+        public KindModel(Kind kind)
         {
-            this.Type = type;
+            this.Kind = kind;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Type Type { get; private set; }
+        public Kind Kind { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,42 +60,42 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long TypeID
+        public long KindID
         {
-            get { return this.Type.TypeID; }
+            get { return this.Kind.KindID; }
             set
             {
-                if (this.Type.TypeID != value)
+                if (this.Kind.KindID != value)
                 {
                     this.IsDirty = true;
-                    this.Type.TypeID = value;
-                    RaisePropertyChanged(() => TypeID);
+                    this.Kind.KindID = value;
+                    RaisePropertyChanged(() => KindID);
                 }
             }
         }
         public string Name
         {
-            get { return this.Type.Name; }
+            get { return this.Kind.Name; }
             set
             {
-                if (this.Type.Name != value)
+                if (this.Kind.Name != value)
                 {
                     this.IsDirty = true;
-                    this.Type.Name = value;
+                    this.Kind.Name = value;
                     RaisePropertyChanged(() => Name);
                 }
             }
         }
-        public Nullable<long> TypeOf
+        public Nullable<long> KindOf
         {
-            get { return this.Type.TypeOf; }
+            get { return this.Kind.KindOf; }
             set
             {
-                if (this.Type.TypeOf != value)
+                if (this.Kind.KindOf != value)
                 {
                     this.IsDirty = true;
-                    this.Type.TypeOf = value;
-                    RaisePropertyChanged(() => TypeOf);
+                    this.Kind.KindOf = value;
+                    RaisePropertyChanged(() => KindOf);
                 }
             }
         }

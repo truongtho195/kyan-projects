@@ -2,13 +2,14 @@
 using System.Linq;
 using FlashCard.Views;
 using System.Waf.Applications;
-using FlashCard.Model;
+using FlashCard.Models;
 using System.Collections.ObjectModel;
 using FlashCard.DataAccess;
 using System.Windows.Input;
 using MVVMHelper.Commands;
 using System;
 using log4net;
+using FlashCard.Database;
 
 namespace FlashCard.ViewModels
 {
@@ -181,9 +182,11 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x => x.IsChecked))
-                return true;
-            return false;
+            ///!!!!
+            //if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x => x.IsChecked))
+            //    return true;
+            //return false;
+            return true;
         }
 
         /// <summary>
@@ -195,9 +198,10 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                foreach (var item in CategoryCollection.Where(x => x.IsChecked))
+                foreach (var item in CategoryCollection.Where(x => x.Checked))
                 {
-                    var lesson = LessonCollection.Where(x => x.CategoryModel.CategoryID == item.CategoryID);
+                    //!!!! Not sure LessonCollection.Where(x => x.CategoryID == item.CategoryID);
+                    var lesson = LessonCollection.Where(x => x.CategoryID == item.CategoryID);
                     //Check condition if user set Lesson user Know => remove this item lesson
                     if (lesson != null && lesson.Count() > 0)
                     {
@@ -211,12 +215,16 @@ namespace FlashCard.ViewModels
 
                 //Handle Setup
                 App.SetupModel = SelectedSetupModel;
-                SetupDataAccess setupDA = new SetupDataAccess();
-
+               
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 if (App.SetupModel.IsNew)
-                    setupDA.Insert(App.SetupModel);
-                else if (App.SetupModel.IsEdit)
-                    setupDA.Update(App.SetupModel);
+                    flashCardEntity.Setups.AddObject(App.SetupModel.Setup);
+                else if (App.SetupModel.IsDirty)
+                {
+                    var setup= flashCardEntity.Setups.Where(x => x.SetupID == App.SetupModel.SetupID);
+                    if (setup != null)
+                    { }
+                }
             }
             catch (Exception ex)
             {
