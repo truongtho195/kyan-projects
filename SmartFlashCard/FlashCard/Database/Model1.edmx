@@ -8,9 +8,9 @@
         <EntityContainer Name="SmartFlashCardDBModelStoreContainer">
           <EntitySet Name="BackSide" EntityType="SmartFlashCardDBModel.Store.BackSide" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="SmartFlashCardDBModel.Store.Categories" store:Type="Tables" />
+          <EntitySet Name="Kinds" EntityType="SmartFlashCardDBModel.Store.Kinds" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Store.Lessons" store:Type="Tables" />
           <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Store.Setups" store:Type="Tables" />
-          <EntitySet Name="Types" EntityType="SmartFlashCardDBModel.Store.Types" store:Type="Tables" />
           <EntitySet Name="UserLesson" EntityType="SmartFlashCardDBModel.Store.UserLesson" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="SmartFlashCardDBModel.Store.Users" store:Type="Tables" />
           <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.Store.FK_BackSide_0">
@@ -18,11 +18,11 @@
             <End Role="BackSide" EntitySet="BackSide" />
           </AssociationSet>
           <AssociationSet Name="FK_Lessons_0" Association="SmartFlashCardDBModel.Store.FK_Lessons_0">
-            <End Role="Types" EntitySet="Types" />
+            <End Role="Categories" EntitySet="Categories" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
           <AssociationSet Name="FK_Lessons_1" Association="SmartFlashCardDBModel.Store.FK_Lessons_1">
-            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Kinds" EntitySet="Kinds" />
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
         </EntityContainer>
@@ -44,6 +44,14 @@
           <Property Name="IsActived" Type="bit" />
           <Property Name="Remark" Type="nvarchar" MaxLength="300" />
         </EntityType>
+        <EntityType Name="Kinds">
+          <Key>
+            <PropertyRef Name="KindID" />
+          </Key>
+          <Property Name="KindID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="KindOf" Type="integer" />
+        </EntityType>
         <EntityType Name="Lessons">
           <Key>
             <PropertyRef Name="LessonID" />
@@ -51,7 +59,7 @@
           <Property Name="LessonID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LessonName" Type="nvarchar" />
           <Property Name="Description" Type="nvarchar" />
-          <Property Name="TypeID" Type="integer" />
+          <Property Name="KindID" Type="integer" />
           <Property Name="CategoryID" Type="integer" />
           <Property Name="IsActived" Type="bit" />
         </EntityType>
@@ -60,22 +68,14 @@
             <PropertyRef Name="SetupID" />
           </Key>
           <Property Name="SetupID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ViewTimeSecond" Type="integer" />
-          <Property Name="DistanceTimeSecond" Type="integer" />
+          <Property Name="ViewTimeSecond" Type="int" Nullable="false" />
+          <Property Name="DistanceTimeSecond" Type="int" Nullable="false" />
           <Property Name="IsLimitCard" Type="bit" />
-          <Property Name="LimitCardNum" Type="integer" />
+          <Property Name="LimitCardNum" Type="int" />
           <Property Name="IsEnableSlideShow" Type="bit" />
           <Property Name="IsEnableLoop" Type="bit" />
           <Property Name="IsEnableSoundForShow" Type="bit" />
           <Property Name="IsShuffle" Type="bit" />
-        </EntityType>
-        <EntityType Name="Types">
-          <Key>
-            <PropertyRef Name="TypeID" />
-          </Key>
-          <Property Name="TypeID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" MaxLength="200" />
-          <Property Name="TypeOf" Type="integer" />
         </EntityType>
         <EntityType Name="UserLesson">
           <Key>
@@ -108,18 +108,6 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Lessons_0">
-          <End Role="Types" Type="SmartFlashCardDBModel.Store.Types" Multiplicity="0..1" />
-          <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Types">
-              <PropertyRef Name="TypeID" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="TypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Lessons_1">
           <End Role="Categories" Type="SmartFlashCardDBModel.Store.Categories" Multiplicity="0..1" />
           <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
           <ReferentialConstraint>
@@ -127,7 +115,19 @@
               <PropertyRef Name="CategoryID" />
             </Principal>
             <Dependent Role="Lessons">
-              <PropertyRef Name="CategoryID" />
+              <PropertyRef Name="KindID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_1">
+          <End Role="Kinds" Type="SmartFlashCardDBModel.Store.Kinds" Multiplicity="0..1" />
+          <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kinds">
+              <PropertyRef Name="KindID" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="KindID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -138,104 +138,90 @@
         <EntityContainer Name="SmartFlashCardDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.BackSide" />
           <EntitySet Name="Categories" EntityType="SmartFlashCardDBModel.Category" />
+          <EntitySet Name="Kinds" EntityType="SmartFlashCardDBModel.Kind" />
           <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Lesson" />
-          <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Setup" />
-          <EntitySet Name="Types" EntityType="SmartFlashCardDBModel.Type" />
           <EntitySet Name="UserLessons" EntityType="SmartFlashCardDBModel.UserLesson" />
           <EntitySet Name="Users" EntityType="SmartFlashCardDBModel.User" />
           <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.FK_BackSide_0">
-            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Lesson" EntitySet="Lessons" />
             <End Role="BackSide" EntitySet="BackSides" />
           </AssociationSet>
-          <AssociationSet Name="FK_Lessons_1" Association="SmartFlashCardDBModel.FK_Lessons_1">
-            <End Role="Categories" EntitySet="Categories" />
-            <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
           <AssociationSet Name="FK_Lessons_0" Association="SmartFlashCardDBModel.FK_Lessons_0">
-            <End Role="Types" EntitySet="Types" />
-            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Kind" EntitySet="Kinds" />
+            <End Role="Lesson" EntitySet="Lessons" />
           </AssociationSet>
+          <AssociationSet Name="FK_Lessons_01" Association="SmartFlashCardDBModel.FK_Lessons_01">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Lesson" EntitySet="Lessons" />
+          </AssociationSet>
+          <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Setup" />
         </EntityContainer>
         <EntityType Name="BackSide">
           <Key>
             <PropertyRef Name="BackSideID" />
           </Key>
-          <Property Name="BackSideID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LessonID" Type="Int64" />
-          <Property Name="Content" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-          <Property Name="IsCorrect" Type="Boolean" />
-          <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="BackSide" ToRole="Lessons" />
+          <Property Type="Int64" Name="BackSideID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="LessonID" />
+          <Property Type="String" Name="Content" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsCorrect" />
+          <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="BackSide" ToRole="Lesson" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryID" />
           </Key>
-          <Property Name="CategoryID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="IsActived" Type="Boolean" />
-          <Property Name="Remark" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Lessons" Relationship="SmartFlashCardDBModel.FK_Lessons_1" FromRole="Categories" ToRole="Lessons" />
+          <Property Type="Int64" Name="CategoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CategoryName" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsActived" />
+          <Property Type="String" Name="Remark" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Lessons" Relationship="SmartFlashCardDBModel.FK_Lessons_01" FromRole="Category" ToRole="Lesson" />
+        </EntityType>
+        <EntityType Name="Kind">
+          <Key>
+            <PropertyRef Name="KindID" />
+          </Key>
+          <Property Type="Int64" Name="KindID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="KindOf" />
+          <NavigationProperty Name="Lessons" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Kind" ToRole="Lesson" />
         </EntityType>
         <EntityType Name="Lesson">
           <Key>
             <PropertyRef Name="LessonID" />
           </Key>
-          <Property Name="LessonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LessonName" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-          <Property Name="TypeID" Type="Int64" />
-          <Property Name="CategoryID" Type="Int64" />
-          <Property Name="IsActived" Type="Boolean" />
-          <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="Lessons" ToRole="BackSide" />
-          <NavigationProperty Name="Category" Relationship="SmartFlashCardDBModel.FK_Lessons_1" FromRole="Lessons" ToRole="Categories" />
-          <NavigationProperty Name="Type" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Lessons" ToRole="Types" />
-        </EntityType>
-        <EntityType Name="Setup">
-          <Key>
-            <PropertyRef Name="SetupID" />
-          </Key>
-          <Property Name="SetupID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ViewTimeSecond" Type="Int64" />
-          <Property Name="DistanceTimeSecond" Type="Int64" />
-          <Property Name="IsLimitCard" Type="Boolean" />
-          <Property Name="LimitCardNum" Type="Int64" />
-          <Property Name="IsEnableSlideShow" Type="Boolean" />
-          <Property Name="IsEnableLoop" Type="Boolean" />
-          <Property Name="IsEnableSoundForShow" Type="Boolean" />
-          <Property Name="IsShuffle" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="Type">
-          <Key>
-            <PropertyRef Name="TypeID" />
-          </Key>
-          <Property Name="TypeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="TypeOf" Type="Int64" />
-          <NavigationProperty Name="Lessons" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Types" ToRole="Lessons" />
+          <Property Type="Int64" Name="LessonID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="LessonName" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="KindID" />
+          <Property Type="Int64" Name="CategoryID" />
+          <Property Type="Boolean" Name="IsActived" />
+          <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="Lesson" ToRole="BackSide" />
+          <NavigationProperty Name="Kind" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Lesson" ToRole="Kind" />
+          <NavigationProperty Name="Category" Relationship="SmartFlashCardDBModel.FK_Lessons_01" FromRole="Lesson" ToRole="Category" />
         </EntityType>
         <EntityType Name="UserLesson">
           <Key>
             <PropertyRef Name="UserLessonID" />
           </Key>
-          <Property Name="UserLessonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int64" />
-          <Property Name="LessonID" Type="Int64" />
+          <Property Type="Int64" Name="UserLessonID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="UserID" />
+          <Property Type="Int64" Name="LessonID" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Password" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="FullName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="LastLogin" Type="DateTime" />
+          <Property Type="Int64" Name="UserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FullName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastLogin" />
         </EntityType>
         <Association Name="FK_BackSide_0">
-          <End Role="Lessons" Type="SmartFlashCardDBModel.Lesson" Multiplicity="0..1" />
-          <End Role="BackSide" Type="SmartFlashCardDBModel.BackSide" Multiplicity="*" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Lessons">
+            <Principal Role="Lesson">
               <PropertyRef Name="LessonID" />
             </Principal>
             <Dependent Role="BackSide">
@@ -243,84 +229,126 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Lessons_1">
-          <End Role="Categories" Type="SmartFlashCardDBModel.Category" Multiplicity="0..1" />
-          <End Role="Lessons" Type="SmartFlashCardDBModel.Lesson" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Categories">
-              <PropertyRef Name="CategoryID" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Lessons_0">
-          <End Role="Types" Type="SmartFlashCardDBModel.Type" Multiplicity="0..1" />
-          <End Role="Lessons" Type="SmartFlashCardDBModel.Lesson" Multiplicity="*" />
+          <End Type="SmartFlashCardDBModel.Kind" Role="Kind" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Types">
-              <PropertyRef Name="TypeID" />
+            <Principal Role="Kind">
+              <PropertyRef Name="KindID" />
             </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="TypeID" />
+            <Dependent Role="Lesson">
+              <PropertyRef Name="KindID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_Lessons_01">
+          <End Type="SmartFlashCardDBModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Lesson">
+              <PropertyRef Name="KindID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Setup">
+          <Key>
+            <PropertyRef Name="SetupID" />
+          </Key>
+          <Property Type="Int64" Name="SetupID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ViewTimeSecond" Nullable="false" />
+          <Property Type="Int32" Name="DistanceTimeSecond" Nullable="false" />
+          <Property Type="Boolean" Name="IsLimitCard" />
+          <Property Type="Int32" Name="LimitCardNum" />
+          <Property Type="Boolean" Name="IsEnableSlideShow" />
+          <Property Type="Boolean" Name="IsEnableLoop" />
+          <Property Type="Boolean" Name="IsEnableSoundForShow" />
+          <Property Type="Boolean" Name="IsShuffle" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SmartFlashCardDBModelStoreContainer" CdmEntityContainer="SmartFlashCardDBEntities">
-          <EntitySetMapping Name="BackSides"><EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide"><MappingFragment StoreEntitySet="BackSide">
-            <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
-            <ScalarProperty Name="LessonID" ColumnName="LessonID" />
-            <ScalarProperty Name="Content" ColumnName="Content" />
-            <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Categories"><EntityTypeMapping TypeName="SmartFlashCardDBModel.Category"><MappingFragment StoreEntitySet="Categories">
-            <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-            <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-            <ScalarProperty Name="IsActived" ColumnName="IsActived" />
-            <ScalarProperty Name="Remark" ColumnName="Remark" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Lessons"><EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson"><MappingFragment StoreEntitySet="Lessons">
-            <ScalarProperty Name="LessonID" ColumnName="LessonID" />
-            <ScalarProperty Name="LessonName" ColumnName="LessonName" />
-            <ScalarProperty Name="Description" ColumnName="Description" />
-            <ScalarProperty Name="TypeID" ColumnName="TypeID" />
-            <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-            <ScalarProperty Name="IsActived" ColumnName="IsActived" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Setups"><EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup"><MappingFragment StoreEntitySet="Setups">
-            <ScalarProperty Name="SetupID" ColumnName="SetupID" />
-            <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
-            <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
-            <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
-            <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
-            <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
-            <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
-            <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
-            <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Types"><EntityTypeMapping TypeName="SmartFlashCardDBModel.Type"><MappingFragment StoreEntitySet="Types">
-            <ScalarProperty Name="TypeID" ColumnName="TypeID" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-            <ScalarProperty Name="TypeOf" ColumnName="TypeOf" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="UserLessons"><EntityTypeMapping TypeName="SmartFlashCardDBModel.UserLesson"><MappingFragment StoreEntitySet="UserLesson">
-            <ScalarProperty Name="UserLessonID" ColumnName="UserLessonID" />
-            <ScalarProperty Name="UserID" ColumnName="UserID" />
-            <ScalarProperty Name="LessonID" ColumnName="LessonID" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="SmartFlashCardDBModel.User"><MappingFragment StoreEntitySet="Users">
-            <ScalarProperty Name="UserID" ColumnName="UserID" />
-            <ScalarProperty Name="UserName" ColumnName="UserName" />
-            <ScalarProperty Name="Password" ColumnName="Password" />
-            <ScalarProperty Name="FullName" ColumnName="FullName" />
-            <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="BackSides">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide">
+              <MappingFragment StoreEntitySet="BackSide">
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+                <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsActived" ColumnName="IsActived" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kinds">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Kind">
+              <MappingFragment StoreEntitySet="Kinds">
+                <ScalarProperty Name="KindOf" ColumnName="KindOf" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="KindID" ColumnName="KindID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson">
+              <MappingFragment StoreEntitySet="Lessons">
+                <ScalarProperty Name="IsActived" ColumnName="IsActived" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="KindID" ColumnName="KindID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+                <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLessons">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.UserLesson">
+              <MappingFragment StoreEntitySet="UserLesson">
+                <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserLessonID" ColumnName="UserLessonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Setups">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
+              <MappingFragment StoreEntitySet="Setups">
+                <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
+                <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
+                <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
+                <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
+                <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
+                <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
+                <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
+                <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
+                <ScalarProperty Name="SetupID" ColumnName="SetupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -342,28 +370,26 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model1">
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="5.25" PointY="1.25" Height="1.7566536458333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="0.75" PointY="1.25" Height="1.7566536458333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="1" Height="2.4140429687499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="2.75" PointY="4.75" Height="2.4140429687499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Type" Width="1.5" PointX="0.75" PointY="5.375" Height="1.5923063151041674" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.UserLesson" Width="1.5" PointX="4.75" PointY="4.75" Height="1.4279589843749996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7566536458333317" IsExpanded="true" />
-        <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSide_0" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="2.1283268229166667" />
-          <ConnectorPoint PointX="5.25" PointY="2.1283268229166667" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="5.25" PointY="1.25" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="0.75" PointY="4.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Kind" Width="1.5" PointX="0.75" PointY="1.375" Height="1.7879850260416745" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="1" Height="2.5571907552083388" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.UserLesson" Width="1.5" PointX="4.75" PointY="4.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.9802864583333388" />
+        <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSide_0" >
+          <ConnectorPoint PointX="4.5" PointY="2.2401432291666659" />
+          <ConnectorPoint PointX="5.25" PointY="2.2401432291666659" />
         </AssociationConnector>
-        <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_1" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="2.1283268229166667" />
-          <ConnectorPoint PointX="3" PointY="2.1283268229166667" />
+        <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_0" >
+          <ConnectorPoint PointX="2.25" PointY="2.2689925130208373" />
+          <ConnectorPoint PointX="3" PointY="2.2689925130208373" />
         </AssociationConnector>
-        <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_0" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="6.1711531575520837" />
-          <ConnectorPoint PointX="2.5" PointY="6.1711531575520837" />
-          <ConnectorPoint PointX="2.5" PointY="4.5" />
-          <ConnectorPoint PointX="3.75" PointY="4.5" />
-          <ConnectorPoint PointX="3.75" PointY="3.4140429687499996" />
+        <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_01" >
+          <ConnectorPoint PointX="2.25" PointY="5.7401432291666667" />
+          <ConnectorPoint PointX="3.75" PointY="5.7401432291666667" />
+          <ConnectorPoint PointX="3.75" PointY="3.7494921875" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="7.375" PointY="0.75" Height="2.7494921874999996" />
       </Diagram>
     </Diagrams>
   </Designer>

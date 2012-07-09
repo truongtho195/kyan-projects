@@ -43,6 +43,7 @@ namespace FlashCard.Models
             }
 
             this.RaisePropertyChanged(propertyName);
+            RaisePropertyChangedCompleted(propertyName);
         }
 
         protected virtual void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
@@ -60,6 +61,7 @@ namespace FlashCard.Models
                 throw new ArgumentException("propertyExpression must represent a valid Property on the object");
 
             RaisePropertyChanged(propertyInfo.Name);
+            
         }
 
         protected virtual void RaisePropertyChangedCompleted(string propertyName)

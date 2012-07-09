@@ -18,9 +18,9 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Categories", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Category), "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Types", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Type), "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Kind", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Kind), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Category), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
 
 #endregion
 
@@ -107,6 +107,22 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Kind> Kinds
+        {
+            get
+            {
+                if ((_Kinds == null))
+                {
+                    _Kinds = base.CreateObjectSet<Kind>("Kinds");
+                }
+                return _Kinds;
+            }
+        }
+        private ObjectSet<Kind> _Kinds;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Lesson> Lessons
         {
             get
@@ -119,38 +135,6 @@ namespace FlashCard.Database
             }
         }
         private ObjectSet<Lesson> _Lessons;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Setup> Setups
-        {
-            get
-            {
-                if ((_Setups == null))
-                {
-                    _Setups = base.CreateObjectSet<Setup>("Setups");
-                }
-                return _Setups;
-            }
-        }
-        private ObjectSet<Setup> _Setups;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Type> Types
-        {
-            get
-            {
-                if ((_Types == null))
-                {
-                    _Types = base.CreateObjectSet<Type>("Types");
-                }
-                return _Types;
-            }
-        }
-        private ObjectSet<Type> _Types;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -183,6 +167,22 @@ namespace FlashCard.Database
             }
         }
         private ObjectSet<User> _Users;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Setup> Setups
+        {
+            get
+            {
+                if ((_Setups == null))
+                {
+                    _Setups = base.CreateObjectSet<Setup>("Setups");
+                }
+                return _Setups;
+            }
+        }
+        private ObjectSet<Setup> _Setups;
 
         #endregion
         #region AddTo Methods
@@ -204,27 +204,19 @@ namespace FlashCard.Database
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Kinds EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToKinds(Kind kind)
+        {
+            base.AddObject("Kinds", kind);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Lessons EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToLessons(Lesson lesson)
         {
             base.AddObject("Lessons", lesson);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToSetups(Setup setup)
-        {
-            base.AddObject("Setups", setup);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Types EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTypes(Type type)
-        {
-            base.AddObject("Types", type);
         }
     
         /// <summary>
@@ -241,6 +233,14 @@ namespace FlashCard.Database
         public void AddToUsers(User user)
         {
             base.AddObject("Users", user);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSetups(Setup setup)
+        {
+            base.AddObject("Setups", setup);
         }
 
         #endregion
@@ -384,16 +384,16 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson")]
         public Lesson Lesson
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value = value;
             }
         }
         /// <summary>
@@ -405,13 +405,13 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson", value);
                 }
             }
         }
@@ -552,18 +552,146 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Lessons")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Lesson")]
         public EntityCollection<Lesson> Lessons
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_1", "Lessons");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_01", "Lesson");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_1", "Lessons", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_01", "Lesson", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="SmartFlashCardDBModel", Name="Kind")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Kind : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Kind object.
+        /// </summary>
+        /// <param name="kindID">Initial value of the KindID property.</param>
+        public static Kind CreateKind(global::System.Int64 kindID)
+        {
+            Kind kind = new Kind();
+            kind.KindID = kindID;
+            return kind;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 KindID
+        {
+            get
+            {
+                return _KindID;
+            }
+            set
+            {
+                if (_KindID != value)
+                {
+                    OnKindIDChanging(value);
+                    ReportPropertyChanging("KindID");
+                    _KindID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("KindID");
+                    OnKindIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _KindID;
+        partial void OnKindIDChanging(global::System.Int64 value);
+        partial void OnKindIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int64> KindOf
+        {
+            get
+            {
+                return _KindOf;
+            }
+            set
+            {
+                OnKindOfChanging(value);
+                ReportPropertyChanging("KindOf");
+                _KindOf = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("KindOf");
+                OnKindOfChanged();
+            }
+        }
+        private Nullable<global::System.Int64> _KindOf;
+        partial void OnKindOfChanging(Nullable<global::System.Int64> value);
+        partial void OnKindOfChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Lesson")]
+        public EntityCollection<Lesson> Lessons
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lesson");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lesson", value);
                 }
             }
         }
@@ -675,24 +803,24 @@ namespace FlashCard.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> TypeID
+        public Nullable<global::System.Int64> KindID
         {
             get
             {
-                return _TypeID;
+                return _KindID;
             }
             set
             {
-                OnTypeIDChanging(value);
-                ReportPropertyChanging("TypeID");
-                _TypeID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TypeID");
-                OnTypeIDChanged();
+                OnKindIDChanging(value);
+                ReportPropertyChanging("KindID");
+                _KindID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("KindID");
+                OnKindIDChanged();
             }
         }
-        private Nullable<global::System.Int64> _TypeID;
-        partial void OnTypeIDChanging(Nullable<global::System.Int64> value);
-        partial void OnTypeIDChanged();
+        private Nullable<global::System.Int64> _KindID;
+        partial void OnKindIDChanging(Nullable<global::System.Int64> value);
+        partial void OnKindIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -774,16 +902,54 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Categories")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Kind")]
+        public Kind Kind
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Kind> KindReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Category")]
         public Category Category
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_1", "Categories").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_1", "Categories").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category").Value = value;
             }
         }
         /// <summary>
@@ -795,51 +961,13 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_1", "Categories");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_1", "Categories", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Types")]
-        public Type Type
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Type>("SmartFlashCardDBModel.FK_Lessons_0", "Types").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Type>("SmartFlashCardDBModel.FK_Lessons_0", "Types").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Type> TypeReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Type>("SmartFlashCardDBModel.FK_Lessons_0", "Types");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Type>("SmartFlashCardDBModel.FK_Lessons_0", "Types", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category", value);
                 }
             }
         }
@@ -861,10 +989,14 @@ namespace FlashCard.Database
         /// Create a new Setup object.
         /// </summary>
         /// <param name="setupID">Initial value of the SetupID property.</param>
-        public static Setup CreateSetup(global::System.Int64 setupID)
+        /// <param name="viewTimeSecond">Initial value of the ViewTimeSecond property.</param>
+        /// <param name="distanceTimeSecond">Initial value of the DistanceTimeSecond property.</param>
+        public static Setup CreateSetup(global::System.Int64 setupID, global::System.Int32 viewTimeSecond, global::System.Int32 distanceTimeSecond)
         {
             Setup setup = new Setup();
             setup.SetupID = setupID;
+            setup.ViewTimeSecond = viewTimeSecond;
+            setup.DistanceTimeSecond = distanceTimeSecond;
             return setup;
         }
 
@@ -901,9 +1033,9 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> ViewTimeSecond
+        public global::System.Int32 ViewTimeSecond
         {
             get
             {
@@ -918,16 +1050,16 @@ namespace FlashCard.Database
                 OnViewTimeSecondChanged();
             }
         }
-        private Nullable<global::System.Int64> _ViewTimeSecond;
-        partial void OnViewTimeSecondChanging(Nullable<global::System.Int64> value);
+        private global::System.Int32 _ViewTimeSecond;
+        partial void OnViewTimeSecondChanging(global::System.Int32 value);
         partial void OnViewTimeSecondChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> DistanceTimeSecond
+        public global::System.Int32 DistanceTimeSecond
         {
             get
             {
@@ -942,8 +1074,8 @@ namespace FlashCard.Database
                 OnDistanceTimeSecondChanged();
             }
         }
-        private Nullable<global::System.Int64> _DistanceTimeSecond;
-        partial void OnDistanceTimeSecondChanging(Nullable<global::System.Int64> value);
+        private global::System.Int32 _DistanceTimeSecond;
+        partial void OnDistanceTimeSecondChanging(global::System.Int32 value);
         partial void OnDistanceTimeSecondChanged();
     
         /// <summary>
@@ -975,7 +1107,7 @@ namespace FlashCard.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> LimitCardNum
+        public Nullable<global::System.Int32> LimitCardNum
         {
             get
             {
@@ -990,8 +1122,8 @@ namespace FlashCard.Database
                 OnLimitCardNumChanged();
             }
         }
-        private Nullable<global::System.Int64> _LimitCardNum;
-        partial void OnLimitCardNumChanging(Nullable<global::System.Int64> value);
+        private Nullable<global::System.Int32> _LimitCardNum;
+        partial void OnLimitCardNumChanging(Nullable<global::System.Int32> value);
         partial void OnLimitCardNumChanged();
     
         /// <summary>
@@ -1092,134 +1224,6 @@ namespace FlashCard.Database
 
         #endregion
     
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="SmartFlashCardDBModel", Name="Type")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Type : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Type object.
-        /// </summary>
-        /// <param name="typeID">Initial value of the TypeID property.</param>
-        public static Type CreateType(global::System.Int64 typeID)
-        {
-            Type type = new Type();
-            type.TypeID = typeID;
-            return type;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 TypeID
-        {
-            get
-            {
-                return _TypeID;
-            }
-            set
-            {
-                if (_TypeID != value)
-                {
-                    OnTypeIDChanging(value);
-                    ReportPropertyChanging("TypeID");
-                    _TypeID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("TypeID");
-                    OnTypeIDChanged();
-                }
-            }
-        }
-        private global::System.Int64 _TypeID;
-        partial void OnTypeIDChanging(global::System.Int64 value);
-        partial void OnTypeIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int64> TypeOf
-        {
-            get
-            {
-                return _TypeOf;
-            }
-            set
-            {
-                OnTypeOfChanging(value);
-                ReportPropertyChanging("TypeOf");
-                _TypeOf = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TypeOf");
-                OnTypeOfChanged();
-            }
-        }
-        private Nullable<global::System.Int64> _TypeOf;
-        partial void OnTypeOfChanging(Nullable<global::System.Int64> value);
-        partial void OnTypeOfChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Lessons")]
-        public EntityCollection<Lesson> Lessons
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lessons");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lessons", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>

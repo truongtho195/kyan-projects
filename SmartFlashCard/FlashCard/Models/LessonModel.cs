@@ -99,16 +99,16 @@ namespace FlashCard.Models
                 }
             }
         }
-        public Nullable<long> TypeID
+        public Nullable<long> KindID
         {
-            get { return this.Lesson.TypeID; }
+            get { return this.Lesson.KindID; }
             set
             {
-                if (this.Lesson.TypeID != value)
+                if (this.Lesson.KindID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.TypeID = value;
-                    RaisePropertyChanged(() => TypeID);
+                    this.Lesson.KindID = value;
+                    RaisePropertyChanged(() => KindID);
                 }
             }
         }
