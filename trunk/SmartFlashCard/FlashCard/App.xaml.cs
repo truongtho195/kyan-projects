@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using FlashCard.Model;
+using FlashCard.Models;
 using Microsoft.Shell;
 using FlashCard.DataAccess;
 using System.Linq;

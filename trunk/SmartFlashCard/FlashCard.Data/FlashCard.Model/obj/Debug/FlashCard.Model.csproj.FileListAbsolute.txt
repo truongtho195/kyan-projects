@@ -120,3 +120,27 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard.Data\F
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\FlashCard.Model.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\System.Windows.Interactivity.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MessageBoxControl.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\MVVMHelper.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\WpfApplicationFramework.xml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\System.Windows.Interactivity.xml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\vi\MVVMHelper.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-CN\MVVMHelper.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\de\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\en\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\es\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\it\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.dll
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard.Data\FlashCard.Model\obj\Debug\FlashCard.Model.pdb

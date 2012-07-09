@@ -498,6 +498,7 @@ namespace FlashCard.DataAccess
             lessonModel.LessonID = int.Parse(reader["LessonID"].ToString());
             lessonModel.LessonName = reader["LessonName"].ToString();
             lessonModel.Description = FlowDocumentConverter.ConvertXMLToFlowDocument(reader["Description"].ToString());
+            var test = new TextRange(lessonModel.Description.ContentStart, lessonModel.Description.ContentEnd);
             lessonModel.TypeID = int.Parse(reader["TypeID"].ToString());
             lessonModel.IsActived = bool.Parse(reader["IsActived"].ToString());
             //CategoryModel
