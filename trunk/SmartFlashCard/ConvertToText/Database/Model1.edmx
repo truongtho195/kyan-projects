@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SmartFlashCardDBModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="SmartFlashCardDBModelStoreContainer">
+          <EntitySet Name="BackSide" EntityType="SmartFlashCardDBModel.Store.BackSide" store:Type="Tables" />
+          <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Store.Lessons" store:Type="Tables" />
+          <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.Store.FK_BackSide_0">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="BackSide" EntitySet="BackSide" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BackSide">
+          <Key>
+            <PropertyRef Name="BackSideID" />
+          </Key>
+          <Property Name="BackSideID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LessonID" Type="integer" />
+          <Property Name="Content" Type="nvarchar" />
+          <Property Name="IsCorrect" Type="bit" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="LessonID" />
+          </Key>
+          <Property Name="LessonID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LessonName" Type="nvarchar" />
+          <Property Name="Description" Type="nvarchar" />
+          <Property Name="TypeID" Type="integer" />
+          <Property Name="CategoryID" Type="integer" />
+          <Property Name="IsActived" Type="bit" />
+        </EntityType>
+        <Association Name="FK_BackSide_0">
+          <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
+          <End Role="BackSide" Type="SmartFlashCardDBModel.Store.BackSide" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="LessonID" />
+            </Principal>
+            <Dependent Role="BackSide">
+              <PropertyRef Name="LessonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SmartFlashCardDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SmartFlashCardDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.BackSide" />
+          <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Lesson" />
+          <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.FK_BackSide_0">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="BackSide" EntitySet="BackSides" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BackSide">
+          <Key>
+            <PropertyRef Name="BackSideID" />
+          </Key>
+          <Property Name="BackSideID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LessonID" Type="Int64" />
+          <Property Name="Content" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="IsCorrect" Type="Boolean" />
+          <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="BackSide" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="Lesson">
+          <Key>
+            <PropertyRef Name="LessonID" />
+          </Key>
+          <Property Name="LessonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LessonName" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
+          <Property Name="TypeID" Type="Int64" />
+          <Property Name="CategoryID" Type="Int64" />
+          <Property Name="IsActived" Type="Boolean" />
+          <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="Lessons" ToRole="BackSide" />
+        </EntityType>
+        <Association Name="FK_BackSide_0">
+          <End Role="Lessons" Type="SmartFlashCardDBModel.Lesson" Multiplicity="0..1" />
+          <End Role="BackSide" Type="SmartFlashCardDBModel.BackSide" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="LessonID" />
+            </Principal>
+            <Dependent Role="BackSide">
+              <PropertyRef Name="LessonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SmartFlashCardDBModelStoreContainer" CdmEntityContainer="SmartFlashCardDBEntities">
+          <EntitySetMapping Name="BackSides"><EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide"><MappingFragment StoreEntitySet="BackSide">
+            <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
+            <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+            <ScalarProperty Name="Content" ColumnName="Content" />
+            <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Lessons"><EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson"><MappingFragment StoreEntitySet="Lessons">
+            <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+            <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+            <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+            <ScalarProperty Name="IsActived" ColumnName="IsActived" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="3" PointY="1.125" Height="1.7566536458333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="0.75" PointY="0.875" Height="2.0853483072916674" IsExpanded="true" />
+        <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSide_0" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.0033268229166667" />
+          <ConnectorPoint PointX="3" PointY="2.0033268229166667" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
