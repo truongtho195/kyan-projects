@@ -28,3 +28,7 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\zh
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.exe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.exe.config
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.exe
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ResolveAssemblyReference.cache
