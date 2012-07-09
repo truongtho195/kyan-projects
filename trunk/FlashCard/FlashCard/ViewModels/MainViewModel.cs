@@ -1120,6 +1120,9 @@ namespace FlashCard.ViewModels
                 testTimeView.Reset();
                 log.DebugFormat("|| ==> Popup Closed.......");
                 log.DebugFormat("|| ================================= \n");
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             });
             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
         }
