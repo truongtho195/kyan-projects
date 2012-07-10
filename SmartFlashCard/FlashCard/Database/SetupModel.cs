@@ -48,13 +48,13 @@ namespace FlashCard.Database
         public bool IsDirty { get; private set; }
         public bool Deleted { get; set; }
         public bool Checked { get; set; }
-
+        
         public void EndUpdate()
         {
             IsNew = false;
             IsDirty = false;
         }
-
+        
 
         #endregion
 

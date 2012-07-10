@@ -86,7 +86,7 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<long> KindOf
+        public long KindOf
         {
             get { return this.Kind.KindOf; }
             set

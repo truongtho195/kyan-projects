@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="SmartFlashCardDBModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="SmartFlashCardDBModelStoreContainer">
-    <EntitySet Name="BackSide" EntityType="SmartFlashCardDBModel.Store.BackSide" store:Type="Tables" />
+    <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.Store.BackSides" store:Type="Tables" />
     <EntitySet Name="Categories" EntityType="SmartFlashCardDBModel.Store.Categories" store:Type="Tables" />
     <EntitySet Name="Kinds" EntityType="SmartFlashCardDBModel.Store.Kinds" store:Type="Tables" />
     <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Store.Lessons" store:Type="Tables" />
     <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Store.Setups" store:Type="Tables" />
     <EntitySet Name="UserLesson" EntityType="SmartFlashCardDBModel.Store.UserLesson" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="SmartFlashCardDBModel.Store.Users" store:Type="Tables" />
-    <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.Store.FK_BackSide_0">
+    <AssociationSet Name="FK_BackSides_0" Association="SmartFlashCardDBModel.Store.FK_BackSides_0">
       <End Role="Lessons" EntitySet="Lessons" />
-      <End Role="BackSide" EntitySet="BackSide" />
+      <End Role="BackSides" EntitySet="BackSides" />
     </AssociationSet>
     <AssociationSet Name="FK_Lessons_0" Association="SmartFlashCardDBModel.Store.FK_Lessons_0">
       <End Role="Categories" EntitySet="Categories" />
@@ -21,7 +21,7 @@
       <End Role="Lessons" EntitySet="Lessons" />
     </AssociationSet>
   </EntityContainer>
-  <EntityType Name="BackSide">
+  <EntityType Name="BackSides">
     <Key>
       <PropertyRef Name="BackSideID" />
     </Key>
@@ -43,9 +43,9 @@
     <Key>
       <PropertyRef Name="KindID" />
     </Key>
-    <Property Name="KindID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="KindID" Type="integer" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="200" />
-    <Property Name="KindOf" Type="integer" />
+    <Property Name="KindOf" Type="integer" Nullable="false" />
   </EntityType>
   <EntityType Name="Lessons">
     <Key>
@@ -90,14 +90,14 @@
     <Property Name="FullName" Type="nvarchar" MaxLength="100" />
     <Property Name="LastLogin" Type="datetime" />
   </EntityType>
-  <Association Name="FK_BackSide_0">
+  <Association Name="FK_BackSides_0">
     <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
-    <End Role="BackSide" Type="SmartFlashCardDBModel.Store.BackSide" Multiplicity="*" />
+    <End Role="BackSides" Type="SmartFlashCardDBModel.Store.BackSides" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Lessons">
         <PropertyRef Name="LessonID" />
       </Principal>
-      <Dependent Role="BackSide">
+      <Dependent Role="BackSides">
         <PropertyRef Name="LessonID" />
       </Dependent>
     </ReferentialConstraint>
@@ -110,7 +110,7 @@
         <PropertyRef Name="CategoryID" />
       </Principal>
       <Dependent Role="Lessons">
-        <PropertyRef Name="KindID" />
+        <PropertyRef Name="CategoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
