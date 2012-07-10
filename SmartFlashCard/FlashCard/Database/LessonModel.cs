@@ -16,7 +16,7 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
     /// Model for table Lesson 
@@ -142,6 +142,7 @@ namespace FlashCard.Models
         #endregion
 
         #region all the custom code
+
         #region Properties
 
         /// <summary>
@@ -259,7 +260,6 @@ namespace FlashCard.Models
         #endregion
 
         #endregion
-
         #endregion
     }
 }

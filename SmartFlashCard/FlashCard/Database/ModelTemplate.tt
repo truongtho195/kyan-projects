@@ -7,6 +7,7 @@
     MetadataLoader loader = new MetadataLoader(this);
     CodeRegion region = new CodeRegion(this, 1);
     MetadataTools ef = new MetadataTools(this);
+    string folderName=string.Empty;
 
     string inputFile = @"..\Database\Model1.edmx";
     EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
@@ -96,7 +97,7 @@ namespace <#=
     void BeginBodyClass(EntityType entity, CodeGenerationTools code, CodeRegion region)
     {
         string customCode = string.Empty;
-        string filename = entity.Name + "Model.cs";
+        string filename =entity.Name + "Model.cs";
         if(DoesFileExist(filename))
             customCode = OutputCustomCode(filename);
 #>

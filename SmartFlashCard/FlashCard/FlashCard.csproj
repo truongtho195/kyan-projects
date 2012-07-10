@@ -99,16 +99,16 @@
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
-    <Compile Include="Models\BackSideModel.cs">
+    <Compile Include="Database\BackSideModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategoryModel.cs">
+    <Compile Include="Database\CategoryModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\KindModel.cs">
+    <Compile Include="Database\KindModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LessonModel.cs">
+    <Compile Include="Database\LessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Database\Model1.Designer.cs">
@@ -116,18 +116,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelTemplate1.cs">
+    <Compile Include="Database\ModelTemplate1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SetupModel.cs">
+    <Compile Include="Database\SetupModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserLessonModel.cs">
+    <Compile Include="Database\UserLessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserModel.cs">
+    <Compile Include="Database\UserModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Helper\CheckConnectionInternet.cs" />
@@ -211,7 +211,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Models\ModelTemplate.tt">
+    <None Include="Database\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate1.cs</LastGenOutput>
     </None>
@@ -230,7 +230,9 @@
     <Resource Include="Images\Preferences.png" />
     <Resource Include="Images\Remove.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Database\Models\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

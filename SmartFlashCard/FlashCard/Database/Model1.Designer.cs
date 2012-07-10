@@ -18,9 +18,9 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Kind", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Kind), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Category), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Categories", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Category), "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Kinds", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Kind), "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
 
 #endregion
 
@@ -139,6 +139,22 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Setup> Setups
+        {
+            get
+            {
+                if ((_Setups == null))
+                {
+                    _Setups = base.CreateObjectSet<Setup>("Setups");
+                }
+                return _Setups;
+            }
+        }
+        private ObjectSet<Setup> _Setups;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<UserLesson> UserLessons
         {
             get
@@ -167,22 +183,6 @@ namespace FlashCard.Database
             }
         }
         private ObjectSet<User> _Users;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Setup> Setups
-        {
-            get
-            {
-                if ((_Setups == null))
-                {
-                    _Setups = base.CreateObjectSet<Setup>("Setups");
-                }
-                return _Setups;
-            }
-        }
-        private ObjectSet<Setup> _Setups;
 
         #endregion
         #region AddTo Methods
@@ -220,6 +220,14 @@ namespace FlashCard.Database
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSetups(Setup setup)
+        {
+            base.AddObject("Setups", setup);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the UserLessons EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToUserLessons(UserLesson userLesson)
@@ -233,14 +241,6 @@ namespace FlashCard.Database
         public void AddToUsers(User user)
         {
             base.AddObject("Users", user);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToSetups(Setup setup)
-        {
-            base.AddObject("Setups", setup);
         }
 
         #endregion
@@ -384,16 +384,16 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons")]
         public Lesson Lesson
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value = value;
             }
         }
         /// <summary>
@@ -405,13 +405,13 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons", value);
                 }
             }
         }
@@ -552,18 +552,18 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Lesson")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Lessons")]
         public EntityCollection<Lesson> Lessons
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_01", "Lesson");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lessons");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_01", "Lesson", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lessons", value);
                 }
             }
         }
@@ -680,18 +680,18 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Lesson")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Lessons")]
         public EntityCollection<Lesson> Lessons
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lesson");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_1", "Lessons");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_0", "Lesson", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Lesson>("SmartFlashCardDBModel.FK_Lessons_1", "Lessons", value);
                 }
             }
         }
@@ -902,54 +902,16 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Kind")]
-        public Kind Kind
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Kind> KindReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_0", "Kind", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_01", "Category")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Categories")]
         public Category Category
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_0", "Categories").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_0", "Categories").Value = value;
             }
         }
         /// <summary>
@@ -961,13 +923,51 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_0", "Categories");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_01", "Category", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Category>("SmartFlashCardDBModel.FK_Lessons_0", "Categories", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Kinds")]
+        public Kind Kind
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_1", "Kinds").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_1", "Kinds").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Kind> KindReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_1", "Kinds");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Kind>("SmartFlashCardDBModel.FK_Lessons_1", "Kinds", value);
                 }
             }
         }

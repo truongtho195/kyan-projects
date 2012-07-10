@@ -16,33 +16,33 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table Category 
+    /// Model for table BackSide 
     /// </summary>
-    public partial class CategoryModel : ViewModelBase
+    public partial class BackSideModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public CategoryModel()
+        public BackSideModel()
         {
             this.IsNew = true;
-            this.Category = new Category();
+            this.BackSide = new BackSide();
         }
 
         // Default contructor that set entity to field
-        public CategoryModel(Category category)
+        public BackSideModel(BackSide backside)
         {
-            this.Category = category;
+            this.BackSide = backside;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Category Category { get; private set; }
+        public BackSide BackSide { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,55 +60,55 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long CategoryID
+        public long BackSideID
         {
-            get { return this.Category.CategoryID; }
+            get { return this.BackSide.BackSideID; }
             set
             {
-                if (this.Category.CategoryID != value)
+                if (this.BackSide.BackSideID != value)
                 {
                     this.IsDirty = true;
-                    this.Category.CategoryID = value;
-                    RaisePropertyChanged(() => CategoryID);
+                    this.BackSide.BackSideID = value;
+                    RaisePropertyChanged(() => BackSideID);
                 }
             }
         }
-        public string CategoryName
+        public Nullable<long> LessonID
         {
-            get { return this.Category.CategoryName; }
+            get { return this.BackSide.LessonID; }
             set
             {
-                if (this.Category.CategoryName != value)
+                if (this.BackSide.LessonID != value)
                 {
                     this.IsDirty = true;
-                    this.Category.CategoryName = value;
-                    RaisePropertyChanged(() => CategoryName);
+                    this.BackSide.LessonID = value;
+                    RaisePropertyChanged(() => LessonID);
                 }
             }
         }
-        public Nullable<bool> IsActived
+        public string Content
         {
-            get { return this.Category.IsActived; }
+            get { return this.BackSide.Content; }
             set
             {
-                if (this.Category.IsActived != value)
+                if (this.BackSide.Content != value)
                 {
                     this.IsDirty = true;
-                    this.Category.IsActived = value;
-                    RaisePropertyChanged(() => IsActived);
+                    this.BackSide.Content = value;
+                    RaisePropertyChanged(() => Content);
                 }
             }
         }
-        public string Remark
+        public Nullable<bool> IsCorrect
         {
-            get { return this.Category.Remark; }
+            get { return this.BackSide.IsCorrect; }
             set
             {
-                if (this.Category.Remark != value)
+                if (this.BackSide.IsCorrect != value)
                 {
                     this.IsDirty = true;
-                    this.Category.Remark = value;
-                    RaisePropertyChanged(() => Remark);
+                    this.BackSide.IsCorrect = value;
+                    RaisePropertyChanged(() => IsCorrect);
                 }
             }
         }
