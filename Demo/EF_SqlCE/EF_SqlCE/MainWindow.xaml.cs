@@ -24,9 +24,27 @@ namespace EF_SqlCE
         {
             InitializeComponent();
         }
+
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                AddBlog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+
+        }
+
+
         public static string getConStrSQL()
         {
-            string linkFIle =  System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\FalconHRDB.s3db";
+            string linkFIle = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\FalconHRDB.s3db";
             string connectionString = new System.Data.EntityClient.EntityConnectionStringBuilder
             {
                 Metadata = "res://*/Database.Model1.csdl|res://*/Database.Model1.ssdl|res://*/Database.Model1.msl",
@@ -35,32 +53,38 @@ namespace EF_SqlCE
                 {
                     DataSource = linkFIle,
                     IntegratedSecurity = false
-                    
+
                 }.ConnectionString
             }.ConnectionString;
 
             return connectionString;
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        //private void AddForFlashCard()
+        //{
+        //    SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+        //    flashCardEntity.Users.AddObject(new User() { FullName = "Hunter", Password = "654321", UserName = "hunter" });
+        //    flashCardEntity.SaveChanges();
+        //}
+
+
+
+        //private void AddCateForNorthWind()
+        //{
+        //    NorthwindEntities entity = new NorthwindEntities();
+        //    entity.Categories.AddObject(new Category() { Category_Name = "Cate of Kyan" });
+        //    entity.SaveChanges();
+        //}
+
+        private void AddBlog()
         {
-           
-            //DepartmentRepository repository = new DepartmentRepository();
-            //repository.Add(new Department(){DepartmentName="Test"});
+            BlogEngineDBEntities entity = new BlogEngineDBEntities();
+            entity.Blogs.AddObject(new Blog()
+                            {
+                                BlogName = "my blog"
 
-            try
-            {
-                FalconHRDBEntities entity = new FalconHRDBEntities();
-                entity.Departments.AddObject(new Department() { DepartmentName = "Test 2" });
-                entity.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-           
+                            });
+            entity.SaveChanges();
         }
     }
 }
