@@ -26,14 +26,7 @@ namespace FlashCard.ViewModels
             Initialize();
             this.Titles = "Lesson Management";
         }
-
-
-        public LessonViewModel(LessonManageView view, bool isFromPopup)
-            : this(view)
-        {
-            IsFromPopup = isFromPopup;
-
-        }
+      
         #endregion
 
         #region Variables
@@ -55,7 +48,7 @@ namespace FlashCard.ViewModels
             {
                 return _titles;
             }
-            set
+            private set 
             {
                 if (_titles != value)
                 {
@@ -78,13 +71,124 @@ namespace FlashCard.ViewModels
             get { return _selectedLesson; }
             set
             {
-                if (_selectedLesson != value)
+                if (value != null)
                 {
                     _selectedLesson = value;
-                    RaisePropertyChanged(() => SelectedLesson);
+                    KindID = (int)SelectedLesson.Lesson.KindID;
+                    CategoryID = (int)SelectedLesson.Lesson.CategoryID;
+                    LessonName = SelectedLesson.Lesson.LessonName;
+                    Description = SelectedLesson.Lesson.Description;
+                    BackSideCollection = new ObservableCollection<BackSideModel>(SelectedLesson.Lesson.BackSides.ToList().Select(x => new BackSideModel(x)));
+                }
+                else if(value == null)
+                {
+                    _selectedLesson = value;
+                    LessonName = string.Empty;
+                    Description = string.Empty;
+                    BackSideCollection = new ObservableCollection<BackSideModel>();
+                }
+                RaisePropertyChanged(() => SelectedLesson);
+            }
+        }
+
+
+        //Lesson Binding Form
+
+        #region KindID
+        private int _kindID;
+        /// <summary>
+        /// Gets or sets the KindID.
+        /// </summary>
+        public int KindID
+        {
+            get { return _kindID; }
+            set
+            {
+                if (_kindID != value)
+                {
+                    _kindID = value;
+                    RaisePropertyChanged(() => KindID);
                 }
             }
         }
+        #endregion
+        
+        #region CategoryID
+        private int _categoryID;
+        /// <summary>
+        /// Gets or sets the CategoryID.
+        /// </summary>
+        public int CategoryID
+        {
+            get { return _categoryID; }
+            set
+            {
+                if (_categoryID != value)
+                {
+                    _categoryID = value;
+                    RaisePropertyChanged(() => CategoryID);
+                }
+            }
+        }
+        #endregion
+
+        #region LessonName
+        private string _lessonName;
+        /// <summary>
+        /// Gets or sets the LessonName.
+        /// </summary>
+        public string LessonName
+        {
+            get { return _lessonName; }
+            set
+            {
+                if (_lessonName != value)
+                {
+                    _lessonName = value;
+                    RaisePropertyChanged(() => LessonName);
+                }
+            }
+        }
+        #endregion
+
+        #region Description
+        private string _description;
+        /// <summary>
+        /// Gets or sets the Description.
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (_description != value)
+                {
+                    _description = value;
+                    RaisePropertyChanged(() => Description);
+                }
+            }
+        }
+        #endregion
+
+        #region BackSideCollection
+        private ObservableCollection<BackSideModel> _backSideCollection;
+        /// <summary>
+        /// Gets or sets the BackSideCollection.
+        /// </summary>
+        public ObservableCollection<BackSideModel> BackSideCollection
+        {
+            get { return _backSideCollection; }
+            set
+            {
+                if (_backSideCollection != value)
+                {
+                    _backSideCollection = value;
+                    RaisePropertyChanged(() => BackSideCollection);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region"  LessonCollection"
@@ -237,11 +341,11 @@ namespace FlashCard.ViewModels
 
         private void NewExecute(object param)
         {
-            SelectedLesson = new LessonModel();
-            ///!!!!  SelectedLesson.TypeID = LessonTypeCollection.First().TypeID;
+            //sSelectedLesson = new LessonModel();
+            //!!!!  SelectedLesson.TypeID = LessonTypeCollection.First().TypeID;
             ///!!!!  SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
-            SelectedLesson.BackSideModel = new BackSideModel();
-            SelectedLesson.BackSideModel.IsCorrect = false;
+            //SelectedLesson.Lesson.BackSides = new BackSideModel();
+            //SelectedLesson.BackSideModel.IsCorrect = false;
             ///!!!! SelectedLesson.CategoryModel = CategoryCollection.First();
             ///!!!!  SelectedLesson.TypeModel = LessonTypeCollection.First();
             ///!!!! SelectedLesson.IsDirty = false;
@@ -482,12 +586,12 @@ namespace FlashCard.ViewModels
 
 
 
-            SelectedLesson = param as LessonModel;
-            if (SelectedLesson.BackSideModel == null)
-            {
-                SelectedLesson.BackSideModel = new BackSideModel();
-                RaisePropertyChanged(() => SelectedLesson);
-            }
+            //SelectedLesson = param as LessonModel;
+            //if (SelectedLesson.BackSideModel == null)
+            //{
+            //    SelectedLesson.BackSideModel = new BackSideModel();
+            //    RaisePropertyChanged(() => SelectedLesson);
+            //}
         }
 
         #endregion
@@ -1119,32 +1223,33 @@ namespace FlashCard.ViewModels
         {
             try
             {
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 TypeDataAccess typeDataAccess = new TypeDataAccess();
                 ///!!!! LessonTypeCollection = new List<KindModel>(typeDataAccess.GetAll());
 
-                CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                ///!!!!  CategoryCollection = new ObservableCollection<CategoryModel>(categoryDataAccess.GetAllWithRelation());
+                CategoryCollection = new ObservableCollection<CategoryModel>(flashCardEntity.Categories.ToList().Select(x=>new CategoryModel(x)));
 
                 CategoryList = CategoryCollection.ToList();
 
-                LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                ///!!!!  LessonCollection = new ObservableCollection<LessonModel>(lessonDataAccess.GetAllWithRelation());
-
+                
+                LessonCollection = new ObservableCollection<LessonModel>(flashCardEntity.Lessons.ToList().Select(x=>new LessonModel(x)));
                 if (LessonCollection.Any())
-                    SelectedLesson = LessonCollection.FirstOrDefault();
+                {
+                    // SelectedLesson =LessonCollection.FirstOrDefault();
+                }
                 else
                 {
                     LessonCollection = new ObservableCollection<LessonModel>();
                     NewExecute(null);
                 }
 
-                if (CategoryCollection.Any())
-                    SelectedCategory = CategoryCollection.FirstOrDefault();
-                else
-                {
-                    CategoryCollection = new ObservableCollection<CategoryModel>();
-                    OnNewCategoryExecute(null);
-                }
+                //if (CategoryCollection.Any())
+                //    SelectedCategory = CategoryCollection.FirstOrDefault();
+                //else
+                //{
+                //    CategoryCollection = new ObservableCollection<CategoryModel>();
+                //    OnNewCategoryExecute(null);
+                //}
             }
             catch (Exception ex)
             {
