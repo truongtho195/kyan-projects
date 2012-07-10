@@ -1224,6 +1224,7 @@ namespace FlashCard.ViewModels
             try
             {
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                var test = flashCardEntity.Lessons.Include("Categories").ToList();
                 TypeDataAccess typeDataAccess = new TypeDataAccess();
                 ///!!!! LessonTypeCollection = new List<KindModel>(typeDataAccess.GetAll());
 

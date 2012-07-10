@@ -142,7 +142,6 @@ namespace FlashCard.Database
         #endregion
 
         #region all the custom code
-
         #region Properties
 
         /// <summary>
@@ -260,6 +259,7 @@ namespace FlashCard.Database
         #endregion
 
         #endregion
+
         #endregion
     }
 }
