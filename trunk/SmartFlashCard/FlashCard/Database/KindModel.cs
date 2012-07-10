@@ -16,33 +16,33 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table BackSide 
+    /// Model for table Kind 
     /// </summary>
-    public partial class BackSideModel : ViewModelBase
+    public partial class KindModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public BackSideModel()
+        public KindModel()
         {
             this.IsNew = true;
-            this.BackSide = new BackSide();
+            this.Kind = new Kind();
         }
 
         // Default contructor that set entity to field
-        public BackSideModel(BackSide backside)
+        public KindModel(Kind kind)
         {
-            this.BackSide = backside;
+            this.Kind = kind;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public BackSide BackSide { get; private set; }
+        public Kind Kind { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,55 +60,42 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long BackSideID
+        public long KindID
         {
-            get { return this.BackSide.BackSideID; }
+            get { return this.Kind.KindID; }
             set
             {
-                if (this.BackSide.BackSideID != value)
+                if (this.Kind.KindID != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.BackSideID = value;
-                    RaisePropertyChanged(() => BackSideID);
+                    this.Kind.KindID = value;
+                    RaisePropertyChanged(() => KindID);
                 }
             }
         }
-        public Nullable<long> LessonID
+        public string Name
         {
-            get { return this.BackSide.LessonID; }
+            get { return this.Kind.Name; }
             set
             {
-                if (this.BackSide.LessonID != value)
+                if (this.Kind.Name != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.LessonID = value;
-                    RaisePropertyChanged(() => LessonID);
+                    this.Kind.Name = value;
+                    RaisePropertyChanged(() => Name);
                 }
             }
         }
-        public string Content
+        public Nullable<long> KindOf
         {
-            get { return this.BackSide.Content; }
+            get { return this.Kind.KindOf; }
             set
             {
-                if (this.BackSide.Content != value)
+                if (this.Kind.KindOf != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.Content = value;
-                    RaisePropertyChanged(() => Content);
-                }
-            }
-        }
-        public Nullable<bool> IsCorrect
-        {
-            get { return this.BackSide.IsCorrect; }
-            set
-            {
-                if (this.BackSide.IsCorrect != value)
-                {
-                    this.IsDirty = true;
-                    this.BackSide.IsCorrect = value;
-                    RaisePropertyChanged(() => IsCorrect);
+                    this.Kind.KindOf = value;
+                    RaisePropertyChanged(() => KindOf);
                 }
             }
         }

@@ -16,7 +16,7 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
     /// Model for table Setup 
@@ -48,13 +48,13 @@ namespace FlashCard.Models
         public bool IsDirty { get; private set; }
         public bool Deleted { get; set; }
         public bool Checked { get; set; }
-        
+
         public void EndUpdate()
         {
             IsNew = false;
             IsDirty = false;
         }
-        
+
 
         #endregion
 
@@ -181,7 +181,7 @@ namespace FlashCard.Models
         #endregion
 
         #region all the custom code
-        #region.   Extend Properties
+        #region Properties
         private TimeSpan _timeOut;
         /// <summary>
         /// This is Extend Properties
@@ -202,21 +202,16 @@ namespace FlashCard.Models
 
         #endregion
 
-        #region.   Override Changed
+        #region Override Changed
         protected override void RaisePropertyChangedCompleted(string propertyName)
         {
             switch (propertyName)
             {
                 case "ViewTimeSecond":
-                    {
-                        var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
-                        this._timeOut = new TimeSpan(0, 0, (int)timeOutSecond);
-                    }
-                    break;
                 case "DistanceTimeSecond":
                     {
                         var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
-                        this._timeOut = new TimeSpan(0, 0, (int)timeOutSecond);
+                        this._timeOut = new TimeSpan(0, 0, timeOutSecond);
                     }
                     break;
                 default:
@@ -224,7 +219,6 @@ namespace FlashCard.Models
             }
             base.RaisePropertyChangedCompleted(propertyName);
         }
-
         #endregion
 
         #endregion

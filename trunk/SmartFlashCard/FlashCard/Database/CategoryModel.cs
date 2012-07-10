@@ -16,33 +16,33 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table Kind 
+    /// Model for table Category 
     /// </summary>
-    public partial class KindModel : ViewModelBase
+    public partial class CategoryModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public KindModel()
+        public CategoryModel()
         {
             this.IsNew = true;
-            this.Kind = new Kind();
+            this.Category = new Category();
         }
 
         // Default contructor that set entity to field
-        public KindModel(Kind kind)
+        public CategoryModel(Category category)
         {
-            this.Kind = kind;
+            this.Category = category;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Kind Kind { get; private set; }
+        public Category Category { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,42 +60,55 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long KindID
+        public long CategoryID
         {
-            get { return this.Kind.KindID; }
+            get { return this.Category.CategoryID; }
             set
             {
-                if (this.Kind.KindID != value)
+                if (this.Category.CategoryID != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.KindID = value;
-                    RaisePropertyChanged(() => KindID);
+                    this.Category.CategoryID = value;
+                    RaisePropertyChanged(() => CategoryID);
                 }
             }
         }
-        public string Name
+        public string CategoryName
         {
-            get { return this.Kind.Name; }
+            get { return this.Category.CategoryName; }
             set
             {
-                if (this.Kind.Name != value)
+                if (this.Category.CategoryName != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.Name = value;
-                    RaisePropertyChanged(() => Name);
+                    this.Category.CategoryName = value;
+                    RaisePropertyChanged(() => CategoryName);
                 }
             }
         }
-        public Nullable<long> KindOf
+        public Nullable<bool> IsActived
         {
-            get { return this.Kind.KindOf; }
+            get { return this.Category.IsActived; }
             set
             {
-                if (this.Kind.KindOf != value)
+                if (this.Category.IsActived != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.KindOf = value;
-                    RaisePropertyChanged(() => KindOf);
+                    this.Category.IsActived = value;
+                    RaisePropertyChanged(() => IsActived);
+                }
+            }
+        }
+        public string Remark
+        {
+            get { return this.Category.Remark; }
+            set
+            {
+                if (this.Category.Remark != value)
+                {
+                    this.IsDirty = true;
+                    this.Category.Remark = value;
+                    RaisePropertyChanged(() => Remark);
                 }
             }
         }

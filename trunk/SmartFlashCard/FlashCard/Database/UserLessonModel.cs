@@ -16,33 +16,33 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table User 
+    /// Model for table UserLesson 
     /// </summary>
-    public partial class UserModel : ViewModelBase
+    public partial class UserLessonModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public UserModel()
+        public UserLessonModel()
         {
             this.IsNew = true;
-            this.User = new User();
+            this.UserLesson = new UserLesson();
         }
 
         // Default contructor that set entity to field
-        public UserModel(User user)
+        public UserLessonModel(UserLesson userlesson)
         {
-            this.User = user;
+            this.UserLesson = userlesson;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public User User { get; private set; }
+        public UserLesson UserLesson { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,68 +60,42 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long UserID
+        public long UserLessonID
         {
-            get { return this.User.UserID; }
+            get { return this.UserLesson.UserLessonID; }
             set
             {
-                if (this.User.UserID != value)
+                if (this.UserLesson.UserLessonID != value)
                 {
                     this.IsDirty = true;
-                    this.User.UserID = value;
+                    this.UserLesson.UserLessonID = value;
+                    RaisePropertyChanged(() => UserLessonID);
+                }
+            }
+        }
+        public Nullable<long> UserID
+        {
+            get { return this.UserLesson.UserID; }
+            set
+            {
+                if (this.UserLesson.UserID != value)
+                {
+                    this.IsDirty = true;
+                    this.UserLesson.UserID = value;
                     RaisePropertyChanged(() => UserID);
                 }
             }
         }
-        public string UserName
+        public Nullable<long> LessonID
         {
-            get { return this.User.UserName; }
+            get { return this.UserLesson.LessonID; }
             set
             {
-                if (this.User.UserName != value)
+                if (this.UserLesson.LessonID != value)
                 {
                     this.IsDirty = true;
-                    this.User.UserName = value;
-                    RaisePropertyChanged(() => UserName);
-                }
-            }
-        }
-        public string Password
-        {
-            get { return this.User.Password; }
-            set
-            {
-                if (this.User.Password != value)
-                {
-                    this.IsDirty = true;
-                    this.User.Password = value;
-                    RaisePropertyChanged(() => Password);
-                }
-            }
-        }
-        public string FullName
-        {
-            get { return this.User.FullName; }
-            set
-            {
-                if (this.User.FullName != value)
-                {
-                    this.IsDirty = true;
-                    this.User.FullName = value;
-                    RaisePropertyChanged(() => FullName);
-                }
-            }
-        }
-        public Nullable<System.DateTime> LastLogin
-        {
-            get { return this.User.LastLogin; }
-            set
-            {
-                if (this.User.LastLogin != value)
-                {
-                    this.IsDirty = true;
-                    this.User.LastLogin = value;
-                    RaisePropertyChanged(() => LastLogin);
+                    this.UserLesson.LessonID = value;
+                    RaisePropertyChanged(() => LessonID);
                 }
             }
         }
@@ -130,7 +104,7 @@ namespace FlashCard.Models
 
         #region all the custom code
 
-      
+
         #endregion
     }
 }

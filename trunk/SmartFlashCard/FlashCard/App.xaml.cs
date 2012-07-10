@@ -5,6 +5,8 @@ using Microsoft.Shell;
 using FlashCard.DataAccess;
 using System.Linq;
 using FlashCard.Views;
+using FlashCard.Database;
+
 
 namespace FlashCard
 {

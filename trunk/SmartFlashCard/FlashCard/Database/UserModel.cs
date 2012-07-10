@@ -16,33 +16,33 @@ using FlashCard.Models;
 using FlashCard.Database;
 
 
-namespace FlashCard.Models
+namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table UserLesson 
+    /// Model for table User 
     /// </summary>
-    public partial class UserLessonModel : ViewModelBase
+    public partial class UserModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public UserLessonModel()
+        public UserModel()
         {
             this.IsNew = true;
-            this.UserLesson = new UserLesson();
+            this.User = new User();
         }
 
         // Default contructor that set entity to field
-        public UserLessonModel(UserLesson userlesson)
+        public UserModel(User user)
         {
-            this.UserLesson = userlesson;
+            this.User = user;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public UserLesson UserLesson { get; private set; }
+        public User User { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,42 +60,68 @@ namespace FlashCard.Models
 
         #region Primitive Properties
 
-        public long UserLessonID
+        public long UserID
         {
-            get { return this.UserLesson.UserLessonID; }
+            get { return this.User.UserID; }
             set
             {
-                if (this.UserLesson.UserLessonID != value)
+                if (this.User.UserID != value)
                 {
                     this.IsDirty = true;
-                    this.UserLesson.UserLessonID = value;
-                    RaisePropertyChanged(() => UserLessonID);
-                }
-            }
-        }
-        public Nullable<long> UserID
-        {
-            get { return this.UserLesson.UserID; }
-            set
-            {
-                if (this.UserLesson.UserID != value)
-                {
-                    this.IsDirty = true;
-                    this.UserLesson.UserID = value;
+                    this.User.UserID = value;
                     RaisePropertyChanged(() => UserID);
                 }
             }
         }
-        public Nullable<long> LessonID
+        public string UserName
         {
-            get { return this.UserLesson.LessonID; }
+            get { return this.User.UserName; }
             set
             {
-                if (this.UserLesson.LessonID != value)
+                if (this.User.UserName != value)
                 {
                     this.IsDirty = true;
-                    this.UserLesson.LessonID = value;
-                    RaisePropertyChanged(() => LessonID);
+                    this.User.UserName = value;
+                    RaisePropertyChanged(() => UserName);
+                }
+            }
+        }
+        public string Password
+        {
+            get { return this.User.Password; }
+            set
+            {
+                if (this.User.Password != value)
+                {
+                    this.IsDirty = true;
+                    this.User.Password = value;
+                    RaisePropertyChanged(() => Password);
+                }
+            }
+        }
+        public string FullName
+        {
+            get { return this.User.FullName; }
+            set
+            {
+                if (this.User.FullName != value)
+                {
+                    this.IsDirty = true;
+                    this.User.FullName = value;
+                    RaisePropertyChanged(() => FullName);
+                }
+            }
+        }
+        public Nullable<System.DateTime> LastLogin
+        {
+            get { return this.User.LastLogin; }
+            set
+            {
+                if (this.User.LastLogin != value)
+                {
+                    this.IsDirty = true;
+                    this.User.LastLogin = value;
+                    RaisePropertyChanged(() => LastLogin);
                 }
             }
         }
