@@ -4,7 +4,6 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\Co
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.DataAccess.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.Model.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\System.Data.SQLite.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\System.Windows.Interactivity.dll

@@ -12,11 +12,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using FlashCard.Models;
-using FlashCard.Database;
+using ConvertToText.Models;
+using ConvertToText.Database;
 
 
-namespace FlashCard.Models
+namespace ConvertToText.Models
 {
     /// <summary>
     /// Model for table BackSide 
