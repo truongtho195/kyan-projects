@@ -26,3 +26,19 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\New folder\EF_SqlCE\EF_SqlCE\ob
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\New folder\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE.Properties.Resources.resources
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\New folder\EF_SqlCE\EF_SqlCE\obj\x86\Debug\GenerateResource.read.1.tlog
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\New folder\EF_SqlCE\EF_SqlCE\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\bin\Debug\EF_SqlCE.exe.config
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\bin\Debug\EF_SqlCE.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\bin\Debug\EF_SqlCE.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\MainWindow.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\MainWindow.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\App.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE_MarkupCompile.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE.g.resources
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE.Properties.Resources.resources
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\bin\Debug\Northwind.sdf
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\EF_SqlCE\EF_SqlCE\obj\x86\Debug\EF_SqlCE_Content.g.cs

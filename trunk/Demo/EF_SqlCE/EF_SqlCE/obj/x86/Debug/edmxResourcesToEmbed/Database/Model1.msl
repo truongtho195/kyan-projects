@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="FalconHRDBModelStoreContainer" CdmEntityContainer="FalconHRDBEntities">
-    <EntitySetMapping Name="Departments">
-      <EntityTypeMapping TypeName="FalconHRDBModel.Department">
-        <MappingFragment StoreEntitySet="Departments">
-          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
-          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+  <EntityContainerMapping StorageEntityContainer="BlogEngineDBModelStoreContainer" CdmEntityContainer="BlogEngineDBEntities">
+    <EntitySetMapping Name="Blogs">
+      <EntityTypeMapping TypeName="BlogEngineDBModel.Blog">
+        <MappingFragment StoreEntitySet="Blogs">
+          <ScalarProperty Name="BlogID" ColumnName="BlogID" />
+          <ScalarProperty Name="BlogName" ColumnName="BlogName" />
+          <Condition ColumnName="BlogID" IsNull="false" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
