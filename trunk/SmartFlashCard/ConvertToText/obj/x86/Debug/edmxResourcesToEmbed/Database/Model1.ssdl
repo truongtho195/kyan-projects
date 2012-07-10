@@ -16,6 +16,7 @@
     <Property Name="LessonID" Type="integer" />
     <Property Name="Content" Type="nvarchar" />
     <Property Name="IsCorrect" Type="bit" />
+    <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Lessons">
     <Key>
@@ -24,9 +25,9 @@
     <Property Name="LessonID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="LessonName" Type="nvarchar" />
     <Property Name="Description" Type="nvarchar" />
-    <Property Name="TypeID" Type="integer" />
     <Property Name="CategoryID" Type="integer" />
     <Property Name="IsActived" Type="bit" />
+    <Property Name="KindID" Type="integer" />
   </EntityType>
   <Association Name="FK_BackSide_0">
     <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />

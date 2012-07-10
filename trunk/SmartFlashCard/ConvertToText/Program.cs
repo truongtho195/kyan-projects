@@ -15,8 +15,38 @@ namespace ConvertToText
     {
         static void Main(string[] args)
         {
-            ConvertLesson();
+            InserLesson();
         }
+
+        private static void InserLesson()
+        {
+            Console.WriteLine("============================Convert Lesson Start ?=============================");
+            Console.WriteLine("Press any key to ..");
+            Console.ReadLine();
+            Console.WriteLine("Starting.....");
+
+            try
+            {
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                LessonDataAccess lessonDA = new LessonDataAccess();
+                var allLesson= lessonDA.GetAll();
+                foreach (var item in allLesson)
+                {
+                    
+                    Console.WriteLine("-  Lesson item convert : {0}", item.LessonID);
+                    TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
+                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonName=item.LessonName,Description=textRange.Text,KindID=item.TypeID,CategoryID=item.CategoryID,IsActived=true});
+                    flashCardEntity.SaveChanges();
+                }
+                Console.WriteLine("Finished.....");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
+            }
+            Console.ReadLine();
+        }
+        
 
         private static void ConvertLesson()
         {
@@ -53,6 +83,8 @@ namespace ConvertToText
 
 
     }
+
+
     static class FlowDocumentConverter
     {
         public static string ConvertFlowDocumentToSUBStringFormat(object flowDocument)

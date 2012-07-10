@@ -4,7 +4,7 @@
     <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.BackSide" />
     <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Lesson" />
     <AssociationSet Name="FK_BackSide_0" Association="SmartFlashCardDBModel.FK_BackSide_0">
-      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="Lesson" EntitySet="Lessons" />
       <End Role="BackSide" EntitySet="BackSides" />
     </AssociationSet>
   </EntityContainer>
@@ -16,25 +16,26 @@
     <Property Name="LessonID" Type="Int64" />
     <Property Name="Content" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
     <Property Name="IsCorrect" Type="Boolean" />
-    <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="BackSide" ToRole="Lessons" />
+    <Property Type="String" Name="BackSideName" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="BackSide" ToRole="Lesson" />
   </EntityType>
   <EntityType Name="Lesson">
     <Key>
       <PropertyRef Name="LessonID" />
     </Key>
-    <Property Name="LessonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LessonName" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-    <Property Name="Description" Type="String" MaxLength="2147483647" Unicode="true" FixedLength="false" />
-    <Property Name="TypeID" Type="Int64" />
-    <Property Name="CategoryID" Type="Int64" />
-    <Property Name="IsActived" Type="Boolean" />
-    <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="Lessons" ToRole="BackSide" />
+    <Property Type="Int64" Name="LessonID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="LessonName" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Description" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+    <Property Type="Int64" Name="CategoryID" />
+    <Property Type="Boolean" Name="IsActived" />
+    <Property Type="Int64" Name="KindID" />
+    <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSide_0" FromRole="Lesson" ToRole="BackSide" />
   </EntityType>
   <Association Name="FK_BackSide_0">
-    <End Role="Lessons" Type="SmartFlashCardDBModel.Lesson" Multiplicity="0..1" />
-    <End Role="BackSide" Type="SmartFlashCardDBModel.BackSide" Multiplicity="*" />
+    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Lessons">
+      <Principal Role="Lesson">
         <PropertyRef Name="LessonID" />
       </Principal>
       <Dependent Role="BackSide">

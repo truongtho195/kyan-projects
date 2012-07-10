@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ConvertToText.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ConvertToText.Database.BackSide), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ConvertToText.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ConvertToText.Database.BackSide), true)]
 
 #endregion
 
@@ -251,6 +251,30 @@ namespace ConvertToText.Database
         private Nullable<global::System.Boolean> _IsCorrect;
         partial void OnIsCorrectChanging(Nullable<global::System.Boolean> value);
         partial void OnIsCorrectChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String BackSideName
+        {
+            get
+            {
+                return _BackSideName;
+            }
+            set
+            {
+                OnBackSideNameChanging(value);
+                ReportPropertyChanging("BackSideName");
+                _BackSideName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("BackSideName");
+                OnBackSideNameChanged();
+            }
+        }
+        private global::System.String _BackSideName;
+        partial void OnBackSideNameChanging(global::System.String value);
+        partial void OnBackSideNameChanged();
 
         #endregion
     
@@ -262,16 +286,16 @@ namespace ConvertToText.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lessons")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson")]
         public Lesson Lesson
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value = value;
             }
         }
         /// <summary>
@@ -283,13 +307,13 @@ namespace ConvertToText.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lessons", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson", value);
                 }
             }
         }
@@ -401,30 +425,6 @@ namespace ConvertToText.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> TypeID
-        {
-            get
-            {
-                return _TypeID;
-            }
-            set
-            {
-                OnTypeIDChanging(value);
-                ReportPropertyChanging("TypeID");
-                _TypeID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TypeID");
-                OnTypeIDChanged();
-            }
-        }
-        private Nullable<global::System.Int64> _TypeID;
-        partial void OnTypeIDChanging(Nullable<global::System.Int64> value);
-        partial void OnTypeIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public Nullable<global::System.Int64> CategoryID
         {
             get
@@ -467,6 +467,30 @@ namespace ConvertToText.Database
         private Nullable<global::System.Boolean> _IsActived;
         partial void OnIsActivedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsActivedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int64> KindID
+        {
+            get
+            {
+                return _KindID;
+            }
+            set
+            {
+                OnKindIDChanging(value);
+                ReportPropertyChanging("KindID");
+                _KindID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("KindID");
+                OnKindIDChanged();
+            }
+        }
+        private Nullable<global::System.Int64> _KindID;
+        partial void OnKindIDChanging(Nullable<global::System.Int64> value);
+        partial void OnKindIDChanged();
 
         #endregion
     
