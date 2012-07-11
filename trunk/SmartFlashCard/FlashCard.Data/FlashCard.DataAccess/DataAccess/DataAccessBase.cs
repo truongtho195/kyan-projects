@@ -18,7 +18,7 @@ namespace FlashCard.DataAccess
             get
             {
                 //string connectionString = "Data Source=" + Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) + @"\SmartFlashCardDB.s3db";//
-                string connectionString = "Data Source=" + Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\SmartFlashCardDB.s3db";
+                string connectionString = "Data Source=" + Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\FlashCardDB.s3db";
                 if (string.IsNullOrEmpty(connectionString) || connectionString.Trim().Length == 0)
                 {
                     return string.Empty;
