@@ -60,7 +60,7 @@ namespace FlashCard.Database
 
         #region Primitive Properties
 
-        public long LessonID
+        public string LessonID
         {
             get { return this.Lesson.LessonID; }
             set
@@ -99,20 +99,7 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<long> KindID
-        {
-            get { return this.Lesson.KindID; }
-            set
-            {
-                if (this.Lesson.KindID != value)
-                {
-                    this.IsDirty = true;
-                    this.Lesson.KindID = value;
-                    RaisePropertyChanged(() => KindID);
-                }
-            }
-        }
-        public Nullable<long> CategoryID
+        public string CategoryID
         {
             get { return this.Lesson.CategoryID; }
             set
@@ -122,6 +109,19 @@ namespace FlashCard.Database
                     this.IsDirty = true;
                     this.Lesson.CategoryID = value;
                     RaisePropertyChanged(() => CategoryID);
+                }
+            }
+        }
+        public string CardID
+        {
+            get { return this.Lesson.CardID; }
+            set
+            {
+                if (this.Lesson.CardID != value)
+                {
+                    this.IsDirty = true;
+                    this.Lesson.CardID = value;
+                    RaisePropertyChanged(() => CardID);
                 }
             }
         }
@@ -142,6 +142,7 @@ namespace FlashCard.Database
         #endregion
 
         #region all the custom code
+
         #region Properties
 
         /// <summary>
@@ -259,7 +260,6 @@ namespace FlashCard.Database
         #endregion
 
         #endregion
-
         #endregion
     }
 }

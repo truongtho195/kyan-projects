@@ -60,7 +60,7 @@ namespace FlashCard.Database
 
         #region Primitive Properties
 
-        public long SetupID
+        public string SetupID
         {
             get { return this.Setup.SetupID; }
             set
@@ -220,6 +220,7 @@ namespace FlashCard.Database
             base.RaisePropertyChangedCompleted(propertyName);
         }
         #endregion
+
 
         #endregion
     }
