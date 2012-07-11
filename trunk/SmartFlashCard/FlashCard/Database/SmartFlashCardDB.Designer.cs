@@ -399,6 +399,30 @@ namespace FlashCard.Database
         private global::System.String _BackSideName;
         partial void OnBackSideNameChanging(global::System.String value);
         partial void OnBackSideNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsMain
+        {
+            get
+            {
+                return _IsMain;
+            }
+            set
+            {
+                OnIsMainChanging(value);
+                ReportPropertyChanging("IsMain");
+                _IsMain = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsMain");
+                OnIsMainChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsMain;
+        partial void OnIsMainChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsMainChanged();
 
         #endregion
     

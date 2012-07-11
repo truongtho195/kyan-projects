@@ -31,6 +31,7 @@
     <Property Type="Boolean" Name="IsCorrect" />
     <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="BackSide" ToRole="Lesson" />
     <Property Type="String" Name="BackSideName" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="IsMain" />
   </EntityType>
   <EntityType Name="Card">
     <Key>

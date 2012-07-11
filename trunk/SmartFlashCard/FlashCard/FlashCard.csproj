@@ -120,6 +120,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\Repository\BackSideRepository.cs" />
+    <Compile Include="Database\Repository\LessonRepository.cs" />
+    <Compile Include="Database\Repository\UnitOfWork.cs" />
     <Compile Include="Database\SetupModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>

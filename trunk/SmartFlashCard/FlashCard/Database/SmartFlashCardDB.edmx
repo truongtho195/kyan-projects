@@ -35,6 +35,7 @@
           <Property Name="Content" Type="nvarchar" MaxLength="200" />
           <Property Name="IsCorrect" Type="bit" />
           <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsMain" Type="bit" />
         </EntityType>
         <EntityType Name="Cards">
           <Key>
@@ -166,6 +167,7 @@
           <Property Type="Boolean" Name="IsCorrect" />
           <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="BackSide" ToRole="Lesson" />
           <Property Type="String" Name="BackSideName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsMain" />
         </EntityType>
         <EntityType Name="Card">
           <Key>
@@ -276,6 +278,7 @@
           <EntitySetMapping Name="BackSides">
             <EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide">
               <MappingFragment StoreEntitySet="BackSides">
+                <ScalarProperty Name="IsMain" ColumnName="IsMain" />
                 <ScalarProperty Name="BackSideName" ColumnName="BackSideName" />
                 <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
                 <ScalarProperty Name="Content" ColumnName="Content" />

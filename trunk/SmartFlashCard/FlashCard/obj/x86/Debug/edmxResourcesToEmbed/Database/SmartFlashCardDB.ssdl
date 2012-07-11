@@ -30,6 +30,7 @@
     <Property Name="Content" Type="nvarchar" MaxLength="200" />
     <Property Name="IsCorrect" Type="bit" />
     <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsMain" Type="bit" />
   </EntityType>
   <EntityType Name="Cards">
     <Key>
