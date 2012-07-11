@@ -331,7 +331,6 @@
             </Setter>
         </Style>
     </Window.Resources>
-
     <Window.InputBindings>
         <KeyBinding Key="S"
                     Modifiers="Control"
@@ -417,7 +416,6 @@
                 <RowDefinition />
                 <RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
-
             <Border x:Name="bdHeader"
                     Background="{DynamicResource brBottomColor}"
                     Margin="1,0">
@@ -503,9 +501,7 @@
                     <RowDefinition Height="32.91" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-
                 <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
-
                 <Grid x:Name="grdControls">
                     <!--Visibility="{Binding IsChecked,ElementName=tgCategories,Converter={StaticResource booleanToVisibilityConverter}}"-->
                     <StackPanel Orientation="Horizontal"
@@ -519,7 +515,7 @@
                                       IsChecked="{Binding IsChecked, Converter={StaticResource reverseBooleanConverter}, ElementName=tgCategories, Mode=TwoWay}" />
                         <ToggleButton x:Name="tgCategories"
                                       Content="Categories"
-                                      IsChecked="{Binding IsCategoryHandle,Mode=OneWayToSource}"
+                                      IsChecked="{Binding IsCardHandle,Mode=OneWayToSource}"
                                       Width="100" />
                     </StackPanel>
                     <Button Content="Study Now"
@@ -551,7 +547,6 @@
                               SelectionMode="Single"
                               Margin="5,0.91,0,0"
                               Grid.Row="1">
-
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
@@ -562,10 +557,10 @@
                             <GridView>
                                 <GridViewColumn Header="Lesson Name"
                                                 Width="auto"
-                                                DisplayMemberBinding="{Binding Lesson.LessonName}" />
-                                <GridViewColumn Header="Category Name"
+                                                DisplayMemberBinding="{Binding LessonName}" />
+                                <GridViewColumn Header="Card Name"
                                                 Width="auto"
-                                                DisplayMemberBinding="{Binding SelectedLesson.Lesson.Category.CategoryName}" />
+                                                DisplayMemberBinding="{Binding Lesson.Card.CardName}" />
                                 <GridViewColumn Header="#">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -589,7 +584,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Grid.RowSpan="2">
-                        <Grid.Style>
+                        <!--<Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedLesson}"
@@ -600,7 +595,7 @@
 
                                 </Style.Triggers>
                             </Style>
-                        </Grid.Style>
+                        </Grid.Style>-->
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
@@ -664,18 +659,19 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox x:Name="cmbType"
-                                          ItemsSource="{Binding LessonTypeCollection}"
-                                          SelectedValue="{Binding KindID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding CategoryCollection}"
+                                          SelectedValue="{Binding CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          
                                           SelectedValuePath="TypeID"
                                           DisplayMemberPath="Name"
                                           d:LayoutOverrides="Height"
                                           Width="120" />
                             </Grid>
-                            <TextBlock x:Name="tbCategory"
+                            <!--Visibility="{Binding SelectedLesson.IsNewType, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"-->
+                            <TextBlock x:Name="tbCard"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
-                                       Text="Category :"
+                                       Text="Card :"
                                        VerticalAlignment="Center"
                                        Grid.Row="2" />
                             <TextBlock x:Name="tbLessonContent"
@@ -685,12 +681,11 @@
                                        VerticalAlignment="Center"
                                        Grid.Row="3"
                                        Margin="0" />
-                            <ComboBox x:Name="cmbCategory"
-                                      ItemsSource="{Binding CategoryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValue="{Binding CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedItem="{Binding SelectedLesson.CategoryModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      DisplayMemberPath="CategoryName"
-                                      SelectedValuePath="CategoryID"
+                            <ComboBox x:Name="cmbCard"
+                                      ItemsSource="{Binding CardList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValue="{Binding CardID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      DisplayMemberPath="CardName"
+                                      SelectedValuePath="CardID"
                                       VerticalAlignment="Center"
                                       Width="120"
                                       Grid.Column="1"
@@ -712,7 +707,6 @@
                                        Grid.Row="4"
                                        Margin="0,6,0,0"
                                        d:LayoutOverrides="VerticalAlignment" />
-
                             <TextBox x:Name="txtDescription"
                                      Text="{Binding Description, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
@@ -745,10 +739,9 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbBackSideName"
-                                                         Width="auto"
-                                                         MinWidth="200px"
+                                                         VerticalAlignment="Top"
+                                                         Width="150" Height="25"
                                                          Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -756,9 +749,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbContent"
-                                                         Width="auto"
-                                                         MinWidth="200px"
-                                                         Text="{Binding BackSideDetail, UpdateSourceTrigger=PropertyChanged}" />
+                                                         Height="80" HorizontalAlignment="Stretch" MinWidth="500"
+                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" />
 
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
@@ -780,7 +772,6 @@
 
                             <Button x:Name="btnAddBackSide"
                                     Command="{Binding AddBackSideCommand}"
-                                    Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Content="Add Back Side"
                                     Grid.Row="6"
                                     Grid.Column="1"
@@ -861,7 +852,7 @@
                             BorderThickness="0,0.5,0,0"
                             Grid.RowSpan="2" />
                     <ListView x:Name="lstCategories"
-                              ItemsSource="{Binding CategoryCollection}"
+                              ItemsSource="{Binding CardCollection}"
                               Background="#FFCDE8FD"
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
@@ -871,7 +862,7 @@
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
-                                <localCommand:EventToCommand Command="{Binding SelectionCategoryChangedCommand}"
+                                <localCommand:EventToCommand Command="{Binding SelectionCardChangedCommand}"
                                                              CommandParameter="{Binding SelectedItem, ElementName=lstCategories}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -880,9 +871,9 @@
                                 <!--<GridViewColumn Header="#"
                                     DisplayMemberBinding="{Binding}"
                                     Width="30" />-->
-                                <GridViewColumn Header="Category Name"
+                                <GridViewColumn Header="Card Name"
                                                 Width="auto"
-                                                DisplayMemberBinding="{Binding CategoryName}" />
+                                                DisplayMemberBinding="{Binding CardName}" />
                                 <!--<GridViewColumn Header="Status"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding IsActived}" />-->
@@ -892,7 +883,7 @@
                                         <DataTemplate>
                                             <Grid>
                                                 <Button x:Name="btnDeleteCate"
-                                                        Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                        Command="{Binding DataContext.DeleteCardCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                                         CommandParameter="{Binding .}"
                                                         Width="20"
                                                         Height="20"
@@ -902,7 +893,7 @@
                                                 </Button>
                                             </Grid>
                                             <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding CategoryID}"
+                                                <DataTrigger Binding="{Binding CardID}"
                                                              Value="0">
                                                     <Setter TargetName="btnDeleteCate"
                                                             Property="Visibility"
@@ -923,7 +914,7 @@
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedCategory}"
+                                    <DataTrigger Binding="{Binding SelectedCard}"
                                                  Value="{x:Null}">
                                         <Setter Property="IsEnabled"
                                                 Value="False" />
@@ -946,14 +937,14 @@
                                         VerticalAlignment="Center"
                                         Margin="0,0,8,0">
                                 <Button x:Name="btnNew1"
-                                        Command="{Binding NewCategoryCommand}"
+                                        Command="{Binding NewCardCommand}"
                                         Content="New"
                                         Width="70"
                                         Background="White"
                                         BorderBrush="{x:Null}"
                                         Margin="0,0,10,0" />
                                 <Button x:Name="btnSave1"
-                                        Command="{Binding SaveCategoryCommand}"
+                                        Command="{Binding SaveCardCommand}"
                                         Content="Save"
                                         Width="70"
                                         BorderBrush="{x:Null}"
@@ -975,13 +966,13 @@
                                 <ColumnDefinition Width="85.191" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="tbCategory1"
+                            <TextBlock x:Name="tbCard1"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
-                                       Text="Category :"
+                                       Text="Card :"
                                        VerticalAlignment="Center" />
                             <TextBox x:Name="tblCateName1"
-                                     Text="{Binding SelectedCategory.CategoryName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedCard.CardName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      HorizontalAlignment="Left"
                                      TextWrapping="Wrap"
                                      VerticalAlignment="Center"
@@ -989,7 +980,7 @@
                                      Height="20"
                                      Grid.Column="1"
                                      Margin="10,0,0,0" />
-                            <TextBlock x:Name="tbCategory1_Copy"
+                            <TextBlock x:Name="tbCard1_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
                                        Text="Remark :"
@@ -997,12 +988,12 @@
                                        Grid.Row="1"
                                        Margin="0,10,0,0" />
                             <TextBox x:Name="txtRemark"
-                                     Text="{Binding SelectedCategory.Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding SelectedCard.Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      TextWrapping="Wrap"
                                      Grid.Column="1"
                                      Margin="10"
                                      Grid.Row="1" />
-                            <TextBlock x:Name="tbCategory1_Copy1"
+                            <TextBlock x:Name="tbCard1_Copy1"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
                                        Text="Is Actived :"
@@ -1011,7 +1002,7 @@
                                        Margin="0"
                                        Visibility="Collapsed" />
                             <ToggleButton Content="Actived"
-                                          IsChecked="{Binding SelectedCategory.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsChecked="{Binding SelectedCard.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           d:LayoutOverrides="Width, Height"
                                           Grid.Row="2"
                                           VerticalAlignment="Center"
@@ -1072,15 +1063,15 @@
                             <ColumnDefinition Width="49" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtSearchCategory"
+                        <TextBox x:Name="txtSearchCard"
                                  TextWrapping="Wrap"
                                  Grid.ColumnSpan="2"
                                  Grid.Column="1"
                                  VerticalAlignment="Center">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="TextChanged">
-                                    <localCommand:EventToCommand Command="{Binding SearchCategoryCommand}"
-                                                                 CommandParameter="{Binding Text, ElementName=txtSearchCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <localCommand:EventToCommand Command="{Binding SearchCardCommand}"
+                                                                 CommandParameter="{Binding Text, ElementName=txtSearchCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </TextBox>

@@ -60,7 +60,7 @@ namespace FlashCard.Database
 
         #region Primitive Properties
 
-        public long CategoryID
+        public string CategoryID
         {
             get { return this.Category.CategoryID; }
             set
@@ -86,29 +86,16 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<bool> IsActived
+        public int CategoryOf
         {
-            get { return this.Category.IsActived; }
+            get { return this.Category.CategoryOf; }
             set
             {
-                if (this.Category.IsActived != value)
+                if (this.Category.CategoryOf != value)
                 {
                     this.IsDirty = true;
-                    this.Category.IsActived = value;
-                    RaisePropertyChanged(() => IsActived);
-                }
-            }
-        }
-        public string Remark
-        {
-            get { return this.Category.Remark; }
-            set
-            {
-                if (this.Category.Remark != value)
-                {
-                    this.IsDirty = true;
-                    this.Category.Remark = value;
-                    RaisePropertyChanged(() => Remark);
+                    this.Category.CategoryOf = value;
+                    RaisePropertyChanged(() => CategoryOf);
                 }
             }
         }

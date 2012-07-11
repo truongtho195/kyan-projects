@@ -19,30 +19,30 @@ using FlashCard.Database;
 namespace FlashCard.Database
 {
     /// <summary>
-    /// Model for table Kind 
+    /// Model for table Card 
     /// </summary>
-    public partial class KindModel : ViewModelBase
+    public partial class CardModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public KindModel()
+        public CardModel()
         {
             this.IsNew = true;
-            this.Kind = new Kind();
+            this.Card = new Card();
         }
 
         // Default contructor that set entity to field
-        public KindModel(Kind kind)
+        public CardModel(Card card)
         {
-            this.Kind = kind;
+            this.Card = card;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Kind Kind { get; private set; }
+        public Card Card { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,42 +60,42 @@ namespace FlashCard.Database
 
         #region Primitive Properties
 
-        public long KindID
+        public string CardID
         {
-            get { return this.Kind.KindID; }
+            get { return this.Card.CardID; }
             set
             {
-                if (this.Kind.KindID != value)
+                if (this.Card.CardID != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.KindID = value;
-                    RaisePropertyChanged(() => KindID);
+                    this.Card.CardID = value;
+                    RaisePropertyChanged(() => CardID);
                 }
             }
         }
-        public string Name
+        public string CardName
         {
-            get { return this.Kind.Name; }
+            get { return this.Card.CardName; }
             set
             {
-                if (this.Kind.Name != value)
+                if (this.Card.CardName != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.Name = value;
-                    RaisePropertyChanged(() => Name);
+                    this.Card.CardName = value;
+                    RaisePropertyChanged(() => CardName);
                 }
             }
         }
-        public long KindOf
+        public string Remark
         {
-            get { return this.Kind.KindOf; }
+            get { return this.Card.Remark; }
             set
             {
-                if (this.Kind.KindOf != value)
+                if (this.Card.Remark != value)
                 {
                     this.IsDirty = true;
-                    this.Kind.KindOf = value;
-                    RaisePropertyChanged(() => KindOf);
+                    this.Card.Remark = value;
+                    RaisePropertyChanged(() => Remark);
                 }
             }
         }

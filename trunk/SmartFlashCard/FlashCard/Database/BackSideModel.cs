@@ -60,7 +60,7 @@ namespace FlashCard.Database
 
         #region Primitive Properties
 
-        public long BackSideID
+        public string BackSideID
         {
             get { return this.BackSide.BackSideID; }
             set
@@ -73,7 +73,7 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<long> LessonID
+        public string LessonID
         {
             get { return this.BackSide.LessonID; }
             set
@@ -109,6 +109,19 @@ namespace FlashCard.Database
                     this.IsDirty = true;
                     this.BackSide.IsCorrect = value;
                     RaisePropertyChanged(() => IsCorrect);
+                }
+            }
+        }
+        public string BackSideName
+        {
+            get { return this.BackSide.BackSideName; }
+            set
+            {
+                if (this.BackSide.BackSideName != value)
+                {
+                    this.IsDirty = true;
+                    this.BackSide.BackSideName = value;
+                    RaisePropertyChanged(() => BackSideName);
                 }
             }
         }

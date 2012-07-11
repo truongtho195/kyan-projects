@@ -25,6 +25,7 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             this.Titles = "Lesson Management";
+            
         }
       
         #endregion
@@ -74,8 +75,8 @@ namespace FlashCard.ViewModels
                 if (value != null)
                 {
                     _selectedLesson = value;
-                    KindID = (int)SelectedLesson.Lesson.KindID;
-                    CategoryID = (int)SelectedLesson.Lesson.CategoryID;
+                    CategoryID = SelectedLesson.Lesson.CategoryID;
+                    CardID = SelectedLesson.Lesson.CardID;
                     LessonName = SelectedLesson.Lesson.LessonName;
                     Description = SelectedLesson.Lesson.Description;
                     BackSideCollection = new ObservableCollection<BackSideModel>(SelectedLesson.Lesson.BackSides.ToList().Select(x => new BackSideModel(x)));
@@ -83,6 +84,9 @@ namespace FlashCard.ViewModels
                 else if(value == null)
                 {
                     _selectedLesson = value;
+                    CategoryID = "1";
+                    CardID = "1";
+
                     LessonName = string.Empty;
                     Description = string.Empty;
                     BackSideCollection = new ObservableCollection<BackSideModel>();
@@ -94,31 +98,12 @@ namespace FlashCard.ViewModels
 
         //Lesson Binding Form
 
-        #region KindID
-        private int _kindID;
+        #region CategoryID
+        private string _categoryID;
         /// <summary>
         /// Gets or sets the KindID.
         /// </summary>
-        public int KindID
-        {
-            get { return _kindID; }
-            set
-            {
-                if (_kindID != value)
-                {
-                    _kindID = value;
-                    RaisePropertyChanged(() => KindID);
-                }
-            }
-        }
-        #endregion
-        
-        #region CategoryID
-        private int _categoryID;
-        /// <summary>
-        /// Gets or sets the CategoryID.
-        /// </summary>
-        public int CategoryID
+        public string CategoryID
         {
             get { return _categoryID; }
             set
@@ -126,7 +111,28 @@ namespace FlashCard.ViewModels
                 if (_categoryID != value)
                 {
                     _categoryID = value;
+                    IsLessonDirty = true;
                     RaisePropertyChanged(() => CategoryID);
+                }
+            }
+        }
+        #endregion
+        
+        #region CardID
+        private string _cardID;
+        /// <summary>
+        /// Gets or sets the CategoryID.
+        /// </summary>
+        public string CardID
+        {
+            get { return _cardID; }
+            set
+            {
+                if (_cardID != value)
+                {
+                    _cardID = value;
+                    IsLessonDirty = true;
+                    RaisePropertyChanged(() => CardID);
                 }
             }
         }
@@ -145,6 +151,7 @@ namespace FlashCard.ViewModels
                 if (_lessonName != value)
                 {
                     _lessonName = value;
+                    IsLessonDirty = true;
                     RaisePropertyChanged(() => LessonName);
                 }
             }
@@ -164,6 +171,7 @@ namespace FlashCard.ViewModels
                 if (_description != value)
                 {
                     _description = value;
+                    IsLessonDirty = true;
                     RaisePropertyChanged(() => Description);
                 }
             }
@@ -189,6 +197,8 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+        public bool IsLessonDirty { get; set; }
+
         #endregion
 
         #region"  LessonCollection"
@@ -210,52 +220,12 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region"  LessonTypeCollection"
-        private List<KindModel> _lessonTypeCollection;
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public List<KindModel> LessonTypeCollection
-        {
-            get { return _lessonTypeCollection; }
-            set
-            {
-                if (_lessonTypeCollection != value)
-                {
-                    _lessonTypeCollection = value;
-                    RaisePropertyChanged(() => LessonTypeCollection);
-                }
-            }
-        }
-        #endregion
-
-        //Category Region
-        #region "  SelectedCategory"
-        private CategoryModel _selectedCategory;
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public CategoryModel SelectedCategory
-        {
-            get { return _selectedCategory; }
-            set
-            {
-                if (_selectedCategory != value)
-                {
-                    _selectedCategory = value;
-
-                    RaisePropertyChanged(() => SelectedCategory);
-                }
-            }
-        }
-        #endregion
-
         #region"  CategoryCollection"
-        private ObservableCollection<CategoryModel> _categoryCollection;
+        private List<CategoryModel> _categoryCollection;
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
-        public ObservableCollection<CategoryModel> CategoryCollection
+        public List<CategoryModel> CategoryCollection
         {
             get { return _categoryCollection; }
             set
@@ -269,20 +239,60 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+        //SelectedCard Region
+        #region "  SelectedCard"
+        private CardModel _selectedCard;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public CardModel SelectedCard
+        {
+            get { return _selectedCard; }
+            set
+            {
+                if (_selectedCard != value)
+                {
+                    _selectedCard = value;
+
+                    RaisePropertyChanged(() => SelectedCard);
+                }
+            }
+        }
+        #endregion
+
+        #region"  CategoryCollection"
+        private ObservableCollection<CardModel> _cardCollection;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public ObservableCollection<CardModel> CardCollection
+        {
+            get { return _cardCollection; }
+            set
+            {
+                if (_cardCollection != value)
+                {
+                    _cardCollection = value;
+                    RaisePropertyChanged(() => CardCollection);
+                }
+            }
+        }
+        #endregion
+
         #region CategoryList
-        private List<CategoryModel> _categoryList;
+        private List<CardModel> _cardList;
         /// <summary>
         /// Gets or sets the CategoryList.
         /// </summary>
-        public List<CategoryModel> CategoryList
+        public List<CardModel> CardList
         {
-            get { return _categoryList; }
+            get { return _cardList; }
             set
             {
-                if (_categoryList != value)
+                if (_cardList != value)
                 {
-                    _categoryList = value;
-                    RaisePropertyChanged(() => CategoryList);
+                    _cardList = value;
+                    RaisePropertyChanged(() => CardList);
                 }
             }
         }
@@ -290,20 +300,20 @@ namespace FlashCard.ViewModels
         
         public bool IsFromPopup { get; set; }
 
-        #region"  IsCategoryHandle"
-        private bool _isCategoryHandle;
+        #region"  IsCardHandle"
+        private bool _isCardHandle;
         /// <summary>
         /// Gets or sets the IsCategoryHandle.
         /// </summary>
-        public bool IsCategoryHandle
+        public bool IsCardHandle
         {
-            get { return _isCategoryHandle; }
+            get { return _isCardHandle; }
             set
             {
-                if (_isCategoryHandle != value)
+                if (_isCardHandle != value)
                 {
-                    _isCategoryHandle = value;
-                    RaisePropertyChanged(() => IsCategoryHandle);
+                    _isCardHandle = value;
+                    RaisePropertyChanged(() => IsCardHandle);
                 }
             }
         }
@@ -341,7 +351,7 @@ namespace FlashCard.ViewModels
 
         private void NewExecute(object param)
         {
-            //sSelectedLesson = new LessonModel();
+            SelectedLesson = null;
             //!!!!  SelectedLesson.TypeID = LessonTypeCollection.First().TypeID;
             ///!!!!  SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
             //SelectedLesson.Lesson.BackSides = new BackSideModel();
@@ -439,10 +449,9 @@ namespace FlashCard.ViewModels
 
         private void AddBackSideExecute(object param)
         {
-            ///!!!!  if (this.SelectedLesson.BackSideCollection == null)
-            ///!!!!       this.SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
-            ///!!!!  this.SelectedLesson.BackSideModel = new BackSideModel() { IsCorrect = false, IsNew = true };
-            ///!!!!   this.SelectedLesson.BackSideCollection.Add(this.SelectedLesson.BackSideModel); ;
+              if (BackSideCollection == null)
+                  BackSideCollection = new ObservableCollection<BackSideModel>();
+               BackSideCollection.Add(new BackSideModel()); 
         }
         #endregion
 
@@ -560,23 +569,25 @@ namespace FlashCard.ViewModels
 
             try
             {
-                if (SelectedLesson != null && SelectedLesson.IsNew)
-                {
-                    LessonCollection.Remove(SelectedLesson);
-                }
-                else if (SelectedLesson != null && SelectedLesson.IsDirty)
-                {
-                    LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                    ///!!!!       var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
+                //if (SelectedLesson != null && SelectedLesson.IsNew)
+                //{
+                //    LessonCollection.Remove(SelectedLesson);
+                //}
+                //else if (SelectedLesson != null && SelectedLesson.IsDirty)
+                //{
+                //    LessonDataAccess lessonDataAccess = new LessonDataAccess();
+                //    ///!!!!       var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
 
-                    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
-                    if (lessonIndex > -1)
-                    {
-                        LessonCollection.RemoveAt(lessonIndex);
-                        ///!!!!   LessonCollection.Insert(lessonIndex, lessonModel);
-                    }
-                    RaisePropertyChanged(() => LessonCollection);
-                }
+                //    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                //    if (lessonIndex > -1)
+                //    {
+                //        LessonCollection.RemoveAt(lessonIndex);
+                //        ///!!!!   LessonCollection.Insert(lessonIndex, lessonModel);
+                //    }
+                //    RaisePropertyChanged(() => LessonCollection);
+                //}
+
+                SelectedLesson = param as LessonModel;
             }
             catch (Exception ex)
             {
@@ -709,18 +720,18 @@ namespace FlashCard.ViewModels
         #endregion
 
         //Category Command
-        #region "  NewCategoryCommand"
+        #region "  NewCardCommand"
         /// <summary>
         /// Gets the NewCategory Command.
         /// <summary>
-        private ICommand _newCategoryCommand;
-        public ICommand NewCategoryCommand
+        private ICommand _newCardCommand;
+        public ICommand NewCardCommand
         {
             get
             {
-                if (_newCategoryCommand == null)
-                    _newCategoryCommand = new RelayCommand(this.OnNewCategoryExecute, this.OnNewCategoryCanExecute);
-                return _newCategoryCommand;
+                if (_newCardCommand == null)
+                    _newCardCommand = new RelayCommand(this.OnNewCategoryExecute, this.OnNewCategoryCanExecute);
+                return _newCardCommand;
             }
         }
 
@@ -730,9 +741,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCategoryCanExecute(object param)
         {
-            if (CategoryCollection == null)
+            if (CardCollection == null)
                 return true;
-            return SelectedCategory != null && !SelectedCategory.IsNew;
+            return SelectedCard != null && !SelectedCard.IsNew;
         }
 
         /// <summary>
@@ -740,34 +751,34 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnNewCategoryExecute(object param)
         {
-            SelectedCategory = new CategoryModel();
+            SelectedCard = new CardModel();
             ///!!!!SelectedCategory.IsNew = true;
-            SelectedCategory.CategoryID = -2;
+            //SelectedCategory.CategoryID = -2;
         }
         #endregion
 
-        #region"  SaveCategoryCommand"
-        private ICommand _saveCategoryCommand;
+        #region"  SaveCardCommand"
+        private ICommand _saveCardCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
-        public ICommand SaveCategoryCommand
+        public ICommand SaveCardCommand
         {
             get
             {
-                if (_saveCategoryCommand == null)
+                if (_saveCardCommand == null)
                 {
-                    _saveCategoryCommand = new RelayCommand(this.SaveCategoryExecute, this.CanSaveCategoryExecute);
+                    _saveCardCommand = new RelayCommand(this.SaveCategoryExecute, this.CanSaveCategoryExecute);
                 }
-                return _saveCategoryCommand;
+                return _saveCardCommand;
             }
         }
 
         private bool CanSaveCategoryExecute(object param)
         {
-            if (SelectedCategory == null)
+            if (SelectedCard == null)
                 return false;
 
-            return SelectedCategory.IsDirty;
+            return SelectedCard.IsDirty;
         }
 
         private void SaveCategoryExecute(object param)
@@ -775,18 +786,18 @@ namespace FlashCard.ViewModels
             try
             {
                 CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                if (SelectedCategory.IsNew)
+                if (SelectedCard.IsNew)
                 {
                     ///!!!! categoryDataAccess.Insert(SelectedCategory);
-                    CategoryCollection.Add(SelectedCategory);
-                    CategoryList.Add(SelectedCategory);
+                    CardCollection.Add(SelectedCard);
+                    CardList.Add(SelectedCard);
 
                 }
                 else
                 {
                     ///!!!!  categoryDataAccess.Update(SelectedCategory);
                 }
-                RaisePropertyChanged(() => CategoryList);
+                RaisePropertyChanged(() => CardList);
             }
             catch (Exception ex)
             {
@@ -797,18 +808,18 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region "  SelectionCategoryChangedCommand"
+        #region "  SelectionCardChangedCommand"
         /// <summary>
         /// Gets the SelectionChanged Command.
         /// <summary>
-        private ICommand _selectionCategoryChangedCommand;
-        public ICommand SelectionCategoryChangedCommand
+        private ICommand _selectionCardChangedCommand;
+        public ICommand SelectionCardChangedCommand
         {
             get
             {
-                if (_selectionCategoryChangedCommand == null)
-                    _selectionCategoryChangedCommand = new RelayCommand(this.OnSelectionCategoryChangedExecute, this.OnSelectionCategoryChangedCanExecute);
-                return _selectionCategoryChangedCommand;
+                if (_selectionCardChangedCommand == null)
+                    _selectionCardChangedCommand = new RelayCommand(this.OnSelectionCategoryChangedExecute, this.OnSelectionCategoryChangedCanExecute);
+                return _selectionCardChangedCommand;
             }
         }
 
@@ -830,20 +841,20 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                if (SelectedCategory != null && SelectedCategory.IsNew)
+                if (SelectedCard != null && SelectedCard.IsNew)
                 {
-                    CategoryCollection.Remove(SelectedCategory);
-                    CategoryList.Remove(SelectedCategory);
-                    RaisePropertyChanged(() => CategoryList);
+                    CardCollection.Remove(SelectedCard);
+                    CardList.Remove(SelectedCard);
+                    RaisePropertyChanged(() => CardList);
                 }
-                else if (SelectedCategory != null && SelectedCategory.IsDirty)
+                else if (SelectedCard != null && SelectedCard.IsDirty)
                 {
                     CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
                     ///!!!!  var cateModel = categoryDataAccess.Get(SelectedCategory.CategoryID);
                     //reset data
                     ///!!!!   SelectedCategory = cateModel;
                 }
-                SelectedCategory = param as CategoryModel;
+                SelectedCard = param as CardModel;
             }
             catch (Exception ex)
             {
@@ -885,7 +896,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnSearchCategoryExecute(object param)
         {
-            _categoryCollectionView = CollectionViewSource.GetDefaultView(this.CategoryCollection);
+            _categoryCollectionView = CollectionViewSource.GetDefaultView(this.CardCollection);
             string keywordCategory = string.Empty;
 
             try
@@ -953,16 +964,16 @@ namespace FlashCard.ViewModels
             MessageBoxResult result = MessageBox.Show("Do you want to remove this Category & Lesson relation", "Remove Category", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
-                CategoryModel cateModel;
+                CardModel cardModel;
                 if (param != null)
                 {
-                    cateModel = param as CategoryModel;
+                    cardModel = param as CardModel;
                     CategoryDataAccess cateDataAccess = new CategoryDataAccess();
                     var resultDel = true;
                         ///!!!!cateDataAccess.DeleteWithRelation(cateModel);
                     if (resultDel)
                     {
-                        foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cateModel.CategoryID)).ToList())
+                        foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cardModel.CardID)).ToList())
                         {
                             if (item != null)
                             {
@@ -972,11 +983,11 @@ namespace FlashCard.ViewModels
                             }
 
                         }
-                        CategoryCollection.Remove(cateModel);
-                        if (cateModel == SelectedCategory)
-                            SelectedCategory = CategoryCollection.First();
+                        CardCollection.Remove(cardModel);
+                        if (cardModel == SelectedCard)
+                            SelectedCard = CardCollection.First();
 
-                        CategoryList.Remove(cateModel);
+                        CardList.Remove(cardModel);
                     }
                 }
             }
@@ -1009,17 +1020,17 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                if (IsCategoryHandle)
+                if (IsCardHandle)
                 {
-                    if (SelectedCategory != null && SelectedCategory.IsNew)
+                    if (SelectedCard != null && SelectedCard.IsNew)
                     {
-                        CategoryCollection.Remove(SelectedCategory);
+                        CardCollection.Remove(SelectedCard);
                     }
-                    else if (SelectedCategory != null && SelectedCategory.IsDirty)
+                    else if (SelectedCard != null && SelectedCard.IsDirty)
                     {
                         SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                         CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                        var cateModel = flashCardEntity.Categories.Where(x=>x.CategoryID==SelectedCategory.CategoryID).SingleOrDefault();
+                        var cardModel = flashCardEntity.Cards.Where(x=>x.CardID==SelectedCard.CardID).SingleOrDefault();
                         //!!!! reset data
                         ///SelectedCategory.Category = cateModel;
                     }
@@ -1120,7 +1131,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnShortcutKeyNewItemCanExecute(object param)
         {
-            if (IsCategoryHandle)
+            if (IsCardHandle)
                 return OnNewCategoryCanExecute(param);
             else
                 return CanNewExecute(param);
@@ -1133,7 +1144,7 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                if (IsCategoryHandle)
+                if (IsCardHandle)
                 {
                     if (OnNewCategoryCanExecute(null))
                     {
@@ -1179,7 +1190,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnShortCutKeySaveItemCanExecute(object param)
         {
-            if (IsCategoryHandle)
+            if (IsCardHandle)
                 return CanSaveCategoryExecute(param);
             else
                 return CanSaveExecute(param);
@@ -1192,7 +1203,7 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                if (IsCategoryHandle)
+                if (IsCardHandle)
                 {
                     if (CanSaveCategoryExecute(param))
                     {
@@ -1224,16 +1235,7 @@ namespace FlashCard.ViewModels
             try
             {
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
-                var test = flashCardEntity.Lessons.Include("Categories").ToList();
-                TypeDataAccess typeDataAccess = new TypeDataAccess();
-                ///!!!! LessonTypeCollection = new List<KindModel>(typeDataAccess.GetAll());
-
-                CategoryCollection = new ObservableCollection<CategoryModel>(flashCardEntity.Categories.ToList().Select(x=>new CategoryModel(x)));
-
-                CategoryList = CategoryCollection.ToList();
-
-                
-                LessonCollection = new ObservableCollection<LessonModel>(flashCardEntity.Lessons.ToList().Select(x=>new LessonModel(x)));
+                LessonCollection = new ObservableCollection<LessonModel>(flashCardEntity.Lessons.ToList().Select(x => new LessonModel(x)));
                 if (LessonCollection.Any())
                 {
                     // SelectedLesson =LessonCollection.FirstOrDefault();
@@ -1243,6 +1245,11 @@ namespace FlashCard.ViewModels
                     LessonCollection = new ObservableCollection<LessonModel>();
                     NewExecute(null);
                 }
+                ///!!!! LessonTypeCollection = new List<KindModel>(typeDataAccess.GetAll());
+
+                CardCollection = new ObservableCollection<CardModel>(flashCardEntity.Cards.ToList().Select(x=>new CardModel(x)));
+
+                CardList = CardCollection.ToList();
 
                 //if (CategoryCollection.Any())
                 //    SelectedCategory = CategoryCollection.FirstOrDefault();
