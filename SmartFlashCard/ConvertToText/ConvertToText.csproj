@@ -65,9 +65,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\BackSideModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\LessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>

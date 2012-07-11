@@ -17,11 +17,11 @@ namespace ConvertToText
         {
             InserLesson();
         }
-
+        
         private static void InserLesson()
         {
             Console.WriteLine("============================Convert Lesson Start ?=============================");
-            Console.WriteLine("Press any key to ..");
+            Console.WriteLine("Press enter key to ..");
             Console.ReadLine();
             Console.WriteLine("Starting.....");
 
@@ -30,13 +30,15 @@ namespace ConvertToText
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 LessonDataAccess lessonDA = new LessonDataAccess();
                 var allLesson= lessonDA.GetAll();
+               
                 foreach (var item in allLesson)
                 {
                     
-                    Console.WriteLine("-  Lesson item convert : {0}", item.LessonID);
+                    Console.WriteLine("-  Lesson item : {0}", item.LessonID);
                     TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
-                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonName=item.LessonName,Description=textRange.Text,KindID=item.TypeID,CategoryID=item.CategoryID,IsActived=true});
+                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString(),IsActived=true});
                     flashCardEntity.SaveChanges();
+                    Console.WriteLine("=====> Done");
                 }
                 Console.WriteLine("Finished.....");
             }
@@ -65,13 +67,13 @@ namespace ConvertToText
                     TextRange textRange = new TextRange(descriptionDocument.ContentStart, descriptionDocument.ContentEnd);
                     item.Description = textRange.Text;
                     flashCardEntity.SaveChanges();
-                    foreach (var backSide in item.BackSides)
-                    {
-                        Console.WriteLine("      Back Side item convert : {0}", backSide.BackSideID);
-                        FlowDocument backSideDocument = FlowDocumentConverter.ConvertXMLToFlowDocument(backSide.Content);
-                        TextRange backSideTextRange = new TextRange(backSideDocument.ContentStart, backSideDocument.ContentEnd);
-                        backSide.Content = backSideTextRange.Text;
-                    }
+                    //foreach (var backSide in item.BackSides)
+                    //{
+                    //    Console.WriteLine("      Back Side item convert : {0}", backSide.BackSideID);
+                    //    FlowDocument backSideDocument = FlowDocumentConverter.ConvertXMLToFlowDocument(backSide.Content);
+                    //    TextRange backSideTextRange = new TextRange(backSideDocument.ContentStart, backSideDocument.ContentEnd);
+                    //    backSide.Content = backSideTextRange.Text;
+                    //}
                 }
             }
             catch (Exception ex)

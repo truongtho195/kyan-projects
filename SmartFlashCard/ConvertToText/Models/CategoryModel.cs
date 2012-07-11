@@ -12,37 +12,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ConvertToText.Models;
-using ConvertToText.Database;
+using FlashCard.Models;
+using FlashCard.Database;
 
 
-namespace ConvertToText.Models
+namespace FlashCard.Models
 {
     /// <summary>
-    /// Model for table BackSide 
+    /// Model for table Category 
     /// </summary>
-    public partial class BackSideModel : ViewModelBase
+    public partial class CategoryModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public BackSideModel()
+        public CategoryModel()
         {
             this.IsNew = true;
-            this.BackSide = new BackSide();
+            this.Category = new Category();
         }
 
         // Default contructor that set entity to field
-        public BackSideModel(BackSide backside)
+        public CategoryModel(Category category)
         {
-            this.BackSide = backside;
+            this.Category = category;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public BackSide BackSide { get; private set; }
+        public Category Category { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,68 +60,55 @@ namespace ConvertToText.Models
 
         #region Primitive Properties
 
-        public long BackSideID
+        public long CategoryID
         {
-            get { return this.BackSide.BackSideID; }
+            get { return this.Category.CategoryID; }
             set
             {
-                if (this.BackSide.BackSideID != value)
+                if (this.Category.CategoryID != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.BackSideID = value;
-                    RaisePropertyChanged(() => BackSideID);
+                    this.Category.CategoryID = value;
+                    RaisePropertyChanged(() => CategoryID);
                 }
             }
         }
-        public Nullable<long> LessonID
+        public string CategoryName
         {
-            get { return this.BackSide.LessonID; }
+            get { return this.Category.CategoryName; }
             set
             {
-                if (this.BackSide.LessonID != value)
+                if (this.Category.CategoryName != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.LessonID = value;
-                    RaisePropertyChanged(() => LessonID);
+                    this.Category.CategoryName = value;
+                    RaisePropertyChanged(() => CategoryName);
                 }
             }
         }
-        public string Content
+        public Nullable<bool> IsActived
         {
-            get { return this.BackSide.Content; }
+            get { return this.Category.IsActived; }
             set
             {
-                if (this.BackSide.Content != value)
+                if (this.Category.IsActived != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.Content = value;
-                    RaisePropertyChanged(() => Content);
+                    this.Category.IsActived = value;
+                    RaisePropertyChanged(() => IsActived);
                 }
             }
         }
-        public Nullable<bool> IsCorrect
+        public string Remark
         {
-            get { return this.BackSide.IsCorrect; }
+            get { return this.Category.Remark; }
             set
             {
-                if (this.BackSide.IsCorrect != value)
+                if (this.Category.Remark != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.IsCorrect = value;
-                    RaisePropertyChanged(() => IsCorrect);
-                }
-            }
-        }
-        public string BackSideName
-        {
-            get { return this.BackSide.BackSideName; }
-            set
-            {
-                if (this.BackSide.BackSideName != value)
-                {
-                    this.IsDirty = true;
-                    this.BackSide.BackSideName = value;
-                    RaisePropertyChanged(() => BackSideName);
+                    this.Category.Remark = value;
+                    RaisePropertyChanged(() => Remark);
                 }
             }
         }
