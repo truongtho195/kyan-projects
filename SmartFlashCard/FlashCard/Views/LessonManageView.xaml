@@ -330,6 +330,23 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!--myRowStyle-->
+        <Style x:Key="myRowCollapseStyle"
+               TargetType="{x:Type DataGridRow}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Deleted, Mode=Twoway, UpdateSourceTrigger=PropertyChanged}"
+                             Value="True">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Deleted, Mode=Twoway, UpdateSourceTrigger=PropertyChanged}"
+                             Value="False">
+                    <Setter Property="Visibility"
+                            Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="S"
@@ -635,8 +652,8 @@
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="68.619" />
-                                <RowDefinition Height="0.628*" />
-                                <RowDefinition Height="0.372*" />
+                                <RowDefinition Height="0.849*" />
+                                <RowDefinition Height="0.151*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="85.191" />
@@ -725,15 +742,16 @@
                                        Grid.Row="5"
                                        Margin="0,5,0,0" />
 
+                            <!--SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
                             <DataGrid x:Name="dgBackSide"
                                       ItemsSource="{Binding BackSideCollection}"
-                                      SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       CanUserDeleteRows="False"
                                       Grid.Column="1"
+                                      RowStyle="{StaticResource myRowCollapseStyle}"
                                       Grid.Row="5"
-                                      Margin="10,8,8,8">
+                                      Margin="10,8,8,8" Background="#33939393">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Name">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -749,9 +767,23 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbContent"
-                                                         Height="80" HorizontalAlignment="Stretch" MinWidth="500"
+                                                         Height="60" HorizontalAlignment="Stretch" MinWidth="500"
                                                          Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" />
 
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="#">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding DataContext.DeleteBackSideCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                        CommandParameter="{Binding .}"
+                                                        Width="20"
+                                                        Height="20"
+                                                        Style="{DynamicResource EmptyButton}"
+                                                        ToolTip="Delete">
+                                                    <Image Source="/Images/1336360382_Delete.png" />
+                                                </Button>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>

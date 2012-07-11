@@ -125,6 +125,19 @@ namespace FlashCard.Database
                 }
             }
         }
+        public Nullable<bool> IsMain
+        {
+            get { return this.BackSide.IsMain; }
+            set
+            {
+                if (this.BackSide.IsMain != value)
+                {
+                    this.IsDirty = true;
+                    this.BackSide.IsMain = value;
+                    RaisePropertyChanged(() => IsMain);
+                }
+            }
+        }
 
         #endregion
 

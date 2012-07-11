@@ -4,6 +4,7 @@
     <EntitySetMapping Name="BackSides">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide">
         <MappingFragment StoreEntitySet="BackSides">
+          <ScalarProperty Name="IsMain" ColumnName="IsMain" />
           <ScalarProperty Name="BackSideName" ColumnName="BackSideName" />
           <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
           <ScalarProperty Name="Content" ColumnName="Content" />
