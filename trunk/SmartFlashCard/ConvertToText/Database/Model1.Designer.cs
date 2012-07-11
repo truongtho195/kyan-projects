@@ -16,11 +16,6 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
-#region EDM Relationship Metadata
-
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ConvertToText.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ConvertToText.Database.BackSide), true)]
-
-#endregion
 
 namespace ConvertToText.Database
 {
@@ -73,22 +68,6 @@ namespace ConvertToText.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<BackSide> BackSides
-        {
-            get
-            {
-                if ((_BackSides == null))
-                {
-                    _BackSides = base.CreateObjectSet<BackSide>("BackSides");
-                }
-                return _BackSides;
-            }
-        }
-        private ObjectSet<BackSide> _BackSides;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Lesson> Lessons
         {
             get
@@ -104,14 +83,6 @@ namespace ConvertToText.Database
 
         #endregion
         #region AddTo Methods
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the BackSides EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToBackSides(BackSide backSide)
-        {
-            base.AddObject("BackSides", backSide);
-        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the Lessons EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -132,198 +103,6 @@ namespace ConvertToText.Database
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="SmartFlashCardDBModel", Name="BackSide")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class BackSide : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new BackSide object.
-        /// </summary>
-        /// <param name="backSideID">Initial value of the BackSideID property.</param>
-        public static BackSide CreateBackSide(global::System.Int64 backSideID)
-        {
-            BackSide backSide = new BackSide();
-            backSide.BackSideID = backSideID;
-            return backSide;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 BackSideID
-        {
-            get
-            {
-                return _BackSideID;
-            }
-            set
-            {
-                if (_BackSideID != value)
-                {
-                    OnBackSideIDChanging(value);
-                    ReportPropertyChanging("BackSideID");
-                    _BackSideID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("BackSideID");
-                    OnBackSideIDChanged();
-                }
-            }
-        }
-        private global::System.Int64 _BackSideID;
-        partial void OnBackSideIDChanging(global::System.Int64 value);
-        partial void OnBackSideIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int64> LessonID
-        {
-            get
-            {
-                return _LessonID;
-            }
-            set
-            {
-                OnLessonIDChanging(value);
-                ReportPropertyChanging("LessonID");
-                _LessonID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LessonID");
-                OnLessonIDChanged();
-            }
-        }
-        private Nullable<global::System.Int64> _LessonID;
-        partial void OnLessonIDChanging(Nullable<global::System.Int64> value);
-        partial void OnLessonIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Content
-        {
-            get
-            {
-                return _Content;
-            }
-            set
-            {
-                OnContentChanging(value);
-                ReportPropertyChanging("Content");
-                _Content = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Content");
-                OnContentChanged();
-            }
-        }
-        private global::System.String _Content;
-        partial void OnContentChanging(global::System.String value);
-        partial void OnContentChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> IsCorrect
-        {
-            get
-            {
-                return _IsCorrect;
-            }
-            set
-            {
-                OnIsCorrectChanging(value);
-                ReportPropertyChanging("IsCorrect");
-                _IsCorrect = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsCorrect");
-                OnIsCorrectChanged();
-            }
-        }
-        private Nullable<global::System.Boolean> _IsCorrect;
-        partial void OnIsCorrectChanging(Nullable<global::System.Boolean> value);
-        partial void OnIsCorrectChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String BackSideName
-        {
-            get
-            {
-                return _BackSideName;
-            }
-            set
-            {
-                OnBackSideNameChanging(value);
-                ReportPropertyChanging("BackSideName");
-                _BackSideName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("BackSideName");
-                OnBackSideNameChanged();
-            }
-        }
-        private global::System.String _BackSideName;
-        partial void OnBackSideNameChanging(global::System.String value);
-        partial void OnBackSideNameChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "Lesson")]
-        public Lesson Lesson
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Lesson> LessonReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_BackSide_0", "Lesson", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="SmartFlashCardDBModel", Name="Lesson")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -335,10 +114,14 @@ namespace ConvertToText.Database
         /// Create a new Lesson object.
         /// </summary>
         /// <param name="lessonID">Initial value of the LessonID property.</param>
-        public static Lesson CreateLesson(global::System.Int64 lessonID)
+        /// <param name="categoryID">Initial value of the CategoryID property.</param>
+        /// <param name="cardID">Initial value of the CardID property.</param>
+        public static Lesson CreateLesson(global::System.String lessonID, global::System.String categoryID, global::System.String cardID)
         {
             Lesson lesson = new Lesson();
             lesson.LessonID = lessonID;
+            lesson.CategoryID = categoryID;
+            lesson.CardID = cardID;
             return lesson;
         }
 
@@ -350,7 +133,7 @@ namespace ConvertToText.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int64 LessonID
+        public global::System.String LessonID
         {
             get
             {
@@ -362,14 +145,14 @@ namespace ConvertToText.Database
                 {
                     OnLessonIDChanging(value);
                     ReportPropertyChanging("LessonID");
-                    _LessonID = StructuralObject.SetValidValue(value);
+                    _LessonID = StructuralObject.SetValidValue(value, false);
                     ReportPropertyChanged("LessonID");
                     OnLessonIDChanged();
                 }
             }
         }
-        private global::System.Int64 _LessonID;
-        partial void OnLessonIDChanging(global::System.Int64 value);
+        private global::System.String _LessonID;
+        partial void OnLessonIDChanging(global::System.String value);
         partial void OnLessonIDChanged();
     
         /// <summary>
@@ -423,9 +206,9 @@ namespace ConvertToText.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> CategoryID
+        public global::System.String CategoryID
         {
             get
             {
@@ -435,14 +218,38 @@ namespace ConvertToText.Database
             {
                 OnCategoryIDChanging(value);
                 ReportPropertyChanging("CategoryID");
-                _CategoryID = StructuralObject.SetValidValue(value);
+                _CategoryID = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("CategoryID");
                 OnCategoryIDChanged();
             }
         }
-        private Nullable<global::System.Int64> _CategoryID;
-        partial void OnCategoryIDChanging(Nullable<global::System.Int64> value);
+        private global::System.String _CategoryID;
+        partial void OnCategoryIDChanging(global::System.String value);
         partial void OnCategoryIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String CardID
+        {
+            get
+            {
+                return _CardID;
+            }
+            set
+            {
+                OnCardIDChanging(value);
+                ReportPropertyChanging("CardID");
+                _CardID = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("CardID");
+                OnCardIDChanged();
+            }
+        }
+        private global::System.String _CardID;
+        partial void OnCardIDChanging(global::System.String value);
+        partial void OnCardIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -467,58 +274,9 @@ namespace ConvertToText.Database
         private Nullable<global::System.Boolean> _IsActived;
         partial void OnIsActivedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsActivedChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int64> KindID
-        {
-            get
-            {
-                return _KindID;
-            }
-            set
-            {
-                OnKindIDChanging(value);
-                ReportPropertyChanging("KindID");
-                _KindID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("KindID");
-                OnKindIDChanged();
-            }
-        }
-        private Nullable<global::System.Int64> _KindID;
-        partial void OnKindIDChanging(Nullable<global::System.Int64> value);
-        partial void OnKindIDChanged();
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSide_0", "BackSide")]
-        public EntityCollection<BackSide> BackSides
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BackSide>("SmartFlashCardDBModel.FK_BackSide_0", "BackSide");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BackSide>("SmartFlashCardDBModel.FK_BackSide_0", "BackSide", value);
-                }
-            }
-        }
-
-        #endregion
     }
 
     #endregion

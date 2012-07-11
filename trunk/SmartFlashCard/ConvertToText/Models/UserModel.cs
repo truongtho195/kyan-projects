@@ -12,37 +12,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ConvertToText.Models;
-using ConvertToText.Database;
+using FlashCard.Models;
+using FlashCard.Database;
 
 
-namespace ConvertToText.Models
+namespace FlashCard.Models
 {
     /// <summary>
-    /// Model for table Lesson 
+    /// Model for table User 
     /// </summary>
-    public partial class LessonModel : ViewModelBase
+    public partial class UserModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public LessonModel()
+        public UserModel()
         {
             this.IsNew = true;
-            this.Lesson = new Lesson();
+            this.User = new User();
         }
 
         // Default contructor that set entity to field
-        public LessonModel(Lesson lesson)
+        public UserModel(User user)
         {
-            this.Lesson = lesson;
+            this.User = user;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Lesson Lesson { get; private set; }
+        public User User { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,81 +60,68 @@ namespace ConvertToText.Models
 
         #region Primitive Properties
 
-        public string LessonID
+        public long UserID
         {
-            get { return this.Lesson.LessonID; }
+            get { return this.User.UserID; }
             set
             {
-                if (this.Lesson.LessonID != value)
+                if (this.User.UserID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonID = value;
-                    RaisePropertyChanged(() => LessonID);
+                    this.User.UserID = value;
+                    RaisePropertyChanged(() => UserID);
                 }
             }
         }
-        public string LessonName
+        public string UserName
         {
-            get { return this.Lesson.LessonName; }
+            get { return this.User.UserName; }
             set
             {
-                if (this.Lesson.LessonName != value)
+                if (this.User.UserName != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonName = value;
-                    RaisePropertyChanged(() => LessonName);
+                    this.User.UserName = value;
+                    RaisePropertyChanged(() => UserName);
                 }
             }
         }
-        public string Description
+        public string Password
         {
-            get { return this.Lesson.Description; }
+            get { return this.User.Password; }
             set
             {
-                if (this.Lesson.Description != value)
+                if (this.User.Password != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.Description = value;
-                    RaisePropertyChanged(() => Description);
+                    this.User.Password = value;
+                    RaisePropertyChanged(() => Password);
                 }
             }
         }
-        public string CategoryID
+        public string FullName
         {
-            get { return this.Lesson.CategoryID; }
+            get { return this.User.FullName; }
             set
             {
-                if (this.Lesson.CategoryID != value)
+                if (this.User.FullName != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.CategoryID = value;
-                    RaisePropertyChanged(() => CategoryID);
+                    this.User.FullName = value;
+                    RaisePropertyChanged(() => FullName);
                 }
             }
         }
-        public string CardID
+        public Nullable<System.DateTime> LastLogin
         {
-            get { return this.Lesson.CardID; }
+            get { return this.User.LastLogin; }
             set
             {
-                if (this.Lesson.CardID != value)
+                if (this.User.LastLogin != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.CardID = value;
-                    RaisePropertyChanged(() => CardID);
-                }
-            }
-        }
-        public Nullable<bool> IsActived
-        {
-            get { return this.Lesson.IsActived; }
-            set
-            {
-                if (this.Lesson.IsActived != value)
-                {
-                    this.IsDirty = true;
-                    this.Lesson.IsActived = value;
-                    RaisePropertyChanged(() => IsActived);
+                    this.User.LastLogin = value;
+                    RaisePropertyChanged(() => LastLogin);
                 }
             }
         }
@@ -142,7 +129,7 @@ namespace ConvertToText.Models
         #endregion
 
         #region all the custom code
-        
+
 
         #endregion
     }

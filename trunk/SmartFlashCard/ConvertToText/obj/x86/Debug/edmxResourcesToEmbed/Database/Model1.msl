@@ -1,22 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="SmartFlashCardDBModelStoreContainer" CdmEntityContainer="SmartFlashCardDBEntities">
-    <EntitySetMapping Name="BackSides">
-      <EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide">
-        <MappingFragment StoreEntitySet="BackSide">
-          <ScalarProperty Name="BackSideName" ColumnName="BackSideName" />
-          <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
-          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
-          <ScalarProperty Name="Content" ColumnName="Content" />
-          <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Lessons">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson">
         <MappingFragment StoreEntitySet="Lessons">
-          <ScalarProperty Name="KindID" ColumnName="KindID" />
           <ScalarProperty Name="IsActived" ColumnName="IsActived" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
           <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="LessonName" ColumnName="LessonName" />
