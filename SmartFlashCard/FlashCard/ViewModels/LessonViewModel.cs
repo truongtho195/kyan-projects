@@ -387,14 +387,15 @@ namespace FlashCard.ViewModels
 
         private bool CanSaveExecute(object param)
         {
-            if (SelectedLesson == null)
-                return false;
+            //if (SelectedLesson == null)
+            //    return false;
             ///!!!!   return SelectedLesson.IsDirty && SelectedLesson.Errors.Count == 0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0);
-            return true;
+            return IsLessonDirty;
         }
 
         private void SaveExecute(object param)
         {
+            
             //Mapping
             SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
             SelectedLesson.LessonName = LessonName;
