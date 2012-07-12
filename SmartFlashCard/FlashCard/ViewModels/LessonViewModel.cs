@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
+using MVVMHelper.ViewModels;
 
 namespace FlashCard.ViewModels
 {
@@ -293,11 +294,11 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region CardList
-        private List<CardModel> _cardList;
+        private List<Card> _cardList;
         /// <summary>
         /// Gets or sets the CategoryList.
         /// </summary>
-        public List<CardModel> CardList
+        public List<Card> CardList
         {
             get { return _cardList; }
             set
@@ -403,14 +404,13 @@ namespace FlashCard.ViewModels
             //if (SelectedLesson == null)
             //    return false;
             ///!!!!   return SelectedLesson.IsDirty && SelectedLesson.Errors.Count == 0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0);
-            return IsLessonDirty;
+            return IsLessonDirty && SelectedLesson.Errors.Count()==0;
         }
 
         private void SaveExecute(object param)
         {
             LessonRepository lessonRepository = new LessonRepository();
             //Mapping
-            SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
             SelectedLesson.LessonName = LessonName;
             SelectedLesson.Description = Description;
             SelectedLesson.CategoryID = CategoryID;
@@ -437,6 +437,7 @@ namespace FlashCard.ViewModels
                 foreach (var item in allBackSideForDelete)
                 {
                     backSideRepository.Delete(item);
+                    backSideRepository.Commit();
                 }
 
                 foreach (var backSideModel in BackSideCollection)
@@ -446,6 +447,8 @@ namespace FlashCard.ViewModels
                     SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
                     backSideModel.EndUpdate();
                 }
+                lessonRepository.Add(SelectedLesson.Lesson);
+                lessonRepository.Commit();
             }
             SelectedLesson.EndUpdate();
             LessonCollection.Add(SelectedLesson);
@@ -815,7 +818,7 @@ namespace FlashCard.ViewModels
             if (SelectedCard == null)
                 return false;
 
-            return SelectedCard.IsDirty;
+            return SelectedCard.IsDirty && SelectedCard.Errors.Count()==0;
         }
 
         private void SaveCategoryExecute(object param)
@@ -830,7 +833,7 @@ namespace FlashCard.ViewModels
                     cardRepository.Add(SelectedCard.Card);
                     SelectedCard.EndUpdate();
                     CardCollection.Add(SelectedCard);
-                    CardList.Add(SelectedCard);
+                    CardList.Add(SelectedCard.Card);
                 }
                 else
                 {
@@ -1018,7 +1021,7 @@ namespace FlashCard.ViewModels
                         if (cardModel == SelectedCard)
                             SelectedCard = CardCollection.First();
 
-                        CardList.Remove(cardModel);
+                        CardList.Remove(cardModel.Card);
                     }
                 }
             }
@@ -1283,7 +1286,8 @@ namespace FlashCard.ViewModels
 
                 CardCollection = new ObservableCollection<CardModel>(cardRepository.GetAll().Select(x => new CardModel(x)));
 
-                CardList = CardCollection.ToList();
+                CardList = CardCollection.Select(x=>x.Card).ToList();
+                RaisePropertyChanged(() => CardList);
 
                 //if (CategoryCollection.Any())
                 //    SelectedCategory = CategoryCollection.FirstOrDefault();

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Waf.Applications;
+using System.Linq;
 using FlashCard.ViewModels;
 
 namespace FlashCard
@@ -19,6 +20,7 @@ namespace FlashCard
     /// </summary>
     public partial class LessonManageView : Window, IView
     {
+        //private readonly HashSet<ValidationError> errors = new HashSet<ValidationError>();
         public LessonManageView()
         {
             this.InitializeComponent();
@@ -35,6 +37,19 @@ namespace FlashCard
         //    var a = new LessonViewModel(this, isFromPopup).View;
         //    InitialEvent();
         //}
+
+        private void ErrorChangedHandler(object sender, ValidationErrorEventArgs e)
+        {
+            //if (e.Action == ValidationErrorEventAction.Added)
+            //{
+            //    errors.Add(e.Error);
+            //}
+            //else
+            //{
+            //    errors.Remove(e.Error);
+            //}
+           // ViewModel.IsValid = !errors.Any();
+        }
 
         #region Variables
         private readonly Lazy<LessonViewModel> viewModel;

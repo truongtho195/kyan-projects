@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FlashCard.Models;
 using FlashCard.Database;
+using System.ComponentModel;
 
 
 namespace FlashCard.Database
@@ -21,7 +22,7 @@ namespace FlashCard.Database
     /// <summary>
     /// Model for table Card 
     /// </summary>
-    public partial class CardModel : ViewModelBase
+    public partial class CardModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
 
@@ -126,6 +127,51 @@ namespace FlashCard.Database
             this.Card.CardName = CardName;
             this.Card.Remark = Remark;
         }
+
+        //Extension 
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
+                    case "CardName":
+                        if (string.IsNullOrWhiteSpace(CardName))
+                            message = "Card Name is required !";
+                        break;
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
+        #endregion
+
 
         #endregion
     }
