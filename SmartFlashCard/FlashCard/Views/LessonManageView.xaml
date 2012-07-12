@@ -679,7 +679,7 @@
                                           ItemsSource="{Binding CategoryCollection}"
                                           SelectedValue="{Binding CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           
-                                          SelectedValuePath="TypeID"
+                                          SelectedValuePath="CategoryID"
                                           DisplayMemberPath="Name"
                                           d:LayoutOverrides="Height"
                                           Width="120" />
@@ -869,7 +869,6 @@
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
                       Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.073*" />
                         <RowDefinition Height="0.927*" />
@@ -905,7 +904,7 @@
                                     Width="30" />-->
                                 <GridViewColumn Header="Card Name"
                                                 Width="auto"
-                                                DisplayMemberBinding="{Binding CardName}" />
+                                                DisplayMemberBinding="{Binding Card.CardName}" />
                                 <!--<GridViewColumn Header="Status"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding IsActived}" />-->
@@ -1033,16 +1032,6 @@
                                        Grid.Row="2"
                                        Margin="0"
                                        Visibility="Collapsed" />
-                            <ToggleButton Content="Actived"
-                                          IsChecked="{Binding SelectedCard.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          d:LayoutOverrides="Width, Height"
-                                          Grid.Row="2"
-                                          VerticalAlignment="Center"
-                                          Grid.Column="1"
-                                          HorizontalAlignment="Left"
-                                          Margin="10,0,0,0"
-                                          Visibility="Collapsed" />
-
                             <!--<DataGrid x:Name="dgBackSide"
                                   Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding SelectedLesson.BackSideCollection}"

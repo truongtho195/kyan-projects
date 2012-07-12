@@ -99,19 +99,6 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<bool> IsCorrect
-        {
-            get { return this.BackSide.IsCorrect; }
-            set
-            {
-                if (this.BackSide.IsCorrect != value)
-                {
-                    this.IsDirty = true;
-                    this.BackSide.IsCorrect = value;
-                    RaisePropertyChanged(() => IsCorrect);
-                }
-            }
-        }
         public string BackSideName
         {
             get { return this.BackSide.BackSideName; }
@@ -125,7 +112,7 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<bool> IsMain
+        public Nullable<byte> IsMain
         {
             get { return this.BackSide.IsMain; }
             set
