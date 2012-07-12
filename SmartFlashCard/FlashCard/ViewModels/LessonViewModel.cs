@@ -73,7 +73,7 @@ namespace FlashCard.ViewModels
             get { return _selectedLesson; }
             set
             {
-                if (value != null)
+                if ( value != null && !value.IsNew)
                 {
                     _selectedLesson = value;
                     CategoryID = SelectedLesson.Lesson.CategoryID;
@@ -82,7 +82,7 @@ namespace FlashCard.ViewModels
                     Description = SelectedLesson.Lesson.Description;
                     BackSideCollection = new ObservableCollection<BackSideModel>(SelectedLesson.Lesson.BackSides.ToList().Select(x => new BackSideModel(x)));
                 }
-                else if (value == null)
+                else if (value != null )
                 {
                     _selectedLesson = value;
                     CategoryID = "1";
@@ -352,7 +352,7 @@ namespace FlashCard.ViewModels
 
         private void NewExecute(object param)
         {
-            SelectedLesson = null;
+            SelectedLesson = new LessonModel();
             BackSideCollection = new ObservableCollection<BackSideModel>();
             BackSideCollection.Add(new BackSideModel() { IsMain = true });
 
@@ -396,11 +396,7 @@ namespace FlashCard.ViewModels
         private void SaveExecute(object param)
         {
             
-            //Mapping
-            SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
-            SelectedLesson.LessonName = LessonName;
-            SelectedLesson.Description = Description;
-            SelectedLesson.IsActived = true;
+            
 
 
             ///!!!!
@@ -419,15 +415,27 @@ namespace FlashCard.ViewModels
 
 
             LessonRepository lessonRepository = new LessonRepository();
+                        //Mapping
+            SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
+            SelectedLesson.LessonName = LessonName;
+            SelectedLesson.Description = Description;
+            SelectedLesson.CategoryID = CategoryID;
+            SelectedLesson.CardID = CardID;
+            SelectedLesson.IsActived = true;
+            
+
             BackSideRepository backSideRepository = new BackSideRepository();
             if (SelectedLesson.IsNew)
             {
+              
                 foreach (var backSideModel in BackSideCollection)
                 {
                     backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
                     SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
                     backSideModel.EndUpdate();
                 }
+                lessonRepository.Add(SelectedLesson.Lesson);
+                lessonRepository.Commit();
             }
             else
             {
@@ -446,9 +454,8 @@ namespace FlashCard.ViewModels
                     backSideModel.EndUpdate();
                 }
             }
-
-            lessonRepository.Add(SelectedLesson.Lesson);
-            lessonRepository.Commit();
+            
+            
 
             LessonCollection.Add(SelectedLesson);
             //reset
