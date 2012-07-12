@@ -746,6 +746,7 @@
                                       ItemsSource="{Binding BackSideCollection}"
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
+                                      SelectedItem="{Binding SelectedBackSide,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                       CanUserDeleteRows="False"
                                       Grid.Column="1"
                                       RowStyle="{StaticResource myRowCollapseStyle}"
@@ -758,8 +759,17 @@
                                                 <TextBox x:Name="tbBackSideName"
                                                          VerticalAlignment="Top"
                                                          Width="150" Height="25"
+                                                         
                                                          Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMain}" Value="1">
+                                                        <Setter Property="IsReadOnly"
+                                                                TargetName="tbBackSideName"
+                                                                Value="True" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
                                             </DataTemplate>
+                                            
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Content">
@@ -775,7 +785,8 @@
                                     <DataGridTemplateColumn Header="#">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Command="{Binding DataContext.DeleteBackSideCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                <Button x:Name="btnDeleteBackSide"
+                                                    Command="{Binding DataContext.DeleteBackSideCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                                         CommandParameter="{Binding .}"
                                                         Width="20"
                                                         Height="20"
@@ -783,6 +794,18 @@
                                                         ToolTip="Delete">
                                                     <Image Source="/Images/1336360382_Delete.png" />
                                                 </Button>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMain}" Value="1">
+                                                        <Setter Property="IsEnabled"
+                                                                Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsMain}"
+                                                                 Value="0">
+                                                        <Setter Property="IsEnabled"
+                                                                TargetName="btnDeleteBackSide"
+                                                                Value="True" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>

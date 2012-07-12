@@ -92,10 +92,10 @@ namespace FlashCard.Database
             //table.DeleteOnSubmit(_entity);
 
             //object originalItem;
-            //EntityKey key = _service.CreateEntityKey(typeof(T).Name, _entity);
-            //if (_service.TryGetObjectByKey(key, out originalItem))
+            //EntityKey key = _context.CreateEntityKey(typeof(T).Name, _entity);
+            //if (_context.TryGetObjectByKey(key, out originalItem))
             //{
-            //    _service.DeleteObject(originalItem);
+            //    _context.DeleteObject(originalItem);
             //}
 
             this.Entities.DeleteObject(_entity);

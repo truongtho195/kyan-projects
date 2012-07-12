@@ -152,7 +152,7 @@
             	<RowDefinition />
             </Grid.RowDefinitions>
             <ListView x:Name="lstCate"
-                      ItemsSource="{Binding CategoryCollection}"
+                      ItemsSource="{Binding CardCollection}"
                       Grid.Row="1"
                       HorizontalAlignment="Left"
                       Width="500" Margin="5,5,5,0">
@@ -161,14 +161,14 @@
                         <GridViewColumn Header="#"  Width="auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding CategoryName}"
-                                              IsChecked="{Binding IsChecked}" />
+                                    <CheckBox Content="{Binding Card.CardName}"
+                                              IsChecked="{Binding Checked}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Number of Lesson"
                                         Width="Auto"
-                                        DisplayMemberBinding="{Binding LessonNum}" />
+                                        DisplayMemberBinding="{Binding Card.Lessons.Count}" />
                     </GridView>
                 </ListView.View>
             </ListView>

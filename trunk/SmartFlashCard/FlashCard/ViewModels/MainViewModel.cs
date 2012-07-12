@@ -32,22 +32,7 @@ namespace FlashCard.ViewModels
             Initialize();
         }
 
-        public void ExcuteMainForm()
-        {
-            IsPopupStarted = true;
-            if (App.SetupModel.Setup.IsEnableSlideShow==true)
-            {
-                InitialTimer();
-                _timerPopup.Start();
-            }
-            else
-            {
-                
-                SelectedLesson = LessonCollection.First();
-                SelectedLesson.IsBackSide = false;
-                ShowPopupForm();
-            }
-        }
+      
 
         #endregion
 
@@ -123,15 +108,6 @@ namespace FlashCard.ViewModels
         public SetupModel SetupModel
         {
             get { return App.SetupModel; }
-            //get { return _setupModel; }
-            //set
-            //{
-            //    if (_setupModel != value)
-            //    {
-            //        _setupModel = value;
-            //        RaisePropertyChanged(() => SetupModel);
-            //    }
-            //}
         }
         #endregion
 
@@ -965,8 +941,22 @@ namespace FlashCard.ViewModels
         {
             log.Info("|| {*} === Initialize MainViewModel ===");
             _listenWord = new MediaPlayer();
-            test.Interval = new TimeSpan(0, 0, 1);
-            test.Tick += new EventHandler(test_Tick);
+        }
+
+        public void ExcuteMainForm()
+        {
+            IsPopupStarted = true;
+            if (App.SetupModel.Setup.IsEnableSlideShow == true)
+            {
+                InitialTimer();
+                _timerPopup.Start();
+            }
+            else
+            {
+                SelectedLesson = LessonCollection.First();
+                SelectedLesson.IsBackSide = false;
+                ShowPopupForm();
+            }
         }
 
         public void GetLesson(List<LessonModel> listLesson)
