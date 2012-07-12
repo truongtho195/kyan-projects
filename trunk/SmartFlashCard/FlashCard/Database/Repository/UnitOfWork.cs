@@ -5,6 +5,8 @@ using System.Text;
 using System.Data;
 using System.Linq.Expressions;
 using System.Data.Objects;
+using System.Data.SqlClient;
+using System.Data.EntityClient;
 
 namespace FlashCard.Database
 {
@@ -33,7 +35,43 @@ namespace FlashCard.Database
             //}
 
             if (_context == null)
-                _context = new SmartFlashCardDBEntities();
+                _context = new SmartFlashCardDBEntities(GetConnectionString());
+        }
+
+        private string GetConnectionString()
+        {
+            string connectionString =  System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            // Specify the provider name, server and database.
+            string providerName = "System.Data.SQLite";
+            string serverName = connectionString;
+            string databaseName = "\\SmartFlashCardDB.s3db";
+
+            // Initialize the connection string builder for the
+            // underlying provider.
+            SqlConnectionStringBuilder sqlBuilder =
+                new SqlConnectionStringBuilder();
+
+            // Set the properties for the data source.
+            sqlBuilder.DataSource = serverName+databaseName;
+            //sqlBuilder.InitialCatalog = databaseName;
+            //sqlBuilder.IntegratedSecurity = true;
+
+            // Build the SqlConnection connection string.
+            string providerString = sqlBuilder.ToString();
+
+            // Initialize the EntityConnectionStringBuilder.
+            EntityConnectionStringBuilder entityBuilder =
+                new EntityConnectionStringBuilder();
+
+            //Set the provider name.
+            entityBuilder.Provider = providerName;
+
+            // Set the provider-specific connection string.
+            entityBuilder.ProviderConnectionString = providerString;
+
+            // Set the Metadata location.
+            entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
+           return entityBuilder.ToString();
         }
 
         //Add a new entity to the model

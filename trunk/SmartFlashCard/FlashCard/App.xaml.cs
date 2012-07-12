@@ -6,6 +6,7 @@ using FlashCard.DataAccess;
 using System.Linq;
 using FlashCard.Views;
 using FlashCard.Database;
+using FlashCard.Database.Repository;
 
 
 namespace FlashCard
@@ -36,9 +37,8 @@ namespace FlashCard
             var currentUserName = Environment.UserName;
 
             log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
-            SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
-
-            var setup = flashCardEntity.Setups.ToList();
+            SetupRepository setupRepository = new SetupRepository();
+            var setup = setupRepository.GetAll();
             if (setup.Count == 0)
                 SetupModel = new SetupModel();
             else
