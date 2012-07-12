@@ -42,7 +42,6 @@ namespace FlashCard.Models
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
 
-            //this.RaisePropertyChanged(propertyName);
             RaisePropertyChangedCompleted(propertyName);
         }
 

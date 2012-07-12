@@ -196,7 +196,10 @@ namespace FlashCard.Database
         /// </summary>
         public TimeSpan TimeOut
         {
-            get { return _timeOut; }
+            get {
+                var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                this._timeOut = new TimeSpan(0, 0, timeOutSecond);
+                return _timeOut; }
             set
             {
                 if (_timeOut != value)

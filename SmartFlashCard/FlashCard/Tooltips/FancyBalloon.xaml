@@ -17,7 +17,7 @@
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
-
+        <converter:ListBoxItemToLineNumberConverter x:Key="ListBoxConverter" />
         <!--#End Region-->
         <!--#region Storyboard-->
         <Storyboard x:Key="FadeIn">
@@ -129,6 +129,73 @@
                 </AdornerDecorator>
             </Border>
         </ControlTemplate>
+        <ItemsPanelTemplate x:Key="ListBoxItemsPanelTemplate">
+            <VirtualizingStackPanel IsItemsHost="True"
+                                    Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        <Style x:Key="ListBoxItemStyleVertical"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <Grid Height="15.96"
+                                  Width="61.007">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <Ellipse Fill="#FFF4F4F5"
+                                         Stroke="Black"
+                                         VerticalAlignment="Stretch">
+
+                                </Ellipse>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="Selector.IsSelectionActive"
+                                               Value="false" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!--<attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"
@@ -386,7 +453,8 @@
                   Grid.Row="1">
                 <Grid x:Name="FrontSideWrapper"
                       RenderTransformOrigin="0.5,0.5"
-                      VerticalAlignment="Center" Margin="5,0">
+                      VerticalAlignment="Center"
+                      Margin="5,0">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -409,58 +477,42 @@
                             <TextBlock TextWrapping="Wrap"
                                        x:Name="tbLessonName"
                                        VerticalAlignment="Center"
-                                       Text="{Binding SelectedLesson.LessonName}"
+                                       Text="{Binding SelectedLesson.Lesson.LessonName,Mode=OneWay}"
                                        Foreground="White"
                                        HorizontalAlignment="Center"
                                        FontSize="21.333"
                                        FontWeight="Bold" />
-
-                            <richTextBoxControl:RichTextBoxToolbar x:Name="tbWords"
-                                                                   Document="{Binding SelectedLesson.Description, Mode=OneWay}"
-                                                                   VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                                                   Background="Transparent"
-                                                                   BorderBrush="Transparent"
-                                                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   IsReadOnly="True"
-                                                                   Foreground="White"
-                                                                   FontSize="16"
-                                                                   MinHeight="25"
-                                                                   MinWidth="290" />
-
-                            <!--<FlowDocumentReader  x:Name="tbWords"
-                                                 Background="Transparent"
-                                                 BorderBrush="Transparent"
-                                                 HorizontalAlignment="Center"
-                                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="White"
-                                                 Margin="5"
-                                                 Grid.Row="1"
-                                                 MinWidth="290"
-                                                 MinHeight="50" />-->
-
-                            <!--Template="{StaticResource FlowDocumentPageViewerTemplate}"-->
-
+                            <TextBlock x:Name="tbWords"
+                                       Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}"
+                                       VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                       Background="Transparent"
+                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       FontSize="16"
+                                       MinHeight="25"
+                                       MinWidth="290" />
                         </StackPanel>
-
                     </Grid>
                     <Grid x:Name="grdListChoice"
                           Visibility="{Binding SelectedLesson.TypeModel.TypeOf, ConverterParameter=2, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Grid.Row="1"
-                          RenderTransformOrigin="0.5,0.5">
-                        <ListBox Margin="5,0"
+                          RenderTransformOrigin="0.5,0.5"
+                          d:IsHidden="True">
+                        <!--This is version with question-->
+                        <!--<ListBox Margin="5,0"
                                  Background="Transparent"
                                  ItemsSource="{Binding SelectedLesson.BackSideCollection}"
-                                 ItemTemplate="{DynamicResource DataTemplate1}" />
+                                 ItemTemplate="{DynamicResource DataTemplate1}" />-->
                     </Grid>
                 </Grid>
                 <Grid x:Name="BackSideWrapper"
                       MinHeight="100"
                       RenderTransformOrigin="0.5,0.5"
                       Margin="0"
-                      VerticalAlignment="Center" Visibility="Hidden">
+                      VerticalAlignment="Center"
+                      Visibility="Collapsed">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -472,39 +524,76 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <richTextBoxControl:RichTextBoxToolbar  x:Name="tblWordBackSide"
-                                                            Background="Transparent"
-                                                            BorderBrush="Transparent"
-                                                            HorizontalAlignment="Center"
-                                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                            VerticalAlignment="Center"
-                                                            VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                                            Foreground="White"
-                                                            Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
-                                                            Grid.Row="1"
-                                                            MinWidth="290"
-                                                            MinHeight="50" />
-                    <!--<FlowDocumentReader  x:Name="tblWordBackSide"
-                                         Document="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Background="Transparent"
-                                         BorderBrush="Transparent"
-                                         HorizontalAlignment="Stretch"
-                                         VerticalAlignment="Stretch"
-                                         Foreground="White"
-                                         VirtualizingStackPanel.IsVirtualizing="True"
-                                         Margin="5"
-                                         Grid.Row="1"
-                                         MinWidth="290"
-                                         IsFindEnabled="False"
-                                         IsPrintEnabled="False"
-                                         IsTwoPageViewEnabled="False"
-                                         ViewingMode="Page"
-                                         MinHeight="50" />-->
-                    <!--Template="{StaticResource FlowDocumentPageViewerTemplate}"
-                                                                 
-                    -->
-
-
+                    <TextBlock  x:Name="tblWordBackSide"
+                                Background="Transparent"
+                                HorizontalAlignment="Center"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                VerticalAlignment="Center"
+                                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                Foreground="White"
+                                Text="{Binding SelectedLesson.BackSideModel.BackSideDetail, Mode=OneTime, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="1"
+                                MinWidth="290"
+                                MinHeight="50" />
+                    <StackPanel x:Name="stOtherBackSide">
+                        <TextBlock TextWrapping="Wrap"
+                                   x:Name="tbBackSideName"
+                                   Text="{Binding SelectedLesson.LessonName}"
+                                   Foreground="White"
+                                   HorizontalAlignment="Left"
+                                   FontSize="21.333"
+                                   FontWeight="Bold" />
+                        <TextBlock x:Name="tbContent"
+                                   Background="Transparent"
+                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontSize="16"
+                                   MinHeight="25"
+                                   MinWidth="290" />
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding SelectedLesson.Lesson.BackSides}"
+                             HorizontalAlignment="Right"
+                             ItemsPanel="{DynamicResource ListBoxItemsPanelTemplate}"
+                             VerticalAlignment="Bottom"
+                             Background="{x:Null}">
+                        <ListBox.Style>
+                            
+                            <Style TargetType="{x:Type ListBox}">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                                <Style.Triggers >
+                                    <DataTrigger Binding="{Binding SelectedLesson.Lesson.BackSides.Count}"
+                                                 Value="1">
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.Style>
+                        <!--ItemContainerStyle="{DynamicResource ListBoxItemStyleVertical}"-->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Ellipse VerticalAlignment="Stretch"
+                                             Width="20"
+                                             Height="20">
+                                        <Ellipse.Fill>
+                                            <RadialGradientBrush GradientOrigin="0.381,0.323">
+                                                <GradientStop Color="#FF3B3B3B"
+                                                              Offset="1" />
+                                                <GradientStop Color="#FFB8B8B8" />
+                                            </RadialGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock Text="{Binding Converter={StaticResource ListBoxConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}"
+                                               Foreground="White"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
                 </Grid>
             </Grid>

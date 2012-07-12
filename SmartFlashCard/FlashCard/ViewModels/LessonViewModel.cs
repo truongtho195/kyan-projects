@@ -202,6 +202,27 @@ namespace FlashCard.ViewModels
 
         #endregion
 
+        #region SelectedBackSide
+
+        private BackSideModel _selectedBackSide;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public BackSideModel SelectedBackSide
+        {
+            get { return _selectedBackSide; }
+            set
+            {
+                if (_selectedBackSide != value)
+                {
+                    _selectedBackSide = value;
+                    RaisePropertyChanged(() => SelectedBackSide);
+                }
+            }
+        }
+
+        #endregion
+
         #region"  LessonCollection"
         private ObservableCollection<LessonModel> _lessonCollection;
         /// <summary>
@@ -368,18 +389,7 @@ namespace FlashCard.ViewModels
         {
             SelectedLesson = new LessonModel();
             BackSideCollection = new ObservableCollection<BackSideModel>();
-            BackSideCollection.Add(new BackSideModel() { IsMain = 1 });
-
-            //!!!!  SelectedLesson.TypeID = LessonTypeCollection.First().TypeID;
-            ///!!!!  SelectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>();
-            //SelectedLesson.Lesson.BackSides = new BackSideModel();
-            //SelectedLesson.BackSideModel.IsCorrect = false;
-            ///!!!! SelectedLesson.CategoryModel = CategoryCollection.First();
-            ///!!!!  SelectedLesson.TypeModel = LessonTypeCollection.First();
-            ///!!!! SelectedLesson.IsDirty = false;
-            ///!!!! SelectedLesson.IsNew = true;
-            ///!!!!   SelectedLesson.IsDelete = false;
-            ///!!!!  SelectedLesson.IsDirtying = true;
+            BackSideCollection.Add(new BackSideModel() { BackSideName="Main Back Side", IsMain = 1 });
         }
         #endregion
 
@@ -404,7 +414,7 @@ namespace FlashCard.ViewModels
             //if (SelectedLesson == null)
             //    return false;
             ///!!!!   return SelectedLesson.IsDirty && SelectedLesson.Errors.Count == 0 || (SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0);
-            return IsLessonDirty && SelectedLesson.Errors.Count()==0;
+            return IsLessonDirty && SelectedLesson.Errors.Count() == 0;
         }
 
         private void SaveExecute(object param)
@@ -432,22 +442,36 @@ namespace FlashCard.ViewModels
             }
             else
             {
-                //Delete All Existed in Lesson 
-                var allBackSideForDelete = backSideRepository.GetQuery(x => x.LessonID.Equals(SelectedLesson.LessonID));
-                foreach (var item in allBackSideForDelete)
-                {
-                    backSideRepository.Delete(item);
-                    backSideRepository.Commit();
-                }
+                ////Delete All Existed in Lesson 
+                //var allBackSideForDelete = backSideRepository.GetQuery(x => x.LessonID.Equals(SelectedLesson.LessonID));
+                //foreach (var item in allBackSideForDelete)
+                //{
+                //    backSideRepository.Delete(item);
+                //    backSideRepository.Commit();
+                //}
 
-                foreach (var backSideModel in BackSideCollection)
+                foreach (var backSideModel in BackSideCollection.ToList())
                 {
-                    backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                    if (backSideModel.Deleted)
+                    {
+                        var deleteBackSide = backSideRepository.GetSingle(x => x.BackSideID.Equals(backSideModel.BackSide.BackSideID));
+                        backSideRepository.Delete(deleteBackSide);
+                        backSideRepository.Commit();
+                        BackSideCollection.Remove(backSideModel);
+                        var chk = SelectedLesson.Lesson.BackSides.Remove(backSideModel.BackSide);
+                    }
+                    else if (backSideModel.IsNew)
+                    {
+                        backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                        backSideModel.LessonID = SelectedLesson.LessonID;
+                        SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
+                        backSideModel.EndUpdate();
+                    }
 
-                    SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
-                    backSideModel.EndUpdate();
+
+
                 }
-                lessonRepository.Add(SelectedLesson.Lesson);
+                lessonRepository.Update(SelectedLesson.Lesson);
                 lessonRepository.Commit();
             }
             SelectedLesson.EndUpdate();
@@ -589,8 +613,6 @@ namespace FlashCard.ViewModels
 
         #region "  AddBackSideCommand"
         private ICommand _addBackSideCommand;
-        //Relay Command In viewModel
-        //Gets or sets the property value
         public ICommand AddBackSideCommand
         {
             get
@@ -638,11 +660,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnDeleteBackSideCanExecute(object param)
         {
-            if (param == null)
+            if (SelectedBackSide == null)
                 return false;
-            var backSide = param as BackSideModel;
-            //return backSide.IsMain != false;
-            return backSide.IsMain == 0;
+            return SelectedBackSide.IsMain == 0;
         }
 
         /// <summary>
@@ -651,13 +671,14 @@ namespace FlashCard.ViewModels
         private void OnDeleteBackSideExecute(object param)
         {
             var backSideModel = param as BackSideModel;
-            if (backSideModel.IsNew)
+            if (SelectedBackSide.IsNew)
             {
-                BackSideCollection.Remove(backSideModel);
+                BackSideCollection.Remove(SelectedBackSide);
             }
             else
             {
-                backSideModel.Deleted = true;
+                SelectedBackSide.Deleted = true;
+                RaisePropertyChanged(() => SelectedBackSide);
             }
         }
         #endregion
@@ -793,7 +814,7 @@ namespace FlashCard.ViewModels
         private void OnNewCardExecute(object param)
         {
             SelectedCard = new CardModel();
-            
+
         }
         #endregion
 
@@ -818,7 +839,7 @@ namespace FlashCard.ViewModels
             if (SelectedCard == null)
                 return false;
 
-            return SelectedCard.IsDirty && SelectedCard.Errors.Count()==0;
+            return SelectedCard.IsDirty && SelectedCard.Errors.Count() == 0;
         }
 
         private void SaveCategoryExecute(object param)
@@ -1060,14 +1081,13 @@ namespace FlashCard.ViewModels
                     {
                         CardCollection.Remove(SelectedCard);
                     }
-                    else if (SelectedCard != null && SelectedCard.IsDirty)
-                    {
-                        SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
-                        CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                        var cardModel = flashCardEntity.Cards.Where(x => x.CardID == SelectedCard.CardID).SingleOrDefault();
-                        //!!!! reset data
-                        ///SelectedCategory.Category = cateModel;
-                    }
+                    //else if (SelectedCard != null && SelectedCard.IsDirty)
+                    //{
+                    //    //SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                    //    //var cardModel = flashCardEntity.Cards.Where(x => x.CardID == SelectedCard.CardID).SingleOrDefault();
+                    //    //!!!! reset data
+                    //    ///SelectedCategory.Category = cateModel;
+                    //}
                 }
                 else
                 {
@@ -1075,19 +1095,16 @@ namespace FlashCard.ViewModels
                     {
                         LessonCollection.Remove(SelectedLesson);
                     }
-                    else if (SelectedLesson != null && SelectedLesson.IsDirty)
-                    {
-                        LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                        ///!!!! var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
-
-                        var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
-                        if (lessonIndex > -1)
-                        {
-                            LessonCollection.RemoveAt(lessonIndex);
-                            ///!!!!  LessonCollection.Insert(lessonIndex, lessonModel);
-                        }
-                        RaisePropertyChanged(() => LessonCollection);
-                    }
+                    //else if (SelectedLesson != null && SelectedLesson.IsDirty)
+                    //{
+                    //    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
+                    //    if (lessonIndex > -1)
+                    //    {
+                    //        LessonCollection.RemoveAt(lessonIndex);
+                    //        ///!!!!  LessonCollection.Insert(lessonIndex, lessonModel);
+                    //    }
+                    //    RaisePropertyChanged(() => LessonCollection);
+                    //}
                 }
 
 
@@ -1096,8 +1113,8 @@ namespace FlashCard.ViewModels
                     _studyConfigView = new StudyConfigView();
                     var studyConfigViewModel = _studyConfigView.GetViewModel<StudyConfigViewModel>();
                     studyConfigViewModel.LessonCollection = this.LessonCollection.ToList();
-                    ///!!!! var cateWithHasLesson = this.CategoryCollection.Where(x => x.LessonNum > 0);
-                    ///!!!!  studyConfigViewModel.CategoryCollection = cateWithHasLesson;
+                     var cateWithHasLesson = this.CardCollection.Where(x => x.Card.Lessons.Count > 0).ToList();
+                     studyConfigViewModel.CardCollection = cateWithHasLesson;
                     ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
                     studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
                     ViewCore.grdControl.Children.Add(_studyConfigView);
@@ -1145,10 +1162,11 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region"  ShortcutKeyNewItemCommand"
+        
+        private ICommand _shortcutKeyNewItemCommand;
         /// <summary>
         /// Gets the ShortcutKeyNewItem Command.
         /// <summary>
-        private ICommand _shortcutKeyNewItemCommand;
         public ICommand ShortcutKeyNewItemCommand
         {
             get
@@ -1203,11 +1221,10 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region"  ShortCutKeySaveItemCommand"
-
+        private ICommand _shortcutKeySaveItemCommand;
         /// <summary>
         /// Gets the ShortCutKeySaveItem Command.
         /// <summary>
-        private ICommand _shortcutKeySaveItemCommand;
         public ICommand ShortcutKeySaveItemCommand
         {
             get
@@ -1286,7 +1303,7 @@ namespace FlashCard.ViewModels
 
                 CardCollection = new ObservableCollection<CardModel>(cardRepository.GetAll().Select(x => new CardModel(x)));
 
-                CardList = CardCollection.Select(x=>x.Card).ToList();
+                CardList = CardCollection.Select(x => x.Card).ToList();
                 RaisePropertyChanged(() => CardList);
 
                 //if (CategoryCollection.Any())

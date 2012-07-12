@@ -10,6 +10,7 @@ using MVVMHelper.Commands;
 using System;
 using log4net;
 using FlashCard.Database;
+using FlashCard.Database.Repository;
 
 namespace FlashCard.ViewModels
 {
@@ -50,19 +51,19 @@ namespace FlashCard.ViewModels
 
 
         #region "  CategoryCollection"
-        private List<CategoryModel> _categoryCollection;
+        private List<CardModel> _cardCollection;
         /// <summary>
         /// Gets or sets the CategoryCollection.
         /// </summary>
-        public List<CategoryModel> CategoryCollection
+        public List<CardModel> CardCollection
         {
-            get { return _categoryCollection; }
+            get { return _cardCollection; }
             set
             {
-                if (_categoryCollection != value)
+                if (_cardCollection != value)
                 {
-                    _categoryCollection = value;
-                    RaisePropertyChanged(() => CategoryCollection);
+                    _cardCollection = value;
+                    RaisePropertyChanged(() => CardCollection);
                 }
             }
         }
@@ -130,34 +131,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        //private List<CategoryModel> _categoryList;
-        ///// <summary>
-        ///// Gets or sets the property value.
-        ///// </summary>
-        //public List<CategoryModel> CategoryList
-        //{
-        //    get { return _categoryList; }
-        //    set
-        //    {
-        //        if (_categoryList != value)
-        //        {
-        //            _categoryList = value;
-        //            RaisePropertyChanged(() => CategoryList);
-        //            SetCheckedCategoryCollection();
-        //        }
-        //    }
-        //}
-
-        //private void SetCheckedCategoryCollection()
-        //{
-        //    if (CategoryList != null)
-        //        foreach (var item in CategoryList)
-        //        {
-        //            var cate = CategoryCollection.Where(x => x.CategoryID == item.CategoryID).SingleOrDefault();
-        //            cate.IsChecked = true;
-        //        }
-        //}
-
         #endregion
 
         #region Commands
@@ -182,11 +155,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            ///!!!!
-            //if (!SelectedSetupModel.Errors.Any() && CategoryCollection.Any(x => x.IsChecked))
-            //    return true;
-            //return false;
-            return true;
+            if (!SelectedSetupModel.Errors.Any() && CardCollection.Any(x => x.Checked))
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -198,10 +169,10 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                foreach (var item in CategoryCollection.Where(x => x.Checked))
+                foreach (var item in CardCollection.Where(x => x.Checked))
                 {
                     //!!!! Not sure LessonCollection.Where(x => x.CategoryID == item.CategoryID);
-                    var lesson = LessonCollection.Where(x => x.CategoryID == item.CategoryID);
+                    var lesson = LessonCollection.Where(x => x.CardID == item.CardID);
                     //Check condition if user set Lesson user Know => remove this item lesson
                     if (lesson != null && lesson.Count() > 0)
                     {
@@ -215,16 +186,18 @@ namespace FlashCard.ViewModels
 
                 //Handle Setup
                 App.SetupModel = SelectedSetupModel;
-               
+
+                SetupRepository setupRepository = new SetupRepository();
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 if (App.SetupModel.IsNew)
-                    flashCardEntity.Setups.AddObject(App.SetupModel.Setup);
+                    setupRepository.Add(App.SetupModel.Setup);
                 else if (App.SetupModel.IsDirty)
                 {
-                    var setup= flashCardEntity.Setups.Where(x => x.SetupID == App.SetupModel.SetupID);
-                    if (setup != null)
-                    { }
+                    setupRepository.Update(App.SetupModel.Setup);
+                    setupRepository.Commit();
+                   
                 }
+                App.SetupModel.EndUpdate();
             }
             catch (Exception ex)
             {
