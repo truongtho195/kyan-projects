@@ -125,19 +125,6 @@ namespace FlashCard.Database
                 }
             }
         }
-        public Nullable<bool> IsActived
-        {
-            get { return this.Lesson.IsActived; }
-            set
-            {
-                if (this.Lesson.IsActived != value)
-                {
-                    this.IsDirty = true;
-                    this.Lesson.IsActived = value;
-                    RaisePropertyChanged(() => IsActived);
-                }
-            }
-        }
 
         #endregion
 
@@ -145,10 +132,12 @@ namespace FlashCard.Database
 
         #region Properties
 
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
+        
         private bool _isBackSide;
+        /// <summary>
+        /// This is Extend Properties
+        ///<para> Gets or sets the property value.</para>
+        /// </summary>
         public bool IsBackSide
         {
             get { return _isBackSide; }
@@ -158,38 +147,17 @@ namespace FlashCard.Database
                 {
                     _isBackSide = value;
                     RaisePropertyChanged(() => IsBackSide);
-                    RaisePropertyChanged(() => SideName);
+                    
                 }
             }
         }
 
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        private string _sideName;
-        public string SideName
-        {
-            get
-            {
-                if (!IsBackSide)
-                    _sideName = "Front Side";
-                else
-                    _sideName = "Back Side";
-                return _sideName;
-            }
-            set
-            {
-                if (_sideName != value)
-                {
-                    _sideName = value;
-                    RaisePropertyChanged(() => SideName);
-                }
-            }
-        }
+        
 
         private BackSideModel _backSideModel;
         /// <summary>
-        /// Gets or sets the property value.
+        /// This is Extend Properties
+        ///<para> Gets or sets the property value.</para>
         /// </summary>
         public BackSideModel BackSideModel
         {
@@ -204,60 +172,6 @@ namespace FlashCard.Database
             }
         }
 
-        private bool _isEditing;
-        /// <summary>
-        /// Gets or sets the property value.
-        /// </summary>
-        public bool IsEditing
-        {
-            get { return _isEditing; }
-            set
-            {
-                if (_isEditing != value)
-                {
-                    _isEditing = value;
-                    RaisePropertyChanged(() => IsEditing);
-                }
-            }
-        }
-
-        #region IsNewType
-        private bool _isNewType;
-        /// <summary>
-        /// Gets or sets the IsNewType.
-        /// </summary>
-        public bool IsNewType
-        {
-            get { return _isNewType; }
-            set
-            {
-                if (_isNewType != value)
-                {
-                    _isNewType = value;
-                    RaisePropertyChanged(() => IsNewType);
-                }
-            }
-        }
-        #endregion
-
-        #region IsNewCate
-        private bool _isNewCate;
-        /// <summary>
-        /// Gets or sets the IsNewCate.
-        /// </summary>
-        public bool IsNewCate
-        {
-            get { return _isNewCate; }
-            set
-            {
-                if (_isNewCate != value)
-                {
-                    _isNewCate = value;
-                    RaisePropertyChanged(() => IsNewCate);
-                }
-            }
-        }
-        #endregion
 
         #endregion
         #endregion

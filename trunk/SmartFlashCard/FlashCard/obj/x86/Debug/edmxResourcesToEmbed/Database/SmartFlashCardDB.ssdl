@@ -13,11 +13,11 @@
       <End Role="BackSides" EntitySet="BackSides" />
     </AssociationSet>
     <AssociationSet Name="FK_Lessons_0" Association="SmartFlashCardDBModel.Store.FK_Lessons_0">
-      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Cards" EntitySet="Cards" />
       <End Role="Lessons" EntitySet="Lessons" />
     </AssociationSet>
     <AssociationSet Name="FK_Lessons_1" Association="SmartFlashCardDBModel.Store.FK_Lessons_1">
-      <End Role="Cards" EntitySet="Cards" />
+      <End Role="Categories" EntitySet="Categories" />
       <End Role="Lessons" EntitySet="Lessons" />
     </AssociationSet>
   </EntityContainer>
@@ -28,9 +28,8 @@
     <Property Name="BackSideID" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="LessonID" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Content" Type="nvarchar" MaxLength="200" />
-    <Property Name="IsCorrect" Type="bit" />
     <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
-    <Property Name="IsMain" Type="bit" />
+    <Property Name="IsMain" Type="tinyint" />
   </EntityType>
   <EntityType Name="Cards">
     <Key>
@@ -57,7 +56,6 @@
     <Property Name="Description" Type="nvarchar" MaxLength="200" />
     <Property Name="CategoryID" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="CardID" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="IsActived" Type="bit" />
   </EntityType>
   <EntityType Name="Setups">
     <Key>
@@ -104,18 +102,6 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Lessons_0">
-    <End Role="Categories" Type="SmartFlashCardDBModel.Store.Categories" Multiplicity="1" />
-    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Categories">
-        <PropertyRef Name="CategoryID" />
-      </Principal>
-      <Dependent Role="Lessons">
-        <PropertyRef Name="CategoryID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Lessons_1">
     <End Role="Cards" Type="SmartFlashCardDBModel.Store.Cards" Multiplicity="1" />
     <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
     <ReferentialConstraint>
@@ -124,6 +110,18 @@
       </Principal>
       <Dependent Role="Lessons">
         <PropertyRef Name="CardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lessons_1">
+    <End Role="Categories" Type="SmartFlashCardDBModel.Store.Categories" Multiplicity="1" />
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Lessons">
+        <PropertyRef Name="CategoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

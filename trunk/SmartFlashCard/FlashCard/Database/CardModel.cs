@@ -48,53 +48,70 @@ namespace FlashCard.Database
         public bool IsDirty { get; private set; }
         public bool Deleted { get; set; }
         public bool Checked { get; set; }
-        
+
         public void EndUpdate()
         {
             IsNew = false;
             IsDirty = false;
         }
-        
+
 
         #endregion
 
         #region Primitive Properties
 
+
+        private string _cardID = string.Empty;
         public string CardID
         {
-            get { return this.Card.CardID; }
+            get
+            {
+                return _cardID;
+            }
+            //get { return this.Card.CardID; }
             set
             {
-                if (this.Card.CardID != value)
+                if (_cardID != value)
                 {
                     this.IsDirty = true;
-                    this.Card.CardID = value;
+                    //this.Card.CardID = value;
+                    _cardID = value;
                     RaisePropertyChanged(() => CardID);
                 }
             }
         }
+        private string _cardName = string.Empty;
+
         public string CardName
         {
-            get { return this.Card.CardName; }
+            get {
+             
+                return _cardName; }
+            //get { return this.Card.CardName; }
             set
             {
-                if (this.Card.CardName != value)
+                if (_cardName != value)
                 {
                     this.IsDirty = true;
-                    this.Card.CardName = value;
+                    _cardName = value;
+                    //this.Card.CardName = value;
                     RaisePropertyChanged(() => CardName);
                 }
             }
         }
+
+        private string _remark = string.Empty;
         public string Remark
         {
-            get { return this.Card.Remark; }
+            get { return _remark; }
+            //get { return this.Card.Remark; }
             set
             {
-                if (this.Card.Remark != value)
+                if (_remark != value)
                 {
                     this.IsDirty = true;
-                    this.Card.Remark = value;
+                    //this.Card.Remark = value;
+                    _remark = value;
                     RaisePropertyChanged(() => Remark);
                 }
             }
@@ -103,7 +120,12 @@ namespace FlashCard.Database
         #endregion
 
         #region all the custom code
-
+        public void ToEntity()
+        {
+            this.Card.CardID = CardID;
+            this.Card.CardName = CardName;
+            this.Card.Remark = Remark;
+        }
 
         #endregion
     }
