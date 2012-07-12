@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FlashCard.Models;
 using FlashCard.Database;
+using System.ComponentModel;
 
 
 namespace FlashCard.Database
@@ -21,7 +22,7 @@ namespace FlashCard.Database
     /// <summary>
     /// Model for table BackSide 
     /// </summary>
-    public partial class BackSideModel : ViewModelBase
+    public partial class BackSideModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
 
@@ -129,7 +130,52 @@ namespace FlashCard.Database
         #endregion
 
         #region all the custom code
-
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
+                    case "BackSideName":
+                        if (string.IsNullOrWhiteSpace(this.BackSideName))
+                            message = "Back side name is required!";
+                        break;
+                    case "Content":
+                        if (string.IsNullOrWhiteSpace(this.Content))
+                            message = "Content is require";
+                        break;
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
+        #endregion
 
         #endregion
     }

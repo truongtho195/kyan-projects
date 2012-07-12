@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FlashCard.Models;
 using FlashCard.Database;
+using System.ComponentModel;
 
 
 namespace FlashCard.Database
@@ -21,7 +22,7 @@ namespace FlashCard.Database
     /// <summary>
     /// Model for table Lesson 
     /// </summary>
-    public partial class LessonModel : ViewModelBase
+    public partial class LessonModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
 
@@ -48,13 +49,13 @@ namespace FlashCard.Database
         public bool IsDirty { get; private set; }
         public bool Deleted { get; set; }
         public bool Checked { get; set; }
-        
+
         public void EndUpdate()
         {
             IsNew = false;
             IsDirty = false;
         }
-        
+
 
         #endregion
 
@@ -132,7 +133,7 @@ namespace FlashCard.Database
 
         #region Properties
 
-        
+
         private bool _isBackSide;
         /// <summary>
         /// This is Extend Properties
@@ -147,12 +148,12 @@ namespace FlashCard.Database
                 {
                     _isBackSide = value;
                     RaisePropertyChanged(() => IsBackSide);
-                    
+
                 }
             }
         }
 
-        
+
 
         private BackSideModel _backSideModel;
         /// <summary>
@@ -173,6 +174,56 @@ namespace FlashCard.Database
         }
 
 
+        #endregion
+
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
+                    case "LessonName":
+                        if (string.IsNullOrWhiteSpace(LessonName))
+                            message = "Lesson Name is required!";
+                        break;
+                    case "Description":
+                        if (string.IsNullOrWhiteSpace(Description))
+                            message = "Description is required!";
+
+
+                        break;
+
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
         #endregion
         #endregion
     }

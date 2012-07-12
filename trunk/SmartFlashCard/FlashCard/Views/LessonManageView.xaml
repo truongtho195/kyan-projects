@@ -542,7 +542,6 @@
                             Margin="0,0,10,0"
                             Width="97"
                             Height="20" />
-
                 </Grid>
                 <Grid x:Name="grdLesson"
                       Grid.Row="1"
@@ -725,7 +724,7 @@
                                        Margin="0,6,0,0"
                                        d:LayoutOverrides="VerticalAlignment" />
                             <TextBox x:Name="txtDescription"
-                                     Text="{Binding Description, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                      Grid.Column="1"
                                      Margin="10,8"
                                      Grid.Row="4"
@@ -759,7 +758,7 @@
                                                 <TextBox x:Name="tbBackSideName"
                                                          VerticalAlignment="Top"
                                                          Width="150" Height="25"
-                                                         Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                         Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -768,7 +767,7 @@
                                             <DataTemplate>
                                                 <TextBox x:Name="tbContent"
                                                          Height="60" HorizontalAlignment="Stretch" MinWidth="500"
-                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" />
+                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
@@ -789,19 +788,6 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <!--<richTextBoxControl:RichTextBoxToolbar x:Name="txtBackSide"
-                                                                   Document="{Binding SelectedLesson.BackSide.BackSideDetail, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                                   Visibility="{Binding SelectedItem.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, ElementName=cmbType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   Grid.Column="1"
-                                                                   BorderBrush="#FF7F9DB9"
-                                                                   BorderThickness="1"
-                                                                   Grid.Row="5"
-                                                                   Margin="10,8,8,8"
-                                                                   HorizontalAlignment="Stretch"
-                                                                   VerticalAlignment="Stretch"
-                                                                   Background="#33A5A5A5"
-                                                                   d:IsHidden="True" />-->
-
                             <Button x:Name="btnAddBackSide"
                                     Command="{Binding AddBackSideCommand}"
                                     Content="Add Back Side"

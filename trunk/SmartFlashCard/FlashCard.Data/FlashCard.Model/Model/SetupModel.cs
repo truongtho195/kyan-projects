@@ -70,6 +70,7 @@ namespace FlashCard.Model
         #endregion
 
 
+        #region DataErrorInfo
         public string Error
         {
             get { throw new NotImplementedException(); }
@@ -100,9 +101,9 @@ namespace FlashCard.Model
                 switch (columnName)
                 {
                     case "DistanceTimeSecond":
-                       if(IsEnableSlideShow)
-                           if (DistanceTimeSecond<0)
-                               message = "Distance time is not accepted!";
+                        if (IsEnableSlideShow)
+                            if (DistanceTimeSecond < 0)
+                                message = "Distance time is not accepted!";
                         break;
                     case "ViewTimeSecond":
                         if (IsEnableSlideShow)
@@ -111,8 +112,8 @@ namespace FlashCard.Model
                         break;
                     case "LimitCardNum":
                         if (IsLimitCard)
-                        { 
-                            if(LimitCardNum<=0)
+                        {
+                            if (LimitCardNum <= 0)
                                 message = "Limit card number is not accepted!";
                         }
                         break;
@@ -124,6 +125,7 @@ namespace FlashCard.Model
                 }
                 return message;
             }
-        }
+        } 
+        #endregion
     }
 }
