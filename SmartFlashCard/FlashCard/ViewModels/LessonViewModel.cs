@@ -439,6 +439,7 @@ namespace FlashCard.ViewModels
                 }
                 lessonRepository.Add(SelectedLesson.Lesson);
                 lessonRepository.Commit();
+                LessonCollection.Add(SelectedLesson);
             }
             else
             {
@@ -454,11 +455,11 @@ namespace FlashCard.ViewModels
                 {
                     if (backSideModel.Deleted)
                     {
-                        var deleteBackSide = backSideRepository.GetSingle(x => x.BackSideID.Equals(backSideModel.BackSide.BackSideID));
+                        BackSide deleteBackSide = backSideRepository.GetSingle(x => x.BackSideID.Equals(backSideModel.BackSide.BackSideID));
                         backSideRepository.Delete(deleteBackSide);
-                        backSideRepository.Commit();
+                        //backSideRepository.Commit();
                         BackSideCollection.Remove(backSideModel);
-                        var chk = SelectedLesson.Lesson.BackSides.Remove(backSideModel.BackSide);
+                        //var chk = SelectedLesson.Lesson.BackSides.Remove(backSideModel.BackSide);
                     }
                     else if (backSideModel.IsNew)
                     {
@@ -467,15 +468,12 @@ namespace FlashCard.ViewModels
                         SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
                         backSideModel.EndUpdate();
                     }
-
-
-
                 }
-                lessonRepository.Update(SelectedLesson.Lesson);
+                //lessonRepository.Update(SelectedLesson.Lesson);
                 lessonRepository.Commit();
             }
             SelectedLesson.EndUpdate();
-            LessonCollection.Add(SelectedLesson);
+            
             //reset
             IsLessonDirty = false;
         }

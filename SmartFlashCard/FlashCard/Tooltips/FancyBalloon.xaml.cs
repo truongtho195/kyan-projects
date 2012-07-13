@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
+using System.Collections.Generic;
+using FlashCard.Database;
 
 namespace FlashCard
 {
@@ -58,8 +60,19 @@ namespace FlashCard
     {
       InitializeComponent();
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
-    
+      List<BackSideModel> list = new List<BackSideModel>();
+      list.Add(new BackSideModel() { BackSideID = "1", BackSideName = "BackSideName 1"});
+      list.Add(new BackSideModel() { BackSideID = "2", BackSideName = "BackSideName 2" });
+      list.Add(new BackSideModel() { BackSideID = "3", BackSideName = "BackSideName 3" });
+      list.Add(new BackSideModel() { BackSideID = "4", BackSideName = "BackSideName 4" });
+      list.Add(new BackSideModel() { BackSideID = "5", BackSideName = "BackSideName 5" });
+      list.Add(new BackSideModel() { BackSideID = "6", BackSideName = "BackSideName 6" });
+      list.Add(new BackSideModel() { BackSideID = "7", BackSideName = "BackSideName 7" });
+      list.Add(new BackSideModel() { BackSideID = "8", BackSideName = "BackSideName 8" });
+      //this.lstBackSide.ItemsSource = list;
     }
+
+   
  
 
 

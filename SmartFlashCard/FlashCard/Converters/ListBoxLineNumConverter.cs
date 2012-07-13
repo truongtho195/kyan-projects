@@ -14,12 +14,10 @@ namespace FlashCard.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
-            ListBoxItem item = value as ListBoxItem;
+            DataGridRow item = value as DataGridRow;
+            var altIndex = item.GetIndex() ;
 
-            ListBox view = ItemsControl.ItemsControlFromItemContainer(item) as ListBox;
-
-            int index = view.ItemContainerGenerator.IndexFromContainer(item) + 1;
-            return index.ToString();
+            return (altIndex += 1).ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,CultureInfo culture)
