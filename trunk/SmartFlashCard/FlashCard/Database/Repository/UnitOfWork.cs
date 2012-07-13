@@ -97,8 +97,8 @@ namespace FlashCard.Database
             //{
             //    _context.DeleteObject(originalItem);
             //}
-
-            this.Entities.DeleteObject(_entity);
+            _context.DeleteObject(_entity);
+            //this.Entities.DeleteObject(_entity);
         }
 
         //Update an existing entity

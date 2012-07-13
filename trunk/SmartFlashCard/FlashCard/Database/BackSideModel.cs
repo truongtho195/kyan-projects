@@ -47,9 +47,28 @@ namespace FlashCard.Database
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
+        //public bool Deleted { get; set; }
         public bool Checked { get; set; }
-        
+
+
+        private bool _deleted;
+        /// <summary>
+        /// Gets or sets the Deleted.
+        /// </summary>
+        public bool Deleted
+        {
+            get { return _deleted; }
+            set
+            {
+                if (_deleted != value)
+                {
+                    _deleted = value;
+                    RaisePropertyChanged(() => Deleted);
+                }
+            }
+        }
+
+
         public void EndUpdate()
         {
             IsNew = false;
