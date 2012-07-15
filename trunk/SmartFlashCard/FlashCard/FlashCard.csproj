@@ -260,10 +260,6 @@
       <Project>{2660BA4D-E3AF-4038-855D-AB1F2C045ECD}</Project>
       <Name>FlashCard.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FlashCard.Data\FlashCard.Model\FlashCard.Model.csproj">
-      <Project>{B8E967AC-4DF6-4247-83E6-BC9589AD2E15}</Project>
-      <Name>FlashCard.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\MVVMHelper\MVVMHelper.csproj">
       <Project>{92A71D19-F6AE-47CC-9E23-D65BCBB03F8A}</Project>
       <Name>MVVMHelper</Name>

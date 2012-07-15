@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using FlashCard.Models;
+using System.Linq;
 using FlashCard.Database;
 using System.ComponentModel;
 
@@ -154,21 +155,24 @@ namespace FlashCard.Database
         }
 
 
-
-        private BackSideModel _backSideModel;
+        private ObservableCollection<BackSideModel> _backSideCollection;
         /// <summary>
-        /// This is Extend Properties
-        ///<para> Gets or sets the property value.</para>
+        /// Extention property.
         /// </summary>
-        public BackSideModel BackSideModel
+        public ObservableCollection<BackSideModel> BackSideCollection
         {
-            get { return _backSideModel; }
+            get
+            {
+
+                return _backSideCollection;
+
+            }
             set
             {
-                if (_backSideModel != value)
+                if (_backSideCollection != value)
                 {
-                    _backSideModel = value;
-                    RaisePropertyChanged(() => BackSideModel);
+                    _backSideCollection = value;
+                    RaisePropertyChanged(() => BackSideCollection);
                 }
             }
         }

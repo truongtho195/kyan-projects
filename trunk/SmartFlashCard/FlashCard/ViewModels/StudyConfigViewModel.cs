@@ -172,7 +172,7 @@ namespace FlashCard.ViewModels
                 foreach (var item in CardCollection.Where(x => x.Checked))
                 {
                     //!!!! Not sure LessonCollection.Where(x => x.CategoryID == item.CategoryID);
-                    var lesson = LessonCollection.Where(x => x.CardID == item.CardID);
+                    var lesson = LessonCollection.Where(x => x.Lesson.CardID == item.Card.CardID);
                     //Check condition if user set Lesson user Know => remove this item lesson
                     if (lesson != null && lesson.Count() > 0)
                     {
