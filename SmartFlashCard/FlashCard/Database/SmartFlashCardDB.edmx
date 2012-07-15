@@ -31,7 +31,7 @@
             <PropertyRef Name="BackSideID" />
           </Key>
           <Property Name="BackSideID" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="LessonID" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
           <Property Name="Content" Type="nvarchar" MaxLength="200" />
           <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
           <Property Name="IsMain" Type="tinyint" />
@@ -95,7 +95,7 @@
           <Property Name="LastLogin" Type="datetime" />
         </EntityType>
         <Association Name="FK_BackSides_0">
-          <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="1" />
+          <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
           <End Role="BackSides" Type="SmartFlashCardDBModel.Store.BackSides" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Lessons">
@@ -247,14 +247,14 @@
             <PropertyRef Name="BackSideID" />
           </Key>
           <Property Type="String" Name="BackSideID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="LessonID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Content" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="BackSideName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Byte" Name="IsMain" />
           <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="BackSide" ToRole="Lesson" />
         </EntityType>
         <Association Name="FK_BackSides_0">
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
           <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Lesson">
@@ -374,20 +374,20 @@
         <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7566536458333388" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="1" Height="2.2496956380208317" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_0" >
-          <ConnectorPoint PointX="2.25" PointY="2.1711531575520837" />
-          <ConnectorPoint PointX="3" PointY="2.1711531575520837" />
+          <ConnectorPoint PointX="2.25" PointY="2.2689925130208337" />
+          <ConnectorPoint PointX="3" PointY="2.2689925130208337" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_1" >
-          <ConnectorPoint PointX="2.25" PointY="6.1711531575520837" />
-          <ConnectorPoint PointX="2.5" PointY="6.1711531575520837" />
+          <ConnectorPoint PointX="2.25" PointY="6.2689925130208337" />
+          <ConnectorPoint PointX="2.5" PointY="6.2689925130208337" />
           <ConnectorPoint PointX="2.5" PointY="4.5" />
           <ConnectorPoint PointX="3.75" PointY="4.5" />
-          <ConnectorPoint PointX="3.75" PointY="3.2496956380208331" />
+          <ConnectorPoint PointX="3.75" PointY="3.5571907552083331" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="5.25" PointY="1.125" Height="1.9210009765624996" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="5.25" PointY="1.25" Height="2.1725878906249996" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSides_0" >
-          <ConnectorPoint PointX="4.5" PointY="2.08550048828125" />
-          <ConnectorPoint PointX="5.25" PointY="2.08550048828125" />
+          <ConnectorPoint PointX="4.5" PointY="2.3362939453125" />
+          <ConnectorPoint PointX="5.25" PointY="2.3362939453125" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

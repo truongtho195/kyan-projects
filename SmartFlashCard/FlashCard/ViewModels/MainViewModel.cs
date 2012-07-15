@@ -20,6 +20,7 @@ using log4net;
 using MVVMHelper.Commands;
 using FlashCard.Database;
 using FlashCard.Models;
+using System.Threading;
 
 namespace FlashCard.ViewModels
 {
@@ -31,16 +32,13 @@ namespace FlashCard.ViewModels
         {
             Initialize();
         }
-
-      
-
         #endregion
 
         #region Variables
         public DispatcherTimer _timerPopup;
         DispatcherTimer _timerViewFullScreen;
         DispatcherTimer _waitForClose;
-        
+
         Stopwatch _swCountTimerTick = new Stopwatch();
         LearnView _learnView;
         private int _currentItemIndex = 0;
@@ -51,9 +49,9 @@ namespace FlashCard.ViewModels
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// When user Click to Hidden Button in popup, Mouse leave Executed. So TimerPopup call with wrong way 
-        /// Need to set true if User Click to Hidden for poupup & set false when popup show again
+        /// Variable set user is current what side, avoid trigger & storyboard not sync together
         /// </summary>
+        public bool IsCurrentBackSide { get; set; }
         #endregion
 
         #region Properties
@@ -95,6 +93,25 @@ namespace FlashCard.ViewModels
                 {
                     _selectedLesson = value;
                     RaisePropertyChanged(() => SelectedLesson);
+                }
+            }
+        }
+        #endregion
+
+        #region"  SelectedBackSide"
+        private BackSide _selectedBackSide;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public BackSide SelectedBackSide
+        {
+            get { return _selectedBackSide; }
+            set
+            {
+                if (_selectedBackSide != value)
+                {
+                    _selectedBackSide = value;
+                    RaisePropertyChanged(() => SelectedBackSide);
                 }
             }
         }
@@ -264,32 +281,41 @@ namespace FlashCard.ViewModels
                 return false;
             return true;
         }
-
+        
         private void ChangeSideExecute(object param)
         {
             log.Info("||{*} === Change Side Command Executed === ");
             SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
+
+
+            Storyboard sbChangeSide;
             if ("Popup".Equals(param.ToString()))
             {
-                var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as UserControl;
-                Storyboard sb;
-                if (SelectedLesson.IsBackSide)
-                    sb = (Storyboard)control.FindResource("sbChangeToBack");
-                else
-                    sb = (Storyboard)control.FindResource("sbChangeToFront");
-                control.BeginStoryboard(sb);
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon;
+
+                    if (SelectedLesson.IsBackSide)
+                        sbChangeSide = (Storyboard)control.FindResource("sbChangeToBack");
+                    else
+                        sbChangeSide = (Storyboard)control.FindResource("sbChangeToFront");
+
+                    sbChangeSide.Begin();
+                }));
+
             }
             else
             {
-                Storyboard sbF;
-                if (SelectedLesson.IsBackSide)
-                    sbF = (Storyboard)_learnView.FindResource("sbToBackSide");
-                else
-                    sbF = (Storyboard)_learnView.FindResource("sbToFrontSide");
-                _learnView.BeginStoryboard(sbF);
-                
 
-                if (App.SetupModel.Setup.IsEnableSlideShow==true)
+                if (SelectedLesson.IsBackSide)
+                {
+                    sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
+                }
+                else
+                    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
+                _learnView.BeginStoryboard(sbChangeSide);
+
+                if (App.SetupModel.Setup.IsEnableSlideShow == true)
                 {
                     DispatcherTimer stopChangeLesson = new DispatcherTimer();
                     stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 3);
@@ -298,8 +324,8 @@ namespace FlashCard.ViewModels
                     stopChangeLesson.Start();
                 }
             }
+            IsCurrentBackSide = SelectedLesson.IsBackSide;
         }
-
 
         #endregion
 
@@ -319,7 +345,7 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseEnterExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow==false)
+            if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
             return true;
         }
@@ -358,7 +384,7 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseLeaveExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow==false)
+            if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
             return true;
         }
@@ -452,7 +478,7 @@ namespace FlashCard.ViewModels
         private void OnPlayPauseExecute(object param)
         {
             log.Info("||{*} === Play Pause Command Executed === ");
-            if (App.SetupModel.Setup.IsEnableSlideShow==true)
+            if (App.SetupModel.Setup.IsEnableSlideShow == true)
             {
                 if ("FullScreen".Equals(param.ToString()))
                 {
@@ -491,7 +517,7 @@ namespace FlashCard.ViewModels
 
         private bool CanShowPopupExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow==false)
+            if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return true;
             return false;
         }
@@ -540,7 +566,7 @@ namespace FlashCard.ViewModels
 
                 DispatcherTimer waitForListener = new DispatcherTimer();
                 waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
-                waitForListener.Tick +=new EventHandler(waitForListener_Tick);
+                waitForListener.Tick += new EventHandler(waitForListener_Tick);
 
                 if (CheckConnectionInternet.IsConnectedToInternet())
                 {
@@ -560,7 +586,7 @@ namespace FlashCard.ViewModels
                 }
                 waitForListener.Start();
 
-                if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow==true)
+                if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
                 {
                     _timerViewFullScreen.Stop();
                     stopForListen.Start();
@@ -579,7 +605,7 @@ namespace FlashCard.ViewModels
         {
             stopListen = false;
             (sender as DispatcherTimer).Stop();
-            
+
         }
         #endregion
 
@@ -652,7 +678,7 @@ namespace FlashCard.ViewModels
         private void OnNextBackLessonExecute(object param)
         {
             log.Info("||{*} === Next Back Command Executed === ");
-            if (App.SetupModel.Setup.IsEnableSlideShow==true)
+            if (App.SetupModel.Setup.IsEnableSlideShow == true)
                 return;
             if ("Back".Equals(param.ToString()))
             {
@@ -769,7 +795,7 @@ namespace FlashCard.ViewModels
             _learnView.Close();
             _learnView = null;
 
-            if (App.SetupModel.Setup.IsEnableSlideShow==true)
+            if (App.SetupModel.Setup.IsEnableSlideShow == true)
             {
                 PlayPauseBallonPopup(false);
             }
@@ -818,7 +844,7 @@ namespace FlashCard.ViewModels
             if (_learnView == null)
                 _learnView = new LearnView();
             _learnView.DataContext = this;
-            if (App.SetupModel.Setup.IsEnableSlideShow==true)
+            if (App.SetupModel.Setup.IsEnableSlideShow == true)
                 StartLessonFullScreen();
             else
                 SetLesson();
@@ -943,6 +969,9 @@ namespace FlashCard.ViewModels
             _listenWord = new MediaPlayer();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ExcuteMainForm()
         {
             IsPopupStarted = true;
@@ -953,17 +982,20 @@ namespace FlashCard.ViewModels
             }
             else
             {
-                SelectedLesson = LessonCollection.First();
-                SelectedLesson.IsBackSide = false;
+                SetLesson();
                 ShowPopupForm();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="listLesson"></param>
         public void GetLesson(List<LessonModel> listLesson)
         {
             //LessonDataAccess lessonDA = new LessonDataAccess();
             //var lesson = lessonDA.GetAllWithRelation();
-            if (App.SetupModel.Setup.IsShuffle==true)
+            if (App.SetupModel.Setup.IsShuffle == true)
             {
                 var lessonShuffle = ShuffleList.Randomize<LessonModel>(listLesson);
                 LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
@@ -980,7 +1012,7 @@ namespace FlashCard.ViewModels
         private void SetLesson(bool isLoop = true)
         {
             var LimitCardNum = LessonCollection.Count;
-            if (App.SetupModel.Setup.IsLimitCard==true)
+            if (App.SetupModel.Setup.IsLimitCard == true)
             {
                 if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
                     LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
@@ -995,7 +1027,9 @@ namespace FlashCard.ViewModels
             }
 
             SelectedLesson = LessonCollection[_currentItemIndex];
-            SelectedLesson.IsBackSide = false;
+            SelectedLesson.IsBackSide = IsCurrentBackSide;
+            RaisePropertyChanged(() => SelectedLesson);
+            SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
             log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
             GC.Collect();
         }
@@ -1027,7 +1061,7 @@ namespace FlashCard.ViewModels
 
             if (_waitForClose == null)
                 _waitForClose = new DispatcherTimer();
-            _waitForClose.Interval = new TimeSpan(0, 0,(int)App.SetupModel.Setup.ViewTimeSecond);
+            _waitForClose.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.ViewTimeSecond);
             _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
 
             if (_timerViewFullScreen == null)
@@ -1035,8 +1069,8 @@ namespace FlashCard.ViewModels
             _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.ViewTimeSecond);
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
 
-            
-        
+
+
             //test.Start();
         }
 
@@ -1062,7 +1096,7 @@ namespace FlashCard.ViewModels
                     FancyBalloon balloon = new FancyBalloon();
                     //_balloon.tbWords.Document = SelectedLesson.Description;
                     //_balloon.tblWordBackSide.Document = SelectedLesson.BackSideModel.BackSideDetail;
-                    if(App.SetupModel.Setup.IsEnableSoundForShow==true)
+                    if (App.SetupModel.Setup.IsEnableSoundForShow == true)
                         _soundForShow.Play();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
                     this.IsPopupStarted = true;
@@ -1075,8 +1109,6 @@ namespace FlashCard.ViewModels
             }
             GC.Collect();
         }
-
-      
 
         /// <summary>
         /// Initial For Wait to close

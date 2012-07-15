@@ -26,7 +26,7 @@
       <PropertyRef Name="BackSideID" />
     </Key>
     <Property Name="BackSideID" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="LessonID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
     <Property Name="Content" Type="nvarchar" MaxLength="200" />
     <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
     <Property Name="IsMain" Type="tinyint" />
@@ -90,7 +90,7 @@
     <Property Name="LastLogin" Type="datetime" />
   </EntityType>
   <Association Name="FK_BackSides_0">
-    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="1" />
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
     <End Role="BackSides" Type="SmartFlashCardDBModel.Store.BackSides" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Lessons">
