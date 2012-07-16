@@ -447,33 +447,6 @@ namespace FlashCard.ViewModels
                 {
                     SelectedLesson.Dispose();
                 }
-                //else if(IsLessonDirty)
-                //{
-                //    var resultMsg= MessageBox.Show("Do you want to change to another item", "Question", MessageBoxButton.YesNo);
-                //    if(resultMsg.Equals(MessageBoxResult.No)) return;
-
-                //    LessonRepository lessonRepository = new LessonRepository();
-                //    lessonRepository.Refresh(SelectedLesson.Lesson);
-                //}
-
-
-                //if (SelectedLesson != null && SelectedLesson.IsNew)
-                //{
-                //    LessonCollection.Remove(SelectedLesson);
-                //}
-                //else if (SelectedLesson != null && SelectedLesson.IsDirty)
-                //{
-                //    LessonDataAccess lessonDataAccess = new LessonDataAccess();
-                //    ///!!!!       var lessonModel = lessonDataAccess.GetItem(SelectedLesson.LessonID);
-
-                //    var lessonIndex = LessonCollection.IndexOf(SelectedLesson);
-                //    if (lessonIndex > -1)
-                //    {
-                //        LessonCollection.RemoveAt(lessonIndex);
-                //        ///!!!!   LessonCollection.Insert(lessonIndex, lessonModel);
-                //    }
-                //    RaisePropertyChanged(() => LessonCollection);
-                //}
                 SelectedLesson = param as LessonModel;
             }
             catch (Exception ex)
@@ -621,7 +594,6 @@ namespace FlashCard.ViewModels
                         return true;
                     else
                     {
-                        ///!!!!
                         if (lessonModel.Lesson.LessonName.ToLower().Contains(keywordLesson.TrimStart().ToLower()) || lessonModel.Lesson.Card.CardName.ToLower().Contains(keywordLesson.TrimStart().ToLower()))
                             return true;
                     }
