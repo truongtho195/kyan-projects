@@ -75,11 +75,15 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.7"
                                       Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="BackSideWrapper">
-            	<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="BackSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Hidden}" />
             </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FrontSideWrapper">
-            	<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Visible}"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="FrontSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
@@ -103,21 +107,25 @@
             </Border>
         </ControlTemplate>
         <Storyboard x:Key="sbChangeToBack">
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-        		Storyboard.TargetName="grdFrame">
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.3"
-        			Value="332" />
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.4"
-        			Value="320" />
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.7"
-        			Value="0" />
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="BackSideWrapper">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Visible}"/>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FrontSideWrapper">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
-        	</ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                                           Storyboard.TargetName="grdFrame">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3"
+                                      Value="332" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4"
+                                      Value="320" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="BackSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                           Storyboard.TargetName="FrontSideWrapper">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
+                                        Value="{x:Static Visibility.Hidden}" />
+            </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -156,9 +164,9 @@
     <Grid x:Name="Layout">
         <attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"
-                                         Command="{Binding FancyBallonMouseEnterCommand}" />
+                                         Command="{Binding FancyBallonMouseEnterCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}}" />
             <attachedCmd:BehaviorBinding Event="MouseLeave"
-                                         Command="{Binding FancyBallonMouseLeaveCommand}" />
+                                         Command="{Binding FancyBallonMouseLeaveCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}}" />
         </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid x:Name="grdFrame"
               RenderTransformOrigin="0.5,0.5">
@@ -402,7 +410,7 @@
                           Visibility="{Binding SelectedLesson.Category.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Grid.Row="1"
                           VerticalAlignment="Center">
-                        <StackPanel d:LayoutOverrides="Width">
+                        <StackPanel d:LayoutOverrides="Width" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <TextBlock TextWrapping="Wrap"
                                        x:Name="tbLessonName"
                                        VerticalAlignment="Center"
@@ -411,17 +419,7 @@
                                        HorizontalAlignment="Center"
                                        FontSize="21.333"
                                        FontWeight="Bold" />
-                            <TextBlock x:Name="tbWords"
-                                       Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}"
-                                       VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                       Background="Transparent"
-                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       FontSize="16"
-                                       MinHeight="25"
-                                       MinWidth="290" />
+                            <TextBlock x:Name="tbDescription" TextWrapping="Wrap" Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="White" FontWeight="Bold" FontStyle="Italic"/>
                         </StackPanel>
                     </Grid>
                     <Grid x:Name="grdListChoice"
@@ -439,21 +437,7 @@
                 <Grid x:Name="BackSideWrapper"
                       MinHeight="100"
                       RenderTransformOrigin="0.5,0.5"
-                      Margin="0" Visibility="Hidden">
-                    <!--<Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Setter Property="Visibility"
-                                    Value="Hidden" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding  SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged }"
-                                             Value="True">
-                                    <Setter Property="Visibility"
-                                            Value="Visible" />
-                                </DataTrigger>
-                               
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>-->
+                      Margin="0" Visibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -484,6 +468,17 @@
                               VerticalGridLinesBrush="#00000000"
                               Foreground="White"
                               Margin="0,0,10,0">
+                        <DataGrid.Style>
+                            <Style TargetType="{x:Type DataGrid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLesson.Lesson.BackSides.Count}"
+                                                 Value="1">
+                                        <Setter Property="Visibility"
+                                                Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Style>
                         <DataGrid.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -509,14 +504,13 @@
                     <TextBlock  x:Name="tblMainBackSide"
                                 Background="Transparent"
                                 HorizontalAlignment="Center"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                 VerticalAlignment="Center"
                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                                 Foreground="White"
                                 Text="{Binding SelectedItem.Content,ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Grid.Row="1"
-                                MinWidth="290"
-                                MinHeight="50"
+                                
+                                
                                 FontSize="21.333">
                          <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -533,7 +527,7 @@
                         </TextBlock.Style>
                     </TextBlock>
                     <StackPanel x:Name="stOtherBackSide"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Top" Margin="5,0">
                         <StackPanel.Style>
                             <Style TargetType="{x:Type StackPanel}">
                                 <Setter Property="Visibility"
@@ -552,7 +546,7 @@
                                    Text="{Binding SelectedItem.BackSideName,ElementName=lstBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                    Foreground="White"
                                    HorizontalAlignment="Left"
-                                   FontSize="21.333"
+                                   FontSize="16"
                                    FontWeight="Bold" />
                         <TextBlock x:Name="tbContent"
                                    Text="{Binding SelectedItem.Content,ElementName=lstBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
@@ -560,7 +554,7 @@
                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                    VerticalAlignment="Center"
                                    Foreground="White"
-                                   FontSize="16"
+                                   FontSize="18.667"
                                    MinHeight="25"
                                    MinWidth="290"
                                    HorizontalAlignment="Center" />

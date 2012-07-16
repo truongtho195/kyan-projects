@@ -212,7 +212,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region CardList
+        #region"  CardList"
         private List<Card> _cardList;
         /// <summary>
         /// Gets or sets the CategoryList.
@@ -308,7 +308,9 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return  SelectedLesson.IsDirty && SelectedLesson.Errors.Count() == 0;
+            return( SelectedLesson.IsDirty || SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0) &&
+                    SelectedLesson.Errors.Count() == 0 &&
+                    SelectedLesson.BackSideCollection.Count(x=>x.Errors.Count>0) == 0;
         }
 
         private void SaveExecute(object param)
@@ -355,6 +357,8 @@ namespace FlashCard.ViewModels
                 lessonRepository.Commit();
             }
             SelectedLesson.EndUpdate();
+            
+            RaisePropertyChanged(() => SelectedLesson);
         }
         #endregion
 
@@ -504,7 +508,9 @@ namespace FlashCard.ViewModels
 
         private bool CanAddBackSideExecute(object param)
         {
-            return true;
+            if (SelectedLesson == null || SelectedLesson.BackSideCollection == null)
+                return false;
+            return SelectedLesson.BackSideCollection != null && SelectedLesson.BackSideCollection.Count(x => x.Errors.Count > 0) == 0;
         }
 
         private void AddBackSideExecute(object param)
@@ -555,6 +561,11 @@ namespace FlashCard.ViewModels
             }
             else
             {
+                if (backSideModel.Errors.Count > 0)
+                {
+                    backSideModel.BackSideName = "BackSideName";
+                    backSideModel.Content = "Content";
+                }
                 backSideModel.IsDeleted = true;
             }
         }
@@ -798,7 +809,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region"  SearchCar"
+        #region"  SearchCard"
 
         /// <summary>
         /// Gets the SearchCategory Command.

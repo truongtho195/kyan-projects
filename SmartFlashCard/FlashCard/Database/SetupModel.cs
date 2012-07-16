@@ -330,7 +330,7 @@ namespace FlashCard.Database
         {
             get
             {
-                var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+                var timeOutSecond = this.Setup.ViewTimeSecond + this.Setup.DistanceTimeSecond;
                 this._timeOut = new TimeSpan(0, 0, timeOutSecond);
                 return _timeOut;
             }
@@ -349,18 +349,18 @@ namespace FlashCard.Database
         #region Override Changed
         protected override void RaisePropertyChangedCompleted(string propertyName)
         {
-            switch (propertyName)
-            {
-                case "ViewTimeSecond":
-                case "DistanceTimeSecond":
-                    {
-                        var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
-                        this._timeOut = new TimeSpan(0, 0, timeOutSecond);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            //switch (propertyName)
+            //{
+            //    case "ViewTimeSecond":
+            //    case "DistanceTimeSecond":
+            //        {
+            //            var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
+            //            this._timeOut = new TimeSpan(0, 0, timeOutSecond);
+            //        }
+            //        break;
+            //    default:
+            //        break;
+            //}
             base.RaisePropertyChangedCompleted(propertyName);
         }
         #endregion

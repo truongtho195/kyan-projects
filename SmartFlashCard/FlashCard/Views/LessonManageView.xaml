@@ -346,8 +346,8 @@
                         <Border x:Name="DGR_Border"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="True">
+                                SnapsToDevicePixels="True"
+                                Background="#00000000">
                             <SelectiveScrollingGrid>
                                 <SelectiveScrollingGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -686,9 +686,9 @@
                                 <RowDefinition Height="0" />
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="35" />
-                                <RowDefinition Height="68.619" />
-                                <RowDefinition Height="0.849*" />
-                                <RowDefinition Height="0.151*" />
+                                <RowDefinition Height="55.619" />
+                                <RowDefinition Height="0.86*" />
+                                <RowDefinition Height="0.14*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="85.191" />
@@ -764,7 +764,7 @@
                                      Margin="10,8"
                                      Grid.Row="4"
                                      BorderThickness="1"
-                                     Background="#33A19F9F"
+                                     Background="White"
                                      BorderBrush="#FF7F9DB9"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch" />
@@ -787,16 +787,23 @@
                                       Grid.Row="5"
                                       Margin="10,8,8,8"
                                       Background="#33939393"
-                                      RowStyle="{DynamicResource myRowCollapseStyle}">
+                                      RowStyle="{DynamicResource myRowCollapseStyle}"
+                                      VerticalGridLinesBrush="#00000000"
+                                      HorizontalGridLinesBrush="#00000000"
+                                      RowHeaderWidth="0">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Name">
+
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbBackSideName"
+                                                         Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                          VerticalAlignment="Top"
                                                          Width="150"
                                                          Height="25"
-                                                         Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                                                         BorderThickness="1"
+                                                         Background="White"
+                                                         BorderBrush="#FF7F9DB9" />
                                                 <DataTemplate.Triggers>
                                                     <DataTrigger Binding="{Binding IsMain}"
                                                                  Value="1">
@@ -813,10 +820,12 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbContent"
+                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                                         TextWrapping="Wrap"
+                                                         AcceptsReturn="True"
                                                          Height="60"
                                                          HorizontalAlignment="Stretch"
-                                                         MinWidth="500"
-                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                                                         Width="450" />
 
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
