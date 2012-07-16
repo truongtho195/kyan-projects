@@ -8,13 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using FlashCard.Models;
-using FlashCard.Database;
 using System.ComponentModel;
+using FlashCard.Models;
 
 
 namespace FlashCard.Database
@@ -37,6 +34,7 @@ namespace FlashCard.Database
         public SetupModel(Setup setup)
         {
             this.Setup = setup;
+            ToModel();
         }
 
         #endregion
@@ -45,143 +43,277 @@ namespace FlashCard.Database
 
         public Setup Setup { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
-        public bool Checked { get; set; }
-        
+        protected bool _isNew;
+        /// <summary>
+        /// Gets or sets the IsNew
+        /// </summary>
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if (_isNew != value)
+                {
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
+                }
+            }
+        }
+
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
+
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
-        
+
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.Setup.SetupID = this.SetupID;
+            this.Setup.ViewTimeSecond = this.ViewTimeSecond;
+            this.Setup.DistanceTimeSecond = this.DistanceTimeSecond;
+            this.Setup.IsLimitCard = this.IsLimitCard;
+            this.Setup.LimitCardNum = this.LimitCardNum;
+            this.Setup.IsEnableSlideShow = this.IsEnableSlideShow;
+            this.Setup.IsEnableLoop = this.IsEnableLoop;
+            this.Setup.IsEnableSoundForShow = this.IsEnableSoundForShow;
+            this.Setup.IsShuffle = this.IsShuffle;
+        }
+
+        public void ToModel()
+        {
+            this.SetupID = this.Setup.SetupID;
+            this.ViewTimeSecond = this.Setup.ViewTimeSecond;
+            this.DistanceTimeSecond = this.Setup.DistanceTimeSecond;
+            this.IsLimitCard = this.Setup.IsLimitCard;
+            this.LimitCardNum = this.Setup.LimitCardNum;
+            this.IsEnableSlideShow = this.Setup.IsEnableSlideShow;
+            this.IsEnableLoop = this.Setup.IsEnableLoop;
+            this.IsEnableSoundForShow = this.Setup.IsEnableSoundForShow;
+            this.IsShuffle = this.Setup.IsShuffle;
+        }
 
         #endregion
 
         #region Primitive Properties
 
+        protected string _setupID;
+        /// <summary>
+        /// Gets or sets the SetupID.
+        /// </summary>
         public string SetupID
         {
-            get { return this.Setup.SetupID; }
+            get { return this._setupID; }
             set
             {
-                if (this.Setup.SetupID != value)
+                if (this._setupID != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.SetupID = value;
+                    this._setupID = value;
                     RaisePropertyChanged(() => SetupID);
                 }
             }
         }
+
+        protected int _viewTimeSecond;
+        /// <summary>
+        /// Gets or sets the ViewTimeSecond.
+        /// </summary>
         public int ViewTimeSecond
         {
-            get { return this.Setup.ViewTimeSecond; }
+            get { return this._viewTimeSecond; }
             set
             {
-                if (this.Setup.ViewTimeSecond != value)
+                if (this._viewTimeSecond != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.ViewTimeSecond = value;
+                    this._viewTimeSecond = value;
                     RaisePropertyChanged(() => ViewTimeSecond);
                 }
             }
         }
+
+        protected int _distanceTimeSecond;
+        /// <summary>
+        /// Gets or sets the DistanceTimeSecond.
+        /// </summary>
         public int DistanceTimeSecond
         {
-            get { return this.Setup.DistanceTimeSecond; }
+            get { return this._distanceTimeSecond; }
             set
             {
-                if (this.Setup.DistanceTimeSecond != value)
+                if (this._distanceTimeSecond != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.DistanceTimeSecond = value;
+                    this._distanceTimeSecond = value;
                     RaisePropertyChanged(() => DistanceTimeSecond);
                 }
             }
         }
+
+        protected Nullable<bool> _isLimitCard;
+        /// <summary>
+        /// Gets or sets the IsLimitCard.
+        /// </summary>
         public Nullable<bool> IsLimitCard
         {
-            get { return this.Setup.IsLimitCard; }
+            get { return this._isLimitCard; }
             set
             {
-                if (this.Setup.IsLimitCard != value)
+                if (this._isLimitCard != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.IsLimitCard = value;
+                    this._isLimitCard = value;
                     RaisePropertyChanged(() => IsLimitCard);
                 }
             }
         }
+
+        protected Nullable<int> _limitCardNum;
+        /// <summary>
+        /// Gets or sets the LimitCardNum.
+        /// </summary>
         public Nullable<int> LimitCardNum
         {
-            get { return this.Setup.LimitCardNum; }
+            get { return this._limitCardNum; }
             set
             {
-                if (this.Setup.LimitCardNum != value)
+                if (this._limitCardNum != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.LimitCardNum = value;
+                    this._limitCardNum = value;
                     RaisePropertyChanged(() => LimitCardNum);
                 }
             }
         }
+
+        protected Nullable<bool> _isEnableSlideShow;
+        /// <summary>
+        /// Gets or sets the IsEnableSlideShow.
+        /// </summary>
         public Nullable<bool> IsEnableSlideShow
         {
-            get { return this.Setup.IsEnableSlideShow; }
+            get { return this._isEnableSlideShow; }
             set
             {
-                if (this.Setup.IsEnableSlideShow != value)
+                if (this._isEnableSlideShow != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.IsEnableSlideShow = value;
+                    this._isEnableSlideShow = value;
                     RaisePropertyChanged(() => IsEnableSlideShow);
                 }
             }
         }
+
+        protected Nullable<bool> _isEnableLoop;
+        /// <summary>
+        /// Gets or sets the IsEnableLoop.
+        /// </summary>
         public Nullable<bool> IsEnableLoop
         {
-            get { return this.Setup.IsEnableLoop; }
+            get { return this._isEnableLoop; }
             set
             {
-                if (this.Setup.IsEnableLoop != value)
+                if (this._isEnableLoop != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.IsEnableLoop = value;
+                    this._isEnableLoop = value;
                     RaisePropertyChanged(() => IsEnableLoop);
                 }
             }
         }
+
+        protected Nullable<bool> _isEnableSoundForShow;
+        /// <summary>
+        /// Gets or sets the IsEnableSoundForShow.
+        /// </summary>
         public Nullable<bool> IsEnableSoundForShow
         {
-            get { return this.Setup.IsEnableSoundForShow; }
+            get { return this._isEnableSoundForShow; }
             set
             {
-                if (this.Setup.IsEnableSoundForShow != value)
+                if (this._isEnableSoundForShow != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.IsEnableSoundForShow = value;
+                    this._isEnableSoundForShow = value;
                     RaisePropertyChanged(() => IsEnableSoundForShow);
                 }
             }
         }
+
+        protected Nullable<bool> _isShuffle;
+        /// <summary>
+        /// Gets or sets the IsShuffle.
+        /// </summary>
         public Nullable<bool> IsShuffle
         {
-            get { return this.Setup.IsShuffle; }
+            get { return this._isShuffle; }
             set
             {
-                if (this.Setup.IsShuffle != value)
+                if (this._isShuffle != value)
                 {
                     this.IsDirty = true;
-                    this.Setup.IsShuffle = value;
+                    this._isShuffle = value;
                     RaisePropertyChanged(() => IsShuffle);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
+        #region Custom Code
 
         /// <summary>
         ///               TimeOut
@@ -196,10 +328,12 @@ namespace FlashCard.Database
         /// </summary>
         public TimeSpan TimeOut
         {
-            get {
+            get
+            {
                 var timeOutSecond = this.ViewTimeSecond + this.DistanceTimeSecond;
                 this._timeOut = new TimeSpan(0, 0, timeOutSecond);
-                return _timeOut; }
+                return _timeOut;
+            }
             set
             {
                 if (_timeOut != value)
@@ -262,17 +396,17 @@ namespace FlashCard.Database
                 switch (columnName)
                 {
                     case "DistanceTimeSecond":
-                        if (IsEnableSlideShow==true)
+                        if (IsEnableSlideShow == true)
                             if (DistanceTimeSecond < 0)
                                 message = "Distance time is not accepted!";
                         break;
                     case "ViewTimeSecond":
-                        if (IsEnableSlideShow==true)
+                        if (IsEnableSlideShow == true)
                             if (ViewTimeSecond < 0)
                                 message = "Time to view is not accepted!";
                         break;
                     case "LimitCardNum":
-                        if (IsLimitCard==true)
+                        if (IsLimitCard == true)
                         {
                             if (LimitCardNum <= 0)
                                 message = "Limit card number is not accepted!";
@@ -288,7 +422,6 @@ namespace FlashCard.Database
             }
         }
         #endregion
-
 
         #endregion
     }

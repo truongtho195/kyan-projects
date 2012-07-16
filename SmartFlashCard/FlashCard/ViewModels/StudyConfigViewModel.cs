@@ -155,7 +155,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            if (!SelectedSetupModel.Errors.Any() && CardCollection.Any(x => x.Checked))
+            if (!SelectedSetupModel.Errors.Any() && CardCollection.Any(x => x.IsChecked))
                 return true;
             return false;
         }
@@ -169,7 +169,7 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                foreach (var item in CardCollection.Where(x => x.Checked))
+                foreach (var item in CardCollection.Where(x => x.IsChecked))
                 {
                     //!!!! Not sure LessonCollection.Where(x => x.CategoryID == item.CategoryID);
                     var lesson = LessonCollection.Where(x => x.Lesson.CardID == item.Card.CardID);

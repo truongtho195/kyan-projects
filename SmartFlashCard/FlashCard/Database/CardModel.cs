@@ -8,13 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using FlashCard.Models;
-using FlashCard.Database;
 using System.ComponentModel;
+using FlashCard.Models;
 
 
 namespace FlashCard.Database
@@ -37,6 +34,7 @@ namespace FlashCard.Database
         public CardModel(Card card)
         {
             this.Card = card;
+            ToModel();
         }
 
         #endregion
@@ -45,90 +43,159 @@ namespace FlashCard.Database
 
         public Card Card { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
-        public bool Checked { get; set; }
+        protected bool _isNew;
+        /// <summary>
+        /// Gets or sets the IsNew
+        /// </summary>
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if (_isNew != value)
+                {
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
+                }
+            }
+        }
+
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
 
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
 
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.Card.CardID = this.CardID;
+            this.Card.CardName = this.CardName;
+            this.Card.Remark = this.Remark;
+        }
+
+        public void ToModel()
+        {
+            this.CardID = this.Card.CardID;
+            this.CardName = this.Card.CardName;
+            this.Remark = this.Card.Remark;
+        }
 
         #endregion
 
         #region Primitive Properties
 
-
-        private string _cardID = string.Empty;
+        protected string _cardID;
+        /// <summary>
+        /// Gets or sets the CardID.
+        /// </summary>
         public string CardID
         {
-            get
-            {
-                return _cardID;
-            }
-            //get { return this.Card.CardID; }
+            get { return this._cardID; }
             set
             {
-                if (_cardID != value)
+                if (this._cardID != value)
                 {
                     this.IsDirty = true;
-                    //this.Card.CardID = value;
-                    _cardID = value;
+                    this._cardID = value;
                     RaisePropertyChanged(() => CardID);
                 }
             }
         }
-        private string _cardName = string.Empty;
 
+        protected string _cardName;
+        /// <summary>
+        /// Gets or sets the CardName.
+        /// </summary>
         public string CardName
         {
-            get {
-             
-                return _cardName; }
-            //get { return this.Card.CardName; }
+            get { return this._cardName; }
             set
             {
-                if (_cardName != value)
+                if (this._cardName != value)
                 {
                     this.IsDirty = true;
-                    _cardName = value;
-                    //this.Card.CardName = value;
+                    this._cardName = value;
                     RaisePropertyChanged(() => CardName);
                 }
             }
         }
 
-        private string _remark = string.Empty;
+        protected string _remark;
+        /// <summary>
+        /// Gets or sets the Remark.
+        /// </summary>
         public string Remark
         {
-            get { return _remark; }
-            //get { return this.Card.Remark; }
+            get { return this._remark; }
             set
             {
-                if (_remark != value)
+                if (this._remark != value)
                 {
                     this.IsDirty = true;
-                    //this.Card.Remark = value;
-                    _remark = value;
+                    this._remark = value;
                     RaisePropertyChanged(() => Remark);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
-        public void ToEntity()
-        {
-            this.Card.CardID = CardID;
-            this.Card.CardName = CardName;
-            this.Card.Remark = Remark;
-        }
-
-        //Extension 
+        #region Custom Code
+     
+        
         #region DataErrorInfo
         public string Error
         {
@@ -158,9 +225,9 @@ namespace FlashCard.Database
                 this.Errors.Remove(columnName);
                 switch (columnName)
                 {
-                    case "CardName":
-                        if (string.IsNullOrWhiteSpace(CardName))
-                            message = "Card Name is required !";
+                   
+                    case "Content":
+                   
                         break;
                 }
                 if (!String.IsNullOrEmpty(message))
@@ -171,7 +238,6 @@ namespace FlashCard.Database
             }
         }
         #endregion
-
 
         #endregion
     }
