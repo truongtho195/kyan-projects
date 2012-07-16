@@ -164,9 +164,9 @@
     <Grid x:Name="Layout">
         <attachedCmd:CommandBehaviorCollection.Behaviors>
             <attachedCmd:BehaviorBinding Event="MouseEnter"
-                                         Command="{Binding FancyBallonMouseEnterCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}}" />
+                                         Command="{Binding FancyBallonMouseEnterCommand}" />
             <attachedCmd:BehaviorBinding Event="MouseLeave"
-                                         Command="{Binding FancyBallonMouseLeaveCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type UserControl}}}" />
+                                         Command="{Binding FancyBallonMouseLeaveCommand}" />
         </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid x:Name="grdFrame"
               RenderTransformOrigin="0.5,0.5">
@@ -419,7 +419,7 @@
                                        HorizontalAlignment="Center"
                                        FontSize="21.333"
                                        FontWeight="Bold" />
-                            <TextBlock x:Name="tbDescription" TextWrapping="Wrap" Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="White" FontWeight="Bold" FontStyle="Italic"/>
+                            <TextBlock x:Name="tbDescription" TextWrapping="Wrap" Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="White" FontStyle="Italic"/>
                         </StackPanel>
                     </Grid>
                     <Grid x:Name="grdListChoice"
@@ -437,7 +437,7 @@
                 <Grid x:Name="BackSideWrapper"
                       MinHeight="100"
                       RenderTransformOrigin="0.5,0.5"
-                      Margin="0" Visibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                      Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Visibility="Hidden">
                     <Grid.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -451,7 +451,7 @@
                     </Grid.RowDefinitions>
                     <DataGrid x:Name="lstBackSide"
                               ItemsSource="{Binding SelectedLesson.Lesson.BackSides}"
-                              SelectedItem="{Binding SelectedBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedBackSide,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
@@ -502,15 +502,13 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <TextBlock  x:Name="tblMainBackSide"
+                                Text="{Binding SelectedItem.Content,ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Background="Transparent"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                                 Foreground="White"
-                                Text="{Binding SelectedItem.Content,ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Grid.Row="1"
-                                
-                                
                                 FontSize="21.333">
                          <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -527,7 +525,7 @@
                         </TextBlock.Style>
                     </TextBlock>
                     <StackPanel x:Name="stOtherBackSide"
-                                VerticalAlignment="Top" Margin="5,0">
+                                VerticalAlignment="Top" Margin="5,0" >
                         <StackPanel.Style>
                             <Style TargetType="{x:Type StackPanel}">
                                 <Setter Property="Visibility"
@@ -559,8 +557,6 @@
                                    MinWidth="290"
                                    HorizontalAlignment="Center" />
                     </StackPanel>
-
-
                 </Grid>
             </Grid>
             <Grid x:Name="grdBottom"

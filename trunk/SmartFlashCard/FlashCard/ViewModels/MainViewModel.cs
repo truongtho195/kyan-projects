@@ -306,7 +306,6 @@ namespace FlashCard.ViewModels
             }
             else
             {
-
                 if (SelectedLesson.IsBackSide)
                 {
                     sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
