@@ -8,12 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.ComponentModel;
 using FlashCard.Models;
-using FlashCard.Database;
 
 
 namespace FlashCard.Database
@@ -21,7 +19,7 @@ namespace FlashCard.Database
     /// <summary>
     /// Model for table Category 
     /// </summary>
-    public partial class CategoryModel : ViewModelBase
+    public partial class CategoryModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
 
@@ -36,6 +34,7 @@ namespace FlashCard.Database
         public CategoryModel(Category category)
         {
             this.Category = category;
+            ToModel();
         }
 
         #endregion
@@ -44,66 +43,199 @@ namespace FlashCard.Database
 
         public Category Category { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
-        public bool Checked { get; set; }
-        
+        protected bool _isNew;
+        /// <summary>
+        /// Gets or sets the IsNew
+        /// </summary>
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if (_isNew != value)
+                {
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
+                }
+            }
+        }
+
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
+
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
-        
+
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.Category.CategoryID = this.CategoryID;
+            this.Category.CategoryName = this.CategoryName;
+            this.Category.CategoryOf = this.CategoryOf;
+        }
+
+        public void ToModel()
+        {
+            this.CategoryID = this.Category.CategoryID;
+            this.CategoryName = this.Category.CategoryName;
+            this.CategoryOf = this.Category.CategoryOf;
+        }
 
         #endregion
 
         #region Primitive Properties
 
+        protected string _categoryID;
+        /// <summary>
+        /// Gets or sets the CategoryID.
+        /// </summary>
         public string CategoryID
         {
-            get { return this.Category.CategoryID; }
+            get { return this._categoryID; }
             set
             {
-                if (this.Category.CategoryID != value)
+                if (this._categoryID != value)
                 {
                     this.IsDirty = true;
-                    this.Category.CategoryID = value;
+                    this._categoryID = value;
                     RaisePropertyChanged(() => CategoryID);
                 }
             }
         }
+
+        protected string _categoryName;
+        /// <summary>
+        /// Gets or sets the CategoryName.
+        /// </summary>
         public string CategoryName
         {
-            get { return this.Category.CategoryName; }
+            get { return this._categoryName; }
             set
             {
-                if (this.Category.CategoryName != value)
+                if (this._categoryName != value)
                 {
                     this.IsDirty = true;
-                    this.Category.CategoryName = value;
+                    this._categoryName = value;
                     RaisePropertyChanged(() => CategoryName);
                 }
             }
         }
+
+        protected int _categoryOf;
+        /// <summary>
+        /// Gets or sets the CategoryOf.
+        /// </summary>
         public int CategoryOf
         {
-            get { return this.Category.CategoryOf; }
+            get { return this._categoryOf; }
             set
             {
-                if (this.Category.CategoryOf != value)
+                if (this._categoryOf != value)
                 {
                     this.IsDirty = true;
-                    this.Category.CategoryOf = value;
+                    this._categoryOf = value;
                     RaisePropertyChanged(() => CategoryOf);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
+        #region Custom Code
 
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
+                    case "Content":
+                        
+                        break;
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
+        #endregion
 
         #endregion
     }

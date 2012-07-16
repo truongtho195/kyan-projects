@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlashCard.Database.Repository
 {
-    public class LessonRepository:UnitOfWork<Lesson>
+    public class LessonRepository:UnitOfWork
     {
         #region Ctor
         public LessonRepository()
@@ -15,13 +15,7 @@ namespace FlashCard.Database.Repository
         #endregion
 
         #region Extenion Methods
-        public void SaveLessonWithRelation(LessonModel lessonModel)
-        {
-            if (lessonModel.IsNew)
-            {
-                
-            }
-        }
+      
         #endregion
 
     }

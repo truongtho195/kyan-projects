@@ -8,12 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.ComponentModel;
 using FlashCard.Models;
-using FlashCard.Database;
 
 
 namespace FlashCard.Database
@@ -21,7 +19,7 @@ namespace FlashCard.Database
     /// <summary>
     /// Model for table UserLesson 
     /// </summary>
-    public partial class UserLessonModel : ViewModelBase
+    public partial class UserLessonModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
 
@@ -36,6 +34,7 @@ namespace FlashCard.Database
         public UserLessonModel(UserLesson userlesson)
         {
             this.UserLesson = userlesson;
+            ToModel();
         }
 
         #endregion
@@ -44,67 +43,200 @@ namespace FlashCard.Database
 
         public UserLesson UserLesson { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
-        public bool Checked { get; set; }
-        
+        protected bool _isNew;
+        /// <summary>
+        /// Gets or sets the IsNew
+        /// </summary>
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if (_isNew != value)
+                {
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
+                }
+            }
+        }
+
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
+
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
-        
+
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.UserLesson.UserLessonID = this.UserLessonID;
+            this.UserLesson.UserID = this.UserID;
+            this.UserLesson.LessonID = this.LessonID;
+        }
+
+        public void ToModel()
+        {
+            this.UserLessonID = this.UserLesson.UserLessonID;
+            this.UserID = this.UserLesson.UserID;
+            this.LessonID = this.UserLesson.LessonID;
+        }
 
         #endregion
 
         #region Primitive Properties
 
+        protected long _userLessonID;
+        /// <summary>
+        /// Gets or sets the UserLessonID.
+        /// </summary>
         public long UserLessonID
         {
-            get { return this.UserLesson.UserLessonID; }
+            get { return this._userLessonID; }
             set
             {
-                if (this.UserLesson.UserLessonID != value)
+                if (this._userLessonID != value)
                 {
                     this.IsDirty = true;
-                    this.UserLesson.UserLessonID = value;
+                    this._userLessonID = value;
                     RaisePropertyChanged(() => UserLessonID);
                 }
             }
         }
+
+        protected Nullable<long> _userID;
+        /// <summary>
+        /// Gets or sets the UserID.
+        /// </summary>
         public Nullable<long> UserID
         {
-            get { return this.UserLesson.UserID; }
+            get { return this._userID; }
             set
             {
-                if (this.UserLesson.UserID != value)
+                if (this._userID != value)
                 {
                     this.IsDirty = true;
-                    this.UserLesson.UserID = value;
+                    this._userID = value;
                     RaisePropertyChanged(() => UserID);
                 }
             }
         }
+
+        protected Nullable<long> _lessonID;
+        /// <summary>
+        /// Gets or sets the LessonID.
+        /// </summary>
         public Nullable<long> LessonID
         {
-            get { return this.UserLesson.LessonID; }
+            get { return this._lessonID; }
             set
             {
-                if (this.UserLesson.LessonID != value)
+                if (this._lessonID != value)
                 {
                     this.IsDirty = true;
-                    this.UserLesson.LessonID = value;
+                    this._lessonID = value;
                     RaisePropertyChanged(() => LessonID);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
+        #region Custom Code
 
+        #region DataErrorInfo
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        public Dictionary<string, string> Errors
+        {
+            get
+            {
+                return _errors;
+            }
+            set
+            {
+                if (_errors != value)
+                {
+                    _errors = value;
+                    RaisePropertyChanged(() => Errors);
+                }
+            }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = String.Empty;
+                this.Errors.Remove(columnName);
+                switch (columnName)
+                {
 
+                    case "Content":
+
+                        break;
+                }
+                if (!String.IsNullOrEmpty(message))
+                {
+                    this.Errors.Add(columnName, message);
+                }
+                return message;
+            }
+        }
+        #endregion
         #endregion
     }
 }

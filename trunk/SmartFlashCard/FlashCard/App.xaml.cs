@@ -38,7 +38,7 @@ namespace FlashCard
 
             log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
             SetupRepository setupRepository = new SetupRepository();
-            var setup = setupRepository.GetAll();
+            var setup = setupRepository.GetAll<Setup>();
             if (setup.Count == 0)
                 SetupModel = new SetupModel();
             else

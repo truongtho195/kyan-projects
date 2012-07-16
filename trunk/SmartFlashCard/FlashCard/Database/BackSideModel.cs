@@ -8,13 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using FlashCard.Models;
-using FlashCard.Database;
 using System.ComponentModel;
+using FlashCard.Models;
 
 
 namespace FlashCard.Database
@@ -37,6 +34,7 @@ namespace FlashCard.Database
         public BackSideModel(BackSide backside)
         {
             this.BackSide = backside;
+            ToModel();
         }
 
         #endregion
@@ -45,110 +43,198 @@ namespace FlashCard.Database
 
         public BackSide BackSide { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        //public bool Deleted { get; set; }
-        public bool Checked { get; set; }
-
-
-        private bool _deleted;
+        protected bool _isNew;
         /// <summary>
-        /// Gets or sets the Deleted.
+        /// Gets or sets the IsNew
         /// </summary>
-        public bool Deleted
+        public bool IsNew
         {
-            get { return _deleted; }
+            get { return _isNew; }
             set
             {
-                if (_deleted != value)
+                if (_isNew != value)
                 {
-                    _deleted = value;
-                    RaisePropertyChanged(() => Deleted);
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
                 }
             }
         }
 
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
 
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
-        
+
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.BackSide.BackSideID = this.BackSideID;
+            this.BackSide.LessonID = this.LessonID;
+            this.BackSide.Content = this.Content;
+            this.BackSide.BackSideName = this.BackSideName;
+            this.BackSide.IsMain = this.IsMain;
+        }
+
+        public void ToModel()
+        {
+            this.BackSideID = this.BackSide.BackSideID;
+            this.LessonID = this.BackSide.LessonID;
+            this.Content = this.BackSide.Content;
+            this.BackSideName = this.BackSide.BackSideName;
+            this.IsMain = this.BackSide.IsMain;
+        }
 
         #endregion
 
         #region Primitive Properties
 
+        protected string _backSideID;
+        /// <summary>
+        /// Gets or sets the BackSideID.
+        /// </summary>
         public string BackSideID
         {
-            get { return this.BackSide.BackSideID; }
+            get { return this._backSideID; }
             set
             {
-                if (this.BackSide.BackSideID != value)
+                if (this._backSideID != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.BackSideID = value;
+                    this._backSideID = value;
                     RaisePropertyChanged(() => BackSideID);
                 }
             }
         }
+
+        protected string _lessonID;
+        /// <summary>
+        /// Gets or sets the LessonID.
+        /// </summary>
         public string LessonID
         {
-            get { return this.BackSide.LessonID; }
+            get { return this._lessonID; }
             set
             {
-                if (this.BackSide.LessonID != value)
+                if (this._lessonID != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.LessonID = value;
+                    this._lessonID = value;
                     RaisePropertyChanged(() => LessonID);
                 }
             }
         }
+
+        protected string _content;
+        /// <summary>
+        /// Gets or sets the Content.
+        /// </summary>
         public string Content
         {
-            get { return this.BackSide.Content; }
+            get { return this._content; }
             set
             {
-                if (this.BackSide.Content != value)
+                if (this._content != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.Content = value;
+                    this._content = value;
                     RaisePropertyChanged(() => Content);
                 }
             }
         }
+
+        protected string _backSideName;
+        /// <summary>
+        /// Gets or sets the BackSideName.
+        /// </summary>
         public string BackSideName
         {
-            get { return this.BackSide.BackSideName; }
+            get { return this._backSideName; }
             set
             {
-                if (this.BackSide.BackSideName != value)
+                if (this._backSideName != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.BackSideName = value;
+                    this._backSideName = value;
                     RaisePropertyChanged(() => BackSideName);
                 }
             }
         }
+
+        protected Nullable<byte> _isMain;
+        /// <summary>
+        /// Gets or sets the IsMain.
+        /// </summary>
         public Nullable<byte> IsMain
         {
-            get { return this.BackSide.IsMain; }
+            get { return this._isMain; }
             set
             {
-                if (this.BackSide.IsMain != value)
+                if (this._isMain != value)
                 {
                     this.IsDirty = true;
-                    this.BackSide.IsMain = value;
+                    this._isMain = value;
                     RaisePropertyChanged(() => IsMain);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
+        #region Custom Code
+
         #region DataErrorInfo
         public string Error
         {
@@ -195,7 +281,6 @@ namespace FlashCard.Database
             }
         }
         #endregion
-
         #endregion
     }
 }

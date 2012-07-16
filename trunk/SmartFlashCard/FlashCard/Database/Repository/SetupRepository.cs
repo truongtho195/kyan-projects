@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlashCard.Database.Repository
 {
-    public class SetupRepository:UnitOfWork<Setup>
+    public class SetupRepository:UnitOfWork
     {
         #region Ctor
         public SetupRepository()

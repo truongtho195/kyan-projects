@@ -10,21 +10,21 @@ using System.Data.EntityClient;
 
 namespace FlashCard.Database
 {
-    public class UnitOfWork<T> : IDisposable where T : class
+    public class UnitOfWork : IDisposable
     {
 
         //A Static instance of the Linq Data Context
         private static System.Data.Objects.ObjectContext _context;
-        private ObjectSet<T> _entities;
-        private ObjectSet<T> Entities
-        {
-            get
-            {
-                if (_entities == null)
-                    _entities = _context.CreateObjectSet<T>();
-                return _entities;
-            }
-        }
+        //private ObjectSet<T> _entities;
+        //private ObjectSet<T> Entities
+        //{
+        //    get
+        //    {
+        //        if (_entities == null)
+        //            _entities = _context.CreateObjectSet<T>();
+        //        return _entities;
+        //    }
+        //}
 
         //The default constructor
         public UnitOfWork()
@@ -40,7 +40,7 @@ namespace FlashCard.Database
 
         private string GetConnectionString()
         {
-            string connectionString =  System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             // Specify the provider name, server and database.
             string providerName = "System.Data.SQLite";
             string serverName = connectionString;
@@ -52,7 +52,7 @@ namespace FlashCard.Database
                 new SqlConnectionStringBuilder();
 
             // Set the properties for the data source.
-            sqlBuilder.DataSource = serverName+databaseName;
+            sqlBuilder.DataSource = serverName + databaseName;
             //sqlBuilder.InitialCatalog = databaseName;
             //sqlBuilder.IntegratedSecurity = true;
 
@@ -71,22 +71,22 @@ namespace FlashCard.Database
 
             // Set the Metadata location.
             entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
-           return entityBuilder.ToString();
+            return entityBuilder.ToString();
         }
 
         //Add a new entity to the model
-        public void Add(T _entity)
+        public void Add<T>(T _entity) where T : class
         {
             //var table = _service.GetTable<T>();            
             //_service.InsertOnSubmit(_entity);
 
             //_service.AddObject(typeof(T).Name, _entity);
 
-            this.Entities.AddObject(_entity);
+            _context.CreateObjectSet<T>().AddObject(_entity);
         }
 
         //Delete an existing entity from the model
-        public void Delete(T _entity)
+        public void Delete<T>(T _entity) where T : class
         {
             //var table = _service.GetTable<T>();
             //table.DeleteOnSubmit(_entity);
@@ -97,12 +97,12 @@ namespace FlashCard.Database
             //{
             //    _context.DeleteObject(originalItem);
             //}
-            _context.DeleteObject(_entity);
+             _context.CreateObjectSet<T>().DeleteObject(_entity);
             //this.Entities.DeleteObject(_entity);
         }
 
         //Update an existing entity
-        public void Update(T _entity)
+        public void Update<T>(T _entity) where T : class
         {
             //var table = _service.GetTable<T>();
             //table.Attach(_entity, true);
@@ -114,29 +114,29 @@ namespace FlashCard.Database
             //    _service.ApplyCurrentValues(typeof(T).Name, _entity);
             //}
 
-            this.Entities.ApplyCurrentValues(_entity);
+            _context.CreateObjectSet<T>().ApplyCurrentValues(_entity);
         }
 
-        public void Refresh(T item)
+        public void Refresh<T>(T item) where T : class
         {
             _context.Refresh(System.Data.Objects.RefreshMode.StoreWins, item);
         }
 
-        public void Refresh()
+        public void Refresh<T>() where T : class
         {
-            _context.Refresh(System.Data.Objects.RefreshMode.StoreWins, this.Entities);
+            _context.Refresh(System.Data.Objects.RefreshMode.StoreWins, _context.CreateObjectSet<T>());
         }
 
         //Get the entire Entity table
-        public IList<T> GetAll()
+        public IList<T> GetAll<T>() where T : class
         {
-            IList<T> list = this.Entities.ToList();
+            IList<T> list = _context.CreateObjectSet<T>().ToList();
             return list;
         }
 
-        public IList<T> GetAll(Expression<Func<T, bool>> expression)
+        public IList<T> GetAll<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            var query = this.Entities.Where(expression);
+            var query = _context.CreateObjectSet<T>().Where(expression);
             if (query != null && query.Count() > 0)
             {
                 IList<T> list = query.ToList();
@@ -145,7 +145,7 @@ namespace FlashCard.Database
             return default(IList<T>);
         }
 
-        public IList<T> Include(params string[] tableNames)
+        public IList<T> Include<T>(params string[] tableNames)
         {
             var query = _context
                 .CreateQuery<T>(
@@ -158,41 +158,41 @@ namespace FlashCard.Database
             return list;
         }
 
-        public IList<T> Skip(int count, Func<T, object> orderby)
+        public IList<T> Skip<T>(int count, Func<T, object> orderby) where T : class
         {
-            IList<T> list =this.Entities
+            IList<T> list = _context.CreateObjectSet<T>()
                 .OrderBy(orderby)
                 .Skip(count).Take(100)
                 .ToList();
             return list;
         }
 
-        public IList<T> Skip(int count, Func<T, int> orderby)
+        public IList<T> Skip<T>(int count, Func<T, int> orderby) where T : class
         {
-            IList<T> list = this.Entities
+            IList<T> list = _context.CreateObjectSet<T>()
                 .OrderBy(orderby)
                 .Skip(count).Take(100)
                 .ToList();
             return list;
         }
 
-        public IQueryable<T> GetQuery(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetQuery<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            return this.Entities
+            return _context.CreateObjectSet<T>()
                 .Where(expression);
         }
 
         //Get by query
-        public T FindBy(Expression<Func<T, bool>> expression)
+        public T FindBy<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            return this.Entities
+            return _context.CreateObjectSet<T>()
                 .Where(expression)
                 .FirstOrDefault();
         }
 
-        public T GetSingle(Expression<Func<T, bool>> expression)
+        public T GetSingle<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            T result = this.Entities
+            T result = _context.CreateObjectSet<T>()
                 .Where(expression)
                 .FirstOrDefault();
 

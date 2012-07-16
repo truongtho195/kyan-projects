@@ -370,12 +370,12 @@
                             </SelectiveScrollingGrid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Deleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Value="True">
                                 <Setter Property="Visibility"
                                         Value="Collapsed" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Deleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          Value="False">
                                 <Setter Property="Visibility"
                                         Value="Visible" />
@@ -407,7 +407,6 @@
             <ColumnDefinition Width="Auto"
                               x:Name="colShdR" />
         </Grid.ColumnDefinitions>
-
         <Rectangle x:Name="rtShdR"
                    Stroke="#00000000"
                    Grid.Column="1"
@@ -457,7 +456,6 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-
         <Border BorderBrush="#FF257EE2"
                 BorderThickness="1.5"
                 Grid.RowSpan="2" />
@@ -611,7 +609,7 @@
                             <GridView>
                                 <GridViewColumn Header="Lesson Name"
                                                 Width="auto"
-                                                DisplayMemberBinding="{Binding LessonName}" />
+                                                DisplayMemberBinding="{Binding Lesson.LessonName}" />
                                 <GridViewColumn Header="Card Name"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding Lesson.Card.CardName}" />
@@ -714,7 +712,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ComboBox x:Name="cmbType"
                                           ItemsSource="{Binding CategoryCollection}"
-                                          SelectedValue="{Binding CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValue="{Binding SelectedLesson.CategoryID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="CategoryID"
                                           DisplayMemberPath="Name"
                                           d:LayoutOverrides="Height"
@@ -736,7 +734,7 @@
                                        Margin="0" />
                             <ComboBox x:Name="cmbCard"
                                       ItemsSource="{Binding CardList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValue="{Binding CardID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValue="{Binding SelectedLesson.CardID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       DisplayMemberPath="CardName"
                                       SelectedValuePath="CardID"
                                       VerticalAlignment="Center"
@@ -747,7 +745,7 @@
                                       Grid.Row="2"
                                       Height="23" />
                             <TextBox x:Name="txtLessonContent"
-                                     Text="{Binding LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                      Margin="10,6,135,6"
@@ -761,7 +759,7 @@
                                        Margin="0,6,0,0"
                                        d:LayoutOverrides="VerticalAlignment" />
                             <TextBox x:Name="txtDescription"
-                                     Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                     Text="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                      Grid.Column="1"
                                      Margin="10,8"
                                      Grid.Row="4"
@@ -780,7 +778,7 @@
 
                             <!--SelectedItem="{Binding SelectedBackSideModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
                             <DataGrid x:Name="dgBackSide"
-                                      ItemsSource="{Binding BackSideCollection}"
+                                      ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       SelectedItem="{Binding SelectedBackSide,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"

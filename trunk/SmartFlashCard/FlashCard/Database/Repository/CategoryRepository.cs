@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlashCard.Database.Repository
 {
-    public class CategoryRepository:UnitOfWork<Category>
+    public class CategoryRepository:UnitOfWork
     {
         #region Ctor
         public CategoryRepository()

@@ -8,14 +8,10 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using FlashCard.Models;
-using System.Linq;
-using FlashCard.Database;
 using System.ComponentModel;
+using FlashCard.Models;
 
 
 namespace FlashCard.Database
@@ -38,6 +34,7 @@ namespace FlashCard.Database
         public LessonModel(Lesson lesson)
         {
             this.Lesson = lesson;
+            ToModel();
         }
 
         #endregion
@@ -46,95 +43,198 @@ namespace FlashCard.Database
 
         public Lesson Lesson { get; private set; }
 
-        public bool IsNew { get; private set; }
-        public bool IsDirty { get; private set; }
-        public bool Deleted { get; set; }
-        public bool Checked { get; set; }
+        protected bool _isNew;
+        /// <summary>
+        /// Gets or sets the IsNew
+        /// </summary>
+        public bool IsNew
+        {
+            get { return _isNew; }
+            set
+            {
+                if (_isNew != value)
+                {
+                    _isNew = value;
+                    RaisePropertyChanged(() => IsNew);
+                }
+            }
+        }
+
+        protected bool _isDirty;
+        /// <summary>
+        /// Gets or sets the IsDirty
+        /// </summary>
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged(() => IsDirty);
+                }
+            }
+        }
+
+        protected bool _isDeleted;
+        /// <summary>
+        /// Gets or sets the IsDeleted
+        /// </summary>
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged(() => IsDeleted);
+                }
+            }
+        }
+
+        protected bool _isChecked;
+        /// <summary>
+        /// Gets or sets the IsChecked
+        /// </summary>
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    RaisePropertyChanged(() => IsChecked);
+                }
+            }
+        }
 
         public void EndUpdate()
         {
-            IsNew = false;
-            IsDirty = false;
+            this.IsNew = false;
+            this.IsDirty = false;
         }
 
+        public void ToEntity()
+        {
+            if (IsNew)
+                this.Lesson.LessonID = this.LessonID;
+            this.Lesson.LessonName = this.LessonName;
+            this.Lesson.Description = this.Description;
+            this.Lesson.CategoryID = this.CategoryID;
+            this.Lesson.CardID = this.CardID;
+        }
+
+        public void ToModel()
+        {
+            this.LessonID = this.Lesson.LessonID;
+            this.LessonName = this.Lesson.LessonName;
+            this.Description = this.Lesson.Description;
+            this.CategoryID = this.Lesson.CategoryID;
+            this.CardID = this.Lesson.CardID;
+        }
 
         #endregion
 
         #region Primitive Properties
 
+        protected string _lessonID;
+        /// <summary>
+        /// Gets or sets the LessonID.
+        /// </summary>
         public string LessonID
         {
-            get { return this.Lesson.LessonID; }
+            get { return this._lessonID; }
             set
             {
-                if (this.Lesson.LessonID != value)
+                if (this._lessonID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonID = value;
+                    this._lessonID = value;
                     RaisePropertyChanged(() => LessonID);
                 }
             }
         }
+
+        protected string _lessonName;
+        /// <summary>
+        /// Gets or sets the LessonName.
+        /// </summary>
         public string LessonName
         {
-            get { return this.Lesson.LessonName; }
+            get { return this._lessonName; }
             set
             {
-                if (this.Lesson.LessonName != value)
+                if (this._lessonName != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonName = value;
+                    this._lessonName = value;
                     RaisePropertyChanged(() => LessonName);
                 }
             }
         }
+
+        protected string _description;
+        /// <summary>
+        /// Gets or sets the Description.
+        /// </summary>
         public string Description
         {
-            get { return this.Lesson.Description; }
+            get { return this._description; }
             set
             {
-                if (this.Lesson.Description != value)
+                if (this._description != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.Description = value;
+                    this._description = value;
                     RaisePropertyChanged(() => Description);
                 }
             }
         }
+
+        protected string _categoryID;
+        /// <summary>
+        /// Gets or sets the CategoryID.
+        /// </summary>
         public string CategoryID
         {
-            get { return this.Lesson.CategoryID; }
+            get { return this._categoryID; }
             set
             {
-                if (this.Lesson.CategoryID != value)
+                if (this._categoryID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.CategoryID = value;
+                    this._categoryID = value;
                     RaisePropertyChanged(() => CategoryID);
                 }
             }
         }
+
+        protected string _cardID;
+        /// <summary>
+        /// Gets or sets the CardID.
+        /// </summary>
         public string CardID
         {
-            get { return this.Lesson.CardID; }
+            get { return this._cardID; }
             set
             {
-                if (this.Lesson.CardID != value)
+                if (this._cardID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.CardID = value;
+                    this._cardID = value;
                     RaisePropertyChanged(() => CardID);
                 }
             }
         }
 
+
         #endregion
 
-        #region all the custom code
-
+        #region Custom Code
         #region Properties
-
-
         private bool _isBackSide;
         /// <summary>
         /// This is Extend Properties
@@ -216,8 +316,6 @@ namespace FlashCard.Database
                     case "Description":
                         if (string.IsNullOrWhiteSpace(Description))
                             message = "Description is required!";
-
-
                         break;
 
                 }
@@ -229,6 +327,7 @@ namespace FlashCard.Database
             }
         }
         #endregion
+
         #endregion
     }
 }
