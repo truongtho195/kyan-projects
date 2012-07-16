@@ -49,7 +49,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         #region "  CategoryCollection"
         private List<CardModel> _cardCollection;
         /// <summary>
@@ -189,13 +188,16 @@ namespace FlashCard.ViewModels
 
                 SetupRepository setupRepository = new SetupRepository();
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                App.SetupModel.ToEntity();
                 if (App.SetupModel.IsNew)
-                    setupRepository.Add(App.SetupModel.Setup);
+                {
+                    setupRepository.Add<Setup>(App.SetupModel.Setup);
+                    setupRepository.Commit();
+                }
                 else if (App.SetupModel.IsDirty)
                 {
-                    setupRepository.Update(App.SetupModel.Setup);
+                    setupRepository.Update<Setup>(App.SetupModel.Setup);
                     setupRepository.Commit();
-                   
                 }
                 App.SetupModel.EndUpdate();
             }
