@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.BackSide = backside;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
