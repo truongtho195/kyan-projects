@@ -115,9 +115,23 @@ namespace FlashCard.ViewModels
                 if (_selectedBackSide != value)
                 {
                     _selectedBackSide = value;
+                    if (_selectedBackSide != null)
+                    {
+                        _selectedBackSide.PropertyChanged -= new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
+                        _selectedBackSide.PropertyChanged += new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
+                    }
                     RaisePropertyChanged(() => SelectedBackSide);
+
                 }
             }
+        }
+
+        private void SelectedBackSide_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+            if ("DisplayName".Equals(e.PropertyName) || "Content".Equals(e.PropertyName))
+                if (CanAddBackSideExecute(null))
+                    AddBackSideExecute(null);
         }
 
         #endregion
@@ -232,7 +246,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-      
+
 
         #region"  IsCardHandle"
         private bool _isCardHandle;
@@ -277,8 +291,8 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return true;
-                
-            return SelectedLesson!=null&& !SelectedLesson.IsDirty;
+
+            return SelectedLesson != null && !SelectedLesson.IsDirty;
         }
 
         private void NewExecute(object param)
@@ -309,9 +323,9 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return( SelectedLesson.IsDirty || SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0) &&
+            return (SelectedLesson.IsDirty || SelectedLesson.BackSideCollection.Count(x => x.IsDirty) > 0) &&
                     SelectedLesson.Errors.Count() == 0 &&
-                    SelectedLesson.BackSideCollection.Count(x=>x.Errors.Count>0) == 0;
+                    SelectedLesson.BackSideCollection.Count(x => x.Errors.Count > 0) == 0;
         }
 
         private void SaveExecute(object param)
@@ -358,7 +372,7 @@ namespace FlashCard.ViewModels
                 lessonRepository.Commit();
             }
             SelectedLesson.EndUpdate();
-            
+
             RaisePropertyChanged(() => SelectedLesson);
         }
         #endregion
