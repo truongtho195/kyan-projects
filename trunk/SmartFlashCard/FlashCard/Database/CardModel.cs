@@ -121,8 +121,8 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Card.CardID = this.CardID;
-            this.Card.CardName = this.CardName;
-            this.Card.Remark = this.Remark;
+            this.Card.CardName = this.CardName.Trim();
+            this.Card.Remark = this.Remark.Trim();
         }
 
         public void ToModel()
