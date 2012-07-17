@@ -33,10 +33,11 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Variables
-        StudyConfigView _studyConfigView;
+        private StudyConfigView _studyConfigView;
         private ICollectionView _lessonCollectionView;
         private ICollectionView _cardCollectionView;
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public bool IsFromPopup { get; set; }
         #endregion
 
         #region Properties
@@ -231,7 +232,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        public bool IsFromPopup { get; set; }
+      
 
         #region"  IsCardHandle"
         private bool _isCardHandle;
@@ -964,7 +965,7 @@ namespace FlashCard.ViewModels
                 }
                 else
                 {
-                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Hidden;
                     ViewCore.grdControl.Children.Clear();
                 }
             }

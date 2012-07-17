@@ -8,7 +8,7 @@
 
     <!-- Resource dictionary entries should be defined here. -->
     <SolidColorBrush x:Key="brBackgroundColor"
-                     Color="#FFCBE6FB" />
+                     Color="#FFCDE8FD" />
 
     <!--#region Validation Template Error-->
     <ControlTemplate x:Key="validationTemplate">
@@ -144,8 +144,7 @@
                             Height="{TemplateBinding Height}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Cursor="Hand"
-                            Background="White"
-                            BorderBrush="#FF4D4D4D">
+                            Background="White">
                         <ContentPresenter x:Name="contentPresenter"
                                           RecognizesAccessKey="True"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
@@ -606,7 +605,7 @@
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}"
                             RenderTransformOrigin="0.5,0.5"
-                            Cursor="Hand">
+                            Cursor="Hand" BorderBrush="#00000000" BorderThickness="0.5">
                         <Border.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -637,9 +636,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"
                                  Value="True">
-                            <Setter Property="Background"
-                                    TargetName="border"
-                                    Value="#B2939393" />
+                        	<Setter Property="BorderBrush" TargetName="border" Value="White"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused"
                                  Value="true" />
@@ -685,14 +682,9 @@
     <LinearGradientBrush x:Key="brBottomColor"
                          EndPoint="0.5,1"
                          StartPoint="0.5,0">
-        <GradientStop Color="#FF5593EE"
-                      Offset="0.036" />
+        <GradientStop Color="#FF5593EE" />
         <GradientStop Color="#FF68A4EB"
                       Offset="0.988" />
-        <GradientStop Color="White"
-                      Offset="1" />
-        <GradientStop Color="White"
-                      Offset="0.011" />
     </LinearGradientBrush>
     <RadialGradientBrush x:Key="FlashCardBG"
                          RadiusY="0.582"
@@ -719,41 +711,6 @@
         <GradientStop Color="#FF152895"
                       Offset="1" />
     </RadialGradientBrush>
-    <LinearGradientBrush x:Key="FullFlashCardBg"
-                         EndPoint="0.5,1.243"
-                         MappingMode="RelativeToBoundingBox"
-                         StartPoint="0.5,0">
-        <GradientStop Color="#F2000000"
-                      Offset="1" />
-        <GradientStop Color="#F23D3B3B"
-                      Offset="0.703" />
-        <GradientStop Color="#F2000000"
-                      Offset="0.079" />
-    </LinearGradientBrush>
-    <RadialGradientBrush x:Key="FullFlashCardBg2"
-                         GradientOrigin="0.242,0.2"
-                         RadiusY="0.668"
-                         RadiusX="0.529">
-        <GradientStop Color="#DAEDE1E1" />
-        <GradientStop Color="#FF1F80BE"
-                      Offset="1" />
-    </RadialGradientBrush>
-    <LinearGradientBrush x:Key="CoverBackground"
-                         EndPoint="-0.031,-0.057"
-                         StartPoint="0.974,1.005">
-        <GradientStop Color="#FF212020"
-                      Offset="0" />
-        <GradientStop Color="#FF878181"
-                      Offset="0.41" />
-        <GradientStop Color="#E4262525"
-                      Offset="0.57" />
-        <GradientStop Color="#FE807A7A"
-                      Offset="1" />
-        <GradientStop Color="#FF767171"
-                      Offset="0.225" />
-        <GradientStop Color="#F36F6A6A"
-                      Offset="0.803" />
-    </LinearGradientBrush>
     <LinearGradientBrush x:Key="FullScreenBg1"
                          EndPoint="0.5,1"
                          MappingMode="RelativeToBoundingBox"
@@ -763,17 +720,6 @@
         <GradientStop Color="#E5000000"
                       Offset="0.103" />
         <GradientStop Color="#E5000000"
-                      Offset="1" />
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="FullScreenBg3"
-                         EndPoint="0.5,1"
-                         MappingMode="RelativeToBoundingBox"
-                         StartPoint="0.5,0">
-        <GradientStop Color="Black"
-                      Offset="0.012" />
-        <GradientStop Color="#E5333131"
-                      Offset="0.041" />
-        <GradientStop Color="#E5333131"
                       Offset="1" />
     </LinearGradientBrush>
     <RadialGradientBrush x:Key="ColorLineNumNomard">
@@ -911,6 +857,349 @@
     						<DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
     					</SelectiveScrollingGrid>
     				</Border>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <LinearGradientBrush x:Key="ShadowLine2" EndPoint="0.958,0.5" StartPoint="0.038,0.5">
+    	<GradientStop Color="#7F000000" Offset="0.159"/>
+    	<GradientStop Color="#00000000" Offset="0.744"/>
+    </LinearGradientBrush>
+    <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+    	<Style.Triggers>
+    		<Trigger Property="IsEnabled" Value="false">
+    			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+    		</Trigger>
+    	</Style.Triggers>
+    	<Setter Property="Template" Value="{DynamicResource ScrollViewerControlTemplate}"/>
+    </Style>
+    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonNormal" EndPoint="1, 0" StartPoint="0, 0">
+    	<GradientStop Color="#EEEDE5" Offset="0"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
+    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
+    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
+    	<GradientStop Color="#EEEDE5" Offset="1"/>
+    </LinearGradientBrush>
+    <Style x:Key="ScrollBarButton" TargetType="{x:Type RepeatButton}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="Focusable" Value="false"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type RepeatButton}">
+    				<Microsoft_Windows_Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="{TemplateBinding Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph}" ThemeColor="NormalColor"/>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonPressed" EndPoint="1, 0" StartPoint="0, 0">
+    	<GradientStop Color="#D7D5C2" Offset="0"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
+    	<GradientStop Color="#E3DED3" Offset="0.06"/>
+    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
+    	<GradientStop Color="#D7D5C2" Offset="1"/>
+    </LinearGradientBrush>
+    <Style x:Key="VerticalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="Background" Value="Transparent"/>
+    	<Setter Property="Focusable" Value="false"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type RepeatButton}">
+    				<Rectangle x:Name="Bg" Fill="{TemplateBinding Background}"/>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsPressed" Value="true">
+    						<Setter Property="Fill" TargetName="Bg" Value="{StaticResource VerticalScrollBarPageButtonPressed}"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <LinearGradientBrush x:Key="VerScrollBarThumbBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
+    	<GradientStop Color="#F0808080" Offset="0.132"/>
+    	<GradientStop Color="#E59B9A9A" Offset="0.864"/>
+    	<GradientStop Color="#E5919090" Offset="0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VerScrollBarThumbActivedBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
+    	<GradientStop Color="#F0ABABAB" Offset="0.132"/>
+    	<GradientStop Color="#E5CAC9C9" Offset="0.864"/>
+    	<GradientStop Color="#E5C6C5C5" Offset="0"/>
+    </LinearGradientBrush>
+    <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type Thumb}">
+    				<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    					<Microsoft_Windows_Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsDragging}" SnapsToDevicePixels="true" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="{TemplateBinding Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph}" ThemeColor="NormalColor" Visibility="Collapsed"/>
+    					<Border x:Name="border" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5" Margin="4,0" Opacity="0.8" Background="{DynamicResource VerScrollBarThumbBg}">
+    						<Border.OpacityMask>
+    							<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+    								<GradientStop Color="#E5FFFFFF" Offset="0.521"/>
+    								<GradientStop Color="#CCFFFFFF" Offset="0.987"/>
+    								<GradientStop Color="#CCFFFFFF" Offset="0.007"/>
+    								<GradientStop Color="White" Offset="0.973"/>
+    								<GradientStop Color="White" Offset="0.019"/>
+    							</LinearGradientBrush>
+    						</Border.OpacityMask>
+    					</Border>
+    				</Grid>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsDragging" Value="True">
+    						<Setter Property="Background" TargetName="border" Value="{DynamicResource VerScrollBarThumbActivedBg}"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonNormal" EndPoint="0, 1" StartPoint="0, 0">
+    	<GradientStop Color="#EEEDE5" Offset="0"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
+    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
+    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
+    	<GradientStop Color="#EEEDE5" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonPressed" EndPoint="0, 1" StartPoint="0, 0">
+    	<GradientStop Color="#D7D5C2" Offset="0"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
+    	<GradientStop Color="#E3DED3" Offset="0.06"/>
+    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
+    	<GradientStop Color="#D7D5C2" Offset="1"/>
+    </LinearGradientBrush>
+    <Style x:Key="HorizontalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="Background" Value="Transparent"/>
+    	<Setter Property="Focusable" Value="false"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type RepeatButton}">
+    				<Rectangle x:Name="Bg" Fill="{TemplateBinding Background}"/>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsPressed" Value="true">
+    						<Setter Property="Fill" TargetName="Bg" Value="{StaticResource HorizontalScrollBarPageButtonPressed}"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <Style x:Key="VerticalScrollBarStyle" TargetType="{x:Type ScrollBar}">
+    	<Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+    	<Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+    	<Setter Property="Background" Value="{StaticResource VerticalScrollBarPageButtonNormal}"/>
+    	<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    	<Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    	<Setter Property="MinWidth" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type ScrollBar}">
+    				<Grid SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+    					<Grid.RowDefinitions>
+    						<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}" Height="0"/>
+    						<RowDefinition Height="0.00001*"/>
+    						<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}" Height="0"/>
+    					</Grid.RowDefinitions>
+    					<RepeatButton Command="{x:Static ScrollBar.LineUpCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="UpArrow"/>
+    					<Track x:Name="PART_Track" IsDirectionReversed="true" Grid.Row="1">
+    						<Track.DecreaseRepeatButton>
+    							<RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+    						</Track.DecreaseRepeatButton>
+    						<Track.IncreaseRepeatButton>
+    							<RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+    						</Track.IncreaseRepeatButton>
+    						<Track.Thumb>
+    							<Thumb Style="{StaticResource ScrollBarThumb}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="VerticalGripper"/>
+    						</Track.Thumb>
+    					</Track>
+    					<RepeatButton Command="{x:Static ScrollBar.LineDownCommand}" Grid.Row="2" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="DownArrow"/>
+    				</Grid>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    	<Style.Triggers>
+    		<Trigger Property="Orientation" Value="Horizontal">
+    			<Setter Property="Width" Value="Auto"/>
+    			<Setter Property="MinWidth" Value="0"/>
+    			<Setter Property="Background" Value="{StaticResource HorizontalScrollBarPageButtonNormal}"/>
+    			<Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+    			<Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+    			<Setter Property="Template">
+    				<Setter.Value>
+    					<ControlTemplate TargetType="{x:Type ScrollBar}">
+    						<Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+    							<Grid.ColumnDefinitions>
+    								<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+    								<ColumnDefinition Width="0.00001*"/>
+    								<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+    							</Grid.ColumnDefinitions>
+    							<RepeatButton Command="{x:Static ScrollBar.LineLeftCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="LeftArrow"/>
+    							<Track x:Name="PART_Track" Grid.Column="1">
+    								<Track.DecreaseRepeatButton>
+    									<RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+    								</Track.DecreaseRepeatButton>
+    								<Track.IncreaseRepeatButton>
+    									<RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+    								</Track.IncreaseRepeatButton>
+    								<Track.Thumb>
+    									<Thumb Style="{StaticResource ScrollBarThumb}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="HorizontalGripper"/>
+    								</Track.Thumb>
+    							</Track>
+    							<RepeatButton Grid.Column="2" Command="{x:Static ScrollBar.LineRightCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="RightArrow"/>
+    						</Grid>
+    					</ControlTemplate>
+    				</Setter.Value>
+    			</Setter>
+    		</Trigger>
+    	</Style.Triggers>
+    </Style>
+    <ControlTemplate x:Key="ScrollViewerControlTemplate" TargetType="{x:Type ScrollViewer}">
+    	<Grid x:Name="Grid" Background="{TemplateBinding Background}">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="*"/>
+    			<ColumnDefinition Width="13"/>
+    		</Grid.ColumnDefinitions>
+    		<Grid.RowDefinitions>
+    			<RowDefinition Height="*"/>
+    			<RowDefinition Height="13"/>
+    		</Grid.RowDefinitions>
+    		<Rectangle x:Name="Corner" Grid.Column="1" Grid.Row="1"/>
+    		<ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+    		<ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" HorizontalAlignment="Center" Style="{DynamicResource VerticalScrollBarStyle}" Background="#00000000"/>
+    		<ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Background="#00000000" Style="{DynamicResource HorizontalScrollBarStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+    	</Grid>
+    </ControlTemplate>
+    <LinearGradientBrush x:Key="bgScrollBarThumb" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
+    	<GradientStop Color="#F0808080" Offset="0.132"/>
+    	<GradientStop Color="#E59B9A9A" Offset="0.904"/>
+    	<GradientStop Color="#E5919090" Offset="0"/>
+    </LinearGradientBrush>
+    <Style x:Key="ScrollBarThumb2" TargetType="{x:Type Thumb}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type Thumb}">
+    				<Microsoft_Windows_Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsDragging}" SnapsToDevicePixels="true" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="{TemplateBinding Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph}" ThemeColor="NormalColor"/>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <Style x:Key="HorizontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
+    	<Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+    	<Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+    	<Setter Property="Background" Value="{StaticResource VerticalScrollBarPageButtonNormal}"/>
+    	<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    	<Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    	<Setter Property="MinWidth" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type ScrollBar}">
+    				<Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+    					<Grid.RowDefinitions>
+    						<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+    						<RowDefinition Height="0.00001*"/>
+    						<RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+    					</Grid.RowDefinitions>
+    					<RepeatButton Command="{x:Static ScrollBar.LineUpCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="UpArrow"/>
+    					<Track x:Name="PART_Track" IsDirectionReversed="true" Grid.Row="1">
+    						<Track.DecreaseRepeatButton>
+    							<RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+    						</Track.DecreaseRepeatButton>
+    						<Track.IncreaseRepeatButton>
+    							<RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+    						</Track.IncreaseRepeatButton>
+    						<Track.Thumb>
+    							<Thumb Style="{StaticResource ScrollBarThumb}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="VerticalGripper"/>
+    						</Track.Thumb>
+    					</Track>
+    					<RepeatButton Command="{x:Static ScrollBar.LineDownCommand}" Grid.Row="2" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="DownArrow"/>
+    				</Grid>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    	<Style.Triggers>
+    		<Trigger Property="Orientation" Value="Horizontal">
+    			<Setter Property="Width" Value="Auto"/>
+    			<Setter Property="MinWidth" Value="0"/>
+    			<Setter Property="Background" Value="{StaticResource HorizontalScrollBarPageButtonNormal}"/>
+    			<Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+    			<Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+    			<Setter Property="Template">
+    				<Setter.Value>
+    					<ControlTemplate TargetType="{x:Type ScrollBar}">
+    						<Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+    							<Grid.ColumnDefinitions>
+    								<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}" Width="0"/>
+    								<ColumnDefinition Width="0.00001*"/>
+    								<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}" Width="0"/>
+    							</Grid.ColumnDefinitions>
+    							<RepeatButton Command="{x:Static ScrollBar.LineLeftCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="LeftArrow"/>
+    							<Track x:Name="PART_Track" Grid.Column="1">
+    								<Track.DecreaseRepeatButton>
+    									<RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+    								</Track.DecreaseRepeatButton>
+    								<Track.IncreaseRepeatButton>
+    									<RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+    								</Track.IncreaseRepeatButton>
+    								<Track.Thumb>
+    									<Thumb Style="{DynamicResource HorizontalThumbStyle}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="HorizontalGripper"/>
+    								</Track.Thumb>
+    							</Track>
+    							<RepeatButton Grid.Column="2" Command="{x:Static ScrollBar.LineRightCommand}" Style="{StaticResource ScrollBarButton}" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="RightArrow"/>
+    						</Grid>
+    					</ControlTemplate>
+    				</Setter.Value>
+    			</Setter>
+    		</Trigger>
+    	</Style.Triggers>
+    </Style>
+    <LinearGradientBrush x:Key="bgScrollBarThumbActived" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
+    	<GradientStop Color="#F0ABABAB" Offset="0.132"/>
+    	<GradientStop Color="#E5CAC9C9" Offset="0.876"/>
+    	<GradientStop Color="#E5C6C5C5" Offset="0"/>
+    </LinearGradientBrush>
+    <Style x:Key="HorizontalThumbStyle" TargetType="{x:Type Thumb}">
+    	<Setter Property="OverridesDefaultStyle" Value="true"/>
+    	<Setter Property="IsTabStop" Value="false"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type Thumb}">
+    				<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    					<Microsoft_Windows_Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsDragging}" SnapsToDevicePixels="true" Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph="{TemplateBinding Microsoft_Windows_Themes:ScrollChrome.ScrollGlyph}" ThemeColor="NormalColor" Visibility="Collapsed"/>
+    					<Border x:Name="border" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5" Margin="0,4" Opacity="0.8" RenderTransformOrigin="0.5,0.5" Background="{DynamicResource bgScrollBarThumb}">
+    						<Border.RenderTransform>
+    							<TransformGroup>
+    								<ScaleTransform/>
+    								<SkewTransform/>
+    								<RotateTransform Angle="0"/>
+    								<TranslateTransform/>
+    							</TransformGroup>
+    						</Border.RenderTransform>
+    						<Border.OpacityMask>
+    							<LinearGradientBrush EndPoint="0,0.5" MappingMode="RelativeToBoundingBox" StartPoint="1,0.5">
+    								<GradientStop Color="#E5FFFFFF" Offset="0.521"/>
+    								<GradientStop Color="#CCFFFFFF" Offset="0.987"/>
+    								<GradientStop Color="#CCFFFFFF" Offset="0.007"/>
+    								<GradientStop Color="White" Offset="0.973"/>
+    								<GradientStop Color="White" Offset="0.019"/>
+    							</LinearGradientBrush>
+    						</Border.OpacityMask>
+    					</Border>
+    				</Grid>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsDragging" Value="True">
+    						<Setter Property="Background" TargetName="border" Value="{DynamicResource bgScrollBarThumbActived}"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
     			</ControlTemplate>
     		</Setter.Value>
     	</Setter>

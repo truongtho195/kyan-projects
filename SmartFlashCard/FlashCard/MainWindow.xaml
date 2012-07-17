@@ -22,9 +22,6 @@
                 <ContextMenu>
                     <MenuItem Header="Full Learning"
                               Command="{Binding FullScreenCommand}" />
-                    <!--<MenuItem Header="Lesson Management"
-                              Command="{Binding LessonManagerCommand}" />-->
-                    <!--Visibility="{Binding IsPopupStarted,Converter={StaticResource booleanToVisibilityConverter},ConverterParameter=True}"-->
                     <MenuItem Command="{Binding PlayPauseCommand}"
                               CommandParameter="Popup">
                         <MenuItem.Style>
@@ -41,7 +38,7 @@
                             </Style>
                         </MenuItem.Style>
                     </MenuItem>
-                    <MenuItem Header="Cancel Studey"
+                    <MenuItem Header="Cancel Study"
                               Command="{Binding CancelCommand}">
                         <MenuItem.Style>
                             <Style TargetType="MenuItem">

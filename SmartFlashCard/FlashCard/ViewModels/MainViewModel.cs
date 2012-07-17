@@ -31,21 +31,22 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
+            
         }
         #endregion
 
         #region Variables
-        public DispatcherTimer _timerPopup;
-        DispatcherTimer _timerViewFullScreen;
-        DispatcherTimer _waitForClose;
+        private DispatcherTimer _timerPopup;
+        private DispatcherTimer _timerViewFullScreen;
+        private DispatcherTimer _waitForClose;
 
-        Stopwatch _swCountTimerTick = new Stopwatch();
-        LearnView _learnView;
+        private Stopwatch _swCountTimerTick = new Stopwatch();
+        private LearnView _learnView;
         private int _currentItemIndex = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
         private MediaPlayer _listenWord;
-        SoundPlayer _soundForShow = new SoundPlayer(FlashCard.Properties.Resources.Notification);
+        private SoundPlayer _soundForShow = new SoundPlayer(FlashCard.Properties.Resources.Notification);
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -251,6 +252,25 @@ namespace FlashCard.ViewModels
                     _isCurrentStarted = value;
                     RaisePropertyChanged(() => IsCurrentStarted);
                     RaisePropertyChanged(() => IconStatus);
+                }
+            }
+        }
+        #endregion
+
+        #region"  CanListen"
+        private bool _canListen = true;
+        /// <summary>
+        /// Gets or sets the CanListen.
+        /// </summary>
+        public bool CanListen
+        {
+            get { return _canListen; }
+            set
+            {
+                if (_canListen != value)
+                {
+                    _canListen = value;
+                    RaisePropertyChanged(() => CanListen);
                 }
             }
         }
@@ -547,15 +567,14 @@ namespace FlashCard.ViewModels
         {
             if (SelectedLesson == null)
                 return false;
-            return true;
+            return CanListen;
         }
 
-        bool stopListen = false;
         private void ListenExecute(object param)
         {
             try
             {
-                if (stopListen) return;
+                //if (stopListen) return;
 
                 log.Info("||{*} === Listen Command Executed === ");
                 DispatcherTimer stopForListen = new DispatcherTimer();
@@ -566,23 +585,8 @@ namespace FlashCard.ViewModels
                 DispatcherTimer waitForListener = new DispatcherTimer();
                 waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
                 waitForListener.Tick += new EventHandler(waitForListener_Tick);
-
-                if (CheckConnectionInternet.IsConnectedToInternet())
-                {
-                    log.DebugFormat("|| == Listen with google translate : {0}", SelectedLesson.LessonName);
-                    _listenWord = new MediaPlayer();
-                    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", SelectedLesson.LessonName);
-                    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                    stopListen = true;
-                    _listenWord.Open(ur);
-                    _listenWord.Play();
-                }
-                else
-                {
-                    log.DebugFormat("|| == Listen with Microsoft Speed : {0}", SelectedLesson.LessonName);
-                    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                    synthesizer.SpeakAsync(SelectedLesson.LessonName);
-                }
+                CanListen = false;
+                TextToSpeechPlayer(SelectedLesson.LessonName);
                 waitForListener.Start();
 
                 if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
@@ -600,11 +604,13 @@ namespace FlashCard.ViewModels
 
         }
 
+       
+
         void waitForListener_Tick(object sender, EventArgs e)
         {
-            stopListen = false;
             (sender as DispatcherTimer).Stop();
-
+            CanListen = true;
+            CanListenExecute(null);
         }
         #endregion
 
@@ -659,6 +665,8 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNextBackLessonCanExecute(object param)
         {
+            if (LessonCollection == null || SelectedLesson==null)
+                return false;
 
             if ("Next".Equals(param.ToString()))
             {
@@ -826,8 +834,6 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnFullScreenCanExecute(object param)
         {
-            if (SelectedLesson == null)
-                return false;
             return true;
         }
 
@@ -969,10 +975,11 @@ namespace FlashCard.ViewModels
         }
 
         /// <summary>
-        /// 
+        /// Public Method Call from another form
         /// </summary>
         public void ExcuteMainForm()
         {
+            TextToSpeechPlayer("Welcome to Flash Card");
             IsPopupStarted = true;
             if (App.SetupModel.Setup.IsEnableSlideShow == true)
             {
@@ -986,10 +993,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="listLesson"></param>
         public void GetLesson(List<LessonModel> listLesson)
         {
             //LessonDataAccess lessonDA = new LessonDataAccess();
@@ -1031,6 +1034,35 @@ namespace FlashCard.ViewModels
             SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
             log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
             GC.Collect();
+        }
+        /// <summary>
+        /// Public method call from another form
+        /// </summary>
+        /// <param name="listLesson"></param>
+
+        /// <summary>
+        /// Method for Speech text
+        /// </summary>
+        /// <param name="TextForSpeech"></param>
+        private void TextToSpeechPlayer(string TextForSpeech)
+        {
+            if (CheckConnectionInternet.IsConnectedToInternet())
+            {
+                log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
+                if(_listenWord==null)
+                    _listenWord = new MediaPlayer();
+
+                string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                _listenWord.Open(ur);
+                _listenWord.Play();
+            }
+            else
+            {
+                log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
+                SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                synthesizer.SpeakAsync(TextForSpeech);
+            }
         }
 
         //Timer Region
@@ -1092,11 +1124,9 @@ namespace FlashCard.ViewModels
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
                 {
                     SetLesson();
-                    FancyBalloon balloon = new FancyBalloon();
-                    //_balloon.tbWords.Document = SelectedLesson.Description;
-                    //_balloon.tblWordBackSide.Document = SelectedLesson.BackSideModel.BackSideDetail;
                     if (App.SetupModel.Setup.IsEnableSoundForShow == true)
-                        _soundForShow.Play();
+                        _soundForShow.PlaySync();
+                    FancyBalloon balloon = new FancyBalloon();
                     ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
                     this.IsPopupStarted = true;
                     //RaisePropertyChanged(() => SelectedLesson);
@@ -1164,7 +1194,12 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _timerViewFullScreen_Tick(object sender, EventArgs e)
         {
-            SetLesson();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+            {
+                SetLesson();
+                if (App.SetupModel.Setup.IsEnableSoundForShow == true)
+                    _soundForShow.PlaySync();
+            }));
         }
 
         /// <summary>
