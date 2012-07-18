@@ -235,7 +235,7 @@ namespace FlashCard.Database
 
         #region Custom Code
         #region Properties
-        private bool _isBackSide;
+        private bool _isBackSide=false;
         /// <summary>
         /// This is Extend Properties
         ///<para> Gets or sets the property value.</para>

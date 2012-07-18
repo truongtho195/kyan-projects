@@ -15,7 +15,7 @@ namespace ConvertToText
     {
         static void Main(string[] args)
         {
-            InserLesson();
+            UpdateLessonNrelation();
         }
         
         private static void InserLesson()
@@ -36,7 +36,7 @@ namespace ConvertToText
                     
                     Console.WriteLine("-  Lesson item : {0}", item.LessonID);
                     TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
-                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString(),IsActived=true});
+                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString()});
                     flashCardEntity.SaveChanges();
                     Console.WriteLine("=====> Done");
                 }
@@ -48,7 +48,39 @@ namespace ConvertToText
             }
             Console.ReadLine();
         }
-        
+
+
+        private static void UpdateLessonNrelation()
+        {
+            Console.WriteLine("============================Update Lesson Start ?=============================");
+            Console.WriteLine("Press any key to ..");
+            Console.ReadLine();
+            Console.WriteLine("Starting.....");
+            try
+            {
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                var AllLesson = flashCardEntity.Lessons.ToList();
+                foreach (var item in AllLesson)
+                {
+                    Console.WriteLine("-  Lesson item convert : {0}", item.LessonID);
+                    item.Description = item.Description.Trim();
+                    item.LessonName = item.LessonName.Trim();
+                    foreach (var backSide in item.BackSides)
+                    {
+                        Console.WriteLine("- - Back side item update :{0}",backSide.BackSideID);
+                        backSide.BackSideName = backSide.BackSideName.Trim();
+                        backSide.Content = backSide.Content.Trim();
+                    }
+                    flashCardEntity.SaveChanges();
+                    Console.WriteLine("=====> Done");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
+            }
+            Console.ReadLine();
+        }
 
         private static void ConvertLesson()
         {

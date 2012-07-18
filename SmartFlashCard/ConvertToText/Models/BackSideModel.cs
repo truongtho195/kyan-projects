@@ -19,30 +19,30 @@ using ConvertToText.Database;
 namespace ConvertToText.Models
 {
     /// <summary>
-    /// Model for table Lesson 
+    /// Model for table BackSide 
     /// </summary>
-    public partial class LessonModel : ViewModelBase
+    public partial class BackSideModel : ViewModelBase
     {
         #region Ctor
 
         // Default contructor
-        public LessonModel()
+        public BackSideModel()
         {
             this.IsNew = true;
-            this.Lesson = new Lesson();
+            this.BackSide = new BackSide();
         }
 
         // Default contructor that set entity to field
-        public LessonModel(Lesson lesson)
+        public BackSideModel(BackSide backside)
         {
-            this.Lesson = lesson;
+            this.BackSide = backside;
         }
 
         #endregion
 
         #region Entity Properties
 
-        public Lesson Lesson { get; private set; }
+        public BackSide BackSide { get; private set; }
 
         public bool IsNew { get; private set; }
         public bool IsDirty { get; private set; }
@@ -60,68 +60,68 @@ namespace ConvertToText.Models
 
         #region Primitive Properties
 
-        public string LessonID
+        public string BackSideID
         {
-            get { return this.Lesson.LessonID; }
+            get { return this.BackSide.BackSideID; }
             set
             {
-                if (this.Lesson.LessonID != value)
+                if (this.BackSide.BackSideID != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonID = value;
+                    this.BackSide.BackSideID = value;
+                    RaisePropertyChanged(() => BackSideID);
+                }
+            }
+        }
+        public string LessonID
+        {
+            get { return this.BackSide.LessonID; }
+            set
+            {
+                if (this.BackSide.LessonID != value)
+                {
+                    this.IsDirty = true;
+                    this.BackSide.LessonID = value;
                     RaisePropertyChanged(() => LessonID);
                 }
             }
         }
-        public string LessonName
+        public string Content
         {
-            get { return this.Lesson.LessonName; }
+            get { return this.BackSide.Content; }
             set
             {
-                if (this.Lesson.LessonName != value)
+                if (this.BackSide.Content != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.LessonName = value;
-                    RaisePropertyChanged(() => LessonName);
+                    this.BackSide.Content = value;
+                    RaisePropertyChanged(() => Content);
                 }
             }
         }
-        public string Description
+        public string BackSideName
         {
-            get { return this.Lesson.Description; }
+            get { return this.BackSide.BackSideName; }
             set
             {
-                if (this.Lesson.Description != value)
+                if (this.BackSide.BackSideName != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.Description = value;
-                    RaisePropertyChanged(() => Description);
+                    this.BackSide.BackSideName = value;
+                    RaisePropertyChanged(() => BackSideName);
                 }
             }
         }
-        public string CategoryID
+        public Nullable<byte> IsMain
         {
-            get { return this.Lesson.CategoryID; }
+            get { return this.BackSide.IsMain; }
             set
             {
-                if (this.Lesson.CategoryID != value)
+                if (this.BackSide.IsMain != value)
                 {
                     this.IsDirty = true;
-                    this.Lesson.CategoryID = value;
-                    RaisePropertyChanged(() => CategoryID);
-                }
-            }
-        }
-        public string CardID
-        {
-            get { return this.Lesson.CardID; }
-            set
-            {
-                if (this.Lesson.CardID != value)
-                {
-                    this.IsDirty = true;
-                    this.Lesson.CardID = value;
-                    RaisePropertyChanged(() => CardID);
+                    this.BackSide.IsMain = value;
+                    RaisePropertyChanged(() => IsMain);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace ConvertToText.Models
         #endregion
 
         #region all the custom code
-        
+
 
         #endregion
     }
