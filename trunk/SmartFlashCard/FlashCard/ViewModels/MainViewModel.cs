@@ -1165,9 +1165,9 @@ namespace FlashCard.ViewModels
             var action = new Action(() =>
             {
                 countSecond = 0;
+                IsCurrentBackSide = false;
                 _waitForClose.Stop();
                 ViewCore.MyNotifyIcon.CloseBalloon();
-                //_balloon = null;
                 testTimeView.Stop();
                 log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
                 testTimeView.Reset();

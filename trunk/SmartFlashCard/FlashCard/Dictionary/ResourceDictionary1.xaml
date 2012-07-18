@@ -805,7 +805,7 @@
     			<ControlTemplate TargetType="{x:Type DataGridCell}">
     				<Border SnapsToDevicePixels="True" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#00000000">
     					<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Background="#00000000">
-    						<Ellipse x:Name="ellipse" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="{DynamicResource ColorLineNumNomard}"/>
+    						<Ellipse x:Name="ellipse" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="{DynamicResource ColorLineNumNomard}"/>
     						<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" d:LayoutOverrides="Width, Height"/>
     					</Grid>
     				</Border>

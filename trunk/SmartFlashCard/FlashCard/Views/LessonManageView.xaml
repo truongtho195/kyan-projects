@@ -381,8 +381,10 @@
                                       IsChecked="{Binding IsChecked, Converter={StaticResource reverseBooleanConverter}, ElementName=tgCategories, Mode=TwoWay}" />
                         <ToggleButton x:Name="tgCategories"
                                       Content="Categories"
-                                      IsChecked="{Binding IsCardHandle,Mode=OneWayToSource}"
+                                      IsChecked="True"
                                       Width="100" />
+									  
+									  <!---->
                     </StackPanel>
                     <Button Content="Study Now"
                             Command="{Binding ShowStudyCommand}"
@@ -802,7 +804,8 @@
                         </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
-                            <RowDefinition />
+                            <RowDefinition Height="0.364*" />
+                            <RowDefinition Height="0.636*"/>
                         </Grid.RowDefinitions>
                         <Border Background="#FFAACCFB"
                                 BorderBrush="#00000000"
@@ -830,13 +833,12 @@
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1"
-                              VerticalAlignment="Top"
-                              Margin="0,10,0,0">
+                              Margin="0,10,0,-28.381" d:LayoutOverrides="Height">
                             <Grid.RowDefinitions>
                                 <!--Collapse Type: use only Vocabulary-->
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="100" />
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="Auto" MinHeight="35" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="85.191" />
@@ -877,6 +879,14 @@
                                        Grid.Row="2"
                                        Margin="0"
                                        Visibility="Collapsed" />
+                        </Grid>
+                        <Grid Grid.Row="2">
+                        	<GroupBox Header="Export &amp; import" Margin="5,0,5,5">
+                        		<StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                        			<Button x:Name="btnImport" Content="Import" HorizontalAlignment="Left" Width="75" Height="21" VerticalAlignment="Center"/>
+                        			<Button x:Name="btnExport" Content="Export" Height="21" Width="75" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        		</StackPanel>
+                        	</GroupBox>
                         </Grid>
                     </Grid>
                     <Border x:Name="bdLeftCate"

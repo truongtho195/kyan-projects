@@ -115,11 +115,11 @@ namespace FlashCard.ViewModels
                 if (_selectedBackSide != value)
                 {
                     _selectedBackSide = value;
-                    if (_selectedBackSide != null)
-                    {
-                        _selectedBackSide.PropertyChanged -= new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
-                        _selectedBackSide.PropertyChanged += new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
-                    }
+                    //if (_selectedBackSide != null)
+                    //{
+                    //    _selectedBackSide.PropertyChanged -= new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
+                    //    _selectedBackSide.PropertyChanged += new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
+                    //}
                     RaisePropertyChanged(() => SelectedBackSide);
 
                 }
@@ -246,10 +246,8 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
-
         #region"  IsCardHandle"
-        private bool _isCardHandle;
+        private bool _isCardHandle =false;
         /// <summary>
         /// Gets or sets the IsCategoryHandle.
         /// </summary>
