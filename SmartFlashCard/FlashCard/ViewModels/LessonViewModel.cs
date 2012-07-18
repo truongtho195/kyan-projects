@@ -16,6 +16,7 @@ using System.Windows;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
 using MVVMHelper.ViewModels;
+using FlashCard.Helper;
 
 namespace FlashCard.ViewModels
 {
@@ -922,6 +923,40 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
+        #region ExportCardCommand
+        private ICommand _exportCardCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand ExportCardCommand
+        {
+            get
+            {
+                if (_exportCardCommand == null)
+                {
+                    _exportCardCommand = new RelayCommand(this.ExportCardExecute, this.CanExportCardExecute);
+                }
+                return _exportCardCommand;
+            }
+        }
+
+        private bool CanExportCardExecute(object param)
+        {
+            if (SelectedCard == null)
+                return false;
+            return SelectedCard.Card.Lessons.Count>0;
+        }
+
+        private void ExportCardExecute(object param)
+        {
+            Serializer<Card>.Serialize(SelectedCard.Card, "F:\\test.xml");
+            //Serializer<System.Data.Objects.DataClasses.EntityCollection<Lesson>>.Serialize(SelectedCard.Card.Lessons, "F:\\test2.xml");
+
+             //GenericSerializer.SaveAs<Card>(SelectedCard.Card,"F:\\TestSaves.xml");
+        }
+        #endregion
+
+
         //Study Command
         #region"  ShowStudyCommand"
         private ICommand _showStudyCommand;
@@ -1133,6 +1168,8 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
+
+
 
         #endregion
 

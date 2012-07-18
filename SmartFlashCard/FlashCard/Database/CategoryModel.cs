@@ -40,7 +40,6 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-
         public Category Category { get; private set; }
 
         protected bool _isNew;
