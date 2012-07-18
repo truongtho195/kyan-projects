@@ -4,7 +4,7 @@
 winexe
 C#
 .cs
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\
 FlashCard
 none
 false
@@ -12,9 +12,9 @@ DEBUG;TRACE
 
 7-1438267917
 1-916308288
-411353389612
-27497829832
+42-516625729
+27-465910138
 App.xaml;MainWindow.xaml;Tooltips\FancyBalloon.xaml;Dictionary\ResourceDictionary1.xaml;Views\StudyConfigView.xaml;Views\LearnView.xaml;Views\LessonManageView.xaml;
 
-False
+True
 

@@ -724,7 +724,7 @@
                 </Grid>
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
-                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}" IsHitTestVisible="False">
+                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.073*" />
                         <RowDefinition Height="0.927*" />
@@ -884,7 +884,8 @@
                         	<GroupBox Header="Export &amp; import" Margin="5,0,5,5">
                         		<StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
                         			<Button x:Name="btnImport" Content="Import" HorizontalAlignment="Left" Width="75" Height="21" VerticalAlignment="Center"/>
-                        			<Button x:Name="btnExport" Content="Export" Height="21" Width="75" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            <Button x:Name="btnExport"
+                                    Command="{Binding ExportCardCommand}" Content="Export" Height="21" Width="75" VerticalAlignment="Center" Margin="10,0,0,0"/>
                         		</StackPanel>
                         	</GroupBox>
                         </Grid>

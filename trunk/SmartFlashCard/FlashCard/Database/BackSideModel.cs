@@ -41,7 +41,8 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-
+        
+        
         public BackSide BackSide { get; private set; }
 
         protected bool _isNew;
