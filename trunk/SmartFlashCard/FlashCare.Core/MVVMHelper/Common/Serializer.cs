@@ -9,7 +9,7 @@ using System.Xml;
 public class Serializer<T>
 {
 
-    #region Serializer Object    
+    #region Serializer Object
 
     public static string SerializeObj(T obj)
     {
@@ -17,7 +17,6 @@ public class Serializer<T>
         using (StringWriter writer = new StringWriter())
         {
             serializer.Serialize(writer, obj);
-
             return writer.ToString();
         }
     }
@@ -29,18 +28,22 @@ public class Serializer<T>
         {
             return (T)serializer.Deserialize(reader);
         }
-    } 
+    }
     #endregion
 
     #region Serializer to Files
-    public static void Serialize(T obj, string filelocation)
+    public static void Serialize(T obj, string filelocation, bool Append=false)
     {
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-        using (TextWriter textWriter = new StreamWriter(filelocation))
+        using (TextWriter textWriter = new StreamWriter(filelocation, Append, ASCIIEncoding.UTF8))
         {
+
             xmlSerializer.Serialize(textWriter, obj);
         }
     }
+
+    
+
 
     public static T Deserialize(string filelocation)
     {
@@ -60,7 +63,7 @@ public class Serializer<T>
             }
         }
         return default(T);
-    } 
+    }
     #endregion
 
 }

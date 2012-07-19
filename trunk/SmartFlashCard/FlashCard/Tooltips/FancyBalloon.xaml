@@ -7,7 +7,6 @@
              x:Class="FlashCard.FancyBalloon"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:uc="clr-namespace:FlashCard.UserControls"
-             xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:localHelper="clr-namespace:FlashCard.Helper"
              x:Name="me"
@@ -17,7 +16,7 @@
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
-        <converter:ListBoxItemToLineNumberConverter x:Key="ListBoxItemToLineNumberConverter" />
+        <converter:DatagridItemToLineNumberConverter x:Key="DatagridItemToLineNumberConverter" />
         <!--#End Region-->
         <!--#region Storyboard-->
         <Storyboard x:Key="FadeIn">
@@ -433,10 +432,11 @@
             						<DataTemplate>
             							<TextBlock Foreground="White"
             								Background="Transparent"
-            								Text="{Binding Converter={StaticResource ListBoxItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+            								Text="{Binding Converter={StaticResource DatagridItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
             								VerticalAlignment="Center"
             								HorizontalAlignment="Center"
             								FontSize="12"
+                                            ToolTip="{Binding BackSideName,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
             								FontWeight="Bold" />
             						</DataTemplate>
             					</DataGridTemplateColumn.CellTemplate>

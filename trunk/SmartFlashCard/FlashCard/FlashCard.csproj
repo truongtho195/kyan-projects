@@ -131,9 +131,9 @@
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Database\SmartFlashCardDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>SmartFlashCardDB.edmx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Database\UserLessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
@@ -219,10 +219,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Database\SmartFlashCardDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SmartFlashCardDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="Database\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>
@@ -261,10 +257,6 @@
     <ProjectReference Include="..\FlashCare.Core\NotifyIconWpf\NotifyIconWpf.csproj">
       <Project>{7AC63864-7638-41C4-969C-D3197EF2BED9}</Project>
       <Name>NotifyIconWpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FlashCare.Core\RichTextBoxToolbar\RichTextBoxControl.csproj">
-      <Project>{25DBEF3D-6D99-4A28-B345-C53B9074DB98}</Project>
-      <Name>RichTextBoxControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</Project>
@@ -349,6 +341,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sounds\Notification.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Database\SmartFlashCardDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SmartFlashCardDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

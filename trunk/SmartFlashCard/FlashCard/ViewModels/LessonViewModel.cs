@@ -1,22 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Waf.Applications;
-using FlashCard.Models;
-using System.Windows.Input;
-using MVVMHelper.Commands;
-using FlashCard.DataAccess;
-using System.Collections.ObjectModel;
-using FlashCard.Views;
-using MVVMHelper.Common;
-using System;
-using log4net;
-using System.ComponentModel;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
-using MVVMHelper.ViewModels;
-using FlashCard.Helper;
+using FlashCard.Views;
+using log4net;
+using MVVMHelper.Commands;
 
 namespace FlashCard.ViewModels
 {
@@ -116,24 +111,11 @@ namespace FlashCard.ViewModels
                 if (_selectedBackSide != value)
                 {
                     _selectedBackSide = value;
-                    //if (_selectedBackSide != null)
-                    //{
-                    //    _selectedBackSide.PropertyChanged -= new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
-                    //    _selectedBackSide.PropertyChanged += new PropertyChangedEventHandler(SelectedBackSide_PropertyChanged);
-                    //}
                     RaisePropertyChanged(() => SelectedBackSide);
-
                 }
             }
         }
 
-        private void SelectedBackSide_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-            if ("DisplayName".Equals(e.PropertyName) || "Content".Equals(e.PropertyName))
-                if (CanAddBackSideExecute(null))
-                    AddBackSideExecute(null);
-        }
 
         #endregion
 
@@ -330,6 +312,8 @@ namespace FlashCard.ViewModels
         private void SaveExecute(object param)
         {
             LessonRepository lessonRepository = new LessonRepository();
+            if(SelectedLesson.IsNew)
+                SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
             //Mapping
             SelectedLesson.ToEntity();
 
@@ -339,6 +323,8 @@ namespace FlashCard.ViewModels
                 foreach (var backSideModel in SelectedLesson.BackSideCollection)
                 {
                     backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                    backSideModel.LessonID = SelectedLesson.LessonID;
+                    backSideModel.ToEntity();
                     SelectedLesson.Lesson.BackSides.Add(backSideModel.BackSide);
                     backSideModel.EndUpdate();
                 }
@@ -897,9 +883,7 @@ namespace FlashCard.ViewModels
                 if (param != null)
                 {
                     cardModel = param as CardModel;
-                    CategoryDataAccess cateDataAccess = new CategoryDataAccess();
                     var resultDel = true;
-                    ///!!!!cateDataAccess.DeleteWithRelation(cateModel);
                     if (resultDel)
                     {
                         foreach (var item in LessonCollection.Where(x => x.CategoryID.Equals(cardModel.CardID)).ToList())
@@ -923,8 +907,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
-        #region ExportCardCommand
+        #region"  ExportCardCommand"
         private ICommand _exportCardCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -949,13 +932,57 @@ namespace FlashCard.ViewModels
 
         private void ExportCardExecute(object param)
         {
-            Serializer<Card>.Serialize(SelectedCard.Card, "F:\\test.xml");
-            //Serializer<System.Data.Objects.DataClasses.EntityCollection<Lesson>>.Serialize(SelectedCard.Card.Lessons, "F:\\test2.xml");
-
-             //GenericSerializer.SaveAs<Card>(SelectedCard.Card,"F:\\TestSaves.xml");
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.Filter="Flash Card File *flc|*.flc";
+            var result = dialog.ShowDialog(ViewCore);
+            if (!string.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                Serializer<Card>.Serialize(SelectedCard.Card, dialog.FileName);
+            }
         }
         #endregion
 
+        #region ImportCommand
+
+        /// <summary>
+        /// Gets the Import Command.
+        /// <summary>
+        private ICommand _importCardCommand;
+        public ICommand ImportCardCommand
+        {
+            get
+            {
+                if (_importCardCommand == null)
+                    _importCardCommand = new RelayCommand(this.OnImportCardExecute, this.OnImportCardCanExecute);
+                return _importCardCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the Import command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnImportCardCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Import command is executed.
+        /// </summary>
+        private void OnImportCardExecute(object param)
+        {
+            Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
+            openDialog.Filter = "Flash Card File *flc|*.flc";
+            openDialog.Multiselect = false;
+            openDialog.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(openDialog.FileName))
+            {
+                var card = Serializer<Card>.Deserialize(openDialog.FileName);
+            }
+        }
+        #endregion
 
         //Study Command
         #region"  ShowStudyCommand"

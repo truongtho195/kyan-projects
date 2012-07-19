@@ -255,7 +255,8 @@
         </EntityType>
         <Association Name="FK_BackSides_0">
           <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
-          <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
+          <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="Lesson">
               <PropertyRef Name="LessonID" />

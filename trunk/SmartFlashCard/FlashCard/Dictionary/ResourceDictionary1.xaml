@@ -3,7 +3,6 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d"
-                    xmlns:richTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
 
     <!-- Resource dictionary entries should be defined here. -->
@@ -40,9 +39,10 @@
                          StrokeThickness="2"
                          Width="14"
                          Height="14" />
-                <!--Tag="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"-->
+                
                 <TextBlock TextWrapping="Wrap"
                            Text="!"
+                           ToolTip="{Binding AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=errorAdorner}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="#FFEBE3E3"
@@ -80,22 +80,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type richTextBoxControl:RichTextBoxToolbar }">
-        <Setter Property="Validation.ErrorTemplate"
-                Value="{DynamicResource validationTemplate}" />
-        <Style.Triggers>
-            <Trigger Property="IsVisible"
-                     Value="false">
-                <Setter Property="Validation.ErrorTemplate"
-                        Value="{x:Null}" />
-            </Trigger>
-            <Trigger Property="IsVisible"
-                     Value="true">
-                <Setter Property="Validation.ErrorTemplate"
-                        Value="{DynamicResource validationTemplate}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    
     <!--#Endregion  Validation Style-->
 
     <Style x:Key="ButtonFocusVisual">

@@ -76,7 +76,6 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\FlashC
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\FlashCard.Model.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\MVVMHelper.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\RichTextBoxControl.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\MessageBoxControl.dll
@@ -86,7 +85,6 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\MVVMHe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.xml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\log4net.xml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.xml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\vi\MVVMHelper.resources.dll

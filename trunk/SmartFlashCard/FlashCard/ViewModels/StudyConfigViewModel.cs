@@ -2,9 +2,7 @@
 using System.Linq;
 using FlashCard.Views;
 using System.Waf.Applications;
-using FlashCard.Models;
 using System.Collections.ObjectModel;
-using FlashCard.DataAccess;
 using System.Windows.Input;
 using MVVMHelper.Commands;
 using System;
