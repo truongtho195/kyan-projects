@@ -3,7 +3,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:FlashCard_Converters="clr-namespace:FlashCard.Converters"
-        xmlns:RichTextBoxControl="clr-namespace:RichTextBoxControl;assembly=RichTextBoxControl"
         mc:Ignorable="d"
         x:Class="FlashCard.Views.LearnView"
         x:Name="vLearnView"
@@ -28,10 +27,12 @@
     <Window.Resources>
         <!--#region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <FlashCard_Converters:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
+        <converter:DatagridItemToLineNumberConverter x:Key="DatagridItemToLineNumberConverter" />
         <!--#endregion Converters-->
         <Storyboard x:Key="sbLoadForm" />
         <Storyboard x:Key="sbUnLoadForm" />
-        <FlashCard_Converters:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
+        
         <DataTemplate x:Key="DataTemplate1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -93,7 +94,7 @@
                                       Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <converter:ListBoxItemToLineNumberConverter x:Key="ListBoxItemToLineNumberConverter" />
+      
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="F4"
@@ -280,7 +281,8 @@
                             <DataTemplate>
                                 <TextBlock Foreground="White"
                                            Background="Transparent"
-                                           Text="{Binding Converter={StaticResource ListBoxItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                           Text="{Binding Converter={StaticResource DatagridItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                           ToolTip="{Binding BackSideName,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            FontSize="12"

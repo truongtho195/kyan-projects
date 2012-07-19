@@ -145,18 +145,20 @@ namespace FlashCard.Database
             return default(IList<T>);
         }
 
-        public IList<T> Include<T>(params string[] tableNames)
+
+        public IList<T> Include<T>(params string[] tableNames) where T : class
         {
             var query = _context
                 .CreateQuery<T>(
                 "[" + typeof(T).Name + "]");
             Array.ForEach(tableNames, new Action<string>(delegate(string item)
-                {
-                    query = query.Include(item);
-                }));
+            {
+                query = query.Include(item);
+            }));
             IList<T> list = query.ToList();
             return list;
         }
+
 
         public IList<T> Skip<T>(int count, Func<T, object> orderby) where T : class
         {

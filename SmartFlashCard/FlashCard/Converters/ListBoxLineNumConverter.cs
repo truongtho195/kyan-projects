@@ -8,12 +8,11 @@ using System.Globalization;
 
 namespace FlashCard.Converters
 {
-    public class ListBoxItemToLineNumberConverter : IValueConverter
+    public class DatagridItemToLineNumberConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
             DataGridRow item = value as DataGridRow;
             var altIndex = item.GetIndex() ;
 

@@ -7,20 +7,17 @@ using System.Media;
 using System.Speech.Synthesis;
 using System.Waf.Applications;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using FlashCard.Database;
 using FlashCard.Helper;
 using FlashCard.Views;
 using Hardcodet.Wpf.TaskbarNotification;
 using log4net;
 using MVVMHelper.Commands;
-using FlashCard.Database;
-using FlashCard.Models;
-using System.Threading;
 
 namespace FlashCard.ViewModels
 {
@@ -1032,6 +1029,7 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = IsCurrentBackSide;
             RaisePropertyChanged(() => SelectedLesson);
             SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
+            
             log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
             GC.Collect();
         }
