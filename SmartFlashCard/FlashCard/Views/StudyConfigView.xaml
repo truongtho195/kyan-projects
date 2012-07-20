@@ -5,8 +5,13 @@
              mc:Ignorable="d"
              x:Class="FlashCard.Views.StudyConfigView"
              HorizontalContentAlignment="Stretch"
-             VerticalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch" Height="450" Width="520"
              >
+	<UserControl.Resources>
+		<ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+			<VirtualizingStackPanel IsItemsHost="True"/>
+		</ItemsPanelTemplate>
+	</UserControl.Resources>
     <!--Title="StudyConfigView"
              WindowStyle="None"
              ResizeMode="NoResize"
@@ -153,29 +158,27 @@
             <ListView x:Name="lstCate"
                       ItemsSource="{Binding CardCollection}"
                       Grid.Row="1"
-                      HorizontalAlignment="Left"
-                      Width="500" Margin="5,5,5,0">
+                      Margin="5,5,5,0" MinWidth="500" FontSize="13.333" >
+            	
                 <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="#"  Width="auto">
+                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn Header="#">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox Content="{Binding Card.CardName}"
-                                              IsChecked="{Binding IsChecked}" />
+                                              IsChecked="{Binding IsChecked}" Width="Auto" MinWidth="300"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Number of Lesson"
-                                        Width="Auto"
-                                        DisplayMemberBinding="{Binding Card.Lessons.Count}" />
+						                                        DisplayMemberBinding="{Binding Card.Lessons.Count}" />
                     </GridView>
                 </ListView.View>
             </ListView>
             <GroupBox Header="More Option"
                       BorderBrush="#FF3F7EE4"
                       Margin="5"
-                      Grid.Row="2"
-                      VerticalAlignment="Top">
+                      Grid.Row="2">
                 <Grid>
                     <Grid.RowDefinitions>
                     	<RowDefinition Height="30" />

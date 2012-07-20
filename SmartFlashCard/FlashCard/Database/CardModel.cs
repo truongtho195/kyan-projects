@@ -40,7 +40,7 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-       
+
         public Card Card { get; private set; }
 
         protected bool _isNew;
@@ -121,8 +121,8 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Card.CardID = this.CardID;
-            this.Card.CardName = this.CardName.Trim();
-            this.Card.Remark = this.Remark.Trim();
+            this.Card.CardName = this.CardName;
+            this.Card.Remark = this.Remark;
         }
 
         public void ToModel()

@@ -35,14 +35,12 @@ namespace FlashCard.Database
         {
             this.BackSide = backside;
             ToModel();
-            this.IsDirty = false;
         }
 
         #endregion
 
         #region Entity Properties
-        
-        
+
         public BackSide BackSide { get; private set; }
 
         protected bool _isNew;
@@ -124,8 +122,8 @@ namespace FlashCard.Database
             if (IsNew)
                 this.BackSide.BackSideID = this.BackSideID;
             this.BackSide.LessonID = this.LessonID;
-            this.BackSide.Content = this.Content.Trim();
-            this.BackSide.BackSideName = this.BackSideName.Trim();
+            this.BackSide.Content = this.Content;
+            this.BackSide.BackSideName = this.BackSideName;
             this.BackSide.IsMain = this.IsMain;
         }
 

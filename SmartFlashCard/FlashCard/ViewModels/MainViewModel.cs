@@ -28,7 +28,10 @@ namespace FlashCard.ViewModels
             : base(view)
         {
             Initialize();
-            
+
+
+
+
         }
         #endregion
 
@@ -118,11 +121,13 @@ namespace FlashCard.ViewModels
         #region "  SetupModel"
         //private SetupModel _setupModel;
         /// <summary>
-        /// Gets or sets the property value.
+        /// Gets the property value.
         /// </summary>
+
         public SetupModel SetupModel
         {
             get { return App.SetupModel; }
+            
         }
         #endregion
 
@@ -298,7 +303,7 @@ namespace FlashCard.ViewModels
                 return false;
             return true;
         }
-        
+
         private void ChangeSideExecute(object param)
         {
             log.Info("||{*} === Change Side Command Executed === ");
@@ -601,7 +606,7 @@ namespace FlashCard.ViewModels
 
         }
 
-       
+
 
         void waitForListener_Tick(object sender, EventArgs e)
         {
@@ -662,7 +667,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNextBackLessonCanExecute(object param)
         {
-            if (LessonCollection == null || SelectedLesson==null)
+            if (LessonCollection == null || SelectedLesson == null)
                 return false;
 
             if ("Next".Equals(param.ToString()))
@@ -1029,7 +1034,7 @@ namespace FlashCard.ViewModels
             SelectedLesson.IsBackSide = IsCurrentBackSide;
             RaisePropertyChanged(() => SelectedLesson);
             SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
-            
+
             log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
             GC.Collect();
         }
@@ -1047,7 +1052,7 @@ namespace FlashCard.ViewModels
             if (CheckConnectionInternet.IsConnectedToInternet())
             {
                 log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
-                if(_listenWord==null)
+                if (_listenWord == null)
                     _listenWord = new MediaPlayer();
 
                 string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);

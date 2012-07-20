@@ -10,8 +10,8 @@
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:localHelper="clr-namespace:FlashCard.Helper"
              x:Name="me"
-             Width="350"
-             Height="220">
+             Width="330"
+             Height="210">
     <UserControl.Resources>
         <!--#Region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />

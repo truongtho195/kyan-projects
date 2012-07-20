@@ -31,69 +31,75 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
                         <Grid Background="{TemplateBinding Background}"
-                              SnapsToDevicePixels="true">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <DockPanel Margin="{TemplateBinding Padding}">
-                                <ScrollViewer DockPanel.Dock="Top"
-                                              Focusable="false"
-                                              HorizontalScrollBarVisibility="Hidden"
-                                              VerticalScrollBarVisibility="Hidden">
-                                    <GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </ScrollViewer>
-                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                                        CanContentScroll="{TemplateBinding CanContentScroll}"
-                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                        Content="{TemplateBinding Content}"
-                                                        KeyboardNavigation.DirectionalNavigation="Local"
-                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </DockPanel>
-                            <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                       Cursor="Arrow"
-                                       Maximum="{TemplateBinding ScrollableWidth}"
-                                       Minimum="0.0"
-                                       Orientation="Horizontal"
-                                       Grid.Row="1"
-                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                       ViewportSize="{TemplateBinding ViewportWidth}" />
-                            <ScrollBar x:Name="PART_VerticalScrollBar"
-                                       Cursor="Arrow"
-                                       Grid.Column="1"
-                                       Maximum="{TemplateBinding ScrollableHeight}"
-                                       Minimum="0.0"
-                                       Orientation="Vertical"
-                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                       ViewportSize="{TemplateBinding ViewportHeight}" />
-                            <DockPanel Background="{Binding Background, ElementName=PART_VerticalScrollBar}"
-                                       Grid.Column="1"
-                                       LastChildFill="false"
-                                       Grid.Row="1">
-                                <Rectangle DockPanel.Dock="Left"
-                                           Fill="White"
-                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                           Width="1" />
-                                <Rectangle DockPanel.Dock="Top"
-                                           Fill="White"
-                                           Height="1"
-                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
-                            </DockPanel>
-                        </Grid>
+                    		SnapsToDevicePixels="true">
+                    		<Grid.ColumnDefinitions>
+                    			<ColumnDefinition Width="*" />
+                    			<ColumnDefinition Width="Auto" />
+                    		</Grid.ColumnDefinitions>
+                    		<Grid.RowDefinitions>
+                    			<RowDefinition Height="*" />
+                    			<RowDefinition Height="Auto" />
+                    		</Grid.RowDefinitions>
+                    		<VisualStateManager.VisualStateGroups>
+                    			<VisualStateGroup x:Name="ValidationStates">
+                    				<VisualState x:Name="Valid"/>
+                    				<VisualState x:Name="InvalidFocused"/>
+                    				<VisualState x:Name="InvalidUnfocused"/>
+                    			</VisualStateGroup>
+                    		</VisualStateManager.VisualStateGroups>
+                    		<DockPanel Margin="{TemplateBinding Padding}">
+                    			<ScrollViewer DockPanel.Dock="Top"
+                    				Focusable="false"
+                    				HorizontalScrollBarVisibility="Hidden"
+                    				VerticalScrollBarVisibility="Hidden">
+                    				<GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                    					Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                    					ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                    					SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    			</ScrollViewer>
+                    			<ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                    				CanContentScroll="{TemplateBinding CanContentScroll}"
+                    				ContentTemplate="{TemplateBinding ContentTemplate}"
+                    				Content="{TemplateBinding Content}"
+                    				KeyboardNavigation.DirectionalNavigation="Local"
+                    				SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    		</DockPanel>
+                    		<ScrollBar x:Name="PART_HorizontalScrollBar"
+                    			Cursor="Arrow"
+                    			Maximum="{TemplateBinding ScrollableWidth}"
+                    			Minimum="0.0"
+                    			Orientation="Horizontal"
+                    			Grid.Row="1"
+                    			Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                    			Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    			ViewportSize="{TemplateBinding ViewportWidth}" Style="{DynamicResource HorizontalScrollBarStyle}" Background="#58939393" Height="12" MinHeight="0" />
+                    		<ScrollBar x:Name="PART_VerticalScrollBar"
+                    			Cursor="Arrow"
+                    			Grid.Column="1"
+                    			Maximum="{TemplateBinding ScrollableHeight}"
+                    			Minimum="0.0"
+                    			Orientation="Vertical"
+                    			Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                    			Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    			ViewportSize="{TemplateBinding ViewportHeight}" Style="{DynamicResource VerticalScrollBarStyle}" Background="{DynamicResource bgScrollBard}" Width="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="0" />
+                    		<DockPanel
+                    			Grid.Column="1"
+                    			Grid.Row="1" LastChildFill="False">
+                    			<Rectangle DockPanel.Dock="Left"
+                    				Fill="White"
+                    				Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                    				Width="1" />
+                    			<Rectangle DockPanel.Dock="Top"
+                    				Fill="White"
+                    				Height="1"
+                    				Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                    		</DockPanel>
+                    	</Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -289,7 +295,7 @@
                 <RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
             <Border x:Name="bdHeader"
-                    Margin="1,0">
+                    Margin="1,1,1,0">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1"
                                          StartPoint="0.5,0">
@@ -420,22 +426,23 @@
                         <ColumnDefinition Width="0.013*" />
                         <ColumnDefinition Width="0.721*" />
                     </Grid.ColumnDefinitions>
+                    <Path Data="M-6,81 L763.5,81" Fill="#FF838383" Height="1" Stretch="Fill" Stroke="#FF7F9DB9" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="0"/>
                     <ListView x:Name="lstLesson"
                               ItemsSource="{Binding LessonCollection}"
-                              Background="#FFCDE8FD"
+                              Background="#33939393"
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
                               SelectionMode="Single"
-                              Margin="5,0.91,0,0"
+                              Margin="5,0,0,0"
                               Grid.Row="1">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                                                             CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </i:EventTrigger>
+                        	<i:EventTrigger EventName="SelectionChanged">
+                        		<localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
+                        			CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        	</i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListView.View>
-                            <GridView>
+                            <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
                                 <GridViewColumn Header="Lesson Name"
                                                 Width="auto"
                                                 DisplayMemberBinding="{Binding Lesson.LessonName}" />
@@ -445,7 +452,7 @@
                                 <GridViewColumn Header="#">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Command="{Binding DataContext.DeleteLessonCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                            <Button Command="{Binding DataContext.DeleteLessonCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                                     CommandParameter="{Binding .}"
                                                     Width="20"
                                                     Height="20"
@@ -467,9 +474,9 @@
                             <RowDefinition Height="48.471" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Border Background="#FFAACCFB"
+                        <Border Background="{DynamicResource headerBackground1}"
                                 BorderBrush="#00000000"
-                                BorderThickness="0.5">
+                                BorderThickness="0.5" Margin="0,1,0,0">
                             <StackPanel x:Name="stkControl"
                                         Orientation="Horizontal"
                                         Height="21.277"
@@ -577,7 +584,7 @@
                                        d:LayoutOverrides="VerticalAlignment"
                                        FontWeight="Bold" />
                             <TextBox x:Name="txtDescription"
-                                     Text="{Binding SelectedLesson.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                     Text="{Binding SelectedLesson.Description, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                      Grid.Column="1"
                                      Margin="10,8"
                                      Grid.Row="4"
@@ -599,7 +606,7 @@
                                       ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
-                                      SelectedItem="{Binding SelectedBackSide,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                      SelectedItem="{Binding SelectedBackSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       CanUserDeleteRows="False"
                                       Grid.Column="1"
                                       Grid.Row="5"
@@ -608,14 +615,14 @@
                                       RowStyle="{DynamicResource myRowCollapseStyle}"
                                       VerticalGridLinesBrush="#00000000"
                                       HorizontalGridLinesBrush="#00000000"
-                                      RowHeaderWidth="0">
+                                      RowHeaderWidth="0" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" VerticalContentAlignment="Center" IsSynchronizedWithCurrentItem="False">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Name">
 
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbBackSideName"
-                                                         Text="{Binding BackSideName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                                         Text="{Binding BackSideName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                          VerticalAlignment="Top"
                                                          Width="150"
                                                          Height="25"
@@ -638,7 +645,7 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="tbContent"
-                                                         Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                                         Text="{Binding Content, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          Height="60"
@@ -652,7 +659,7 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button x:Name="btnDeleteBackSide"
-                                                        Command="{Binding DataContext.DeleteBackSideCommand,RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
+                                                        Command="{Binding DataContext.DeleteBackSideCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}"
                                                         CommandParameter="{Binding .}"
                                                         Width="20"
                                                         Height="20"
@@ -692,34 +699,37 @@
                                     Margin="0,0,10,0" />
                         </Grid>
                     </Grid>
-                    <Grid x:Name="grdSearchLesson"
-                          d:LayoutOverrides="Width"
-                          Margin="5,0"
-                          VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="49.397" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock TextWrapping="Wrap"
-                                   Text="Search : "
-                                   Margin="0"
-                                   VerticalAlignment="Center"
-                                   d:LayoutOverrides="Width"
-                                   FontWeight="Bold" />
-                        <TextBox x:Name="txtSearchLesson"
-                                 TextWrapping="NoWrap"
-                                 VerticalAlignment="Center"
-                                 Margin="0"
-                                 Grid.Column="1">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
-                                                                 CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
+                    <Border x:Name="bdSearchLesson"
+                    	BorderBrush="#FF7F9DB9" BorderThickness="1" CornerRadius="8" Margin="5,2,2,2" Background="White" Height="25" >
+                    	<Grid x:Name="grdSearchLesson"
+                    		d:LayoutOverrides="Width"
+                    		Margin="2">
+                    		<Grid.ColumnDefinitions>
+                    			<ColumnDefinition Width="49.397" />
+                    			<ColumnDefinition />
+                    		</Grid.ColumnDefinitions>
+                    		<TextBlock TextWrapping="Wrap"
+                    			Text="Search "
+                    			Margin="0,0,2,0"
+                    			VerticalAlignment="Center"
+                    			d:LayoutOverrides="Width"
+                    			FontWeight="Bold" Foreground="Black" HorizontalAlignment="Right" />
+                    		<Path Data="M48.5,3.09 L48.5,18.09" Fill="#FFF4F4F5" HorizontalAlignment="Right" Stretch="Fill" Stroke="Black" Width="1" VerticalAlignment="Center" Height="15"/>
+                    		<TextBox x:Name="txtSearchLesson"
+                    			TextWrapping="NoWrap"
+                    			VerticalAlignment="Center"
+                    			Margin="3,0"
+                    			Grid.Column="1" Background="Transparent" BorderBrush="#007F9DB9">
+                    			<i:Interaction.Triggers>
+                    				<i:EventTrigger EventName="TextChanged">
+                    					<localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
+                    						CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    				</i:EventTrigger>
+                    			</i:Interaction.Triggers>
 
-                        </TextBox>
-                    </Grid>
+                    		</TextBox>
+                    	</Grid>
+                    </Border>
                     <Rectangle Grid.Column="1"
                                HorizontalAlignment="Left"
                                Width="10"
@@ -735,11 +745,6 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <Border x:Name="bdLeftLesson"
-                            BorderBrush="Black"
-                            BorderThickness="0,0.5,0,0"
-                            Margin="0"
-                            Grid.RowSpan="2" />
                 </Grid>
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
@@ -769,7 +774,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListView.View>
-                            <GridView>
+                            <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
 
                                 <GridViewColumn Header="Card Name"
                                                 Width="auto"
