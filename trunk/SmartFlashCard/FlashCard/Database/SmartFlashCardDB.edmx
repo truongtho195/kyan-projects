@@ -247,14 +247,16 @@
             <PropertyRef Name="BackSideID" />
           </Key>
           <Property Type="String" Name="BackSideID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="Content" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="BackSideName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Byte" Name="IsMain" />
           <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="BackSide" ToRole="Lesson" />
         </EntityType>
         <Association Name="FK_BackSides_0">
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" >
           </End>
           <ReferentialConstraint>

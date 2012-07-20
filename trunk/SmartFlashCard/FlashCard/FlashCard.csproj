@@ -106,20 +106,24 @@
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Database\BackSideModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\CardModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\CategoryModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\LessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\ModelTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Database\Repository\BackSideRepository.cs" />
     <Compile Include="Database\Repository\CategoryRepository.cs" />
@@ -129,6 +133,7 @@
     <Compile Include="Database\Repository\UnitOfWork.cs" />
     <Compile Include="Database\SetupModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\SmartFlashCardDB.Designer.cs">
       <DependentUpon>SmartFlashCardDB.edmx</DependentUpon>
@@ -137,9 +142,11 @@
     </Compile>
     <Compile Include="Database\UserLessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\UserModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />
@@ -164,6 +171,9 @@
     </Compile>
     <Compile Include="Views\LessonManageView.xaml.cs">
       <DependentUpon>LessonManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Page Include="App.xaml">
       <SubType>Designer</SubType>
@@ -194,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LessonManageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

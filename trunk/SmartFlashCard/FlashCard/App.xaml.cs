@@ -48,6 +48,8 @@ namespace FlashCard
             LessonMangeView.Show();
         }
         public static SetupModel SetupModel;
+       
+
         public static LessonManageView LessonMangeView;
 
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)

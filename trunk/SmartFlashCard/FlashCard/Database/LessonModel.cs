@@ -40,6 +40,7 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
+
         public Lesson Lesson { get; private set; }
 
         protected bool _isNew;
@@ -120,8 +121,8 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Lesson.LessonID = this.LessonID;
-            this.Lesson.LessonName = this.LessonName.Trim();
-            this.Lesson.Description = this.Description.Trim();
+            this.Lesson.LessonName = this.LessonName;
+            this.Lesson.Description = this.Description;
             this.Lesson.CategoryID = this.CategoryID;
             this.Lesson.CardID = this.CardID;
         }

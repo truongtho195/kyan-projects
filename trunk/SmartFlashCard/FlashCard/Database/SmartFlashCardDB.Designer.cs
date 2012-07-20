@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 
 [assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Card", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FlashCard.Database.Card), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
 [assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FlashCard.Database.Category), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSides_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSides_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
 
 #endregion
 
@@ -265,10 +265,12 @@ namespace FlashCard.Database
         /// Create a new BackSide object.
         /// </summary>
         /// <param name="backSideID">Initial value of the BackSideID property.</param>
-        public static BackSide CreateBackSide(global::System.String backSideID)
+        /// <param name="lessonID">Initial value of the LessonID property.</param>
+        public static BackSide CreateBackSide(global::System.String backSideID, global::System.String lessonID)
         {
             BackSide backSide = new BackSide();
             backSide.BackSideID = backSideID;
+            backSide.LessonID = lessonID;
             return backSide;
         }
 
@@ -305,7 +307,7 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String LessonID
         {
@@ -317,7 +319,7 @@ namespace FlashCard.Database
             {
                 OnLessonIDChanging(value);
                 ReportPropertyChanging("LessonID");
-                _LessonID = StructuralObject.SetValidValue(value, true);
+                _LessonID = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("LessonID");
                 OnLessonIDChanged();
             }
