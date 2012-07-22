@@ -13,6 +13,7 @@ namespace FlashCard.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            
             DataGridRow item = value as DataGridRow;
             var altIndex = item.GetIndex() ;
 

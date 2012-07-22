@@ -74,10 +74,12 @@ namespace FlashCard.ViewModels
                 if (value != null && !value.IsNew)
                 {
                     _selectedLesson = value;
-                    _selectedLesson.CategoryID = _selectedLesson.Lesson.CategoryID;
-                    _selectedLesson.CardID = _selectedLesson.Lesson.CardID;
-                    _selectedLesson.LessonName = _selectedLesson.Lesson.LessonName;
-                    _selectedLesson.Description = _selectedLesson.Lesson.Description;
+                    _selectedLesson.ToModel();
+                    //_selectedLesson.CategoryID = _selectedLesson.Lesson.CategoryID;
+                    //_selectedLesson.CardID = _selectedLesson.Lesson.CardID;
+                    //_selectedLesson.LessonName = _selectedLesson.Lesson.LessonName;
+                    //_selectedLesson.Description = _selectedLesson.Lesson.Description;
+
                     _selectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>(_selectedLesson.Lesson.BackSides.ToList().Select(x => new BackSideModel(x)));
                     _selectedLesson.IsDirty = false;
                 }
@@ -230,7 +232,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region"  IsCardHandle"
-        private bool _isCardHandle =false;
+        private bool _isCardHandle = false;
         /// <summary>
         /// Gets or sets the IsCategoryHandle.
         /// </summary>
@@ -312,7 +314,7 @@ namespace FlashCard.ViewModels
         private void SaveExecute(object param)
         {
             LessonRepository lessonRepository = new LessonRepository();
-            if(SelectedLesson.IsNew)
+            if (SelectedLesson.IsNew)
                 SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
             //Mapping
             SelectedLesson.ToEntity();
@@ -868,7 +870,7 @@ namespace FlashCard.ViewModels
         {
             if (param == null)
                 return false;
-            return true;
+            return !(param as CardModel).Card.CardID.Equals("1");
         }
 
         /// <summary>
@@ -896,11 +898,16 @@ namespace FlashCard.ViewModels
                             }
 
                         }
+                        CardRepository cardRepository = new CardRepository();
+                        cardRepository.Delete<Card>(cardModel.Card);
+                        cardRepository.Commit();
                         CardCollection.Remove(cardModel);
                         if (cardModel == SelectedCard)
                             SelectedCard = CardCollection.First();
 
                         CardList.Remove(cardModel.Card);
+
+
                     }
                 }
             }
@@ -927,13 +934,14 @@ namespace FlashCard.ViewModels
         {
             if (SelectedCard == null)
                 return false;
-            return SelectedCard.Card.Lessons.Count>0;
+            return SelectedCard.Card.Lessons.Count > 0;
         }
 
         private void ExportCardExecute(object param)
         {
             Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.Filter="Flash Card File *flc|*.flc";
+            dialog.Filter = "Flash Card File *flc|*.flc";
+            dialog.FileName = string.Format("{0}.flc", SelectedCard.Card.CardName);
             var result = dialog.ShowDialog(ViewCore);
             if (!string.IsNullOrWhiteSpace(dialog.FileName))
             {
@@ -942,7 +950,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region ImportCommand
+        #region"  ImportCommand"
 
         /// <summary>
         /// Gets the Import Command.
@@ -1195,8 +1203,6 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
-
-
 
         #endregion
 

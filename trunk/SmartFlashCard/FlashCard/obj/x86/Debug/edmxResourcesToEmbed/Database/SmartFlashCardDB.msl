@@ -54,17 +54,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Lessons">
-      <EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson">
-        <MappingFragment StoreEntitySet="Lessons">
-          <ScalarProperty Name="CardID" ColumnName="CardID" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="LessonName" ColumnName="LessonName" />
-          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="BackSides">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.BackSide">
         <MappingFragment StoreEntitySet="BackSides">
@@ -73,6 +62,17 @@
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="LessonID" ColumnName="LessonID" />
           <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lessons">
+      <EntityTypeMapping TypeName="SmartFlashCardDBModel.Lesson">
+        <MappingFragment StoreEntitySet="Lessons">
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
