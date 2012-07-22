@@ -101,7 +101,8 @@
     <Compile Include="Commands\EventCommandBehaviour.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\FlowDocumentToXamlConverter.cs" />
-    <Compile Include="Converters\ListBoxLineNumConverter.cs" />
+    <Compile Include="Converters\DatagridItemToLineNumConverter.cs" />
+    <Compile Include="Converters\ListViewLineNumberConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Database\BackSideModel.cs">

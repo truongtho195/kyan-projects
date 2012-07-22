@@ -20,140 +20,10 @@
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
         <converter:ReverseBooleanConverter x:Key="reverseBooleanConverter" />
+        <converter:ListViewLineNumberConverter x:Key="ListViewLineNumberConverter" />
         <converter:FlowDocumentToXamlConverter x:Key="flowDocumentToXamlConverter" />
         <SolidColorBrush x:Key="ListBorder"
                          Color="#FF7F9DB9" />
-        <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}"
-               TargetType="{x:Type ScrollViewer}">
-            <Setter Property="Focusable"
-                    Value="false" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                        <Grid Background="{TemplateBinding Background}"
-                    		SnapsToDevicePixels="true">
-                    		<Grid.ColumnDefinitions>
-                    			<ColumnDefinition Width="*" />
-                    			<ColumnDefinition Width="Auto" />
-                    		</Grid.ColumnDefinitions>
-                    		<Grid.RowDefinitions>
-                    			<RowDefinition Height="*" />
-                    			<RowDefinition Height="Auto" />
-                    		</Grid.RowDefinitions>
-                    		<VisualStateManager.VisualStateGroups>
-                    			<VisualStateGroup x:Name="ValidationStates">
-                    				<VisualState x:Name="Valid"/>
-                    				<VisualState x:Name="InvalidFocused"/>
-                    				<VisualState x:Name="InvalidUnfocused"/>
-                    			</VisualStateGroup>
-                    		</VisualStateManager.VisualStateGroups>
-                    		<DockPanel Margin="{TemplateBinding Padding}">
-                    			<ScrollViewer DockPanel.Dock="Top"
-                    				Focusable="false"
-                    				HorizontalScrollBarVisibility="Hidden"
-                    				VerticalScrollBarVisibility="Hidden">
-                    				<GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                    					Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
-                    					ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                    					SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    			</ScrollViewer>
-                    			<ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                    				CanContentScroll="{TemplateBinding CanContentScroll}"
-                    				ContentTemplate="{TemplateBinding ContentTemplate}"
-                    				Content="{TemplateBinding Content}"
-                    				KeyboardNavigation.DirectionalNavigation="Local"
-                    				SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    		</DockPanel>
-                    		<ScrollBar x:Name="PART_HorizontalScrollBar"
-                    			Cursor="Arrow"
-                    			Maximum="{TemplateBinding ScrollableWidth}"
-                    			Minimum="0.0"
-                    			Orientation="Horizontal"
-                    			Grid.Row="1"
-                    			Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                    			Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                    			ViewportSize="{TemplateBinding ViewportWidth}" Style="{DynamicResource HorizontalScrollBarStyle}" Background="#58939393" Height="12" MinHeight="0" />
-                    		<ScrollBar x:Name="PART_VerticalScrollBar"
-                    			Cursor="Arrow"
-                    			Grid.Column="1"
-                    			Maximum="{TemplateBinding ScrollableHeight}"
-                    			Minimum="0.0"
-                    			Orientation="Vertical"
-                    			Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                    			Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                    			ViewportSize="{TemplateBinding ViewportHeight}" Style="{DynamicResource VerticalScrollBarStyle}" Background="{DynamicResource bgScrollBard}" Width="12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="0" />
-                    		<DockPanel
-                    			Grid.Column="1"
-                    			Grid.Row="1" LastChildFill="False">
-                    			<Rectangle DockPanel.Dock="Left"
-                    				Fill="White"
-                    				Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                    				Width="1" />
-                    			<Rectangle DockPanel.Dock="Top"
-                    				Fill="White"
-                    				Height="1"
-                    				Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
-                    		</DockPanel>
-                    	</Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ListViewStyle"
-               TargetType="{x:Type ListView}">
-            <Setter Property="Background"
-                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource ListBorder}" />
-            <Setter Property="BorderThickness"
-                    Value="1" />
-            <Setter Property="Foreground"
-                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-                    Value="Auto" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-                    Value="Auto" />
-            <Setter Property="ScrollViewer.CanContentScroll"
-                    Value="true" />
-            <Setter Property="ScrollViewer.PanningMode"
-                    Value="Both" />
-            <Setter Property="Stylus.IsFlicksEnabled"
-                    Value="False" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListView}">
-                        <Border x:Name="Bd"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                SnapsToDevicePixels="true">
-                            <ScrollViewer Padding="{TemplateBinding Padding}"
-                                          Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </ScrollViewer>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsGrouping"
-                                     Value="true">
-                                <Setter Property="ScrollViewer.CanContentScroll"
-                                        Value="false" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled"
-                                     Value="false">
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
             <VirtualizingStackPanel IsItemsHost="True" />
         </ItemsPanelTemplate>
@@ -295,7 +165,7 @@
                 <RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
             <Border x:Name="bdHeader"
-                    Margin="1,1,1,0">
+                    Margin="2,2,2,0">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1"
                                          StartPoint="0.5,0">
@@ -418,7 +288,7 @@
                       Grid.Row="1"
                       Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgLesson}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="33.23" />
+                        <RowDefinition Height="36.84" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -426,28 +296,37 @@
                         <ColumnDefinition Width="0.013*" />
                         <ColumnDefinition Width="0.721*" />
                     </Grid.ColumnDefinitions>
-                    <Path Data="M-6,81 L763.5,81" Fill="#FF838383" Height="1" Stretch="Fill" Stroke="#FF7F9DB9" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="0"/>
+                    <Path Data="M-6,81 L763.5,81"
+                          Fill="#FF838383"
+                          Height="1"
+                          Stretch="Fill"
+                          Stroke="#FF7F9DB9"
+                          VerticalAlignment="Top"
+                          Grid.ColumnSpan="3"
+                          Margin="0" />
                     <ListView x:Name="lstLesson"
                               ItemsSource="{Binding LessonCollection}"
                               Background="#33939393"
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
                               SelectionMode="Single"
-                              Margin="5,0,0,0"
-                              Grid.Row="1">
+                              Margin="5,1,0,1"
+                              Grid.Row="1"
+                              FontWeight="Bold">
                         <i:Interaction.Triggers>
-                        	<i:EventTrigger EventName="SelectionChanged">
-                        		<localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                        			CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        	</i:EventTrigger>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
+                                                             CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                                <GridViewColumn Header="#"
+                                                Width="30"
+                                                DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" />
                                 <GridViewColumn Header="Lesson Name"
-                                                Width="auto"
                                                 DisplayMemberBinding="{Binding Lesson.LessonName}" />
                                 <GridViewColumn Header="Card Name"
-                                                Width="auto"
                                                 DisplayMemberBinding="{Binding Lesson.Card.CardName}" />
                                 <GridViewColumn Header="#">
                                     <GridViewColumn.CellTemplate>
@@ -476,7 +355,8 @@
                         </Grid.RowDefinitions>
                         <Border Background="{DynamicResource headerBackground1}"
                                 BorderBrush="#00000000"
-                                BorderThickness="0.5" Margin="0,1,0,0">
+                                BorderThickness="0.5"
+                                Margin="0,1,2,0">
                             <StackPanel x:Name="stkControl"
                                         Orientation="Horizontal"
                                         Height="21.277"
@@ -573,7 +453,8 @@
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                      Margin="10,6,135,6"
-                                     Grid.Row="3" />
+                                     Grid.Row="3"
+                                     BorderBrush="#FF7F9DB9" />
                             <TextBlock x:Name="tbLessonContent_Copy"
                                        HorizontalAlignment="Right"
                                        TextWrapping="Wrap"
@@ -615,16 +496,25 @@
                                       RowStyle="{DynamicResource myRowCollapseStyle}"
                                       VerticalGridLinesBrush="#00000000"
                                       HorizontalGridLinesBrush="#00000000"
-                                      RowHeaderWidth="0" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}" VerticalContentAlignment="Center" IsSynchronizedWithCurrentItem="False">
+                                      RowHeaderWidth="0"
+                                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
+                                      VerticalContentAlignment="Center"
+                                      IsSynchronizedWithCurrentItem="False"
+                                      Foreground="White"
+                                      FontWeight="Bold"
+                                      Style="{DynamicResource DataGridStyle}"
+                                      Grid.ColumnSpan="3"
+                                      BorderThickness="1">
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Name">
 
+                                    <DataGridTemplateColumn Header="Name"
+                                                            MinWidth="150">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox x:Name="tbBackSideName"
+                                                <TextBox x:Name="txtBackSideName"
                                                          Text="{Binding BackSideName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                         HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Top"
-                                                         Width="150"
                                                          Height="25"
                                                          BorderThickness="1"
                                                          Background="White"
@@ -633,7 +523,7 @@
                                                     <DataTrigger Binding="{Binding IsMain}"
                                                                  Value="1">
                                                         <Setter Property="IsReadOnly"
-                                                                TargetName="tbBackSideName"
+                                                                TargetName="txtBackSideName"
                                                                 Value="True" />
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
@@ -641,16 +531,16 @@
 
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="Content">
+                                    <DataGridTemplateColumn Header="Content"
+                                                            MinWidth="500">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox x:Name="tbContent"
+                                                <TextBox x:Name="txtContent"
                                                          Text="{Binding Content, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          Height="60"
-                                                         HorizontalAlignment="Stretch"
-                                                         Width="450" />
+                                                         HorizontalAlignment="Stretch" />
 
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
@@ -691,7 +581,7 @@
                                     Grid.Row="6"
                                     Grid.Column="1"
                                     Width="100"
-                                    Height="25"
+                                    Height="23"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Background="White"
@@ -700,35 +590,50 @@
                         </Grid>
                     </Grid>
                     <Border x:Name="bdSearchLesson"
-                    	BorderBrush="#FF7F9DB9" BorderThickness="1" CornerRadius="8" Margin="5,2,2,2" Background="White" Height="25" >
-                    	<Grid x:Name="grdSearchLesson"
-                    		d:LayoutOverrides="Width"
-                    		Margin="2">
-                    		<Grid.ColumnDefinitions>
-                    			<ColumnDefinition Width="49.397" />
-                    			<ColumnDefinition />
-                    		</Grid.ColumnDefinitions>
-                    		<TextBlock TextWrapping="Wrap"
-                    			Text="Search "
-                    			Margin="0,0,2,0"
-                    			VerticalAlignment="Center"
-                    			d:LayoutOverrides="Width"
-                    			FontWeight="Bold" Foreground="Black" HorizontalAlignment="Right" />
-                    		<Path Data="M48.5,3.09 L48.5,18.09" Fill="#FFF4F4F5" HorizontalAlignment="Right" Stretch="Fill" Stroke="Black" Width="1" VerticalAlignment="Center" Height="15"/>
-                    		<TextBox x:Name="txtSearchLesson"
-                    			TextWrapping="NoWrap"
-                    			VerticalAlignment="Center"
-                    			Margin="3,0"
-                    			Grid.Column="1" Background="Transparent" BorderBrush="#007F9DB9">
-                    			<i:Interaction.Triggers>
-                    				<i:EventTrigger EventName="TextChanged">
-                    					<localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
-                    						CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    				</i:EventTrigger>
-                    			</i:Interaction.Triggers>
+                            BorderBrush="#FF7F9DB9"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Margin="5,2,2,2"
+                            Background="White"
+                            Height="30">
+                        <Grid x:Name="grdSearchLesson"
+                              d:LayoutOverrides="Width"
+                              Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="43.25" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap"
+                                       Text="Search "
+                                       VerticalAlignment="Center"
+                                       d:LayoutOverrides="Width"
+                                       FontWeight="Bold"
+                                       Foreground="Black"
+                                       HorizontalAlignment="Right" />
+                            <Path Data="M48.5,3.09 L48.5,18.09"
+                                  Fill="#FFF4F4F5"
+                                  HorizontalAlignment="Right"
+                                  Stretch="Fill"
+                                  Stroke="Black"
+                                  Width="0.5"
+                                  VerticalAlignment="Center"
+                                  Height="15" />
+                            <TextBox x:Name="txtSearchLesson"
+                                     TextWrapping="NoWrap"
+                                     VerticalAlignment="Center"
+                                     Margin="3,0"
+                                     Grid.Column="1"
+                                     Background="Transparent"
+                                     BorderBrush="#007F9DB9">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <localCommand:EventToCommand Command="{Binding SearchLessonCommand}"
+                                                                     CommandParameter="{Binding Text, ElementName=txtSearchLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
 
-                    		</TextBox>
-                    	</Grid>
+                            </TextBox>
+                        </Grid>
                     </Border>
                     <Rectangle Grid.Column="1"
                                HorizontalAlignment="Left"
@@ -774,10 +679,13 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListView.View>
+
                             <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                                <GridViewColumn Header="#"
+                                                Width="30"
+                                                DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" />
 
                                 <GridViewColumn Header="Card Name"
-                                                Width="auto"
                                                 DisplayMemberBinding="{Binding Card.CardName}" />
 
                                 <GridViewColumn Header="#">
@@ -951,31 +859,52 @@
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <Grid x:Name="grdSearchCate"
-                          VerticalAlignment="Center"
-                          Margin="5,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="49" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <TextBox x:Name="txtSearchCard"
-                                 TextWrapping="Wrap"
-                                 Grid.ColumnSpan="2"
-                                 Grid.Column="1"
-                                 VerticalAlignment="Center">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <localCommand:EventToCommand Command="{Binding SearchCardCommand}"
-                                                                 CommandParameter="{Binding Text, ElementName=txtSearchCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <TextBlock TextWrapping="Wrap"
-                                   Text="Search : "
-                                   d:LayoutOverrides="Width, Height"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Bold" />
-                    </Grid>
+                    <Border x:Name="bdSearchCard"
+                            BorderBrush="#FF7F9DB9"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Margin="5,2,2,2"
+                            Background="White"
+                            Height="30">
+                        <Grid x:Name="grdSearchCate"
+                              VerticalAlignment="Center"
+                              Margin="5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="49" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap"
+                                       Text="Search "
+                                       VerticalAlignment="Center"
+                                       d:LayoutOverrides="Width"
+                                       FontWeight="Bold"
+                                       Foreground="Black"
+                                       HorizontalAlignment="Right" />
+                            <Path Data="M48.5,3.09 L48.5,18.09"
+                                  Fill="#FFF4F4F5"
+                                  HorizontalAlignment="Right"
+                                  Stretch="Fill"
+                                  Stroke="Black"
+                                  Width="0.5"
+                                  VerticalAlignment="Center"
+                                  Height="15" />
+                            <TextBox x:Name="txtSearchCard"
+                                     TextWrapping="NoWrap"
+                                     VerticalAlignment="Center"
+                                     Margin="3,0"
+                                     Grid.Column="1"
+                                     Background="Transparent"
+                                     BorderBrush="#007F9DB9">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <localCommand:EventToCommand Command="{Binding SearchCardCommand}"
+                                                                     CommandParameter="{Binding Text, ElementName=txtSearchCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+
+                        </Grid>
+                    </Border>
                 </Grid>
                 <Grid x:Name="grdUserControl"
                       Grid.Row="1"
@@ -1007,7 +936,7 @@
                     Grid.Row="2"
                     Height="30"
                     Background="{DynamicResource brBottomColor}"
-                    Margin="1,0,1,1">
+                    Margin="2,0,2,2">
                 <Button x:Name="btnClose"
                         Height="21.277"
                         Content="Exit"

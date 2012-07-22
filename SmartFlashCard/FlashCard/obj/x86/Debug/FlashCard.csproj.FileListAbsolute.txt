@@ -19,7 +19,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\De
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\MVVMHelper.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\RichTextBoxControl.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\MessageBoxControl.dll
@@ -29,7 +28,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\De
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\RichTextBoxControl.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\log4net.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\vi\MVVMHelper.resources.dll
@@ -108,3 +106,5 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Ge
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.baml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.g.cs
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.baml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.g.cs
