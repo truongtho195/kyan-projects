@@ -407,7 +407,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnDeleteLessonExecute(object param)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to remove this Lesson", "Remove Lesson", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show(ViewCore as Window, "Do you want to remove this Lesson", "Remove Lesson", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
                 LessonModel lessonModel;
@@ -872,7 +872,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnDeleteCardExecute(object param)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to remove this Category & Lesson relation", "Remove Category", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show(ViewCore as Window, "Do you want to remove this Category & Lesson relation", "Remove Category", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
                 CardModel cardModel;
@@ -939,8 +939,8 @@ namespace FlashCard.ViewModels
         private void ExportCardExecute(object param)
         {
             Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.Filter = "Flash Card File *flc|*.flc";
-            dialog.FileName = string.Format("{0}.flc", SelectedCard.Card.CardName);
+            dialog.Filter = "Flash Card File *.fcard|*.fcard";
+            dialog.FileName = string.Format("{0}.fcard", SelectedCard.Card.CardName);
             var result = dialog.ShowDialog(ViewCore);
             if (!string.IsNullOrWhiteSpace(dialog.FileName))
             {
@@ -980,7 +980,7 @@ namespace FlashCard.ViewModels
         private void OnImportCardExecute(object param)
         {
             Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
-            openDialog.Filter = "Flash Card File *flc|*.flc";
+            openDialog.Filter = "Flash Card File (*.fcard) |*.fcard";
             openDialog.Multiselect = false;
             openDialog.ShowDialog();
             List<LessonModel> listLesson = new List<LessonModel>();
@@ -989,6 +989,7 @@ namespace FlashCard.ViewModels
             if (!string.IsNullOrWhiteSpace(openDialog.FileName))
             {
                 var card = Serializer<Card>.Deserialize(openDialog.FileName);
+
                 CardModel cardModel = new CardModel();
                 if (card != null)
                 {
@@ -1056,6 +1057,8 @@ namespace FlashCard.ViewModels
                     {
                         LessonCollection.Add(lessonModel);
                     }
+                    string msg = string.Format( "Card {0} & {1} Lesson(s) import success!", cardModel.CardName,listLesson.Count());
+                    MessageBox.Show(ViewCore as Window, msg, "Information", MessageBoxButton.OK);
                 }
             }
         }

@@ -600,7 +600,7 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 if (log.IsDebugEnabled)
-                    MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ViewCore as Window,ex.ToString());
             }
 
 
@@ -727,7 +727,7 @@ namespace FlashCard.ViewModels
         private void CancelExecute(object param)
         {
             log.Info("||{*} === Cancel Command Executed === ");
-            var result = MessageBox.Show("Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
+            var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
                 IsPopupStarted = false;
@@ -783,7 +783,7 @@ namespace FlashCard.ViewModels
         private void OnCloseExecute()
         {
             log.Info("||{*} === Close Command Executed === ");
-            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult messageBoxResult = MessageBox.Show(ViewCore as Window, "Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");

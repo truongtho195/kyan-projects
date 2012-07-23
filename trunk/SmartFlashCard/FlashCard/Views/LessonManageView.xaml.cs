@@ -147,7 +147,7 @@ namespace FlashCard
 
         private void ExitApplication(RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult messageBoxResult = MessageBox.Show(this, "Do you want to exit ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
                 Application.Current.Shutdown();
             else e.Handled = true;

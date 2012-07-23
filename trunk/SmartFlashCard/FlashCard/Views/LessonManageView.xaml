@@ -721,18 +721,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Grid.RowSpan="2">
-                        <Grid.Style>
-                            <Style TargetType="{x:Type Grid}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedCard}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="IsEnabled"
-                                                Value="False" />
-                                    </DataTrigger>
-
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+                       
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition Height="0.364*" />
@@ -747,22 +736,35 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Margin="0,0,8,0">
-                                <Button x:Name="btnNewCard"
-                                        Command="{Binding NewCardCommand}"
-                                        Content="New"
-                                        Width="70"
-                                        Background="White"
-                                        BorderBrush="{x:Null}"
-                                        Margin="0,0,10,0"
-                                        Height="20" />
-                                <Button x:Name="btnSaveCard"
-                                        Command="{Binding SaveCardCommand}"
-                                        Content="Save"
-                                        Width="70"
-                                        BorderBrush="{x:Null}"
-                                        Background="White"
-                                        Margin="0,0,10,0"
-                                        Height="20" />
+                            	<Button x:Name="btnImport"
+                            		Command="{Binding ImportCardCommand}"
+                            		Content="Import"
+                            		Width="75"
+                            		Height="21"
+                            		VerticalAlignment="Center" />
+                            	<Button x:Name="btnExport"
+                            		Command="{Binding ExportCardCommand}"
+                            		Content="Export"
+                            		Height="20.999"
+                            		Width="75"
+                            		VerticalAlignment="Center"
+                            		Margin="10,0,15,0" />
+                            	<Button x:Name="btnNewCard"
+                            		Command="{Binding NewCardCommand}"
+                            		Content="New"
+                            		Width="70"
+                            		Background="White"
+                            		BorderBrush="{x:Null}"
+                            		Margin="0,0,10,0"
+                            		Height="20" />
+                            	<Button x:Name="btnSaveCard"
+                            		Command="{Binding SaveCardCommand}"
+                            		Content="Save"
+                            		Width="70"
+                            		BorderBrush="{x:Null}"
+                            		Background="White"
+                            		Margin="0"
+                            		Height="20" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1"
@@ -814,29 +816,6 @@
                                        Grid.Row="2"
                                        Margin="0"
                                        Visibility="Collapsed" />
-                        </Grid>
-                        <Grid Grid.Row="2">
-                            <GroupBox Header="Export &amp; import"
-                                      Margin="5,0,5,5">
-                                <StackPanel VerticalAlignment="Top"
-                                            Orientation="Horizontal"
-                                            HorizontalAlignment="Right">
-                                    <Button x:Name="btnImport"
-                                            Command="{Binding ImportCardCommand}"
-                                            Content="Import"
-                                            HorizontalAlignment="Left"
-                                            Width="75"
-                                            Height="21"
-                                            VerticalAlignment="Center" />
-                                    <Button x:Name="btnExport"
-                                            Command="{Binding ExportCardCommand}"
-                                            Content="Export"
-                                            Height="21"
-                                            Width="75"
-                                            VerticalAlignment="Center"
-                                            Margin="10,0,0,0" />
-                                </StackPanel>
-                            </GroupBox>
                         </Grid>
                     </Grid>
                     <Border x:Name="bdLeftCate"
