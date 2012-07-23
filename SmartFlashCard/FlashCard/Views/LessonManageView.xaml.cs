@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Waf.Applications;
 using System.Linq;
 using FlashCard.ViewModels;
+using FlashCard.Database;
 
 namespace FlashCard
 {
@@ -27,7 +28,13 @@ namespace FlashCard
             viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
             var a = new LessonViewModel(this).View;
             InitialEvent();
-
+        }
+        public LessonManageView(List<LessonModel> lessonCollection)
+        {
+            this.InitializeComponent();
+            viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
+            var a = new LessonViewModel(this, lessonCollection).View;
+            InitialEvent();
         }
 
         //public LessonManageView(bool isFromPopup)
