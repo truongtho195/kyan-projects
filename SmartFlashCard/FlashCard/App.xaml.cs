@@ -70,7 +70,6 @@ namespace FlashCard
             }
             catch (Exception ex)
             {
-                RunNormal();
             }
             if (!IsStatupRunOk)
             {
