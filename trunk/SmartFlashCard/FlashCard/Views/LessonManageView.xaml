@@ -327,7 +327,7 @@
                                 <GridViewColumn Header="Lesson Name"
                                                 DisplayMemberBinding="{Binding Lesson.LessonName}" />
                                 <GridViewColumn Header="Card Name"
-                                                DisplayMemberBinding="{Binding Lesson.Card.CardName,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
+                                               
                                 <GridViewColumn Header="#">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
