@@ -451,6 +451,7 @@
                                       Height="23" />
                             <TextBox x:Name="txtLessonContent"
                                      Text="{Binding SelectedLesson.LessonName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     MaxLength="100"
                                      Grid.Column="1"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                      Margin="10,6,135,6"
@@ -506,13 +507,13 @@
                                       Grid.ColumnSpan="3"
                                       BorderThickness="1">
                                 <DataGrid.Columns>
-
                                     <DataGridTemplateColumn Header="Name"
                                                             MinWidth="150">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="txtBackSideName"
                                                          Text="{Binding BackSideName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                         MaxLength="50"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Top"
                                                          Height="25"
@@ -528,7 +529,6 @@
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
-
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Content"
@@ -537,11 +537,11 @@
                                             <DataTemplate>
                                                 <TextBox x:Name="txtContent"
                                                          Text="{Binding Content, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                         MaxLength="200"
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          Height="60"
                                                          HorizontalAlignment="Stretch" />
-
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -881,7 +881,6 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </TextBox>
-
                         </Grid>
                     </Border>
                 </Grid>
