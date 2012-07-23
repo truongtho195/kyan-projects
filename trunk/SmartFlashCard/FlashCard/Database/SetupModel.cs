@@ -320,6 +320,7 @@ namespace FlashCard.Database
         /// |----------------|---------------------------|
         ///    DistanceTime       ViewTime
         /// </summary>
+        
         #region Properties
         private TimeSpan _timeOut;
         /// <summary>
@@ -343,6 +344,27 @@ namespace FlashCard.Database
                 }
             }
         }
+
+
+        #region IsRunStatup
+        private bool _isRunStatup;
+        /// <summary>
+        /// Gets or sets the IsRunStatup.
+        /// </summary>
+        public bool IsRunStatup
+        {
+            get { return _isRunStatup; }
+            set
+            {
+                if (_isRunStatup != value)
+                {
+                    _isRunStatup = value;
+                    RaisePropertyChanged(() => IsRunStatup);
+                }
+            }
+        }
+        #endregion
+
 
         #endregion
 
