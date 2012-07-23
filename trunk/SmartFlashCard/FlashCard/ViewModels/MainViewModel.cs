@@ -21,7 +21,7 @@ using MVVMHelper.Commands;
 
 namespace FlashCard.ViewModels
 {
-    public partial class MainViewModel : ViewModel<MainWindow>,IDisposable
+    public partial class MainViewModel : ViewModel<MainWindow>, IDisposable
     {
         #region Constructors
         public MainViewModel(MainWindow view)
@@ -127,7 +127,7 @@ namespace FlashCard.ViewModels
         public SetupModel SetupModel
         {
             get { return App.SetupModel; }
-            
+
         }
         #endregion
 
@@ -328,18 +328,18 @@ namespace FlashCard.ViewModels
             }
             else
             {
-                if (SelectedLesson.IsBackSide)
-                {
-                    sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
-                }
-                else
-                    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
-                _learnView.BeginStoryboard(sbChangeSide);
+                //if (SelectedLesson.IsBackSide)
+                //{
+                //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
+                //}
+                //else
+                //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
+                //_learnView.BeginStoryboard(sbChangeSide);
 
                 if (App.SetupModel.Setup.IsEnableSlideShow == true)
                 {
                     DispatcherTimer stopChangeLesson = new DispatcherTimer();
-                    stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 3);
+                    stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 2);
                     stopChangeLesson.Tick += new EventHandler(waitUserClick_Tick);
                     _timerViewFullScreen.Stop();
                     stopChangeLesson.Start();
@@ -600,7 +600,7 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 if (log.IsDebugEnabled)
-                    MessageBox.Show(ViewCore as Window,ex.ToString());
+                    MessageBox.Show(ViewCore as Window, ex.ToString());
             }
 
 
@@ -727,10 +727,10 @@ namespace FlashCard.ViewModels
         private void CancelExecute(object param)
         {
             log.Info("||{*} === Cancel Command Executed === ");
-            var result = MessageBox.Show( ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
+            var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
-                
+
                 if ("FullScreen".Equals(param.ToString()))
                 {
                     _timerViewFullScreen.Stop();
@@ -812,7 +812,7 @@ namespace FlashCard.ViewModels
             }
         }
 
-        
+
         #endregion
 
         #region "  Full Screen Command"
@@ -1197,10 +1197,9 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _timerViewFullScreen_Tick(object sender, EventArgs e)
         {
-            var sbToFrontSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
             {
-                sbToFrontSide.Begin();
+
                 SetLesson();
                 if (App.SetupModel.Setup.IsEnableSoundForShow == true)
                     _soundForShow.PlaySync();

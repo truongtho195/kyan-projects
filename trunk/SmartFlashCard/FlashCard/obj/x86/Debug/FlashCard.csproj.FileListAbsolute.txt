@@ -15,15 +15,11 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x8
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\MVVMHelper.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\MessageBoxControl.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.DataAccess.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\FlashCard.Model.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\MVVMHelper.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.pdb
@@ -100,5 +96,3 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Fl
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.baml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\Views\Window1.g.cs

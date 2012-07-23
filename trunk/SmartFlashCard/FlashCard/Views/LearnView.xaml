@@ -251,7 +251,21 @@
                                         ScaleY="{Binding Value, ElementName=slIncrectTextSize}" />
 
                     </Grid.LayoutTransform>
-                    <Grid x:Name="BackSideWrapper" Visibility="Hidden">
+                    <Grid x:Name="BackSideWrapper">
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Setter Property="Visibility"
+                                        Value="Hidden" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 Value="True">
+                                        <Setter Property="Visibility"
+                                                Value="Visible" />
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20.553" />
                             <RowDefinition />
@@ -286,7 +300,8 @@
                                    HorizontalAlignment="Left"
                                    FontSize="16"
                                    FontWeight="Bold"
-                                   d:LayoutOverrides="Height" VerticalAlignment="Center">
+                                   d:LayoutOverrides="Height"
+                                   VerticalAlignment="Center">
                     		<TextBlock.Style>
                     			<Style TargetType="{x:Type TextBlock}">
                     				<Setter Property="Visibility"
@@ -308,7 +323,8 @@
                                    VerticalAlignment="Center"
                                    Foreground="White"
                                    FontSize="18.667"
-                                   HorizontalAlignment="Center" Grid.Row="1">
+                                   HorizontalAlignment="Center"
+                                   Grid.Row="1">
                     		<TextBlock.Style>
                     			<Style TargetType="{x:Type TextBlock}">
                     				<Setter Property="Visibility"
@@ -329,28 +345,20 @@
                     <Grid x:Name="FrontSideWrapper"
                           RenderTransformOrigin="0.5,0.5"
                           VerticalAlignment="Center">
-                        <Grid.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Grid.RenderTransform>
-                        <!--<Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                             Value="False">
-                                    <Setter Property="Visibility"
-                                            Value="Visible" />
-                                </DataTrigger>
-                               
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>-->
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                 Value="True">
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed" />
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                         </Grid.RowDefinitions>
