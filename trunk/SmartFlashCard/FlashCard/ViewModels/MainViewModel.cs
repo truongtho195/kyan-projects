@@ -1197,9 +1197,9 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _timerViewFullScreen_Tick(object sender, EventArgs e)
         {
+            var sbToFrontSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
             {
-                var sbToFrontSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
                 sbToFrontSide.Begin();
                 SetLesson();
                 if (App.SetupModel.Setup.IsEnableSoundForShow == true)

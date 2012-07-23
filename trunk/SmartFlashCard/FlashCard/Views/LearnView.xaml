@@ -15,7 +15,7 @@
         xmlns:converter="clr-namespace:FlashCard.Converters"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Topmost="True"
+        Topmost="False"
         HorizontalContentAlignment="Stretch"
         VerticalContentAlignment="Stretch">
     <i:Interaction.Triggers>
