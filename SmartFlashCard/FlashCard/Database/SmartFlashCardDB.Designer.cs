@@ -553,7 +553,7 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [XmlIgnoreAttribute()]
+        //[XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Lesson")]
@@ -863,7 +863,7 @@ namespace FlashCard.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [XmlIgnoreAttribute()]
+        //[XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_BackSides_0", "BackSide")]

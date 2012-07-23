@@ -230,7 +230,9 @@
           <NavigationProperty Name="Category" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Lesson" ToRole="Category" />
         </EntityType>
         <Association Name="FK_BackSides_0">
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Lesson">
@@ -242,7 +244,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Lessons_1">
-          <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Card">

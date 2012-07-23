@@ -406,6 +406,12 @@ namespace FlashCard.ViewModels
                     LessonRepository lessonRepository = new LessonRepository();
                     lessonRepository.Delete(lessonModel.Lesson);
                     lessonRepository.Commit();
+                    if (SelectedLesson == lessonModel)
+                    {
+                        var indexLesson = LessonCollection.IndexOf(SelectedLesson);
+                        ViewCore.lstLesson.SelectedIndex = indexLesson - 1;
+                    }
+
                     LessonCollection.Remove(lessonModel);
                 }
             }
@@ -676,7 +682,6 @@ namespace FlashCard.ViewModels
         private void OnNewCardExecute(object param)
         {
             SelectedCard = new CardModel();
-
         }
         #endregion
 
@@ -690,13 +695,13 @@ namespace FlashCard.ViewModels
             {
                 if (_saveCardCommand == null)
                 {
-                    _saveCardCommand = new RelayCommand(this.SaveCategoryExecute, this.CanSaveCategoryExecute);
+                    _saveCardCommand = new RelayCommand(this.SaveCardExecute, this.CanSaveCardExecute);
                 }
                 return _saveCardCommand;
             }
         }
 
-        private bool CanSaveCategoryExecute(object param)
+        private bool CanSaveCardExecute(object param)
         {
             if (SelectedCard == null)
                 return false;
@@ -704,34 +709,12 @@ namespace FlashCard.ViewModels
             return SelectedCard.IsDirty && SelectedCard.Errors.Count() == 0;
         }
 
-        private void SaveCategoryExecute(object param)
+        private void SaveCardExecute(object param)
         {
-            try
-            {
-                CardRepository cardRepository = new CardRepository();
-                if (SelectedCard.IsNew)
-                {
-                    SelectedCard.CardID = AutoGeneration.NewSeqGuid().ToString();
-                    SelectedCard.ToEntity();
-                    cardRepository.Add<Card>(SelectedCard.Card);
-                    SelectedCard.EndUpdate();
-                    CardCollection.Add(SelectedCard);
-                    CardList.Add(SelectedCard.Card);
-                }
-                else
-                {
-                    SelectedCard.ToEntity();
-                    cardRepository.Update(SelectedCard.Card);
-                    SelectedCard.EndUpdate();
-                }
-                RaisePropertyChanged(() => CardList);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                throw;
-            }
+            SaveCard(SelectedCard);
         }
+
+
         #endregion
 
         #region "  SelectionCardChangedCommand"
@@ -907,6 +890,11 @@ namespace FlashCard.ViewModels
 
                         CardList.Remove(cardModel.Card);
 
+                        var CardLesson = LessonCollection.Where(x => x.CardID.Equals(cardModel.Card.CardID));
+                        foreach (var item in CardLesson.ToList())
+                        {
+                            LessonCollection.Remove(item);
+                        }
 
                     }
                 }
@@ -984,10 +972,80 @@ namespace FlashCard.ViewModels
             openDialog.Filter = "Flash Card File *flc|*.flc";
             openDialog.Multiselect = false;
             openDialog.ShowDialog();
-
+            List<LessonModel> listLesson = new List<LessonModel>();
+            List<BackSideModel> listBackSide;
+            
             if (!string.IsNullOrWhiteSpace(openDialog.FileName))
             {
                 var card = Serializer<Card>.Deserialize(openDialog.FileName);
+                CardModel cardModel = new CardModel();
+                if (card != null)
+                {
+                    cardModel.CardID = AutoGeneration.NewSeqGuid().ToString();
+                    cardModel.CardName = card.CardName;
+                    cardModel.Remark = card.Remark;
+                    cardModel.ToEntity();
+                    //Handle Card.Lessons
+                    if (card.Lessons != null && card.Lessons.Count > 0)
+                    {
+                        listLesson = new List<LessonModel>();
+                        foreach (var lesson in card.Lessons)
+                        {
+                            if (lesson != null)
+                            {
+                                LessonModel lessonModel = new LessonModel();
+                                lessonModel.LessonID = AutoGeneration.NewSeqGuid().ToString();
+                                lessonModel.CardID = cardModel.CardID;
+                                lessonModel.LessonName = lesson.LessonName;
+                                lessonModel.Description = lesson.Description;
+                                lessonModel.CategoryID = lesson.CategoryID;
+                                lessonModel.ToEntity();
+                                //Handle Lesson.BackSides
+                                if (lesson.BackSides != null && lesson.BackSides.Count > 0)
+                                {
+                                    listBackSide = new List<BackSideModel>();
+                                    foreach (var backSide in lesson.BackSides)
+                                    {
+                                        if (backSide != null)
+                                        {
+                                            BackSideModel backSideModel = new BackSideModel();
+                                            backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                                            backSideModel.LessonID = backSide.LessonID;
+                                            backSideModel.BackSideName = backSide.BackSideName;
+                                            backSideModel.Content = backSide.Content;
+                                            backSideModel.IsMain = backSide.IsMain;
+                                            backSideModel.ToEntity();
+                                            //add BackSide to Lessons
+                                            lessonModel.Lesson.BackSides.Add(backSideModel.BackSide);
+                                            backSideModel.EndUpdate();
+                                            listBackSide.Add(backSideModel);
+                                        }
+                                    }
+                                }//End handle BackSide
+                              
+                                //Add Lesson To Card
+                                lessonModel.EndUpdate();
+                                cardModel.Card.Lessons.Add(lessonModel.Lesson);
+                                listLesson.Add(lessonModel);
+                            }
+                        }
+                    }//End Handle Lesson
+
+                    CardRepository cardRepository = new CardRepository();
+                    cardRepository.Add<Card>(cardModel.Card);
+                    cardRepository.Commit();
+
+                    // Add To UI
+
+                    cardModel.EndUpdate();
+                    CardCollection.Add(cardModel);
+                    CardList.Add(cardModel.Card);
+
+                    foreach (var lessonModel in listLesson)
+                    {
+                        LessonCollection.Add(lessonModel);
+                    }
+                }
             }
         }
         #endregion
@@ -1168,7 +1226,7 @@ namespace FlashCard.ViewModels
         private bool OnShortCutKeySaveItemCanExecute(object param)
         {
             if (IsCardHandle)
-                return CanSaveCategoryExecute(param);
+                return CanSaveCardExecute(param);
             else
                 return CanSaveExecute(param);
         }
@@ -1182,9 +1240,9 @@ namespace FlashCard.ViewModels
             {
                 if (IsCardHandle)
                 {
-                    if (CanSaveCategoryExecute(param))
+                    if (CanSaveCardExecute(param))
                     {
-                        SaveCategoryExecute(param);
+                        SaveCardExecute(param);
                     }
                 }
                 else
@@ -1218,6 +1276,7 @@ namespace FlashCard.ViewModels
                 LessonCollection = new ObservableCollection<LessonModel>(lessonRepository.GetAll<Lesson>().Select(x => new LessonModel(x)));
                 if (LessonCollection.Any())
                 {
+                    //OnSelectionChangedExecute(LessonCollection.FirstOrDefault());
                     SelectedLesson = LessonCollection.FirstOrDefault();
                 }
                 else
@@ -1233,7 +1292,10 @@ namespace FlashCard.ViewModels
                 RaisePropertyChanged(() => CardList);
 
                 if (CardCollection.Any())
+                {
+                    //ViewCore.lstCategories.SelectedItem = CardCollection.FirstOrDefault();
                     SelectedCard = CardCollection.FirstOrDefault();
+                }
                 else
                 {
                     CardCollection = new ObservableCollection<CardModel>();
@@ -1245,6 +1307,67 @@ namespace FlashCard.ViewModels
                 log.Error(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Update or Save new card
+        /// </summary>
+        /// <param name="cardModel"></param>
+        private void SaveCard(CardModel cardModel)
+        {
+            try
+            {
+                CardRepository cardRepository = new CardRepository();
+                if (cardModel.IsNew)
+                {
+                    cardModel.CardID = AutoGeneration.NewSeqGuid().ToString();
+                    cardModel.ToEntity();
+                    cardRepository.Add<Card>(SelectedCard.Card);
+                    cardRepository.Commit();
+                    cardModel.EndUpdate();
+                    CardCollection.Add(cardModel);
+                    CardList.Add(cardModel.Card);
+                }
+                else
+                {
+                    cardModel.ToEntity();
+                    cardRepository.Update(cardModel.Card);
+                    cardRepository.Commit();
+                    cardModel.EndUpdate();
+                }
+                RaisePropertyChanged(() => CardList);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+        }
+
+        private void SaveLesson(LessonModel lessonModel)
+        {
+            LessonRepository lessonRepository = new LessonRepository();
+            if (lessonModel.IsNew)
+                lessonModel.LessonID = AutoGeneration.NewSeqGuid().ToString();
+            //Mapping
+            lessonModel.ToEntity();
+
+            BackSideRepository backSideRepository = new BackSideRepository();
+            if (lessonModel.IsNew)
+            {
+                foreach (var backSideModel in lessonModel.BackSideCollection)
+                {
+                    backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                    backSideModel.LessonID = lessonModel.LessonID;
+                    backSideModel.ToEntity();
+                    lessonModel.Lesson.BackSides.Add(backSideModel.BackSide);
+                    backSideModel.EndUpdate();
+                }
+                lessonRepository.Add(lessonModel.Lesson);
+                lessonRepository.Commit();
+                LessonCollection.Add(lessonModel);
+                lessonModel.EndUpdate();
+            }
+          
         }
         #endregion
     }

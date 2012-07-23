@@ -327,7 +327,7 @@
                                 <GridViewColumn Header="Lesson Name"
                                                 DisplayMemberBinding="{Binding Lesson.LessonName}" />
                                 <GridViewColumn Header="Card Name"
-                                                DisplayMemberBinding="{Binding Lesson.Card.CardName}" />
+                                                DisplayMemberBinding="{Binding Lesson.Card.CardName,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" />
                                 <GridViewColumn Header="#">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -439,6 +439,7 @@
                             <ComboBox x:Name="cmbCard"
                                       ItemsSource="{Binding CardList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedValue="{Binding SelectedLesson.CardID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedItem="{Binding SelectedLesson.Lesson.Card,Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                       DisplayMemberPath="CardName"
                                       SelectedValuePath="CardID"
                                       VerticalAlignment="Center"
@@ -482,7 +483,6 @@
                                        Grid.Row="5"
                                        Margin="0,5,0,0"
                                        FontWeight="Bold" />
-
                             <DataGrid x:Name="dgBackSide"
                                       ItemsSource="{Binding SelectedLesson.BackSideCollection}"
                                       AutoGenerateColumns="False"

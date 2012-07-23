@@ -261,10 +261,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FlashCard.Data\FlashCard.DataAccess\FlashCard.DataAccess.csproj">
-      <Project>{2660BA4D-E3AF-4038-855D-AB1F2C045ECD}</Project>
-      <Name>FlashCard.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FlashCare.Core\MVVMHelper\MVVMHelper.csproj">
       <Project>{92A71D19-F6AE-47CC-9E23-D65BCBB03F8A}</Project>
       <Name>MVVMHelper</Name>
