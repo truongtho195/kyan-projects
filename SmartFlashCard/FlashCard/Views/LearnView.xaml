@@ -190,7 +190,6 @@
                               Height="15"
                               Width="15" />
                     </Button>
-
                     <Button x:Name="btnExit"
                             Command="{Binding CancelCommand}"
                             CommandParameter="FullScreen"
