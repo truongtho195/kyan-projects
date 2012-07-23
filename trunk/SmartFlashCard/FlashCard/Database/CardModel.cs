@@ -225,6 +225,7 @@ namespace FlashCard.Database
                 this.Errors.Remove(columnName);
                 switch (columnName)
                 {
+                 
                     case "CardName":
                         if (string.IsNullOrWhiteSpace(CardName))
                             message = "Card Name is required!";
