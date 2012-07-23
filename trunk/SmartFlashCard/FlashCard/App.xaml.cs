@@ -18,6 +18,8 @@ namespace FlashCard
         public static void Main()
         {
             //string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
+
+
             string appName = "SmardFashCard";
             if (SingleInstance<App>.InitializeAsFirstInstance(appName))
             {
