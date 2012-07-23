@@ -606,8 +606,6 @@ namespace FlashCard.ViewModels
 
         }
 
-
-
         void waitForListener_Tick(object sender, EventArgs e)
         {
             (sender as DispatcherTimer).Stop();
