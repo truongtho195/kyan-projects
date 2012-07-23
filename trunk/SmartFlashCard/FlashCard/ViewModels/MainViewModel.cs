@@ -733,6 +733,7 @@ namespace FlashCard.ViewModels
                 
                 if ("FullScreen".Equals(param.ToString()))
                 {
+                    _timerViewFullScreen.Stop();
                     _timerViewFullScreen = null;
                     _learnView.Close();
                 }
@@ -1123,7 +1124,7 @@ namespace FlashCard.ViewModels
             log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
             if (!ViewCore.MyNotifyIcon.IsPopupOpen)
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                 {
                     SetLesson();
                     if (App.SetupModel.Setup.IsEnableSoundForShow == true)
@@ -1198,6 +1199,8 @@ namespace FlashCard.ViewModels
         {
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
             {
+                var sbToFrontSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
+                sbToFrontSide.Begin();
                 SetLesson();
                 if (App.SetupModel.Setup.IsEnableSoundForShow == true)
                     _soundForShow.PlaySync();
