@@ -9,12 +9,13 @@
         Title="LearnView"
         AllowsTransparency="True"
         WindowStyle="None"
-        Background="{x:Null}"
+        Background="Transparent"
         xmlns:localCommand="clr-namespace:FlashCard.Commands"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:converter="clr-namespace:FlashCard.Converters"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        Topmost="True"
         HorizontalContentAlignment="Stretch"
         VerticalContentAlignment="Stretch">
     <i:Interaction.Triggers>
@@ -30,9 +31,6 @@
         <FlashCard_Converters:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
         <converter:DatagridItemToLineNumberConverter x:Key="DatagridItemToLineNumberConverter" />
         <!--#endregion Converters-->
-        <Storyboard x:Key="sbLoadForm" />
-        <Storyboard x:Key="sbUnLoadForm" />
-
         <DataTemplate x:Key="DataTemplate1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -253,14 +251,8 @@
                         <ScaleTransform ScaleX="{Binding Value, ElementName=slIncrectTextSize}"
                                         ScaleY="{Binding Value, ElementName=slIncrectTextSize}" />
 
-
-
                     </Grid.LayoutTransform>
-
-
-
                     <Grid x:Name="BackSideWrapper" Visibility="Hidden">
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20.553" />
                             <RowDefinition />
@@ -338,7 +330,6 @@
                     <Grid x:Name="FrontSideWrapper"
                           RenderTransformOrigin="0.5,0.5"
                           VerticalAlignment="Center">
-
                         <Grid.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -353,9 +344,9 @@
                                     Value="Visible" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SelectedLesson.IsBackSide,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
-                                             Value="True">
+                                             Value="False">
                                     <Setter Property="Visibility"
-                                            Value="Hidden" />
+                                            Value="Visible" />
                                 </DataTrigger>
                                
                             </Style.Triggers>

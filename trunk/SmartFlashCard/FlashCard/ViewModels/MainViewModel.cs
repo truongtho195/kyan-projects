@@ -21,7 +21,7 @@ using MVVMHelper.Commands;
 
 namespace FlashCard.ViewModels
 {
-    public partial class MainViewModel : ViewModel<MainWindow>
+    public partial class MainViewModel : ViewModel<MainWindow>,IDisposable
     {
         #region Constructors
         public MainViewModel(MainWindow view)
@@ -196,8 +196,8 @@ namespace FlashCard.ViewModels
                 if (_isFullSreenStarted != value)
                 {
                     _isFullSreenStarted = value;
-                    if (_isFullSreenStarted)
-                        IsPopupStarted = false;
+                    //if (_isFullSreenStarted)
+                    IsPopupStarted = !_isFullSreenStarted;
                     RaisePropertyChanged(() => IsFullScreenStarted);
                 }
             }
@@ -727,11 +727,10 @@ namespace FlashCard.ViewModels
         private void CancelExecute(object param)
         {
             log.Info("||{*} === Cancel Command Executed === ");
-            var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
+            var result = MessageBox.Show( ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
             if (result.Equals(MessageBoxResult.Yes))
             {
-                IsPopupStarted = false;
-
+                
                 if ("FullScreen".Equals(param.ToString()))
                 {
                     _timerViewFullScreen = null;
@@ -743,11 +742,15 @@ namespace FlashCard.ViewModels
                     _timerPopup = null;
                     _waitForClose = null;
                 }
+                IsPopupStarted = false;
                 ViewCore.MyNotifyIcon.Dispose();
                 ViewCore.MyNotifyIcon = null;
                 GC.SuppressFinalize(this);
                 if (App.LessonMangeView != null)
+                {
+                    App.LessonMangeView.Activate();
                     App.LessonMangeView.Show();
+                }
             }
         }
         #endregion
@@ -784,33 +787,31 @@ namespace FlashCard.ViewModels
         {
             log.Info("||{*} === Close Command Executed === ");
             MessageBoxResult messageBoxResult = MessageBox.Show(ViewCore as Window, "Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (messageBoxResult.Equals(MessageBoxResult.Yes))
             {
-                Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
-                sb.Completed += new EventHandler(sb_Completed);
-                _learnView.BeginStoryboard(sb);
+                //Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
+                //sb.Completed += new EventHandler(sb_Completed);
+                //_learnView.BeginStoryboard(sb);
                 if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
                 {
                     _timerViewFullScreen.Stop();
                     IsFullScreenStarted = false;
+                    _learnView.Close();
+                    _learnView = null;
+
+                    if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                    {
+                        PlayPauseBallonPopup(false);
+                    }
+                    else
+                    {
+                        ShowPopupForm();
+                    }
                 }
             }
         }
 
-        private void sb_Completed(object sender, EventArgs e)
-        {
-            _learnView.Close();
-            _learnView = null;
-
-            if (App.SetupModel.Setup.IsEnableSlideShow == true)
-            {
-                PlayPauseBallonPopup(false);
-            }
-            else
-            {
-                ShowPopupForm();
-            }
-        }
+        
         #endregion
 
         #region "  Full Screen Command"
@@ -1029,7 +1030,7 @@ namespace FlashCard.ViewModels
             }
 
             SelectedLesson = LessonCollection[_currentItemIndex];
-            SelectedLesson.IsBackSide = IsCurrentBackSide;
+            SelectedLesson.IsBackSide = false;  //    IsCurrentBackSide;
             RaisePropertyChanged(() => SelectedLesson);
             SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
 
@@ -1307,5 +1308,12 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            _soundForShow.Dispose();
+            _timerPopup = null;
+            _timerViewFullScreen = null;
+        }
     }
 }
