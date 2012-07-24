@@ -31,8 +31,16 @@
         <!--myRowStyle-->
         <Style x:Key="myRowCollapseStyle"
                TargetType="{x:Type DataGridRow}">
+        	<Style.Triggers>
+        		<Trigger Property="IsMouseOver" Value="True">
+        			<Setter Property="Background" Value="#FFD3E1F7"/>
+        		</Trigger>
+        		<Trigger Property="Selector.IsSelected" Value="True">
+        			<Setter Property="Background" Value="{DynamicResource bgItemSelected}"/>
+        		</Trigger>
+        	</Style.Triggers>
             <Setter Property="Background"
-                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+                    Value="Transparent" />
             <Setter Property="SnapsToDevicePixels"
                     Value="true" />
             <Setter Property="Validation.ErrorTemplate"
@@ -44,7 +52,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 SnapsToDevicePixels="True"
-                                Background="#00000000">
+                                Background="{TemplateBinding Background}">
                             <SelectiveScrollingGrid>
                                 <SelectiveScrollingGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -67,17 +75,17 @@
                             </SelectiveScrollingGrid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Value="True">
-                                <Setter Property="Visibility"
-                                        Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Value="False">
-                                <Setter Property="Visibility"
-                                        Value="Visible" />
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
+                    		<DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    			Value="True">
+                    			<Setter Property="Visibility"
+                    				Value="Collapsed" />
+                    		</DataTrigger>
+                    		<DataTrigger Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    			Value="False">
+                    			<Setter Property="Visibility"
+                    				Value="Visible" />
+                    		</DataTrigger>
+                    	</ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -165,16 +173,7 @@
                 <RowDefinition Height="29.795" />
             </Grid.RowDefinitions>
             <Border x:Name="bdHeader"
-                    Margin="2,2,2,0">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1"
-                                         StartPoint="0.5,0">
-                        <GradientStop Color="#FF5593EE"
-                                      Offset="0.036" />
-                        <GradientStop Color="#FF68A4EB"
-                                      Offset="0.988" />
-                    </LinearGradientBrush>
-                </Border.Background>
+                    Margin="2,2,2,0" Background="{DynamicResource bgHeaderColor}">
                 <Grid>
                     <StackPanel x:Name="stSystemControl"
                                 Orientation="Horizontal"
@@ -505,11 +504,11 @@
                                       FontWeight="Bold"
                                       Style="{DynamicResource DataGridStyle}"
                                       Grid.ColumnSpan="3"
-                                      BorderThickness="1">
+                                      BorderThickness="1" CellStyle="{DynamicResource DataGridCellStyle}">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Name"
                                                             MinWidth="150">
-                                        <DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="txtBackSideName"
                                                          Text="{Binding BackSideName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -517,10 +516,18 @@
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Top"
                                                          Height="25"
+                                                         Background="Transparent"
                                                          BorderThickness="1"
-                                                         Background="White"
+                                                         Foreground="Black"
                                                          BorderBrush="#FF7F9DB9" />
                                                 <DataTemplate.Triggers>
+                                                    <Trigger SourceName="txtBackSideName"
+                                                             Property="IsVisible"
+                                                             Value="True">
+                                                        <Setter TargetName="txtBackSideName"
+                                                                Property="FocusManager.FocusedElement"
+                                                                Value="{Binding ElementName=txtBackSideName}" />
+                                                    </Trigger>
                                                     <DataTrigger Binding="{Binding IsMain}"
                                                                  Value="1">
                                                         <Setter Property="IsReadOnly"
@@ -529,11 +536,21 @@
                                                     </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock x:Name="tbBackSideName"
+                                                           Text="{Binding BackSideName, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                           HorizontalAlignment="Stretch"
+                                                           VerticalAlignment="Top"
+                                                           Foreground="Black"
+                                                           Height="25" />
+                                            </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Content"
                                                             MinWidth="500">
-                                        <DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <TextBox x:Name="txtContent"
                                                          Text="{Binding Content, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -541,7 +558,28 @@
                                                          TextWrapping="Wrap"
                                                          AcceptsReturn="True"
                                                          Height="60"
+                                                         Foreground="Black"
+                                                         Background="Transparent"
                                                          HorizontalAlignment="Stretch" />
+                                                <DataTemplate.Triggers>
+                                                    <Trigger SourceName="txtContent"
+                                                             Property="IsVisible"
+                                                             Value="True">
+                                                        <Setter TargetName="txtContent"
+                                                                Property="FocusManager.FocusedElement"
+                                                                Value="{Binding ElementName=txtContent}" />
+                                                    </Trigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock x:Name="tbContent"
+                                                           Text="{Binding Content,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                           TextWrapping="Wrap"
+                                                           Foreground="Black"
+                                                           Height="60"
+                                                           HorizontalAlignment="Stretch" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -553,6 +591,7 @@
                                                         CommandParameter="{Binding .}"
                                                         Width="20"
                                                         Height="20"
+                                                        Foreground="Black"
                                                         ToolTip="Delete"
                                                         Style="{DynamicResource EmptyButton}">
                                                     <Image Source="/Images/1336360382_Delete.png" />
@@ -721,7 +760,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Grid.RowSpan="2">
-                       
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="48.471" />
                             <RowDefinition Height="0.364*" />
@@ -736,35 +775,35 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Margin="0,0,8,0">
-                            	<Button x:Name="btnImport"
-                            		Command="{Binding ImportCardCommand}"
-                            		Content="Import"
-                            		Width="75"
-                            		Height="21"
-                            		VerticalAlignment="Center" />
-                            	<Button x:Name="btnExport"
-                            		Command="{Binding ExportCardCommand}"
-                            		Content="Export"
-                            		Height="20.999"
-                            		Width="75"
-                            		VerticalAlignment="Center"
-                            		Margin="10,0,15,0" />
-                            	<Button x:Name="btnNewCard"
-                            		Command="{Binding NewCardCommand}"
-                            		Content="New"
-                            		Width="70"
-                            		Background="White"
-                            		BorderBrush="{x:Null}"
-                            		Margin="0,0,10,0"
-                            		Height="20" />
-                            	<Button x:Name="btnSaveCard"
-                            		Command="{Binding SaveCardCommand}"
-                            		Content="Save"
-                            		Width="70"
-                            		BorderBrush="{x:Null}"
-                            		Background="White"
-                            		Margin="0"
-                            		Height="20" />
+                                <Button x:Name="btnImport"
+                                        Command="{Binding ImportCardCommand}"
+                                        Content="Import"
+                                        Width="75"
+                                        Height="21"
+                                        VerticalAlignment="Center" />
+                                <Button x:Name="btnExport"
+                                        Command="{Binding ExportCardCommand}"
+                                        Content="Export"
+                                        Height="20.999"
+                                        Width="75"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,15,0" />
+                                <Button x:Name="btnNewCard"
+                                        Command="{Binding NewCardCommand}"
+                                        Content="New"
+                                        Width="70"
+                                        Background="White"
+                                        BorderBrush="{x:Null}"
+                                        Margin="0,0,10,0"
+                                        Height="20" />
+                                <Button x:Name="btnSaveCard"
+                                        Command="{Binding SaveCardCommand}"
+                                        Content="Save"
+                                        Width="70"
+                                        BorderBrush="{x:Null}"
+                                        Background="White"
+                                        Margin="0"
+                                        Height="20" />
                             </StackPanel>
                         </Border>
                         <Grid Grid.Row="1"

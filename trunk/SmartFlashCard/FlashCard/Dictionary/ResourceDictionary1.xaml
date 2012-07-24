@@ -4,6 +4,14 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d"
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
+	<LinearGradientBrush x:Key="bgHeaderColor" EndPoint="0.5,1"
+		StartPoint="0.5,0">
+		<GradientStop Color="#FF5593EE"
+			Offset="0.021" />
+		<GradientStop Color="#FF68A4EB"
+			Offset="0.988" />
+		<GradientStop Color="#FF67A3EB" Offset="0.972"/>
+	</LinearGradientBrush>
 	<Style x:Key="StaticExtension2"
 		TargetType="{x:Type ScrollViewer}">
 		<Setter Property="Focusable"
@@ -1566,5 +1574,34 @@
  			</ControlTemplate>
  		</Setter.Value>
  	</Setter>
+ </Style>
+ <LinearGradientBrush x:Key="bgItemSelected" EndPoint="0.5,1" StartPoint="0.5,0">
+ 	<GradientStop Color="#FF94B9F3" Offset="0"/>
+ 	<GradientStop Color="#FFADCBF9" Offset="0.792"/>
+ 	<GradientStop Color="#FFA5C5F7" Offset="1"/>
+ </LinearGradientBrush>
+ <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+ 	<Setter Property="Background" Value="Transparent"/>
+ 	<Setter Property="BorderBrush" Value="Transparent"/>
+ 	<Setter Property="BorderThickness" Value="1"/>
+ 	<Setter Property="Template">
+ 		<Setter.Value>
+ 			<ControlTemplate TargetType="{x:Type DataGridCell}">
+ 				<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+ 					<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+ 				</Border>
+ 			</ControlTemplate>
+ 		</Setter.Value>
+ 	</Setter>
+ 	<Style.Triggers>
+ 		<Trigger Property="IsSelected" Value="True">
+ 			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+ 			<Setter Property="BorderBrush" Value="#FFD2EEFD"/>
+ 			<Setter Property="Background" Value="{DynamicResource bgItemSelected}"/>
+ 		</Trigger>
+ 		<Trigger Property="IsKeyboardFocusWithin" Value="True">
+ 			<Setter Property="BorderBrush" Value="#FFC5DBFF"/>
+ 		</Trigger>
+ 	</Style.Triggers>
  </Style>
 </ResourceDictionary>
