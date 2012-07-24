@@ -938,14 +938,24 @@ namespace FlashCard.ViewModels
 
         private void ExportCardExecute(object param)
         {
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.Filter = "Flash Card File *.fcard|*.fcard";
-            dialog.FileName = string.Format("{0}.fcard", SelectedCard.Card.CardName);
-            var result = dialog.ShowDialog(ViewCore);
-            if (!string.IsNullOrWhiteSpace(dialog.FileName))
+            try
             {
-                Serializer<Card>.Serialize(SelectedCard.Card, dialog.FileName);
+                Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+                dialog.Filter = "Flash Card File (*.fcard) |*.fcard";
+                dialog.FileName = string.Format("{0}.fcard", SelectedCard.Card.CardName);
+                var result = dialog.ShowDialog(ViewCore);
+                if (!string.IsNullOrWhiteSpace(dialog.FileName))
+                {
+                    Serializer<Card>.Serialize(SelectedCard.Card, dialog.FileName);
+                }
+
+                MessageBox.Show(ViewCore as Window, "Flash Card Export success !","Information" ,MessageBoxButton.OK);
             }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            
         }
         #endregion
 
@@ -979,87 +989,94 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnImportCardExecute(object param)
         {
-            Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
-            openDialog.Filter = "Flash Card File (*.fcard) |*.fcard";
-            openDialog.Multiselect = false;
-            openDialog.ShowDialog();
-            List<LessonModel> listLesson = new List<LessonModel>();
-            List<BackSideModel> listBackSide;
-            
-            if (!string.IsNullOrWhiteSpace(openDialog.FileName))
+            try
             {
-                var card = Serializer<Card>.Deserialize(openDialog.FileName);
+                Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
+                openDialog.Filter = "Flash Card File (*.fcard) |*.fcard";
+                openDialog.Multiselect = false;
+                openDialog.ShowDialog();
+                List<LessonModel> listLesson = new List<LessonModel>();
+                List<BackSideModel> listBackSide;
 
-                CardModel cardModel = new CardModel();
-                if (card != null)
+                if (!string.IsNullOrWhiteSpace(openDialog.FileName))
                 {
-                    cardModel.CardID = AutoGeneration.NewSeqGuid().ToString();
-                    cardModel.CardName = card.CardName;
-                    cardModel.Remark = card.Remark;
-                    cardModel.ToEntity();
-                    //Handle Card.Lessons
-                    if (card.Lessons != null && card.Lessons.Count > 0)
+                    var card = Serializer<Card>.Deserialize(openDialog.FileName);
+
+                    CardModel cardModel = new CardModel();
+                    if (card != null)
                     {
-                        listLesson = new List<LessonModel>();
-                        foreach (var lesson in card.Lessons)
+                        cardModel.CardID = AutoGeneration.NewSeqGuid().ToString();
+                        cardModel.CardName = card.CardName;
+                        cardModel.Remark = card.Remark;
+                        cardModel.ToEntity();
+                        //Handle Card.Lessons
+                        if (card.Lessons != null && card.Lessons.Count > 0)
                         {
-                            if (lesson != null)
+                            listLesson = new List<LessonModel>();
+                            foreach (var lesson in card.Lessons)
                             {
-                                LessonModel lessonModel = new LessonModel();
-                                lessonModel.LessonID = AutoGeneration.NewSeqGuid().ToString();
-                                lessonModel.CardID = cardModel.CardID;
-                                lessonModel.LessonName = lesson.LessonName;
-                                lessonModel.Description = lesson.Description;
-                                lessonModel.CategoryID = lesson.CategoryID;
-                                lessonModel.ToEntity();
-                                //Handle Lesson.BackSides
-                                if (lesson.BackSides != null && lesson.BackSides.Count > 0)
+                                if (lesson != null)
                                 {
-                                    listBackSide = new List<BackSideModel>();
-                                    foreach (var backSide in lesson.BackSides)
+                                    LessonModel lessonModel = new LessonModel();
+                                    lessonModel.LessonID = AutoGeneration.NewSeqGuid().ToString();
+                                    lessonModel.CardID = cardModel.CardID;
+                                    lessonModel.LessonName = lesson.LessonName;
+                                    lessonModel.Description = lesson.Description;
+                                    lessonModel.CategoryID = lesson.CategoryID;
+                                    lessonModel.ToEntity();
+                                    //Handle Lesson.BackSides
+                                    if (lesson.BackSides != null && lesson.BackSides.Count > 0)
                                     {
-                                        if (backSide != null)
+                                        listBackSide = new List<BackSideModel>();
+                                        foreach (var backSide in lesson.BackSides)
                                         {
-                                            BackSideModel backSideModel = new BackSideModel();
-                                            backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
-                                            backSideModel.LessonID = backSide.LessonID;
-                                            backSideModel.BackSideName = backSide.BackSideName;
-                                            backSideModel.Content = backSide.Content;
-                                            backSideModel.IsMain = backSide.IsMain;
-                                            backSideModel.ToEntity();
-                                            //add BackSide to Lessons
-                                            lessonModel.Lesson.BackSides.Add(backSideModel.BackSide);
-                                            backSideModel.EndUpdate();
-                                            listBackSide.Add(backSideModel);
+                                            if (backSide != null)
+                                            {
+                                                BackSideModel backSideModel = new BackSideModel();
+                                                backSideModel.BackSideID = AutoGeneration.NewSeqGuid().ToString();
+                                                backSideModel.LessonID = backSide.LessonID;
+                                                backSideModel.BackSideName = backSide.BackSideName;
+                                                backSideModel.Content = backSide.Content;
+                                                backSideModel.IsMain = backSide.IsMain;
+                                                backSideModel.ToEntity();
+                                                //add BackSide to Lessons
+                                                lessonModel.Lesson.BackSides.Add(backSideModel.BackSide);
+                                                backSideModel.EndUpdate();
+                                                listBackSide.Add(backSideModel);
+                                            }
                                         }
-                                    }
-                                }//End handle BackSide
-                              
-                                //Add Lesson To Card
-                                lessonModel.EndUpdate();
-                                cardModel.Card.Lessons.Add(lessonModel.Lesson);
-                                listLesson.Add(lessonModel);
+                                    }//End handle BackSide
+
+                                    //Add Lesson To Card
+                                    lessonModel.EndUpdate();
+                                    cardModel.Card.Lessons.Add(lessonModel.Lesson);
+                                    listLesson.Add(lessonModel);
+                                }
                             }
+                        }//End Handle Lesson
+
+                        CardRepository cardRepository = new CardRepository();
+                        cardRepository.Add<Card>(cardModel.Card);
+                        cardRepository.Commit();
+
+                        // Add To UI
+
+                        cardModel.EndUpdate();
+                        CardCollection.Add(cardModel);
+                        CardList.Add(cardModel.Card);
+
+                        foreach (var lessonModel in listLesson)
+                        {
+                            LessonCollection.Add(lessonModel);
                         }
-                    }//End Handle Lesson
-
-                    CardRepository cardRepository = new CardRepository();
-                    cardRepository.Add<Card>(cardModel.Card);
-                    cardRepository.Commit();
-
-                    // Add To UI
-
-                    cardModel.EndUpdate();
-                    CardCollection.Add(cardModel);
-                    CardList.Add(cardModel.Card);
-
-                    foreach (var lessonModel in listLesson)
-                    {
-                        LessonCollection.Add(lessonModel);
+                        string msg = string.Format("Card {0} & {1} Lesson(s) import success!", cardModel.CardName, listLesson.Count());
+                        MessageBox.Show(ViewCore as Window, msg, "Information", MessageBoxButton.OK);
                     }
-                    string msg = string.Format( "Card {0} & {1} Lesson(s) import success!", cardModel.CardName,listLesson.Count());
-                    MessageBox.Show(ViewCore as Window, msg, "Information", MessageBoxButton.OK);
                 }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
             }
         }
         #endregion

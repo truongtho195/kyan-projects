@@ -37,7 +37,6 @@ public class Serializer<T>
         XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
         using (TextWriter textWriter = new StreamWriter(filelocation, Append, ASCIIEncoding.UTF8))
         {
-
             xmlSerializer.Serialize(textWriter, obj);
         }
     }
@@ -50,7 +49,7 @@ public class Serializer<T>
         try
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (TextReader textReader = new StreamReader(filelocation))
+            using (StringReader textReader = new StringReader(filelocation))
             {
                 return (T)xmlSerializer.Deserialize(textReader);
             }
@@ -59,7 +58,7 @@ public class Serializer<T>
         {
             if (File.Exists(filelocation))
             {
-                File.Delete(filelocation);
+                //File.Delete(filelocation);
             }
         }
         return default(T);
