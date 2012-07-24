@@ -1110,10 +1110,8 @@ namespace FlashCard.ViewModels
 
             if (_timerViewFullScreen == null)
                 _timerViewFullScreen = new DispatcherTimer();
-            _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.ViewTimeSecond);
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.DistanceTimeSecond);
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
-
-
 
             //test.Start();
         }
@@ -1195,7 +1193,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void StartLessonFullScreen()
         {
-            _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.Setup.ViewTimeSecond);
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.Setup.DistanceTimeSecond);
             IsFullScreenStarted = true;
             _timerViewFullScreen.Start();
         }
