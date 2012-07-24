@@ -576,42 +576,47 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                //if (stopListen) return;
-
-                log.Info("||{*} === Listen Command Executed === ");
-                DispatcherTimer stopForListen = new DispatcherTimer();
-                stopForListen = new DispatcherTimer();
-                stopForListen.Interval = new TimeSpan(0, 0, 0, 5);
-                stopForListen.Tick += new EventHandler(waitUserClick_Tick);
-
-                DispatcherTimer waitForListener = new DispatcherTimer();
-                waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
-                waitForListener.Tick += new EventHandler(waitForListener_Tick);
-                CanListen = false;
-                TextToSpeechPlayer(SelectedLesson.LessonName);
-                waitForListener.Start();
-
-                if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
+                
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
+                delegate
                 {
-                    _timerViewFullScreen.Stop();
-                    stopForListen.Start();
+                    DispatcherTimer waitForListener = new DispatcherTimer();
+                    waitForListener = new DispatcherTimer();
+                    waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
+                    waitForListener.Tick += new EventHandler(waitForListener_Tick);
+
+                    log.Info("||{*} === Listen Command Executed === ");
+                    CanListen = false;
+                    TextToSpeechPlayer(SelectedLesson.LessonName);
+                    waitForListener.Start();
+                    if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
+                    {
+                        DispatcherTimer stopForListen = new DispatcherTimer();
+                        stopForListen = new DispatcherTimer();
+                        stopForListen.Interval = new TimeSpan(0, 0, 0, 2);
+                        stopForListen.Tick += new EventHandler(waitUserClick_Tick);
+                        _timerViewFullScreen.Stop();
+                        stopForListen.Start();
+                    }
                 }
+                ));
             }
             catch (Exception ex)
             {
                 if (log.IsDebugEnabled)
                     MessageBox.Show(ViewCore as Window, ex.ToString());
             }
-
-
         }
 
-        void waitForListener_Tick(object sender, EventArgs e)
+        private void waitForListener_Tick(object sender, EventArgs e)
         {
-            (sender as DispatcherTimer).Stop();
+            var dispartcherTimer = sender as DispatcherTimer;
+            dispartcherTimer.Stop();
             CanListen = true;
-            CanListenExecute(null);
+            CommandManager.InvalidateRequerySuggested();
         }
+
+
         #endregion
 
         #region"  HiddenPopupCommand"
@@ -858,6 +863,7 @@ namespace FlashCard.ViewModels
 
             //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
             //_learnView.BeginStoryboard(sb);
+            _learnView.Activate();
             _learnView.Show();
         }
         #endregion
@@ -1049,23 +1055,27 @@ namespace FlashCard.ViewModels
         /// <param name="TextForSpeech"></param>
         private void TextToSpeechPlayer(string TextForSpeech)
         {
-            if (CheckConnectionInternet.IsConnectedToInternet())
-            {
-                log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
-                if (_listenWord == null)
-                    _listenWord = new MediaPlayer();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Send, new Action(
+                delegate
+                {
+                    if (CheckConnectionInternet.IsConnectedToInternet())
+                    {
+                        log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
+                        if (_listenWord == null)
+                            _listenWord = new MediaPlayer();
 
-                string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                _listenWord.Open(ur);
-                _listenWord.Play();
-            }
-            else
-            {
-                log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
-                SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                synthesizer.SpeakAsync(TextForSpeech);
-            }
+                        string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                        var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                        _listenWord.Open(ur);
+                        _listenWord.Play();
+                    }
+                    else
+                    {
+                        log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
+                        SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                        synthesizer.Speak(TextForSpeech);
+                    }
+                }));
         }
 
         //Timer Region
