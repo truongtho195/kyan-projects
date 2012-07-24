@@ -49,7 +49,7 @@ public class Serializer<T>
         try
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (StringReader textReader = new StringReader(filelocation))
+            using (TextReader textReader = new StreamReader(filelocation))
             {
                 return (T)xmlSerializer.Deserialize(textReader);
             }
