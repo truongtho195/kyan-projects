@@ -35,7 +35,7 @@ namespace FlashCard
             //string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
 
 
-            string appName = "SmardFashCard";
+            string appName = "SmardFashCard_DEV";
             if (SingleInstance<App>.InitializeAsFirstInstance(appName))
             {
                 SetupRepository setupRepository = new SetupRepository();
