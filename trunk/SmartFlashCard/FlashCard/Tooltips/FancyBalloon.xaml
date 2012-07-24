@@ -85,7 +85,6 @@
         </Storyboard>
 
         <!--#end region Storyboard-->
-
         <!--#Region DataTemplate-->
         <Storyboard x:Key="sbChangeToBack">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
@@ -107,6 +106,11 @@
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
                                         Value="{x:Static Visibility.Hidden}" />
             </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="FadeLeave">
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Layout">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0.95"/>
+        	</DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -132,15 +136,15 @@
             <BeginStoryboard x:Name="FadeBack_BeginStoryboard1"
                              Storyboard="{StaticResource FadeBack}" />
         </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+        	<BeginStoryboard x:Name="FadeLeave_BeginStoryboard" Storyboard="{StaticResource FadeLeave}"/>
+        </EventTrigger>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
             <BeginStoryboard Storyboard="{StaticResource FadeOut}"
                              x:Name="FadeOut_BeginStoryboard" />
             <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
 
         </EventTrigger>
-
-
-
     </UserControl.Triggers>
     <Grid x:Name="Layout">
         <attachedCmd:CommandBehaviorCollection.Behaviors>
