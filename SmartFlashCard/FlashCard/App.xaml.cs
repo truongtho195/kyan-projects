@@ -6,6 +6,7 @@ using FlashCard.Views;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
 using System.Collections.Generic;
+using log4net;
 
 
 namespace FlashCard
@@ -15,6 +16,19 @@ namespace FlashCard
     /// </summary>
     public partial class App : Application, ISingleInstanceApp
     {
+        #region Properties
+        public static LessonManageView LessonMangeView;
+        public static SetupModel SetupModel;
+        
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private List<LessonModel> LessonCollection;
+        
+        /// <summary>
+        /// Variable check if user click on file & file valid, set IsStatupRunOk = true . not run method run normal
+        /// </summary>
+        private bool IsStatupRunOk = false;
+        #endregion
+
         [STAThread]
         public static void Main()
         {
@@ -42,7 +56,7 @@ namespace FlashCard
                 SingleInstance<App>.Cleanup();
             }
         }
-        private bool IsStatupRunOk = false;
+        
         protected override void OnStartup(StartupEventArgs e)
         {
             // @"E:\Desktop\3000 General Word.flc"
@@ -50,9 +64,9 @@ namespace FlashCard
             try
             {
                 var file = e.Args.FirstOrDefault().ToString();
-                //var file = @"E:\Desktop\test.txt";
+                //var file = @"E:\Desktop\Sorable.fcard";
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
-                if (fileInfo.Exists)
+                if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {
                     SetupModel.IsRunStatup = true;
                     var card = Serializer<Card>.Deserialize(file);
@@ -65,12 +79,15 @@ namespace FlashCard
                             IsStatupRunOk = true;
                         }
                     }
-                   
+
+                }
+                else
+                {
+                    MessageBox.Show("File not valid", "Error", MessageBoxButton.OK);
                 }
             }
-            catch (Exception ex)
-            {
-            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            
             if (!IsStatupRunOk)
             {
                 RunNormal();
@@ -78,7 +95,19 @@ namespace FlashCard
 
             base.OnStartup(e);
         }
+    
+   
+        public App()
+        {
+           
+        }
 
+
+
+        #region Methods
+        /// <summary>
+        /// Methods execute when user click on file but not valid or has exception with file
+        /// </summary>
         private static void RunNormal()
         {
             var currentUserName = Environment.UserName;
@@ -87,19 +116,12 @@ namespace FlashCard
             LessonMangeView.Show();
         }
 
-        public static LessonManageView LessonMangeView;
-        public static SetupModel SetupModel;
-
-        private List<LessonModel> LessonCollection;
-        public App()
-        {
-           
-        }
-
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)
         {
             return true;
         }
+
+        #endregion
 
         #region Handle program Exception
 

@@ -123,7 +123,7 @@
         <Border x:Name="bdHeader"
                 Background="#00000000"
                 Height="30"
-                VerticalAlignment="Bottom">
+                VerticalAlignment="Center" Margin="5,0">
             <Grid x:Name="grdHeader"
                   Margin="10,0">
                 <StackPanel x:Name="stSystemControl"
@@ -220,7 +220,7 @@
             </Grid>
         </Border>
         <Grid x:Name="grdContent"
-              Grid.Row="1">
+              Grid.Row="1" Margin="5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="33.792" />
@@ -461,7 +461,7 @@
                 BorderThickness="1"
                 Grid.Row="2"
                 Height="30"
-                VerticalAlignment="Top">
+                VerticalAlignment="Top" Margin="5,0">
             <Grid Margin="0,0,10,0">
                 <StackPanel x:Name="stDetail"
                             Orientation="Horizontal"
