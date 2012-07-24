@@ -84,9 +84,10 @@ namespace FlashCard
                 else
                 {
                     MessageBox.Show("File not valid", "Error", MessageBoxButton.OK);
+
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            catch (Exception ex) { log.Error(ex); }
             
             if (!IsStatupRunOk)
             {
