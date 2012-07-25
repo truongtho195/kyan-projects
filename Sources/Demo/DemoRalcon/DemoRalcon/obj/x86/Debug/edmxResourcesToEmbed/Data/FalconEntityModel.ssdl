@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FalconHRDBModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="FalconHRDBModelStoreContainer">
+    <EntitySet Name="Countries" EntityType="FalconHRDBModel.Store.Countries" store:Type="Tables" />
+    <EntitySet Name="DepartmentDetails" EntityType="FalconHRDBModel.Store.DepartmentDetails" store:Type="Tables" />
+    <EntitySet Name="Departments" EntityType="FalconHRDBModel.Store.Departments" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="FalconHRDBModel.Store.Employees" store:Type="Tables" />
+    <AssociationSet Name="FK_DepartmentDetails_0" Association="FalconHRDBModel.Store.FK_DepartmentDetails_0">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="DepartmentDetails" EntitySet="DepartmentDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DepartmentDetails_1" Association="FalconHRDBModel.Store.FK_DepartmentDetails_1">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="DepartmentDetails" EntitySet="DepartmentDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_0" Association="FalconHRDBModel.Store.FK_Employees_0">
+      <End Role="Countries" EntitySet="Countries" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryID" />
+    </Key>
+    <Property Name="CountryID" Type="integer" Nullable="false" />
+    <Property Name="CountryName" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="DepartmentDetails">
+    <Key>
+      <PropertyRef Name="DetailID" />
+    </Key>
+    <Property Name="DetailID" Type="integer" Nullable="false" />
+    <Property Name="EmployeeID" Type="integer" Nullable="false" />
+    <Property Name="DepartmentID" Type="integer" Nullable="false" />
+    <Property Name="Status" Type="tinyint" Nullable="false" />
+    <Property Name="LastActive" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="DepartmentID" />
+    </Key>
+    <Property Name="DepartmentID" Type="integer" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="integer" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="80" />
+    <Property Name="MiddleName" Type="nvarchar" Nullable="false" MaxLength="80" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="80" />
+    <Property Name="Gender" Type="integer" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="120" />
+    <Property Name="HomeTownID" Type="integer" />
+    <Property Name="Note" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <Association Name="FK_DepartmentDetails_0">
+    <End Role="Departments" Type="FalconHRDBModel.Store.Departments" Multiplicity="1" />
+    <End Role="DepartmentDetails" Type="FalconHRDBModel.Store.DepartmentDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="DepartmentID" />
+      </Principal>
+      <Dependent Role="DepartmentDetails">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DepartmentDetails_1">
+    <End Role="Employees" Type="FalconHRDBModel.Store.Employees" Multiplicity="1" />
+    <End Role="DepartmentDetails" Type="FalconHRDBModel.Store.DepartmentDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="DepartmentDetails">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_0">
+    <End Role="Countries" Type="FalconHRDBModel.Store.Countries" Multiplicity="0..1" />
+    <End Role="Employees" Type="FalconHRDBModel.Store.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Countries">
+        <PropertyRef Name="CountryID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="HomeTownID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
