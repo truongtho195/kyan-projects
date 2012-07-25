@@ -22,9 +22,12 @@ namespace FlashCard.ViewModels
         }
 
         #endregion
+
+        #region Variables
         public delegate void handlerControl(string message);
         public event handlerControl ButtonClickHandler;
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        #endregion
 
         #region Properties
 
@@ -128,6 +131,31 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
+        #region" SelectedCard"
+        private CardModel _selectedCard;
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public CardModel SelectedCard
+        {
+            get { return _selectedCard; }
+            set
+            {
+                if (_selectedCard != value)
+                {
+                    _selectedCard = value;
+                    RaisePropertyChanged(() => SelectedCard);
+                    if (SelectedCard != null && SelectedCard.Card.Lessons.Count>0)
+                    { 
+                        SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(SelectedCard.Card.Lessons.Select(x=>new LessonModel(x)));
+                    }
+                }
+            }
+        } 
+        #endregion
+
+
         #endregion
 
         #region Commands
@@ -152,7 +180,9 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOKCanExecute(object param)
         {
-            if (!SelectedSetupModel.Errors.Any() && CardCollection.Any(x => x.IsChecked))
+            if (SelectedCard == null)
+                return false;
+            if (!SelectedSetupModel.Errors.Any() && SelectedCard.LessonCollection!=null && SelectedCard.LessonCollection.Any(x => x.IsChecked))
                 return true;
             return false;
         }
@@ -166,16 +196,15 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                foreach (var item in CardCollection.Where(x => x.IsChecked))
-                {
-                    //!!!! Not sure LessonCollection.Where(x => x.CategoryID == item.CategoryID);
-                    var lesson = LessonCollection.Where(x => x.Lesson.CardID == item.Card.CardID);
-                    //Check condition if user set Lesson user Know => remove this item lesson
-                    if (lesson != null && lesson.Count() > 0)
-                    {
-                        lst.AddRange(lesson);
-                    }
-                }
+                //foreach (var item in SelectedCard.LessonCollection.Where(x => x.IsChecked))
+                //{
+                //    //Check condition if user set Lesson user Know => remove this item lesson
+                //    if (lesson != null && lesson.Count() > 0)
+                //    {
+                //        lst.AddRange(lesson);
+                //    }
+                //}
+                lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
                 if (lst != null && lst.Count > 0)
                 {
                     LessonCollection = new List<LessonModel>(lst);

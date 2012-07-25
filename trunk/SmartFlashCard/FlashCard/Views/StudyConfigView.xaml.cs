@@ -75,8 +75,7 @@ namespace FlashCard.Views
         private void InitialEvent()
         {
             this.bdHeader.MouseLeftButtonDown += new MouseButtonEventHandler(bdHeader_MouseLeftButtonDown);
-            this.btnMinimize.Click += new RoutedEventHandler(btnMinimize_Click);
-            this.btnMaximize.Click += new RoutedEventHandler(btnMaximize_Click);
+            
             //this.btnExit.Click : call from command
             //this.btnExit.Click += new RoutedEventHandler(btnExit_Click);
         }

@@ -101,49 +101,16 @@
     <Compile Include="Converters\ListViewLineNumberConverter.cs" />
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
-    <Compile Include="Database\BackSideModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\CardModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\CategoryModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\LessonModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\ModelTemplate.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="Database\Repository\BackSideRepository.cs" />
     <Compile Include="Database\Repository\CategoryRepository.cs" />
     <Compile Include="Database\Repository\CardRepository.cs" />
     <Compile Include="Database\Repository\SetupRepository.cs" />
     <Compile Include="Database\Repository\LessonRepository.cs" />
     <Compile Include="Database\Repository\UnitOfWork.cs" />
-    <Compile Include="Database\SetupModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Database\SmartFlashCardDB.Designer.cs">
       <DependentUpon>SmartFlashCardDB.edmx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Database\UserLessonModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\UserModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />
@@ -226,10 +193,6 @@
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Database\ModelTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
