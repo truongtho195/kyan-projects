@@ -939,7 +939,7 @@
         			</Border>
         			<Grid x:Name="grdControl"
         				HorizontalAlignment="Center"
-        				VerticalAlignment="Center"
+        				VerticalAlignment="Top"
         				Margin="0" />
         		</Grid>
         	</Grid>

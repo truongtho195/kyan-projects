@@ -194,8 +194,30 @@ namespace FlashCard.Database
         #endregion
 
         #region Custom Code
-     
-        
+
+        #region Properties
+
+        private ObservableCollection<LessonModel> _lessonCollection;
+        /// <summary>
+        ///  <para>Exention Property in CardModel</para>
+        /// Gets or sets the property value.
+        /// </summary>
+        public ObservableCollection<LessonModel> LessonCollection
+        {
+            get { return _lessonCollection; }
+            set
+            {
+                if (_lessonCollection != value)
+                {
+                    _lessonCollection = value;
+                    RaisePropertyChanged(() => LessonCollection);
+                }
+            }
+        }
+
+        #endregion
+
+
         #region DataErrorInfo
         public string Error
         {
