@@ -96,3 +96,4 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Fl
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\FlashCard.Properties.Resources.resources
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\obj\x86\Debug\Views\ResourceDictionary2.baml
