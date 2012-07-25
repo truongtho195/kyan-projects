@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlogEngineDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="BlogEngineDBModelStoreContainer">
+    <EntitySet Name="Blogs" EntityType="BlogEngineDBModel.Store.Blogs" store:Type="Tables" />
+  </EntityContainer>
+  <EntityType Name="Blogs">
+    <Key>
+      <PropertyRef Name="BlogID" />
+    </Key>
+    <Property Name="BlogID" Type="nvarchar" MaxLength="10" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BlogName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+</Schema>

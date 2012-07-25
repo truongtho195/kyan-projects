@@ -1,0 +1,44 @@
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\bin\Debug\DemoRalcon.exe
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\bin\Debug\DemoRalcon.pdb
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\App.g.cs
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon_MarkupCompile.cache
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.g.resources
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.Properties.Resources.resources
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.read.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.write.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.exe
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.pdb
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\App.baml
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\MainWindow.baml
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\MainWindow.g.cs
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\EmployeeView.baml
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\EmployeeView.g.cs
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\DepartmentView.baml
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\DepartmentView.g.cs
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\Employee.baml
+F:\Workplace\WPF-WCF\SourceProject\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\Employee.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.exe
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.pdb
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\bin\Debug\DemoRalcon.exe
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\bin\Debug\DemoRalcon.pdb
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\DepartmentView.baml
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\Employee.baml
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\EmployeeView.baml
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\MainWindow.baml
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\App.baml
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\DepartmentView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\Employee.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\EmployeeView.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\Views\MainWindow.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\App.g.cs
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon_MarkupCompile.cache
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.g.resources
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.Properties.Resources.resources
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.read.0.tlog
+E:\Kyan DATA\Kyan\KyanPrj\DemoRalcon\DemoRalcon\obj\x86\Debug\GenerateResource.write.0.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.exe
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\DemoRalcon\DemoRalcon\obj\x86\Debug\DemoRalcon.pdb
