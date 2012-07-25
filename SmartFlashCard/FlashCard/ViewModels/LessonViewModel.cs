@@ -421,8 +421,8 @@ namespace FlashCard.ViewModels
                     {
                         var indexLesson = LessonCollection.IndexOf(SelectedLesson);
                         ViewCore.lstLesson.SelectedIndex = indexLesson - 1;
-                    }
 
+                    }
                     LessonCollection.Remove(lessonModel);
                 }
             }

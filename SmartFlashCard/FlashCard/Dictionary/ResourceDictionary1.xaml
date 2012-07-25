@@ -6,12 +6,154 @@
                     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
 	<LinearGradientBrush x:Key="bgHeaderColor" EndPoint="0.5,1"
 		StartPoint="0.5,0">
-		<GradientStop Color="#FF5593EE"
-			Offset="0.021" />
-		<GradientStop Color="#FF68A4EB"
-			Offset="0.988" />
-		<GradientStop Color="#FF67A3EB" Offset="0.972"/>
+		<GradientStop Color="#FF82B0F3" />
+		<GradientStop Color="#FF75B4FF" Offset="1"/>
 	</LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonNormalBackgroundFill"
+                         EndPoint="0.5,1"
+                         StartPoint="0.5,0">
+    	<GradientStop Color="#FFFFFFFF"
+    		Offset="0" />
+    	<GradientStop Color="#FFF0F0EA"
+    		Offset="0.9" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="brBackgroundColor"
+                     Color="#FFCDE8FD" />
+    <SolidColorBrush x:Key="ButtonBorder"
+                     Color="#FF003C74" />
+    <LinearGradientBrush x:Key="ButtonNormalBackground"
+                         EndPoint="0,1"
+                         StartPoint="0,0">
+    	<GradientStop Color="#F3F3F3"
+    		Offset="0" />
+    	<GradientStop Color="#EBEBEB"
+    		Offset="0.5" />
+    	<GradientStop Color="#DDDDDD"
+    		Offset="0.5" />
+    	<GradientStop Color="#CDCDCD"
+    		Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ButtonNormalBorder"
+                     Color="#FF707070" />
+    <RadialGradientBrush x:Key="FlashCardBG"
+                         RadiusY="0.582"
+                         RadiusX="0.582"
+                         GradientOrigin="0.814,0.205">
+        <RadialGradientBrush.RelativeTransform>
+            <TransformGroup>
+            	<ScaleTransform CenterY="0.5"
+            		CenterX="0.5"
+            		ScaleY="1"
+            		ScaleX="1" />
+            	<SkewTransform AngleY="0"
+            		AngleX="0"
+            		CenterY="0.5"
+            		CenterX="0.5" />
+            	<RotateTransform Angle="-95.19"
+            		CenterY="0.5"
+            		CenterX="0.5" />
+            	<TranslateTransform />
+            </TransformGroup>
+        </RadialGradientBrush.RelativeTransform>
+    	<GradientStop Color="#FF1E71BE"
+    		Offset="0" />
+    	<GradientStop Color="#FF152895"
+    		Offset="1" />
+    </RadialGradientBrush>
+    <LinearGradientBrush x:Key="FullScreenBg1"
+                         EndPoint="0.5,1"
+                         MappingMode="RelativeToBoundingBox"
+                         StartPoint="0.5,0">
+    	<GradientStop Color="Black"
+    		Offset="0.045" />
+    	<GradientStop Color="#E5000000"
+    		Offset="0.103" />
+    	<GradientStop Color="#E5000000"
+    		Offset="1" />
+    </LinearGradientBrush>
+    <RadialGradientBrush x:Key="ColorLineNumNomard">
+    	<GradientStop Color="#FF434141"
+    		Offset="1" />
+    	<GradientStop Color="#FF9B9797" />
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="ColorLineNumSelected">
+    	<GradientStop Color="#FF0B0E9B"
+    		Offset="0.996" />
+    	<GradientStop Color="#FF4C6CED" />
+    </RadialGradientBrush>
+    <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
+    <LinearGradientBrush x:Key="ShadowLine2" EndPoint="0.958,0.5" StartPoint="0.038,0.5">
+    	<GradientStop Color="#7F000000" Offset="0.159"/>
+    	<GradientStop Color="#00000000" Offset="0.744"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonNormal" EndPoint="1, 0" StartPoint="0, 0">
+    	<GradientStop Color="#EEEDE5" Offset="0"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
+    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
+    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
+    	<GradientStop Color="#EEEDE5" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonPressed" EndPoint="1, 0" StartPoint="0, 0">
+    	<GradientStop Color="#D7D5C2" Offset="0"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
+    	<GradientStop Color="#E3DED3" Offset="0.06"/>
+    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
+    	<GradientStop Color="#00D7D5C2" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VerScrollBarThumbBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
+    	<GradientStop Color="#F29B9B9B" Offset="0.56"/>
+    	<GradientStop Color="#F2BDBABA"/>
+    	<GradientStop Color="#F2AFADAD" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="VerScrollBarThumbActivedBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
+    	<GradientStop Color="#F01510B2" Offset="0.116"/>
+    	<GradientStop Color="#E52C47DA" Offset="0.864"/>
+    	<GradientStop Color="#E51A42E2" Offset="0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonNormal" EndPoint="0, 1" StartPoint="0, 0">
+    	<GradientStop Color="#EEEDE5" Offset="0"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
+    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
+    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
+    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
+    	<GradientStop Color="#EEEDE5" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonPressed" EndPoint="0, 1" StartPoint="0, 0">
+    	<GradientStop Color="#D7D5C2" Offset="0"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
+    	<GradientStop Color="#E3DED3" Offset="0.06"/>
+    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
+    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
+    	<GradientStop Color="#00D7D5C2" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="bgScrollBard" Color="#CCFFFFFF"/>
+    <LinearGradientBrush x:Key="bgScrollBarThumb" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
+    	<GradientStop Color="#F0808080" Offset="0.132"/>
+    	<GradientStop Color="#E59B9A9A" Offset="0.904"/>
+    	<GradientStop Color="#E5919090" Offset="0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="bgScrollBarThumbActived" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
+    	<GradientStop Color="#F015109F" Offset="0.156"/>
+    	<GradientStop Color="#E52C47DA" Offset="0.988"/>
+    	<GradientStop Color="#E51337C8" Offset="0.008"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
+    <SolidColorBrush x:Key="HeaderBackgroundActived" Color="#FF4D94F7"/>
+ <LinearGradientBrush  x:Key="BlueRinseBrush" 
+                          EndPoint="0.5,1" StartPoint="0.5,0">
+ 	<GradientStop Color="#FF4166D4" Offset="1"/>
+ 	<GradientStop Color="#FF57A0F4" Offset="0.5"/>
+ 	<GradientStop Color="#FF4B94EC" Offset="0.498"/>
+    </LinearGradientBrush>
+ <LinearGradientBrush x:Key="bgItemSelected" EndPoint="0.5,1" StartPoint="0.5,0">
+ 	<GradientStop Color="#FF94B9F3" Offset="0"/>
+ 	<GradientStop Color="#FFADCBF9" Offset="0.792"/>
+ 	<GradientStop Color="#FFA5C5F7" Offset="1"/>
+ </LinearGradientBrush>
+    <SolidColorBrush x:Key="bgHeaderColor1" Color="#FFAACCFB"/>
+    <SolidColorBrush x:Key="bgColor1" Color="#FFAACCFB"/>
 	<Style x:Key="StaticExtension2"
 		TargetType="{x:Type ScrollViewer}">
 		<Setter Property="Focusable"
@@ -94,8 +236,6 @@
 	</Style>
 
     <!-- Resource dictionary entries should be defined here. -->
-    <SolidColorBrush x:Key="brBackgroundColor"
-                     Color="#FFCDE8FD" />
 
     <!--#region Validation Template Error-->
     <ControlTemplate x:Key="validationTemplate">
@@ -184,16 +324,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <LinearGradientBrush x:Key="ButtonNormalBackgroundFill"
-                         EndPoint="0.5,1"
-                         StartPoint="0.5,0">
-        <GradientStop Color="#FFFFFFFF"
-                      Offset="0" />
-        <GradientStop Color="#FFF0F0EA"
-                      Offset="0.9" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ButtonBorder"
-                     Color="#FF003C74" />
     <Style TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle"
                 Value="{StaticResource ButtonFocusVisual}" />
@@ -636,20 +766,6 @@
     </Style>
 
     <!--#Region "EmptyButton Style"-->
-    <LinearGradientBrush x:Key="ButtonNormalBackground"
-                         EndPoint="0,1"
-                         StartPoint="0,0">
-        <GradientStop Color="#F3F3F3"
-                      Offset="0" />
-        <GradientStop Color="#EBEBEB"
-                      Offset="0.5" />
-        <GradientStop Color="#DDDDDD"
-                      Offset="0.5" />
-        <GradientStop Color="#CDCDCD"
-                      Offset="1" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ButtonNormalBorder"
-                     Color="#FF707070" />
     <Style x:Key="EmptyButton"
            TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle"
@@ -752,59 +868,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <LinearGradientBrush x:Key="brBottomColor"
-                         EndPoint="0.5,1"
-                         StartPoint="0.5,0">
-        <GradientStop Color="#FF5593EE" />
-        <GradientStop Color="#FF68A4EB"
-                      Offset="0.988" />
-    </LinearGradientBrush>
-    <RadialGradientBrush x:Key="FlashCardBG"
-                         RadiusY="0.582"
-                         RadiusX="0.582"
-                         GradientOrigin="0.814,0.205">
-        <RadialGradientBrush.RelativeTransform>
-            <TransformGroup>
-                <ScaleTransform CenterY="0.5"
-                                CenterX="0.5"
-                                ScaleY="1"
-                                ScaleX="1" />
-                <SkewTransform AngleY="0"
-                               AngleX="0"
-                               CenterY="0.5"
-                               CenterX="0.5" />
-                <RotateTransform Angle="-95.19"
-                                 CenterY="0.5"
-                                 CenterX="0.5" />
-                <TranslateTransform />
-            </TransformGroup>
-        </RadialGradientBrush.RelativeTransform>
-        <GradientStop Color="#FF1E71BE"
-                      Offset="0" />
-        <GradientStop Color="#FF152895"
-                      Offset="1" />
-    </RadialGradientBrush>
-    <LinearGradientBrush x:Key="FullScreenBg1"
-                         EndPoint="0.5,1"
-                         MappingMode="RelativeToBoundingBox"
-                         StartPoint="0.5,0">
-        <GradientStop Color="Black"
-                      Offset="0.045" />
-        <GradientStop Color="#E5000000"
-                      Offset="0.103" />
-        <GradientStop Color="#E5000000"
-                      Offset="1" />
-    </LinearGradientBrush>
-    <RadialGradientBrush x:Key="ColorLineNumNomard">
-        <GradientStop Color="#FF434141"
-                      Offset="1" />
-        <GradientStop Color="#FF9B9797" />
-    </RadialGradientBrush>
-    <RadialGradientBrush x:Key="ColorLineNumSelected">
-        <GradientStop Color="#FF0B0E9B"
-                      Offset="0.996" />
-        <GradientStop Color="#FF4C6CED" />
-    </RadialGradientBrush>
     <Style x:Key="ListBoxItemVerticalStyle"
            TargetType="{x:Type ListBoxItem}">
     	<Style.Triggers>
@@ -868,7 +931,6 @@
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
     </Style>
-    <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
     <Style x:Key="DataGridCellEclipStyle" TargetType="{x:Type DataGridCell}">
     	<Setter Property="Background" Value="Transparent"/>
     	<Setter Property="BorderBrush" Value="Transparent"/>
@@ -934,10 +996,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <LinearGradientBrush x:Key="ShadowLine2" EndPoint="0.958,0.5" StartPoint="0.038,0.5">
-    	<GradientStop Color="#7F000000" Offset="0.159"/>
-    	<GradientStop Color="#00000000" Offset="0.744"/>
-    </LinearGradientBrush>
     <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
     	<Style.Triggers>
     		<Trigger Property="IsEnabled" Value="false">
@@ -946,14 +1004,6 @@
     	</Style.Triggers>
     	<Setter Property="Template" Value="{DynamicResource ScrollViewerControlTemplate}"/>
     </Style>
-    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonNormal" EndPoint="1, 0" StartPoint="0, 0">
-    	<GradientStop Color="#EEEDE5" Offset="0"/>
-    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
-    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
-    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
-    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
-    	<GradientStop Color="#EEEDE5" Offset="1"/>
-    </LinearGradientBrush>
     <Style x:Key="ScrollBarButton" TargetType="{x:Type RepeatButton}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="Focusable" Value="false"/>
@@ -966,14 +1016,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <LinearGradientBrush x:Key="VerticalScrollBarPageButtonPressed" EndPoint="1, 0" StartPoint="0, 0">
-    	<GradientStop Color="#D7D5C2" Offset="0"/>
-    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
-    	<GradientStop Color="#E3DED3" Offset="0.06"/>
-    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
-    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
-    	<GradientStop Color="#00D7D5C2" Offset="1"/>
-    </LinearGradientBrush>
     <Style x:Key="VerticalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="Background" Value="Transparent"/>
@@ -992,16 +1034,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <LinearGradientBrush x:Key="VerScrollBarThumbBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
-    	<GradientStop Color="#F29B9B9B" Offset="0.56"/>
-    	<GradientStop Color="#F2BDBABA"/>
-    	<GradientStop Color="#F2AFADAD" Offset="1"/>
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="VerScrollBarThumbActivedBg" EndPoint="0.961,0.5" StartPoint="0.059,0.5">
-    	<GradientStop Color="#F01510B2" Offset="0.116"/>
-    	<GradientStop Color="#E52C47DA" Offset="0.864"/>
-    	<GradientStop Color="#E51A42E2" Offset="0"/>
-    </LinearGradientBrush>
     <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="IsTabStop" Value="false"/>
@@ -1021,22 +1053,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonNormal" EndPoint="0, 1" StartPoint="0, 0">
-    	<GradientStop Color="#EEEDE5" Offset="0"/>
-    	<GradientStop Color="#EEEDE5" Offset="0.05"/>
-    	<GradientStop Color="#F3F1EC" Offset="0.06"/>
-    	<GradientStop Color="#FEFEFE" Offset="0.94"/>
-    	<GradientStop Color="#EEEDE5" Offset="0.95"/>
-    	<GradientStop Color="#EEEDE5" Offset="1"/>
-    </LinearGradientBrush>
-    <LinearGradientBrush x:Key="HorizontalScrollBarPageButtonPressed" EndPoint="0, 1" StartPoint="0, 0">
-    	<GradientStop Color="#D7D5C2" Offset="0"/>
-    	<GradientStop Color="#D7D5C2" Offset="0.05"/>
-    	<GradientStop Color="#E3DED3" Offset="0.06"/>
-    	<GradientStop Color="#FDFDF6" Offset="0.94"/>
-    	<GradientStop Color="#D7D5C2" Offset="0.95"/>
-    	<GradientStop Color="#00D7D5C2" Offset="1"/>
-    </LinearGradientBrush>
     <Style x:Key="HorizontalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="Background" Value="Transparent"/>
@@ -1055,7 +1071,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <SolidColorBrush x:Key="bgScrollBard" Color="#CCFFFFFF"/>
     <Style x:Key="VerticalScrollBarStyle" TargetType="{x:Type ScrollBar}">
     	<Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
     	<Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
@@ -1160,11 +1175,6 @@
     		<ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Background="#00000000" Style="{DynamicResource HorizontalScrollBarStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="13"/>
     	</Grid>
     </ControlTemplate>
-    <LinearGradientBrush x:Key="bgScrollBarThumb" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
-    	<GradientStop Color="#F0808080" Offset="0.132"/>
-    	<GradientStop Color="#E59B9A9A" Offset="0.904"/>
-    	<GradientStop Color="#E5919090" Offset="0"/>
-    </LinearGradientBrush>
     <Style x:Key="ScrollBarThumb2" TargetType="{x:Type Thumb}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="IsTabStop" Value="false"/>
@@ -1252,11 +1262,6 @@
     		</Trigger>
     	</Style.Triggers>
     </Style>
-    <LinearGradientBrush x:Key="bgScrollBarThumbActived" EndPoint="0.51,0.951" StartPoint="0.51,0.049">
-    	<GradientStop Color="#F015109F" Offset="0.156"/>
-    	<GradientStop Color="#E52C47DA" Offset="0.988"/>
-    	<GradientStop Color="#E51337C8" Offset="0.008"/>
-    </LinearGradientBrush>
     <Style x:Key="HorizontalThumbStyle" TargetType="{x:Type Thumb}">
     	<Setter Property="OverridesDefaultStyle" Value="true"/>
     	<Setter Property="IsTabStop" Value="false"/>
@@ -1294,7 +1299,6 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
     <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="{x:Type ScrollViewer}">
     	<Setter Property="Focusable" Value="false"/>
     	<Setter Property="Template">
@@ -1365,14 +1369,13 @@
     		</Setter.Value>
     	</Setter>
     </Style>
-    <SolidColorBrush x:Key="HeaderBackgroundActived" Color="#FF4D94F7"/>
  <Style x:Key="DataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
  	<Setter Property="VerticalContentAlignment" Value="Center"/>
  	<Setter Property="Template">
  		<Setter.Value>
  			<ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
  				<Grid Margin="0">
- 					<Microsoft_Windows_Themes:DataGridHeaderBorder x:Name="dataGridHeaderBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsClickable="{TemplateBinding CanUserSort}" IsPressed="{TemplateBinding IsPressed}" IsHovered="{TemplateBinding IsMouseOver}" Padding="{TemplateBinding Padding}" SortDirection="{TemplateBinding SortDirection}" SeparatorBrush="{TemplateBinding SeparatorBrush}" SeparatorVisibility="{TemplateBinding SeparatorVisibility}" ThemeColor="NormalColor" Background="#FFAACCFB" MinHeight="25" VerticalAlignment="Stretch">
+ 					<Microsoft_Windows_Themes:DataGridHeaderBorder x:Name="dataGridHeaderBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsClickable="{TemplateBinding CanUserSort}" IsPressed="{TemplateBinding IsPressed}" IsHovered="{TemplateBinding IsMouseOver}" Padding="{TemplateBinding Padding}" SortDirection="{TemplateBinding SortDirection}" SeparatorBrush="{TemplateBinding SeparatorBrush}" SeparatorVisibility="{TemplateBinding SeparatorVisibility}" ThemeColor="NormalColor" Background="{DynamicResource bgColor1}" MinHeight="25" VerticalAlignment="Stretch">
  						<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
  					</Microsoft_Windows_Themes:DataGridHeaderBorder>
  					<Thumb x:Name="PART_RightHeaderGripper" Visibility="Visible" Padding="0" Style="{DynamicResource GridViewColumnHeaderGripper}" Background="White" HorizontalAlignment="Right" Width="Auto" Cursor="SizeWE" Margin="0,0,-1.5,0"/>
@@ -1386,14 +1389,6 @@
  		</Setter.Value>
  	</Setter>
  </Style>
- 
- <LinearGradientBrush  x:Key="BlueRinseBrush" 
-                          EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="#FF4166D4" Offset="1"/>
-        <GradientStop Color="#FF57A0F4" Offset="0.5"/>
-        <GradientStop Color="#FF4B94EC" Offset="0.498"/>
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="headerBackground1" Color="#FFAACCFB"/>
  
  <Style x:Key="GridViewColumnHeaderStyle"  
            TargetType="GridViewColumnHeader">
@@ -1422,7 +1417,7 @@
              		<Border x:Name="HeaderBorder"
              			BorderThickness="0"
              			BorderBrush="{StaticResource BlueRinseBrush}"
-             			Background="{DynamicResource headerBackground1}"
+             			Background="{DynamicResource bgColor1}"
              			Padding="2,0,2,0" MinHeight="23">
              			<ContentPresenter x:Name="HeaderContent"
              				TextElement.Foreground="White"
@@ -1575,11 +1570,6 @@
  		</Setter.Value>
  	</Setter>
  </Style>
- <LinearGradientBrush x:Key="bgItemSelected" EndPoint="0.5,1" StartPoint="0.5,0">
- 	<GradientStop Color="#FF94B9F3" Offset="0"/>
- 	<GradientStop Color="#FFADCBF9" Offset="0.792"/>
- 	<GradientStop Color="#FFA5C5F7" Offset="1"/>
- </LinearGradientBrush>
  <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
  	<Setter Property="Background" Value="Transparent"/>
  	<Setter Property="BorderBrush" Value="Transparent"/>
@@ -1603,5 +1593,37 @@
  			<Setter Property="BorderBrush" Value="#FFC5DBFF"/>
  		</Trigger>
  	</Style.Triggers>
+ </Style>
+ <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+ 	<Style.Triggers>
+ 		<Trigger Property="IsChecked" Value="True">
+ 			<Setter Property="Foreground" Value="#FF1687DE"/>
+ 			<Setter Property="FontWeight" Value="Bold"/>
+ 		</Trigger>
+ 	</Style.Triggers>
+ 	<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+ 	<Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+ 	<Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
+ 	<Setter Property="HorizontalContentAlignment" Value="Center"/>
+ 	<Setter Property="VerticalContentAlignment" Value="Center"/>
+ 	<Setter Property="Template">
+ 		<Setter.Value>
+ 			<ControlTemplate TargetType="{x:Type ToggleButton}">
+ 				<Border x:Name="border" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="#FF138DEB">
+ 					<ContentPresenter RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+ 				</Border>
+ 				<ControlTemplate.Triggers>
+ 					<Trigger Property="IsKeyboardFocused" Value="true"/>
+ 					<Trigger Property="IsChecked" Value="true">
+ 						<Setter Property="BorderThickness" TargetName="border" Value="0,3,0,0"/>
+ 					</Trigger>
+ 					<Trigger Property="IsEnabled" Value="false">
+ 						<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+ 					</Trigger>
+ 				</ControlTemplate.Triggers>
+ 			</ControlTemplate>
+ 		</Setter.Value>
+ 	</Setter>
+ 	<Setter Property="Cursor" Value="Hand"/>
  </Style>
 </ResourceDictionary>
