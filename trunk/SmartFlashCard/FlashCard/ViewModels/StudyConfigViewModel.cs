@@ -131,7 +131,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         #region" SelectedCard"
         private CardModel _selectedCard;
         /// <summary>
@@ -147,13 +146,54 @@ namespace FlashCard.ViewModels
                     _selectedCard = value;
                     RaisePropertyChanged(() => SelectedCard);
                     if (SelectedCard != null && SelectedCard.Card.Lessons.Count>0)
-                    { 
+                    {
+                        SelectedCard.CheckedAll = true;
                         SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(SelectedCard.Card.Lessons.Select(x=>new LessonModel(x)));
+                        SetCheckValueForCollection();
+                        RaisePropertyChanged(() => TotalLesson);
                     }
                 }
             }
         } 
         #endregion
+
+        #region" CheckedAll"
+        private bool? _checkedAll;
+        /// <summary>
+        /// Gets or sets the CheckedAll.
+        /// </summary>
+        public bool? CheckedAll
+        {
+            get { return _checkedAll; }
+            set
+            {
+                if (_checkedAll != value)
+                {
+                    _checkedAll = value;
+                    RaisePropertyChanged(() => CheckedAll);
+                    SetCheckValueForCollection();
+                }
+            }
+        }
+        #endregion
+
+
+        #region" TotalLesson"
+        /// <summary>
+        /// Gets the TotalLesson.
+        /// </summary>
+        public int TotalLesson
+        {
+            get
+            {
+                if (SelectedCard != null && SelectedCard.LessonCollection != null)
+                    return SelectedCard.LessonCollection.Count(x=>x.IsChecked);
+                return 0;
+            }
+           
+        }
+        #endregion
+
 
 
         #endregion
@@ -272,6 +312,52 @@ namespace FlashCard.ViewModels
             ButtonClickHandler.Invoke("CancelExecute");
         }
         #endregion
+
+        #region CheckedCommand
+
+        /// <summary>
+        /// Gets the Checked Command.
+        /// <summary>
+        private ICommand _checkedCommand;
+        public ICommand CheckedCommand
+        {
+            get
+            {
+                if (_checkedCommand == null)
+                    _checkedCommand = new RelayCommand(this.OnCheckedExecute, this.OnCheckedCanExecute);
+                return _checkedCommand;
+            }
+        }
+
+        /// <summary>
+        /// Method to check whether the Checked command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnCheckedCanExecute(object param)
+        {
+            if ("Parent".Equals(param))
+            {
+                return SelectedCard != null && SelectedCard.LessonCollection != null && SelectedCard.LessonCollection.Count > 0;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Checked command is executed.
+        /// </summary>
+        private void OnCheckedExecute(object param)
+        {
+            if ("Parent".Equals(param))
+            {
+                SetCheckValueForCollection();
+            }
+            else
+            {
+                SetCheckValueForParent();
+                RaisePropertyChanged(() => TotalLesson);
+            }
+        }
+        #endregion
         #endregion
 
         #region Methods
@@ -292,6 +378,50 @@ namespace FlashCard.ViewModels
 
 
         }
+
+
+
+        private void SetCheckValueForCollection()
+        {
+            foreach (var item in SelectedCard.LessonCollection)
+            {
+                item.IsChecked = SelectedCard.CheckedAll.HasValue ? SelectedCard.CheckedAll.Value : false;
+            }
+                
+        }
+
+        private void SetCheckValueForParent()
+        {
+            if (SelectedCard == null || (SelectedCard != null && SelectedCard.LessonCollection == null))
+            {
+                SelectedCard.CheckedAll = false;
+                return;
+            }
+
+            if(SelectedCard.LessonCollection.Count==0)
+            {
+                SelectedCard.CheckedAll = false;
+                return;
+            }
+            bool? status=null;
+            for (int i = 0; i < SelectedCard.LessonCollection.Count; i++)
+            {
+                var lessonModel = SelectedCard.LessonCollection[i];
+                bool? current = lessonModel.IsChecked;
+                if (i == 0)
+                {
+                    status = current;
+                }
+                else if (status != current)
+                {
+                    status = null;
+                    break;
+                }
+            }
+            SelectedCard.CheckedAll = status;
+        }
+
+
         #endregion
 
 

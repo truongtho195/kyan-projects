@@ -215,7 +215,28 @@ namespace FlashCard.Database
             }
         }
 
+        #region" CheckedAll"
+        private bool? _checkedAll=true;
+        /// <summary>
+        /// Gets or sets the CheckedAll.
+        /// </summary>
+        public bool? CheckedAll
+        {
+            get { return _checkedAll; }
+            set
+            {
+                if (_checkedAll != value)
+                {
+                    _checkedAll = value;
+                    RaisePropertyChanged(() => CheckedAll);
+                }
+            }
+        }
         #endregion
+
+        #endregion
+
+
 
 
         #region DataErrorInfo
