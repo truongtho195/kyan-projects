@@ -76,5 +76,23 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Studies">
+      <EntityTypeMapping TypeName="SmartFlashCardDBModel.Study">
+        <MappingFragment StoreEntitySet="Studies">
+          <ScalarProperty Name="IsNextStudy" ColumnName="IsNextStudy" />
+          <ScalarProperty Name="StudyDate" ColumnName="StudyDate" />
+          <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudyDetails">
+      <EntityTypeMapping TypeName="SmartFlashCardDBModel.StudyDetail">
+        <MappingFragment StoreEntitySet="StudyDetails">
+          <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+          <ScalarProperty Name="StudyDetailID" ColumnName="StudyDetailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

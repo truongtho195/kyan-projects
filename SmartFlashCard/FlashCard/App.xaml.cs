@@ -19,6 +19,8 @@ namespace FlashCard
         #region Properties
         public static LessonManageView LessonMangeView;
         public static SetupModel SetupModel;
+        public static StudyModel StudyModel;
+
         
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private List<LessonModel> LessonCollection;
@@ -45,6 +47,20 @@ namespace FlashCard
                 else
                 {
                     SetupModel = new SetupModel(setup.FirstOrDefault());
+                }
+
+                StudyRepository studyRepository = new StudyRepository();
+                var studyAll = studyRepository.GetAll<Study>();
+                if (studyAll.Count == 0)
+                    StudyModel = new StudyModel();
+                else
+                {
+                    var nextStudy = studyAll.Select(x => x.IsNextStudy);
+                    if (nextStudy != null)
+                    {
+                        //get lesson for today
+                    }
+                    
                 }
 
 
@@ -87,7 +103,8 @@ namespace FlashCard
 
                 }
             }
-            catch (Exception ex) { log.Error(ex); }
+            catch (Exception ex) { 
+                log.Error(ex); }
             
             if (!IsStatupRunOk)
             {

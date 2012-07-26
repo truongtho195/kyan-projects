@@ -20,6 +20,16 @@
       <End Role="Category" EntitySet="Categories" />
       <End Role="Lesson" EntitySet="Lessons" />
     </AssociationSet>
+    <EntitySet Name="Studies" EntityType="SmartFlashCardDBModel.Study" />
+    <EntitySet Name="StudyDetails" EntityType="SmartFlashCardDBModel.StudyDetail" />
+    <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.FK_StudyDetails_1">
+      <End Role="Lesson" EntitySet="Lessons" />
+      <End Role="StudyDetail" EntitySet="StudyDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.FK_StudyDetails_0">
+      <End Role="Study" EntitySet="Studies" />
+      <End Role="StudyDetail" EntitySet="StudyDetails" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Card">
     <Key>
@@ -94,11 +104,10 @@
     <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="Lesson" ToRole="BackSide" />
     <NavigationProperty Name="Card" Relationship="SmartFlashCardDBModel.FK_Lessons_1" FromRole="Lesson" ToRole="Card" />
     <NavigationProperty Name="Category" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Lesson" ToRole="Category" />
+    <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="Lesson" ToRole="StudyDetail" />
   </EntityType>
   <Association Name="FK_BackSides_0">
-    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
+    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
     <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Lesson">
@@ -110,9 +119,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Lessons_1">
-    <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
+    <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" />
     <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Card">
@@ -132,6 +139,49 @@
       </Principal>
       <Dependent Role="Lesson">
         <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Study">
+    <Key>
+      <PropertyRef Name="StudyID" />
+    </Key>
+    <Property Type="Guid" Name="StudyID" Nullable="false" />
+    <Property Type="DateTime" Name="StudyDate" Nullable="false" />
+    <Property Type="Boolean" Name="IsNextStudy" />
+    <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="Study" ToRole="StudyDetail" />
+  </EntityType>
+  <EntityType Name="StudyDetail">
+    <Key>
+      <PropertyRef Name="StudyDetailID" />
+    </Key>
+    <Property Type="Guid" Name="StudyDetailID" Nullable="false" />
+    <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Guid" Name="StudyID" />
+    <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetail" ToRole="Lesson" />
+    <NavigationProperty Name="Study" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="StudyDetail" ToRole="Study" />
+  </EntityType>
+  <Association Name="FK_StudyDetails_1">
+    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lesson">
+        <PropertyRef Name="LessonID" />
+      </Principal>
+      <Dependent Role="StudyDetail">
+        <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_0">
+    <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Study">
+        <PropertyRef Name="StudyID" />
+      </Principal>
+      <Dependent Role="StudyDetail">
+        <PropertyRef Name="StudyID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
