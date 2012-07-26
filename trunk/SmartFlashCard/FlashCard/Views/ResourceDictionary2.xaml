@@ -1,9 +1,0 @@
-﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<SolidColorBrush x:Key="brBackgroundColor"
-		Color="White" />
-	<SolidColorBrush x:Key="bgHeaderColor1" Color="#FFEDEDED"/>
-	<SolidColorBrush x:Key="bgHeaderColor" Color="#FF599EEB"/>
-	<!-- Resource dictionary entries should be defined here. -->
-</ResourceDictionary>

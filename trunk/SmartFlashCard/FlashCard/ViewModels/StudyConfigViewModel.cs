@@ -145,16 +145,16 @@ namespace FlashCard.ViewModels
                 {
                     _selectedCard = value;
                     RaisePropertyChanged(() => SelectedCard);
-                    if (SelectedCard != null && SelectedCard.Card.Lessons.Count>0)
+                    if (SelectedCard != null && SelectedCard.Card.Lessons.Count > 0)
                     {
                         SelectedCard.CheckedAll = true;
-                        SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(SelectedCard.Card.Lessons.Select(x=>new LessonModel(x)));
+                        SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(SelectedCard.Card.Lessons.Select(x => new LessonModel(x)));
                         SetCheckValueForCollection();
                         RaisePropertyChanged(() => TotalLesson);
                     }
                 }
             }
-        } 
+        }
         #endregion
 
         #region" CheckedAll"
@@ -178,6 +178,26 @@ namespace FlashCard.ViewModels
         #endregion
 
 
+        #region SelectedStudy
+        private StudyModel _selectedStudy;
+        /// <summary>
+        /// Gets or sets the SelectedStudy.
+        /// </summary>
+        public StudyModel SelectedStudy
+        {
+            get { return _selectedStudy; }
+            set
+            {
+                if (_selectedStudy != value)
+                {
+                    _selectedStudy = value;
+                    RaisePropertyChanged(() => SelectedStudy);
+                }
+            }
+        }
+        #endregion
+
+
         #region" TotalLesson"
         /// <summary>
         /// Gets the TotalLesson.
@@ -187,10 +207,10 @@ namespace FlashCard.ViewModels
             get
             {
                 if (SelectedCard != null && SelectedCard.LessonCollection != null)
-                    return SelectedCard.LessonCollection.Count(x=>x.IsChecked);
+                    return SelectedCard.LessonCollection.Count(x => x.IsChecked);
                 return 0;
             }
-           
+
         }
         #endregion
 
@@ -222,7 +242,7 @@ namespace FlashCard.ViewModels
         {
             if (SelectedCard == null)
                 return false;
-            if (!SelectedSetupModel.Errors.Any() && SelectedCard.LessonCollection!=null && SelectedCard.LessonCollection.Any(x => x.IsChecked))
+            if (!SelectedSetupModel.Errors.Any() && SelectedCard.LessonCollection != null && SelectedCard.LessonCollection.Any(x => x.IsChecked))
                 return true;
             return false;
         }
@@ -236,14 +256,6 @@ namespace FlashCard.ViewModels
             try
             {
                 List<LessonModel> lst = new List<LessonModel>();
-                //foreach (var item in SelectedCard.LessonCollection.Where(x => x.IsChecked))
-                //{
-                //    //Check condition if user set Lesson user Know => remove this item lesson
-                //    if (lesson != null && lesson.Count() > 0)
-                //    {
-                //        lst.AddRange(lesson);
-                //    }
-                //}
                 lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
                 if (lst != null && lst.Count > 0)
                 {
@@ -254,7 +266,6 @@ namespace FlashCard.ViewModels
                 App.SetupModel = SelectedSetupModel;
 
                 SetupRepository setupRepository = new SetupRepository();
-                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 App.SetupModel.ToEntity();
                 if (App.SetupModel.IsNew)
                 {
@@ -267,6 +278,38 @@ namespace FlashCard.ViewModels
                     setupRepository.Commit();
                 }
                 App.SetupModel.EndUpdate();
+
+                // For Study
+                StudyRepository studyRespository = new StudyRepository();
+                //set all study = true to false
+                if (SelectedStudy.IsNextStudy == true)
+                {
+                    var allStudy = studyRespository.GetAll<Study>(x=>x.IsNextStudy==true);
+                    foreach (var item in allStudy)
+                    {
+                        item.IsNextStudy=false;
+                        studyRespository.Update<Study>(item);
+                    }
+                    studyRespository.Commit();
+                }
+
+                //insert new study
+                Study study = new Study();
+                study.IsNextStudy = SelectedStudy.IsNextStudy;
+                study.StudyID = AutoGeneration.NewSeqGuid();
+                study.StudyDate = DateTime.Today;
+                foreach (var item in LessonCollection)
+                {
+                    study.StudyDetails.Add(
+                        new StudyDetail()
+                        {
+                            StudyDetailID = AutoGeneration.NewSeqGuid(),
+                            LessonID = item.LessonID,
+                            StudyID = SelectedStudy.StudyID,
+                        });
+                }
+                studyRespository.Add<Study>(study);
+                studyRespository.Commit();
             }
             catch (Exception ex)
             {
@@ -367,9 +410,7 @@ namespace FlashCard.ViewModels
             try
             {
                 SelectedSetupModel = App.SetupModel;
-                //CategoryDataAccess categoryDataAccess = new CategoryDataAccess();
-                //var cate = categoryDataAccess.GetAllWithRelation().Where(x => x.LessonNum > 0);
-                //CategoryCollection = new ObservableCollection<CategoryModel>(cate);
+                SelectedStudy = App.StudyModel;
             }
             catch (Exception ex)
             {
@@ -387,7 +428,7 @@ namespace FlashCard.ViewModels
             {
                 item.IsChecked = SelectedCard.CheckedAll.HasValue ? SelectedCard.CheckedAll.Value : false;
             }
-                
+
         }
 
         private void SetCheckValueForParent()
@@ -398,12 +439,12 @@ namespace FlashCard.ViewModels
                 return;
             }
 
-            if(SelectedCard.LessonCollection.Count==0)
+            if (SelectedCard.LessonCollection.Count == 0)
             {
                 SelectedCard.CheckedAll = false;
                 return;
             }
-            bool? status=null;
+            bool? status = null;
             for (int i = 0; i < SelectedCard.LessonCollection.Count; i++)
             {
                 var lessonModel = SelectedCard.LessonCollection[i];

@@ -557,6 +557,13 @@
                            Text=" lesson(s) choice"
                            FontWeight="Bold" />
             </StackPanel>
+            <CheckBox Content="Lesson for next Study"
+                      HorizontalAlignment="Left"
+                      IsChecked="{Binding SelectedStudy}"
+                      Grid.Row="2"
+                      VerticalAlignment="Center"
+                      Grid.Column="1"
+                      Margin="21,0,0,0" />
         </Grid>
         <Border x:Name="bdBottom"
                 Grid.Row="2"
