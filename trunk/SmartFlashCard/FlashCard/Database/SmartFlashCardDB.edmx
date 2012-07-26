@@ -28,11 +28,11 @@
             <End Role="Lessons" EntitySet="Lessons" />
           </AssociationSet>
           <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_0">
-            <End Role="Studies" EntitySet="Studies" />
+            <End Role="Lessons" EntitySet="Lessons" />
             <End Role="StudyDetails" EntitySet="StudyDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_1">
-            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Studies" EntitySet="Studies" />
             <End Role="StudyDetails" EntitySet="StudyDetails" />
           </AssociationSet>
         </EntityContainer>
@@ -85,14 +85,14 @@
           <Property Name="IsEnableLoop" Type="bit" />
           <Property Name="IsEnableSoundForShow" Type="bit" />
           <Property Name="IsShuffle" Type="bit" />
+          <Property Name="IsOpenLastStudy" Type="bit" />
         </EntityType>
         <EntityType Name="Studies">
           <Key>
             <PropertyRef Name="StudyID" />
           </Key>
           <Property Name="StudyID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="StudyDate" Type="datetime" Nullable="false" />
-          <Property Name="IsNextStudy" Type="bit" />
+          <Property Name="LastStudyDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="StudyDetails">
           <Key>
@@ -101,6 +101,7 @@
           <Property Name="StudyDetailID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyID" Type="uniqueidentifier" />
+          <Property Name="IsLastStudy" Type="bit" />
         </EntityType>
         <EntityType Name="UserLesson">
           <Key>
@@ -157,18 +158,6 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudyDetails_0">
-          <End Role="Studies" Type="SmartFlashCardDBModel.Store.Studies" Multiplicity="0..1" />
-          <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Studies">
-              <PropertyRef Name="StudyID" />
-            </Principal>
-            <Dependent Role="StudyDetails">
-              <PropertyRef Name="StudyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StudyDetails_1">
           <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
           <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
           <ReferentialConstraint>
@@ -180,6 +169,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudyDetails_1">
+          <End Role="Studies" Type="SmartFlashCardDBModel.Store.Studies" Multiplicity="0..1" />
+          <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Studies">
+              <PropertyRef Name="StudyID" />
+            </Principal>
+            <Dependent Role="StudyDetails">
+              <PropertyRef Name="StudyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -187,7 +188,6 @@
         <EntityContainer Name="SmartFlashCardDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cards" EntityType="SmartFlashCardDBModel.Card" />
           <EntitySet Name="Categories" EntityType="SmartFlashCardDBModel.Category" />
-          <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Setup" />
           <EntitySet Name="UserLessons" EntityType="SmartFlashCardDBModel.UserLesson" />
           <EntitySet Name="Users" EntityType="SmartFlashCardDBModel.User" />
           <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.BackSide" />
@@ -206,14 +206,15 @@
           </AssociationSet>
           <EntitySet Name="Studies" EntityType="SmartFlashCardDBModel.Study" />
           <EntitySet Name="StudyDetails" EntityType="SmartFlashCardDBModel.StudyDetail" />
-          <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.FK_StudyDetails_1">
+          <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.FK_StudyDetails_0">
             <End Role="Lesson" EntitySet="Lessons" />
             <End Role="StudyDetail" EntitySet="StudyDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.FK_StudyDetails_0">
+          <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.FK_StudyDetails_1">
             <End Role="Study" EntitySet="Studies" />
             <End Role="StudyDetail" EntitySet="StudyDetails" />
           </AssociationSet>
+          <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Setup" />
           </EntityContainer>
         <EntityType Name="Card">
           <Key>
@@ -232,20 +233,6 @@
           <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="CategoryOf" Nullable="false" />
           <NavigationProperty Name="Lessons" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Category" ToRole="Lesson" />
-        </EntityType>
-        <EntityType Name="Setup">
-          <Key>
-            <PropertyRef Name="SetupID" />
-          </Key>
-          <Property Type="String" Name="SetupID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ViewTimeSecond" Nullable="false" />
-          <Property Type="Int32" Name="DistanceTimeSecond" Nullable="false" />
-          <Property Type="Boolean" Name="IsLimitCard" />
-          <Property Type="Int32" Name="LimitCardNum" />
-          <Property Type="Boolean" Name="IsEnableSlideShow" />
-          <Property Type="Boolean" Name="IsEnableLoop" />
-          <Property Type="Boolean" Name="IsEnableSoundForShow" />
-          <Property Type="Boolean" Name="IsShuffle" />
         </EntityType>
         <EntityType Name="UserLesson">
           <Key>
@@ -288,7 +275,7 @@
           <NavigationProperty Name="BackSides" Relationship="SmartFlashCardDBModel.FK_BackSides_0" FromRole="Lesson" ToRole="BackSide" />
           <NavigationProperty Name="Card" Relationship="SmartFlashCardDBModel.FK_Lessons_1" FromRole="Lesson" ToRole="Card" />
           <NavigationProperty Name="Category" Relationship="SmartFlashCardDBModel.FK_Lessons_0" FromRole="Lesson" ToRole="Category" />
-          <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="Lesson" ToRole="StudyDetail" />
+          <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="Lesson" ToRole="StudyDetail" />
         </EntityType>
         <Association Name="FK_BackSides_0">
           <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
@@ -331,9 +318,8 @@
             <PropertyRef Name="StudyID" />
           </Key>
           <Property Type="Guid" Name="StudyID" Nullable="false" />
-          <Property Type="DateTime" Name="StudyDate" Nullable="false" />
-          <Property Type="Boolean" Name="IsNextStudy" />
-          <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="Study" ToRole="StudyDetail" />
+          <Property Type="DateTime" Name="LastStudyDate" Nullable="false" />
+          <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="Study" ToRole="StudyDetail" />
         </EntityType>
         <EntityType Name="StudyDetail">
           <Key>
@@ -342,10 +328,11 @@
           <Property Type="Guid" Name="StudyDetailID" Nullable="false" />
           <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="StudyID" />
-          <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetail" ToRole="Lesson" />
-          <NavigationProperty Name="Study" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="StudyDetail" ToRole="Study" />
+          <Property Type="Boolean" Name="IsLastStudy" />
+          <NavigationProperty Name="Lesson" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="StudyDetail" ToRole="Lesson" />
+          <NavigationProperty Name="Study" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetail" ToRole="Study" />
         </EntityType>
-        <Association Name="FK_StudyDetails_1">
+        <Association Name="FK_StudyDetails_0">
           <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
           <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -357,7 +344,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StudyDetails_0">
+        <Association Name="FK_StudyDetails_1">
           <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1" />
           <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -369,6 +356,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Setup">
+          <Key>
+            <PropertyRef Name="SetupID" />
+          </Key>
+          <Property Type="String" Name="SetupID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ViewTimeSecond" Nullable="false" />
+          <Property Type="Int32" Name="DistanceTimeSecond" Nullable="false" />
+          <Property Type="Boolean" Name="IsLimitCard" />
+          <Property Type="Int32" Name="LimitCardNum" />
+          <Property Type="Boolean" Name="IsEnableSlideShow" />
+          <Property Type="Boolean" Name="IsEnableLoop" />
+          <Property Type="Boolean" Name="IsEnableSoundForShow" />
+          <Property Type="Boolean" Name="IsShuffle" />
+          <Property Type="Boolean" Name="IsOpenLastStudy" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -390,21 +392,6 @@
                 <ScalarProperty Name="CategoryOf" ColumnName="CategoryOf" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Setups">
-            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
-              <MappingFragment StoreEntitySet="Setups">
-                <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
-                <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
-                <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
-                <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
-                <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
-                <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
-                <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
-                <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
-                <ScalarProperty Name="SetupID" ColumnName="SetupID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -453,8 +440,7 @@
           <EntitySetMapping Name="Studies">
             <EntityTypeMapping TypeName="SmartFlashCardDBModel.Study">
               <MappingFragment StoreEntitySet="Studies">
-                <ScalarProperty Name="IsNextStudy" ColumnName="IsNextStudy" />
-                <ScalarProperty Name="StudyDate" ColumnName="StudyDate" />
+                <ScalarProperty Name="LastStudyDate" ColumnName="LastStudyDate" />
                 <ScalarProperty Name="StudyID" ColumnName="StudyID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -462,9 +448,26 @@
           <EntitySetMapping Name="StudyDetails">
             <EntityTypeMapping TypeName="SmartFlashCardDBModel.StudyDetail">
               <MappingFragment StoreEntitySet="StudyDetails">
+                <ScalarProperty Name="IsLastStudy" ColumnName="IsLastStudy" />
                 <ScalarProperty Name="StudyID" ColumnName="StudyID" />
                 <ScalarProperty Name="LessonID" ColumnName="LessonID" />
                 <ScalarProperty Name="StudyDetailID" ColumnName="StudyDetailID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Setups">
+            <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
+              <MappingFragment StoreEntitySet="Setups">
+                <ScalarProperty Name="IsOpenLastStudy" ColumnName="IsOpenLastStudy" />
+                <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
+                <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
+                <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
+                <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
+                <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
+                <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
+                <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
+                <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
+                <ScalarProperty Name="SetupID" ColumnName="SetupID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -491,34 +494,34 @@
       <Diagram Name="SmartFlashCardDB">
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Card" Width="1.5" PointX="0.75" PointY="1.375" Height="1.5923063151041674" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="3.125" PointY="0.5" Height="1.5923063151041665" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="0.5" PointY="4.625" Height="2.4140429687500031" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.UserLesson" Width="1.5" PointX="9.75" PointY="4.375" Height="1.4279589843750031" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7566536458333388" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="7.125" PointY="0.625" Height="1.9210009765625" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="2.375" Height="2.4140429687500031" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSides_0" >
-          <ConnectorPoint PointX="4.5" PointY="3.61675098828125" />
-          <ConnectorPoint PointX="8.46875" PointY="3.61675098828125" />
-          <ConnectorPoint PointX="8.46875" PointY="2.5460009765625" />
+          <ConnectorPoint PointX="4.5" PointY="2.5862939453125" />
+          <ConnectorPoint PointX="7.125" PointY="2.5862939453125" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_1" >
-          <ConnectorPoint PointX="2.25" PointY="2.6711531575520837" />
-          <ConnectorPoint PointX="3" PointY="2.6711531575520837" />
+          <ConnectorPoint PointX="2.25" PointY="2.7689925130208337" />
+          <ConnectorPoint PointX="3" PointY="2.7689925130208337" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_0" >
-          <ConnectorPoint PointX="3.8125" PointY="2.0923063151041665" />
+          <ConnectorPoint PointX="3.8125" PointY="2.287985026041667" />
           <ConnectorPoint PointX="3.8125" PointY="2.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Study" Width="1.5" PointX="2.625" PointY="8.25" Height="1.5923063151041674" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.StudyDetail" Width="1.5" PointX="3" PointY="5.75" Height="1.7566536458333353" />
-        <AssociationConnector Association="SmartFlashCardDBModel.FK_StudyDetails_1" >
-          <ConnectorPoint PointX="3.75" PointY="4.78904296875" />
-          <ConnectorPoint PointX="3.75" PointY="5.75" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Study" Width="1.5" PointX="3" PointY="8" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.StudyDetail" Width="1.5" PointX="5.25" PointY="7.625" Height="2.1725878906250031" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_StudyDetails_0" >
-          <ConnectorPoint PointX="3.5625" PointY="8.25" />
-          <ConnectorPoint PointX="3.5625" PointY="7.5066536458333353" />
+          <ConnectorPoint PointX="4.5" PointY="3.8866455664062505" />
+          <ConnectorPoint PointX="5.96875" PointY="3.8866455664062505" />
+          <ConnectorPoint PointX="5.96875" PointY="7.625" />
         </AssociationConnector>
+        <AssociationConnector Association="SmartFlashCardDBModel.FK_StudyDetails_1" >
+          <ConnectorPoint PointX="4.5" PointY="8.797841796875" />
+          <ConnectorPoint PointX="5.25" PointY="8.797841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="7.375" PointY="7.75" Height="2.9417936197916674" />
         </Diagram>
     </Diagrams>
   </Designer>

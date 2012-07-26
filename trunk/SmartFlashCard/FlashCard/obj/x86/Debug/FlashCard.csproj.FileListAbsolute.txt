@@ -24,7 +24,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\De
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\WpfApplicationFramework.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\log4net.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\System.Windows.Interactivity.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\vi\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\bin\Debug\zh-CN\MVVMHelper.resources.dll
@@ -47,7 +46,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x8
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\GenerateResource.write.1.tlog
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\FlashCard.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\FlashCard.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCard\obj\x86\Debug\Views\ResourceDictionary2.baml
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\FlashCard.exe.config
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\FlashCard.exe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCard\bin\Debug\FlashCard.pdb

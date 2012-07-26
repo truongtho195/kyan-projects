@@ -129,6 +129,7 @@ namespace FlashCard.Database
             this.Setup.IsEnableLoop = this.IsEnableLoop;
             this.Setup.IsEnableSoundForShow = this.IsEnableSoundForShow;
             this.Setup.IsShuffle = this.IsShuffle;
+            this.Setup.IsOpenLastStudy = this.IsOpenLastStudy;
         }
 
         public void ToModel()
@@ -142,6 +143,7 @@ namespace FlashCard.Database
             this.IsEnableLoop = this.Setup.IsEnableLoop;
             this.IsEnableSoundForShow = this.Setup.IsEnableSoundForShow;
             this.IsShuffle = this.Setup.IsShuffle;
+            this.IsOpenLastStudy = this.Setup.IsOpenLastStudy;
         }
 
         #endregion
@@ -306,6 +308,24 @@ namespace FlashCard.Database
                     this.IsDirty = true;
                     this._isShuffle = value;
                     RaisePropertyChanged(() => IsShuffle);
+                }
+            }
+        }
+
+        protected Nullable<bool> _isOpenLastStudy;
+        /// <summary>
+        /// Gets or sets the IsOpenLastStudy.
+        /// </summary>
+        public Nullable<bool> IsOpenLastStudy
+        {
+            get { return this._isOpenLastStudy; }
+            set
+            {
+                if (this._isOpenLastStudy != value)
+                {
+                    this.IsDirty = true;
+                    this._isOpenLastStudy = value;
+                    RaisePropertyChanged(() => IsOpenLastStudy);
                 }
             }
         }

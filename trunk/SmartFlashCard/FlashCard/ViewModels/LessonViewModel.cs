@@ -28,7 +28,7 @@ namespace FlashCard.ViewModels
         public LessonViewModel(LessonManageView view,List<LessonModel> lessonCollection):this(view)
         {
             //handle Statup for file
-            if (App.SetupModel != null && App.SetupModel.IsRunStatup)
+            if (App.SetupModel != null &&( App.SetupModel.IsRunStatup || App.SetupModel.IsOpenLastStudy==true))
             {
                 MainWindow mainWindow = new MainWindow();
                 var mainViewModel = mainWindow.GetViewModel<MainViewModel>();

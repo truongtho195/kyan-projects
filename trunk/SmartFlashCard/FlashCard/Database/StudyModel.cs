@@ -121,15 +121,13 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Study.StudyID = this.StudyID;
-            this.Study.StudyDate = this.StudyDate;
-            this.Study.IsNextStudy = this.IsNextStudy;
+            this.Study.LastStudyDate = this.LastStudyDate;
         }
 
         public void ToModel()
         {
             this.StudyID = this.Study.StudyID;
-            this.StudyDate = this.Study.StudyDate;
-            this.IsNextStudy = this.Study.IsNextStudy;
+            this.LastStudyDate = this.Study.LastStudyDate;
         }
 
         #endregion
@@ -154,38 +152,20 @@ namespace FlashCard.Database
             }
         }
 
-        protected System.DateTime _studyDate;
+        protected System.DateTime _lastStudyDate;
         /// <summary>
-        /// Gets or sets the StudyDate.
+        /// Gets or sets the LastStudyDate.
         /// </summary>
-        public System.DateTime StudyDate
+        public System.DateTime LastStudyDate
         {
-            get { return this._studyDate; }
+            get { return this._lastStudyDate; }
             set
             {
-                if (this._studyDate != value)
+                if (this._lastStudyDate != value)
                 {
                     this.IsDirty = true;
-                    this._studyDate = value;
-                    RaisePropertyChanged(() => StudyDate);
-                }
-            }
-        }
-
-        protected Nullable<bool> _isNextStudy;
-        /// <summary>
-        /// Gets or sets the IsNextStudy.
-        /// </summary>
-        public Nullable<bool> IsNextStudy
-        {
-            get { return this._isNextStudy; }
-            set
-            {
-                if (this._isNextStudy != value)
-                {
-                    this.IsDirty = true;
-                    this._isNextStudy = value;
-                    RaisePropertyChanged(() => IsNextStudy);
+                    this._lastStudyDate = value;
+                    RaisePropertyChanged(() => LastStudyDate);
                 }
             }
         }
