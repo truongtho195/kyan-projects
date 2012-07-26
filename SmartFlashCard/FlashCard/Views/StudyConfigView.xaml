@@ -6,18 +6,264 @@
              x:Class="FlashCard.Views.StudyConfigView"
              HorizontalContentAlignment="Stretch"
              VerticalContentAlignment="Stretch"
-             Height="500"
+             xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+             Height="520"
              Width="778">
     <UserControl.Resources>
-        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True" />
-        </ItemsPanelTemplate>
+        <Style TargetType="{x:Type ListViewItem}"
+               x:Key="ListViewItemCardStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border x:Name="border"
+                                CornerRadius="8"
+                                BorderThickness="1"
+                                Width="200"
+                                Height="90"
+                                Cursor="Hand">
+                            <Grid x:Name="Layout"
+                                  HorizontalAlignment="Stretch"
+                                  Width="Auto">
+                                <Border x:Name="border_Copy"
+                                        CornerRadius="8"
+                                        BorderThickness="1"
+                                        Width="Auto"
+                                        Height="Auto"
+                                        Background="#F0293955"
+                                        RenderTransformOrigin="0,0.5"
+                                        Margin="5" />
+                                <Border x:Name="border_Copy1"
+                                        CornerRadius="8"
+                                        BorderThickness="1"
+                                        Width="Auto"
+                                        Height="Auto"
+                                        Background="#FFE5E9BC"
+                                        RenderTransformOrigin="0,0.5"
+                                        Margin="5"
+                                        Padding="0" />
+                                <Border x:Name="border_Copy2"
+                                        CornerRadius="8"
+                                        Width="Auto"
+                                        Height="Auto"
+                                        Background="{DynamicResource bgColor1}"
+                                        RenderTransformOrigin="0,0.5"
+                                        Margin="5"
+                                        BorderThickness="0.5">
+                                    <Border.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform Angle="0" />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Border.RenderTransform>
+                                    <Grid x:Name="grdContent"
+                                          Height="Auto"
+                                          Width="Auto"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="46" />
+                                            <RowDefinition Height="35" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding Card.CardName}"
+                                                   TextWrapping="Wrap"
+                                                   d:LayoutOverrides="Height"
+                                                   VerticalAlignment="Bottom"
+                                                   FontWeight="Bold"
+                                                   FontSize="13.333" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding Card.Lessons.Count}"
+                                                   d:LayoutOverrides="Height"
+                                                   Grid.Row="1"
+                                                   VerticalAlignment="Top"
+                                                   FontSize="10.667" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Selector.IsSelected"
+                                     Value="True">
+                                <Setter Property="RenderTransform"
+                                        TargetName="border_Copy">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform Angle="-2" />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransform"
+                                        TargetName="border_Copy2">
+                                    <Setter.Value>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform Angle="2" />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ListViewNoHeaderStyle"
+               TargetType="{x:Type ListView}">
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource ListBorder}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                    Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="true" />
+            <Setter Property="ScrollViewer.PanningMode"
+                    Value="Both" />
+            <Setter Property="Stylus.IsFlicksEnabled"
+                    Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListView}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ScrollViewer Padding="{TemplateBinding Padding}"
+                                          Style="{DynamicResource ScrollViewerListViewNoHeaderStyle}"
+                                          Margin="0">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsGrouping"
+                                     Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll"
+                                        Value="false" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ScrollViewerListViewNoHeaderStyle"
+               TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Focusable"
+                    Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid Background="{TemplateBinding Background}"
+                              SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ValidationStates">
+                                    <VisualState x:Name="Valid" />
+                                    <VisualState x:Name="InvalidFocused" />
+                                    <VisualState x:Name="InvalidUnfocused" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    Content="{TemplateBinding Content}"
+                                                    KeyboardNavigation.DirectionalNavigation="Local"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                    d:LayoutOverrides="Width"
+                                                    Grid.Row="1"
+                                                    Grid.RowSpan="2"
+                                                    Grid.ColumnSpan="2" />
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                       Cursor="Arrow"
+                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                       Minimum="0.0"
+                                       Orientation="Horizontal"
+                                       Grid.Row="2"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportWidth}"
+                                       Style="{DynamicResource HorizontalScrollBarStyle}"
+                                       Background="#58939393"
+                                       Height="12"
+                                       MinHeight="0" />
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Cursor="Arrow"
+                                       Grid.Column="1"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0.0"
+                                       Orientation="Vertical"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Style="{DynamicResource VerticalScrollBarStyle}"
+                                       Background="{DynamicResource bgScrollBard}"
+                                       Width="12"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       MinWidth="0"
+                                       Grid.Row="1" />
+                            <DockPanel Grid.Column="0"
+                                       Grid.Row="2"
+                                       LastChildFill="False">
+                                <Rectangle DockPanel.Dock="Left"
+                                           Fill="Transparent"
+                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                           Width="1" />
+                                <Rectangle DockPanel.Dock="Top"
+                                           Fill="Transparent"
+                                           Height="1"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                            </DockPanel>
+                            <ScrollViewer Focusable="false"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          d:LayoutOverrides="Height"
+                                          Grid.ColumnSpan="2">
+                                <GridViewHeaderRowPresenter AllowsColumnReorder="{Binding TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderContainerStyle="{Binding TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderToolTip="{Binding TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderStringFormat="{Binding TemplatedParent.View.ColumnHeaderStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderContextMenu="{Binding TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderTemplate="{Binding TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            Columns="{Binding TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            ColumnHeaderTemplateSelector="{Binding TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                            Visibility="Collapsed" />
+                            </ScrollViewer>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
-    <!--Title="StudyConfigView"
-             WindowStyle="None"
-             ResizeMode="NoResize"
-             SizeToContent="WidthAndHeight"
-             WindowStartupLocation="CenterScreen"-->
     <Grid x:Name="Layout">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.979*" />
@@ -92,7 +338,6 @@
         <Border BorderBrush="Black"
                 Grid.RowSpan="3"
                 Background="{DynamicResource brBackgroundColor}" />
-
         <Border x:Name="bdHeader">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1"
@@ -111,31 +356,31 @@
                        HorizontalAlignment="Left"
                        Margin="5,0,0,0" />
         </Border>
-
         <Grid x:Name="grdLayout"
               Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.345*" />
-                <ColumnDefinition Width="0.655*" />
+                <ColumnDefinition Width="0.288*" />
+                <ColumnDefinition Width="0.712*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0" />
-                <RowDefinition Height="232.964" />
-                <RowDefinition />
+                <RowDefinition Height="204.5" />
+                <RowDefinition Height="0.111*" />
+                <RowDefinition Height="0.889*" />
             </Grid.RowDefinitions>
             <GroupBox Header="More Option"
                       BorderBrush="#FF3F7EE4"
                       Grid.Row="1"
                       Grid.Column="1"
-                      VerticalAlignment="Center"
-                      Margin="5,0,5,5">
+                      Margin="5,0,8,0"
+                      Padding="5,0,8,0">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="25" />
                         <RowDefinition Height="80" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
@@ -245,63 +490,73 @@
                       ItemsSource="{Binding CardCollection}"
                       SelectedItem="{Binding SelectedCard}"
                       Grid.Row="1"
-                      Margin="8,8,2,2"
+                      Margin="8,8,2,8"
                       FontSize="13.333"
-                      Style="{DynamicResource ListViewStyle}"
-                      Grid.RowSpan="2">
+                      Style="{StaticResource ListViewNoHeaderStyle}"
+                      Grid.RowSpan="3"
+                      ItemContainerStyle="{DynamicResource ListViewItemCardStyle}"
+                      Background="#33CCC7C7">
                 <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <!--<GridViewColumn Header="#">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox Content="{Binding Card.CardName}"
-                                              IsChecked="{Binding IsChecked}"
-                                              Width="Auto"
-                                              MinWidth="300" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>-->
-                        <GridViewColumn Header="Card Name"
-                                        Width="120"
-                                        DisplayMemberBinding="{Binding Card.CardName}" />
-                        <GridViewColumn Header="Number of Lesson"
-                                        DisplayMemberBinding="{Binding Card.Lessons.Count}" />
-                    </GridView>
+                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}" />
+
+
                 </ListView.View>
             </ListView>
             <ListView x:Name="lstLessons"
                       ItemsSource="{Binding SelectedCard.LessonCollection}"
-                      Grid.Row="2"
-                      Margin="5"
+                      Grid.Row="3"
                       FontSize="13.333"
                       Style="{DynamicResource ListViewStyle}"
-                      Grid.Column="1">
+                      Grid.Column="1"
+                      Margin="3,8,8,8"
+                      Background="#33CCC7C7">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <GridViewColumn Header="#" >
+                        <GridViewColumn Header="#"
+                                        Width="25">
                             <GridViewColumn.HeaderTemplate>
                                 <DataTemplate>
-                                    <CheckBox Width="30"
-                                              VerticalAlignment="Center"
-                                              HorizontalAlignment="Center" />
+                                    <CheckBox VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Command="{Binding DataContext.CheckedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                              CommandParameter="Parent"
+                                              IsChecked="{Binding DataContext.SelectedCard.CheckedAll, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
                                 </DataTemplate>
                             </GridViewColumn.HeaderTemplate>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  Width="30"
-                                               VerticalAlignment="Center"
-                                               IsChecked="{Binding IsChecked}" />
+                                    <CheckBox VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Command="{Binding DataContext.CheckedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                              CommandParameter="Child"
+                                              IsChecked="{Binding IsChecked}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Lesson Name"
-                                        Width="200"
+                                        Width="300"
                                         DisplayMemberBinding="{Binding Lesson.LessonName}" />
 
 
                     </GridView>
                 </ListView.View>
             </ListView>
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        d:LayoutOverrides="Height"
+                        VerticalAlignment="Center"
+                        Margin="0,0,8,0">
+                <TextBlock TextWrapping="Wrap"
+                           d:LayoutOverrides="Width"
+                           Text="{Binding TotalLesson, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                           Margin="0,0,4,0"
+                           FontWeight="Bold" />
+                <TextBlock TextWrapping="Wrap"
+                           Text=" lesson(s) choice"
+                           FontWeight="Bold" />
+            </StackPanel>
         </Grid>
         <Border x:Name="bdBottom"
                 Grid.Row="2"

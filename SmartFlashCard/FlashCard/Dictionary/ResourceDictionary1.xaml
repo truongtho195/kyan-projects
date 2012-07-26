@@ -141,18 +141,11 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="ListBorder" Color="#FF7F9DB9"/>
     <SolidColorBrush x:Key="HeaderBackgroundActived" Color="#FF4D94F7"/>
- <LinearGradientBrush  x:Key="BlueRinseBrush" 
-                          EndPoint="0.5,1" StartPoint="0.5,0">
- 	<GradientStop Color="#FF4166D4" Offset="1"/>
- 	<GradientStop Color="#FF57A0F4" Offset="0.5"/>
- 	<GradientStop Color="#FF4B94EC" Offset="0.498"/>
-    </LinearGradientBrush>
  <LinearGradientBrush x:Key="bgItemSelected" EndPoint="0.5,1" StartPoint="0.5,0">
  	<GradientStop Color="#FF94B9F3" Offset="0"/>
  	<GradientStop Color="#FFADCBF9" Offset="0.792"/>
  	<GradientStop Color="#FFA5C5F7" Offset="1"/>
  </LinearGradientBrush>
-    <SolidColorBrush x:Key="bgHeaderColor1" Color="#FFAACCFB"/>
     <SolidColorBrush x:Key="bgColor1" Color="#FFAACCFB"/>
 	<Style x:Key="StaticExtension2"
 		TargetType="{x:Type ScrollViewer}">
@@ -1396,8 +1389,6 @@
                 Value="Center"/>
         <Setter Property="VerticalContentAlignment" 
                 Value="Center"/>
-        <Setter Property="Background" 
-                Value="{StaticResource BlueRinseBrush}"/>
         <Setter Property="Foreground" 
                 Value="{DynamicResource 
                     {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -1416,7 +1407,6 @@
              		</VisualStateManager.VisualStateGroups>
              		<Border x:Name="HeaderBorder"
              			BorderThickness="0"
-             			BorderBrush="{StaticResource BlueRinseBrush}"
              			Background="{DynamicResource bgColor1}"
              			Padding="2,0,2,0" MinHeight="23">
              			<ContentPresenter x:Name="HeaderContent"

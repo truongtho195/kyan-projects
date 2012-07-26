@@ -53,6 +53,8 @@ namespace FlashCard.ViewModels
         /// Variable set user is current what side, avoid trigger & storyboard not sync together
         /// </summary>
         public bool IsCurrentBackSide { get; set; }
+
+        public bool IsHidePopupCommandRaise { get; set; }
         #endregion
 
         #region Properties
@@ -416,8 +418,13 @@ namespace FlashCard.ViewModels
 
             //IsPopupStarted== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
             // IsPopupStarted know user not click on button fullScreen
-            if (!IsOtherFormShow && this.IsPopupStarted == true)
+            if (!IsOtherFormShow && this.IsPopupStarted == true )
             {
+                if (!IsHidePopupCommandRaise)
+                {
+                    var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeLeave") as Storyboard;
+                    storyBoard.Begin();
+                }
                 _swCountTimerTick.Stop();
                 int time = 0;
                 if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
@@ -431,6 +438,9 @@ namespace FlashCard.ViewModels
                 if (_timerPopup != null)
                     _timerPopup.Start();
             }
+            
+
+            IsHidePopupCommandRaise = false;
         }
         #endregion
 
@@ -643,6 +653,7 @@ namespace FlashCard.ViewModels
         private void HiddenPopupExecute(object param)
         {
             log.Info("||{*} === Hidden Popup Command Executed === ");
+            IsHidePopupCommandRaise = true;
             ViewCore.MyNotifyIcon.CloseBalloon();
             log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
         }
