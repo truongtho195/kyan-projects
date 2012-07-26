@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FlashCard.DataAccess;
 using System.Windows.Documents;
 using ConvertToText.Database;
 using System.IO;
@@ -20,33 +19,33 @@ namespace ConvertToText
         
         private static void InserLesson()
         {
-            Console.WriteLine("============================Convert Lesson Start ?=============================");
-            Console.WriteLine("Press enter key to ..");
-            Console.ReadLine();
-            Console.WriteLine("Starting.....");
+            //Console.WriteLine("============================Convert Lesson Start ?=============================");
+            //Console.WriteLine("Press enter key to ..");
+            //Console.ReadLine();
+            //Console.WriteLine("Starting.....");
 
-            try
-            {
-                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
-                LessonDataAccess lessonDA = new LessonDataAccess();
-                var allLesson= lessonDA.GetAll();
+            //try
+            //{
+            //    SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+            //    LessonDataAccess lessonDA = new LessonDataAccess();
+            //    var allLesson= lessonDA.GetAll();
                
-                foreach (var item in allLesson)
-                {
+            //    foreach (var item in allLesson)
+            //    {
                     
-                    Console.WriteLine("-  Lesson item : {0}", item.LessonID);
-                    TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
-                    flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString()});
-                    flashCardEntity.SaveChanges();
-                    Console.WriteLine("=====> Done");
-                }
-                Console.WriteLine("Finished.....");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
-            }
-            Console.ReadLine();
+            //        Console.WriteLine("-  Lesson item : {0}", item.LessonID);
+            //        TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
+            //        flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString()});
+            //        flashCardEntity.SaveChanges();
+            //        Console.WriteLine("=====> Done");
+            //    }
+            //    Console.WriteLine("Finished.....");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
+            //}
+            //Console.ReadLine();
         }
 
 
