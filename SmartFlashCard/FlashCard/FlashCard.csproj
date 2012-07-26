@@ -102,20 +102,20 @@
     <Compile Include="Converters\ReverseBooleanConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Database\BackSideModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\CardModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\CategoryModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\LessonModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\ModelTemplate.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
@@ -130,8 +130,8 @@
     <Compile Include="Database\Repository\LessonRepository.cs" />
     <Compile Include="Database\Repository\UnitOfWork.cs" />
     <Compile Include="Database\SetupModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\SmartFlashCardDB.Designer.cs">
       <DependentUpon>SmartFlashCardDB.edmx</DependentUpon>
@@ -139,20 +139,20 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Database\StudyDetailModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\StudyModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\UserLessonModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\UserModel.cs">
-      <SubType>Code</SubType>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />

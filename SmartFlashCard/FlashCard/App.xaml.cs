@@ -50,19 +50,6 @@ namespace FlashCard
                 }
 
                 StudyRepository studyRepository = new StudyRepository();
-                var studyAll = studyRepository.GetAll<Study>();
-                if (studyAll.Count == 0)
-                    StudyModel = new StudyModel();
-                else
-                {
-                    var nextStudy = studyAll.Select(x => x.IsNextStudy);
-                    if (nextStudy != null)
-                    {
-                        //get lesson for today
-                    }
-                    
-                }
-
 
                 var application = new App();
                 application.InitializeComponent();
@@ -77,10 +64,11 @@ namespace FlashCard
         {
             // @"E:\Desktop\3000 General Word.flc"
             // @"E:\Desktop\test.txt"
+            //var file = @"E:\Desktop\Sorable.fcard";
             try
             {
                 var file = e.Args.FirstOrDefault().ToString();
-                //var file = @"E:\Desktop\Sorable.fcard";
+                
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {
@@ -126,12 +114,29 @@ namespace FlashCard
         /// <summary>
         /// Methods execute when user click on file but not valid or has exception with file
         /// </summary>
-        private static void RunNormal()
+        private void RunNormal()
         {
             var currentUserName = Environment.UserName;
             log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
-            LessonMangeView = new LessonManageView();
-            LessonMangeView.Show();
+
+
+            if (SetupModel.IsOpenLastStudy == true)
+            {
+                StudyRepository studyRespository = new StudyRepository();
+                var study = studyRespository.GetAll<Study>();
+                if (study != null)
+                {
+                    var lesson = study.FirstOrDefault().StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
+                    LessonCollection = new List<LessonModel>();
+                    LessonCollection.AddRange(lesson.Select(x=>new LessonModel(x)));
+                    LessonMangeView = new LessonManageView(this.LessonCollection);
+                }
+            }
+            else
+            {
+                LessonMangeView = new LessonManageView();
+                LessonMangeView.Show();
+            }
         }
 
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)

@@ -559,7 +559,7 @@
             </StackPanel>
             <CheckBox Content="Lesson for next Study"
                       HorizontalAlignment="Left"
-                      IsChecked="{Binding SelectedStudy}"
+                      IsChecked="{Binding SelectedSetupModel.IsOpenLastStudy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                       Grid.Row="2"
                       VerticalAlignment="Center"
                       Grid.Column="1"

@@ -19,21 +19,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Setups">
-      <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
-        <MappingFragment StoreEntitySet="Setups">
-          <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
-          <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
-          <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
-          <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
-          <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
-          <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
-          <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
-          <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
-          <ScalarProperty Name="SetupID" ColumnName="SetupID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="UserLessons">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.UserLesson">
         <MappingFragment StoreEntitySet="UserLesson">
@@ -79,8 +64,7 @@
     <EntitySetMapping Name="Studies">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.Study">
         <MappingFragment StoreEntitySet="Studies">
-          <ScalarProperty Name="IsNextStudy" ColumnName="IsNextStudy" />
-          <ScalarProperty Name="StudyDate" ColumnName="StudyDate" />
+          <ScalarProperty Name="LastStudyDate" ColumnName="LastStudyDate" />
           <ScalarProperty Name="StudyID" ColumnName="StudyID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -88,9 +72,26 @@
     <EntitySetMapping Name="StudyDetails">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.StudyDetail">
         <MappingFragment StoreEntitySet="StudyDetails">
+          <ScalarProperty Name="IsLastStudy" ColumnName="IsLastStudy" />
           <ScalarProperty Name="StudyID" ColumnName="StudyID" />
           <ScalarProperty Name="LessonID" ColumnName="LessonID" />
           <ScalarProperty Name="StudyDetailID" ColumnName="StudyDetailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Setups">
+      <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
+        <MappingFragment StoreEntitySet="Setups">
+          <ScalarProperty Name="IsOpenLastStudy" ColumnName="IsOpenLastStudy" />
+          <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
+          <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
+          <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
+          <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
+          <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
+          <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
+          <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
+          <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
+          <ScalarProperty Name="SetupID" ColumnName="SetupID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

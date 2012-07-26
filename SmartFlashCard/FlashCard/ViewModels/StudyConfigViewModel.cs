@@ -279,37 +279,58 @@ namespace FlashCard.ViewModels
                 }
                 App.SetupModel.EndUpdate();
 
-                // For Study
-                StudyRepository studyRespository = new StudyRepository();
-                //set all study = true to false
-                if (SelectedStudy.IsNextStudy == true)
+                if (App.SetupModel.IsOpenLastStudy == true)
                 {
-                    var allStudy = studyRespository.GetAll<Study>(x=>x.IsNextStudy==true);
-                    foreach (var item in allStudy)
+                    // For Study
+                    StudyRepository studyRespository = new StudyRepository();
+
+                    //set IsLast
+                    var studyAll = studyRespository.GetAll<Study>();
+                    Study study;
+                    if (studyAll.Count==0)
                     {
-                        item.IsNextStudy=false;
-                        studyRespository.Update<Study>(item);
+                        study = new Study();
+                        study.StudyID = AutoGeneration.NewSeqGuid();
+                        study.LastStudyDate = DateTime.Today;
+                        studyRespository.Add<Study>(study);
+                        studyRespository.Commit();
+                    }
+                    else
+                    {
+                        study = studyAll.FirstOrDefault();
+                    }
+
+
+
+                    //reset data IsLastStudy == true => set all to false
+                    foreach (var item in study.StudyDetails.Where(x => x.IsLastStudy == true))
+                    {
+                        item.IsLastStudy = false;
+                        studyRespository.Update(item);
+                    }
+                    studyRespository.Commit();
+
+                    //Store & set isLastStudy
+                    foreach (var item in LessonCollection)
+                    {
+                        var studyDetail = study.StudyDetails.Where(x => x.LessonID.Equals(item.LessonID)).SingleOrDefault();
+                        if (studyDetail != null)
+                        {
+                            studyDetail.IsLastStudy = true;
+                        }
+                        else
+                        {
+                            StudyDetail detail = new StudyDetail();
+                            detail.StudyDetailID = AutoGeneration.NewSeqGuid();
+                            detail.LessonID = item.LessonID;
+                            detail.IsLastStudy = true;
+                            detail.StudyID = study.StudyID;
+                            study.StudyDetails.Add(detail);
+                        }
                     }
                     studyRespository.Commit();
                 }
 
-                //insert new study
-                Study study = new Study();
-                study.IsNextStudy = SelectedStudy.IsNextStudy;
-                study.StudyID = AutoGeneration.NewSeqGuid();
-                study.StudyDate = DateTime.Today;
-                foreach (var item in LessonCollection)
-                {
-                    study.StudyDetails.Add(
-                        new StudyDetail()
-                        {
-                            StudyDetailID = AutoGeneration.NewSeqGuid(),
-                            LessonID = item.LessonID,
-                            StudyID = SelectedStudy.StudyID,
-                        });
-                }
-                studyRespository.Add<Study>(study);
-                studyRespository.Commit();
             }
             catch (Exception ex)
             {

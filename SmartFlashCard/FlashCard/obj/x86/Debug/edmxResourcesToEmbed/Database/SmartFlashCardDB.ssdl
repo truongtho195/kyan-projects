@@ -23,11 +23,11 @@
       <End Role="Lessons" EntitySet="Lessons" />
     </AssociationSet>
     <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_0">
-      <End Role="Studies" EntitySet="Studies" />
+      <End Role="Lessons" EntitySet="Lessons" />
       <End Role="StudyDetails" EntitySet="StudyDetails" />
     </AssociationSet>
     <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_1">
-      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="Studies" EntitySet="Studies" />
       <End Role="StudyDetails" EntitySet="StudyDetails" />
     </AssociationSet>
   </EntityContainer>
@@ -80,14 +80,14 @@
     <Property Name="IsEnableLoop" Type="bit" />
     <Property Name="IsEnableSoundForShow" Type="bit" />
     <Property Name="IsShuffle" Type="bit" />
+    <Property Name="IsOpenLastStudy" Type="bit" />
   </EntityType>
   <EntityType Name="Studies">
     <Key>
       <PropertyRef Name="StudyID" />
     </Key>
     <Property Name="StudyID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="StudyDate" Type="datetime" Nullable="false" />
-    <Property Name="IsNextStudy" Type="bit" />
+    <Property Name="LastStudyDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="StudyDetails">
     <Key>
@@ -96,6 +96,7 @@
     <Property Name="StudyDetailID" Type="uniqueidentifier" Nullable="false" />
     <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
     <Property Name="StudyID" Type="uniqueidentifier" />
+    <Property Name="IsLastStudy" Type="bit" />
   </EntityType>
   <EntityType Name="UserLesson">
     <Key>
@@ -152,18 +153,6 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_StudyDetails_0">
-    <End Role="Studies" Type="SmartFlashCardDBModel.Store.Studies" Multiplicity="0..1" />
-    <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Studies">
-        <PropertyRef Name="StudyID" />
-      </Principal>
-      <Dependent Role="StudyDetails">
-        <PropertyRef Name="StudyID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_StudyDetails_1">
     <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
     <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
     <ReferentialConstraint>
@@ -172,6 +161,18 @@
       </Principal>
       <Dependent Role="StudyDetails">
         <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_1">
+    <End Role="Studies" Type="SmartFlashCardDBModel.Store.Studies" Multiplicity="0..1" />
+    <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Studies">
+        <PropertyRef Name="StudyID" />
+      </Principal>
+      <Dependent Role="StudyDetails">
+        <PropertyRef Name="StudyID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

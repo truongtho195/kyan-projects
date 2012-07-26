@@ -21,8 +21,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_BackSides_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "BackSide", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.BackSide), true)]
 [assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_1", "Card", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Card), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
 [assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_Lessons_0", "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FlashCard.Database.Category), "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.Lesson), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "StudyDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.StudyDetail), true)]
-[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "Study", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Study), "StudyDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.StudyDetail), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "Lesson", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Lesson), "StudyDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.StudyDetail), true)]
+[assembly: EdmRelationshipAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "Study", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FlashCard.Database.Study), "StudyDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FlashCard.Database.StudyDetail), true)]
 
 #endregion
 
@@ -105,22 +105,6 @@ namespace FlashCard.Database
             }
         }
         private ObjectSet<Category> _Categories;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Setup> Setups
-        {
-            get
-            {
-                if ((_Setups == null))
-                {
-                    _Setups = base.CreateObjectSet<Setup>("Setups");
-                }
-                return _Setups;
-            }
-        }
-        private ObjectSet<Setup> _Setups;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -217,6 +201,22 @@ namespace FlashCard.Database
             }
         }
         private ObjectSet<StudyDetail> _StudyDetails;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Setup> Setups
+        {
+            get
+            {
+                if ((_Setups == null))
+                {
+                    _Setups = base.CreateObjectSet<Setup>("Setups");
+                }
+                return _Setups;
+            }
+        }
+        private ObjectSet<Setup> _Setups;
 
         #endregion
         #region AddTo Methods
@@ -235,14 +235,6 @@ namespace FlashCard.Database
         public void AddToCategories(Category category)
         {
             base.AddObject("Categories", category);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToSetups(Setup setup)
-        {
-            base.AddObject("Setups", setup);
         }
     
         /// <summary>
@@ -291,6 +283,14 @@ namespace FlashCard.Database
         public void AddToStudyDetails(StudyDetail studyDetail)
         {
             base.AddObject("StudyDetails", studyDetail);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Setups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSetups(Setup setup)
+        {
+            base.AddObject("Setups", setup);
         }
 
         #endregion
@@ -1014,18 +1014,18 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "StudyDetail")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "StudyDetail")]
         public EntityCollection<StudyDetail> StudyDetails
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_1", "StudyDetail");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_0", "StudyDetail");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_1", "StudyDetail", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_0", "StudyDetail", value);
                 }
             }
         }
@@ -1279,6 +1279,30 @@ namespace FlashCard.Database
         private Nullable<global::System.Boolean> _IsShuffle;
         partial void OnIsShuffleChanging(Nullable<global::System.Boolean> value);
         partial void OnIsShuffleChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsOpenLastStudy
+        {
+            get
+            {
+                return _IsOpenLastStudy;
+            }
+            set
+            {
+                OnIsOpenLastStudyChanging(value);
+                ReportPropertyChanging("IsOpenLastStudy");
+                _IsOpenLastStudy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpenLastStudy");
+                OnIsOpenLastStudyChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsOpenLastStudy;
+        partial void OnIsOpenLastStudyChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsOpenLastStudyChanged();
 
         #endregion
     
@@ -1298,12 +1322,12 @@ namespace FlashCard.Database
         /// Create a new Study object.
         /// </summary>
         /// <param name="studyID">Initial value of the StudyID property.</param>
-        /// <param name="studyDate">Initial value of the StudyDate property.</param>
-        public static Study CreateStudy(global::System.Guid studyID, global::System.DateTime studyDate)
+        /// <param name="lastStudyDate">Initial value of the LastStudyDate property.</param>
+        public static Study CreateStudy(global::System.Guid studyID, global::System.DateTime lastStudyDate)
         {
             Study study = new Study();
             study.StudyID = studyID;
-            study.StudyDate = studyDate;
+            study.LastStudyDate = lastStudyDate;
             return study;
         }
 
@@ -1342,48 +1366,24 @@ namespace FlashCard.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime StudyDate
+        public global::System.DateTime LastStudyDate
         {
             get
             {
-                return _StudyDate;
+                return _LastStudyDate;
             }
             set
             {
-                OnStudyDateChanging(value);
-                ReportPropertyChanging("StudyDate");
-                _StudyDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("StudyDate");
-                OnStudyDateChanged();
+                OnLastStudyDateChanging(value);
+                ReportPropertyChanging("LastStudyDate");
+                _LastStudyDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastStudyDate");
+                OnLastStudyDateChanged();
             }
         }
-        private global::System.DateTime _StudyDate;
-        partial void OnStudyDateChanging(global::System.DateTime value);
-        partial void OnStudyDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> IsNextStudy
-        {
-            get
-            {
-                return _IsNextStudy;
-            }
-            set
-            {
-                OnIsNextStudyChanging(value);
-                ReportPropertyChanging("IsNextStudy");
-                _IsNextStudy = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsNextStudy");
-                OnIsNextStudyChanged();
-            }
-        }
-        private Nullable<global::System.Boolean> _IsNextStudy;
-        partial void OnIsNextStudyChanging(Nullable<global::System.Boolean> value);
-        partial void OnIsNextStudyChanged();
+        private global::System.DateTime _LastStudyDate;
+        partial void OnLastStudyDateChanging(global::System.DateTime value);
+        partial void OnLastStudyDateChanged();
 
         #endregion
     
@@ -1395,18 +1395,18 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "StudyDetail")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "StudyDetail")]
         public EntityCollection<StudyDetail> StudyDetails
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_0", "StudyDetail");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_1", "StudyDetail");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_0", "StudyDetail", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StudyDetail>("SmartFlashCardDBModel.FK_StudyDetails_1", "StudyDetail", value);
                 }
             }
         }
@@ -1512,6 +1512,30 @@ namespace FlashCard.Database
         private Nullable<global::System.Guid> _StudyID;
         partial void OnStudyIDChanging(Nullable<global::System.Guid> value);
         partial void OnStudyIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsLastStudy
+        {
+            get
+            {
+                return _IsLastStudy;
+            }
+            set
+            {
+                OnIsLastStudyChanging(value);
+                ReportPropertyChanging("IsLastStudy");
+                _IsLastStudy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsLastStudy");
+                OnIsLastStudyChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsLastStudy;
+        partial void OnIsLastStudyChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsLastStudyChanged();
 
         #endregion
     
@@ -1523,16 +1547,16 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "Lesson")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "Lesson")]
         public Lesson Lesson
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_1", "Lesson").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_0", "Lesson").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_1", "Lesson").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_0", "Lesson").Value = value;
             }
         }
         /// <summary>
@@ -1544,13 +1568,13 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_1", "Lesson");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_0", "Lesson");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_1", "Lesson", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Lesson>("SmartFlashCardDBModel.FK_StudyDetails_0", "Lesson", value);
                 }
             }
         }
@@ -1561,16 +1585,16 @@ namespace FlashCard.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_0", "Study")]
+        [EdmRelationshipNavigationPropertyAttribute("SmartFlashCardDBModel", "FK_StudyDetails_1", "Study")]
         public Study Study
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_0", "Study").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_1", "Study").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_0", "Study").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_1", "Study").Value = value;
             }
         }
         /// <summary>
@@ -1582,13 +1606,13 @@ namespace FlashCard.Database
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_0", "Study");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_1", "Study");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_0", "Study", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Study>("SmartFlashCardDBModel.FK_StudyDetails_1", "Study", value);
                 }
             }
         }

@@ -150,8 +150,6 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\M
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.read.0.tlog
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.write.0.tlog
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
@@ -180,3 +178,5 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.read.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.write.1.tlog

@@ -123,6 +123,7 @@ namespace FlashCard.Database
                 this.StudyDetail.StudyDetailID = this.StudyDetailID;
             this.StudyDetail.LessonID = this.LessonID;
             this.StudyDetail.StudyID = this.StudyID;
+            this.StudyDetail.IsLastStudy = this.IsLastStudy;
         }
 
         public void ToModel()
@@ -130,6 +131,7 @@ namespace FlashCard.Database
             this.StudyDetailID = this.StudyDetail.StudyDetailID;
             this.LessonID = this.StudyDetail.LessonID;
             this.StudyID = this.StudyDetail.StudyID;
+            this.IsLastStudy = this.StudyDetail.IsLastStudy;
         }
 
         #endregion
@@ -186,6 +188,24 @@ namespace FlashCard.Database
                     this.IsDirty = true;
                     this._studyID = value;
                     RaisePropertyChanged(() => StudyID);
+                }
+            }
+        }
+
+        protected Nullable<bool> _isLastStudy;
+        /// <summary>
+        /// Gets or sets the IsLastStudy.
+        /// </summary>
+        public Nullable<bool> IsLastStudy
+        {
+            get { return this._isLastStudy; }
+            set
+            {
+                if (this._isLastStudy != value)
+                {
+                    this.IsDirty = true;
+                    this._isLastStudy = value;
+                    RaisePropertyChanged(() => IsLastStudy);
                 }
             }
         }
