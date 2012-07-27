@@ -81,6 +81,7 @@
     <Property Name="IsEnableSoundForShow" Type="bit" />
     <Property Name="IsShuffle" Type="bit" />
     <Property Name="IsOpenLastStudy" Type="bit" />
+    <Property Name="SpeechWhenShow" Type="bit" />
   </EntityType>
   <EntityType Name="Studies">
     <Key>

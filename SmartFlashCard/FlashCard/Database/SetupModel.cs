@@ -144,6 +144,7 @@ namespace FlashCard.Database
             this.Setup.IsEnableSoundForShow = this.IsEnableSoundForShow;
             this.Setup.IsShuffle = this.IsShuffle;
             this.Setup.IsOpenLastStudy = this.IsOpenLastStudy;
+            this.Setup.SpeechWhenShow = this.SpeechWhenShow;
         }
 
         /// <summary>
@@ -162,6 +163,7 @@ namespace FlashCard.Database
             this.IsEnableSoundForShow = this.Setup.IsEnableSoundForShow;
             this.IsShuffle = this.Setup.IsShuffle;
             this.IsOpenLastStudy = this.Setup.IsOpenLastStudy;
+            this.SpeechWhenShow = this.Setup.SpeechWhenShow;
         }
 
         #endregion
@@ -354,6 +356,25 @@ namespace FlashCard.Database
                     this.IsDirty = true;
                     this._isOpenLastStudy = value;
                     RaisePropertyChanged(() => IsOpenLastStudy);
+                }
+            }
+        }
+
+        protected Nullable<bool> _speechWhenShow;
+        /// <summary>
+        ///Property Model
+        ///<para> Gets or sets the SpeechWhenShow.</para>
+        /// </summary>
+        public Nullable<bool> SpeechWhenShow
+        {
+            get { return this._speechWhenShow; }
+            set
+            {
+                if (this._speechWhenShow != value)
+                {
+                    this.IsDirty = true;
+                    this._speechWhenShow = value;
+                    RaisePropertyChanged(() => SpeechWhenShow);
                 }
             }
         }

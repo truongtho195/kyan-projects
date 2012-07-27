@@ -86,6 +86,7 @@
           <Property Name="IsEnableSoundForShow" Type="bit" />
           <Property Name="IsShuffle" Type="bit" />
           <Property Name="IsOpenLastStudy" Type="bit" />
+          <Property Name="SpeechWhenShow" Type="bit" />
         </EntityType>
         <EntityType Name="Studies">
           <Key>
@@ -378,6 +379,7 @@
           <Property Type="Boolean" Name="IsEnableSoundForShow" />
           <Property Type="Boolean" Name="IsShuffle" />
           <Property Type="Boolean" Name="IsOpenLastStudy" />
+          <Property Type="Boolean" Name="SpeechWhenShow" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -466,6 +468,7 @@
           <EntitySetMapping Name="Setups">
             <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
               <MappingFragment StoreEntitySet="Setups">
+                <ScalarProperty Name="SpeechWhenShow" ColumnName="SpeechWhenShow" />
                 <ScalarProperty Name="IsOpenLastStudy" ColumnName="IsOpenLastStudy" />
                 <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
                 <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
@@ -530,7 +533,7 @@
           <ConnectorPoint PointX="4.5" PointY="8.797841796875" />
           <ConnectorPoint PointX="5.25" PointY="8.797841796875" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="7.375" PointY="7.75" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Setup" Width="1.5" PointX="7.375" PointY="7.75" Height="2.7427376302083353" />
         </Diagram>
     </Diagrams>
   </Designer>

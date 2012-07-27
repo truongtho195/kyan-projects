@@ -82,6 +82,7 @@
     <EntitySetMapping Name="Setups">
       <EntityTypeMapping TypeName="SmartFlashCardDBModel.Setup">
         <MappingFragment StoreEntitySet="Setups">
+          <ScalarProperty Name="SpeechWhenShow" ColumnName="SpeechWhenShow" />
           <ScalarProperty Name="IsOpenLastStudy" ColumnName="IsOpenLastStudy" />
           <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
           <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />

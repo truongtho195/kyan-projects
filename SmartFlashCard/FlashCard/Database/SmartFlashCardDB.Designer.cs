@@ -1303,6 +1303,30 @@ namespace FlashCard.Database
         private Nullable<global::System.Boolean> _IsOpenLastStudy;
         partial void OnIsOpenLastStudyChanging(Nullable<global::System.Boolean> value);
         partial void OnIsOpenLastStudyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> SpeechWhenShow
+        {
+            get
+            {
+                return _SpeechWhenShow;
+            }
+            set
+            {
+                OnSpeechWhenShowChanging(value);
+                ReportPropertyChanging("SpeechWhenShow");
+                _SpeechWhenShow = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SpeechWhenShow");
+                OnSpeechWhenShowChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _SpeechWhenShow;
+        partial void OnSpeechWhenShowChanging(Nullable<global::System.Boolean> value);
+        partial void OnSpeechWhenShowChanged();
 
         #endregion
     
