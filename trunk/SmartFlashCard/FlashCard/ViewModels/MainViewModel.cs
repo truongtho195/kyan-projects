@@ -492,7 +492,7 @@ namespace FlashCard.ViewModels
         private void OnExitExecute(object param)
         {
             var msg = MessageBox.Show(ViewCore as Window, "Do you want to exit !", "Exit Flash Card", MessageBoxButton.YesNo);
-            if (msg.Equals(MessageBoxResult.OK))
+            if (msg.Equals(MessageBoxResult.Yes))
                 Application.Current.Shutdown();
         }
         #endregion
@@ -788,7 +788,17 @@ namespace FlashCard.ViewModels
             try
             {
                 log.Info("||{*} === Cancel Command Executed === ");
+                //Close & waiting for answer
+                if ("FullScreen".Equals(param.ToString()))
+                {
+                    _timerViewFullScreen.Stop();
+                }
+                else
+                {
+                    CloseTimerPopup();
+                }
                 var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
+
                 if (result.Equals(MessageBoxResult.Yes))
                 {
 
@@ -813,6 +823,13 @@ namespace FlashCard.ViewModels
                         App.LessonMangeView.Activate();
                         App.LessonMangeView.Show();
                     }
+                }
+                else
+                {
+                    if ("FullScreen".Equals(param.ToString()))
+                        _timerViewFullScreen.Start();
+                    else
+                        _timerPopup.Start();
                 }
             }
             catch (Exception ex)
@@ -870,7 +887,7 @@ namespace FlashCard.ViewModels
 
                         if (App.SetupModel.Setup.IsEnableSlideShow == true)
                         {
-                            PlayPauseBallonPopup(false);
+                            PlayPauseBallonPopup(true);
                         }
                         else
                         {
@@ -1246,6 +1263,8 @@ namespace FlashCard.ViewModels
                         //RaisePropertyChanged(() => SelectedLesson);
                         var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
                         TimerForClosePopup(timerSpan);
+                        if (App.SetupModel.SpeechWhenShow == true)
+                            TextToSpeechPlayer(SelectedLesson.LessonName);
                         log.DebugFormat("|| =================================\n");
                         log.DebugFormat("|| ==> Is Popup Showing");
                     }));
@@ -1327,6 +1346,9 @@ namespace FlashCard.ViewModels
                         SetLesson();
                         if (App.SetupModel.Setup.IsEnableSoundForShow == true)
                             _soundForShow.PlaySync();
+
+                        if (App.SetupModel.SpeechWhenShow == true)
+                            TextToSpeechPlayer(SelectedLesson.LessonName);
                     }));
             }
             catch (Exception ex)
@@ -1377,7 +1399,6 @@ namespace FlashCard.ViewModels
 
                 if (!isOtherFormShow)
                 {
-                    var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
                     CloseTimerPopup();
                 }
                 log.DebugFormat("|| ==> Timer will be \"Started \" ");
@@ -1453,6 +1474,7 @@ namespace FlashCard.ViewModels
             _soundForShow.Dispose();
             _timerPopup = null;
             _timerViewFullScreen = null;
+
         }
     }
 }

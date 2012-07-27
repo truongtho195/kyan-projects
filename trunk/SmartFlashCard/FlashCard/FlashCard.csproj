@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Database\ModelTemplate.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <SubType>Code</SubType>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>

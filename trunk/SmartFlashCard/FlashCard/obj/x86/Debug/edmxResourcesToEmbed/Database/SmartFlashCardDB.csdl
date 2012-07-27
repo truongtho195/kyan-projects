@@ -193,5 +193,6 @@
     <Property Type="Boolean" Name="IsEnableSoundForShow" />
     <Property Type="Boolean" Name="IsShuffle" />
     <Property Type="Boolean" Name="IsOpenLastStudy" />
+    <Property Type="Boolean" Name="SpeechWhenShow" />
   </EntityType>
 </Schema>
