@@ -278,7 +278,9 @@
           <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="Lesson" ToRole="StudyDetail" />
         </EntityType>
         <Association Name="FK_BackSides_0">
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Lesson">
@@ -290,8 +292,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Lessons_1">
-          <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" />
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
+          <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" ></End>
           <ReferentialConstraint>
             <Principal Role="Card">
               <PropertyRef Name="CardID" />
@@ -333,8 +337,10 @@
           <NavigationProperty Name="Study" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetail" ToRole="Study" />
         </EntityType>
         <Association Name="FK_StudyDetails_0">
-          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
-          <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
+          <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" ></End>
           <ReferentialConstraint>
             <Principal Role="Lesson">
               <PropertyRef Name="LessonID" />
@@ -345,7 +351,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudyDetails_1">
-          <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1" />
+          <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Study">
@@ -492,23 +500,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="SmartFlashCardDB">
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Card" Width="1.5" PointX="0.75" PointY="1.375" Height="1.5923063151041674" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="3.125" PointY="0.5" Height="1.5923063151041665" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Card" Width="1.5" PointX="0.5" PointY="2.25" Height="1.5923063151041674" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="2.625" PointY="0.5" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.UserLesson" Width="1.5" PointX="9.75" PointY="4.375" Height="1.4279589843750031" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7566536458333388" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="7.125" PointY="0.625" Height="1.9210009765625" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="2.375" Height="2.4140429687500031" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSides_0" >
-          <ConnectorPoint PointX="4.5" PointY="2.5862939453125" />
-          <ConnectorPoint PointX="7.125" PointY="2.5862939453125" />
+          <ConnectorPoint PointX="4.5" PointY="3.1012089667968752" />
+          <ConnectorPoint PointX="8.46875" PointY="3.1012089667968752" />
+          <ConnectorPoint PointX="8.46875" PointY="2.5460009765625" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_1" >
-          <ConnectorPoint PointX="2.25" PointY="2.7689925130208337" />
-          <ConnectorPoint PointX="3" PointY="2.7689925130208337" />
+          <ConnectorPoint PointX="2" PointY="3.1086531575520837" />
+          <ConnectorPoint PointX="3" PointY="3.1086531575520837" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_0" >
-          <ConnectorPoint PointX="3.8125" PointY="2.287985026041667" />
-          <ConnectorPoint PointX="3.8125" PointY="2.375" />
+          <ConnectorPoint PointX="3.5625" PointY="2.0923063151041665" />
+          <ConnectorPoint PointX="3.5625" PointY="2.375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Study" Width="1.5" PointX="3" PointY="8" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.StudyDetail" Width="1.5" PointX="5.25" PointY="7.625" Height="2.1725878906250031" />

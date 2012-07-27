@@ -93,7 +93,9 @@
     <NavigationProperty Name="StudyDetails" Relationship="SmartFlashCardDBModel.FK_StudyDetails_0" FromRole="Lesson" ToRole="StudyDetail" />
   </EntityType>
   <Association Name="FK_BackSides_0">
-    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Type="SmartFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Lesson">
@@ -105,7 +107,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Lessons_1">
-    <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.Card" Role="Card" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Card">
@@ -148,7 +152,9 @@
     <NavigationProperty Name="Study" Relationship="SmartFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetail" ToRole="Study" />
   </EntityType>
   <Association Name="FK_StudyDetails_0">
-    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Lesson">
@@ -160,7 +166,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_StudyDetails_1">
-    <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1" />
+    <End Type="SmartFlashCardDBModel.Study" Role="Study" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Type="SmartFlashCardDBModel.StudyDetail" Role="StudyDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Study">
