@@ -65,7 +65,6 @@ namespace FlashCard
             //var file = @"E:\Desktop\Sorable.fcard";
             try
             {
-
                 var file = e.Args.FirstOrDefault().ToString();
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
