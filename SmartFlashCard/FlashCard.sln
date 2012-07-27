@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplicationFramework", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToText", "ConvertToText\ConvertToText.csproj", "{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlashCard.Deloyment", "FlashCard.Deloyment", "{3C6C226C-C55D-4723-8301-869FD5C14402}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlashCard.App", "FlashCard.App", "{EF21B811-A1C3-4704-A241-8482B9628A06}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SmartFlashCard", "SmartFlashCard\SmartFlashCard.vdproj", "{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FlashCard.vsmdi
@@ -157,6 +163,21 @@ Global
 		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|Mixed Platforms.Build.0 = Release|x86
 		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|x86.ActiveCfg = Release|x86
 		{74B9A4AF-640F-4DFB-8B55-BD53B076BE86}.Release|x86.Build.0 = Release|x86
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Debug|Any CPU.ActiveCfg = Debug
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Debug|x86.ActiveCfg = Debug
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Full|Any CPU.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Full|Mixed Platforms.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Full|x86.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Incremental|Any CPU.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Incremental|Mixed Platforms.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Incremental|x86.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.JustRun|Any CPU.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.JustRun|Mixed Platforms.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.JustRun|x86.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Release|Any CPU.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Release|Mixed Platforms.ActiveCfg = Release
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,5 +186,7 @@ Global
 		{7AC63864-7638-41C4-969C-D3197EF2BED9} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
 		{92A71D19-F6AE-47CC-9E23-D65BCBB03F8A} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
 		{27B67DFE-0BF1-4435-B036-E4C083EAEA03} = {2C70907B-92F6-4E6F-A318-974324EED0B1}
+		{69B02B2A-E853-40C9-8FE9-5F5033A60ABC} = {3C6C226C-C55D-4723-8301-869FD5C14402}
+		{12E8717A-F3D1-4830-B3B9-C4141376D6A0} = {EF21B811-A1C3-4704-A241-8482B9628A06}
 	EndGlobalSection
 EndGlobal
