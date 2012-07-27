@@ -8,7 +8,7 @@
              VerticalContentAlignment="Stretch"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              Height="520"
-             Width="778">
+             Width="778" FontSize="12">
     <UserControl.Resources>
         <Style TargetType="{x:Type ListViewItem}"
                x:Key="ListViewItemCardStyle">

@@ -15,7 +15,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent" FontSize="12">
     <Window.Resources>
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <converter:ValueToVisibilityConverter x:Key="valueToVisibilityConverter" />
@@ -353,7 +353,7 @@
         				<Border Background="{DynamicResource bgColor1}"
         					BorderBrush="#00000000"
         					BorderThickness="0.5"
-        					Margin="20,1,2,0">
+        					Margin="0,1,2,0">
         					<StackPanel x:Name="stkControl"
         						Orientation="Horizontal"
         						Height="21.277"
@@ -499,7 +499,6 @@
         						VerticalContentAlignment="Center"
         						IsSynchronizedWithCurrentItem="False"
         						Foreground="White"
-        						FontWeight="Bold"
         						Style="{DynamicResource DataGridStyle}"
         						Grid.ColumnSpan="3"
         						BorderThickness="1" CellStyle="{DynamicResource DataGridCellStyle}">
@@ -516,6 +515,7 @@
         											Height="25"
         											Background="Transparent"
         											BorderThickness="1"
+													  FontWeight="Bold"
         											Foreground="Black"
         											BorderBrush="#FF7F9DB9" />
         										<DataTemplate.Triggers>
@@ -538,8 +538,10 @@
         								<DataGridTemplateColumn.CellTemplate>
         									<DataTemplate>
         										<TextBlock x:Name="tbBackSideName"
+													Margin="5,3,0,0"
         											Text="{Binding BackSideName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
         											HorizontalAlignment="Stretch"
+													  FontWeight="Bold"
         											VerticalAlignment="Top"
         											Foreground="Black"
         											Height="25" />
@@ -558,6 +560,8 @@
         											Height="60"
         											Foreground="Black"
         											Background="Transparent"
+													
+													VerticalAlignment="Stretch"
         											HorizontalAlignment="Stretch" />
         										<DataTemplate.Triggers>
         											<Trigger SourceName="txtContent"
@@ -573,10 +577,11 @@
         								<DataGridTemplateColumn.CellTemplate>
         									<DataTemplate>
         										<TextBlock x:Name="tbContent"
-        											Text="{Binding Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+													      											Text="{Binding Content, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
         											TextWrapping="Wrap"
         											Foreground="Black"
-        											Height="60"
+        											Height="57"
+													Margin="5,3,0,0"
         											HorizontalAlignment="Stretch" />
         									</DataTemplate>
         								</DataGridTemplateColumn.CellTemplate>
@@ -767,7 +772,7 @@
         				</Grid.RowDefinitions>
         				<Border Background="#FFAACCFB"
         					BorderBrush="#00000000"
-        					BorderThickness="0.5" Margin="20,0,0,0">
+        					BorderThickness="0.5" Margin="0">
         					<StackPanel x:Name="stkControl1"
         						Orientation="Horizontal"
         						Height="21.277"

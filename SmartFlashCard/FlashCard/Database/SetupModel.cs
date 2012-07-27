@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.Setup = setup;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
@@ -45,7 +46,8 @@ namespace FlashCard.Database
 
         protected bool _isNew;
         /// <summary>
-        /// Gets or sets the IsNew
+        /// Property Base
+        /// <para> Gets or sets the IsNew </para>
         /// </summary>
         public bool IsNew
         {
@@ -62,7 +64,8 @@ namespace FlashCard.Database
 
         protected bool _isDirty;
         /// <summary>
-        /// Gets or sets the IsDirty
+        /// Property Base
+        /// <para>Gets or sets the IsDirty</para>
         /// </summary>
         public bool IsDirty
         {
@@ -79,7 +82,8 @@ namespace FlashCard.Database
 
         protected bool _isDeleted;
         /// <summary>
-        /// Gets or sets the IsDeleted
+        /// Property Base
+        ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
         public bool IsDeleted
         {
@@ -96,7 +100,8 @@ namespace FlashCard.Database
 
         protected bool _isChecked;
         /// <summary>
-        /// Gets or sets the IsChecked
+        /// Property Base
+        ///<para> Gets or sets the IsChecked</para>
         /// </summary>
         public bool IsChecked
         {
@@ -111,12 +116,21 @@ namespace FlashCard.Database
             }
         }
 
+        
+        /// <summary>
+        ///<para>Public Method</para>
+        /// Method for set IsNew & IsDirty = false;
+        /// </summary>
         public void EndUpdate()
         {
             this.IsNew = false;
             this.IsDirty = false;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set PropertyModel to Entity</para>
+        /// </summary>
         public void ToEntity()
         {
             if (IsNew)
@@ -132,6 +146,10 @@ namespace FlashCard.Database
             this.Setup.IsOpenLastStudy = this.IsOpenLastStudy;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set Entity to PropertyModel</para>
+        /// </summary
         public void ToModel()
         {
             this.SetupID = this.Setup.SetupID;
@@ -152,7 +170,8 @@ namespace FlashCard.Database
 
         protected string _setupID;
         /// <summary>
-        /// Gets or sets the SetupID.
+        ///Property Model
+        ///<para> Gets or sets the SetupID.</para>
         /// </summary>
         public string SetupID
         {
@@ -170,7 +189,8 @@ namespace FlashCard.Database
 
         protected int _viewTimeSecond;
         /// <summary>
-        /// Gets or sets the ViewTimeSecond.
+        ///Property Model
+        ///<para> Gets or sets the ViewTimeSecond.</para>
         /// </summary>
         public int ViewTimeSecond
         {
@@ -188,7 +208,8 @@ namespace FlashCard.Database
 
         protected int _distanceTimeSecond;
         /// <summary>
-        /// Gets or sets the DistanceTimeSecond.
+        ///Property Model
+        ///<para> Gets or sets the DistanceTimeSecond.</para>
         /// </summary>
         public int DistanceTimeSecond
         {
@@ -206,7 +227,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isLimitCard;
         /// <summary>
-        /// Gets or sets the IsLimitCard.
+        ///Property Model
+        ///<para> Gets or sets the IsLimitCard.</para>
         /// </summary>
         public Nullable<bool> IsLimitCard
         {
@@ -224,7 +246,8 @@ namespace FlashCard.Database
 
         protected Nullable<int> _limitCardNum;
         /// <summary>
-        /// Gets or sets the LimitCardNum.
+        ///Property Model
+        ///<para> Gets or sets the LimitCardNum.</para>
         /// </summary>
         public Nullable<int> LimitCardNum
         {
@@ -242,7 +265,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isEnableSlideShow;
         /// <summary>
-        /// Gets or sets the IsEnableSlideShow.
+        ///Property Model
+        ///<para> Gets or sets the IsEnableSlideShow.</para>
         /// </summary>
         public Nullable<bool> IsEnableSlideShow
         {
@@ -260,7 +284,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isEnableLoop;
         /// <summary>
-        /// Gets or sets the IsEnableLoop.
+        ///Property Model
+        ///<para> Gets or sets the IsEnableLoop.</para>
         /// </summary>
         public Nullable<bool> IsEnableLoop
         {
@@ -278,7 +303,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isEnableSoundForShow;
         /// <summary>
-        /// Gets or sets the IsEnableSoundForShow.
+        ///Property Model
+        ///<para> Gets or sets the IsEnableSoundForShow.</para>
         /// </summary>
         public Nullable<bool> IsEnableSoundForShow
         {
@@ -296,7 +322,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isShuffle;
         /// <summary>
-        /// Gets or sets the IsShuffle.
+        ///Property Model
+        ///<para> Gets or sets the IsShuffle.</para>
         /// </summary>
         public Nullable<bool> IsShuffle
         {
@@ -314,7 +341,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isOpenLastStudy;
         /// <summary>
-        /// Gets or sets the IsOpenLastStudy.
+        ///Property Model
+        ///<para> Gets or sets the IsOpenLastStudy.</para>
         /// </summary>
         public Nullable<bool> IsOpenLastStudy
         {
