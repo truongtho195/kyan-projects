@@ -1394,7 +1394,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-       
         #endregion
     }
 }
