@@ -634,7 +634,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SmartFlashCard"
         "ProductCode" = "8:{2F15FBFD-F835-4D0C-9F08-A5052DAF7EA9}"
-        "PackageCode" = "8:{BFBB3773-BDED-4E0B-98F1-305B5AC05880}"
+        "PackageCode" = "8:{F416E3BC-AD4D-431F-8C10-668D8C018894}"
         "UpgradeCode" = "8:{461060DD-3859-43C1-B0C8-585C5F2F3863}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
