@@ -124,32 +124,6 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\D
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\FlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-CN\MVVMHelper.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.xml
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\de\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\en\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\es\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\it\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\ResolveAssemblyReference.cache
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.resources
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.vi.resources
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.zh-CN.resources
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\vi\MVVMHelper.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
@@ -178,5 +152,31 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\MVVMHelper.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\vi\MVVMHelper.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-CN\MVVMHelper.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\WpfApplicationFramework.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\System.Windows.Interactivity.xml
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\de\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\en\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\es\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\it\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\ResolveAssemblyReference.cache
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.vi.resources
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.Properties.Resources.zh-CN.resources
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.read.1.tlog
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\GenerateResource.write.1.tlog
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\vi\MVVMHelper.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\zh-CN\MVVMHelper.resources.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.dll
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\MVVMHelper\obj\Debug\MVVMHelper.pdb

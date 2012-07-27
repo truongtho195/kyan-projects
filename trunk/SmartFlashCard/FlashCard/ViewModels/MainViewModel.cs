@@ -805,7 +805,6 @@ namespace FlashCard.ViewModels
                     if ("FullScreen".Equals(param.ToString()))
                     {
                         _timerViewFullScreen.Stop();
-                        _timerViewFullScreen = null;
                         _learnView.Close();
                     }
                     else
@@ -816,7 +815,6 @@ namespace FlashCard.ViewModels
                     }
                     IsPopupStarted = false;
                     ViewCore.MyNotifyIcon.Dispose();
-                    ViewCore.MyNotifyIcon = null;
                     GC.SuppressFinalize(this);
                     if (App.LessonMangeView != null)
                     {
