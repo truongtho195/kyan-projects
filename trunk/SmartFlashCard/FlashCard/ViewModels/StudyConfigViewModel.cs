@@ -125,6 +125,7 @@ namespace FlashCard.ViewModels
                 if (_selectedSetupModel != value)
                 {
                     _selectedSetupModel = value;
+                    _selectedSetupModel.ToModel();
                     RaisePropertyChanged(() => SelectedSetupModel);
                 }
             }
