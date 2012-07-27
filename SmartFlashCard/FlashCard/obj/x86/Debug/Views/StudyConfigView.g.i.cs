@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 
 using AttachedCommandBehavior;
+using Microsoft.Windows.Themes;
 using System;
 using System.Diagnostics;
 using System.Windows;
