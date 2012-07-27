@@ -308,46 +308,53 @@ namespace FlashCard.ViewModels
 
         private void ChangeSideExecute(object param)
         {
-            log.Info("||{*} === Change Side Command Executed === ");
-            SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
-
-
-            Storyboard sbChangeSide;
-            if ("Popup".Equals(param.ToString()))
+            try
             {
-                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                log.Info("||{*} === Change Side Command Executed === ");
+                SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
+
+
+                Storyboard sbChangeSide;
+                if ("Popup".Equals(param.ToString()))
                 {
-                    var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon;
+                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon;
 
-                    if (SelectedLesson.IsBackSide)
-                        sbChangeSide = (Storyboard)control.FindResource("sbChangeToBack");
-                    else
-                        sbChangeSide = (Storyboard)control.FindResource("sbChangeToFront");
+                        if (SelectedLesson.IsBackSide)
+                            sbChangeSide = (Storyboard)control.FindResource("sbChangeToBack");
+                        else
+                            sbChangeSide = (Storyboard)control.FindResource("sbChangeToFront");
 
-                    sbChangeSide.Begin();
-                }));
+                        sbChangeSide.Begin();
+                    }));
 
-            }
-            else
-            {
-                //if (SelectedLesson.IsBackSide)
-                //{
-                //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
-                //}
-                //else
-                //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
-                //_learnView.BeginStoryboard(sbChangeSide);
-
-                if (App.SetupModel.Setup.IsEnableSlideShow == true)
-                {
-                    DispatcherTimer stopChangeLesson = new DispatcherTimer();
-                    stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 2);
-                    stopChangeLesson.Tick += new EventHandler(waitUserClick_Tick);
-                    _timerViewFullScreen.Stop();
-                    stopChangeLesson.Start();
                 }
+                else
+                {
+                    //if (SelectedLesson.IsBackSide)
+                    //{
+                    //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToBackSide");
+                    //}
+                    //else
+                    //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
+                    //_learnView.BeginStoryboard(sbChangeSide);
+
+                    if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                    {
+                        DispatcherTimer stopChangeLesson = new DispatcherTimer();
+                        stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 2);
+                        stopChangeLesson.Tick += new EventHandler(waitUserClick_Tick);
+                        _timerViewFullScreen.Stop();
+                        stopChangeLesson.Start();
+                    }
+                }
+                IsCurrentBackSide = SelectedLesson.IsBackSide;
             }
-            IsCurrentBackSide = SelectedLesson.IsBackSide;
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         #endregion
@@ -375,16 +382,23 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseEnterExecute(object param)
         {
-            var action = new Action(() =>
+            try
             {
-                log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
-                if (ViewCore.MyNotifyIcon.IsPopupOpen)
-                {
-                    _waitForClose.Stop();
-                    _timerPopup.Stop();
-                }
-            });
-            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+                var action = new Action(() =>
+                    {
+                        log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
+                        if (ViewCore.MyNotifyIcon.IsPopupOpen)
+                        {
+                            _waitForClose.Stop();
+                            _timerPopup.Stop();
+                        }
+                    });
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
         #endregion
 
@@ -414,33 +428,37 @@ namespace FlashCard.ViewModels
 
         private void FancyBallonMouseLeaveExecute(object param)
         {
-            log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
-
-            //IsPopupStarted== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
-            // IsPopupStarted know user not click on button fullScreen
-            if (!IsOtherFormShow && this.IsPopupStarted == true )
+            try
             {
-                if (!IsHidePopupCommandRaise)
+                log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
+                //IsPopupStarted== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
+                // IsPopupStarted know user not click on button fullScreen
+                if (!IsOtherFormShow && this.IsPopupStarted == true)
                 {
-                    var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeLeave") as Storyboard;
-                    storyBoard.Begin();
+                    if (!IsHidePopupCommandRaise)
+                    {
+                        var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeLeave") as Storyboard;
+                        storyBoard.Begin();
+                    }
+                    _swCountTimerTick.Stop();
+                    int time = 0;
+                    if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
+                        time = App.SetupModel.Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
+                    else
+                        time = 2;
+                    var timerSpan = new TimeSpan(0, 0, 0, time);
+                    TimerForClosePopup(timerSpan);
+                    _swCountTimerTick.Reset();
+                    //Create timer popup cause When Mouse Enter _timerPopup is Stoped
+                    if (_timerPopup != null)
+                        _timerPopup.Start();
                 }
-                _swCountTimerTick.Stop();
-                int time = 0;
-                if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
-                    time = App.SetupModel.Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
-                else
-                    time = 2;
-                var timerSpan = new TimeSpan(0, 0, 0, time);
-                TimerForClosePopup(timerSpan);
-                _swCountTimerTick.Reset();
-                //Create timer popup cause When Mouse Enter _timerPopup is Stoped
-                if (_timerPopup != null)
-                    _timerPopup.Start();
+                IsHidePopupCommandRaise = false;
             }
-            
-
-            IsHidePopupCommandRaise = false;
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
         #endregion
 
@@ -473,7 +491,9 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnExitExecute(object param)
         {
-            Application.Current.Shutdown();
+            var msg = MessageBox.Show(ViewCore as Window, "Do you want to exit !", "Exit Flash Card", MessageBoxButton.YesNo);
+            if (msg.Equals(MessageBoxResult.OK))
+                Application.Current.Shutdown();
         }
         #endregion
 
@@ -508,24 +528,31 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnPlayPauseExecute(object param)
         {
-            log.Info("||{*} === Play Pause Command Executed === ");
-            if (App.SetupModel.Setup.IsEnableSlideShow == true)
+            try
             {
-                if ("FullScreen".Equals(param.ToString()))
+                log.Info("||{*} === Play Pause Command Executed === ");
+                if (App.SetupModel.Setup.IsEnableSlideShow == true)
                 {
-                    if (_timerViewFullScreen.IsEnabled)
+                    if ("FullScreen".Equals(param.ToString()))
                     {
-                        IsFullScreenStarted = false;
-                        _timerViewFullScreen.Stop();
+                        if (_timerViewFullScreen.IsEnabled)
+                        {
+                            IsFullScreenStarted = false;
+                            _timerViewFullScreen.Stop();
+                        }
+                        else
+                        {
+                            IsFullScreenStarted = true;
+                            _timerViewFullScreen.Start();
+                        }
                     }
                     else
-                    {
-                        IsFullScreenStarted = true;
-                        _timerViewFullScreen.Start();
-                    }
+                        PlayPauseBallonPopup(false);
                 }
-                else
-                    PlayPauseBallonPopup(false);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
             }
         }
 
@@ -586,7 +613,6 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
                 delegate
                 {
@@ -613,8 +639,7 @@ namespace FlashCard.ViewModels
             }
             catch (Exception ex)
             {
-                if (log.IsDebugEnabled)
-                    MessageBox.Show(ViewCore as Window, ex.ToString());
+                log.Error(ex);
             }
         }
 
@@ -625,8 +650,6 @@ namespace FlashCard.ViewModels
             CanListen = true;
             CommandManager.InvalidateRequerySuggested();
         }
-
-
         #endregion
 
         #region"  HiddenPopupCommand"
@@ -652,10 +675,22 @@ namespace FlashCard.ViewModels
 
         private void HiddenPopupExecute(object param)
         {
-            log.Info("||{*} === Hidden Popup Command Executed === ");
-            IsHidePopupCommandRaise = true;
-            ViewCore.MyNotifyIcon.CloseBalloon();
-            log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
+            try
+            {
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    log.Info("||{*} === Hidden Popup Command Executed === ");
+                    IsHidePopupCommandRaise = true;
+                    ViewCore.MyNotifyIcon.CloseBalloon();
+                    log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
+                }));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
+
         }
         #endregion
 
@@ -700,21 +735,29 @@ namespace FlashCard.ViewModels
         /// 
         private void OnNextBackLessonExecute(object param)
         {
-            log.Info("||{*} === Next Back Command Executed === ");
-            if (App.SetupModel.Setup.IsEnableSlideShow == true)
-                return;
-            if ("Back".Equals(param.ToString()))
+            try
             {
-                if (_currentItemIndex != 0)
-                    _currentItemIndex--;
-            }
-            else
-            {
-                if (_currentItemIndex < LessonCollection.Count() - 1)
-                    _currentItemIndex++;
+                log.Info("||{*} === Next Back Command Executed === ");
+                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                    return;
+                if ("Back".Equals(param.ToString()))
+                {
+                    if (_currentItemIndex != 0)
+                        _currentItemIndex--;
+                }
+                else
+                {
+                    if (_currentItemIndex < LessonCollection.Count() - 1)
+                        _currentItemIndex++;
 
+                }
+                SetLesson(false);
             }
-            SetLesson(false);
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                throw;
+            }
 
         }
         #endregion
@@ -742,32 +785,39 @@ namespace FlashCard.ViewModels
 
         private void CancelExecute(object param)
         {
-            log.Info("||{*} === Cancel Command Executed === ");
-            var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
-            if (result.Equals(MessageBoxResult.Yes))
+            try
             {
+                log.Info("||{*} === Cancel Command Executed === ");
+                var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
+                if (result.Equals(MessageBoxResult.Yes))
+                {
 
-                if ("FullScreen".Equals(param.ToString()))
-                {
-                    _timerViewFullScreen.Stop();
-                    _timerViewFullScreen = null;
-                    _learnView.Close();
+                    if ("FullScreen".Equals(param.ToString()))
+                    {
+                        _timerViewFullScreen.Stop();
+                        _timerViewFullScreen = null;
+                        _learnView.Close();
+                    }
+                    else
+                    {
+                        CloseTimerPopup();
+                        _timerPopup = null;
+                        _waitForClose = null;
+                    }
+                    IsPopupStarted = false;
+                    ViewCore.MyNotifyIcon.Dispose();
+                    ViewCore.MyNotifyIcon = null;
+                    GC.SuppressFinalize(this);
+                    if (App.LessonMangeView != null)
+                    {
+                        App.LessonMangeView.Activate();
+                        App.LessonMangeView.Show();
+                    }
                 }
-                else
-                {
-                    CloseTimerPopup();
-                    _timerPopup = null;
-                    _waitForClose = null;
-                }
-                IsPopupStarted = false;
-                ViewCore.MyNotifyIcon.Dispose();
-                ViewCore.MyNotifyIcon = null;
-                GC.SuppressFinalize(this);
-                if (App.LessonMangeView != null)
-                {
-                    App.LessonMangeView.Activate();
-                    App.LessonMangeView.Show();
-                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
             }
         }
         #endregion
@@ -802,33 +852,38 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCloseExecute()
         {
-            log.Info("||{*} === Close Command Executed === ");
-            MessageBoxResult messageBoxResult = MessageBox.Show(ViewCore as Window, "Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (messageBoxResult.Equals(MessageBoxResult.Yes))
+            try
             {
-                //Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
-                //sb.Completed += new EventHandler(sb_Completed);
-                //_learnView.BeginStoryboard(sb);
-                if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
+                log.Info("||{*} === Close Command Executed === ");
+                MessageBoxResult messageBoxResult = MessageBox.Show(ViewCore as Window, "Do you want to exit fullscreen ? ", "Question.", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (messageBoxResult.Equals(MessageBoxResult.Yes))
                 {
-                    _timerViewFullScreen.Stop();
-                    IsFullScreenStarted = false;
-                    _learnView.Close();
-                    _learnView = null;
+                    //Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
+                    //sb.Completed += new EventHandler(sb_Completed);
+                    //_learnView.BeginStoryboard(sb);
+                    if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
+                    {
+                        _timerViewFullScreen.Stop();
+                        IsFullScreenStarted = false;
+                        _learnView.Close();
+                        _learnView = null;
 
-                    if (App.SetupModel.Setup.IsEnableSlideShow == true)
-                    {
-                        PlayPauseBallonPopup(false);
-                    }
-                    else
-                    {
-                        ShowPopupForm();
+                        if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                        {
+                            PlayPauseBallonPopup(false);
+                        }
+                        else
+                        {
+                            ShowPopupForm();
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
-
-
         #endregion
 
         #region "  Full Screen Command"
@@ -860,22 +915,29 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnFullScreenExecute(object param)
         {
-            log.Info("|| {*} === Full Screen Call ===");
-            //HiddenPopupExecute(null);
-            CloseTimerPopup();
-            //PlayPauseBallonPopup(true);
-            if (_learnView == null)
-                _learnView = new LearnView();
-            _learnView.DataContext = this;
-            if (App.SetupModel.Setup.IsEnableSlideShow == true)
-                StartLessonFullScreen();
-            else
-                SetLesson();
+            try
+            {
+                log.Info("|| {*} === Full Screen Call ===");
+                //HiddenPopupExecute(null);
+                CloseTimerPopup();
+                //PlayPauseBallonPopup(true);
+                if (_learnView == null)
+                    _learnView = new LearnView();
+                _learnView.DataContext = this;
+                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                    StartLessonFullScreen();
+                else
+                    SetLesson();
 
-            //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
-            //_learnView.BeginStoryboard(sb);
-            _learnView.Activate();
-            _learnView.Show();
+                //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
+                //_learnView.BeginStoryboard(sb);
+                _learnView.Activate();
+                _learnView.Show();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
         #endregion
 
@@ -910,23 +972,30 @@ namespace FlashCard.ViewModels
         bool StatusAfterHidden = false;
         private void OnMiniFullScreenExecute(object param)
         {
-            StatusAfterHidden = _timerViewFullScreen != null ? this._timerViewFullScreen.IsEnabled : false;
-            log.Info("|| {*} === Mini Full Screen Execute Call ===");
-            log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
-            if ("Minimized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
+            try
             {
-                this._timerViewFullScreen.Stop();
-                IsCurrentStarted = false;
-                log.Debug("|| ==> FullScreen is Stoped!");
+                StatusAfterHidden = _timerViewFullScreen != null ? this._timerViewFullScreen.IsEnabled : false;
+                log.Info("|| {*} === Mini Full Screen Execute Call ===");
+                log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
+                if ("Minimized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
+                {
+                    this._timerViewFullScreen.Stop();
+                    IsCurrentStarted = false;
+                    log.Debug("|| ==> FullScreen is Stoped!");
+                }
+                else if (this._timerViewFullScreen != null && !this._timerViewFullScreen.IsEnabled)
+                {
+                    if (StatusAfterHidden)
+                        this._timerViewFullScreen.Start();
+                    IsCurrentStarted = true;
+                    log.Debug("|| ==> FullScreen is Started!");
+                }
+                log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
             }
-            else if (this._timerViewFullScreen != null && !this._timerViewFullScreen.IsEnabled)
+            catch (Exception ex)
             {
-                if (StatusAfterHidden)
-                    this._timerViewFullScreen.Start();
-                IsCurrentStarted = true;
-                log.Debug("|| ==> FullScreen is Started!");
+                log.Error(ex);
             }
-            log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
 
         }
         #endregion
@@ -998,17 +1067,24 @@ namespace FlashCard.ViewModels
         /// </summary>
         public void ExcuteMainForm()
         {
-            TextToSpeechPlayer("Welcome to Flash Card");
-            IsPopupStarted = true;
-            if (App.SetupModel.Setup.IsEnableSlideShow == true)
+            try
             {
-                InitialTimer();
-                _timerPopup.Start();
+                TextToSpeechPlayer("Welcome to Flash Card");
+                IsPopupStarted = true;
+                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                {
+                    InitialTimer();
+                    _timerPopup.Start();
+                }
+                else
+                {
+                    SetLesson();
+                    ShowPopupForm();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SetLesson();
-                ShowPopupForm();
+                log.Error(ex);
             }
         }
 
@@ -1032,28 +1108,35 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void SetLesson(bool isLoop = true)
         {
-            var LimitCardNum = LessonCollection.Count;
-            if (App.SetupModel.Setup.IsLimitCard == true)
+            try
             {
-                if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
-                    LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
-            }
+                var LimitCardNum = LessonCollection.Count;
+                if (App.SetupModel.Setup.IsLimitCard == true)
+                {
+                    if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
+                        LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
+                }
 
-            if (isLoop)
+                if (isLoop)
+                {
+                    if (_currentItemIndex < LimitCardNum - 1)
+                        _currentItemIndex++;
+                    else
+                        _currentItemIndex = 0;
+                }
+
+                SelectedLesson = LessonCollection[_currentItemIndex];
+                SelectedLesson.IsBackSide = false;  //    IsCurrentBackSide;
+                RaisePropertyChanged(() => SelectedLesson);
+                SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
+
+                log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
+                GC.Collect();
+            }
+            catch (Exception ex)
             {
-                if (_currentItemIndex < LimitCardNum - 1)
-                    _currentItemIndex++;
-                else
-                    _currentItemIndex = 0;
+                log.Error(ex);
             }
-
-            SelectedLesson = LessonCollection[_currentItemIndex];
-            SelectedLesson.IsBackSide = false;  //    IsCurrentBackSide;
-            RaisePropertyChanged(() => SelectedLesson);
-            SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
-
-            log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
-            GC.Collect();
         }
         /// <summary>
         /// Public method call from another form
@@ -1066,27 +1149,34 @@ namespace FlashCard.ViewModels
         /// <param name="TextForSpeech"></param>
         private void TextToSpeechPlayer(string TextForSpeech)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Send, new Action(
-                delegate
-                {
-                    if (CheckConnectionInternet.IsConnectedToInternet())
-                    {
-                        log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
-                        if (_listenWord == null)
-                            _listenWord = new MediaPlayer();
+            try
+            {
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
+                   delegate
+                   {
+                       if (CheckConnectionInternet.IsConnectedToInternet())
+                       {
+                           log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
+                           if (_listenWord == null)
+                               _listenWord = new MediaPlayer();
 
-                        string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                        var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                        _listenWord.Open(ur);
-                        _listenWord.Play();
-                    }
-                    else
-                    {
-                        log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
-                        SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                        synthesizer.Speak(TextForSpeech);
-                    }
-                }));
+                           string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                           var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                           _listenWord.Open(ur);
+                           _listenWord.Play();
+                       }
+                       else
+                       {
+                           log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
+                           SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                           synthesizer.Speak(TextForSpeech);
+                       }
+                   }));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         //Timer Region
@@ -1135,30 +1225,37 @@ namespace FlashCard.ViewModels
         Stopwatch testTimerPopup = new Stopwatch();
         private void _timer_Tick(object sender, EventArgs e)
         {
-            log.DebugFormat("|| =============Summary=============");
-            log.DebugFormat("|| == Timer tick : {0}", _timerPopup.IsEnabled);
-            testTimerPopup.Start();
-            _swCountTimerTick.Start();
-            log.DebugFormat("|| == TimerPopup.Interval :{0}", _timerPopup.Interval);
-            log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
-            if (!ViewCore.MyNotifyIcon.IsPopupOpen)
+            try
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                log.DebugFormat("|| =============Summary=============");
+                log.DebugFormat("|| == Timer tick : {0}", _timerPopup.IsEnabled);
+                testTimerPopup.Start();
+                _swCountTimerTick.Start();
+                log.DebugFormat("|| == TimerPopup.Interval :{0}", _timerPopup.Interval);
+                log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
+                if (!ViewCore.MyNotifyIcon.IsPopupOpen)
                 {
-                    SetLesson();
-                    if (App.SetupModel.Setup.IsEnableSoundForShow == true)
-                        _soundForShow.PlaySync();
-                    FancyBalloon balloon = new FancyBalloon();
-                    ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
-                    this.IsPopupStarted = true;
-                    //RaisePropertyChanged(() => SelectedLesson);
-                    var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
-                    TimerForClosePopup(timerSpan);
-                    log.DebugFormat("|| =================================\n");
-                    log.DebugFormat("|| ==> Is Popup Showing");
-                }));
+                    Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        SetLesson();
+                        if (App.SetupModel.Setup.IsEnableSoundForShow == true)
+                            _soundForShow.PlaySync();
+                        FancyBalloon balloon = new FancyBalloon();
+                        ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
+                        this.IsPopupStarted = true;
+                        //RaisePropertyChanged(() => SelectedLesson);
+                        var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
+                        TimerForClosePopup(timerSpan);
+                        log.DebugFormat("|| =================================\n");
+                        log.DebugFormat("|| ==> Is Popup Showing");
+                    }));
+                }
+                GC.Collect();
             }
-            GC.Collect();
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         /// <summary>
@@ -1182,21 +1279,28 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _waitForClose_Tick(object sender, EventArgs e)
         {
-            log.Info("|| {*} === Initial Timer For Close Popup === ");
-            log.Info("|| ==> WaitBalloon() methods started ");
-            var action = new Action(() =>
+            try
             {
-                countSecond = 0;
-                IsCurrentBackSide = false;
-                _waitForClose.Stop();
-                ViewCore.MyNotifyIcon.CloseBalloon();
-                testTimeView.Stop();
-                log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
-                testTimeView.Reset();
-                log.DebugFormat("|| ==> Popup Closed.......");
-                log.DebugFormat("|| ================================= \n");
-            });
-            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+                log.Info("|| {*} === Initial Timer For Close Popup === ");
+                log.Info("|| ==> WaitBalloon() methods started ");
+                var action = new Action(() =>
+                {
+                    countSecond = 0;
+                    IsCurrentBackSide = false;
+                    _waitForClose.Stop();
+                    ViewCore.MyNotifyIcon.CloseBalloon();
+                    testTimeView.Stop();
+                    log.DebugFormat("|| == View Timer :{0}", testTimeView.Elapsed.Seconds);
+                    testTimeView.Reset();
+                    log.DebugFormat("|| ==> Popup Closed.......");
+                    log.DebugFormat("|| ================================= \n");
+                });
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         /// <summary>
@@ -1216,13 +1320,19 @@ namespace FlashCard.ViewModels
         /// <param name="e"></param>
         private void _timerViewFullScreen_Tick(object sender, EventArgs e)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+            try
             {
-
-                SetLesson();
-                if (App.SetupModel.Setup.IsEnableSoundForShow == true)
-                    _soundForShow.PlaySync();
-            }));
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        SetLesson();
+                        if (App.SetupModel.Setup.IsEnableSoundForShow == true)
+                            _soundForShow.PlaySync();
+                    }));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
         /// <summary>
@@ -1298,7 +1408,7 @@ namespace FlashCard.ViewModels
                 if (_timerPopup != null)
                     log.DebugFormat("|| == Timer tick (_timerPopup) Status : {0}", _timerPopup.IsEnabled);
             });
-            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, action);
         }
 
         /// <summary>
@@ -1306,9 +1416,17 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void ShowPopupForm()
         {
-            FancyBalloon balloon = new FancyBalloon();
-            IsCurrentStarted = true;
-            ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
+            try
+            {
+                FancyBalloon balloon = new FancyBalloon();
+                IsCurrentStarted = true;
+                ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                throw;
+            }
         }
         #endregion
 

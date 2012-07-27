@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Windows;
-using Microsoft.Shell;
+using System.Collections.Generic;
 using System.Linq;
-using FlashCard.Views;
+using System.Windows;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
-using System.Collections.Generic;
 using log4net;
+using Microsoft.Shell;
 
 
 namespace FlashCard
@@ -21,10 +20,10 @@ namespace FlashCard
         public static SetupModel SetupModel;
         public static StudyModel StudyModel;
 
-        
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private List<LessonModel> LessonCollection;
-        
+        private static ILog log;
+
         /// <summary>
         /// Variable check if user click on file & file valid, set IsStatupRunOk = true . not run method run normal
         /// </summary>
@@ -34,10 +33,9 @@ namespace FlashCard
         [STAThread]
         public static void Main()
         {
-            //string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
+            string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
 
-
-            string appName = "SmardFashCard";
+            //string appName = "SmardFashCard";
             if (SingleInstance<App>.InitializeAsFirstInstance(appName))
             {
                 SetupRepository setupRepository = new SetupRepository();
@@ -59,7 +57,7 @@ namespace FlashCard
                 SingleInstance<App>.Cleanup();
             }
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // @"E:\Desktop\3000 General Word.flc"
@@ -67,8 +65,8 @@ namespace FlashCard
             //var file = @"E:\Desktop\Sorable.fcard";
             try
             {
+
                 var file = e.Args.FirstOrDefault().ToString();
-                
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {
@@ -83,17 +81,17 @@ namespace FlashCard
                             IsStatupRunOk = true;
                         }
                     }
-
                 }
                 else
                 {
                     MessageBox.Show("File not valid", "Error", MessageBoxButton.OK);
-
                 }
             }
-            catch (Exception ex) { 
-                log.Error(ex); }
-            
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
             if (!IsStatupRunOk)
             {
                 RunNormal();
@@ -101,11 +99,15 @@ namespace FlashCard
 
             base.OnStartup(e);
         }
-    
-   
+
+
         public App()
         {
-           
+            var currentUserName = Environment.UserName;
+            log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
+            log= LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(string.Empty);
+            log.Info(" ======= Flash card Run=====");
         }
 
 
@@ -116,10 +118,6 @@ namespace FlashCard
         /// </summary>
         private void RunNormal()
         {
-            var currentUserName = Environment.UserName;
-            log4net.GlobalContext.Properties["LogName"] = String.Format("CardLog-{0}-{1}.txt", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
-
-
             if (SetupModel.IsOpenLastStudy == true)
             {
                 StudyRepository studyRespository = new StudyRepository();
@@ -128,7 +126,7 @@ namespace FlashCard
                 {
                     var lesson = study.FirstOrDefault().StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
                     LessonCollection = new List<LessonModel>();
-                    LessonCollection.AddRange(lesson.Select(x=>new LessonModel(x)));
+                    LessonCollection.AddRange(lesson.Select(x => new LessonModel(x)));
                     LessonMangeView = new LessonManageView(this.LessonCollection);
                 }
             }
@@ -151,6 +149,7 @@ namespace FlashCard
         protected void FlashCardDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.ToString());
+            log.Error(e.Exception);
             e.Handled = true;
         }
 
@@ -163,7 +162,7 @@ namespace FlashCard
         {
             if (e == null) { return; }
 
-            //log.Error(e);
+            log.Error(e);
 
             if (!isTerminating)
             {
