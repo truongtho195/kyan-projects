@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.StudyDetail = studydetail;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
@@ -45,7 +46,8 @@ namespace FlashCard.Database
 
         protected bool _isNew;
         /// <summary>
-        /// Gets or sets the IsNew
+        /// Property Base
+        /// <para> Gets or sets the IsNew </para>
         /// </summary>
         public bool IsNew
         {
@@ -62,7 +64,8 @@ namespace FlashCard.Database
 
         protected bool _isDirty;
         /// <summary>
-        /// Gets or sets the IsDirty
+        /// Property Base
+        /// <para>Gets or sets the IsDirty</para>
         /// </summary>
         public bool IsDirty
         {
@@ -79,7 +82,8 @@ namespace FlashCard.Database
 
         protected bool _isDeleted;
         /// <summary>
-        /// Gets or sets the IsDeleted
+        /// Property Base
+        ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
         public bool IsDeleted
         {
@@ -96,7 +100,8 @@ namespace FlashCard.Database
 
         protected bool _isChecked;
         /// <summary>
-        /// Gets or sets the IsChecked
+        /// Property Base
+        ///<para> Gets or sets the IsChecked</para>
         /// </summary>
         public bool IsChecked
         {
@@ -111,12 +116,21 @@ namespace FlashCard.Database
             }
         }
 
+        
+        /// <summary>
+        ///<para>Public Method</para>
+        /// Method for set IsNew & IsDirty = false;
+        /// </summary>
         public void EndUpdate()
         {
             this.IsNew = false;
             this.IsDirty = false;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set PropertyModel to Entity</para>
+        /// </summary>
         public void ToEntity()
         {
             if (IsNew)
@@ -126,6 +140,10 @@ namespace FlashCard.Database
             this.StudyDetail.IsLastStudy = this.IsLastStudy;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set Entity to PropertyModel</para>
+        /// </summary
         public void ToModel()
         {
             this.StudyDetailID = this.StudyDetail.StudyDetailID;
@@ -140,7 +158,8 @@ namespace FlashCard.Database
 
         protected System.Guid _studyDetailID;
         /// <summary>
-        /// Gets or sets the StudyDetailID.
+        ///Property Model
+        ///<para> Gets or sets the StudyDetailID.</para>
         /// </summary>
         public System.Guid StudyDetailID
         {
@@ -158,7 +177,8 @@ namespace FlashCard.Database
 
         protected string _lessonID;
         /// <summary>
-        /// Gets or sets the LessonID.
+        ///Property Model
+        ///<para> Gets or sets the LessonID.</para>
         /// </summary>
         public string LessonID
         {
@@ -176,7 +196,8 @@ namespace FlashCard.Database
 
         protected Nullable<System.Guid> _studyID;
         /// <summary>
-        /// Gets or sets the StudyID.
+        ///Property Model
+        ///<para> Gets or sets the StudyID.</para>
         /// </summary>
         public Nullable<System.Guid> StudyID
         {
@@ -194,7 +215,8 @@ namespace FlashCard.Database
 
         protected Nullable<bool> _isLastStudy;
         /// <summary>
-        /// Gets or sets the IsLastStudy.
+        ///Property Model
+        ///<para> Gets or sets the IsLastStudy.</para>
         /// </summary>
         public Nullable<bool> IsLastStudy
         {

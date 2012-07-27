@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.Category = category;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
@@ -45,7 +46,8 @@ namespace FlashCard.Database
 
         protected bool _isNew;
         /// <summary>
-        /// Gets or sets the IsNew
+        /// Property Base
+        /// <para> Gets or sets the IsNew </para>
         /// </summary>
         public bool IsNew
         {
@@ -62,7 +64,8 @@ namespace FlashCard.Database
 
         protected bool _isDirty;
         /// <summary>
-        /// Gets or sets the IsDirty
+        /// Property Base
+        /// <para>Gets or sets the IsDirty</para>
         /// </summary>
         public bool IsDirty
         {
@@ -79,7 +82,8 @@ namespace FlashCard.Database
 
         protected bool _isDeleted;
         /// <summary>
-        /// Gets or sets the IsDeleted
+        /// Property Base
+        ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
         public bool IsDeleted
         {
@@ -96,7 +100,8 @@ namespace FlashCard.Database
 
         protected bool _isChecked;
         /// <summary>
-        /// Gets or sets the IsChecked
+        /// Property Base
+        ///<para> Gets or sets the IsChecked</para>
         /// </summary>
         public bool IsChecked
         {
@@ -111,12 +116,21 @@ namespace FlashCard.Database
             }
         }
 
+        
+        /// <summary>
+        ///<para>Public Method</para>
+        /// Method for set IsNew & IsDirty = false;
+        /// </summary>
         public void EndUpdate()
         {
             this.IsNew = false;
             this.IsDirty = false;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set PropertyModel to Entity</para>
+        /// </summary>
         public void ToEntity()
         {
             if (IsNew)
@@ -125,6 +139,10 @@ namespace FlashCard.Database
             this.Category.CategoryOf = this.CategoryOf;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set Entity to PropertyModel</para>
+        /// </summary
         public void ToModel()
         {
             this.CategoryID = this.Category.CategoryID;
@@ -138,7 +156,8 @@ namespace FlashCard.Database
 
         protected string _categoryID;
         /// <summary>
-        /// Gets or sets the CategoryID.
+        ///Property Model
+        ///<para> Gets or sets the CategoryID.</para>
         /// </summary>
         public string CategoryID
         {
@@ -156,7 +175,8 @@ namespace FlashCard.Database
 
         protected string _categoryName;
         /// <summary>
-        /// Gets or sets the CategoryName.
+        ///Property Model
+        ///<para> Gets or sets the CategoryName.</para>
         /// </summary>
         public string CategoryName
         {
@@ -174,7 +194,8 @@ namespace FlashCard.Database
 
         protected int _categoryOf;
         /// <summary>
-        /// Gets or sets the CategoryOf.
+        ///Property Model
+        ///<para> Gets or sets the CategoryOf.</para>
         /// </summary>
         public int CategoryOf
         {

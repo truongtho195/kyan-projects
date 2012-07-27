@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.BackSide = backside;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
@@ -45,7 +46,8 @@ namespace FlashCard.Database
 
         protected bool _isNew;
         /// <summary>
-        /// Gets or sets the IsNew
+        /// Property Base
+        /// <para> Gets or sets the IsNew </para>
         /// </summary>
         public bool IsNew
         {
@@ -62,7 +64,8 @@ namespace FlashCard.Database
 
         protected bool _isDirty;
         /// <summary>
-        /// Gets or sets the IsDirty
+        /// Property Base
+        /// <para>Gets or sets the IsDirty</para>
         /// </summary>
         public bool IsDirty
         {
@@ -79,7 +82,8 @@ namespace FlashCard.Database
 
         protected bool _isDeleted;
         /// <summary>
-        /// Gets or sets the IsDeleted
+        /// Property Base
+        ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
         public bool IsDeleted
         {
@@ -96,7 +100,8 @@ namespace FlashCard.Database
 
         protected bool _isChecked;
         /// <summary>
-        /// Gets or sets the IsChecked
+        /// Property Base
+        ///<para> Gets or sets the IsChecked</para>
         /// </summary>
         public bool IsChecked
         {
@@ -111,12 +116,21 @@ namespace FlashCard.Database
             }
         }
 
+        
+        /// <summary>
+        ///<para>Public Method</para>
+        /// Method for set IsNew & IsDirty = false;
+        /// </summary>
         public void EndUpdate()
         {
             this.IsNew = false;
             this.IsDirty = false;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set PropertyModel to Entity</para>
+        /// </summary>
         public void ToEntity()
         {
             if (IsNew)
@@ -127,6 +141,10 @@ namespace FlashCard.Database
             this.BackSide.IsMain = this.IsMain;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set Entity to PropertyModel</para>
+        /// </summary
         public void ToModel()
         {
             this.BackSideID = this.BackSide.BackSideID;
@@ -142,7 +160,8 @@ namespace FlashCard.Database
 
         protected string _backSideID;
         /// <summary>
-        /// Gets or sets the BackSideID.
+        ///Property Model
+        ///<para> Gets or sets the BackSideID.</para>
         /// </summary>
         public string BackSideID
         {
@@ -160,7 +179,8 @@ namespace FlashCard.Database
 
         protected string _lessonID;
         /// <summary>
-        /// Gets or sets the LessonID.
+        ///Property Model
+        ///<para> Gets or sets the LessonID.</para>
         /// </summary>
         public string LessonID
         {
@@ -178,7 +198,8 @@ namespace FlashCard.Database
 
         protected string _content;
         /// <summary>
-        /// Gets or sets the Content.
+        ///Property Model
+        ///<para> Gets or sets the Content.</para>
         /// </summary>
         public string Content
         {
@@ -196,7 +217,8 @@ namespace FlashCard.Database
 
         protected string _backSideName;
         /// <summary>
-        /// Gets or sets the BackSideName.
+        ///Property Model
+        ///<para> Gets or sets the BackSideName.</para>
         /// </summary>
         public string BackSideName
         {
@@ -214,7 +236,8 @@ namespace FlashCard.Database
 
         protected Nullable<byte> _isMain;
         /// <summary>
-        /// Gets or sets the IsMain.
+        ///Property Model
+        ///<para> Gets or sets the IsMain.</para>
         /// </summary>
         public Nullable<byte> IsMain
         {

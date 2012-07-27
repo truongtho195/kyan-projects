@@ -35,6 +35,7 @@ namespace FlashCard.Database
         {
             this.User = user;
             ToModel();
+            this.IsDirty = false;
         }
 
         #endregion
@@ -45,7 +46,8 @@ namespace FlashCard.Database
 
         protected bool _isNew;
         /// <summary>
-        /// Gets or sets the IsNew
+        /// Property Base
+        /// <para> Gets or sets the IsNew </para>
         /// </summary>
         public bool IsNew
         {
@@ -62,7 +64,8 @@ namespace FlashCard.Database
 
         protected bool _isDirty;
         /// <summary>
-        /// Gets or sets the IsDirty
+        /// Property Base
+        /// <para>Gets or sets the IsDirty</para>
         /// </summary>
         public bool IsDirty
         {
@@ -79,7 +82,8 @@ namespace FlashCard.Database
 
         protected bool _isDeleted;
         /// <summary>
-        /// Gets or sets the IsDeleted
+        /// Property Base
+        ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
         public bool IsDeleted
         {
@@ -96,7 +100,8 @@ namespace FlashCard.Database
 
         protected bool _isChecked;
         /// <summary>
-        /// Gets or sets the IsChecked
+        /// Property Base
+        ///<para> Gets or sets the IsChecked</para>
         /// </summary>
         public bool IsChecked
         {
@@ -111,12 +116,21 @@ namespace FlashCard.Database
             }
         }
 
+        
+        /// <summary>
+        ///<para>Public Method</para>
+        /// Method for set IsNew & IsDirty = false;
+        /// </summary>
         public void EndUpdate()
         {
             this.IsNew = false;
             this.IsDirty = false;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set PropertyModel to Entity</para>
+        /// </summary>
         public void ToEntity()
         {
             if (IsNew)
@@ -127,6 +141,10 @@ namespace FlashCard.Database
             this.User.LastLogin = this.LastLogin;
         }
 
+        /// <summary>
+        ///Public Method
+        ///<para> Method for set Entity to PropertyModel</para>
+        /// </summary
         public void ToModel()
         {
             this.UserID = this.User.UserID;
@@ -142,7 +160,8 @@ namespace FlashCard.Database
 
         protected long _userID;
         /// <summary>
-        /// Gets or sets the UserID.
+        ///Property Model
+        ///<para> Gets or sets the UserID.</para>
         /// </summary>
         public long UserID
         {
@@ -160,7 +179,8 @@ namespace FlashCard.Database
 
         protected string _userName;
         /// <summary>
-        /// Gets or sets the UserName.
+        ///Property Model
+        ///<para> Gets or sets the UserName.</para>
         /// </summary>
         public string UserName
         {
@@ -178,7 +198,8 @@ namespace FlashCard.Database
 
         protected string _password;
         /// <summary>
-        /// Gets or sets the Password.
+        ///Property Model
+        ///<para> Gets or sets the Password.</para>
         /// </summary>
         public string Password
         {
@@ -196,7 +217,8 @@ namespace FlashCard.Database
 
         protected string _fullName;
         /// <summary>
-        /// Gets or sets the FullName.
+        ///Property Model
+        ///<para> Gets or sets the FullName.</para>
         /// </summary>
         public string FullName
         {
@@ -214,7 +236,8 @@ namespace FlashCard.Database
 
         protected Nullable<System.DateTime> _lastLogin;
         /// <summary>
-        /// Gets or sets the LastLogin.
+        ///Property Model
+        ///<para> Gets or sets the LastLogin.</para>
         /// </summary>
         public Nullable<System.DateTime> LastLogin
         {

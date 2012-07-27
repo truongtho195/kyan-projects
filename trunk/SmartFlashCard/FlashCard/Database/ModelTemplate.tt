@@ -120,6 +120,7 @@ public <#=        code.Escape(entity.Name + "Model")#>(<#=        code.Escape(en
 {
     this.<#=        code.Escape(entity.Name)#> = <#=        code.Escape(entity.Name).ToLower()#>;
     ToModel();
+    this.IsDirty = false;
 }
 <#+
         PopIndent();
@@ -133,7 +134,8 @@ public <#=        code.Escape(entity.Name + "Model")#>(<#=        code.Escape(en
 <#+        this.WriteLine(string.Empty);#>
 protected bool _isNew;
 /// <summary>
-/// Gets or sets the IsNew
+/// Property Base
+/// <para> Gets or sets the IsNew </para>
 /// </summary>
 public bool IsNew
 {
@@ -150,7 +152,8 @@ public bool IsNew
 <#+        this.WriteLine(string.Empty);#>
 protected bool _isDirty;
 /// <summary>
-/// Gets or sets the IsDirty
+/// Property Base
+/// <para>Gets or sets the IsDirty</para>
 /// </summary>
 public bool IsDirty
 {
@@ -167,7 +170,8 @@ public bool IsDirty
 <#+        this.WriteLine(string.Empty);#>
 protected bool _isDeleted;
 /// <summary>
-/// Gets or sets the IsDeleted
+/// Property Base
+///<para>Gets or sets the IsDeleted</para>
 /// </summary>
 public bool IsDeleted
 {
@@ -184,7 +188,8 @@ public bool IsDeleted
 <#+        this.WriteLine(string.Empty);#>
 protected bool _isChecked;
 /// <summary>
-/// Gets or sets the IsChecked
+/// Property Base
+///<para> Gets or sets the IsChecked</para>
 /// </summary>
 public bool IsChecked
 {
@@ -199,12 +204,21 @@ public bool IsChecked
     }
 }
 <#+        this.WriteLine(string.Empty);#>
+
+/// <summary>
+///<para>Public Method</para>
+/// Method for set IsNew & IsDirty = false;
+/// </summary>
 public void EndUpdate()
 {
     this.IsNew = false;
     this.IsDirty = false;
 }
 <#+        this.WriteLine(string.Empty);#>
+/// <summary>
+///Public Method
+///<para> Method for set PropertyModel to Entity</para>
+/// </summary>
 public void ToEntity()
 {
 <#+
@@ -228,6 +242,10 @@ public void ToEntity()
 #>
 }
 <#+        this.WriteLine(string.Empty);#>
+/// <summary>
+///Public Method
+///<para> Method for set Entity to PropertyModel</para>
+/// </summary
 public void ToModel()
 {
 <#+
@@ -252,7 +270,8 @@ public void ToModel()
 #>
 protected <#=            code.Escape(edmProperty.TypeUsage)#> <#=            "_" + CapitalCase(code.Escape(edmProperty))#>;
 /// <summary>
-/// Gets or sets the <#=            code.Escape(edmProperty)#>.
+///Property Model
+///<para> Gets or sets the <#=            code.Escape(edmProperty)#>.</para>
 /// </summary>
 <#=            Accessibility.ForProperty(edmProperty)#> <#=            code.Escape(edmProperty.TypeUsage)#> <#=            code.Escape(edmProperty)#>
 {
