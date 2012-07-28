@@ -31,7 +31,6 @@ namespace FlashCard
             InitializeComponent();
             viewModel = new Lazy<MainViewModel>(() => ViewHelper.GetViewModel<MainViewModel>(this));
             var a = new MainViewModel(this).View;
-            
             this.Closed += new EventHandler(MainWindow_Closed);
         }
 

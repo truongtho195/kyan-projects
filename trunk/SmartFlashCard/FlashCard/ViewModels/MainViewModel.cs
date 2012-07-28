@@ -989,22 +989,23 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                StatusAfterHidden = _timerViewFullScreen != null ? this._timerViewFullScreen.IsEnabled : false;
-                log.Info("|| {*} === Mini Full Screen Execute Call ===");
-                log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
-                if ("Minimized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
-                {
-                    this._timerViewFullScreen.Stop();
-                    IsCurrentStarted = false;
-                    log.Debug("|| ==> FullScreen is Stoped!");
-                }
-                else if (this._timerViewFullScreen != null && !this._timerViewFullScreen.IsEnabled)
-                {
-                    if (StatusAfterHidden)
-                        this._timerViewFullScreen.Start();
-                    IsCurrentStarted = true;
-                    log.Debug("|| ==> FullScreen is Started!");
-                }
+                //StatusAfterHidden = _timerViewFullScreen != null ? this._timerViewFullScreen.IsEnabled : false;
+                //log.Info("|| {*} === Mini Full Screen Execute Call ===");
+                //log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
+                ////Minimized
+                //if ("Maximized".Equals(param.ToString()) && _timerViewFullScreen != null && this._timerViewFullScreen.IsEnabled)
+                //{
+                //    this._timerViewFullScreen.Stop();
+                //    IsCurrentStarted = false;
+                //    log.Debug("|| ==> FullScreen is Stoped!");
+                //}
+                //else if (this._timerViewFullScreen != null && !this._timerViewFullScreen.IsEnabled)
+                //{
+                //    if (StatusAfterHidden)
+                //        this._timerViewFullScreen.Start();
+                //    IsCurrentStarted = true;
+                //    log.Debug("|| ==> FullScreen is Started!");
+                //}
                 log.Debug("|| == Is Full Screen Started : " + IsFullScreenStarted);
             }
             catch (Exception ex)
