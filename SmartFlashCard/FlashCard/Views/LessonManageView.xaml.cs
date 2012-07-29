@@ -29,11 +29,11 @@ namespace FlashCard
             var a = new LessonViewModel(this).View;
             InitialEvent();
         }
-        public LessonManageView(List<LessonModel> lessonCollection)
+        public LessonManageView(List<LessonModel> lessonCollection,bool isFile)
         {
             this.InitializeComponent();
             viewModel = new Lazy<LessonViewModel>(() => ViewHelper.GetViewModel<LessonViewModel>(this));
-            var a = new LessonViewModel(this, lessonCollection).View;
+            var a = new LessonViewModel(this, lessonCollection,isFile).View;
             InitialEvent();
         }
 

@@ -29,9 +29,6 @@ namespace FlashCard.ViewModels
         {
             Initialize();
 
-
-
-
         }
         #endregion
 
@@ -45,7 +42,7 @@ namespace FlashCard.ViewModels
         private int _currentItemIndex = 0;
         public int TimerCount { get; set; }
         public bool IsMouseEnter { get; set; }
-        private MediaPlayer _listenWord;
+        private MediaPlayer _listenWord = new MediaPlayer();
         private SoundPlayer _soundForShow = new SoundPlayer(FlashCard.Properties.Resources.Notification);
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -282,6 +279,7 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region Commands
+
         #region "  Change Side Command"
         /// <summary>
         /// SaveCommand
@@ -588,9 +586,9 @@ namespace FlashCard.ViewModels
         #endregion
 
         #region "  ListenCommand"
-        private ICommand _listenCommand;
+        private RelayCommand _listenCommand;
         //Gets or sets the property value
-        public ICommand ListenCommand
+        public RelayCommand ListenCommand
         {
             get
             {
@@ -613,29 +611,25 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
-                delegate
-                {
-                    DispatcherTimer waitForListener = new DispatcherTimer();
-                    waitForListener = new DispatcherTimer();
-                    waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
-                    waitForListener.Tick += new EventHandler(waitForListener_Tick);
+                DispatcherTimer waitForListener = new DispatcherTimer();
+                waitForListener = new DispatcherTimer();
+                waitForListener.Interval = new TimeSpan(0, 0, 0, 1);
+                waitForListener.Tick += new EventHandler(waitForListener_Tick);
 
-                    log.Info("||{*} === Listen Command Executed === ");
-                    CanListen = false;
-                    TextToSpeechPlayer(SelectedLesson.LessonName);
-                    waitForListener.Start();
-                    if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
-                    {
-                        DispatcherTimer stopForListen = new DispatcherTimer();
-                        stopForListen = new DispatcherTimer();
-                        stopForListen.Interval = new TimeSpan(0, 0, 0, 2);
-                        stopForListen.Tick += new EventHandler(waitUserClick_Tick);
-                        _timerViewFullScreen.Stop();
-                        stopForListen.Start();
-                    }
+                log.Info("||{*} === Listen Command Executed === ");
+                CanListen = false;
+                TextToSpeechPlayer(SelectedLesson.LessonName.Trim());
+                waitForListener.Start();
+                if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true)
+                {
+                    DispatcherTimer stopForListen = new DispatcherTimer();
+                    stopForListen = new DispatcherTimer();
+                    stopForListen.Interval = new TimeSpan(0, 0, 0, 2);
+                    stopForListen.Tick += new EventHandler(waitUserClick_Tick);
+                    _timerViewFullScreen.Stop();
+
+                    stopForListen.Start();
                 }
-                ));
             }
             catch (Exception ex)
             {
@@ -649,6 +643,7 @@ namespace FlashCard.ViewModels
             dispartcherTimer.Stop();
             CanListen = true;
             CommandManager.InvalidateRequerySuggested();
+
         }
         #endregion
 
@@ -1104,21 +1099,6 @@ namespace FlashCard.ViewModels
             }
         }
 
-        public void GetLesson(List<LessonModel> listLesson)
-        {
-            //LessonDataAccess lessonDA = new LessonDataAccess();
-            //var lesson = lessonDA.GetAllWithRelation();
-            if (App.SetupModel.Setup.IsShuffle == true)
-            {
-                var lessonShuffle = ShuffleList.Randomize<LessonModel>(listLesson);
-                LessonCollection = new ObservableCollection<LessonModel>(lessonShuffle);
-            }
-            else
-            {
-                LessonCollection = new ObservableCollection<LessonModel>(listLesson);
-            }
-        }
-
         /// <summary>
         /// Method to set lesson to show in popup or fullscreen
         /// </summary>
@@ -1126,16 +1106,17 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                var LimitCardNum = LessonCollection.Count;
-                if (App.SetupModel.Setup.IsLimitCard == true)
-                {
-                    if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
-                        LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
-                }
+                //var LimitCardNum = LessonCollection.Count;
+                //if (App.SetupModel.Setup.IsLimitCard == true)
+                //{
+                //    if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
+                //        LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
+                //}
 
                 if (isLoop)
                 {
-                    if (_currentItemIndex < LimitCardNum - 1)
+                    //LimitCardNum - 1
+                    if (_currentItemIndex < LessonCollection.Count)
                         _currentItemIndex++;
                     else
                         _currentItemIndex = 0;
@@ -1146,7 +1127,7 @@ namespace FlashCard.ViewModels
                 RaisePropertyChanged(() => SelectedLesson);
                 SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
 
-                log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LimitCardNum);
+                log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LessonCollection.Count);
                 GC.Collect();
             }
             catch (Exception ex)
@@ -1167,27 +1148,23 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
-                   delegate
-                   {
-                       if (CheckConnectionInternet.IsConnectedToInternet())
-                       {
-                           log.DebugFormat("|| == Listen with google translate : {0}", TextForSpeech);
-                           if (_listenWord == null)
-                               _listenWord = new MediaPlayer();
+                if (CheckConnectionInternet.IsConnectedToInternet())
+                {
+                    //log.Info("|| Listen with google translate : " + TextForSpeech);
+                    _listenWord.Close();
+                    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
+                }
+                else
+                {
+                    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
+                    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                    synthesizer.Speak(TextForSpeech);
+                }
 
-                           string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                           var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                           _listenWord.Open(ur);
-                           _listenWord.Play();
-                       }
-                       else
-                       {
-                           log.DebugFormat("|| == Listen with Microsoft Speed : {0}", TextForSpeech);
-                           SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                           synthesizer.Speak(TextForSpeech);
-                       }
-                   }));
+
             }
             catch (Exception ex)
             {
@@ -1448,6 +1425,7 @@ namespace FlashCard.ViewModels
                 throw;
             }
         }
+
         #endregion
 
         #region All For Test

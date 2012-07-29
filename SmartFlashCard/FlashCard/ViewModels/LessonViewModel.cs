@@ -23,19 +23,58 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             this.Titles = "Lesson Management";
-           
+
         }
-        public LessonViewModel(LessonManageView view,List<LessonModel> lessonCollection):this(view)
+        public LessonViewModel(LessonManageView view, List<LessonModel> lessonCollection, bool isFile)
+            : this(view)
         {
             try
             {
-                //handle Statup for file
-                if (App.SetupModel != null && (App.SetupModel.IsRunStatup || App.SetupModel.IsOpenLastStudy == true))
+                if (!ViewCore.grdControl.Children.Contains(_studyConfigView))
                 {
-                    MainWindow mainWindow = new MainWindow();
-                    var mainViewModel = mainWindow.GetViewModel<MainViewModel>();
-                    mainViewModel.GetLesson(lessonCollection.ToList());
-                    mainViewModel.ExcuteMainForm();
+                    _studyConfigView = new StudyConfigView();
+                    var studyConfigViewModel = _studyConfigView.GetViewModel<StudyConfigViewModel>();
+                    var cateWithHasLesson = this.CardCollection.Where(x => x.Card.Lessons.Count > 0).ToList();
+                    studyConfigViewModel.LessonCollection = this.LessonCollection.ToList();
+                    studyConfigViewModel.CardCollection = cateWithHasLesson;
+                    if (isFile)
+                    {
+                        //handle Statup for file
+                        if (App.SetupModel != null && (App.SetupModel.IsRunStatup || App.SetupModel.IsOpenLastStudy == true))
+                        {
+                            var card = lessonCollection.FirstOrDefault().Lesson.Card;
+                            CardModel cardModel = new CardModel(card);
+                            cardModel.IsFile = true;
+                            studyConfigViewModel.CardCollection.Add(cardModel);
+                            studyConfigViewModel.SelectedCard = cardModel;
+
+                        }
+                    }
+                    else
+                    {
+                        var card = lessonCollection.FirstOrDefault().Lesson.Card;
+                        var selectCard = studyConfigViewModel.CardCollection.SingleOrDefault(x => x.Card.CardID.Equals(card.CardID));
+
+                        studyConfigViewModel.SelectedCard = selectCard;
+                        studyConfigViewModel.SelectedCard.CheckedAll = false;
+                        studyConfigViewModel.CheckedForList("Parent");
+
+                        foreach (var item in lessonCollection)
+                        {
+                            var lessonChecked = studyConfigViewModel.SelectedCard.LessonCollection.Where(x => x.LessonID.Equals(item.LessonID)).SingleOrDefault();
+                            lessonChecked.IsChecked = true;
+                            studyConfigViewModel.CheckedForList("Child");
+                        }
+                    }
+
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+                    studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+                    ViewCore.grdControl.Children.Add(_studyConfigView);
+                }
+                else
+                {
+                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Hidden;
+                    ViewCore.grdControl.Children.Clear();
                 }
             }
             catch (Exception ex)
@@ -969,13 +1008,13 @@ namespace FlashCard.ViewModels
                     Serializer<Card>.Serialize(SelectedCard.Card, dialog.FileName);
                 }
 
-                MessageBox.Show(ViewCore as Window, "Flash Card Export success !","Information" ,MessageBoxButton.OK);
+                MessageBox.Show(ViewCore as Window, "Flash Card Export success !", "Information", MessageBoxButton.OK);
             }
             catch (Exception ex)
             {
                 log.Error(ex);
             }
-            
+
         }
         #endregion
 
@@ -1173,10 +1212,9 @@ namespace FlashCard.ViewModels
                 if ("OkExecute".Equals(message))
                 {
                     MainWindow mainWindow = new MainWindow();
-
                     var lessonCollection = _studyConfigView.GetViewModel<StudyConfigViewModel>().LessonCollection;
                     var mainViewModel = mainWindow.GetViewModel<MainViewModel>();
-                    mainViewModel.GetLesson(lessonCollection.ToList());
+                    mainViewModel.LessonCollection = new ObservableCollection<LessonModel>(lessonCollection);
                     mainViewModel.ExcuteMainForm();
                     ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
                     ViewCore.grdControl.Children.Clear();
@@ -1313,6 +1351,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
         #endregion
 
         #region Methods
@@ -1377,7 +1416,11 @@ namespace FlashCard.ViewModels
                     cardRepository.Commit();
                     cardModel.EndUpdate();
                     CardCollection.Add(cardModel);
-                    CardList.Add(cardModel.Card);
+                    CardList.Clear();
+
+                    CardList = new List<Card>(CardCollection.Select(x=>x.Card).ToList());
+                    RaisePropertyChanged(() => CardList);
+
                 }
                 else
                 {
@@ -1386,8 +1429,7 @@ namespace FlashCard.ViewModels
                     cardRepository.Commit();
                     cardModel.EndUpdate();
                 }
-                RaisePropertyChanged(() => CardList);
-            }
+                            }
             catch (Exception ex)
             {
                 log.Error(ex);
