@@ -55,11 +55,17 @@ namespace MVVMHelper.Commands
         {
             return _canExecute == null ? true : _canExecute(parameter);
         }
-
+        private EventHandler _internalCanExecuteChanged;
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
         }
 
         public void Execute(object parameter)
@@ -67,6 +73,8 @@ namespace MVVMHelper.Commands
             _execute(parameter);
         }
 
+
+       
         #endregion // ICommand Members
     }
 }

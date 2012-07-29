@@ -9,6 +9,7 @@ using System;
 using log4net;
 using FlashCard.Database;
 using FlashCard.Database.Repository;
+using FlashCard.Helper;
 
 namespace FlashCard.ViewModels
 {
@@ -73,6 +74,7 @@ namespace FlashCard.ViewModels
         private List<LessonModel> _lessonCollection;
         /// <summary>
         /// Gets or sets the LessonCollection.
+        /// Set From another collection after handled will out to collection for study
         /// </summary>
         public List<LessonModel> LessonCollection
         {
@@ -150,7 +152,7 @@ namespace FlashCard.ViewModels
                     {
                         SelectedCard.CheckedAll = true;
                         SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(SelectedCard.Card.Lessons.Select(x => new LessonModel(x)));
-                        SetCheckValueForCollection();
+                        SetCheckValueForCollection(SelectedCard.CheckedAll.Value);
                         RaisePropertyChanged(() => TotalLesson);
                     }
                 }
@@ -158,28 +160,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region" CheckedAll"
-        private bool? _checkedAll;
-        /// <summary>
-        /// Gets or sets the CheckedAll.
-        /// </summary>
-        public bool? CheckedAll
-        {
-            get { return _checkedAll; }
-            set
-            {
-                if (_checkedAll != value)
-                {
-                    _checkedAll = value;
-                    RaisePropertyChanged(() => CheckedAll);
-                    SetCheckValueForCollection();
-                }
-            }
-        }
-        #endregion
-
-
-        #region SelectedStudy
+        #region" SelectedStudy"
         private StudyModel _selectedStudy;
         /// <summary>
         /// Gets or sets the SelectedStudy.
@@ -198,7 +179,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-
         #region" TotalLesson"
         /// <summary>
         /// Gets the TotalLesson.
@@ -214,8 +194,6 @@ namespace FlashCard.ViewModels
 
         }
         #endregion
-
-
 
         #endregion
 
@@ -256,16 +234,8 @@ namespace FlashCard.ViewModels
             log.Info("|| {*} === OK Command Executed ===");
             try
             {
-                List<LessonModel> lst = new List<LessonModel>();
-                lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
-                if (lst != null && lst.Count > 0)
-                {
-                    LessonCollection = new List<LessonModel>(lst);
-                }
-
-                //Handle Setup
+                //Save setup
                 App.SetupModel = SelectedSetupModel;
-
                 SetupRepository setupRepository = new SetupRepository();
                 App.SetupModel.ToEntity();
                 if (App.SetupModel.IsNew)
@@ -280,15 +250,40 @@ namespace FlashCard.ViewModels
                 }
                 App.SetupModel.EndUpdate();
 
-                if (App.SetupModel.IsOpenLastStudy == true)
+                // Get  & Set Lesson for study
+                List<LessonModel> lst = new List<LessonModel>();
+                lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
+                if (lst != null && lst.Count > 0)
                 {
-                    // For Study
+                    //Shuffle
+                    LessonCollection = new List<LessonModel>(lst);
+                    if (App.SetupModel.Setup.IsShuffle == true)
+                    {
+                        var lessonShuffle = ShuffleList.Randomize<LessonModel>(LessonCollection.ToList());
+                        LessonCollection = new List<LessonModel>(lessonShuffle);
+                    }
+
+                    var LimitCardNum = LessonCollection.Count;
+                    if (App.SetupModel.Setup.IsLimitCard == true)
+                    {
+                        if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
+                            LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
+                        LessonCollection = new List<LessonModel>(LessonCollection.GetRange(0,LimitCardNum));
+                    }
+                }
+
+
+                //Store last study 
+                if (!SelectedCard.IsFile)
+                {
+                    // For Study 
+                    // Set Last Lesson user Study
                     StudyRepository studyRespository = new StudyRepository();
 
                     //set IsLast
                     var studyAll = studyRespository.GetAll<Study>();
                     Study study;
-                    if (studyAll.Count==0)
+                    if (studyAll.Count == 0)
                     {
                         study = new Study();
                         study.StudyID = AutoGeneration.NewSeqGuid();
@@ -300,8 +295,6 @@ namespace FlashCard.ViewModels
                     {
                         study = studyAll.FirstOrDefault();
                     }
-
-
 
                     //reset data IsLastStudy == true => set all to false
                     foreach (var item in study.StudyDetails.Where(x => x.IsLastStudy == true))
@@ -331,7 +324,6 @@ namespace FlashCard.ViewModels
                     }
                     studyRespository.Commit();
                 }
-
             }
             catch (Exception ex)
             {
@@ -378,7 +370,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region CheckedCommand
+        #region"  CheckedCommand"
 
         /// <summary>
         /// Gets the Checked Command.
@@ -412,16 +404,57 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void OnCheckedExecute(object param)
         {
-            if ("Parent".Equals(param))
+            CheckedForList(param);
+        }
+
+
+        #endregion
+
+        #region GetLastLesson
+
+        #region GetLastLessonCommand
+        private ICommand _getLastLessonCommand;
+        //Relay Command In viewModel
+        //Gets or sets the property value
+        public ICommand GetLastLessonCommand
+        {
+            get
             {
-                SetCheckValueForCollection();
-            }
-            else
-            {
-                SetCheckValueForParent();
-                RaisePropertyChanged(() => TotalLesson);
+                if (_getLastLessonCommand == null)
+                {
+                    _getLastLessonCommand = new RelayCommand(this.GetLastLessonExecute, this.CanGetLastLessonExecute);
+                }
+                return _getLastLessonCommand;
             }
         }
+
+        private bool CanGetLastLessonExecute(object param)
+        {
+            if (SelectedStudy.Study.StudyDetails.Count == 0)
+                return false;
+            return SelectedStudy.Study.StudyDetails.Where(x => x.IsLastStudy == true).Count() > 0;
+        }
+
+        private void GetLastLessonExecute(object param)
+        {
+            var lesson = SelectedStudy.Study.StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
+
+            var card = lesson.FirstOrDefault().Card;
+            var selectCard = CardCollection.SingleOrDefault(x => x.Card.CardID.Equals(card.CardID));
+
+            SelectedCard = selectCard;
+            SelectedCard.CheckedAll = false;
+            CheckedForList("Parent");
+
+            foreach (var item in lesson)
+            {
+                var lessonChecked = SelectedCard.LessonCollection.Where(x => x.LessonID.Equals(item.LessonID)).SingleOrDefault();
+                lessonChecked.IsChecked = true;
+                CheckedForList("Child");
+            }
+        }
+        #endregion
+
         #endregion
         #endregion
 
@@ -442,15 +475,30 @@ namespace FlashCard.ViewModels
 
         }
 
-
-
-        private void SetCheckValueForCollection()
+        private void SetCheckValueForCollection(bool isChecked)
         {
             foreach (var item in SelectedCard.LessonCollection)
             {
-                item.IsChecked = SelectedCard.CheckedAll.HasValue ? SelectedCard.CheckedAll.Value : false;
+                item.IsChecked = isChecked;
             }
 
+        }
+
+        /// <summary>
+        ///  Set checked from parent or child 
+        /// </summary>
+        /// <param name="param">Parent : set from parent to child</param>
+        public void CheckedForList(object param)
+        {
+            if ("Parent".Equals(param))
+            {
+                SetCheckValueForCollection(SelectedCard.CheckedAll.Value);
+            }
+            else
+            {
+                SetCheckValueForParent();
+                RaisePropertyChanged(() => TotalLesson);
+            }
         }
 
         private void SetCheckValueForParent()

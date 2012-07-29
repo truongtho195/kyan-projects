@@ -47,8 +47,12 @@ namespace FlashCard
                     SetupModel = new SetupModel(setup.FirstOrDefault());
                 }
 
-                StudyRepository studyRepository = new StudyRepository();
-
+                StudyRepository studyRespository = new StudyRepository();
+                var study = studyRespository.GetAll<Study>();
+                if (study != null)
+                    App.StudyModel = new StudyModel(study.FirstOrDefault());
+                else
+                    App.StudyModel = new StudyModel();
                 var application = new App();
                 application.InitializeComponent();
 
@@ -76,7 +80,7 @@ namespace FlashCard
                         LessonCollection = new List<LessonModel>(card.Lessons.Select(x => new LessonModel(x)));
                         if (LessonCollection != null && LessonCollection.Count() > 0 && SetupModel.IsRunStatup)
                         {
-                            LessonMangeView = new LessonManageView(this.LessonCollection);
+                            LessonMangeView = new LessonManageView(this.LessonCollection, true);
                             IsStatupRunOk = true;
                         }
                     }
@@ -104,7 +108,7 @@ namespace FlashCard
         {
             var currentUserName = Environment.UserName;
             log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
-            log= LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(string.Empty);
             log.Info(" ======= Flash card Run=====");
         }
@@ -119,21 +123,16 @@ namespace FlashCard
         {
             if (SetupModel.IsOpenLastStudy == true)
             {
-                StudyRepository studyRespository = new StudyRepository();
-                var study = studyRespository.GetAll<Study>();
-                if (study != null)
-                {
-                    var lesson = study.FirstOrDefault().StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
-                    LessonCollection = new List<LessonModel>();
-                    LessonCollection.AddRange(lesson.Select(x => new LessonModel(x)));
-                    LessonMangeView = new LessonManageView(this.LessonCollection);
-                }
+                var lesson = App.StudyModel.Study.StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
+                LessonCollection = new List<LessonModel>();
+                LessonCollection.AddRange(lesson.Select(x => new LessonModel(x)));
+                LessonMangeView = new LessonManageView(this.LessonCollection, false);
             }
             else
             {
                 LessonMangeView = new LessonManageView();
-                LessonMangeView.Show();
             }
+            LessonMangeView.Show();
         }
 
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)

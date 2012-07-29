@@ -236,6 +236,26 @@ namespace FlashCard.Database
             }
         }
 
+
+        private bool _isFile;
+        /// <summary>
+        ///Extention Property in CardModel
+        ///<para> Gets or sets the property value.</para>
+        /// </summary>
+        public bool IsFile
+        {
+            get { return _isFile; }
+            set
+            {
+                if (_isFile != value)
+                {
+                    _isFile = value;
+                    RaisePropertyChanged(() => IsFile);
+                }
+            }
+        }
+
+
         #region" CheckedAll"
         private bool? _checkedAll=true;
         /// <summary>
@@ -256,9 +276,6 @@ namespace FlashCard.Database
         #endregion
 
         #endregion
-
-
-
 
         #region DataErrorInfo
         public string Error
