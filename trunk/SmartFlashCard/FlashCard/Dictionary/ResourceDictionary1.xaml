@@ -300,8 +300,24 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{DynamicResource validationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="false">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
 
-    
+            <Trigger Property="IsVisible"
+                     Value="true">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource validationTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--#Endregion  Validation Style-->
 
     <Style x:Key="ButtonFocusVisual">
