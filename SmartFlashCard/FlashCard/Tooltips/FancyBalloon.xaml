@@ -370,7 +370,7 @@
             					<RowDefinition />
             				</Grid.RowDefinitions>
             				<Grid x:Name="grdPhrase"
-            					Visibility="{Binding SelectedLesson.Category.TypeOf, ConverterParameter=1, Converter={StaticResource valueToVisibilityConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            					
             					Grid.Row="1">
             					<StackPanel d:LayoutOverrides="Width" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
             						<TextBlock TextWrapping="Wrap"

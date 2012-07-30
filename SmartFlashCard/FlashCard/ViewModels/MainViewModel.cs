@@ -49,7 +49,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         public bool IsCurrentBackSide { get; set; }
 
-        public bool IsHidePopupCommandRaise { get; set; }
+        public bool IsOtherEventControlRaise { get; set; }
         #endregion
 
         #region Properties
@@ -374,7 +374,7 @@ namespace FlashCard.ViewModels
         {
             if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
-            return true;
+            return ViewCore.MyNotifyIcon.CustomBalloon!=null;
         }
 
         private void FancyBallonMouseEnterExecute(object param)
@@ -384,7 +384,7 @@ namespace FlashCard.ViewModels
                 var action = new Action(() =>
                     {
                         log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
-                        if (ViewCore.MyNotifyIcon.IsPopupOpen)
+                        if (!(ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).isClosing)
                         {
                             _waitForClose.Stop();
                             _timerPopup.Stop();
@@ -420,7 +420,7 @@ namespace FlashCard.ViewModels
         {
             if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
-            return true;
+            return ViewCore.MyNotifyIcon.CustomBalloon!=null;
         }
 
         private void FancyBallonMouseLeaveExecute(object param)
@@ -428,29 +428,27 @@ namespace FlashCard.ViewModels
             try
             {
                 log.Info("||{*} === Fancy Ballon Mouse Leave  Command Executed === ");
-                //IsPopupStarted== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
-                // IsPopupStarted know user not click on button fullScreen
-                if (!IsOtherFormShow && this.IsPopupStarted == true)
+                //IsOtherEventControlRaise== true; Set for sensario if use MouseEnter to Click FullScreen Button => MouseLeave will execute so timer start
+                // IsOtherEventControlRaise know user not click on button fullScreen
+                if (!IsOtherEventControlRaise)
                 {
-                    if (!IsHidePopupCommandRaise)
-                    {
-                        var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeLeave") as Storyboard;
-                        storyBoard.Begin();
-                    }
-                    _swCountTimerTick.Stop();
-                    int time = 0;
-                    if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
-                        time = App.SetupModel.Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
-                    else
-                        time = 2;
-                    var timerSpan = new TimeSpan(0, 0, 0, time);
-                    TimerForClosePopup(timerSpan);
-                    _swCountTimerTick.Reset();
-                    //Create timer popup cause When Mouse Enter _timerPopup is Stoped
-                    if (_timerPopup != null)
-                        _timerPopup.Start();
+                    var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeLeave") as Storyboard;
+                    storyBoard.Begin();
                 }
-                IsHidePopupCommandRaise = false;
+                _swCountTimerTick.Stop();
+                int time = 0;
+                if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
+                    time = App.SetupModel.Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
+                else
+                    time = 2;
+                var timerSpan = new TimeSpan(0, 0, 0, time);
+                TimerForClosePopup(timerSpan);
+                _swCountTimerTick.Reset();
+                //Create timer popup cause When Mouse Enter _timerPopup is Stoped
+                if (_timerPopup != null)
+                    _timerPopup.Start();
+
+                IsOtherEventControlRaise = false;
             }
             catch (Exception ex)
             {
@@ -537,13 +535,13 @@ namespace FlashCard.ViewModels
                             IsFullScreenStarted = false;
                             IsCurrentStarted = false;
                             _timerViewFullScreen.Stop();
-                            
+
                         }
                         else
                         {
                             IsFullScreenStarted = true;
                             _timerViewFullScreen.Start();
-                            
+
                         }
                     }
                     else
@@ -675,7 +673,7 @@ namespace FlashCard.ViewModels
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                 {
                     log.Info("||{*} === Hidden Popup Command Executed === ");
-                    IsHidePopupCommandRaise = true;
+                    IsOtherEventControlRaise = true;
                     ViewCore.MyNotifyIcon.CloseBalloon();
                     log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
                 }));
@@ -931,7 +929,7 @@ namespace FlashCard.ViewModels
             try
             {
                 log.Info("|| {*} === Full Screen Call ===");
-                //HiddenPopupExecute(null);
+                IsOtherEventControlRaise = true;
                 CloseTimerPopup();
                 //PlayPauseBallonPopup(true);
                 if (_learnView == null)
@@ -976,13 +974,13 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnMiniFullScreenCanExecute(object param)
         {
+            
             return true;
         }
 
         /// <summary>
         /// Method to invoke when the MiniFullScreen command is executed.
         /// </summary>
-        bool StatusAfterHidden = false;
         private void OnMiniFullScreenExecute(object param)
         {
             try
@@ -1109,28 +1107,21 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                //var LimitCardNum = LessonCollection.Count;
-                //if (App.SetupModel.Setup.IsLimitCard == true)
-                //{
-                //    if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
-                //        LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
-                //}
 
-                if (isLoop)
-                {
-                    //LimitCardNum - 1
-                    if (_currentItemIndex < LessonCollection.Count)
-                        _currentItemIndex++;
-                    else
-                        _currentItemIndex = 0;
-                }
 
+                log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex + 1, LessonCollection.Count);
                 SelectedLesson = LessonCollection[_currentItemIndex];
                 SelectedLesson.IsBackSide = false;  //    IsCurrentBackSide;
                 RaisePropertyChanged(() => SelectedLesson);
                 SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
-
-                log.DebugFormat("|| == Current Item : {0}/{1}", _currentItemIndex, LessonCollection.Count);
+                if (isLoop)
+                {
+                    //LimitCardNum - 1
+                    if (_currentItemIndex < LessonCollection.Count - 1)
+                        _currentItemIndex++;
+                    else
+                        _currentItemIndex = 0;
+                }
                 GC.Collect();
             }
             catch (Exception ex)
