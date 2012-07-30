@@ -30,6 +30,8 @@
                                 <Setter Property="Header"
                                         Value="Play" />
                                 <Style.Triggers>
+                                 
+
                                     <DataTrigger Binding="{Binding IsPopupStarted}"
                                                  Value="True">
                                         <Setter Property="Header"
