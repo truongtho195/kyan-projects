@@ -1,0 +1,13 @@
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\bin\Debug\ShutdowDemo.exe
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\bin\Debug\ShutdowDemo.pdb
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\MainWindow.baml
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\MainWindow.g.cs
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\App.g.cs
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ShutdowDemo_MarkupCompile.cache
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ShutdowDemo.g.resources
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ShutdowDemo.Properties.Resources.resources
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ShutdowDemo.exe
+E:\Demo\WPF\ShutdowDemo\ShutdowDemo\obj\x86\Debug\ShutdowDemo.pdb
