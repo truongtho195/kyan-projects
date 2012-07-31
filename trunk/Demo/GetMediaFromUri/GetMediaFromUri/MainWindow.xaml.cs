@@ -29,23 +29,25 @@ namespace GetMediaFromUri
 
         private void btnGetMedia_Click(object sender, RoutedEventArgs e)
         {
-
-
             try
             {
                 MediaPlayer media = new MediaPlayer();
                 string keyword = "Hello world";
                 string strUrl = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", keyword);
-
+                
+                string file = string.Format("SoundDic/{0}.mp3", keyword);
                 var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
-
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
                 WebResponse response = request.GetResponse();
                 Stream strm = response.GetResponseStream();
-
+                DirectoryInfo directoryInfo = new DirectoryInfo(keyword);
+                if (!directoryInfo.Exists)
+                {
+                    directoryInfo.Create();
+                }
                 if (strm.CanRead)
                 {
-                    SaveStreamToFile(strm, string.Format("E:\\{0}.mp3",keyword));
+                    SaveStreamToFile(strm, string.Format("SoundDic/{0}.mp3",keyword));
                 }
 
             }
