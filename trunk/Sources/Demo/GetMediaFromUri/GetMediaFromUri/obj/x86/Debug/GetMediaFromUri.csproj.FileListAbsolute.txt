@@ -1,0 +1,26 @@
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\bin\Debug\GetMediaFromUri.exe
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\bin\Debug\GetMediaFromUri.pdb
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\MainWindow.baml
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\MainWindow.g.cs
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\App.g.cs
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri_MarkupCompile.cache
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.g.resources
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.Properties.Resources.resources
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.exe
+E:\Demo\WPF\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\bin\Debug\GetMediaFromUri.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\bin\Debug\GetMediaFromUri.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\MainWindow.baml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\MainWindow.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\App.g.cs
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri_MarkupCompile.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.g.resources
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GetMediaFromUri.Properties.Resources.resources
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Demo\GetMediaFromUri\GetMediaFromUri\obj\x86\Debug\GenerateResource.write.1.tlog
