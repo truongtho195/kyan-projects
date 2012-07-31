@@ -97,8 +97,7 @@ namespace ConvertToText
             //}
             //Console.ReadLine();
         }
-
-
+        
         private static void UpdateLessonNrelation()
         {
             Console.WriteLine("============================Update Lesson Start ?=============================");
@@ -165,6 +164,23 @@ namespace ConvertToText
         }
 
 
+
+        private void ReadMSWord()
+        {
+            Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
+            object miss = System.Reflection.Missing.Value;
+            object path = @"E:\3000.doc";
+            object readOnly = true;
+            Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
+            string totaltext = "";
+            for (int i = 0; i < docs.Paragraphs.Count; i++)
+            {
+                totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
+            }
+            Console.WriteLine(totaltext);
+            docs.Close();
+            word.Quit();
+        }
     }
 
 
