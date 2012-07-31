@@ -34,6 +34,10 @@ namespace FlashCard.Helper
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
                 WebResponse response = request.GetResponse();
                 Stream strm = response.GetResponseStream();
+                
+                if (keyword.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                    keyword = CleanFileName(keyword);
+                
                 string fullPathFile =string.Format("{0}/{1}.mp3", pathFile, keyword);
                 if (strm.CanRead & !File.Exists(fullPathFile))
                 {
@@ -59,6 +63,13 @@ namespace FlashCard.Helper
             for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
                 to.WriteByte((byte)a);
         }
+
+        private static string CleanFileName(string fileName)
+        {
+            return Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c.ToString(), string.Empty));
+        }
+
+
     }
 
 }

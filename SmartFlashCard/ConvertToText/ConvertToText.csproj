@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="GetSoundFromGoogleTranslate.cs" />
     <Compile Include="Models\BackSideModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
