@@ -135,10 +135,11 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.StudyDetail.StudyDetailID = this.StudyDetailID;
-            this.StudyDetail.LessonID = this.LessonID;
+            this.StudyDetail.LessonID = this.LessonID.Trim();
             this.StudyDetail.StudyID = this.StudyID;
             this.StudyDetail.IsLastStudy = this.IsLastStudy;
         }
+        
 
         /// <summary>
         ///Public Method

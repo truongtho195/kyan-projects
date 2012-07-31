@@ -146,6 +146,7 @@ namespace FlashCard.Database
             this.Setup.IsOpenLastStudy = this.IsOpenLastStudy;
             this.Setup.SpeechWhenShow = this.SpeechWhenShow;
         }
+        
 
         /// <summary>
         ///Public Method

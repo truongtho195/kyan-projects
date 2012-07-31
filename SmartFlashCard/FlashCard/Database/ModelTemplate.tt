@@ -234,13 +234,20 @@ public void ToEntity()
             }
             else
             {
+                if(code.Escape(edmProperty.TypeUsage).Equals("string"))
+                {
 #>
-    this.<#=                code.Escape(entity.Name)#>.<#=                code.Escape(edmProperty)#> = this.<#=                code.Escape(edmProperty)#>;
-<#+
+    this.<#=                    code.Escape(entity.Name)#>.<#=                    code.Escape(edmProperty)#> = this.<#=                    code.Escape(edmProperty)#>.Trim();
+<#+                }else{ #>
+    this.<#=                    code.Escape(entity.Name)#>.<#=                    code.Escape(edmProperty)#> = this.<#=                    code.Escape(edmProperty)#>;
+<#+             
+                }
             }
+           
         }
 #>
 }
+
 <#+        this.WriteLine(string.Empty);#>
 /// <summary>
 ///Public Method

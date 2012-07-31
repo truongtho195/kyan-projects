@@ -12,6 +12,7 @@ using FlashCard.Database.Repository;
 using FlashCard.Views;
 using log4net;
 using MVVMHelper.Commands;
+using FlashCard.Helper;
 
 namespace FlashCard.ViewModels
 {
@@ -377,7 +378,8 @@ namespace FlashCard.ViewModels
                     SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
                 //Mapping
                 SelectedLesson.ToEntity();
-
+                GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, "FlashCardSound");
+                
                 BackSideRepository backSideRepository = new BackSideRepository();
                 if (SelectedLesson.IsNew)
                 {
@@ -1416,9 +1418,9 @@ namespace FlashCard.ViewModels
                     cardRepository.Commit();
                     cardModel.EndUpdate();
                     CardCollection.Add(cardModel);
-                    CardList.Clear();
-
-                    CardList = new List<Card>(CardCollection.Select(x=>x.Card).ToList());
+                    CardList.Add(cardModel.Card);
+                    //CardList.Clear();
+                    //CardList = new List<Card>(CardCollection.Select(x=>x.Card).ToList());
                     RaisePropertyChanged(() => CardList);
 
                 }

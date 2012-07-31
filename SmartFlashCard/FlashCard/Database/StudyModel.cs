@@ -137,6 +137,7 @@ namespace FlashCard.Database
                 this.Study.StudyID = this.StudyID;
             this.Study.LastStudyDate = this.LastStudyDate;
         }
+        
 
         /// <summary>
         ///Public Method
