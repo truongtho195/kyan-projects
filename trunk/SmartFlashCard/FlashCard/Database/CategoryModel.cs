@@ -135,9 +135,10 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Category.CategoryID = this.CategoryID;
-            this.Category.CategoryName = this.CategoryName;
+            this.Category.CategoryName = this.CategoryName.Trim();
             this.Category.CategoryOf = this.CategoryOf;
         }
+        
 
         /// <summary>
         ///Public Method

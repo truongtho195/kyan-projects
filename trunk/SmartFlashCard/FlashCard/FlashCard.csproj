@@ -157,6 +157,7 @@
     </Compile>
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />
+    <Compile Include="Helper\GetSoundFromGoogleTranslate.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
     <Compile Include="Helper\ShuffleList.cs" />
     <Compile Include="Helper\SingleInstance.cs" />

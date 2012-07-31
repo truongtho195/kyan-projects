@@ -135,11 +135,12 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.Lesson.LessonID = this.LessonID;
-            this.Lesson.LessonName = this.LessonName;
-            this.Lesson.Description = this.Description;
-            this.Lesson.CategoryID = this.CategoryID;
-            this.Lesson.CardID = this.CardID;
+            this.Lesson.LessonName = this.LessonName.Trim();
+            this.Lesson.Description = this.Description.Trim();
+            this.Lesson.CategoryID = this.CategoryID.Trim();
+            this.Lesson.CardID = this.CardID.Trim();
         }
+        
 
         /// <summary>
         ///Public Method

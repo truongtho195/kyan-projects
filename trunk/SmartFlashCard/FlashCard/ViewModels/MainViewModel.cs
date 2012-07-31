@@ -1142,7 +1142,15 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                if (CheckConnectionInternet.IsConnectedToInternet())
+                string strFullPath = string.Format("FlashCardSound/{0}.mp3", TextForSpeech);
+                if (System.IO.File.Exists(strFullPath))
+                {
+                    _listenWord.Close();
+                    var ur = new Uri(strFullPath, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
+                }
+                else if (CheckConnectionInternet.IsConnectedToInternet())
                 {
                     //log.Info("|| Listen with google translate : " + TextForSpeech);
                     _listenWord.Close();
@@ -1157,8 +1165,6 @@ namespace FlashCard.ViewModels
                     SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                     synthesizer.Speak(TextForSpeech);
                 }
-
-
             }
             catch (Exception ex)
             {

@@ -135,11 +135,12 @@ namespace FlashCard.Database
         {
             if (IsNew)
                 this.User.UserID = this.UserID;
-            this.User.UserName = this.UserName;
-            this.User.Password = this.Password;
-            this.User.FullName = this.FullName;
+            this.User.UserName = this.UserName.Trim();
+            this.User.Password = this.Password.Trim();
+            this.User.FullName = this.FullName.Trim();
             this.User.LastLogin = this.LastLogin;
         }
+        
 
         /// <summary>
         ///Public Method

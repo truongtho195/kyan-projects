@@ -138,6 +138,7 @@ namespace FlashCard.Database
             this.UserLesson.UserID = this.UserID;
             this.UserLesson.LessonID = this.LessonID;
         }
+        
 
         /// <summary>
         ///Public Method
