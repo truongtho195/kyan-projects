@@ -1418,9 +1418,9 @@ namespace FlashCard.ViewModels
                     cardRepository.Commit();
                     cardModel.EndUpdate();
                     CardCollection.Add(cardModel);
-                    CardList.Add(cardModel.Card);
-                    //CardList.Clear();
-                    //CardList = new List<Card>(CardCollection.Select(x=>x.Card).ToList());
+                    //CardList.Add(cardModel.Card);
+                    CardList.Clear();
+                    CardList = new List<Card>(CardCollection.Select(x => x.Card).ToList());
                     RaisePropertyChanged(() => CardList);
 
                 }
