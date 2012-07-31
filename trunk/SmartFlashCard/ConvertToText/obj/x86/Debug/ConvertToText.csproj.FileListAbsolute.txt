@@ -1,28 +1,3 @@
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.exe.config
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\obj\x86\Debug\ResolveAssemblyReference.cache
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.exe
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.pdb
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\MVVMHelper.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\System.Windows.Interactivity.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\MessageBoxControl.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\MVVMHelper.pdb
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.pdb
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.xml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\System.Windows.Interactivity.xml
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\vi\MVVMHelper.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\zh-CN\MVVMHelper.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\de\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\en\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\es\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\it\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.exe
-E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.exe.config
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ConvertToText.pdb

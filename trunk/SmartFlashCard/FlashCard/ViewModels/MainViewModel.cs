@@ -1142,7 +1142,11 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                string strFullPath = string.Format("FlashCardSound/{0}.mp3", TextForSpeech);
+                string textFile = TextForSpeech;
+                if (textFile.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) > -1)
+                    textFile = CleanFileName(TextForSpeech);
+
+                string strFullPath = string.Format("FlashCardSound/{0}.mp3", textFile);
                 if (System.IO.File.Exists(strFullPath))
                 {
                     _listenWord.Close();
@@ -1150,21 +1154,21 @@ namespace FlashCard.ViewModels
                     _listenWord.Open(ur);
                     _listenWord.Play();
                 }
-                else if (CheckConnectionInternet.IsConnectedToInternet())
-                {
-                    //log.Info("|| Listen with google translate : " + TextForSpeech);
-                    _listenWord.Close();
-                    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                    _listenWord.Open(ur);
-                    _listenWord.Play();
-                }
-                else
-                {
-                    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
-                    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                    synthesizer.Speak(TextForSpeech);
-                }
+                //else if (CheckConnectionInternet.IsConnectedToInternet())
+                //{
+                //    //log.Info("|| Listen with google translate : " + TextForSpeech);
+                //    _listenWord.Close();
+                //    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                //    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                //    _listenWord.Open(ur);
+                //    _listenWord.Play();
+                //}
+                //else
+                //{
+                //    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
+                //    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                //    synthesizer.Speak(TextForSpeech);
+                //}
             }
             catch (Exception ex)
             {
@@ -1438,6 +1442,17 @@ namespace FlashCard.ViewModels
                 log.Error(ex);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Clean Invalid Char in file name
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private string CleanFileName(string fileName)
+        {
+            
+            return System.IO.Path.GetInvalidFileNameChars().Aggregate(fileName,(current, c) => current.Replace(c.ToString(), string.Empty)).Trim();
         }
 
         #endregion

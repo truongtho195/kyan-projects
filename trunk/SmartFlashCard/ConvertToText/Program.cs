@@ -7,6 +7,8 @@ using ConvertToText.Database;
 using System.IO;
 using System.Windows.Markup;
 using System.Xml;
+using FlashCard.Helper;
+using System.Text.RegularExpressions;
 
 namespace ConvertToText
 {
@@ -14,9 +16,44 @@ namespace ConvertToText
     {
         static void Main(string[] args)
         {
-            UpdateLessonNrelation();
+            GetSoundForLesson();
         }
-        
+
+
+        private static void GetSoundForLesson()
+        {
+            Console.WriteLine("============================GetSoundForLesson Lesson Start ?=============================");
+            Console.WriteLine("Press any key to ..");
+            Console.ReadLine();
+            Console.WriteLine("Starting.....");
+            try
+            {
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                var AllLesson = flashCardEntity.Lessons.ToList();
+                foreach (var item in AllLesson)
+                {
+                    Console.Write("Get Sound For Lesson {0}", item.LessonName);
+                    var fileName = item.LessonName;
+                    if (item.LessonName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                    {
+                        fileName = CleanFileName(item.LessonName);
+                        Console.Write("          InvalidFileNameChars");
+                    }
+                    GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, "FlashCardSound");
+                    Console.WriteLine("==> Done");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
+            }
+            Console.WriteLine("|| Generation successful !");
+            Console.ReadLine();
+        }
+        private static string CleanFileName(string fileName)
+        {
+            return Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c.ToString(), string.Empty));
+        }
         private static void InserLesson()
         {
             //Console.WriteLine("============================Convert Lesson Start ?=============================");
@@ -29,10 +66,10 @@ namespace ConvertToText
             //    SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
             //    LessonDataAccess lessonDA = new LessonDataAccess();
             //    var allLesson= lessonDA.GetAll();
-               
+
             //    foreach (var item in allLesson)
             //    {
-                    
+
             //        Console.WriteLine("-  Lesson item : {0}", item.LessonID);
             //        TextRange textRange = new TextRange(item.Description.ContentStart, item.Description.ContentEnd);
             //        flashCardEntity.Lessons.AddObject(new Lesson() {LessonID=item.LessonID.ToString(), LessonName=item.LessonName,Description=textRange.Text,CategoryID=item.TypeID.ToString(),CardID=item.CategoryID.ToString()});
@@ -66,7 +103,7 @@ namespace ConvertToText
                     item.LessonName = item.LessonName.Trim();
                     foreach (var backSide in item.BackSides)
                     {
-                        Console.WriteLine("- - Back side item update :{0}",backSide.BackSideID);
+                        Console.WriteLine("- - Back side item update :{0}", backSide.BackSideID);
                         backSide.BackSideName = backSide.BackSideName.Trim();
                         backSide.Content = backSide.Content.Trim();
                     }
