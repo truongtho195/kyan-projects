@@ -1451,7 +1451,6 @@ namespace FlashCard.ViewModels
         /// <returns></returns>
         private string CleanFileName(string fileName)
         {
-            
             return System.IO.Path.GetInvalidFileNameChars().Aggregate(fileName,(current, c) => current.Replace(c.ToString(), string.Empty)).Trim();
         }
 

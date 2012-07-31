@@ -28,31 +28,44 @@ namespace ConvertToText
             Console.WriteLine("Starting.....");
             try
             {
+                int iCount = 0;
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 var AllLesson = flashCardEntity.Lessons.ToList();
                 foreach (var item in AllLesson)
                 {
+                    iCount++;
                     Console.Write("Get Sound For Lesson {0}", item.LessonName);
                     var fileName = item.LessonName;
                     if (item.LessonName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
                     {
                         fileName = CleanFileName(item.LessonName);
-                        Console.Write("          InvalidFileNameChars");
+                        Console.WriteLine("      InvalidFileNameChars");
                     }
                     GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, "FlashCardSound");
                     Console.WriteLine("==> Done");
                 }
+                Console.WriteLine("|| Generation successful {0}/{1}!", iCount, AllLesson.Count);
+                Console.ReadLine();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
             }
-            Console.WriteLine("|| Generation successful !");
-            Console.ReadLine();
+
         }
         private static string CleanFileName(string fileName)
         {
-            return Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c.ToString(), string.Empty));
+            try
+            {
+                return Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c.ToString(), string.Empty)).Trim();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return fileName;
+                    
+            }
+            
         }
         private static void InserLesson()
         {

@@ -29,11 +29,14 @@ namespace FlashCard.Helper
             try
             {
                 string strUrl = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", keyword);
+                string fullPathFile = string.Format("{0}/{1}.mp3", pathFile, keyword);
+                if (File.Exists(fullPathFile))
+                    File.Delete(fullPathFile);
                 var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
                 WebResponse response = request.GetResponse();
                 Stream strm = response.GetResponseStream();
-                string fullPathFile =string.Format("{0}/{1}.mp3", pathFile, keyword);
+                
                 if (strm.CanRead & !File.Exists(fullPathFile))
                 {
                     SaveStreamToFile(strm, fullPathFile);
