@@ -1154,21 +1154,21 @@ namespace FlashCard.ViewModels
                     _listenWord.Open(ur);
                     _listenWord.Play();
                 }
-                //else if (CheckConnectionInternet.IsConnectedToInternet())
-                //{
-                //    //log.Info("|| Listen with google translate : " + TextForSpeech);
-                //    _listenWord.Close();
-                //    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                //    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                //    _listenWord.Open(ur);
-                //    _listenWord.Play();
-                //}
-                //else
-                //{
-                //    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
-                //    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                //    synthesizer.Speak(TextForSpeech);
-                //}
+                else if (CheckConnectionInternet.IsConnectedToInternet())
+                {
+                    //log.Info("|| Listen with google translate : " + TextForSpeech);
+                    _listenWord.Close();
+                    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+                    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
+                }
+                else
+                {
+                    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
+                    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                    synthesizer.Speak(TextForSpeech);
+                }
             }
             catch (Exception ex)
             {
