@@ -374,7 +374,7 @@ namespace FlashCard.ViewModels
         {
             if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
-            return ViewCore.MyNotifyIcon.CustomBalloon!=null;
+            return ViewCore.MyNotifyIcon.CustomBalloon != null;
         }
 
         private void FancyBallonMouseEnterExecute(object param)
@@ -382,14 +382,17 @@ namespace FlashCard.ViewModels
             try
             {
                 var action = new Action(() =>
+                {
+                    log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
+                    //if (!(ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).isClosing)
+                    if(!IsOtherEventControlRaise)
                     {
-                        log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
-                        if (!(ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).isClosing)
-                        {
-                            _waitForClose.Stop();
-                            _timerPopup.Stop();
-                        }
-                    });
+                        var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeBack") as Storyboard;
+                        storyBoard.Begin();
+                        _waitForClose.Stop();
+                        _timerPopup.Stop();
+                    }
+                });
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, action);
             }
             catch (Exception ex)
@@ -420,7 +423,7 @@ namespace FlashCard.ViewModels
         {
             if (App.SetupModel.Setup.IsEnableSlideShow == false)
                 return false;
-            return ViewCore.MyNotifyIcon.CustomBalloon!=null;
+            return ViewCore.MyNotifyIcon.CustomBalloon != null;
         }
 
         private void FancyBallonMouseLeaveExecute(object param)
@@ -445,10 +448,10 @@ namespace FlashCard.ViewModels
                 TimerForClosePopup(timerSpan);
                 _swCountTimerTick.Reset();
                 //Create timer popup cause When Mouse Enter _timerPopup is Stoped
-                if (_timerPopup != null)
+                if (_timerPopup != null && !_timerPopup.IsEnabled)
                     _timerPopup.Start();
 
-                IsOtherEventControlRaise = false;
+                //IsOtherEventControlRaise = false;
             }
             catch (Exception ex)
             {
@@ -675,6 +678,8 @@ namespace FlashCard.ViewModels
                     log.Info("||{*} === Hidden Popup Command Executed === ");
                     IsOtherEventControlRaise = true;
                     ViewCore.MyNotifyIcon.CloseBalloon();
+                    if (_timerPopup != null && !_timerPopup.IsEnabled)
+                        _timerPopup.Start();
                     log.DebugFormat("|| == Popup Icon Status Is Close : {0}", ViewCore.MyNotifyIcon.IsClosed);
                 }));
             }
@@ -974,7 +979,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnMiniFullScreenCanExecute(object param)
         {
-            
+
             return true;
         }
 
@@ -1236,6 +1241,7 @@ namespace FlashCard.ViewModels
                         if (App.SetupModel.Setup.IsEnableSoundForShow == true)
                             _soundForShow.PlaySync();
                         FancyBalloon balloon = new FancyBalloon();
+                        IsOtherEventControlRaise = false;
                         ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
                         this.IsPopupStarted = true;
                         var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
@@ -1451,7 +1457,7 @@ namespace FlashCard.ViewModels
         /// <returns></returns>
         private string CleanFileName(string fileName)
         {
-            return System.IO.Path.GetInvalidFileNameChars().Aggregate(fileName,(current, c) => current.Replace(c.ToString(), string.Empty)).Trim();
+            return System.IO.Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c.ToString(), string.Empty)).Trim();
         }
 
         #endregion

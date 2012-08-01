@@ -131,11 +131,6 @@
             <BeginStoryboard Storyboard="{StaticResource FadeIn}"
                              x:Name="FadeIn_BeginStoryboard" />
         </EventTrigger>
-        <EventTrigger RoutedEvent="Mouse.MouseEnter">
-            <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
-            <BeginStoryboard x:Name="FadeBack_BeginStoryboard1"
-                             Storyboard="{StaticResource FadeBack}" />
-        </EventTrigger>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
             <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
             <BeginStoryboard x:Name="FadeOut_BeginStoryboard" Storyboard="{StaticResource FadeOut}"/>
