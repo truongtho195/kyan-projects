@@ -1,0 +1,7 @@
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\bin\BlogMVCDemo.dll
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\bin\BlogMVCDemo.pdb
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\bin\EntityFramework.dll
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\bin\EntityFramework.xml
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\obj\Debug\ResolveAssemblyReference.cache
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\obj\Debug\BlogMVCDemo.dll
+E:\Demo\Webproject\BlogMVCDemo\BlogMVCDemo\obj\Debug\BlogMVCDemo.pdb
