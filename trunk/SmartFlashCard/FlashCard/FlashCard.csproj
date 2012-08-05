@@ -167,7 +167,6 @@
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\EventToCommand.cs" />
-    <Compile Include="UserControls\BindableRichTextBox.cs" />
     <Compile Include="ViewModels\StudyConfigViewModel.cs" />
     <Compile Include="ViewModels\LessonViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -253,7 +252,9 @@
     <Resource Include="Images\Preferences.png" />
     <Resource Include="Images\Remove.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
