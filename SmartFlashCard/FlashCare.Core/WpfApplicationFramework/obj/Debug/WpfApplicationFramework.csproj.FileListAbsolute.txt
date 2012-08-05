@@ -39,3 +39,4 @@ E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\Output\Debu
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\ResolveAssemblyReference.cache
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.dll
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\SmartFlashCard\FlashCare.Core\WpfApplicationFramework\obj\Debug\WpfApplicationFramework.pdb
+F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\FlashCare.Core\Output\Debug\WpfApplicationFramework.xml

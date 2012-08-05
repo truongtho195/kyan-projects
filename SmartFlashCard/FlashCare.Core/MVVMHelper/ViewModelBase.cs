@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
 using MVVMHelper.Common;
 using System.Waf.Applications;
 using System.Windows;
-using System.Windows.Media;
 using MVVMHelper.Services;
 
 namespace MVVMHelper.ViewModels

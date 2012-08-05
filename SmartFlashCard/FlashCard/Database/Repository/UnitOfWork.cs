@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Linq.Expressions;
-using System.Data.Objects;
-using System.Data.SqlClient;
-using System.Data.EntityClient;
-
-namespace FlashCard.Database
+﻿namespace FlashCard.Database
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Data;
+    using System.Linq.Expressions;
+    using System.Data.SqlClient;
+    using System.Data.EntityClient;
     public class UnitOfWork : IDisposable
     {
 
@@ -97,7 +94,7 @@ namespace FlashCard.Database
             //{
             //    _context.DeleteObject(originalItem);
             //}
-             _context.CreateObjectSet<T>().DeleteObject(_entity);
+            _context.CreateObjectSet<T>().DeleteObject(_entity);
             //this.Entities.DeleteObject(_entity);
         }
 

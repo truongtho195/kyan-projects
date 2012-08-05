@@ -6,7 +6,6 @@
              mc:Ignorable="d"
              x:Class="FlashCard.FancyBalloon"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
-             xmlns:uc="clr-namespace:FlashCard.UserControls"
              xmlns:converter="clr-namespace:FlashCard.Converters"
              xmlns:localHelper="clr-namespace:FlashCard.Helper"
              x:Name="me"

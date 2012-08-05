@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
-using System.Threading;
 using System.Windows.Controls;
 using System.IO;
 using System.Windows.Documents;
-using System.Windows.Markup;
 
 namespace FlashCard.Helper
 {
