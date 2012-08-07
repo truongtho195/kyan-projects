@@ -34,6 +34,14 @@ namespace BlogMVCDemo.Data
             _context.ContextOptions.LazyLoadingEnabled = false;
         }
 
+        /// <summary>
+        /// Get ConnectionString
+        /// </summary>
+        public string ConnectionString
+        {
+            get { return _context.Connection.ConnectionString; }
+        }
+
         public void Commit()
         {
             try
@@ -53,14 +61,13 @@ namespace BlogMVCDemo.Data
             DisposeCore();
         }
 
-        protected virtual void DisposeCore() { }
-
-
         public void Dispose()
         {
             Disposing();
             GC.SuppressFinalize(this);
         }
+
+        protected virtual void DisposeCore() { }
         
     }
 }

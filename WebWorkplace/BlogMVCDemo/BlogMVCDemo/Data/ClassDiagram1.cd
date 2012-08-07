@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BlogMVCDemo.Data.RepositoryBase&lt;T&gt;">
+    <Position X="2.75" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAABIAAAAAAAAAAAAAAEAAAAAAgEAAAAAEAA=</HashCode>
+      <FileName>Data\RepositoryBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlogMVCDemo.Data.UnitOfWork">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgEAAACAABAAAAAAAAgCAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Data\UnitOfWork.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
