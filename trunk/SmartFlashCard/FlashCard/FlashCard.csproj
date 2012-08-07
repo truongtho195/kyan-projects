@@ -233,6 +233,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Database\ClassDiagram1.cd" />
     <None Include="Database\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>

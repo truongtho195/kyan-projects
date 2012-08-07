@@ -125,7 +125,6 @@ namespace FlashCard
     {
       Popup pp = (Popup)Parent;
       pp.IsOpen = false;
-     
     }
 
     
