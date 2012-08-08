@@ -131,8 +131,9 @@ namespace FlashCard
             else
             {
                 LessonMangeView = new LessonManageView();
+                LessonMangeView.Show();
             }
-            LessonMangeView.Show();
+
         }
 
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)

@@ -26,6 +26,7 @@ namespace FlashCard.ViewModels
             this.Titles = "Lesson Management";
 
         }
+
         public LessonViewModel(LessonManageView view, List<LessonModel> lessonCollection, bool isFile)
             : this(view)
         {
@@ -50,6 +51,9 @@ namespace FlashCard.ViewModels
                             studyConfigViewModel.SelectedCard = cardModel;
 
                         }
+                        ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
+                        studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
+                        ViewCore.grdControl.Children.Add(_studyConfigView);
                     }
                     else
                     {
@@ -66,11 +70,11 @@ namespace FlashCard.ViewModels
                             lessonChecked.IsChecked = true;
                             studyConfigViewModel.CheckedForList("Child");
                         }
+                        LessonViewModel_DoNow("OkExecute");
+
                     }
 
-                    ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Visible;
-                    studyConfigViewModel.ButtonClickHandler += new StudyConfigViewModel.handlerControl(LessonViewModel_DoNow);
-                    ViewCore.grdControl.Children.Add(_studyConfigView);
+
                 }
                 else
                 {
@@ -379,7 +383,7 @@ namespace FlashCard.ViewModels
                 //Mapping
                 SelectedLesson.ToEntity();
                 GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, "FlashCardSound");
-                
+
                 BackSideRepository backSideRepository = new BackSideRepository();
                 if (SelectedLesson.IsNew)
                 {
@@ -1220,7 +1224,8 @@ namespace FlashCard.ViewModels
                     mainViewModel.ExcuteMainForm();
                     ViewCore.grdUserControl.Visibility = System.Windows.Visibility.Collapsed;
                     ViewCore.grdControl.Children.Clear();
-                    App.LessonMangeView.Hide();
+                    if (App.LessonMangeView != null)
+                        App.LessonMangeView.Hide();
                 }
                 else
                 {
@@ -1431,7 +1436,7 @@ namespace FlashCard.ViewModels
                     cardRepository.Commit();
                     cardModel.EndUpdate();
                 }
-                            }
+            }
             catch (Exception ex)
             {
                 log.Error(ex);
