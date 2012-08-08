@@ -4,7 +4,6 @@
     <EntitySet Name="Categories" EntityType="BlogMvcModel.Store.Categories" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Comments" EntityType="BlogMvcModel.Store.Comments" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Posts" EntityType="BlogMvcModel.Store.Posts" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="sysdiagrams" EntityType="BlogMvcModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_Categories_Categories" Association="BlogMvcModel.Store.FK_Categories_Categories">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="Categories1" EntitySet="Categories" />
@@ -31,8 +30,8 @@
       <PropertyRef Name="CommentID" />
     </Key>
     <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="Comment_Content" Type="text" Nullable="false" />
-    <Property Name="Comment_Date" Type="datetime" />
+    <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="80" />
+    <Property Name="CommentContent" Type="text" />
     <Property Name="PostID" Type="int" />
   </EntityType>
   <EntityType Name="Posts">
@@ -41,19 +40,9 @@
     </Key>
     <Property Name="PostID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="100" />
-    <Property Name="Post_content" Type="text" />
+    <Property Name="PostContent" Type="text" />
     <Property Name="CategoryID" Type="int" />
     <Property Name="TagID" Type="int" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <Association Name="FK_Categories_Categories">
     <End Role="Categories" Type="BlogMvcModel.Store.Categories" Multiplicity="0..1" />
@@ -68,7 +57,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Comments_Posts">
-    <End Role="Posts" Type="BlogMvcModel.Store.Posts" Multiplicity="0..1" />
+    <End Role="Posts" Type="BlogMvcModel.Store.Posts" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Comments" Type="BlogMvcModel.Store.Comments" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Posts">

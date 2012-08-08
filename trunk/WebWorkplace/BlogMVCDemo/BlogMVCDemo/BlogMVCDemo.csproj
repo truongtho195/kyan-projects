@@ -66,13 +66,18 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Database\BlogMvcDb.Designer.cs">
+    <Compile Include="Database\BlogMvcDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BlogMvcDb.edmx</DependentUpon>
+      <DependentUpon>BlogMvcDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Data\PostRespository.cs" />
     <Compile Include="Data\RepositoryBase.cs" />
+    <Compile Include="Data\TextTemplate1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextTemplate1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -157,13 +162,15 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Database\BlogMvcDb.edmx">
+    <EntityDeploy Include="Database\BlogMvcDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>BlogMvcDb.Designer.cs</LastGenOutput>
+      <LastGenOutput>BlogMvcDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Data\ClassDiagram1.cd" />
+    <None Include="Data\TextTemplate1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TextTemplate1.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -4,7 +4,6 @@
     <EntitySet Name="Categories" EntityType="BlogMvcModel.Category" />
     <EntitySet Name="Comments" EntityType="BlogMvcModel.Comment" />
     <EntitySet Name="Posts" EntityType="BlogMvcModel.Post" />
-    <EntitySet Name="sysdiagrams" EntityType="BlogMvcModel.sysdiagram" />
     <AssociationSet Name="FK_Categories_Categories" Association="BlogMvcModel.FK_Categories_Categories">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="Categories1" EntitySet="Categories" />
@@ -34,8 +33,8 @@
       <PropertyRef Name="CommentID" />
     </Key>
     <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Comment_Content" Type="String" Nullable="false" MaxLength="Max" Unicode="false" FixedLength="false" />
-    <Property Name="Comment_Date" Type="DateTime" />
+    <Property Name="Subject" Type="String" Nullable="false" MaxLength="80" Unicode="true" FixedLength="false" />
+    <Property Name="CommentContent" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
     <Property Name="PostID" Type="Int32" />
     <NavigationProperty Name="Post" Relationship="BlogMvcModel.FK_Comments_Posts" FromRole="Comments" ToRole="Posts" />
   </EntityType>
@@ -45,21 +44,11 @@
     </Key>
     <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-    <Property Name="Post_content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="PostContent" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
     <Property Name="CategoryID" Type="Int32" />
     <Property Name="TagID" Type="Int32" />
     <NavigationProperty Name="Category" Relationship="BlogMvcModel.FK_Posts_Categories" FromRole="Posts" ToRole="Categories" />
     <NavigationProperty Name="Comments" Relationship="BlogMvcModel.FK_Comments_Posts" FromRole="Posts" ToRole="Comments" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <Association Name="FK_Categories_Categories">
     <End Role="Categories" Type="BlogMvcModel.Category" Multiplicity="0..1" />
@@ -86,7 +75,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Comments_Posts">
-    <End Role="Posts" Type="BlogMvcModel.Post" Multiplicity="0..1" />
+    <End Role="Posts" Type="BlogMvcModel.Post" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="Comments" Type="BlogMvcModel.Comment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Posts">
