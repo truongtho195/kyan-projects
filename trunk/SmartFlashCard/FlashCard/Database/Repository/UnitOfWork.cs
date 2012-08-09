@@ -32,7 +32,7 @@
             //{
             //    _service = new System.Data.Objects.ObjectContext("string");
             //}
-
+            //GetConnectionString()
             log.Info("Initial UnitOfWork");
             if (_context == null)
                 _context = new SmartFlashCardDBEntities(GetConnectionString());
@@ -46,7 +46,9 @@
                 log.Info("GetConnectionString()");
                 string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
                 // Specify the provider name, server and database.
+                //string providerName = "System.Data.SQLite";
                 string providerName = "System.Data.SQLite";
+                
                 string serverName = connectionString;
                 string databaseName = "\\SmartFlashCardDB.s3db";
 
