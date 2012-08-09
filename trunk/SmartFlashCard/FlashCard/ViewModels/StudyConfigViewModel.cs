@@ -232,107 +232,13 @@ namespace FlashCard.ViewModels
         private void OnOKExecute(object param)
         {
             log.Info("|| {*} === OK Command Executed ===");
-            try
-            {
-                //Save setup
-                App.SetupModel = SelectedSetupModel;
-                SetupRepository setupRepository = new SetupRepository();
-                App.SetupModel.ToEntity();
-                if (App.SetupModel.IsNew)
-                {
-                    setupRepository.Add<Setup>(App.SetupModel.Setup);
-                    setupRepository.Commit();
-                }
-                else if (App.SetupModel.IsDirty)
-                {
-                    setupRepository.Update<Setup>(App.SetupModel.Setup);
-                    setupRepository.Commit();
-                }
-                App.SetupModel.EndUpdate();
-
-                // Get  & Set Lesson for study
-                List<LessonModel> lst = new List<LessonModel>();
-                lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
-                if (lst != null && lst.Count > 0)
-                {
-                    //Shuffle
-                    LessonCollection = new List<LessonModel>(lst);
-                    if (App.SetupModel.Setup.IsShuffle == true)
-                    {
-                        var lessonShuffle = ShuffleList.Randomize<LessonModel>(LessonCollection.ToList());
-                        LessonCollection = new List<LessonModel>(lessonShuffle);
-                    }
-
-                    var LimitCardNum = LessonCollection.Count;
-                    if (App.SetupModel.Setup.IsLimitCard == true)
-                    {
-                        if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
-                            LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
-                        LessonCollection = new List<LessonModel>(LessonCollection.GetRange(0,LimitCardNum));
-                    }
-                }
-
-
-                //Store last study 
-                if (!SelectedCard.IsFile)
-                {
-                    // For Study 
-                    // Set Last Lesson user Study
-                    StudyRepository studyRespository = new StudyRepository();
-
-                    //set IsLast
-                    var studyAll = studyRespository.GetAll<Study>();
-                    Study study;
-                    if (studyAll.Count == 0)
-                    {
-                        study = new Study();
-                        study.StudyID = AutoGeneration.NewSeqGuid();
-                        study.LastStudyDate = DateTime.Today;
-                        studyRespository.Add<Study>(study);
-                        studyRespository.Commit();
-                    }
-                    else
-                    {
-                        study = studyAll.FirstOrDefault();
-                    }
-
-                    //reset data IsLastStudy == true => set all to false
-                    foreach (var item in study.StudyDetails.Where(x => x.IsLastStudy == true))
-                    {
-                        item.IsLastStudy = false;
-                        studyRespository.Update(item);
-                    }
-                    studyRespository.Commit();
-
-                    //Store & set isLastStudy
-                    foreach (var item in LessonCollection)
-                    {
-                        var studyDetail = study.StudyDetails.Where(x => x.LessonID.Equals(item.LessonID)).SingleOrDefault();
-                        if (studyDetail != null)
-                        {
-                            studyDetail.IsLastStudy = true;
-                        }
-                        else
-                        {
-                            StudyDetail detail = new StudyDetail();
-                            detail.StudyDetailID = AutoGeneration.NewSeqGuid();
-                            detail.LessonID = item.LessonID;
-                            detail.IsLastStudy = true;
-                            detail.StudyID = study.StudyID;
-                            study.StudyDetails.Add(detail);
-                        }
-                    }
-                    studyRespository.Commit();
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-            }
+            OkExecute();
 
             ButtonClickHandler.Invoke("OkExecute");
 
         }
+
+       
         #endregion
 
         #region "  CancelCommand"
@@ -530,6 +436,107 @@ namespace FlashCard.ViewModels
                 }
             }
             SelectedCard.CheckedAll = status;
+        }
+
+        public void OkExecute()
+        {
+            try
+            {
+                //Save setup
+                App.SetupModel = SelectedSetupModel;
+                SetupRepository setupRepository = new SetupRepository();
+                App.SetupModel.ToEntity();
+                if (App.SetupModel.IsNew)
+                {
+                    setupRepository.Add<Setup>(App.SetupModel.Setup);
+                    setupRepository.Commit();
+                }
+                else if (App.SetupModel.IsDirty)
+                {
+                    setupRepository.Update<Setup>(App.SetupModel.Setup);
+                    setupRepository.Commit();
+                }
+                App.SetupModel.EndUpdate();
+
+                // Get  & Set Lesson for study
+                List<LessonModel> lst = new List<LessonModel>();
+                lst.AddRange(SelectedCard.LessonCollection.Where(x => x.IsChecked));
+                if (lst != null && lst.Count > 0)
+                {
+                    //Shuffle
+                    LessonCollection = new List<LessonModel>(lst);
+                    if (App.SetupModel.Setup.IsShuffle == true)
+                    {
+                        var lessonShuffle = ShuffleList.Randomize<LessonModel>(LessonCollection.ToList());
+                        LessonCollection = new List<LessonModel>(lessonShuffle);
+                    }
+
+                    var LimitCardNum = LessonCollection.Count;
+                    if (App.SetupModel.Setup.IsLimitCard == true)
+                    {
+                        if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
+                            LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
+                        LessonCollection = new List<LessonModel>(LessonCollection.GetRange(0, LimitCardNum));
+                    }
+                }
+
+
+                //Store last study 
+                if (!SelectedCard.IsFile)
+                {
+                    // For Study 
+                    // Set Last Lesson user Study
+                    StudyRepository studyRespository = new StudyRepository();
+
+                    //set IsLast
+                    var studyAll = studyRespository.GetAll<Study>();
+                    Study study;
+                    if (studyAll.Count == 0)
+                    {
+                        study = new Study();
+                        study.StudyID = AutoGeneration.NewSeqGuid();
+                        study.LastStudyDate = DateTime.Today;
+                        studyRespository.Add<Study>(study);
+                        studyRespository.Commit();
+                    }
+                    else
+                    {
+                        study = studyAll.FirstOrDefault();
+                    }
+
+                    //reset data IsLastStudy == true => set all to false
+                    foreach (var item in study.StudyDetails.Where(x => x.IsLastStudy == true))
+                    {
+                        item.IsLastStudy = false;
+                        studyRespository.Update(item);
+                    }
+                    studyRespository.Commit();
+
+                    //Store & set isLastStudy
+                    foreach (var item in LessonCollection)
+                    {
+                        var studyDetail = study.StudyDetails.Where(x => x.LessonID.Equals(item.LessonID)).SingleOrDefault();
+                        if (studyDetail != null)
+                        {
+                            studyDetail.IsLastStudy = true;
+                        }
+                        else
+                        {
+                            StudyDetail detail = new StudyDetail();
+                            detail.StudyDetailID = AutoGeneration.NewSeqGuid();
+                            detail.LessonID = item.LessonID;
+                            detail.IsLastStudy = true;
+                            detail.StudyID = study.StudyID;
+                            study.StudyDetails.Add(detail);
+                        }
+                    }
+                    studyRespository.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
         }
 
 

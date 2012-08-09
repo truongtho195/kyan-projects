@@ -24,7 +24,6 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             this.Titles = "Lesson Management";
-
         }
 
         public LessonViewModel(LessonManageView view, List<LessonModel> lessonCollection, bool isFile)
@@ -70,11 +69,9 @@ namespace FlashCard.ViewModels
                             lessonChecked.IsChecked = true;
                             studyConfigViewModel.CheckedForList("Child");
                         }
+                        studyConfigViewModel.OkExecute();
                         LessonViewModel_DoNow("OkExecute");
-
                     }
-
-
                 }
                 else
                 {
@@ -1213,6 +1210,7 @@ namespace FlashCard.ViewModels
 
         private void LessonViewModel_DoNow(string message)
         {
+            
             try
             {
                 if ("OkExecute".Equals(message))
