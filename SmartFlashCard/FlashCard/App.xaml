@@ -9,7 +9,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Dictionary/ResourceDictionary1.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
