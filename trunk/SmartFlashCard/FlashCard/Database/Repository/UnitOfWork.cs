@@ -43,6 +43,7 @@
         {
             try
             {
+                log.Info("GetConnectionString()");
                 string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
                 // Specify the provider name, server and database.
                 string providerName = "System.Data.SQLite";
@@ -52,6 +53,7 @@
                 // Initialize the connection string builder for the
                 // underlying provider.
                 SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+                
 
                 // Set the properties for the data source.
                 sqlBuilder.DataSource = serverName + databaseName;
@@ -60,7 +62,7 @@
 
                 // Build the SqlConnection connection string.
                 string providerString = sqlBuilder.ToString();
-
+                log.Info("sqlBuilder OK");
                 // Initialize the EntityConnectionStringBuilder.
                 EntityConnectionStringBuilder entityBuilder =
                     new EntityConnectionStringBuilder();
@@ -70,9 +72,12 @@
 
                 // Set the provider-specific connection string.
                 entityBuilder.ProviderConnectionString = providerString;
+                log.Info("entityBuilder OK");
 
                 // Set the Metadata location.
                 entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
+                log.Info("entityBuilder Return connection string");
+                log.Info(entityBuilder.ToString());
                 return entityBuilder.ToString();
             }
             catch (Exception ex)
@@ -91,6 +96,7 @@
             //_service.AddObject(typeof(T).Name, _entity);
 
             _context.CreateObjectSet<T>().AddObject(_entity);
+            log.Info("Add "+typeof(T));
         }
 
         //Delete an existing entity from the model
@@ -106,6 +112,7 @@
             //    _context.DeleteObject(originalItem);
             //}
             _context.CreateObjectSet<T>().DeleteObject(_entity);
+            log.Info("Delete " + typeof(T));
             //this.Entities.DeleteObject(_entity);
         }
 
@@ -123,22 +130,26 @@
             //}
 
             _context.CreateObjectSet<T>().ApplyCurrentValues(_entity);
+            log.Info("Update " + typeof(T));
         }
 
         public void Refresh<T>(T item) where T : class
         {
             _context.Refresh(System.Data.Objects.RefreshMode.StoreWins, item);
+            log.Info("Refresh " + typeof(T));
         }
 
         public void Refresh<T>() where T : class
         {
             _context.Refresh(System.Data.Objects.RefreshMode.StoreWins, _context.CreateObjectSet<T>());
+            log.Info("Refresh " + typeof(T));
         }
 
         //Get the entire Entity table
         public IList<T> GetAll<T>() where T : class
         {
             IList<T> list = _context.CreateObjectSet<T>().ToList();
+            log.Info("GetAll " + typeof(T));
             return list;
         }
 
@@ -150,6 +161,7 @@
                 IList<T> list = query.ToList();
                 return list;
             }
+            log.Info("GetAll " + typeof(T));
             return default(IList<T>);
         }
 
@@ -164,6 +176,7 @@
                 query = query.Include(item);
             }));
             IList<T> list = query.ToList();
+            log.Info("Include " + typeof(T));
             return list;
         }
 
@@ -174,6 +187,7 @@
                 .OrderBy(orderby)
                 .Skip(count).Take(100)
                 .ToList();
+            log.Info("Skip " + typeof(T));
             return list;
         }
 
@@ -183,11 +197,13 @@
                 .OrderBy(orderby)
                 .Skip(count).Take(100)
                 .ToList();
+            log.Info("Skip " + typeof(T));
             return list;
         }
 
         public IQueryable<T> GetQuery<T>(Expression<Func<T, bool>> expression) where T : class
         {
+            log.Info("GetQuery " + typeof(T));
             return _context.CreateObjectSet<T>()
                 .Where(expression);
         }
@@ -195,6 +211,7 @@
         //Get by query
         public T FindBy<T>(Expression<Func<T, bool>> expression) where T : class
         {
+            log.Info("FindBy " + typeof(T));
             return _context.CreateObjectSet<T>()
                 .Where(expression)
                 .FirstOrDefault();
@@ -202,6 +219,7 @@
 
         public T GetSingle<T>(Expression<Func<T, bool>> expression) where T : class
         {
+            log.Info("GetSingle " + typeof(T));
             T result = _context.CreateObjectSet<T>()
                 .Where(expression)
                 .FirstOrDefault();
