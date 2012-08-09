@@ -7,9 +7,11 @@
     using System.Linq.Expressions;
     using System.Data.SqlClient;
     using System.Data.EntityClient;
+    using log4net;
     public class UnitOfWork : IDisposable
     {
 
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         //A Static instance of the Linq Data Context
         private static System.Data.Objects.ObjectContext _context;
         //private ObjectSet<T> _entities;
@@ -31,43 +33,53 @@
             //    _service = new System.Data.Objects.ObjectContext("string");
             //}
 
+            log.Info("Initial UnitOfWork");
             if (_context == null)
                 _context = new SmartFlashCardDBEntities(GetConnectionString());
+            log.Info("Initial UnitOfWork Done");
         }
 
         private string GetConnectionString()
         {
-            string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            // Specify the provider name, server and database.
-            string providerName = "System.Data.SQLite";
-            string serverName = connectionString;
-            string databaseName = "\\SmartFlashCardDB.s3db";
+            try
+            {
+                string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+                // Specify the provider name, server and database.
+                string providerName = "System.Data.SQLite";
+                string serverName = connectionString;
+                string databaseName = "\\SmartFlashCardDB.s3db";
 
-            // Initialize the connection string builder for the
-            // underlying provider.
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+                // Initialize the connection string builder for the
+                // underlying provider.
+                SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
-            // Set the properties for the data source.
-            sqlBuilder.DataSource = serverName + databaseName;
-            //sqlBuilder.InitialCatalog = databaseName;
-            //sqlBuilder.IntegratedSecurity = true;
+                // Set the properties for the data source.
+                sqlBuilder.DataSource = serverName + databaseName;
+                //sqlBuilder.InitialCatalog = databaseName;
+                //sqlBuilder.IntegratedSecurity = true;
 
-            // Build the SqlConnection connection string.
-            string providerString = sqlBuilder.ToString();
+                // Build the SqlConnection connection string.
+                string providerString = sqlBuilder.ToString();
 
-            // Initialize the EntityConnectionStringBuilder.
-            EntityConnectionStringBuilder entityBuilder =
-                new EntityConnectionStringBuilder();
+                // Initialize the EntityConnectionStringBuilder.
+                EntityConnectionStringBuilder entityBuilder =
+                    new EntityConnectionStringBuilder();
 
-            //Set the provider name.
-            entityBuilder.Provider = providerName;
+                //Set the provider name.
+                entityBuilder.Provider = providerName;
 
-            // Set the provider-specific connection string.
-            entityBuilder.ProviderConnectionString = providerString;
+                // Set the provider-specific connection string.
+                entityBuilder.ProviderConnectionString = providerString;
 
-            // Set the Metadata location.
-            entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
-            return entityBuilder.ToString();
+                // Set the Metadata location.
+                entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
+                return entityBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            return String.Empty;
         }
 
         //Add a new entity to the model
