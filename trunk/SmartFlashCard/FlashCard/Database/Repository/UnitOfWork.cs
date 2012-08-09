@@ -45,8 +45,7 @@
 
             // Initialize the connection string builder for the
             // underlying provider.
-            SqlConnectionStringBuilder sqlBuilder =
-                new SqlConnectionStringBuilder();
+            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
             // Set the properties for the data source.
             sqlBuilder.DataSource = serverName + databaseName;

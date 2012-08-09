@@ -33,32 +33,48 @@ namespace FlashCard
         [STAThread]
         public static void Main()
         {
-            string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
-
-            //string appName = "SmardFashCard";
-            if (SingleInstance<App>.InitializeAsFirstInstance(appName))
+            MessageBox.Show("Welcome");
+            var currentUserName = Environment.UserName;
+            log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
+            log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            log.Info(string.Empty);
+            log.Info(" ======= Flash card Run=====");
+            try
             {
-                SetupRepository setupRepository = new SetupRepository();
-                var setup = setupRepository.GetAll<Setup>();
-                if (setup.Count == 0)
-                    SetupModel = new SetupModel();
-                else
+                string appName = System.Configuration.ConfigurationManager.AppSettings["ApplicationName"];
+                log.Info("appName OK");
+                //string appName = "SmardFashCard";
+                if (SingleInstance<App>.InitializeAsFirstInstance(appName))
                 {
-                    SetupModel = new SetupModel(setup.FirstOrDefault());
+                    log.Info("Pass SingleInstance");
+                    SetupRepository setupRepository = new SetupRepository();
+                    var setup = setupRepository.GetAll<Setup>();
+                    log.Info("setupRepository.GetAll");
+                    if (setup.Count == 0)
+                        SetupModel = new SetupModel();
+                    else
+                    {
+                        SetupModel = new SetupModel(setup.FirstOrDefault());
+                    }
+
+                    StudyRepository studyRespository = new StudyRepository();
+                    var study = studyRespository.GetAll<Study>();
+                    log.Info("studyRespository.GetAll<Study>()");
+                    if (study != null)
+                        App.StudyModel = new StudyModel(study.FirstOrDefault());
+                    else
+                        App.StudyModel = new StudyModel();
+                    var application = new App();
+                    application.InitializeComponent();
+
+                    application.Run();
+                    // Allow single instance code to perform cleanup operations
+                    SingleInstance<App>.Cleanup();
                 }
-
-                StudyRepository studyRespository = new StudyRepository();
-                var study = studyRespository.GetAll<Study>();
-                if (study != null)
-                    App.StudyModel = new StudyModel(study.FirstOrDefault());
-                else
-                    App.StudyModel = new StudyModel();
-                var application = new App();
-                application.InitializeComponent();
-
-                application.Run();
-                // Allow single instance code to perform cleanup operations
-                SingleInstance<App>.Cleanup();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
             }
         }
 
@@ -67,6 +83,7 @@ namespace FlashCard
             // @"E:\Desktop\3000 General Word.flc"
             // @"E:\Desktop\test.txt"
             //var file = @"E:\Desktop\Sorable.fcard";
+            log.Info("OnStartup Run");
             try
             {
                 var file = e.Args.FirstOrDefault().ToString();
@@ -90,6 +107,10 @@ namespace FlashCard
                     MessageBox.Show("File not valid", "Error", MessageBoxButton.OK);
                 }
             }
+            catch (NullReferenceException NullEx)
+            {
+                log.Info(NullEx);
+            }
             catch (Exception ex)
             {
                 log.Error(ex);
@@ -97,6 +118,7 @@ namespace FlashCard
 
             if (!IsStatupRunOk)
             {
+                log.Info("RunNormal()");
                 RunNormal();
             }
 
@@ -106,11 +128,7 @@ namespace FlashCard
 
         public App()
         {
-            var currentUserName = Environment.UserName;
-            log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
-            log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info(string.Empty);
-            log.Info(" ======= Flash card Run=====");
+            
         }
 
 
@@ -123,6 +141,7 @@ namespace FlashCard
         {
             if (SetupModel.IsOpenLastStudy == true)
             {
+                log.Info("SetupModel.IsOpenLastStudy==true");
                 var lesson = App.StudyModel.Study.StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
                 LessonCollection = new List<LessonModel>();
                 LessonCollection.AddRange(lesson.Select(x => new LessonModel(x)));
@@ -130,6 +149,7 @@ namespace FlashCard
             }
             else
             {
+                log.Info("SetupModel.IsOpenLastStudy==false");
                 LessonMangeView = new LessonManageView();
                 LessonMangeView.Show();
             }
