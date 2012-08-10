@@ -33,9 +33,11 @@
             //    _service = new System.Data.Objects.ObjectContext("string");
             //}
             //GetConnectionString()
+
+            var test = GetEntityConnection();
             log.Info("Initial UnitOfWork");
             if (_context == null)
-                _context = new SmartFlashCardDBEntities(GetConnectionString());
+                _context = new SmartFlashCardDBEntities(GetEntityConnection());
             log.Info("Initial UnitOfWork Done");
         }
 
@@ -87,6 +89,31 @@
                 log.Error(ex);
             }
             return String.Empty;
+        }
+
+        private EntityConnection GetEntityConnection()
+        {
+            string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            // Specify the provider name, server and database.
+
+            string databaseName = "\\SmartFlashCardDB.s3db";
+
+            // underlying provider.
+            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+            
+            // Set the properties for the data source.
+            sqlBuilder.DataSource = connectionString + databaseName;
+
+            System.Data.EntityClient.EntityConnectionStringBuilder ee = new System.Data.EntityClient.EntityConnectionStringBuilder();
+            ee.Provider = "System.Data.SQLite";
+            ee.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
+            //ee.Metadata = @"res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl";
+            //ee.ProviderConnectionString = @"data source=C:\Mydata.db;Version=3;";
+            ee.ProviderConnectionString = sqlBuilder.ToString();
+
+            System.Data.EntityClient.EntityConnection entityConnection = new System.Data.EntityClient.EntityConnection(ee.ConnectionString);
+
+            return entityConnection;
         }
 
         //Add a new entity to the model

@@ -1367,7 +1367,6 @@ namespace FlashCard.ViewModels
                 LessonRepository lessonRepository = new LessonRepository();
                 CategoryRepository categoryRepository = new CategoryRepository();
                 CardRepository cardRepository = new CardRepository();
-                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 LessonCollection = new ObservableCollection<LessonModel>(lessonRepository.GetAll<Lesson>().Select(x => new LessonModel(x)));
                 if (LessonCollection.Any())
                 {
