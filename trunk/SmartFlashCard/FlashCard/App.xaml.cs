@@ -33,7 +33,6 @@ namespace FlashCard
         [STAThread]
         public static void Main()
         {
-            MessageBox.Show("Welcome");
             var currentUserName = Environment.UserName;
             log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
             log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -56,7 +55,6 @@ namespace FlashCard
                     {
                         SetupModel = new SetupModel(setup.FirstOrDefault());
                     }
-
                     StudyRepository studyRespository = new StudyRepository();
                     var study = studyRespository.GetAll<Study>();
                     log.Info("studyRespository.GetAll<Study>()");
