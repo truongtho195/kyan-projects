@@ -316,9 +316,7 @@ namespace FlashCard.ViewModels
 
         #endregion
 
-        #region GetLastLesson
-
-        #region GetLastLessonCommand
+        #region"  GetLastLessonCommand"
         private ICommand _getLastLessonCommand;
         //Relay Command In viewModel
         //Gets or sets the property value
@@ -361,7 +359,7 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #endregion
+        
         #endregion
 
         #region Methods

@@ -4,14 +4,10 @@ F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\ob
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\obj\x86\Debug\ResolveAssemblyReference.cache
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\ConvertToText.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.DataAccess.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.Model.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\MVVMHelper.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\System.Windows.Interactivity.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.dll
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\MessageBoxControl.dll
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.DataAccess.pdb
-F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\FlashCard.Model.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\MVVMHelper.pdb
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\System.Windows.Interactivity.xml
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\SmartFlashCard\ConvertToText\bin\Debug\WpfApplicationFramework.pdb
