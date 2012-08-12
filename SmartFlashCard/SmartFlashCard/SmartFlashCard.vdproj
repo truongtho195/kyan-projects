@@ -1024,49 +1024,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CCEC60517148E85C3B8AF51E90C9B974"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_83A6FEE562887E83C60822CBEEC15E44"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_80274733712134326CA3922A2FC0AB35"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6F9EC1AF97ACB60E4BD2BF34913E6C38"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_77C795B5B237B420A1D641D5C67C6872"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3A7AA23D67A3B1A0702EC3D595ECA3B8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E318E20B28A731A56EB3923DE8C04139"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2337D61D99717CEAB8BFCDBE104F091D"
+        "OwnerKey" = "8:_0C4CCDCA3D334238BD4CA4EF79E81B5D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1078,7 +1036,49 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0C4CCDCA3D334238BD4CA4EF79E81B5D"
+        "OwnerKey" = "8:_2337D61D99717CEAB8BFCDBE104F091D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E318E20B28A731A56EB3923DE8C04139"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3A7AA23D67A3B1A0702EC3D595ECA3B8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_77C795B5B237B420A1D641D5C67C6872"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6F9EC1AF97ACB60E4BD2BF34913E6C38"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_80274733712134326CA3922A2FC0AB35"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_83A6FEE562887E83C60822CBEEC15E44"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CCEC60517148E85C3B8AF51E90C9B974"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1724,6 +1724,11 @@
             "AssemblyAsmDisplayName" = "8:MVVMHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_2337D61D99717CEAB8BFCDBE104F091D"
+                    {
+                    "Name" = "8:MVVMHelper.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:MVVMHelper.dll"
             "TargetName" = "8:"
@@ -1970,6 +1975,11 @@
             "AssemblyAsmDisplayName" = "8:MessageBoxControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_3A7AA23D67A3B1A0702EC3D595ECA3B8"
+                    {
+                    "Name" = "8:MessageBoxControl.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:MessageBoxControl.dll"
             "TargetName" = "8:"
@@ -2636,6 +2646,11 @@
             "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_6F9EC1AF97ACB60E4BD2BF34913E6C38"
+                    {
+                    "Name" = "8:System.Data.SQLite.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Data.SQLite.dll"
             "TargetName" = "8:"
@@ -2702,6 +2717,11 @@
             "AssemblyAsmDisplayName" = "8:System.Data.SQLite.Linq, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_77C795B5B237B420A1D641D5C67C6872"
+                    {
+                    "Name" = "8:System.Data.SQLite.Linq.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Data.SQLite.Linq.dll"
             "TargetName" = "8:"
@@ -2728,6 +2748,11 @@
             "AssemblyAsmDisplayName" = "8:Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_7A03414F9426CCBCC606767646A52A2A"
+                    {
+                    "Name" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Hardcodet.Wpf.TaskbarNotification.dll"
             "TargetName" = "8:"
@@ -2794,6 +2819,11 @@
             "AssemblyAsmDisplayName" = "8:log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_80274733712134326CA3922A2FC0AB35"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
@@ -2880,6 +2910,11 @@
             "AssemblyAsmDisplayName" = "8:AttachedCommandBehavior, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_83A6FEE562887E83C60822CBEEC15E44"
+                    {
+                    "Name" = "8:AttachedCommandBehavior.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:AttachedCommandBehavior.dll"
             "TargetName" = "8:"
@@ -3886,6 +3921,11 @@
             "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_CCEC60517148E85C3B8AF51E90C9B974"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
             "TargetName" = "8:"
@@ -4152,6 +4192,11 @@
             "AssemblyAsmDisplayName" = "8:WpfApplicationFramework, Version=2.0.0.400, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_E318E20B28A731A56EB3923DE8C04139"
+                    {
+                    "Name" = "8:WpfApplicationFramework.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:WpfApplicationFramework.dll"
             "TargetName" = "8:"
@@ -4570,7 +4615,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SmartFlashCard"
         "ProductCode" = "8:{2F15FBFD-F835-4D0C-9F08-A5052DAF7EA9}"
-        "PackageCode" = "8:{7BBA01FA-59B1-4BD1-929C-3192ED8080F1}"
+        "PackageCode" = "8:{6E5D22AD-946D-4FF8-8C97-8F68226CB85B}"
         "UpgradeCode" = "8:{461060DD-3859-43C1-B0C8-585C5F2F3863}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
