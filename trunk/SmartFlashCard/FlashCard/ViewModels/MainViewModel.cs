@@ -385,7 +385,7 @@ namespace FlashCard.ViewModels
                 {
                     log.Info("||{*} === Fancy Ballon Mouse Enter Command Executed === ");
                     //if (!(ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).isClosing)
-                    if(!IsOtherEventControlRaise)
+                    if (!IsOtherEventControlRaise)
                     {
                         var storyBoard = (ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon).FindResource("FadeBack") as Storyboard;
                         storyBoard.Begin();
@@ -786,6 +786,7 @@ namespace FlashCard.ViewModels
             {
                 log.Info("||{*} === Cancel Command Executed === ");
                 //Close & waiting for answer
+
                 if ("FullScreen".Equals(param.ToString()))
                 {
                     _timerViewFullScreen.Stop();
@@ -798,18 +799,17 @@ namespace FlashCard.ViewModels
 
                 if (result.Equals(MessageBoxResult.Yes))
                 {
-
-                    if ("FullScreen".Equals(param.ToString()))
-                    {
+                    //For Fullscreen
+                    if (_timerViewFullScreen != null)
                         _timerViewFullScreen.Stop();
+                    if (_learnView != null)
+                    {
                         _learnView.Close();
                     }
-                    else
-                    {
-                        CloseTimerPopup();
-                        _timerPopup = null;
-                        _waitForClose = null;
-                    }
+
+                    //For Popup
+                    CloseTimerPopup();
+
                     IsPopupStarted = false;
                     ViewCore.MyNotifyIcon.Dispose();
                     GC.SuppressFinalize(this);
@@ -876,11 +876,12 @@ namespace FlashCard.ViewModels
                     //Storyboard sb = (Storyboard)_learnView.FindResource("sbUnLoadForm");
                     //sb.Completed += new EventHandler(sb_Completed);
                     //_learnView.BeginStoryboard(sb);
-                    if (_timerViewFullScreen != null && _timerViewFullScreen.IsEnabled)
+                    if (_timerViewFullScreen != null)
                     {
                         _timerViewFullScreen.Stop();
                         IsFullScreenStarted = false;
                         _learnView.Close();
+                        _learnView = null;
 
                         if (App.SetupModel.Setup.IsEnableSlideShow == true)
                         {
@@ -923,7 +924,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnFullScreenCanExecute(object param)
         {
-            return true;
+            return !IsFullScreenStarted;
         }
 
         /// <summary>
@@ -947,7 +948,6 @@ namespace FlashCard.ViewModels
 
                 //Storyboard sb = (Storyboard)_learnView.FindResource("sbLoadForm");
                 //_learnView.BeginStoryboard(sb);
-                _learnView.Activate();
                 _learnView.Show();
             }
             catch (Exception ex)
@@ -1167,6 +1167,13 @@ namespace FlashCard.ViewModels
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
                     _listenWord.Open(ur);
                     _listenWord.Play();
+                    Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(
+                        delegate
+                        {
+                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, "FlashCardSound");
+                        }));
+                    
+
                 }
                 else
                 {
@@ -1414,11 +1421,10 @@ namespace FlashCard.ViewModels
         {
             var action = new Action(() =>
             {
-                if (_waitForClose != null && _waitForClose.IsEnabled)
-                    _waitForClose.Stop();
-                if (_timerPopup != null && _timerPopup.IsEnabled)
+                if (_timerPopup != null)
                     _timerPopup.Stop();
-
+                if (_waitForClose != null)
+                    _waitForClose.Stop();
                 if (ViewCore.MyNotifyIcon.CustomBalloon != null)
                 {
                     ViewCore.MyNotifyIcon.CloseBalloon();

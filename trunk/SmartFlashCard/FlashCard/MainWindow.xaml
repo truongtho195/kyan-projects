@@ -21,7 +21,9 @@
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Full Learning"
-                              Command="{Binding FullScreenCommand}" />
+                              Command="{Binding FullScreenCommand}">
+                                
+                    </MenuItem>
                     <MenuItem Command="{Binding PlayPauseCommand}"
                               Visibility="{Binding SetupModel.IsEnableSlideShow,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter}}"
                               CommandParameter="Popup">
@@ -30,8 +32,6 @@
                                 <Setter Property="Header"
                                         Value="Play" />
                                 <Style.Triggers>
-                                 
-
                                     <DataTrigger Binding="{Binding IsPopupStarted}"
                                                  Value="True">
                                         <Setter Property="Header"

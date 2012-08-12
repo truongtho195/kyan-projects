@@ -33,17 +33,17 @@ namespace FlashCard.Helper
                     keyword = CleanFileName(keyword);
 
                 string fullPathFile = string.Format("{0}/{1}.mp3", pathFile, keyword);
-                if (File.Exists(fullPathFile))
-                    File.Delete(fullPathFile);
-                var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
-                WebResponse response = request.GetResponse();
-                Stream strm = response.GetResponseStream();
-                
-                
-                if (strm.CanRead & !File.Exists(fullPathFile))
+                if (!File.Exists(fullPathFile))
                 {
-                    SaveStreamToFile(strm, fullPathFile);
+                    var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
+                    WebResponse response = request.GetResponse();
+                    Stream strm = response.GetResponseStream();
+
+                    if (strm.CanRead & !File.Exists(fullPathFile))
+                    {
+                        SaveStreamToFile(strm, fullPathFile);
+                    }
                 }
             }
             catch (Exception ex)

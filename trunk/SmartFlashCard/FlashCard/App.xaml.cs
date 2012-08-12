@@ -73,6 +73,7 @@ namespace FlashCard
             catch (Exception ex)
             {
                 log.Error(ex);
+                MessageBox.Show(ex.ToString());
             }
         }
 

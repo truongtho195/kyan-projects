@@ -949,7 +949,14 @@
     			<ControlTemplate TargetType="{x:Type DataGridCell}">
     				<Border SnapsToDevicePixels="True" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#00000000">
     					<Grid VerticalAlignment="Center" HorizontalAlignment="Center" Background="#00000000">
-    						<Ellipse x:Name="ellipse" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="{DynamicResource ColorLineNumNomard}"/>
+    						<Ellipse x:Name="ellipse" Width="18" Height="18" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="#FF4B4A4A" StrokeThickness="0.5">
+    							<Ellipse.Fill>
+    								<RadialGradientBrush GradientOrigin="0.242,0.371">
+    									<GradientStop Color="#667C7B7B" Offset="1"/>
+    									<GradientStop Color="#2BC4C2C2" Offset="0.832"/>
+    								</RadialGradientBrush>
+    							</Ellipse.Fill>
+    						</Ellipse>
     						<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" d:LayoutOverrides="Width, Height"/>
     					</Grid>
     				</Border>

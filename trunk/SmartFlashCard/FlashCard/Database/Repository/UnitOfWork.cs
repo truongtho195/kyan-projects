@@ -8,6 +8,10 @@
     using System.Data.SqlClient;
     using System.Data.EntityClient;
     using log4net;
+    using System.Data.Common;
+    using System.Data.Metadata.Edm;
+    using System.Reflection;
+    using System.Data.SQLite;
     public class UnitOfWork : IDisposable
     {
 
@@ -34,33 +38,47 @@
             //}
             //GetConnectionString()
 
-            var test = GetEntityConnection();
             log.Info("Initial UnitOfWork");
             if (_context == null)
-                _context = new SmartFlashCardDBEntities(GetEntityConnection());
+                _context = new SmartFlashCardDBEntities(sqlConnectionString());
             log.Info("Initial UnitOfWork Done");
         }
+        private EntityConnection sqlConnectionString()
+        { 
+            string serverName = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            string databaseName = "SmartFlashCardDB.s3db";
+            string dataSource = string.Format("Data Source={0}\\{1}", serverName, databaseName);
+            string metaData = "Database.SmartFlashCardDB";
 
+            //Create Entity Collection string For get MetaWorkspace
+            System.Data.EntityClient.EntityConnectionStringBuilder ee = new System.Data.EntityClient.EntityConnectionStringBuilder();
+            ee.Provider = "System.Data.SQLite";
+            ee.Metadata = string.Format(@"res://*/{0}.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/{0}.msl", metaData);
+            EntityConnection entityConn = new EntityConnection(ee.ToString());
+            
+            //Create Entity Collection with sqlite
+            SQLiteConnection sqlConnection = new SQLiteConnection(dataSource);
+            EntityConnection entityConnection = new System.Data.EntityClient.EntityConnection(entityConn.GetMetadataWorkspace(),sqlConnection);
+            return entityConnection;
+        }
         private string GetConnectionString()
         {
             try
             {
                 log.Info("GetConnectionString()");
-                string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+                string serverName = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
                 // Specify the provider name, server and database.
                 //string providerName = "System.Data.SQLite";
                 string providerName = "System.Data.SQLite";
-                
-                string serverName = connectionString;
-                string databaseName = "\\SmartFlashCardDB.s3db";
+                string metaData = "Database.SmartFlashCardDB";
+                string databaseName = "SmartFlashCardDB.s3db";
 
                 // Initialize the connection string builder for the
                 // underlying provider.
                 SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-                
 
                 // Set the properties for the data source.
-                sqlBuilder.DataSource = serverName + databaseName;
+                sqlBuilder.DataSource = string.Format("{0}\\{1}", serverName, databaseName);
                 //sqlBuilder.InitialCatalog = databaseName;
                 //sqlBuilder.IntegratedSecurity = true;
 
@@ -79,7 +97,7 @@
                 log.Info("entityBuilder OK");
 
                 // Set the Metadata location.
-                entityBuilder.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
+                entityBuilder.Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", metaData);
                 log.Info("entityBuilder Return connection string");
                 log.Info(entityBuilder.ToString());
                 return entityBuilder.ToString();
@@ -91,30 +109,7 @@
             return String.Empty;
         }
 
-        private EntityConnection GetEntityConnection()
-        {
-            string connectionString = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            // Specify the provider name, server and database.
-
-            string databaseName = "\\SmartFlashCardDB.s3db";
-
-            // underlying provider.
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-            
-            // Set the properties for the data source.
-            sqlBuilder.DataSource = connectionString + databaseName;
-
-            System.Data.EntityClient.EntityConnectionStringBuilder ee = new System.Data.EntityClient.EntityConnectionStringBuilder();
-            ee.Provider = "System.Data.SQLite";
-            ee.Metadata = @"res://*/Database.SmartFlashCardDB.csdl|res://*/Database.SmartFlashCardDB.ssdl|res://*/Database.SmartFlashCardDB.msl";
-            //ee.Metadata = @"res://*/Model1.csdl|res://*/Model1.ssdl|res://*/Model1.msl";
-            //ee.ProviderConnectionString = @"data source=C:\Mydata.db;Version=3;";
-            ee.ProviderConnectionString = sqlBuilder.ToString();
-
-            System.Data.EntityClient.EntityConnection entityConnection = new System.Data.EntityClient.EntityConnection(ee.ConnectionString);
-
-            return entityConnection;
-        }
+     
 
         //Add a new entity to the model
         public void Add<T>(T _entity) where T : class
@@ -125,7 +120,7 @@
             //_service.AddObject(typeof(T).Name, _entity);
 
             _context.CreateObjectSet<T>().AddObject(_entity);
-            log.Info("Add "+typeof(T));
+            log.Info("Add " + typeof(T));
         }
 
         //Delete an existing entity from the model
