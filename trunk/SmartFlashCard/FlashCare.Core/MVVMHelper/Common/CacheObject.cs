@@ -34,7 +34,7 @@ public class CacheObject
     /// <typeparam name="T">Type of cached item</typeparam>
     /// <param name="objectToCache">Item to be cached</param>
     /// <param name="key">Name of item</param>
-    public static void Add<T>(T objectToCache, string key) where T : class
+    public static void Add<T>(string key,T objectToCache) where T : class
     {
         Cache.Add(key, objectToCache, DateTime.Now.AddDays(cachePeriod));
     }
@@ -45,7 +45,7 @@ public class CacheObject
     /// </summary>
     /// <param name="objectToCache">Item to be cached</param>
     /// <param name="key">Name of item</param>
-    public static void Add(object objectToCache, string key)
+    public static void Add(string key,object objectToCache )
     {
         Cache.Add(key, objectToCache, DateTime.Now.AddDays(cachePeriod));
     }

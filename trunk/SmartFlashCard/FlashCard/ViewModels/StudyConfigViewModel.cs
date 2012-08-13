@@ -368,8 +368,8 @@ namespace FlashCard.ViewModels
             log.Info("|| {*} === InitialData ===");
             try
             {
-                SelectedSetupModel = App.SetupModel;
-                SelectedStudy = App.StudyModel;
+                SelectedSetupModel = CacheObject.Get<SetupModel>("SetupModel");
+                SelectedStudy = CacheObject.Get<StudyModel>("StudyModel");
             }
             catch (Exception ex)
             {
@@ -441,20 +441,20 @@ namespace FlashCard.ViewModels
             try
             {
                 //Save setup
-                App.SetupModel = SelectedSetupModel;
+                CacheObject.Add<SetupModel>("SetupModel",SelectedSetupModel);
                 SetupRepository setupRepository = new SetupRepository();
-                App.SetupModel.ToEntity();
-                if (App.SetupModel.IsNew)
+                CacheObject.Get<SetupModel>("SetupModel").ToEntity();
+                if (CacheObject.Get<SetupModel>("SetupModel").IsNew)
                 {
-                    setupRepository.Add<Setup>(App.SetupModel.Setup);
+                    setupRepository.Add<Setup>(CacheObject.Get<SetupModel>("SetupModel").Setup);
                     setupRepository.Commit();
                 }
-                else if (App.SetupModel.IsDirty)
+                else if (CacheObject.Get<SetupModel>("SetupModel").IsDirty)
                 {
-                    setupRepository.Update<Setup>(App.SetupModel.Setup);
+                    setupRepository.Update<Setup>(CacheObject.Get<SetupModel>("SetupModel").Setup);
                     setupRepository.Commit();
                 }
-                App.SetupModel.EndUpdate();
+                CacheObject.Get<SetupModel>("SetupModel").EndUpdate();
 
                 // Get  & Set Lesson for study
                 List<LessonModel> lst = new List<LessonModel>();
@@ -463,17 +463,17 @@ namespace FlashCard.ViewModels
                 {
                     //Shuffle
                     LessonCollection = new List<LessonModel>(lst);
-                    if (App.SetupModel.Setup.IsShuffle == true)
+                    if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsShuffle == true)
                     {
                         var lessonShuffle = ShuffleList.Randomize<LessonModel>(LessonCollection.ToList());
                         LessonCollection = new List<LessonModel>(lessonShuffle);
                     }
 
                     var LimitCardNum = LessonCollection.Count;
-                    if (App.SetupModel.Setup.IsLimitCard == true)
+                    if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsLimitCard == true)
                     {
-                        if (App.SetupModel.Setup.LimitCardNum < LimitCardNum)
-                            LimitCardNum = App.SetupModel.Setup.LimitCardNum.Value;
+                        if (CacheObject.Get<SetupModel>("SetupModel").Setup.LimitCardNum < LimitCardNum)
+                            LimitCardNum = CacheObject.Get<SetupModel>("SetupModel").Setup.LimitCardNum.Value;
                         LessonCollection = new List<LessonModel>(LessonCollection.GetRange(0, LimitCardNum));
                     }
                 }

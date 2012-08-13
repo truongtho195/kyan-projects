@@ -41,7 +41,7 @@ namespace FlashCard.ViewModels
                     if (isFile)
                     {
                         //handle Statup for file
-                        if (App.SetupModel != null && (App.SetupModel.IsRunStatup || App.SetupModel.IsOpenLastStudy == true))
+                        if (CacheObject.Get<SetupModel>("SetupModel") != null && (CacheObject.Get<SetupModel>("SetupModel").IsRunStatup || CacheObject.Get<SetupModel>("SetupModel").IsOpenLastStudy == true))
                         {
                             var card = lessonCollection.FirstOrDefault().Lesson.Card;
                             CardModel cardModel = new CardModel(card);
