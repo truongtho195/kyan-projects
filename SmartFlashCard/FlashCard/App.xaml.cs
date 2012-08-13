@@ -17,10 +17,6 @@ namespace FlashCard
     {
         #region Properties
         public static LessonManageView LessonMangeView;
-        public static SetupModel SetupModel;
-        public static StudyModel StudyModel;
-
-
         private List<LessonModel> LessonCollection;
         private static ILog log;
 
@@ -28,8 +24,10 @@ namespace FlashCard
         /// Variable check if user click on file & file valid, set IsStatupRunOk = true . not run method run normal
         /// </summary>
         private bool IsStatupRunOk = false;
+        
         #endregion
 
+        #region Startup Methods
         [STAThread]
         public static void Main()
         {
@@ -50,18 +48,17 @@ namespace FlashCard
                     var setup = setupRepository.GetAll<Setup>();
                     log.Info("setupRepository.GetAll");
                     if (setup.Count == 0)
-                        SetupModel = new SetupModel();
+                        CacheObject.Add<SetupModel>("SetupModel",new SetupModel()) ;
                     else
-                    {
-                        SetupModel = new SetupModel(setup.FirstOrDefault());
-                    }
+                        CacheObject.Add<SetupModel>( "SetupModel",new SetupModel(setup.FirstOrDefault()));
+
                     StudyRepository studyRespository = new StudyRepository();
                     var study = studyRespository.GetAll<Study>();
                     log.Info("studyRespository.GetAll<Study>()");
                     if (study != null)
-                        App.StudyModel = new StudyModel(study.FirstOrDefault());
+                        CacheObject.Add<StudyModel>("StudyModel",new StudyModel(study.FirstOrDefault()));
                     else
-                        App.StudyModel = new StudyModel();
+                        CacheObject.Add<StudyModel>("StudyModel",new StudyModel());
                     var application = new App();
                     application.InitializeComponent();
 
@@ -89,12 +86,12 @@ namespace FlashCard
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {
-                    SetupModel.IsRunStatup = true;
+                    CacheObject.Get<SetupModel>("SetupModel").IsRunStatup = true;
                     var card = Serializer<Card>.Deserialize(file);
                     if (card != null)
                     {
                         LessonCollection = new List<LessonModel>(card.Lessons.Select(x => new LessonModel(x)));
-                        if (LessonCollection != null && LessonCollection.Count() > 0 && SetupModel.IsRunStatup)
+                        if (LessonCollection != null && LessonCollection.Count() > 0 && CacheObject.Get<SetupModel>("SetupModel").IsRunStatup)
                         {
                             LessonMangeView = new LessonManageView(this.LessonCollection, true);
                             IsStatupRunOk = true;
@@ -124,13 +121,11 @@ namespace FlashCard
             base.OnStartup(e);
         }
 
-
         public App()
         {
-            
-        }
 
-
+        } 
+        #endregion
 
         #region Methods
         /// <summary>
@@ -138,10 +133,10 @@ namespace FlashCard
         /// </summary>
         private void RunNormal()
         {
-            if (SetupModel.IsOpenLastStudy == true)
+            if (CacheObject.Get<SetupModel>("SetupModel").IsOpenLastStudy == true)
             {
                 log.Info("SetupModel.IsOpenLastStudy==true");
-                var lesson = App.StudyModel.Study.StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
+                var lesson = CacheObject.Get<StudyModel>("StudyModel").Study.StudyDetails.Where(x => x.IsLastStudy == true).Select(x => x.Lesson).Distinct();
                 LessonCollection = new List<LessonModel>();
                 LessonCollection.AddRange(lesson.Select(x => new LessonModel(x)));
                 LessonMangeView = new LessonManageView(this.LessonCollection, false);
@@ -152,7 +147,6 @@ namespace FlashCard
                 LessonMangeView = new LessonManageView();
                 LessonMangeView.Show();
             }
-
         }
 
         public bool SignalExternalCommandLineArgs(System.Collections.Generic.IList<string> args)

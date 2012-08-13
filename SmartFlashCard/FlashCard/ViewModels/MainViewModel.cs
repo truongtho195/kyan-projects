@@ -123,8 +123,7 @@ namespace FlashCard.ViewModels
 
         public SetupModel SetupModel
         {
-            get { return App.SetupModel; }
-
+            get { return CacheObject.Get<SetupModel>("SetupModel");}
         }
         #endregion
 
@@ -337,7 +336,7 @@ namespace FlashCard.ViewModels
                     //    sbChangeSide = (Storyboard)_learnView.FindResource("sbToFrontSide");
                     //_learnView.BeginStoryboard(sbChangeSide);
 
-                    if (App.SetupModel.Setup.IsEnableSlideShow == true && IsCurrentStarted)
+                    if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true && IsCurrentStarted)
                     {
                         DispatcherTimer stopChangeLesson = new DispatcherTimer();
                         stopChangeLesson.Interval = new TimeSpan(0, 0, 0, 2);
@@ -372,7 +371,7 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseEnterExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow == false)
+            if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == false)
                 return false;
             return ViewCore.MyNotifyIcon.CustomBalloon != null;
         }
@@ -421,7 +420,7 @@ namespace FlashCard.ViewModels
 
         private bool CanFancyBallonMouseLeaveExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow == false)
+            if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == false)
                 return false;
             return ViewCore.MyNotifyIcon.CustomBalloon != null;
         }
@@ -440,8 +439,8 @@ namespace FlashCard.ViewModels
                 }
                 _swCountTimerTick.Stop();
                 int time = 0;
-                if (_swCountTimerTick.Elapsed.Seconds < App.SetupModel.Setup.ViewTimeSecond)
-                    time = App.SetupModel.Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
+                if (_swCountTimerTick.Elapsed.Seconds < CacheObject.Get<SetupModel>("SetupModel").Setup.ViewTimeSecond)
+                    time = CacheObject.Get<SetupModel>("SetupModel").Setup.ViewTimeSecond - _swCountTimerTick.Elapsed.Seconds + 1;
                 else
                     time = 2;
                 var timerSpan = new TimeSpan(0, 0, 0, time);
@@ -529,7 +528,7 @@ namespace FlashCard.ViewModels
             try
             {
                 log.Info("||{*} === Play Pause Command Executed === ");
-                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                 {
                     if ("FullScreen".Equals(param.ToString()))
                     {
@@ -576,7 +575,7 @@ namespace FlashCard.ViewModels
 
         private bool CanShowPopupExecute(object param)
         {
-            if (App.SetupModel.Setup.IsEnableSlideShow == false)
+            if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == false)
                 return true;
             return false;
         }
@@ -622,7 +621,7 @@ namespace FlashCard.ViewModels
                 CanListen = false;
                 TextToSpeechPlayer(SelectedLesson.LessonName.Trim());
                 waitForListener.Start();
-                if ("FullScreen".Equals(param.ToString()) && App.SetupModel.Setup.IsEnableSlideShow == true && IsCurrentStarted)
+                if ("FullScreen".Equals(param.ToString()) && CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true && IsCurrentStarted)
                 {
                     DispatcherTimer stopForListen = new DispatcherTimer();
                     stopForListen = new DispatcherTimer();
@@ -735,7 +734,7 @@ namespace FlashCard.ViewModels
             try
             {
                 log.Info("||{*} === Next Back Command Executed === ");
-                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                     return;
                 if ("Back".Equals(param.ToString()))
                 {
@@ -883,7 +882,7 @@ namespace FlashCard.ViewModels
                         _learnView.Close();
                         _learnView = null;
 
-                        if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                        if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                         {
                             //PlayPauseBallonPopup(true);
                             //Run popup
@@ -941,7 +940,7 @@ namespace FlashCard.ViewModels
                 if (_learnView == null)
                     _learnView = new LearnView();
                 _learnView.DataContext = this;
-                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                     StartLessonFullScreen();
                 else
                     SetLesson();
@@ -1088,7 +1087,7 @@ namespace FlashCard.ViewModels
                 TextToSpeechPlayer("Welcome to Flash Card");
                 IsPopupStarted = true;
                 IsCurrentStarted = true;
-                if (App.SetupModel.Setup.IsEnableSlideShow == true)
+                if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                 {
                     InitialTimer();
                     _timerPopup.Start();
@@ -1210,17 +1209,17 @@ namespace FlashCard.ViewModels
 
             if (_timerPopup == null)
                 _timerPopup = new DispatcherTimer();
-            _timerPopup.Interval = App.SetupModel.TimeOut;
+            _timerPopup.Interval = CacheObject.Get<SetupModel>("SetupModel").TimeOut;
             _timerPopup.Tick += new EventHandler(_timer_Tick);
 
             if (_waitForClose == null)
                 _waitForClose = new DispatcherTimer();
-            _waitForClose.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.ViewTimeSecond);
+            _waitForClose.Interval = new TimeSpan(0, 0, (int)CacheObject.Get<SetupModel>("SetupModel").Setup.ViewTimeSecond);
             _waitForClose.Tick += new EventHandler(_waitForClose_Tick);
 
             if (_timerViewFullScreen == null)
                 _timerViewFullScreen = new DispatcherTimer();
-            _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)App.SetupModel.Setup.DistanceTimeSecond);
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, (int)CacheObject.Get<SetupModel>("SetupModel").Setup.DistanceTimeSecond);
             _timerViewFullScreen.Tick += new EventHandler(_timerViewFullScreen_Tick);
         }
 
@@ -1239,21 +1238,21 @@ namespace FlashCard.ViewModels
                 testTimerPopup.Start();
                 _swCountTimerTick.Start();
                 log.DebugFormat("|| == TimerPopup.Interval :{0}", _timerPopup.Interval);
-                log.DebugFormat("|| == TimeOut :{0}", App.SetupModel.TimeOut.Seconds);
+                log.DebugFormat("|| == TimeOut :{0}", CacheObject.Get<SetupModel>("SetupModel").TimeOut.Seconds);
                 if (!ViewCore.MyNotifyIcon.IsPopupOpen)
                 {
                     Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                     {
                         SetLesson();
-                        if (App.SetupModel.Setup.IsEnableSoundForShow == true)
+                        if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSoundForShow == true)
                             _soundForShow.PlaySync();
                         FancyBalloon balloon = new FancyBalloon();
                         IsOtherEventControlRaise = false;
                         ViewCore.MyNotifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Fade, null);
                         this.IsPopupStarted = true;
-                        var timerSpan = new TimeSpan(0, 0, 0, App.SetupModel.Setup.ViewTimeSecond);
+                        var timerSpan = new TimeSpan(0, 0, 0, CacheObject.Get<SetupModel>("SetupModel").Setup.ViewTimeSecond);
                         TimerForClosePopup(timerSpan);
-                        if (App.SetupModel.SpeechWhenShow == true)
+                        if (CacheObject.Get<SetupModel>("SetupModel").SpeechWhenShow == true)
                             TextToSpeechPlayer(SelectedLesson.LessonName);
                         log.DebugFormat("|| =================================\n");
                         log.DebugFormat("|| ==> Is Popup Showing");
@@ -1317,7 +1316,7 @@ namespace FlashCard.ViewModels
         /// </summary>
         private void StartLessonFullScreen()
         {
-            _timerViewFullScreen.Interval = new TimeSpan(0, 0, App.SetupModel.Setup.DistanceTimeSecond);
+            _timerViewFullScreen.Interval = new TimeSpan(0, 0, CacheObject.Get<SetupModel>("SetupModel").Setup.DistanceTimeSecond);
             IsFullScreenStarted = true;
             _timerViewFullScreen.Start();
         }
@@ -1334,10 +1333,10 @@ namespace FlashCard.ViewModels
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                     {
                         SetLesson();
-                        if (App.SetupModel.Setup.IsEnableSoundForShow == true)
+                        if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSoundForShow == true)
                             _soundForShow.PlaySync();
 
-                        if (App.SetupModel.SpeechWhenShow == true)
+                        if (CacheObject.Get<SetupModel>("SetupModel").SpeechWhenShow == true)
                             TextToSpeechPlayer(SelectedLesson.LessonName);
                     }));
             }

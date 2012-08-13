@@ -22,7 +22,6 @@
                 <ContextMenu>
                     <MenuItem Header="Full Learning"
                               Command="{Binding FullScreenCommand}">
-                                
                     </MenuItem>
                     <MenuItem Command="{Binding PlayPauseCommand}"
                               Visibility="{Binding SetupModel.IsEnableSlideShow,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter}}"
