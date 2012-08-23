@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>zxing.presentation</name>
+    </assembly>
+    <members>
+        <member name="M:ZXing.BitmapSourceLuminanceSource.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ZXing.BitmapSourceLuminanceSource"/> class.
+            </summary>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+        </member>
+        <member name="M:ZXing.BitmapSourceLuminanceSource.#ctor(System.Windows.Media.Imaging.BitmapSource)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ZXing.BitmapSourceLuminanceSource"/> class.
+            </summary>
+            <param name="bitmap">The bitmap.</param>
+        </member>
+        <member name="M:ZXing.BitmapSourceLuminanceSource.CreateLuminanceSource(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Should create a new luminance source with the right class type.
+            The method is used in methods crop and rotate.
+            </summary>
+            <param name="newLuminances">The new luminances.</param>
+            <param name="width">The width.</param>
+            <param name="height">The height.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

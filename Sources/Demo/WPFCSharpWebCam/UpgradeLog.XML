@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="WPFCSharpWebCam">
+</Property><Property Name="Solution File" Value="C:\Users\Truong Tho\Desktop\WPFCSharpWebCam\WPFCSharpWebCam.sln">
+</Property><Property Name="Date" Value="Thursday, August 23, 2012">
+</Property><Property Name="Time" Value="23:44:15 PM">
+</Property></Properties><Event ErrorLevel="0" Project="WPFCSharpWebCam" Source="WPFCSharpWebCam.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="WPFCSharpWebCam" Source="WPFCSharpWebCam.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="WPFCSharpWebCam" Source="WPFCSharpWebCam.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
