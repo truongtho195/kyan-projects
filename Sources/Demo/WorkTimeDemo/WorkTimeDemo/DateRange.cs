@@ -16,13 +16,13 @@ namespace WorkTimeDemo
             this.startDate = startDate;
             this.endDate = endDate;
         }
-        public Nullable<TimeSpan> TimeSpan
+        public TimeSpan TimeSpan
         {
             get
             {
                 if (endDate.HasValue && startDate.HasValue)
                     return endDate.Value.Subtract(startDate.Value);
-                return null;
+                return new TimeSpan(0,0,0);
 
             }
         }

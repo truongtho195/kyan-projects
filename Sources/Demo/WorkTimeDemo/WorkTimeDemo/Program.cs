@@ -16,12 +16,47 @@ namespace WorkTimeDemo
         {
             DateTime LockIn = new DateTime(2012, 8, 1, 12, 50, 0);
             DateTime LockOut = new DateTime(2012, 8, 1, 16, 30, 0);
-            var result = GetFullWorkTime(LockIn, LockOut, false);
+            var result = GetFullWorkTime(LockIn, LockOut);
             Console.WriteLine("Full Work Time :  {0}   ||  {1}", result.StartDate, result.EndDate);
             Console.WriteLine("Total FullWorkTime :{0}", result.TimeSpan);
             Console.ReadLine();
         }
 
+        private static TimeSpan TotalFullWorkTime(DateTime clockIn, DateTime clockOut,bool isReduct)
+        {
+            TimeSpan result = new TimeSpan();
+            DateRange clockRange = new DateRange(clockIn, clockOut);
+            DateRange workRange = new DateRange(workIn, workOut);
+            DateRange lunchRange = new DateRange(lunchOut, lunchIn);
+            DateRange WorkInLunchOut = new DateRange(workIn, lunchOut);
+            DateRange lunchInWorkOut = new DateRange(lunchIn, workOut);
+            if (isReduct)
+            {
+                if (clockIn < lunchOut & clockOut > lunchIn)
+                {
+                    var before = clockRange.GetIntersection(WorkInLunchOut);
+                    var after = clockRange.GetIntersection(lunchInWorkOut);
+                    result = before.TimeSpan.Add(after.TimeSpan);
+                }
+                else if(clockIn<lunchOut && workOut<lunchIn) //shift 1
+                {
+                    result = clockRange.GetIntersection(WorkInLunchOut).TimeSpan;
+                }
+                else if ((clockIn > lunchOut || clockIn < lunchIn) && clockOut >lunchIn)
+                {
+                    result = clockRange.GetIntersection(lunchInWorkOut).TimeSpan;
+                }
+
+            }
+            else
+            {
+                if (clockRange.Intersects(workRange))
+                {
+                    result = clockRange.GetIntersection(workRange).TimeSpan;
+                }
+            }
+            return result;
+        }
 
 
         private static DateRange GetFullWorkTime(DateTime clockIn, DateTime clockOut)
