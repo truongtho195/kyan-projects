@@ -14,15 +14,66 @@ namespace WorkTimeDemo
         private static DateTime lunchIn = new DateTime(2012, 8, 1, 13, 0, 0);
         static void Main(string[] args)
         {
-            DateTime LockIn = new DateTime(2012, 8, 1, 12, 50, 0);
-            DateTime LockOut = new DateTime(2012, 8, 1, 16, 30, 0);
-            var result = GetFullWorkTime(LockIn, LockOut);
-            Console.WriteLine("Full Work Time :  {0}   ||  {1}", result.StartDate, result.EndDate);
-            Console.WriteLine("Total FullWorkTime :{0}", result.TimeSpan);
+            Console.WriteLine("{0} - {1}", DateTime.Now.DayOfWeek, (int)DateTime.Now.DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(1).DayOfWeek, (int)DateTime.Now.AddDays(1).DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(2).DayOfWeek, (int)DateTime.Now.AddDays(2).DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(3).DayOfWeek, (int)DateTime.Now.AddDays(3).DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(4).DayOfWeek, (int)DateTime.Now.AddDays(4).DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(5).DayOfWeek, (int)DateTime.Now.AddDays(5).DayOfWeek);
+            Console.WriteLine("{0} - {1}", DateTime.Now.AddDays(6).DayOfWeek, (int)DateTime.Now.AddDays(6).DayOfWeek);
+            
+
+            //foreach (var item in TimeLogList())
+            //{
+
+            //    var result = TotalFullWorkTime(item.LockIn, item.LockOut, true);
+            //    Console.WriteLine("ID : {0}", item.ID);
+            //    Console.WriteLine("UserName : {0}", item.UserName);
+            //    Console.WriteLine("Log  : {0} - {1}", item.LockIn, item.LockOut);
+            //    Console.WriteLine("Total FullWorkTime :{0}", result);
+            //    var dayOfweek = item.LockIn.Day;
+                
+                
+            //    Console.WriteLine("Total unScheduled :{0}", unScheduled(item.LockIn, item.LockOut,false));
+
+            //    Console.WriteLine("--------------------------------------------------");
+            //}
+
+
+            
             Console.ReadLine();
         }
 
-        private static TimeSpan TotalFullWorkTime(DateTime clockIn, DateTime clockOut,bool isReduct)
+        private static TimeSpan unScheduled(DateTime clockIn, DateTime clockOut,bool isDeduct)
+        {
+            DateRange clockRange = new DateRange(clockIn, clockOut);
+            DateRange workRange = new DateRange(workIn, workOut);
+            DateRange lunchRange = new DateRange(lunchOut, lunchIn);
+            DateRange WorkInLunchOut = new DateRange(workIn, lunchOut);
+            DateRange lunchInWorkOut = new DateRange(lunchIn, workOut);
+
+            TimeSpan result = new TimeSpan();
+            if (clockIn < workIn)
+            {
+                TimeSpan time = workIn.Subtract(clockIn);
+                result = result.Add(time);
+            }
+
+            if (clockRange.Intersects(lunchRange) && !isDeduct)
+            {
+                var time = clockRange.GetIntersection(lunchRange);
+                result = result.Add(time.TimeSpan);
+            }
+           
+            if (clockOut > workOut)
+            {
+                TimeSpan time = clockOut.Subtract(workOut);
+                result = result.Add(time);
+            }
+            return result;
+        }
+
+        private static TimeSpan TotalFullWorkTime(DateTime clockIn, DateTime clockOut, bool isdeduct)
         {
             TimeSpan result = new TimeSpan();
             DateRange clockRange = new DateRange(clockIn, clockOut);
@@ -30,7 +81,7 @@ namespace WorkTimeDemo
             DateRange lunchRange = new DateRange(lunchOut, lunchIn);
             DateRange WorkInLunchOut = new DateRange(workIn, lunchOut);
             DateRange lunchInWorkOut = new DateRange(lunchIn, workOut);
-            if (isReduct)
+            if (isdeduct)
             {
                 if (clockIn < lunchOut & clockOut > lunchIn)
                 {
@@ -38,11 +89,11 @@ namespace WorkTimeDemo
                     var after = clockRange.GetIntersection(lunchInWorkOut);
                     result = before.TimeSpan.Add(after.TimeSpan);
                 }
-                else if(clockIn<lunchOut && workOut<lunchIn) //shift 1
+                else if (clockIn < lunchOut && workOut < lunchIn) //shift 1
                 {
                     result = clockRange.GetIntersection(WorkInLunchOut).TimeSpan;
                 }
-                else if ((clockIn > lunchOut || clockIn < lunchIn) && clockOut >lunchIn)
+                else if ((clockIn > lunchOut || clockIn < lunchIn) && clockOut > lunchIn)
                 {
                     result = clockRange.GetIntersection(lunchInWorkOut).TimeSpan;
                 }
@@ -95,7 +146,7 @@ namespace WorkTimeDemo
         }
 
 
-        private List<TimeLog> TimeLogList()
+        private static List<TimeLog> TimeLogList()
         {
             List<TimeLog> list = new List<TimeLog>();
             list.Add(new TimeLog()
@@ -180,14 +231,14 @@ namespace WorkTimeDemo
             DateRange lunchInWorkOut = new DateRange(lunchIn, workOut);
             var before = clockRange.GetIntersection(WorkInLunchOut);
             var after = clockRange.GetIntersection(lunchInWorkOut);
-            Console.WriteLine("Total Work Time with Reduce Breake Time :  {0} ", before.TimeSpan.Value.Add(after.TimeSpan.Value));
+            Console.WriteLine("Total Work Time with Reduce Breake Time :  {0} ", before.TimeSpan.Add(after.TimeSpan));
             //Over time
             DateRange OverTimeRange = new DateRange();
             if (clockRange.Intersects(lunchRange))
                 OverTimeRange = clockRange.GetIntersection(lunchRange);
 
-            if (OverTimeRange.TimeSpan.HasValue)
-                Console.WriteLine("OverTime :  {0} ", OverTimeRange.TimeSpan);
+
+            Console.WriteLine("OverTime :  {0} ", OverTimeRange.TimeSpan);
         }
     }
 
