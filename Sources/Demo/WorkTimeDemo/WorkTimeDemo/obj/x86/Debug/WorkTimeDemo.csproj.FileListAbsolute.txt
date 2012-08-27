@@ -11,3 +11,9 @@ F:\Workplace\WPF-WCF\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\GenerateResour
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\Sources\Demo\WorkTimeDemo\WorkTimeDemo\bin\Debug\WorkTimeDemo.exe.config
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\Sources\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\WorkTimeDemo.exe
 F:\Workplace\WPF-WCF\SourceProject\kyan-projects\Sources\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\bin\Debug\WorkTimeDemo.exe.config
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\WorkTimeDemo.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\bin\Debug\WorkTimeDemo.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\bin\Debug\WorkTimeDemo.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\WorkTimeDemo\WorkTimeDemo\obj\x86\Debug\WorkTimeDemo.pdb
