@@ -31,8 +31,9 @@ namespace FlashCard
         [STAThread]
         public static void Main()
         {
+            var currentFolder = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             var currentUserName = Environment.UserName;
-            log4net.GlobalContext.Properties["LogName"] = String.Format("FlashCardLogs/{0}-{1}.log", currentUserName, DateTime.Now.ToString("yyyyMMdd"));
+            log4net.GlobalContext.Properties["LogName"] = String.Format("{0}/FlashCardLogs/{1}-{2}.log", currentFolder,currentUserName, DateTime.Now.ToString("yyyyMMdd"));
             log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             log.Info(string.Empty);
             log.Info(" ======= Flash card Run=====");
