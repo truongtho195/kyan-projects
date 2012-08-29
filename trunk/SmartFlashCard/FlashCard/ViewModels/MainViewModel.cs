@@ -123,7 +123,7 @@ namespace FlashCard.ViewModels
 
         public SetupModel SetupModel
         {
-            get { return CacheObject.Get<SetupModel>("SetupModel");}
+            get { return CacheObject.Get<SetupModel>("SetupModel"); }
         }
         #endregion
 
@@ -242,6 +242,7 @@ namespace FlashCard.ViewModels
         {
             get
             {
+                //return (_timerPopup != null && _timerPopup.IsEnabled || _timerViewFullScreen != null && _timerViewFullScreen.IsEnabled);
                 return _isCurrentStarted;
             }
             set
@@ -308,8 +309,6 @@ namespace FlashCard.ViewModels
             {
                 log.Info("||{*} === Change Side Command Executed === ");
                 SelectedLesson.IsBackSide = !SelectedLesson.IsBackSide;
-
-
                 Storyboard sbChangeSide;
                 if ("Popup".Equals(param.ToString()))
                 {
@@ -1171,8 +1170,6 @@ namespace FlashCard.ViewModels
                         {
                             GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, "FlashCardSound");
                         }));
-                    
-
                 }
                 else
                 {

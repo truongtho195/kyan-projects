@@ -31,7 +31,7 @@
                                 <Setter Property="Header"
                                         Value="Play" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPopupStarted}"
+                                    <DataTrigger Binding="{Binding IsPopupStarted,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                  Value="True">
                                         <Setter Property="Header"
                                                 Value="Pause" />
