@@ -1148,10 +1148,11 @@ namespace FlashCard.ViewModels
                 string textFile = TextForSpeech;
                 if (textFile.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) > -1)
                     textFile = CleanFileName(TextForSpeech);
-
-                string strFullPath = string.Format("FlashCardSound/{0}.mp3", textFile);
+                var currentFolder= System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+                string strFullPath = string.Format(@"{0}\FlashCardSound\{1}.mp3", currentFolder, textFile);
                 if (System.IO.File.Exists(strFullPath))
                 {
+                    log.Info("|| Listen with file ");
                     _listenWord.Close();
                     var ur = new Uri(strFullPath, UriKind.RelativeOrAbsolute);
                     _listenWord.Open(ur);
@@ -1159,7 +1160,7 @@ namespace FlashCard.ViewModels
                 }
                 else if (CheckConnectionInternet.IsConnectedToInternet())
                 {
-                    //log.Info("|| Listen with google translate : " + TextForSpeech);
+                    log.Info("|| Listen with google translate : " + TextForSpeech);
                     _listenWord.Close();
                     string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
@@ -1168,7 +1169,7 @@ namespace FlashCard.ViewModels
                     Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(
                         delegate
                         {
-                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, "FlashCardSound");
+                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder+"\\FlashCardSound");
                         }));
                 }
                 else
