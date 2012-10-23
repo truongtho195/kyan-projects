@@ -9,6 +9,7 @@ using System.Windows.Markup;
 using System.Xml;
 using FlashCard.Helper;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 namespace ConvertToText
 {
@@ -19,6 +20,31 @@ namespace ConvertToText
             GetSoundForLesson();
         }
 
+        #region ImportLesson
+        private static void InsertLesson()
+        {
+
+        }
+
+        static List<string> listCard()
+        {
+            List<string> list = new List<string>();
+            string url = "Toiec2.html";
+            FileInfo file = new FileInfo(url);
+            var ex = file.Exists;
+            TextReader reader = File.OpenText(file.FullName);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(reader.ReadToEnd());
+            var divContainer = doc.DocumentNode.SelectNodes("//ul").SingleOrDefault();
+            var liTag = divContainer.SelectNodes("//li/div[@class='word_id']");
+            foreach (var item in liTag)
+            {
+                list.Add(item.InnerText);
+                Console.WriteLine(item.InnerText);
+            }
+            return list;
+        }
+        #endregion
 
         private static void GetSoundForLesson()
         {
@@ -164,22 +190,21 @@ namespace ConvertToText
         }
 
 
-
         private void ReadMSWord()
         {
-            Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
-            object miss = System.Reflection.Missing.Value;
-            object path = @"E:\3000.doc";
-            object readOnly = true;
-            Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
-            string totaltext = "";
-            for (int i = 0; i < docs.Paragraphs.Count; i++)
-            {
-                totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
-            }
-            Console.WriteLine(totaltext);
-            docs.Close();
-            word.Quit();
+            //Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
+            //object miss = System.Reflection.Missing.Value;
+            //object path = @"E:\3000.doc";
+            //object readOnly = true;
+            //Microsoft.Office.Interop.Word.Document docs = word.Documents.Open(ref path, ref miss, ref readOnly, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss, ref miss);
+            //string totaltext = "";
+            //for (int i = 0; i < docs.Paragraphs.Count; i++)
+            //{
+            //    totaltext += " \r\n " + docs.Paragraphs[i + 1].Range.Text.ToString();
+            //}
+            //Console.WriteLine(totaltext);
+            //docs.Close();
+            //word.Quit();
         }
     }
 

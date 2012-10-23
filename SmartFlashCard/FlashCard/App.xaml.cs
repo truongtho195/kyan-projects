@@ -6,6 +6,7 @@ using FlashCard.Database;
 using FlashCard.Database.Repository;
 using log4net;
 using Microsoft.Shell;
+using FlashCard.Views;
 
 
 namespace FlashCard
@@ -113,6 +114,8 @@ namespace FlashCard
                 log.Error(ex);
             }
 
+            //ImportFromSite view = new ImportFromSite();
+            //view.Show();
             if (!IsStatupRunOk)
             {
                 log.Info("RunNormal()");
