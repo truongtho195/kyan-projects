@@ -182,29 +182,37 @@ namespace GetContentBlueUp
             List<string> list = new List<string>();
 
             //wordlist-list-container /ul =>div word_id
-            WebRequest myWebRequest;
-            WebResponse myWebResponse;
-            string url = "http://www.blueup.vn/dashboard/thongkechitiet/toeic-2/wordlist";
-            myWebRequest = WebRequest.Create(url);
-            myWebResponse = myWebRequest.GetResponse();//Returns a response from an Internet resource
-            Stream streamResponse = myWebResponse.GetResponseStream();//return the data stream from the internet
-            //and save it in the stream
-            StreamReader sreader = new StreamReader(streamResponse);//reads the data stream
-            Rstring = sreader.ReadToEnd();//reads it to the end
+            //WebRequest myWebRequest;
+            //WebResponse myWebResponse;
+            string url = "Toiec2.html";
+            FileInfo file = new FileInfo(url);
+            var ex = file.Exists;
+            //myWebRequest = WebRequest.Create(url);
+            //myWebResponse = myWebRequest.GetResponse();//Returns a response from an Internet resource
+            //Stream streamResponse = myWebResponse.GetResponseStream();//return the data stream from the internet
+            ////and save it in the stream
+            //StreamReader sreader = new StreamReader(streamResponse);//reads the data stream
+            //Rstring = sreader.ReadToEnd();//reads it to the end
+
+            TextReader reader = File.OpenText(file.FullName);
             var doc = new HtmlDocument();
-            doc.LoadHtml(Rstring);
-            string xpath = "//div[@id='rightside']/div[3]/div/div[3]/div[3]/ul";
-            var divContainer = doc.DocumentNode.SelectNodes("//div");//.Where(x => x.Attributes.Count > 0 && x.Attributes.Count(y => y.Name == "class" && y.Value.Equals("wordlist-list")) > 0).SingleOrDefault();
-            foreach (var item in divContainer)
+            doc.LoadHtml(reader.ReadToEnd());
+            var divContainer = doc.DocumentNode.SelectNodes("//ul").SingleOrDefault();
+            //.Where(x => x.Attributes.Count > 0 && x.Attributes.Count(y => y.Name == "class" && y.Value.Equals("wordlist-list")) > 0).SingleOrDefault();
+            var liTag = divContainer.SelectNodes("//li/div[@class='word_id']");
+            foreach (var item in liTag)
             {
-                if (item.Attributes.Count(x => x.Name == "class" && x.Value == "wordlist-list")>0)
-                { 
-                
-                }
+
+                Console.WriteLine(item.InnerText);
+                //foreach (var tag in item.Where(x=>x.Attributes.Any(y=>y.Name=="class" && y.Value=="word_id")))
+                //{
+                //        Console.WriteLine(tag.InnerText);
+                //}
             }
-            var test= doc.DocumentNode.Attributes.Where(x => x.Name == "class" && x.Value.Equals("wordlist-list-mask")).SingleOrDefault();
+
+            var test = doc.DocumentNode.Attributes.Where(x => x.Name == "class" && x.Value.Equals("wordlist-list-mask")).SingleOrDefault();
             return list;
-           
+
         }
     }
 

@@ -7,3 +7,8 @@ F:\Workplace\Other\GetContentBlueUp\GetContentBlueUp\obj\x86\Debug\GetContentBlu
 F:\Workplace\Other\GetContentBlueUp\GetContentBlueUp\obj\x86\Debug\GetContentBlueUp.pdb
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\obj\x86\Debug\GetContentBlueUp.exe
 E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\obj\x86\Debug\GetContentBlueUp.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\bin\Debug\GetContentBlueUp.exe
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\bin\Debug\GetContentBlueUp.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\bin\Debug\HtmlAgilityPack.pdb
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\bin\Debug\HtmlAgilityPack.xml
+E:\Kyan DATA\Kyan\Kyan Project\KyanPrj\Sources\Demo\GetContentBlueUp\GetContentBlueUp\obj\x86\Debug\ResolveAssemblyReference.cache
