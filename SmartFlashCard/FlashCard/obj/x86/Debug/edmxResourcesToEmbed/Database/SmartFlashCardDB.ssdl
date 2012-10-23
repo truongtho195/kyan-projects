@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SmartFlashCardDBModel.Store" Alias="Self" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="SmartFlashCardDBModelStoreContainer">
+    <EntitySet Name="BackSides" EntityType="SmartFlashCardDBModel.Store.BackSides" store:Type="Tables" />
+    <EntitySet Name="Cards" EntityType="SmartFlashCardDBModel.Store.Cards" store:Type="Tables" />
+    <EntitySet Name="Categories" EntityType="SmartFlashCardDBModel.Store.Categories" store:Type="Tables" />
+    <EntitySet Name="Lessons" EntityType="SmartFlashCardDBModel.Store.Lessons" store:Type="Tables" />
+    <EntitySet Name="Setups" EntityType="SmartFlashCardDBModel.Store.Setups" store:Type="Tables" />
+    <EntitySet Name="Studies" EntityType="SmartFlashCardDBModel.Store.Studies" store:Type="Tables" />
+    <EntitySet Name="StudyDetails" EntityType="SmartFlashCardDBModel.Store.StudyDetails" store:Type="Tables" />
+    <EntitySet Name="UserLesson" EntityType="SmartFlashCardDBModel.Store.UserLesson" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="SmartFlashCardDBModel.Store.Users" store:Type="Tables" />
+    <AssociationSet Name="FK_BackSides_0" Association="SmartFlashCardDBModel.Store.FK_BackSides_0">
+      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="BackSides" EntitySet="BackSides" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lessons_0" Association="SmartFlashCardDBModel.Store.FK_Lessons_0">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Lessons" EntitySet="Lessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lessons_1" Association="SmartFlashCardDBModel.Store.FK_Lessons_1">
+      <End Role="Cards" EntitySet="Cards" />
+      <End Role="Lessons" EntitySet="Lessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyDetails_0" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_0">
+      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="StudyDetails" EntitySet="StudyDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyDetails_1" Association="SmartFlashCardDBModel.Store.FK_StudyDetails_1">
+      <End Role="Studies" EntitySet="Studies" />
+      <End Role="StudyDetails" EntitySet="StudyDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="BackSides">
+    <Key>
+      <PropertyRef Name="BackSideID" />
+    </Key>
+    <Property Name="BackSideID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
+    <Property Name="Content" Type="nvarchar" MaxLength="200" />
+    <Property Name="BackSideName" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsMain" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="Cards">
+    <Key>
+      <PropertyRef Name="CardID" />
+    </Key>
+    <Property Name="CardID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CardName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Remark" Type="nvarchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CategoryName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="CategoryOf" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Lessons">
+    <Key>
+      <PropertyRef Name="LessonID" />
+    </Key>
+    <Property Name="LessonID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LessonName" Type="nvarchar" MaxLength="150" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="CategoryID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CardID" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Setups">
+    <Key>
+      <PropertyRef Name="SetupID" />
+    </Key>
+    <Property Name="SetupID" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ViewTimeSecond" Type="int" Nullable="false" />
+    <Property Name="DistanceTimeSecond" Type="int" Nullable="false" />
+    <Property Name="IsLimitCard" Type="bit" />
+    <Property Name="LimitCardNum" Type="int" />
+    <Property Name="IsEnableSlideShow" Type="bit" />
+    <Property Name="IsEnableLoop" Type="bit" />
+    <Property Name="IsEnableSoundForShow" Type="bit" />
+    <Property Name="IsShuffle" Type="bit" />
+    <Property Name="IsOpenLastStudy" Type="bit" />
+    <Property Name="SpeechWhenShow" Type="bit" />
+  </EntityType>
+  <EntityType Name="Studies">
+    <Key>
+      <PropertyRef Name="StudyID" />
+    </Key>
+    <Property Name="StudyID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LastStudyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudyDetails">
+    <Key>
+      <PropertyRef Name="StudyDetailID" />
+    </Key>
+    <Property Name="StudyDetailID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LessonID" Type="nvarchar" MaxLength="50" />
+    <Property Name="StudyID" Type="uniqueidentifier" />
+    <Property Name="IsLastStudy" Type="bit" />
+  </EntityType>
+  <EntityType Name="UserLesson">
+    <Key>
+      <PropertyRef Name="UserLessonID" />
+    </Key>
+    <Property Name="UserLessonID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="integer" />
+    <Property Name="LessonID" Type="integer" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+    <Property Name="LastLogin" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_BackSides_0">
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
+    <End Role="BackSides" Type="SmartFlashCardDBModel.Store.BackSides" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lessons">
+        <PropertyRef Name="LessonID" />
+      </Principal>
+      <Dependent Role="BackSides">
+        <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lessons_0">
+    <End Role="Categories" Type="SmartFlashCardDBModel.Store.Categories" Multiplicity="1" />
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Lessons">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lessons_1">
+    <End Role="Cards" Type="SmartFlashCardDBModel.Store.Cards" Multiplicity="0..1" />
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cards">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="Lessons">
+        <PropertyRef Name="CardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_0">
+    <End Role="Lessons" Type="SmartFlashCardDBModel.Store.Lessons" Multiplicity="0..1" />
+    <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lessons">
+        <PropertyRef Name="LessonID" />
+      </Principal>
+      <Dependent Role="StudyDetails">
+        <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_1">
+    <End Role="Studies" Type="SmartFlashCardDBModel.Store.Studies" Multiplicity="0..1" />
+    <End Role="StudyDetails" Type="SmartFlashCardDBModel.Store.StudyDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Studies">
+        <PropertyRef Name="StudyID" />
+      </Principal>
+      <Dependent Role="StudyDetails">
+        <PropertyRef Name="StudyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
