@@ -11,6 +11,7 @@
         x:Name="Window"
         Title="{Binding Titles}"
         ResizeMode="NoResize"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -27,6 +28,45 @@
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
             <VirtualizingStackPanel IsItemsHost="True" />
         </ItemsPanelTemplate>
+
+        <!--  Control Template Group Item  -->
+        <ControlTemplate x:Key="DataGridGroupControlTemplate"
+                         TargetType="{x:Type GroupItem}">
+            <Border x:Name="DGR_Border"
+                    SnapsToDevicePixels="True">
+                
+                <SelectiveScrollingGrid>
+                    <SelectiveScrollingGrid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </SelectiveScrollingGrid.ColumnDefinitions>
+                    <SelectiveScrollingGrid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </SelectiveScrollingGrid.RowDefinitions>
+                    <Expander IsExpanded="True"
+                              BorderBrush="#FFA4B97F"
+                              HorizontalAlignment="Stretch"
+                              BorderThickness="0,0,0,1">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Stretch">
+                                <TextBlock FontWeight="Bold"
+                                           Text="{Binding Name}"
+                                           MinWidth="100"
+                                           />
+                                <TextBlock FontWeight="Bold"
+                                           Margin="10,0,0,0"
+                                           Text="{Binding ItemCount}" />
+                            </StackPanel>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ItemsPresenter />
+                        </Expander.Content>
+                    </Expander>
+                </SelectiveScrollingGrid>
+            </Border>
+        </ControlTemplate>
+        <!--  #endregion DataTemplate  -->
 
         <!--myRowStyle-->
         <Style x:Key="myRowCollapseStyle"
@@ -320,6 +360,7 @@
                               Style="{DynamicResource ListViewStyle}"
                               ItemsPanel="{DynamicResource ItemsPanelTemplate}"
                               SelectionMode="Single"
+                              ScrollViewer.CanContentScroll="False"
                               Margin="5,1,0,1"
                               Grid.Row="1"
                               FontWeight="Bold">
@@ -329,12 +370,23 @@
                                                              CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template"
+                                                Value="{StaticResource DataGridGroupControlTemplate}" />
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
                                 <GridViewColumn Header="#"
-                                                Width="30"
+                                                Width="50"
                                                 DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" />
                                 <GridViewColumn Header="Lesson Name"
+                                                Width="auto"
                                                 DisplayMemberBinding="{Binding Lesson.LessonName}" />
                                 <GridViewColumn Header="Card Name"
                                                 DisplayMemberBinding="{Binding Lesson.Card.CardName}" />
