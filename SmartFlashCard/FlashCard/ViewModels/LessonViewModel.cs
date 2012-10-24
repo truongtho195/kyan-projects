@@ -658,7 +658,7 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                _lessonCollectionView = CollectionViewSource.GetDefaultView(this.LessonCollection);
+                
                 string keywordLesson = string.Empty;
                 this._lessonCollectionView.Filter = (item) =>
                 {
@@ -1378,6 +1378,8 @@ namespace FlashCard.ViewModels
                     LessonCollection = new ObservableCollection<LessonModel>();
                     NewExecute(null);
                 }
+                _lessonCollectionView = CollectionViewSource.GetDefaultView(this.LessonCollection);
+                _lessonCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("Lesson.Card.CardName"));
                 CategoryCollection = new List<CategoryModel>(categoryRepository.GetAll<Category>().Select(x => new CategoryModel(x)));
 
                 CardCollection = new ObservableCollection<CardModel>(cardRepository.GetAll<Card>().Select(x => new CardModel(x)));
