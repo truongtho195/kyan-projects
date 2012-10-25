@@ -37,20 +37,21 @@
 
                 <SelectiveScrollingGrid>
                     <SelectiveScrollingGrid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
                     </SelectiveScrollingGrid.ColumnDefinitions>
                     <SelectiveScrollingGrid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </SelectiveScrollingGrid.RowDefinitions>
-                    
+
                     <Expander IsExpanded="True"
-                              Width="auto"
-                              >
+                              Width="auto">
                         <Expander.Header>
-                            <Grid Background="BlueViolet" HorizontalAlignment="Stretch" Width="Auto">
+                            <Grid Background="BlueViolet"
+                                  HorizontalAlignment="Stretch"
+                                  Width="Auto">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition  />
+                                    <ColumnDefinition />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
