@@ -34,7 +34,7 @@
                          TargetType="{x:Type GroupItem}">
             <Border x:Name="DGR_Border"
                     SnapsToDevicePixels="True">
-                
+
                 <SelectiveScrollingGrid>
                     <SelectiveScrollingGrid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -43,21 +43,32 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </SelectiveScrollingGrid.RowDefinitions>
+                    
                     <Expander IsExpanded="True"
-                              BorderBrush="#FFA4B97F"
-                              HorizontalAlignment="Stretch"
-                              BorderThickness="0,0,0,1">
+                              Width="auto"
+                              >
                         <Expander.Header>
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Stretch">
+                            <Grid Background="BlueViolet" HorizontalAlignment="Stretch" Width="Auto">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
                                 <TextBlock FontWeight="Bold"
-                                           Text="{Binding Name}"
-                                           MinWidth="100"
-                                           />
+                                           Text="{Binding Name}" />
                                 <TextBlock FontWeight="Bold"
                                            Margin="10,0,0,0"
+                                           HorizontalAlignment="Stretch"
+                                           Grid.Column="1"
                                            Text="{Binding ItemCount}" />
-                            </StackPanel>
+                                <Separator Width="auto"
+                                           Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           Background="Black" />
+                            </Grid>
                         </Expander.Header>
                         <Expander.Content>
                             <ItemsPresenter />
