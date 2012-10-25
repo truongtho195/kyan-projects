@@ -107,9 +107,11 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="FadeLeave">
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Layout">
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0.95"/>
-        	</DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                                           Storyboard.TargetName="Layout">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1"
+                                      Value="0.95" />
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
 
@@ -132,7 +134,8 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
             <StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard" />
-            <BeginStoryboard x:Name="FadeOut_BeginStoryboard" Storyboard="{StaticResource FadeOut}"/>
+            <BeginStoryboard x:Name="FadeOut_BeginStoryboard"
+                             Storyboard="{StaticResource FadeOut}" />
 
         </EventTrigger>
     </UserControl.Triggers>
@@ -163,8 +166,11 @@
                   Grid.RowSpan="3">
                 <Border BorderBrush="White"
                         BorderThickness="0.5"
-                        Background="#FF346CA1" CornerRadius="8" />
-                <Border Margin="1" d:IsHidden="True" CornerRadius="8">
+                        Background="#FF346CA1"
+                        CornerRadius="8" />
+                <Border Margin="1"
+                        d:IsHidden="True"
+                        CornerRadius="8">
                     <Border.Background>
                         <RadialGradientBrush Center="0.88,0.771"
                                              GradientOrigin="0.828,0.714"
@@ -230,7 +236,8 @@
                                 Background="#00000000"
                                 BorderBrush="#00003C74"
                                 Height="20"
-                                Margin="0,0,5,0" Style="{DynamicResource EmptyButton}">
+                                Margin="0,0,5,0"
+                                Style="{DynamicResource EmptyButton}">
                             <Image Source="/FlashCard;component/Images/1337833571_full_screen.png"
                                    Stretch="Fill" />
                         </Button>
@@ -257,7 +264,9 @@
                                 Width="20"
                                 Style="{DynamicResource EmptyButton}"
                                 Margin="5,0,0,0"
-                                Height="20" Background="#00000000" Visibility="Collapsed">
+                                Height="20"
+                                Background="#00000000"
+                                Visibility="Collapsed">
                             <Image Width="16"
                                    Source="/Images/Close.png"
                                    Stretch="Fill"
@@ -274,7 +283,8 @@
                             Width="25"
                             VerticalAlignment="Center"
                             Style="{DynamicResource EmptyButton}"
-                            Height="25" Background="#00000000">
+                            Height="25"
+                            Background="#00000000">
                         <Image Source="/FlashCard;component/Images/1339695682_audio-volume-high.png"
                                Stretch="Fill"
                                HorizontalAlignment="Center"
@@ -284,198 +294,227 @@
             </Border>
             <Grid x:Name="grLayoutContent"
                   Grid.Row="1">
-            	<Grid.RowDefinitions>
-            		<RowDefinition/>
-            		<RowDefinition Height="Auto"/>
-            	</Grid.RowDefinitions>
-            	<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True" Style="{DynamicResource ScrollViewerStyle}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-            		<Grid x:Name="grdScrollViewer" MaxWidth="340" Margin="3,0">
-            			<Grid x:Name="BackSideWrapper"
-            				RenderTransformOrigin="0.5,0.5" Margin="0" Visibility="Hidden" >
-            				<Grid.RenderTransform>
-            					<TransformGroup>
-            						<ScaleTransform />
-            						<SkewTransform />
-            						<RotateTransform />
-            						<TranslateTransform />
-            					</TransformGroup>
-            				</Grid.RenderTransform>
-            				<TextBlock  x:Name="tblMainBackSide"
-            					Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            					Background="Transparent"
-            					HorizontalAlignment="Center"
-            					VirtualizingStackPanel.VirtualizationMode="Recycling"
-            					Foreground="White"
-            					Grid.Row="1"
-            					FontSize="24" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                              HorizontalScrollBarVisibility="Disabled"
+                              CanContentScroll="True"
+                              Style="{DynamicResource ScrollViewerStyle}"
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center">
+                    <Grid x:Name="grdScrollViewer"
+                          MaxWidth="340"
+                          Margin="3,0">
+                        <Grid x:Name="BackSideWrapper"
+                              RenderTransformOrigin="0.5,0.5"
+                              Margin="0"
+                              Visibility="Hidden">
+                            <Grid.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Grid.RenderTransform>
+                            <TextBlock  x:Name="tblMainBackSide"
+                                        Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Background="Transparent"
+                                        HorizontalAlignment="Center"
+                                        VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                        Foreground="White"
+                                        Grid.Row="1"
+                                        FontSize="24"
+                                        VerticalAlignment="Center">
             					<TextBlock.Style>
             						<Style TargetType="{x:Type TextBlock}">
             							<Setter Property="Visibility"
-            								Value="Visible" />
+                                                Value="Visible" />
             							<Style.Triggers>
             								<DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            									Value="0">
+                                                         Value="0">
             									<Setter Property="Visibility"
-            										Value="Hidden" />
+                                                        Value="Hidden" />
             								</DataTrigger>
             							</Style.Triggers>
             						</Style>
             					</TextBlock.Style>
-            				</TextBlock>
-            				<Grid x:Name="stOtherBackSide" >
-            					<Grid.RowDefinitions>
-            						<RowDefinition Height="0.197*"/>
-            						<RowDefinition Height="0.803*"/>
-            					</Grid.RowDefinitions>
-            				
-	<Grid.Style>
-		
-            						<Style TargetType="{x:Type Grid}">
-            							<Setter Property="Visibility"
-            								Value="Hidden" />
-            							<Style.Triggers>
-            								<DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            									Value="0">
-            									<Setter Property="Visibility"
-            										Value="Visible" />
-            								</DataTrigger>
-            							</Style.Triggers>
-            						</Style>
-            					</Grid.Style>
-            					<TextBlock TextWrapping="Wrap"
-            						x:Name="tbBackSideName"
-            						Text="{Binding SelectedItem.BackSideName, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            						Foreground="White"
-            						HorizontalAlignment="Left"
-            						FontSize="16"
-            						FontWeight="Bold" d:LayoutOverrides="Height" Margin="5,0,0,0" />
-            					<TextBlock x:Name="tbContent"
-            						Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            						Background="Transparent"
-            						ScrollViewer.HorizontalScrollBarVisibility="Auto"
-            						VerticalAlignment="Center"
-            						Foreground="White"
-            						FontSize="18.667"
-            						HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" Grid.Row="1" MaxWidth="350" />
-            				</Grid>
-            			</Grid>
-            			<Grid x:Name="FrontSideWrapper">
-            				<Grid.RowDefinitions>
-            					<RowDefinition />
-            				</Grid.RowDefinitions>
-            				<Grid x:Name="grdPhrase"
-            					
-            					Grid.Row="1">
-            					<StackPanel d:LayoutOverrides="Width" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
-            						<TextBlock TextWrapping="Wrap"
-            							x:Name="tbLessonName"
-            							VerticalAlignment="Center"
-            							Text="{Binding SelectedLesson.Lesson.LessonName, Mode=OneWay}"
-            							Foreground="White"
-            							HorizontalAlignment="Center"
-            							FontSize="21.333"
-            							FontWeight="Bold" />
-            						<TextBlock x:Name="tbDescription" TextWrapping="Wrap" Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="White" FontStyle="Italic"/>
-            					</StackPanel>
-            				</Grid>
-            			</Grid>
-            		</Grid>
-            	</ScrollViewer>
+                            </TextBlock>
+                            <Grid x:Name="stOtherBackSide">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.197*" />
+                                    <RowDefinition Height="0.803*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.Style>
+
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Visibility"
+                                                Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Value="0">
+                                                <Setter Property="Visibility"
+                                                        Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <TextBlock TextWrapping="Wrap"
+                                           x:Name="tbBackSideName"
+                                           Text="{Binding SelectedItem.BackSideName, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Foreground="White"
+                                           HorizontalAlignment="Left"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           d:LayoutOverrides="Height"
+                                           Margin="5,0,0,0" />
+                                <TextBlock x:Name="tbContent"
+                                           Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Background="Transparent"
+                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontSize="18.667"
+                                           HorizontalAlignment="Center"
+                                           TextWrapping="WrapWithOverflow"
+                                           Grid.Row="1"
+                                           MaxWidth="350" />
+                            </Grid>
+                        </Grid>
+                        <Grid x:Name="FrontSideWrapper">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid x:Name="grdPhrase"
+                                  Grid.Row="1">
+                                <StackPanel d:LayoutOverrides="Width"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock TextWrapping="Wrap"
+                                               x:Name="tbLessonName"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding SelectedLesson.Lesson.LessonName, Mode=OneWay}"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"
+                                               FontSize="21.333"
+                                               FontWeight="Bold" />
+                                    <TextBlock x:Name="tbDescription"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="16"
+                                               Foreground="White"
+                                               FontStyle="Italic" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
             </Grid>
             <Grid x:Name="grdBottom"
-                  Grid.Row="2" Margin="5,0">
+                  Grid.Row="2"
+                  Margin="5,0">
                 <DataGrid x:Name="lstBackSide"
-            		ItemsSource="{Binding SelectedLesson.Lesson.BackSides}"
-            		SelectedItem="{Binding SelectedBackSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            		AutoGenerateColumns="False"
-            		CanUserAddRows="False"
-            		CanUserDeleteRows="False"
-            		SelectionMode="Single"
-            		SelectionUnit="FullRow"
-            		Background="Transparent"
-            		BorderBrush="Transparent"
-            		HeadersVisibility="None"
-            		CellStyle="{DynamicResource DataGridCellEclipStyle}"
-            		VerticalAlignment="Center"
-            		HorizontalAlignment="Center"
-            		RowStyle="{DynamicResource DataGridRowHozStyle}"
-            		HorizontalGridLinesBrush="#00000000"
-            		VerticalGridLinesBrush="#00000000"
-            		Foreground="White" Visibility="{Binding Visibility, ElementName=BackSideWrapper}">
-            		<DataGrid.Style>
-            			<Style TargetType="{x:Type DataGrid}">
-            				<Style.Triggers>
-            					<DataTrigger Binding="{Binding SelectedLesson.Lesson.BackSides.Count}"
-            						Value="1">
-            						<Setter Property="Visibility"
-            							Value="Hidden" />
-            					</DataTrigger>
-            				</Style.Triggers>
-            			</Style>
-            		</DataGrid.Style>
-            		<DataGrid.ItemsPanel>
-            			<ItemsPanelTemplate>
-            				<StackPanel Orientation="Horizontal"
-            					Background="Transparent" />
-            			</ItemsPanelTemplate>
-            		</DataGrid.ItemsPanel>
-            		<DataGrid.Columns>
-            			<DataGridTemplateColumn>
-            				<DataGridTemplateColumn.CellTemplate>
-            					<DataTemplate>
-            						<TextBlock Foreground="White"
-            							Background="Transparent"
-            							Text="{Binding Converter={StaticResource DatagridItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
-            							VerticalAlignment="Center"
-            							HorizontalAlignment="Center"
-            							FontSize="12"
-            							ToolTip="{Binding BackSideName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            							FontWeight="Bold" />
-            					</DataTemplate>
-            				</DataGridTemplateColumn.CellTemplate>
-            			</DataGridTemplateColumn>
-            		</DataGrid.Columns>
-            	</DataGrid>
-                <StackPanel HorizontalAlignment="Right" d:LayoutOverrides="Height" Orientation="Horizontal">
-            		<Button x:Name="btnChangeFace"
-            			Command="{Binding ChangeSideCommand}"
-            			CommandParameter="Popup"
-            			VerticalAlignment="Center"
-            			BorderBrush="{x:Null}"
-            			d:LayoutOverrides="Width, GridBox"
-            			Style="{DynamicResource EmptyButton}"
-            			Height="26">
-            			<Button.Background>
-            				<LinearGradientBrush EndPoint="0.5,1"
-            					StartPoint="0.5,0">
-            					<GradientStop Color="White"
-            						Offset="0" />
-            					<GradientStop Color="White"
-            						Offset="0.9" />
-            				</LinearGradientBrush>
-            			</Button.Background>
-            			<Image Stretch="Fill"
-            				Width="41">
-            				<Image.Style>
-            					<Style TargetType="{x:Type Image}">
-            						<Setter Property="Source"
-            							Value="/Images/Arrow_Right.png" />
-            						<Setter Property="ToolTip"
-            							Value="Change to Back Side" />
-            						<Style.Triggers>
-            							<DataTrigger Binding="{Binding Visibility, ElementName=FrontSideWrapper}"
-            								Value="Hidden">
-            								<Setter Property="Source"
-            									Value="/Images/Arrow_Left.png" />
-            								<Setter Property="ToolTip"
-            									Value="Change to Front Side" />
-            							</DataTrigger>
-            						</Style.Triggers>
-            					</Style>
-            				</Image.Style>
-            			</Image>
-            		</Button>
-            	</StackPanel>
+                          ItemsSource="{Binding SelectedLesson.Lesson.BackSides}"
+                          SelectedItem="{Binding SelectedBackSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          HeadersVisibility="None"
+                          CellStyle="{DynamicResource DataGridCellEclipStyle}"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          RowStyle="{DynamicResource DataGridRowHozStyle}"
+                          HorizontalGridLinesBrush="#00000000"
+                          VerticalGridLinesBrush="#00000000"
+                          Foreground="White"
+                          Visibility="{Binding Visibility, ElementName=BackSideWrapper}">
+                    <DataGrid.Style>
+                        <Style TargetType="{x:Type DataGrid}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedLesson.Lesson.BackSides.Count}"
+                                             Value="1">
+                                    <Setter Property="Visibility"
+                                            Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Background="Transparent" />
+                        </ItemsPanelTemplate>
+                    </DataGrid.ItemsPanel>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Foreground="White"
+                                               Background="Transparent"
+                                               Text="{Binding Converter={StaticResource DatagridItemToLineNumberConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               FontSize="12"
+                                               ToolTip="{Binding BackSideName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                               FontWeight="Bold" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel HorizontalAlignment="Right"
+                            d:LayoutOverrides="Height"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnChangeFace"
+                            Command="{Binding ChangeSideCommand}"
+                            CommandParameter="Popup"
+                            VerticalAlignment="Center"
+                            BorderBrush="{x:Null}"
+                            d:LayoutOverrides="Width, GridBox"
+                            Style="{DynamicResource EmptyButton}"
+                            Height="26">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1"
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="White"
+                                              Offset="0" />
+                                <GradientStop Color="White"
+                                              Offset="0.9" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Image Stretch="Fill"
+                               Width="41">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Source"
+                                            Value="/Images/Arrow_Right.png" />
+                                    <Setter Property="ToolTip"
+                                            Value="Change to Back Side" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Visibility, ElementName=FrontSideWrapper}"
+                                                     Value="Hidden">
+                                            <Setter Property="Source"
+                                                    Value="/Images/Arrow_Left.png" />
+                                            <Setter Property="ToolTip"
+                                                    Value="Change to Front Side" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
+                </StackPanel>
                 <StackPanel Visibility="{Binding SetupModel.IsEnableSlideShow, ConverterParameter=False, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
                             HorizontalAlignment="Left"
                             Orientation="Horizontal"

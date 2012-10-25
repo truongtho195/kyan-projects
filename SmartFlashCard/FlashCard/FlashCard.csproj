@@ -161,6 +161,7 @@
       <DependentUpon>ModelTemplate.tt</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="defineEnum.cs" />
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />
     <Compile Include="Helper\GetSoundFromGoogleTranslate.cs" />

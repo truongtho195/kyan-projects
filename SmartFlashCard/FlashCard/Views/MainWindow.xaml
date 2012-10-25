@@ -24,18 +24,26 @@
                               Command="{Binding FullScreenCommand}">
                     </MenuItem>
                     <MenuItem Command="{Binding PlayPauseCommand}"
-                              Visibility="{Binding SetupModel.IsEnableSlideShow,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter}}"
                               CommandParameter="Popup">
+                        <!--Visibility="{Binding SetupModel.IsEnableSlideShow,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter}}"-->
                         <MenuItem.Style>
                             <Style TargetType="MenuItem">
                                 <Setter Property="Header"
                                         Value="Play" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPopupStarted,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                    <DataTrigger Binding="{Binding IsCurrentStarted,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                  Value="True">
                                         <Setter Property="Header"
                                                 Value="Pause" />
                                     </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=SetupModel.IsEnableSlideShow}"
+                                                       Value="true" />
+                                            <Condition Binding="{Binding Path=CurrentStudy}"
+                                                       Value="1" /><!--CurrentStudy = Popup-->
+                                        </MultiDataTrigger.Conditions>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </MenuItem.Style>
