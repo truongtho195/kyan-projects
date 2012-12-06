@@ -11,7 +11,6 @@ namespace FlashCard
         None = 0,
         Popup = 1,
         FullScreen = 2
-
     }
 
 }

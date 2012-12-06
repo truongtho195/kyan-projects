@@ -2,15 +2,21 @@
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System;
+using System.Xml.Serialization;
+using FlashCard.Database;
 
 namespace FlashCard.Models
 {
+
+    [XmlInclude(typeof(CardModel))]
+    [XmlInclude(typeof(LessonModel))]
     public abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Raised when a property on this object has a new value.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        [XmlIgnore]
         public virtual string DisplayName { get; protected set; }
 
         /// <summary>

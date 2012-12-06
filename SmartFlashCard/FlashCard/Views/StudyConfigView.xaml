@@ -34,6 +34,14 @@
                             <Grid x:Name="Layout"
                                   HorizontalAlignment="Stretch"
                                   Width="Auto">
+                            	<Grid.RowDefinitions>
+                            		<RowDefinition Height="0.54*"/>
+                            		<RowDefinition Height="0.46*"/>
+                            	</Grid.RowDefinitions>
+                            	<Grid.ColumnDefinitions>
+                            		<ColumnDefinition Width="0.731*"/>
+                            		<ColumnDefinition Width="0.269*"/>
+                            	</Grid.ColumnDefinitions>
                                 <Border x:Name="border_Copy"
                                         CornerRadius="8"
                                         BorderThickness="1"
@@ -41,7 +49,7 @@
                                         Height="Auto"
                                         Background="#F0293955"
                                         RenderTransformOrigin="0.035,0.071"
-                                        Margin="5" >
+                                        Margin="5" Grid.ColumnSpan="2" Grid.RowSpan="2" >
                                 	<Border.RenderTransform>
                                 		<TransformGroup>
                                 			<ScaleTransform/>
@@ -59,7 +67,7 @@
                                         Background="#FFE5E9BC"
                                         RenderTransformOrigin="0,0.5"
                                         Margin="5"
-                                        Padding="0" />
+                                        Padding="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
                                 <Border x:Name="border_Copy2"
                                         CornerRadius="8"
                                         Width="Auto"
@@ -67,7 +75,7 @@
                                         Background="{DynamicResource bgColor1}"
                                         RenderTransformOrigin="0,0.5"
                                         Margin="5"
-                                        BorderThickness="0.3">
+                                        BorderThickness="0.3" Grid.ColumnSpan="2" Grid.RowSpan="2">
                                 	<Border.Effect>
                                 		<DropShadowEffect BlurRadius="2" Direction="311" ShadowDepth="2"/>
                                 	</Border.Effect>
@@ -79,32 +87,9 @@
                                             <TranslateTransform />
                                         </TransformGroup>
                                     </Border.RenderTransform>
-                                    <Grid x:Name="grdContent"
-                                          Height="Auto"
-                                          Width="Auto"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="46" />
-                                            <RowDefinition Height="35" />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   Text="{Binding Card.CardName}"
-                                                   TextWrapping="Wrap"
-                                                   d:LayoutOverrides="Height"
-                                                   VerticalAlignment="Bottom"
-                                                   FontWeight="Bold"
-                                                   FontSize="13.333" />
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   TextWrapping="Wrap"
-                                                   Text="{Binding Card.Lessons.Count}"
-                                                   d:LayoutOverrides="Height"
-                                                   Grid.Row="1"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="10.667" />
-                                    </Grid>
                                 </Border>
                                 <Ellipse Fill="#FFCDE2F2" HorizontalAlignment="Left" Height="8.333" Margin="10,10,0,0" Stroke="White" VerticalAlignment="Top" Width="8.333"/>
+                                <Path Grid.Column="1" Data="M158.94699,5.3333281 L192.6868,24.999833 192.68684,39.457713 136.93844,5.3129947 z" Fill="#FF00E2FF" Height="Auto" Margin="0.136,5.313,5.312,8.062" Stretch="Fill" StrokeThickness="0.1" VerticalAlignment="Stretch" Stroke="#FF727272"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -378,8 +363,8 @@
         <Grid x:Name="grdLayout"
               Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.288*" />
-                <ColumnDefinition Width="0.712*" />
+                <ColumnDefinition Width="0.32*" />
+                <ColumnDefinition Width="0.68*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0" />
@@ -509,12 +494,12 @@
                       ItemsSource="{Binding CardCollection}"
                       SelectedItem="{Binding SelectedCard}"
                       Grid.Row="1"
-                      Margin="8,8,2,8"
+                      Margin="8,8,6,8"
                       FontSize="13.333"
                       Style="{StaticResource ListViewNoHeaderStyle}"
                       Grid.RowSpan="3"
                       ItemContainerStyle="{DynamicResource ListViewItemCardStyle}"
-                      Background="#33CCC7C7">
+                      Background="#33CCC7C7" BorderBrush="{DynamicResource ListBorder}">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}" />
 

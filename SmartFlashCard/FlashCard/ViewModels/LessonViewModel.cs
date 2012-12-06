@@ -658,7 +658,7 @@ namespace FlashCard.ViewModels
         {
             try
             {
-                
+
                 string keywordLesson = string.Empty;
                 this._lessonCollectionView.Filter = (item) =>
                 {
@@ -1006,9 +1006,17 @@ namespace FlashCard.ViewModels
                 dialog.Filter = "Flash Card File (*.fcard) |*.fcard";
                 dialog.FileName = string.Format("{0}.fcard", SelectedCard.Card.CardName);
                 var result = dialog.ShowDialog(ViewCore);
+
+
                 if (!string.IsNullOrWhiteSpace(dialog.FileName))
                 {
-                    Serializer<Card>.Serialize(SelectedCard.Card, dialog.FileName);
+                    SelectedCard.LessonCollection = new ObservableCollection<LessonModel>(
+                         SelectedCard.Card.Lessons.Select(x => new LessonModel(x)
+                         {
+                             BackSideCollection = new ObservableCollection<BackSideModel>(x.BackSides.Select(y => new BackSideModel(y)))
+                         }));
+
+                    Serializer<CardModel>.Serialize(SelectedCard, dialog.FileName);
                 }
 
                 MessageBox.Show(ViewCore as Window, "Flash Card Export success !", "Information", MessageBoxButton.OK);
@@ -1016,6 +1024,7 @@ namespace FlashCard.ViewModels
             catch (Exception ex)
             {
                 log.Error(ex);
+                throw ex;
             }
 
         }
@@ -1062,7 +1071,7 @@ namespace FlashCard.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(openDialog.FileName))
                 {
-                    var card = Serializer<Card>.Deserialize(openDialog.FileName);
+                    var card = Serializer<CardModel>.Deserialize(openDialog.FileName);
 
                     CardModel cardModel = new CardModel();
                     if (card != null)
@@ -1072,10 +1081,10 @@ namespace FlashCard.ViewModels
                         cardModel.Remark = card.Remark;
                         cardModel.ToEntity();
                         //Handle Card.Lessons
-                        if (card.Lessons != null && card.Lessons.Count > 0)
+                        if (card.LessonCollection != null && card.LessonCollection.Count > 0)
                         {
                             listLesson = new List<LessonModel>();
-                            foreach (var lesson in card.Lessons)
+                            foreach (var lesson in card.LessonCollection)
                             {
                                 if (lesson != null)
                                 {
@@ -1087,10 +1096,10 @@ namespace FlashCard.ViewModels
                                     lessonModel.CategoryID = lesson.CategoryID;
                                     lessonModel.ToEntity();
                                     //Handle Lesson.BackSides
-                                    if (lesson.BackSides != null && lesson.BackSides.Count > 0)
+                                    if (lesson.BackSideCollection != null && lesson.BackSideCollection.Count > 0)
                                     {
                                         listBackSide = new List<BackSideModel>();
-                                        foreach (var backSide in lesson.BackSides)
+                                        foreach (var backSide in lesson.BackSideCollection)
                                         {
                                             if (backSide != null)
                                             {
@@ -1210,7 +1219,7 @@ namespace FlashCard.ViewModels
 
         private void LessonViewModel_DoNow(string message)
         {
-            
+
             try
             {
                 if ("OkExecute".Equals(message))
