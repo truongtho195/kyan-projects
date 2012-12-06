@@ -12,12 +12,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using FlashCard.Models;
+using System.Xml.Serialization;
 
 namespace FlashCard.Database
 {
     /// <summary>
     /// Model for table BackSide 
     /// </summary>
+    /// 
     public partial class BackSideModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
@@ -40,14 +42,18 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-
+        
+        [XmlIgnore]
         public BackSide BackSide { get; private set; }
-
+        
+        [XmlIgnore]
         protected bool _isNew;
         /// <summary>
         /// Property Base
         /// <para> Gets or sets the IsNew </para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsNew
         {
             get { return _isNew; }
@@ -66,6 +72,8 @@ namespace FlashCard.Database
         /// Property Base
         /// <para>Gets or sets the IsDirty</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDirty
         {
             get { return _isDirty; }
@@ -84,6 +92,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -102,6 +112,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para> Gets or sets the IsChecked</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -115,7 +127,7 @@ namespace FlashCard.Database
             }
         }
 
-        
+
         /// <summary>
         ///<para>Public Method</para>
         /// Method for set IsNew & IsDirty = false;
@@ -139,7 +151,7 @@ namespace FlashCard.Database
             this.BackSide.BackSideName = this.BackSideName.Trim();
             this.BackSide.IsMain = this.IsMain;
         }
-        
+
 
         /// <summary>
         ///Public Method
@@ -259,11 +271,16 @@ namespace FlashCard.Database
         #region Custom Code
 
         #region DataErrorInfo
+        [XmlIgnore]
         public string Error
         {
             get { throw new NotImplementedException(); }
         }
+        
+        [XmlIgnore]
         private Dictionary<string, string> _errors = new Dictionary<string, string>();
+
+        [XmlIgnore]
         public Dictionary<string, string> Errors
         {
             get
@@ -279,6 +296,8 @@ namespace FlashCard.Database
                 }
             }
         }
+  
+        [XmlIgnore]
         public string this[string columnName]
         {
             get

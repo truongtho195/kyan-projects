@@ -18,6 +18,7 @@ using FlashCard.Views;
 using Hardcodet.Wpf.TaskbarNotification;
 using log4net;
 using MVVMHelper.Commands;
+using FlashCard.Database.Repository;
 
 namespace FlashCard.ViewModels
 {
@@ -805,14 +806,13 @@ namespace FlashCard.ViewModels
             {
                 log.Info("||{*} === Cancel Command Executed === ");
                 //Close & waiting for answer
-
-                if ("FullScreen".Equals(param.ToString()))
-                {
-                    _timerViewFullScreen.Stop();
-                }
-                else
+                if (this.CurrentStudy == StudyType.Popup)
                 {
                     CloseTimerPopup();
+                }
+                else if(this.CurrentStudy == StudyType.FullScreen)
+                {
+                    _timerViewFullScreen.Stop();
                 }
                 var result = MessageBox.Show(ViewCore as Window, "Do you want to exit study !", "Question !", MessageBoxButton.YesNo);
 
@@ -826,17 +826,33 @@ namespace FlashCard.ViewModels
                         _learnView.Close();
                     }
 
-                    //For Popup
-                    CloseTimerPopup();
 
                     //IsPopupStarted = false;
                     this.CurrentStudy = StudyType.None;
                     ViewCore.MyNotifyIcon.Dispose();
+
+                    //Update SetupModel IsOpenLastStudy
+                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, new Action(
+                        delegate
+                        {
+                            if (CacheObject.Get<SetupModel>("SetupModel").IsOpenLastStudy == true)
+                            {
+                                var setupModel = CacheObject.Get<SetupModel>("SetupModel");
+                                setupModel.IsOpenLastStudy = false;
+                                setupModel.ToEntity();
+                                SetupRepository setupRepository = new SetupRepository();
+                                setupRepository.Update<Setup>(setupModel.Setup);
+                                setupRepository.Commit();
+                                CacheObject.Add<SetupModel>("SetupModel", setupModel);
+                            }
+                        }));
+                    //End Update SetupModel IsOpenLastStudy
+
                     GC.SuppressFinalize(this);
                     if (App.LessonMangeView != null)
                     {
-                        App.LessonMangeView.Activate();
                         App.LessonMangeView.Show();
+                        App.LessonMangeView.Activate();
                     }
                 }
                 else
@@ -912,7 +928,7 @@ namespace FlashCard.ViewModels
                         }
                         else
                         {
-                            
+
                             ShowPopupForm();
                         }
                     }
@@ -946,7 +962,7 @@ namespace FlashCard.ViewModels
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnFullScreenCanExecute(object param)
         {
-            return !(this.CurrentStudy==StudyType.FullScreen);
+            return !(this.CurrentStudy == StudyType.FullScreen);
         }
 
         /// <summary>
@@ -1173,7 +1189,7 @@ namespace FlashCard.ViewModels
                 string textFile = TextForSpeech;
                 if (textFile.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) > -1)
                     textFile = CleanFileName(TextForSpeech);
-                var currentFolder= System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+                var currentFolder = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
                 string strFullPath = string.Format(@"{0}\FlashCardSound\{1}.mp3", currentFolder, textFile);
                 if (System.IO.File.Exists(strFullPath))
                 {
@@ -1194,7 +1210,7 @@ namespace FlashCard.ViewModels
                     Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(
                         delegate
                         {
-                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder+"\\FlashCardSound");
+                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder + "\\FlashCardSound");
                         }));
                 }
                 else
@@ -1438,7 +1454,7 @@ namespace FlashCard.ViewModels
                 if (_timerPopup != null)
                     log.DebugFormat("|| == Timer tick (_timerPopup) Status : {0}", _timerPopup.IsEnabled);
             });
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, action);
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, action);
         }
 
         /// <summary>

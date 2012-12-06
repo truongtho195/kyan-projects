@@ -12,12 +12,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using FlashCard.Models;
+using System.Xml.Serialization;
 
 namespace FlashCard.Database
 {
     /// <summary>
     /// Model for table Card 
-    /// </summary>
+    /// </summary>]
+    /// 
     public partial class CardModel : ViewModelBase, IDataErrorInfo
     {
         #region Ctor
@@ -40,7 +42,7 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-
+        [XmlIgnore]
         public Card Card { get; private set; }
 
         protected bool _isNew;
@@ -48,6 +50,8 @@ namespace FlashCard.Database
         /// Property Base
         /// <para> Gets or sets the IsNew </para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsNew
         {
             get { return _isNew; }
@@ -66,6 +70,8 @@ namespace FlashCard.Database
         /// Property Base
         /// <para>Gets or sets the IsDirty</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDirty
         {
             get { return _isDirty; }
@@ -84,6 +90,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -102,6 +110,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para> Gets or sets the IsChecked</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -130,6 +140,7 @@ namespace FlashCard.Database
         ///Public Method
         ///<para> Method for set PropertyModel to Entity</para>
         /// </summary>
+        /// 
         public void ToEntity()
         {
             if (IsNew)
@@ -223,6 +234,7 @@ namespace FlashCard.Database
         ///  <para>Exention Property in CardModel</para>
         /// Gets or sets the property value.
         /// </summary>
+        
         public ObservableCollection<LessonModel> LessonCollection
         {
             get { return _lessonCollection; }
@@ -242,6 +254,8 @@ namespace FlashCard.Database
         ///Extention Property in CardModel
         ///<para> Gets or sets the property value.</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsFile
         {
             get { return _isFile; }
@@ -261,6 +275,8 @@ namespace FlashCard.Database
         /// <summary>
         /// Gets or sets the CheckedAll.
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool? CheckedAll
         {
             get { return _checkedAll; }
@@ -278,11 +294,14 @@ namespace FlashCard.Database
         #endregion
 
         #region DataErrorInfo
+        [XmlIgnore]
         public string Error
         {
             get { throw new NotImplementedException(); }
         }
+        [XmlIgnore]
         private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        [XmlIgnore]
         public Dictionary<string, string> Errors
         {
             get
@@ -298,6 +317,7 @@ namespace FlashCard.Database
                 }
             }
         }
+        [XmlIgnore]
         public string this[string columnName]
         {
             get

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using FlashCard.Models;
+using System.Xml.Serialization;
 
 namespace FlashCard.Database
 {
@@ -40,14 +41,16 @@ namespace FlashCard.Database
         #endregion
 
         #region Entity Properties
-
+        [XmlIgnore]
         public Lesson Lesson { get; private set; }
-
+        [XmlIgnore]
         protected bool _isNew;
         /// <summary>
         /// Property Base
         /// <para> Gets or sets the IsNew </para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsNew
         {
             get { return _isNew; }
@@ -61,11 +64,14 @@ namespace FlashCard.Database
             }
         }
 
+
         protected bool _isDirty;
         /// <summary>
         /// Property Base
         /// <para>Gets or sets the IsDirty</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDirty
         {
             get { return _isDirty; }
@@ -84,6 +90,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para>Gets or sets the IsDeleted</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -102,6 +110,8 @@ namespace FlashCard.Database
         /// Property Base
         ///<para> Gets or sets the IsChecked</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -115,7 +125,7 @@ namespace FlashCard.Database
             }
         }
 
-        
+
         /// <summary>
         ///<para>Public Method</para>
         /// Method for set IsNew & IsDirty = false;
@@ -139,7 +149,7 @@ namespace FlashCard.Database
             this.Lesson.CategoryID = this.CategoryID.Trim();
             this.Lesson.CardID = this.CardID.Trim();
         }
-        
+
 
         /// <summary>
         ///Public Method
@@ -182,6 +192,7 @@ namespace FlashCard.Database
         ///Property Model
         ///<para> Gets or sets the LessonName.</para>
         /// </summary>
+        /// 
         public string LessonName
         {
             get { return this._lessonName; }
@@ -201,6 +212,7 @@ namespace FlashCard.Database
         ///Property Model
         ///<para> Gets or sets the Description.</para>
         /// </summary>
+        /// 
         public string Description
         {
             get { return this._description; }
@@ -220,6 +232,7 @@ namespace FlashCard.Database
         ///Property Model
         ///<para> Gets or sets the CategoryID.</para>
         /// </summary>
+        /// 
         public string CategoryID
         {
             get { return this._categoryID; }
@@ -239,6 +252,7 @@ namespace FlashCard.Database
         ///Property Model
         ///<para> Gets or sets the CardID.</para>
         /// </summary>
+        /// 
         public string CardID
         {
             get { return this._cardID; }
@@ -258,11 +272,13 @@ namespace FlashCard.Database
 
         #region Custom Code
         #region Properties
-        private bool _isBackSide=false;
+        private bool _isBackSide = false;
         /// <summary>
         /// This is Extend Properties
         ///<para> Gets or sets the property value.</para>
         /// </summary>
+        /// 
+        [XmlIgnore]
         public bool IsBackSide
         {
             get { return _isBackSide; }
@@ -304,11 +320,16 @@ namespace FlashCard.Database
         #endregion
 
         #region DataErrorInfo
+        [XmlIgnore]
         public string Error
         {
             get { throw new NotImplementedException(); }
         }
+
+        [XmlIgnore]
         private Dictionary<string, string> _errors = new Dictionary<string, string>();
+
+        [XmlIgnore]
         public Dictionary<string, string> Errors
         {
             get
@@ -324,6 +345,9 @@ namespace FlashCard.Database
                 }
             }
         }
+
+        
+        [XmlIgnore]
         public string this[string columnName]
         {
             get
