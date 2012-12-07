@@ -478,7 +478,7 @@ namespace FlashCard.ViewModels
                         if (SelectedLesson == lessonModel)
                         {
                             var indexLesson = LessonCollection.IndexOf(SelectedLesson);
-                            ViewCore.lstLesson.SelectedIndex = indexLesson - 1;
+                            //ViewCore.lstLesson.SelectedIndex = indexLesson - 1;
 
                         }
                         LessonCollection.Remove(lessonModel);

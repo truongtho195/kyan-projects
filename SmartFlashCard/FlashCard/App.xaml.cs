@@ -84,19 +84,30 @@ namespace FlashCard
             log.Info("OnStartup Run");
             try
             {
-                var file = e.Args.FirstOrDefault().ToString();
+                //var file = e.Args.FirstOrDefault().ToString();
+                var file = @"E:\Desktop\Toeic A6.fcard";
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {
                     CacheObject.Get<SetupModel>("SetupModel").IsRunStatup = true;
-                    var card = Serializer<Card>.Deserialize(file);
+                    var card = Serializer<CardModel>.Deserialize(file);
+                    
                     if (card != null)
                     {
-                        LessonCollection = new List<LessonModel>(card.Lessons.Select(x => new LessonModel(x)));
+                        card.ToEntity();
+                        foreach (var item in card.LessonCollection)
+                        {
+                            item.Lesson.Card = card.Card;
+                            item.ToEntity();
+                            
+                        }
+                        LessonCollection = card.LessonCollection.ToList();
                         if (LessonCollection != null && LessonCollection.Count() > 0 && CacheObject.Get<SetupModel>("SetupModel").IsRunStatup)
                         {
                             LessonMangeView = new LessonManageView(this.LessonCollection, true);
                             IsStatupRunOk = true;
+                            LessonMangeView.Show();
+                            
                         }
                     }
                 }
