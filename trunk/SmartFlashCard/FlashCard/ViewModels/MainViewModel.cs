@@ -826,7 +826,6 @@ namespace FlashCard.ViewModels
                         _learnView.Close();
                     }
 
-
                     //IsPopupStarted = false;
                     this.CurrentStudy = StudyType.None;
                     ViewCore.MyNotifyIcon.Dispose();

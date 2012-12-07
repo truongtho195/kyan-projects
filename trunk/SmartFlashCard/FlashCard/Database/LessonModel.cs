@@ -321,6 +321,7 @@ namespace FlashCard.Database
 
         #region DataErrorInfo
         [XmlIgnore]
+        
         public string Error
         {
             get { throw new NotImplementedException(); }

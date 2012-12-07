@@ -8,8 +8,10 @@
              VerticalContentAlignment="Stretch"
              xmlns:attachedCmd="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              Height="520"
+             xmlns:converter="clr-namespace:FlashCard.Converters"
              Width="778" FontSize="12" RenderTransformOrigin="0.5,0.5">
     <UserControl.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <Style TargetType="{x:Type ListViewItem}"
                x:Key="ListViewItemCardStyle">
             <Setter Property="Template">
@@ -87,9 +89,40 @@
                                             <TranslateTransform />
                                         </TransformGroup>
                                     </Border.RenderTransform>
+                                    <Grid x:Name="grdContent"
+                                          Height="Auto"
+                                          Width="Auto"
+                                          VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Stretch">
+                                    	<Grid.ColumnDefinitions>
+                                    		<ColumnDefinition Width="0.738*"/>
+                                    		<ColumnDefinition Width="0.262*"/>
+                                    	</Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="46" />
+                                            <RowDefinition Height="35" />
+                                        </Grid.RowDefinitions>
+                                        <Grid x:Name="grdFile"
+                                    		Grid.RowSpan="1"
+                                    		Grid.Column="1"
+                                    		Visibility="{Binding IsFile, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}" ToolTip="Card From File">
+                                    		<Path Data="M161.30716,5.0854319L192.75576,23.889961 192.68684,39.457713 136.93819,5.262154z" Fill="Red" Height="Auto" Stretch="Fill" Stroke="Black" Width="Auto" StrokeThickness="0"/>
+                                    	</Grid>
+                                    	<TextBlock HorizontalAlignment="Center"
+                                    		Text="{Binding Card.CardName}"
+                                    		TextWrapping="Wrap"
+                                    		VerticalAlignment="Bottom"
+                                    		FontWeight="Bold"
+                                    		FontSize="13.333" Grid.ColumnSpan="2" />
+                                    	<TextBlock HorizontalAlignment="Center"
+                                    		TextWrapping="Wrap"
+                                    		Text="{Binding Card.Lessons.Count}"
+                                    		Grid.Row="1"
+                                    		VerticalAlignment="Top"
+                                    		FontSize="10.667" Grid.ColumnSpan="2" />
+                                    </Grid>
                                 </Border>
                                 <Ellipse Fill="#FFCDE2F2" HorizontalAlignment="Left" Height="8.333" Margin="10,10,0,0" Stroke="White" VerticalAlignment="Top" Width="8.333"/>
-                                <Path Grid.Column="1" Data="M158.94699,5.3333281 L192.6868,24.999833 192.68684,39.457713 136.93844,5.3129947 z" Fill="#FF00E2FF" Height="Auto" Margin="0.136,5.313,5.312,8.062" Stretch="Fill" StrokeThickness="0.1" VerticalAlignment="Stretch" Stroke="#FF727272"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -260,14 +293,6 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-	<UserControl.RenderTransform>
-		<TransformGroup>
-			<ScaleTransform/>
-			<SkewTransform/>
-			<RotateTransform/>
-			<TranslateTransform/>
-		</TransformGroup>
-	</UserControl.RenderTransform>
     <Grid x:Name="Layout">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.979*" />
@@ -502,8 +527,6 @@
                       Background="#33CCC7C7" BorderBrush="{DynamicResource ListBorder}">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}" />
-
-
                 </ListView.View>
             </ListView>
             <ListView x:Name="lstLessons"
@@ -538,7 +561,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Lesson Name"
-                                        Width="300"
+                                        Width="auto"
                                         DisplayMemberBinding="{Binding Lesson.LessonName}" />
 
 
