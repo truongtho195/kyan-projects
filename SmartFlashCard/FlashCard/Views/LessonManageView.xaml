@@ -43,14 +43,12 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </SelectiveScrollingGrid.RowDefinitions>
-                    <Expander Width="auto"
-                              IsExpanded="True">
+                    <Expander 
+                              IsExpanded="False">
                         <Expander.Header>
-                            <Grid Width="Auto"
-                                  HorizontalAlignment="Stretch"
-                                  Background="BlueViolet">
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -379,11 +377,19 @@
                     <DataGrid x:Name="lstLesson"
                               Grid.Row="1"
                               Margin="5,1,0,1"
+                              AutoGenerateColumns="False"
                               Background="#33939393"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CellStyle="{DynamicResource DataGridCellStyle}"
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
+                              VerticalGridLinesBrush="#00000000"
+                              Style="{DynamicResource DataGridStyle}"
+                              HorizontalGridLinesBrush="#00000000"
+                              RowHeaderWidth="0"
                               FontWeight="Bold"
                               ItemsSource="{Binding LessonCollection}"
-                              SelectionMode="Single"
-                              >
+                              SelectionMode="Single">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
@@ -401,88 +407,94 @@
                             </GroupStyle>
                         </DataGrid.GroupStyle>
                         <DataGrid.Columns>
-                            <!--<DataGridTextColumn Width="50"
-                                                Header="#"
-                                                Binding="{Binding Converter={StaticResource ListViewLineNumberConverter},
-                                                                               RelativeSource={RelativeSource FindAncestor,
-                                                                                                              AncestorType={x:Type DataGridRow}}}" />-->
-                            <DataGridTextColumn Header="Lesson Name"
-                                                Width="*"
-                                                Binding="{Binding Lesson.LessonName}" />
+                            <!--
+                                <DataGridTextColumn Width="50"
+                                Header="#"
+                                Binding="{Binding Converter={StaticResource ListViewLineNumberConverter},
+                                RelativeSource={RelativeSource FindAncestor,
+                                AncestorType={x:Type DataGridRow}}}" />
+                            -->
+                            <DataGridTextColumn Width="*"
+                                                Binding="{Binding Lesson.LessonName}"
+                                                Header="Lesson Name" />
                             <DataGridTemplateColumn Header="Del">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <!--<Button Width="20"
+
+                                        <Button Width="20"
                                                 Height="20"
                                                 Command="{Binding DataContext.DeleteLessonCommand,
-                                                                      RelativeSource={RelativeSource AncestorType={x:Type Window},
-                                                                                                     Mode=FindAncestor}}"
+                                            RelativeSource={RelativeSource AncestorType={x:Type Window},
+                                            Mode=FindAncestor}}"
                                                 CommandParameter="{Binding .}"
                                                 Style="{StaticResource EmptyButton}"
-                                                ToolTip="Delete">-->
+                                                ToolTip="Delete">
+
                                             <Image Source="/Images/1336360382_Delete.png" />
-                                        <!--</Button>-->
+                                        </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <!--<ListView x:Name="lstLesson"
-                              Grid.Row="1"
-                              Margin="5,1,0,1"
-                              Background="#33939393"
-                              FontWeight="Bold"
-                              ItemsPanel="{DynamicResource ItemsPanelTemplate}"
-                              ItemsSource="{Binding LessonCollection}"
-                              ScrollViewer.CanContentScroll="False"
-                              SelectionMode="Single"
-                              Style="{DynamicResource ListViewStyle}">
+                    <!--
+                        <ListView x:Name="lstLesson"
+                        Grid.Row="1"
+                        Margin="5,1,0,1"
+                        Background="#33939393"
+                        FontWeight="Bold"
+                        ItemsPanel="{DynamicResource ItemsPanelTemplate}"
+                        ItemsSource="{Binding LessonCollection}"
+                        ScrollViewer.CanContentScroll="False"
+                        SelectionMode="Single"
+                        Style="{DynamicResource ListViewStyle}">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                                                             CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </i:EventTrigger>
+                        <i:EventTrigger EventName="SelectionChanged">
+                        <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
+                        CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ListView.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template"
-                                                Value="{StaticResource DataGridGroupControlTemplate}" />
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
+                        <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                        <Setter Property="Template"
+                        Value="{StaticResource DataGridGroupControlTemplate}" />
+                        </Style>
+                        </GroupStyle.ContainerStyle>
+                        </GroupStyle>
                         </ListView.GroupStyle>
                         <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                                <GridViewColumn Width="50"
-                                                DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter},
-                                                                               RelativeSource={RelativeSource FindAncestor,
-                                                                                                              AncestorType={x:Type ListBoxItem}}}"
-                                                Header="#" />
-                                <GridViewColumn Width="200"
-                                    DisplayMemberBinding="{Binding Lesson.LessonName}"
-                                                Header="Lesson Name" />
-
-                                <GridViewColumn Header="#">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Width="20"
-                                                    Height="20"
-                                                    Command="{Binding DataContext.DeleteLessonCommand,
-                                                                      RelativeSource={RelativeSource AncestorType={x:Type Window},
-                                                                                                     Mode=FindAncestor}}"
-                                                    CommandParameter="{Binding .}"
-                                                    Style="{DynamicResource EmptyButton}"
-                                                    ToolTip="Delete">
-                                                <Image Source="/Images/1336360382_Delete.png" />
-                                            </Button>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
+                        <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn Width="50"
+                        DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter},
+                        RelativeSource={RelativeSource FindAncestor,
+                        AncestorType={x:Type ListBoxItem}}}"
+                        Header="#" />
+                        <GridViewColumn Width="200"
+                        DisplayMemberBinding="{Binding Lesson.LessonName}"
+                        Header="Lesson Name" />
+                        
+                        <GridViewColumn Header="#">
+                        <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                        <Button Width="20"
+                        Height="20"
+                        Command="{Binding DataContext.DeleteLessonCommand,
+                        RelativeSource={RelativeSource AncestorType={x:Type Window},
+                        Mode=FindAncestor}}"
+                        CommandParameter="{Binding .}"
+                        Style="{DynamicResource EmptyButton}"
+                        ToolTip="Delete">
+                        <Image Source="/Images/1336360382_Delete.png" />
+                        </Button>
+                        </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        </GridView>
                         </ListView.View>
-                    </ListView>-->
+                        </ListView>
+                    -->
                     <Grid x:Name="grdContent"
                           Grid.RowSpan="2"
                           Grid.Column="1"
@@ -822,14 +834,14 @@
                                 <ColumnDefinition Width="50" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Right"
+                            <TextBlock Margin="0"
+                                       HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontWeight="Bold"
                                        Foreground="Black"
                                        Text="Search "
                                        TextWrapping="Wrap"
-                                       d:LayoutOverrides="Width"
-                                       Margin="0" />
+                                       d:LayoutOverrides="Width" />
                             <Path Width="0.5"
                                   Height="15"
                                   HorizontalAlignment="Right"
@@ -873,7 +885,9 @@
                 </Grid>
                 <Grid x:Name="grdCategories"
                       Grid.Row="1"
-                      Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=tgCategories}">
+                      Visibility="{Binding IsChecked,
+                                           Converter={StaticResource booleanToVisibilityConverter},
+                                           ElementName=tgCategories}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="37" />
                         <RowDefinition />
