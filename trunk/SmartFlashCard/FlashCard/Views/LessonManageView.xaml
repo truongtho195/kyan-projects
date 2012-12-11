@@ -33,44 +33,32 @@
         <ControlTemplate x:Key="DataGridGroupControlTemplate"
                          TargetType="{x:Type GroupItem}">
             <Border x:Name="DGR_Border"
+                    BorderThickness="1"
+                    BorderBrush="#FF4A7197"
+                    CornerRadius="8"
+                    HorizontalAlignment="Stretch"
+                    Margin="3,0,3,3"
                     SnapsToDevicePixels="True">
-
-                <SelectiveScrollingGrid>
-                    <SelectiveScrollingGrid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </SelectiveScrollingGrid.ColumnDefinitions>
+                <SelectiveScrollingGrid HorizontalAlignment="Stretch">
                     <SelectiveScrollingGrid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto"
+                                       MinHeight="23" />
+                        <RowDefinition />
                     </SelectiveScrollingGrid.RowDefinitions>
-                    <Expander 
-                              IsExpanded="False">
+                    <Expander IsExpanded="False">
                         <Expander.Header>
-                            <Grid HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock FontWeight="Bold"
-                                           Text="{Binding Name}" />
-                                <TextBlock Grid.Column="1"
-                                           Margin="10,0,0,0"
-                                           HorizontalAlignment="Stretch"
-                                           FontWeight="Bold"
-                                           Text="{Binding ItemCount}" />
-                                <Separator Grid.Row="1"
-                                           Grid.ColumnSpan="2"
-                                           Width="auto"
-                                           Background="Black" />
-                            </Grid>
+                            <TextBlock FontWeight="Bold">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} ({1})">
+                                            <Binding Path="Name" />
+                                            <Binding Path="ItemCount" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                            </TextBlock>
                         </Expander.Header>
-                        <Expander.Content>
-                            <ItemsPresenter />
-                        </Expander.Content>
+
+                        <ItemsPresenter Margin="5" />
+
                     </Expander>
                 </SelectiveScrollingGrid>
             </Border>
@@ -149,6 +137,60 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="DataGridRowStyle1"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="true" />
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{x:Null}" />
+            <Setter Property="ValidationErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBlock Foreground="Red"
+                                   Margin="2,0,0,0"
+                                   Text="!"
+                                   VerticalAlignment="Center" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Column="1"
+                                                          Grid.Row="1"
+                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="bool2VisibilityConverter" />
+
+
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="S"
@@ -376,20 +418,24 @@
                           Stroke="#FF7F9DB9" />
                     <DataGrid x:Name="lstLesson"
                               Grid.Row="1"
-                              Margin="5,1,0,1"
-                              AutoGenerateColumns="False"
-                              Background="#33939393"
+                              Margin="5,1,5,1"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               CellStyle="{DynamicResource DataGridCellStyle}"
+                              HorizontalAlignment="Stretch"
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle}"
                               VerticalGridLinesBrush="#00000000"
                               Style="{DynamicResource DataGridStyle}"
                               HorizontalGridLinesBrush="#00000000"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               RowHeaderWidth="0"
                               FontWeight="Bold"
                               ItemsSource="{Binding LessonCollection}"
-                              SelectionMode="Single">
+                              SelectionMode="Single"
+                              RowStyle="{DynamicResource DataGridRowStyle1}"
+                              Background="{x:Null}"
+                              RowBackground="#00CCCCCC"
+                              AutoGenerateColumns="False">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
@@ -407,20 +453,16 @@
                             </GroupStyle>
                         </DataGrid.GroupStyle>
                         <DataGrid.Columns>
-                            <!--
-                                <DataGridTextColumn Width="50"
-                                Header="#"
-                                Binding="{Binding Converter={StaticResource ListViewLineNumberConverter},
-                                RelativeSource={RelativeSource FindAncestor,
-                                AncestorType={x:Type DataGridRow}}}" />
-                            -->
                             <DataGridTextColumn Width="*"
+                                                MinWidth="220"
+                                                IsReadOnly="True"
                                                 Binding="{Binding Lesson.LessonName}"
                                                 Header="Lesson Name" />
-                            <DataGridTemplateColumn Header="Del">
+                            <DataGridTemplateColumn Header="Del"
+                                                    IsReadOnly="True"
+                                                    MinWidth="30">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-
                                         <Button Width="20"
                                                 Height="20"
                                                 Command="{Binding DataContext.DeleteLessonCommand,
@@ -429,7 +471,6 @@
                                                 CommandParameter="{Binding .}"
                                                 Style="{StaticResource EmptyButton}"
                                                 ToolTip="Delete">
-
                                             <Image Source="/Images/1336360382_Delete.png" />
                                         </Button>
                                     </DataTemplate>
@@ -437,64 +478,6 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <!--
-                        <ListView x:Name="lstLesson"
-                        Grid.Row="1"
-                        Margin="5,1,0,1"
-                        Background="#33939393"
-                        FontWeight="Bold"
-                        ItemsPanel="{DynamicResource ItemsPanelTemplate}"
-                        ItemsSource="{Binding LessonCollection}"
-                        ScrollViewer.CanContentScroll="False"
-                        SelectionMode="Single"
-                        Style="{DynamicResource ListViewStyle}">
-                        <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                        <localCommand:EventToCommand Command="{Binding SelectionChangedCommand}"
-                        CommandParameter="{Binding SelectedItem, ElementName=lstLesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ListView.GroupStyle>
-                        <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                        <Setter Property="Template"
-                        Value="{StaticResource DataGridGroupControlTemplate}" />
-                        </Style>
-                        </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                        </ListView.GroupStyle>
-                        <ListView.View>
-                        <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <GridViewColumn Width="50"
-                        DisplayMemberBinding="{Binding Converter={StaticResource ListViewLineNumberConverter},
-                        RelativeSource={RelativeSource FindAncestor,
-                        AncestorType={x:Type ListBoxItem}}}"
-                        Header="#" />
-                        <GridViewColumn Width="200"
-                        DisplayMemberBinding="{Binding Lesson.LessonName}"
-                        Header="Lesson Name" />
-                        
-                        <GridViewColumn Header="#">
-                        <GridViewColumn.CellTemplate>
-                        <DataTemplate>
-                        <Button Width="20"
-                        Height="20"
-                        Command="{Binding DataContext.DeleteLessonCommand,
-                        RelativeSource={RelativeSource AncestorType={x:Type Window},
-                        Mode=FindAncestor}}"
-                        CommandParameter="{Binding .}"
-                        Style="{DynamicResource EmptyButton}"
-                        ToolTip="Delete">
-                        <Image Source="/Images/1336360382_Delete.png" />
-                        </Button>
-                        </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        </GridView>
-                        </ListView.View>
-                        </ListView>
-                    -->
                     <Grid x:Name="grdContent"
                           Grid.RowSpan="2"
                           Grid.Column="1"
@@ -729,7 +712,8 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn MinWidth="500"
+                                    <DataGridTemplateColumn 
+                                        Width="*"
                                                             Header="Content">
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
@@ -822,7 +806,7 @@
                     </Grid>
                     <Border x:Name="bdSearchLesson"
                             Height="30"
-                            Margin="5,2,2,2"
+                            Margin="5,2"
                             Background="White"
                             BorderBrush="#FF7F9DB9"
                             BorderThickness="1"
