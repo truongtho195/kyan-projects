@@ -533,6 +533,7 @@
                       ItemsSource="{Binding SelectedCard.LessonCollection}"
                       Grid.Row="3"
                       FontSize="13.333"
+					  HorizontalAlignment="Stretch"
                       Style="{DynamicResource ListViewStyle}"
                       Grid.Column="1"
                       Margin="3,8,8,8"
@@ -561,7 +562,8 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Lesson Name"
-                                        Width="auto"
+                                        Width="Auto"
+										
                                         DisplayMemberBinding="{Binding Lesson.LessonName}" />
 
 
