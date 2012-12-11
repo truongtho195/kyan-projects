@@ -17,12 +17,48 @@ namespace ConvertToText
     {
         static void Main(string[] args)
         {
-            GetSoundForLesson();
+            //GetSoundForLesson();
+            Console.WriteLine("============================GetSoundForLesson Lesson Start ?=============================");
+            Console.WriteLine("Press any key to ..");
+            Console.ReadLine();
+            Console.WriteLine("Starting.....");
+            SetMainBackSide();
+            Console.ReadLine();
         }
 
         #region ImportLesson
         private static void InsertLesson()
         {
+
+        }
+
+        private static void SetMainBackSide()
+        {
+            SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+            List<string> listItemError = new List<string>();
+            var AllLesson = flashCardEntity.Lessons.ToList();
+
+            foreach (var item in AllLesson)
+            {
+                var mainBackSide = item.BackSides.SingleOrDefault(x => x.BackSideName.Trim().Equals("Main Back Side"));
+                if (mainBackSide != null)
+                {
+                    Console.Write("Current Item {0} - {1}", item.LessonName, mainBackSide.BackSideID);
+                    mainBackSide.IsMain = 1;
+                    try
+                    {
+                        flashCardEntity.SaveChanges();
+                        Console.WriteLine("Done :{0}", mainBackSide.BackSideID);
+                    }
+                    catch (Exception ex)
+                    {
+                        listItemError.Add(mainBackSide.BackSideID);
+                        Console.WriteLine(" [ Error ] Item Error : {0}", mainBackSide.BackSideID);
+                    }
+                }
+
+            }
+
 
         }
 
@@ -89,9 +125,9 @@ namespace ConvertToText
             {
                 Console.WriteLine(ex.ToString());
                 return fileName;
-                    
+
             }
-            
+
         }
         private static void InserLesson()
         {
@@ -123,7 +159,7 @@ namespace ConvertToText
             //}
             //Console.ReadLine();
         }
-        
+
         private static void UpdateLessonNrelation()
         {
             Console.WriteLine("============================Update Lesson Start ?=============================");

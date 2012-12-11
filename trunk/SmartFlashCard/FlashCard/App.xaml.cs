@@ -84,8 +84,7 @@ namespace FlashCard
             log.Info("OnStartup Run");
             try
             {
-                //var file = e.Args.FirstOrDefault().ToString();
-                var file = @"E:\Desktop\Toeic A6.fcard";
+                var file = e.Args.FirstOrDefault().ToString();
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                 if (fileInfo.Exists && ".fcard".Equals(fileInfo.Extension))
                 {

@@ -337,9 +337,14 @@ namespace FlashCard.ViewModels
                         var control = ViewCore.MyNotifyIcon.CustomBalloon.Child as FancyBalloon;
 
                         if (SelectedLesson.IsBackSide)
+                        {
                             sbChangeSide = (Storyboard)control.FindResource("sbChangeToBack");
+                            SelectedBackSide = SelectedLesson.Lesson.BackSides.Where(x => x.IsMain == 1).SingleOrDefault();
+                        }
                         else
+                        {
                             sbChangeSide = (Storyboard)control.FindResource("sbChangeToFront");
+                        }
 
                         sbChangeSide.Begin();
                     }));
