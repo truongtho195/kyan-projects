@@ -148,14 +148,6 @@
         </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid x:Name="grdFrame"
               RenderTransformOrigin="0.5,0.5">
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Grid.RenderTransform>
             <Grid.RowDefinitions>
                 <RowDefinition Height="29.333" />
                 <RowDefinition />
