@@ -298,124 +298,93 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ScrollViewer VerticalScrollBarVisibility="Disabled"
-                              HorizontalScrollBarVisibility="Disabled"
-                              CanContentScroll="True"
-                              Style="{DynamicResource ScrollViewerStyle}"
-                              VerticalContentAlignment="Center"
-                              HorizontalContentAlignment="Center">
-                    <Grid x:Name="grdScrollViewer"
-                          MaxWidth="340"
-                          Margin="3,0">
-                        <Grid x:Name="BackSideWrapper"
-                              RenderTransformOrigin="0.5,0.5"
-                              Margin="0"
-                              Visibility="Hidden">
-                            <Grid.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </Grid.RenderTransform>
-                            <TextBlock  x:Name="tblMainBackSide"
-                                        Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Background="Transparent"
-                                        HorizontalAlignment="Center"
-                                        VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                        Foreground="White"
-                                        Grid.Row="1"
-                                        FontSize="24"
-                                        VerticalAlignment="Center">
-            					<TextBlock.Style>
-            						<Style TargetType="{x:Type TextBlock}">
-            							<Setter Property="Visibility"
-                                                Value="Visible" />
-            							<Style.Triggers>
-            								<DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         Value="0">
-            									<Setter Property="Visibility"
-                                                        Value="Hidden" />
-            								</DataTrigger>
-            							</Style.Triggers>
-            						</Style>
-            					</TextBlock.Style>
-                            </TextBlock>
-                            <Grid x:Name="stOtherBackSide">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.197*" />
-                                    <RowDefinition Height="0.803*" />
-                                </Grid.RowDefinitions>
+            	<Grid x:Name="grdScrollViewer"
+            		MaxWidth="340"
+            		Margin="3,0" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            		<Grid x:Name="BackSideWrapper"
+            			RenderTransformOrigin="0.5,0.5"
+            			Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Hidden">
+            			<Grid.RenderTransform>
+            				<TransformGroup>
+            					<ScaleTransform />
+            					<SkewTransform />
+            					<RotateTransform />
+            					<TranslateTransform />
+            				</TransformGroup>
+            			</Grid.RenderTransform>
+            			<Grid x:Name="stOtherBackSide" Visibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            				<Grid.RowDefinitions>
+            					<RowDefinition Height="0.197*" />
+            					<RowDefinition Height="0.803*" />
+            				</Grid.RowDefinitions>
 
-                                <Grid.Style>
+            				<Grid.Style>
 
-                                    <Style TargetType="{x:Type Grid}">
-                                        <Setter Property="Visibility"
-                                                Value="Hidden" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         Value="0">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                <TextBlock TextWrapping="Wrap"
-                                           x:Name="tbBackSideName"
-                                           Text="{Binding SelectedItem.BackSideName, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Foreground="White"
-                                           HorizontalAlignment="Left"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           d:LayoutOverrides="Height"
-                                           Margin="5,0,0,0" />
-                                <TextBlock x:Name="tbContent"
-                                           Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Background="Transparent"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                           VerticalAlignment="Center"
-                                           Foreground="White"
-                                           FontSize="18.667"
-                                           HorizontalAlignment="Center"
-                                           TextWrapping="WrapWithOverflow"
-                                           Grid.Row="1"
-                                           MaxWidth="350" />
-                            </Grid>
-                        </Grid>
-                        <Grid x:Name="FrontSideWrapper">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid x:Name="grdPhrase"
-                                  Grid.Row="1">
-                                <StackPanel d:LayoutOverrides="Width"
-                                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                    <TextBlock TextWrapping="Wrap"
-                                               x:Name="tbLessonName"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding SelectedLesson.Lesson.LessonName, Mode=OneWay}"
-                                               Foreground="White"
-                                               HorizontalAlignment="Center"
-                                               FontSize="21.333"
-                                               FontWeight="Bold" />
-                                    <TextBlock x:Name="tbDescription"
-                                               TextWrapping="Wrap"
-                                               Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="16"
-                                               Foreground="White"
-                                               FontStyle="Italic" />
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </ScrollViewer>
+            					<Style TargetType="{x:Type Grid}">
+            						<Setter Property="Visibility"
+            							Value="Hidden" />
+            						<Style.Triggers>
+            							<DataTrigger Binding="{Binding SelectedItem.IsMain, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            								Value="0">
+            								<Setter Property="Visibility"
+            									Value="Visible" />
+            							</DataTrigger>
+            						</Style.Triggers>
+            					</Style>
+            				</Grid.Style>
+            				<TextBlock TextWrapping="Wrap"
+            					x:Name="tbBackSideName"
+            					Text="{Binding SelectedItem.BackSideName, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            					Foreground="White"
+            					HorizontalAlignment="Left"
+            					FontSize="16"
+            					FontWeight="Bold"
+            					d:LayoutOverrides="Height"
+            					Margin="5,0,0,0" />
+            				<TextBlock x:Name="tbContent"
+            					Text="{Binding SelectedItem.Content, ElementName=lstBackSide, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            					Background="Transparent"
+                                           
+            					VerticalAlignment="Center"
+            					Foreground="White"
+            					FontSize="18"
+            					HorizontalAlignment="Center"
+            					TextWrapping="WrapWithOverflow"
+            					Grid.Row="1"
+            					MaxWidth="350" />
+            			</Grid>
+            		</Grid>
+            		<Grid x:Name="FrontSideWrapper" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            			<Grid.RowDefinitions>
+            				<RowDefinition />
+            			</Grid.RowDefinitions>
+            			<Grid x:Name="grdPhrase"
+            				Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            				<StackPanel d:LayoutOverrides="Width"
+            					ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            					ScrollViewer.VerticalScrollBarVisibility="Auto"
+            					HorizontalAlignment="Center"
+            					VerticalAlignment="Center">
+            					<TextBlock TextWrapping="Wrap"
+            						x:Name="tbLessonName"
+            						VerticalAlignment="Center"
+            						Text="{Binding SelectedLesson.Lesson.LessonName, Mode=OneWay}"
+            						Foreground="White"
+            						HorizontalAlignment="Center"
+            						FontSize="21.333"
+            						FontWeight="Bold" />
+            					<TextBlock x:Name="tbDescription"
+            						TextWrapping="Wrap"
+            						Text="{Binding SelectedLesson.Lesson.Description, Mode=OneWay}"
+            						HorizontalAlignment="Center"
+            						VerticalAlignment="Center"
+            						FontSize="16"
+            						Foreground="White"
+            						FontStyle="Italic" />
+            				</StackPanel>
+            			</Grid>
+            		</Grid>
+            	</Grid>
             </Grid>
             <Grid x:Name="grdBottom"
                   Grid.Row="2"
