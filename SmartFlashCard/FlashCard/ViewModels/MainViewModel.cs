@@ -555,23 +555,7 @@ namespace FlashCard.ViewModels
                 if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSlideShow == true)
                 {
                     if ("FullScreen".Equals(param.ToString()))
-                    {
-                        if (_timerViewFullScreen.IsEnabled)
-                        {
-                            //IsFullScreenStarted = false;
-                            IsCurrentStarted = false;
-                            this.CurrentStudy = StudyType.None;
-                            _timerViewFullScreen.Stop();
-
-                        }
-                        else
-                        {
-                            //IsFullScreenStarted = true;
-                            this.CurrentStudy = StudyType.FullScreen;
-                            _timerViewFullScreen.Start();
-
-                        }
-                    }
+                        PlayPauseFullScreen();
                     else
                         PlayPauseBallonPopup(false);
                 }
@@ -581,6 +565,8 @@ namespace FlashCard.ViewModels
                 log.Error(ex);
             }
         }
+
+      
 
         #endregion
 
@@ -1362,8 +1348,6 @@ namespace FlashCard.ViewModels
         private void StartLessonFullScreen()
         {
             _timerViewFullScreen.Interval = new TimeSpan(0, 0, CacheObject.Get<SetupModel>("SetupModel").Setup.DistanceTimeSecond);
-            //IsFullScreenStarted = true;
-            this.CurrentStudy = StudyType.FullScreen;
             _timerViewFullScreen.Start();
         }
 
@@ -1378,6 +1362,8 @@ namespace FlashCard.ViewModels
             {
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate
                     {
+                        this.CurrentStudy = StudyType.FullScreen;
+                        this.IsCurrentStarted = true;
                         SetLesson();
                         if (CacheObject.Get<SetupModel>("SetupModel").Setup.IsEnableSoundForShow == true)
                             _soundForShow.PlaySync();
@@ -1435,6 +1421,22 @@ namespace FlashCard.ViewModels
                 IsCurrentStarted = true;
                 _timerPopup.Start();
             }
+        }
+
+        /// <summary>
+        /// Method Play or Pause Study of FullScreen
+        /// </summary>
+        private void PlayPauseFullScreen()
+        {
+            this.CurrentStudy = StudyType.FullScreen;
+            if (_timerViewFullScreen.IsEnabled)
+            {
+                IsCurrentStarted = false;
+                _timerViewFullScreen.Stop();
+            }
+            else
+                _timerViewFullScreen.Start();
+
         }
 
         /// <summary>
