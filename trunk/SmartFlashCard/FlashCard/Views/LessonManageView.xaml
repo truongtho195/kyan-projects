@@ -418,7 +418,7 @@
                           Stroke="#FF7F9DB9" />
                     <DataGrid x:Name="lstLesson"
                               Grid.Row="1"
-                              Margin="5,1,5,1"
+                              Margin="5,1"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               CellStyle="{DynamicResource DataGridCellStyle}"
@@ -454,10 +454,9 @@
                         </DataGrid.GroupStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*"
-                                                MinWidth="220"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Lesson.LessonName}"
-                                                Header="Lesson Name" />
+                                                Header="Lesson Name" MinWidth="200" />
                             <DataGridTemplateColumn Header="Del"
                                                     IsReadOnly="True"
                                                     MinWidth="30">
