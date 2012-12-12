@@ -1216,6 +1216,7 @@ namespace FlashCard.ViewModels
                         {
                             GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder + "\\FlashCardSound");
                         }));
+                    
                 }
                 else
                 {

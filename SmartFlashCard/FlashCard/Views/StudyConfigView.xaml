@@ -521,6 +521,7 @@
                       Grid.Row="1"
                       Margin="8,8,6,8"
                       FontSize="13.333"
+                      SelectionMode="Single"
                       Style="{StaticResource ListViewNoHeaderStyle}"
                       Grid.RowSpan="3"
                       ItemContainerStyle="{DynamicResource ListViewItemCardStyle}"
