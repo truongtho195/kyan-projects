@@ -61,51 +61,10 @@
                           Content="{Binding BackSideDetail}" />
             </Grid>
         </DataTemplate>
-        <Storyboard x:Key="sbChangeToFront">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="grdFrame">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3"
-                                      Value="332" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4"
-                                      Value="320" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="BackSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
-                                        Value="{x:Static Visibility.Hidden}" />
-            </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="FrontSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
-                                        Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
 
         <!--#end region Storyboard-->
         <!--#Region DataTemplate-->
-        <Storyboard x:Key="sbChangeToBack">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
-                                           Storyboard.TargetName="grdFrame">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3"
-                                      Value="332" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4"
-                                      Value="320" />
-                <EasingDoubleKeyFrame KeyTime="0:0:0.7"
-                                      Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="BackSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
-                                        Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="FrontSideWrapper">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.3"
-                                        Value="{x:Static Visibility.Hidden}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
+      
         <Storyboard x:Key="FadeLeave">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
                                            Storyboard.TargetName="Layout">
@@ -113,6 +72,45 @@
                                       Value="0.95" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="sbGoBack">
+        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="BackSideWrapper">
+        		<DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Visible}"/>
+        	</ObjectAnimationUsingKeyFrames>
+        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FrontSideWrapper">
+        		<DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
+        	</ObjectAnimationUsingKeyFrames>
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="1"/>
+        	</DoubleAnimationUsingKeyFrames>
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="350"/>
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+        	</DoubleAnimationUsingKeyFrames>
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="220"/>
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+        	</DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="sbGoFront">
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="1"/>
+        	</DoubleAnimationUsingKeyFrames>
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="350"/>
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+        	</DoubleAnimationUsingKeyFrames>
+        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="grdFrame">
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="220"/>
+        		<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+        	</DoubleAnimationUsingKeyFrames>
+        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="BackSideWrapper">
+        		<DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
+        	</ObjectAnimationUsingKeyFrames>
+        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="FrontSideWrapper">
+        		<DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Visible}"/>
+        	</ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        
 
 
 
@@ -138,6 +136,7 @@
                              Storyboard="{StaticResource FadeOut}" />
 
         </EventTrigger>
+        
     </UserControl.Triggers>
     <Grid x:Name="Layout">
         <attachedCmd:CommandBehaviorCollection.Behaviors>
@@ -148,6 +147,14 @@
         </attachedCmd:CommandBehaviorCollection.Behaviors>
         <Grid x:Name="grdFrame"
               RenderTransformOrigin="0.5,0.5">
+        	<Grid.RenderTransform>
+        		<TransformGroup>
+        			<ScaleTransform/>
+        			<SkewTransform/>
+        			<RotateTransform/>
+        			<TranslateTransform/>
+        		</TransformGroup>
+        	</Grid.RenderTransform>
             <Grid.RowDefinitions>
                 <RowDefinition Height="29.333" />
                 <RowDefinition />
@@ -215,12 +222,15 @@
                                       Direction="292" />
                 </Border.Effect>
                 <Grid>
+                	<Grid.ColumnDefinitions>
+                		<ColumnDefinition Width="30.846"/>
+                		<ColumnDefinition/>
+                	</Grid.ColumnDefinitions>
                     <StackPanel x:Name="stSystembutton"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
-                                d:LayoutOverrides="Width"
                                 HorizontalAlignment="Right"
-                                Margin="0">
+                                Margin="0" Grid.Column="1">
                         <Button x:Name="btnFullScreen"
                                 Command="{Binding FullScreenCommand}"
                                 CommandParameter="Popup"
@@ -270,9 +280,7 @@
                     <Button x:Name="btnListen"
                             Command="{Binding ListenCommand,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                             CommandParameter="Popup"
-                            HorizontalAlignment="Left"
-                            Margin="0"
-                            Width="25"
+                            Margin="0,0,-0.25,0"
                             VerticalAlignment="Center"
                             Style="{DynamicResource EmptyButton}"
                             Height="25"

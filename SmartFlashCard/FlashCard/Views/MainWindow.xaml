@@ -1,12 +1,13 @@
-﻿<Window x:Class="FlashCard.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControl="clr-namespace:FlashCard.Views"
+        xmlns:notifyIcon="http://www.hardcodet.net/taskbar"
+        xmlns:converter="clr-namespace:FlashCard.Converters" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FlashCard.MainWindow"
         Title="MainWindow"
         Height="10"
         Width="10"
-        xmlns:userControl="clr-namespace:FlashCard.Views"
-        xmlns:notifyIcon="http://www.hardcodet.net/taskbar"
-        xmlns:converter="clr-namespace:FlashCard.Converters">
+        >
     <Window.Resources>
         <!--#region Converters-->
         <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
@@ -21,26 +22,25 @@
             <notifyIcon:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Full Learning"
-                              Command="{Binding FullScreenCommand}">
-                    </MenuItem>
+                              Command="{Binding FullScreenCommand}"/>
                     <MenuItem Command="{Binding PlayPauseCommand}"
                               CommandParameter="Popup">
                         <!--Visibility="{Binding SetupModel.IsEnableSlideShow,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource booleanToVisibilityConverter}}"-->
                         <MenuItem.Style>
-                            <Style TargetType="MenuItem">
+                            <Style TargetType="{x:Type MenuItem}">
                                 <Setter Property="Header"
                                         Value="Play" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsCurrentStarted,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                    <DataTrigger Binding="{Binding IsCurrentStarted, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                  Value="True">
                                         <Setter Property="Header"
                                                 Value="Pause" />
                                     </DataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Path=SetupModel.IsEnableSlideShow}"
+                                            <Condition Binding="{Binding SetupModel.IsEnableSlideShow}"
                                                        Value="true" />
-                                            <Condition Binding="{Binding Path=CurrentStudy}"
+                                            <Condition Binding="{Binding CurrentStudy}"
                                                        Value="1" /><!--CurrentStudy = Popup-->
                                         </MultiDataTrigger.Conditions>
                                     </MultiDataTrigger>
@@ -51,7 +51,7 @@
                     <MenuItem Header="Cancel Study"
                               Command="{Binding CancelCommand}">
                         <MenuItem.Style>
-                            <Style TargetType="MenuItem">
+                            <Style TargetType="{x:Type MenuItem}">
                                 <Setter Property="CommandParameter"
                                         Value="Popup" />
                                 <Style.Triggers>

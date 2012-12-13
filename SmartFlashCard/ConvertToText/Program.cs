@@ -22,13 +22,41 @@ namespace ConvertToText
             Console.WriteLine("Press any key to ..");
             Console.ReadLine();
             Console.WriteLine("Starting.....");
-            SetMainBackSide();
+            SetMainBackSide2();
             Console.ReadLine();
         }
 
         #region ImportLesson
-        private static void InsertLesson()
+        private static void SetMainBackSide2()
         {
+            SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+            List<string> listItemError = new List<string>();
+            var AllBackSide = flashCardEntity.BackSides.Where(x => x.BackSideName.ToLower().Trim().Equals("Main Back Side".ToLower())).ToList();
+            Console.WriteLine("Total : " + AllBackSide.Count);
+            Console.WriteLine("Total=====");
+            int i = 1;
+            foreach (var item in AllBackSide)
+            {
+                if (item != null)
+                {
+                    Console.WriteLine("{0,-3} | {1,-10} | {2,5}", i, item.BackSideID, item.IsMain);
+                    i++;
+
+                }
+
+            }
+            //if (listItemError.Count > 0)
+            //{
+            //    Console.WriteLine("--------------------------Item Error----------------");
+            //    foreach (var item in listItemError)
+            //    {
+            //        Console.WriteLine(item);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("All done");
+            //}
 
         }
 
@@ -40,7 +68,7 @@ namespace ConvertToText
 
             foreach (var item in AllLesson)
             {
-                var mainBackSide = item.BackSides.SingleOrDefault(x => x.BackSideName.Trim().Equals("Main Back Side"));
+                var mainBackSide = item.BackSides.SingleOrDefault(x => x.BackSideName.ToLower().Trim().Equals("Main Back Side".ToLower()));
                 if (mainBackSide != null)
                 {
                     Console.Write("Current Item {0} - {1}", item.LessonName, mainBackSide.BackSideID);
@@ -58,7 +86,18 @@ namespace ConvertToText
                 }
 
             }
-
+            if (listItemError.Count > 0)
+            {
+                Console.WriteLine("--------------------------Item Error----------------");
+                foreach (var item in listItemError)
+                {
+                    Console.WriteLine(item);
+                }
+            }
+            else
+            {
+                Console.WriteLine("All done");
+            }
 
         }
 
