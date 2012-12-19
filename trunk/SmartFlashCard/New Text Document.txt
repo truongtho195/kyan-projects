@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.IO;
+using System.Xml.Serialization;
+using System.Media;
+
+namespace AudioFileByte
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+        private MediaPlayer _listenWord = new MediaPlayer();
+        private SoundPlayer _soundForShow = new SoundPlayer();
+
+   
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            string path = @"E:\No New Messages.wav";
+            ReadFile(path);
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var audioBin = Serializer<AudioBin>.Deserialize(@"E:\MyFile.Bin");
+                Stream s = new MemoryStream(audioBin.AudioData);
+                _soundForShow.Stream = s;
+                _soundForShow.PlaySync();
+                s.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private void ReadFile(string filePath)
+        {
+            byte[] audioFile = File.ReadAllBytes(filePath);
+            AudioBin audioBin = new AudioBin()
+            {
+                AudioID = 1,
+                AudioName = "Trash Empty",
+                AudioData = audioFile
+            };
+            Serializer<AudioBin>.Serialize(audioBin, @"E:\MyFile.Bin", true);
+        }
+    }
+
+    public class AudioBin
+    {
+        public int AudioID { get; set; }
+        public string AudioName { get; set; }
+        public byte[] AudioData { get; set; }
+    }
+}
