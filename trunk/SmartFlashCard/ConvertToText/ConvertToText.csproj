@@ -79,6 +79,7 @@
     <Compile Include="Models\LessonModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LessonSoundModel.cs" />
     <Compile Include="Models\ModelTemplate1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

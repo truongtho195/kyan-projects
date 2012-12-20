@@ -161,14 +161,16 @@
       <DependentUpon>ModelTemplate.tt</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="defineEnum.cs" />
+    <Compile Include="define.cs" />
     <Compile Include="Helper\CheckConnectionInternet.cs" />
     <Compile Include="Helper\GenericSerializer.cs" />
     <Compile Include="Helper\GetSoundFromGoogleTranslate.cs" />
     <Compile Include="Helper\RichTextBoxHelper.cs" />
     <Compile Include="Helper\ShuffleList.cs" />
     <Compile Include="Helper\SingleInstance.cs" />
+    <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Helper\VolumeControl.cs" />
+    <Compile Include="Models\LessonSoundModel.cs" />
     <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Tooltips\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>

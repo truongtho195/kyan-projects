@@ -7,49 +7,61 @@ namespace FlashCard.Helper
 {
     public static class GetSoundFromGoogleTranslate
     {
-      
+
 
         /// <summary>
         /// Check & Create Directory , get sound with keyword & store in pathFile
         /// </summary>
         /// <param name="keyword"></param>
         /// <param name="pathFile"></param>
-        public static void GetSoundGoogle(string keyword, string pathFile)
+        public static Stream GetSoundGoogle(string keyword, string pathFile)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(pathFile);
-            if (!directoryInfo.Exists)
+            if (!string.IsNullOrWhiteSpace(pathFile))
             {
-                directoryInfo.Create();
+                DirectoryInfo directoryInfo = new DirectoryInfo(pathFile);
+                if (!directoryInfo.Exists)
+                {
+                    directoryInfo.Create();
+                }
             }
-            GetSound(keyword, pathFile);
+            return GetSound(keyword, pathFile);
         }
-        private static void GetSound(string keyword,string pathFile)
+
+
+
+
+        private static Stream GetSound(string keyword, string pathFile)
         {
             try
             {
                 string strUrl = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", keyword);
-                
+
                 if (keyword.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
                     keyword = CleanFileName(keyword);
 
-                string fullPathFile = string.Format("{0}/{1}.mp3", pathFile, keyword);
-                if (!File.Exists(fullPathFile))
+                var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
+                WebResponse response = request.GetResponse();
+                Stream strm = response.GetResponseStream();
+                //Is User Add File Path => Save To file else return stream
+                if (!string.IsNullOrWhiteSpace(pathFile))
                 {
-                    var ur = new Uri(strUrl, UriKind.RelativeOrAbsolute);
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ur);
-                    WebResponse response = request.GetResponse();
-                    Stream strm = response.GetResponseStream();
-
-                    if (strm.CanRead & !File.Exists(fullPathFile))
+                    string fullPathFile = string.Format("{0}/{1}.mp3", pathFile, keyword);
+                    if (!File.Exists(fullPathFile))
                     {
-                        SaveStreamToFile(strm, fullPathFile);
+                        if (strm.CanRead & !File.Exists(fullPathFile))
+                        {
+                            SaveStreamToFile(strm, fullPathFile);
+                        }
                     }
                 }
+                return strm;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+            return null;
         }
 
         private static void SaveStreamToFile(Stream stream, string filename)
@@ -57,6 +69,7 @@ namespace FlashCard.Helper
             using (Stream destination = File.Create(filename))
                 Write(stream, destination);
         }
+
 
         //Typically I implement this Write method as a Stream extension method. 
         //The framework handles buffering.

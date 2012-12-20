@@ -13,6 +13,8 @@ using FlashCard.Views;
 using log4net;
 using MVVMHelper.Commands;
 using FlashCard.Helper;
+using FlashCard.Models;
+using System.IO;
 
 namespace FlashCard.ViewModels
 {
@@ -24,6 +26,9 @@ namespace FlashCard.ViewModels
         {
             Initialize();
             this.Titles = "Lesson Management";
+            LessonSoundList = Serializer<List<LessonSoundModel>>.Deserialize(define.SoundFileName);
+            if (LessonSoundList == null)
+                LessonSoundList = new List<LessonSoundModel>();
         }
 
         public LessonViewModel(LessonManageView view, List<LessonModel> lessonCollection, bool isFile)
@@ -134,10 +139,6 @@ namespace FlashCard.ViewModels
                 {
                     _selectedLesson = value;
                     _selectedLesson.ToModel();
-                    //_selectedLesson.CategoryID = _selectedLesson.Lesson.CategoryID;
-                    //_selectedLesson.CardID = _selectedLesson.Lesson.CardID;
-                    //_selectedLesson.LessonName = _selectedLesson.Lesson.LessonName;
-                    //_selectedLesson.Description = _selectedLesson.Lesson.Description;
 
                     _selectedLesson.BackSideCollection = new ObservableCollection<BackSideModel>(_selectedLesson.Lesson.BackSides.ToList().Select(x => new BackSideModel(x)));
                     _selectedLesson.IsDirty = false;
@@ -309,6 +310,27 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
+
+        #region LessonSoundList
+        private List<LessonSoundModel> _lessonSoundList;
+        /// <summary>
+        /// Gets or sets the LessonSoundList.
+        /// </summary>
+        public List<LessonSoundModel> LessonSoundList
+        {
+            get { return _lessonSoundList; }
+            set
+            {
+                if (_lessonSoundList != value)
+                {
+                    _lessonSoundList = value;
+                    RaisePropertyChanged(() => LessonSoundList);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
 
         #region Commands
@@ -379,7 +401,6 @@ namespace FlashCard.ViewModels
                     SelectedLesson.LessonID = AutoGeneration.NewSeqGuid().ToString();
                 //Mapping
                 SelectedLesson.ToEntity();
-                GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, "FlashCardSound");
 
                 BackSideRepository backSideRepository = new BackSideRepository();
                 if (SelectedLesson.IsNew)
@@ -420,8 +441,25 @@ namespace FlashCard.ViewModels
                     lessonRepository.Update<Lesson>(SelectedLesson.Lesson);
                     lessonRepository.Commit();
                 }
-                SelectedLesson.EndUpdate();
 
+                ///Get & Store Sound in data
+                var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, null);
+                var validFileName = StringHelper.CleanFileName(SelectedLesson.Lesson.LessonName);
+                var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(validFileName)).FirstOrDefault();
+                if (sound != null)
+                    LessonSoundList.Remove(sound);
+
+                var memoryStream = new MemoryStream();
+                audioStream.CopyTo(memoryStream);
+                //Add New item
+                LessonSoundModel lessonSoundModel = new LessonSoundModel();
+                lessonSoundModel.LessonName = validFileName;
+                lessonSoundModel.SoundFile = memoryStream.ToArray();
+                LessonSoundList.Add(lessonSoundModel);
+                //Serialization to file
+                Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, define.SoundFileName, false);
+                /// End get sound & Store data
+                SelectedLesson.EndUpdate();
                 RaisePropertyChanged(() => SelectedLesson);
             }
             catch (Exception ex)
