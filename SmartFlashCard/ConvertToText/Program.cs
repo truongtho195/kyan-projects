@@ -10,6 +10,8 @@ using System.Xml;
 using FlashCard.Helper;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using FlashCard.Models;
+using System.Threading.Tasks;
 
 namespace ConvertToText
 {
@@ -22,7 +24,7 @@ namespace ConvertToText
             Console.WriteLine("Press any key to ..");
             Console.ReadLine();
             Console.WriteLine("Starting.....");
-            SetMainBackSide2();
+            GetSoundForLesson();
             Console.ReadLine();
         }
 
@@ -123,17 +125,13 @@ namespace ConvertToText
 
         private static void GetSoundForLesson()
         {
-            Console.WriteLine("============================GetSoundForLesson Lesson Start ?=============================");
-            Console.WriteLine("Press any key to ..");
-            Console.ReadLine();
-            Console.WriteLine("Starting.....");
+            List<LessonSoundModel> LessonSoundList = new List<LessonSoundModel>();
             try
             {
                 int iCount = 0;
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 var AllLesson = flashCardEntity.Lessons.ToList();
-                foreach (var item in AllLesson)
-                {
+                Parallel.ForEach(AllLesson, item => {
                     iCount++;
                     Console.Write("Get Sound For Lesson {0}", item.LessonName);
                     var fileName = item.LessonName;
@@ -142,17 +140,70 @@ namespace ConvertToText
                         fileName = CleanFileName(item.LessonName);
                         Console.WriteLine("      InvalidFileNameChars");
                     }
-                    GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, "FlashCardSound");
+
+                    var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, null);
+
+                    var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(fileName)).FirstOrDefault();
+                    if (sound != null)
+                        LessonSoundList.Remove(sound);
+
+                    var memoryStream = new MemoryStream();
+                    audioStream.CopyTo(memoryStream);
+                    //Add New item
+                    LessonSoundModel newLessonSound = new LessonSoundModel();
+                    newLessonSound.LessonName = fileName;
+                    newLessonSound.SoundFile = memoryStream.ToArray();
+                    LessonSoundList.Add(newLessonSound);
+                    //Serialization to file
                     Console.WriteLine("==> Done");
-                }
+                });
+
+                //foreach (var item in AllLesson)
+                //{
+                //    iCount++;
+                //    Console.Write("Get Sound For Lesson {0}", item.LessonName);
+                //    var fileName = item.LessonName;
+                //    if (item.LessonName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                //    {
+                //        fileName = CleanFileName(item.LessonName);
+                //        Console.WriteLine("      InvalidFileNameChars");
+                //    }
+
+                //    var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, null);
+
+                //    var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(fileName)).FirstOrDefault();
+                //        if (sound != null)
+                //            LessonSoundList.Remove(sound);
+
+                //        var memoryStream = new MemoryStream();
+                //        audioStream.CopyTo(memoryStream);
+                //        //Add New item
+                //        LessonSoundModel newLessonSound = new LessonSoundModel();
+                //        newLessonSound.LessonName = fileName;
+                //        newLessonSound.SoundFile = memoryStream.ToArray();
+                //        LessonSoundList.Add(newLessonSound);
+                //        //Serialization to file
+                //    Console.WriteLine("==> Done");
+                //}
+                staString = string.Empty;
+                var task = new Task(Waiting);
+                task.Start();
+
+                Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, @"FlashCardSound.DATA", false);
                 Console.WriteLine("|| Generation successful {0}/{1}!", iCount, AllLesson.Count);
                 Console.ReadLine();
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
             }
 
+        }
+        static string staString = string.Empty;
+        static void Waiting()
+        {
+            Console.WriteLine(staString += ".");
         }
         private static string CleanFileName(string fileName)
         {
