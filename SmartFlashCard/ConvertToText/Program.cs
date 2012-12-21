@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using FlashCard.Models;
 using System.Threading.Tasks;
+using System.Media;
 
 namespace ConvertToText
 {
@@ -24,7 +25,7 @@ namespace ConvertToText
             Console.WriteLine("Press any key to ..");
             Console.ReadLine();
             Console.WriteLine("Starting.....");
-            GetSoundForLesson();
+            GetSoundNRead();
             Console.ReadLine();
         }
 
@@ -131,7 +132,8 @@ namespace ConvertToText
                 int iCount = 0;
                 SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
                 var AllLesson = flashCardEntity.Lessons.ToList();
-                Parallel.ForEach(AllLesson, item => {
+                Parallel.ForEach(AllLesson, item =>
+                {
                     iCount++;
                     Console.Write("Get Sound For Lesson {0}", item.LessonName);
                     var fileName = item.LessonName;
@@ -185,9 +187,6 @@ namespace ConvertToText
                 //        //Serialization to file
                 //    Console.WriteLine("==> Done");
                 //}
-                staString = string.Empty;
-                var task = new Task(Waiting);
-                task.Start();
 
                 Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, @"FlashCardSound.DATA", false);
                 Console.WriteLine("|| Generation successful {0}/{1}!", iCount, AllLesson.Count);
@@ -199,6 +198,60 @@ namespace ConvertToText
                 Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
             }
 
+        }
+
+        static void GetSoundNRead()
+        {
+            List<LessonSoundModel> LessonSoundList = new List<LessonSoundModel>();
+            try
+            {
+                int iCount = 0;
+                SmartFlashCardDBEntities flashCardEntity = new SmartFlashCardDBEntities();
+                var AllLesson = flashCardEntity.Lessons.ToList().Take(3);
+                foreach (var item in AllLesson)
+                {
+                    iCount++;
+                    Console.Write("Get Sound For Lesson {0}", item.LessonName);
+                    var fileName = item.LessonName;
+                    if (item.LessonName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                    {
+                        fileName = CleanFileName(item.LessonName);
+                        Console.WriteLine("      InvalidFileNameChars");
+                    }
+
+                    var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(fileName, null);
+
+                    var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(fileName)).FirstOrDefault();
+                    if (sound != null)
+                        LessonSoundList.Remove(sound);
+
+                    var memoryStream = new MemoryStream();
+                    audioStream.CopyTo(memoryStream);
+                    SoundPlayer _soundForShow = new SoundPlayer();
+                    _soundForShow.Stream = memoryStream;
+
+                    _soundForShow.LoadAsync();
+                    //Add New item
+                    LessonSoundModel newLessonSound = new LessonSoundModel();
+                    newLessonSound.LessonName = fileName;
+                    newLessonSound.SoundFile = memoryStream.ToArray();
+
+
+
+                    LessonSoundList.Add(newLessonSound);
+                    //Serialization to file
+                    Console.WriteLine("==> Done");
+                }
+
+                Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, @"FlashCardSound.DATA", false);
+                //Console.WriteLine("|| Generation successful {0}{1}", iCount, AllLesson.Count);
+                Console.ReadLine();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n + !!!  Exception : \n {0}", ex.ToString());
+            }
         }
         static string staString = string.Empty;
         static void Waiting()
