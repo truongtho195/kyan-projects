@@ -44,7 +44,7 @@ namespace FlashCard.ViewModels
         private Stopwatch _swCountTimerTick = new Stopwatch();
         private LearnView _learnView;
         private int _currentItemIndex = 0;
-        private SoundPlayer _listenWord = new SoundPlayer();
+        private MediaPlayer _listenWord = new MediaPlayer();
         private SoundPlayer _soundForShow = new SoundPlayer(FlashCard.Properties.Resources.Notification);
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -267,24 +267,6 @@ namespace FlashCard.ViewModels
         }
         #endregion
 
-        #region LessonSoundList
-        private List<LessonSoundModel> _lessonSoundList;
-        /// <summary>
-        /// Gets or sets the LessonSoundList.
-        /// </summary>
-        public List<LessonSoundModel> LessonSoundList
-        {
-            get { return _lessonSoundList; }
-            set
-            {
-                if (_lessonSoundList != value)
-                {
-                    _lessonSoundList = value;
-                    RaisePropertyChanged(() => LessonSoundList);
-                }
-            }
-        }
-        #endregion
 
         #endregion
 
@@ -1096,8 +1078,6 @@ namespace FlashCard.ViewModels
         private void Initialize()
         {
             log.Info("|| {*} === Initialize MainViewModel ===");
-
-            LessonSoundList = Serializer<List<LessonSoundModel>>.Deserialize(define.SoundFileName);
         }
 
         /// <summary>
@@ -1175,46 +1155,30 @@ namespace FlashCard.ViewModels
                     textFile = StringHelper.CleanFileName(TextForSpeech);
                 var currentFolder = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
-                //Get Sound File From Bin
-                var lessonSoundModel = this.LessonSoundList.Where(x => x.LessonName.Trim().Equals(textFile)).FirstOrDefault();
-                if (lessonSoundModel != null)
+
+                string strFullPath = string.Format(@"{0}\FlashCardSound\{1}.mp3", currentFolder, textFile);
+                if (System.IO.File.Exists(strFullPath))
                 {
                     log.Info("|| Listen with file ");
-                    Stream s = new MemoryStream(lessonSoundModel.SoundFile);
-                    _listenWord.Stream = s;
-                    _listenWord.PlaySync();
-                    s.Dispose();
+                    _listenWord.Close();
+                    var ur = new Uri(strFullPath, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
                 }
                 else if (CheckConnectionInternet.IsConnectedToInternet())
                 {
                     log.Info("|| Listen with google translate : " + TextForSpeech);
+                    _listenWord.Close();
                     string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
                     var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+                    _listenWord.Open(ur);
+                    _listenWord.Play();
+                    Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(
+                        delegate
+                        {
+                            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder + "\\FlashCardSound");
+                        }));
 
-                    MediaPlayer playSoundGoogle = new MediaPlayer();
-                    playSoundGoogle.Open(ur);
-                    playSoundGoogle.Play();
-                    
-                    ///Get & Store Sound in data
-                    Task.Factory.StartNew(() =>
-                    {
-                        var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, null);
-                        var validFileName = StringHelper.CleanFileName(SelectedLesson.Lesson.LessonName);
-                        var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(validFileName)).FirstOrDefault();
-                        if (sound != null)
-                            LessonSoundList.Remove(sound);
-
-                        var memoryStream = new MemoryStream();
-                        audioStream.CopyTo(memoryStream);
-                        //Add New item
-                        LessonSoundModel newLessonSound = new LessonSoundModel();
-                        newLessonSound.LessonName = validFileName;
-                        newLessonSound.SoundFile = memoryStream.ToArray();
-                        LessonSoundList.Add(newLessonSound);
-                        //Serialization to file
-                        Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, define.SoundFileName, false);
-                    }).Wait();
-                    /// End get sound & Store data
                 }
                 else
                 {
@@ -1222,42 +1186,62 @@ namespace FlashCard.ViewModels
                     SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                     synthesizer.Speak(TextForSpeech);
                 }
-
-                //string strFullPath = string.Format(@"{0}\FlashCardSound\{1}.mp3", currentFolder, textFile);
-                //if (System.IO.File.Exists(strFullPath))
-                //{
-                //    log.Info("|| Listen with file ");
-                //    _listenWord.Close();
-                //    var ur = new Uri(strFullPath, UriKind.RelativeOrAbsolute);
-                //    _listenWord.Open(ur);
-                //    _listenWord.Play();
-                //}
-                //else if (CheckConnectionInternet.IsConnectedToInternet())
-                //{
-                //    log.Info("|| Listen with google translate : " + TextForSpeech);
-                //    _listenWord.Close();
-                //    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
-                //    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
-                //    _listenWord.Open(ur);
-                //    _listenWord.Play();
-                //    Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(
-                //        delegate
-                //        {
-                //            GetSoundFromGoogleTranslate.GetSoundGoogle(textFile, currentFolder + "\\FlashCardSound");
-                //        }));
-
-                //}
-                //else
-                //{
-                //    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
-                //    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-                //    synthesizer.Speak(TextForSpeech);
-                //}
             }
             catch (Exception ex)
             {
                 log.Error(ex);
             }
+        }
+
+        private void SoundFromBin(string TextForSpeech, string textFile)
+        {
+            ////Get Sound File From Bin
+            //var lessonSoundModel = this.LessonSoundList.Where(x => x.LessonName.Trim().Equals(textFile)).FirstOrDefault();
+            //if (lessonSoundModel != null)
+            //{
+            //    log.Info("|| Listen with file ");
+            //    Stream s = new MemoryStream(lessonSoundModel.SoundFile);
+            //    _listenWord.Stream = s;
+            //    _listenWord.PlaySync();
+            //    s.Dispose();
+            //}
+            //else if (CheckConnectionInternet.IsConnectedToInternet())
+            //{
+            //    log.Info("|| Listen with google translate : " + TextForSpeech);
+            //    string keyword = string.Format("{0}{1}&tl=en", "http://translate.google.com/translate_tts?q=", TextForSpeech);
+            //    var ur = new Uri(keyword, UriKind.RelativeOrAbsolute);
+
+            //    MediaPlayer playSoundGoogle = new MediaPlayer();
+            //    playSoundGoogle.Open(ur);
+            //    playSoundGoogle.Play();
+
+            //    ///Get & Store Sound in data
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        var audioStream = GetSoundFromGoogleTranslate.GetSoundGoogle(SelectedLesson.Lesson.LessonName, null);
+            //        var validFileName = StringHelper.CleanFileName(SelectedLesson.Lesson.LessonName);
+            //        var sound = LessonSoundList.Where(x => x.LessonName.Trim().Equals(validFileName)).FirstOrDefault();
+            //        if (sound != null)
+            //            LessonSoundList.Remove(sound);
+
+            //        var memoryStream = new MemoryStream();
+            //        audioStream.CopyTo(memoryStream);
+            //        //Add New item
+            //        LessonSoundModel newLessonSound = new LessonSoundModel();
+            //        newLessonSound.LessonName = validFileName;
+            //        newLessonSound.SoundFile = memoryStream.ToArray();
+            //        LessonSoundList.Add(newLessonSound);
+            //        //Serialization to file
+            //        Serializer<List<LessonSoundModel>>.Serialize(LessonSoundList, define.SoundFileName, false);
+            //    }).Wait();
+            //    /// End get sound & Store data
+            //}
+            //else
+            //{
+            //    log.InfoFormat("|| Listen with Microsoft text Speech : {0}", TextForSpeech);
+            //    SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+            //    synthesizer.Speak(TextForSpeech);
+            //}
         }
 
         //Timer Region
