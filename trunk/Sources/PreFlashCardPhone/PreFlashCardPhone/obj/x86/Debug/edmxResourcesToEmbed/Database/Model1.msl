@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WPFlashCardDBModelStoreContainer" CdmEntityContainer="WPFlashCardDBEntities">
+    <EntitySetMapping Name="BackSideTypes">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.BackSideType">
+        <MappingFragment StoreEntitySet="BackSideTypes">
+          <ScalarProperty Name="BackSideTypeID" ColumnName="BackSideTypeID" />
+          <ScalarProperty Name="BackSideName" ColumnName="BackSideName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cards">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.Card">
+        <MappingFragment StoreEntitySet="Cards">
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+          <ScalarProperty Name="CardName" ColumnName="CardName" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.Category">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryOf" ColumnName="CategoryOf" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lessons">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.Lesson">
+        <MappingFragment StoreEntitySet="Lessons">
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+          <ScalarProperty Name="LessonName" ColumnName="LessonName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CardID" ColumnName="CardID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Setups">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.Setup">
+        <MappingFragment StoreEntitySet="Setups">
+          <ScalarProperty Name="SetupID" ColumnName="SetupID" />
+          <ScalarProperty Name="ViewTimeSecond" ColumnName="ViewTimeSecond" />
+          <ScalarProperty Name="DistanceTimeSecond" ColumnName="DistanceTimeSecond" />
+          <ScalarProperty Name="IsLimitCard" ColumnName="IsLimitCard" />
+          <ScalarProperty Name="LimitCardNum" ColumnName="LimitCardNum" />
+          <ScalarProperty Name="IsEnableSlideShow" ColumnName="IsEnableSlideShow" />
+          <ScalarProperty Name="IsEnableLoop" ColumnName="IsEnableLoop" />
+          <ScalarProperty Name="IsEnableSoundForShow" ColumnName="IsEnableSoundForShow" />
+          <ScalarProperty Name="IsShuffle" ColumnName="IsShuffle" />
+          <ScalarProperty Name="IsOpenLastStudy" ColumnName="IsOpenLastStudy" />
+          <ScalarProperty Name="SpeechWhenShow" ColumnName="SpeechWhenShow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Studies">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.Study">
+        <MappingFragment StoreEntitySet="Studies">
+          <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+          <ScalarProperty Name="LastStudyDate" ColumnName="LastStudyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudyDetails">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.StudyDetail">
+        <MappingFragment StoreEntitySet="StudyDetails">
+          <ScalarProperty Name="StudyDetailID" ColumnName="StudyDetailID" />
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+          <ScalarProperty Name="StudyID" ColumnName="StudyID" />
+          <ScalarProperty Name="IsLastStudy" ColumnName="IsLastStudy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserLessons">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.UserLesson">
+        <MappingFragment StoreEntitySet="UserLesson">
+          <ScalarProperty Name="UserLessonID" ColumnName="UserLessonID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BackSides">
+      <EntityTypeMapping TypeName="WPFlashCardDBModel.BackSide">
+        <MappingFragment StoreEntitySet="BackSides">
+          <ScalarProperty Name="IsMain" ColumnName="IsMain" />
+          <ScalarProperty Name="BackSideTypeID" ColumnName="BackSideTypeID" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="LessonID" ColumnName="LessonID" />
+          <ScalarProperty Name="BackSideID" ColumnName="BackSideID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

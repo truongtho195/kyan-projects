@@ -1,0 +1,6 @@
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\bin\Debug\PreFlashCardPhone.exe.config
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\bin\Debug\PreFlashCardPhone.exe
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\bin\Debug\PreFlashCardPhone.pdb
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\obj\x86\Debug\PreFlashCardPhone.exe
+E:\Demo\PreFlashCardPhone\PreFlashCardPhone\obj\x86\Debug\PreFlashCardPhone.pdb

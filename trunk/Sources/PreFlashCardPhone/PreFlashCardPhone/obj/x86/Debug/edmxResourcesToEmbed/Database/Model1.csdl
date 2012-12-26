@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WPFlashCardDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="WPFlashCardDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BackSideTypes" EntityType="WPFlashCardDBModel.BackSideType" />
+    <EntitySet Name="Cards" EntityType="WPFlashCardDBModel.Card" />
+    <EntitySet Name="Categories" EntityType="WPFlashCardDBModel.Category" />
+    <EntitySet Name="Lessons" EntityType="WPFlashCardDBModel.Lesson" />
+    <EntitySet Name="Setups" EntityType="WPFlashCardDBModel.Setup" />
+    <EntitySet Name="Studies" EntityType="WPFlashCardDBModel.Study" />
+    <EntitySet Name="StudyDetails" EntityType="WPFlashCardDBModel.StudyDetail" />
+    <EntitySet Name="UserLessons" EntityType="WPFlashCardDBModel.UserLesson" />
+    <EntitySet Name="Users" EntityType="WPFlashCardDBModel.User" />
+    <AssociationSet Name="FK_Lessons_1" Association="WPFlashCardDBModel.FK_Lessons_1">
+      <End Role="Cards" EntitySet="Cards" />
+      <End Role="Lessons" EntitySet="Lessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lessons_0" Association="WPFlashCardDBModel.FK_Lessons_0">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Lessons" EntitySet="Lessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyDetails_0" Association="WPFlashCardDBModel.FK_StudyDetails_0">
+      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="StudyDetails" EntitySet="StudyDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudyDetails_1" Association="WPFlashCardDBModel.FK_StudyDetails_1">
+      <End Role="Studies" EntitySet="Studies" />
+      <End Role="StudyDetails" EntitySet="StudyDetails" />
+    </AssociationSet>
+    <EntitySet Name="BackSides" EntityType="WPFlashCardDBModel.BackSide" />
+    <AssociationSet Name="FK_BackSides_0" Association="WPFlashCardDBModel.FK_BackSides_0">
+      <End Role="BackSideType" EntitySet="BackSideTypes" />
+      <End Role="BackSide" EntitySet="BackSides" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BackSides_1" Association="WPFlashCardDBModel.FK_BackSides_1">
+      <End Role="Lesson" EntitySet="Lessons" />
+      <End Role="BackSide" EntitySet="BackSides" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="BackSideType">
+    <Key>
+      <PropertyRef Name="BackSideTypeID" />
+    </Key>
+    <Property Name="BackSideTypeID" Type="Int64" Nullable="false" />
+    <Property Name="BackSideName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="BackSides" Relationship="WPFlashCardDBModel.FK_BackSides_0" FromRole="BackSideType" ToRole="BackSide" />
+  </EntityType>
+  <EntityType Name="Card">
+    <Key>
+      <PropertyRef Name="CardID" />
+    </Key>
+    <Property Name="CardID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="CardName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Remark" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Lessons" Relationship="WPFlashCardDBModel.FK_Lessons_1" FromRole="Cards" ToRole="Lessons" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CategoryOf" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Lessons" Relationship="WPFlashCardDBModel.FK_Lessons_0" FromRole="Categories" ToRole="Lessons" />
+  </EntityType>
+  <EntityType Name="Lesson">
+    <Key>
+      <PropertyRef Name="LessonID" />
+    </Key>
+    <Property Name="LessonID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="LessonName" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="CategoryID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="CardID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Card" Relationship="WPFlashCardDBModel.FK_Lessons_1" FromRole="Lessons" ToRole="Cards" />
+    <NavigationProperty Name="Category" Relationship="WPFlashCardDBModel.FK_Lessons_0" FromRole="Lessons" ToRole="Categories" />
+    <NavigationProperty Name="StudyDetails" Relationship="WPFlashCardDBModel.FK_StudyDetails_0" FromRole="Lessons" ToRole="StudyDetails" />
+    <NavigationProperty Name="BackSides" Relationship="WPFlashCardDBModel.FK_BackSides_1" FromRole="Lesson" ToRole="BackSide" />
+  </EntityType>
+  <EntityType Name="Setup">
+    <Key>
+      <PropertyRef Name="SetupID" />
+    </Key>
+    <Property Name="SetupID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="ViewTimeSecond" Type="Int32" Nullable="false" />
+    <Property Name="DistanceTimeSecond" Type="Int32" Nullable="false" />
+    <Property Name="IsLimitCard" Type="Boolean" />
+    <Property Name="LimitCardNum" Type="Int32" />
+    <Property Name="IsEnableSlideShow" Type="Boolean" />
+    <Property Name="IsEnableLoop" Type="Boolean" />
+    <Property Name="IsEnableSoundForShow" Type="Boolean" />
+    <Property Name="IsShuffle" Type="Boolean" />
+    <Property Name="IsOpenLastStudy" Type="Boolean" />
+    <Property Name="SpeechWhenShow" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Study">
+    <Key>
+      <PropertyRef Name="StudyID" />
+    </Key>
+    <Property Name="StudyID" Type="Guid" Nullable="false" />
+    <Property Name="LastStudyDate" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="StudyDetails" Relationship="WPFlashCardDBModel.FK_StudyDetails_1" FromRole="Studies" ToRole="StudyDetails" />
+  </EntityType>
+  <EntityType Name="StudyDetail">
+    <Key>
+      <PropertyRef Name="StudyDetailID" />
+    </Key>
+    <Property Name="StudyDetailID" Type="Guid" Nullable="false" />
+    <Property Name="LessonID" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="StudyID" Type="Guid" />
+    <Property Name="IsLastStudy" Type="Boolean" />
+    <NavigationProperty Name="Lesson" Relationship="WPFlashCardDBModel.FK_StudyDetails_0" FromRole="StudyDetails" ToRole="Lessons" />
+    <NavigationProperty Name="Study" Relationship="WPFlashCardDBModel.FK_StudyDetails_1" FromRole="StudyDetails" ToRole="Studies" />
+  </EntityType>
+  <EntityType Name="UserLesson">
+    <Key>
+      <PropertyRef Name="UserLessonID" />
+    </Key>
+    <Property Name="UserLessonID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int64" />
+    <Property Name="LessonID" Type="Int64" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Password" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="FullName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="LastLogin" Type="DateTime" />
+  </EntityType>
+  <Association Name="FK_Lessons_1">
+    <End Role="Cards" Type="WPFlashCardDBModel.Card" Multiplicity="0..1" />
+    <End Role="Lessons" Type="WPFlashCardDBModel.Lesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cards">
+        <PropertyRef Name="CardID" />
+      </Principal>
+      <Dependent Role="Lessons">
+        <PropertyRef Name="CardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lessons_0">
+    <End Role="Categories" Type="WPFlashCardDBModel.Category" Multiplicity="1" />
+    <End Role="Lessons" Type="WPFlashCardDBModel.Lesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Lessons">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_0">
+    <End Role="Lessons" Type="WPFlashCardDBModel.Lesson" Multiplicity="0..1" />
+    <End Role="StudyDetails" Type="WPFlashCardDBModel.StudyDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lessons">
+        <PropertyRef Name="LessonID" />
+      </Principal>
+      <Dependent Role="StudyDetails">
+        <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudyDetails_1">
+    <End Role="Studies" Type="WPFlashCardDBModel.Study" Multiplicity="0..1" />
+    <End Role="StudyDetails" Type="WPFlashCardDBModel.StudyDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Studies">
+        <PropertyRef Name="StudyID" />
+      </Principal>
+      <Dependent Role="StudyDetails">
+        <PropertyRef Name="StudyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BackSide">
+    <Key>
+      <PropertyRef Name="BackSideID" />
+    </Key>
+    <Property Type="String" Name="BackSideID" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="LessonID" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Content" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Type="Int64" Name="BackSideTypeID" />
+    <Property Type="Byte" Name="IsMain" />
+    <NavigationProperty Name="BackSideType" Relationship="WPFlashCardDBModel.FK_BackSides_0" FromRole="BackSide" ToRole="BackSideType" />
+    <NavigationProperty Name="Lesson" Relationship="WPFlashCardDBModel.FK_BackSides_1" FromRole="BackSide" ToRole="Lesson" />
+  </EntityType>
+  <Association Name="FK_BackSides_0">
+    <End Type="WPFlashCardDBModel.BackSideType" Role="BackSideType" Multiplicity="0..1" />
+    <End Type="WPFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BackSideType">
+        <PropertyRef Name="BackSideTypeID" />
+      </Principal>
+      <Dependent Role="BackSide">
+        <PropertyRef Name="BackSideTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BackSides_1">
+    <End Type="WPFlashCardDBModel.Lesson" Role="Lesson" Multiplicity="0..1" />
+    <End Type="WPFlashCardDBModel.BackSide" Role="BackSide" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lesson">
+        <PropertyRef Name="LessonID" />
+      </Principal>
+      <Dependent Role="BackSide">
+        <PropertyRef Name="LessonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

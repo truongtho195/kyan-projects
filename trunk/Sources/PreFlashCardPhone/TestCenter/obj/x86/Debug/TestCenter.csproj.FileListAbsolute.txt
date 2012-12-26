@@ -1,0 +1,14 @@
+E:\Demo\PreFlashCardPhone\TestCenter\bin\Debug\TestCenter.exe
+E:\Demo\PreFlashCardPhone\TestCenter\bin\Debug\TestCenter.pdb
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\MainWindow.baml
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\MainWindow.g.cs
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\App.g.cs
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\TestCenter_MarkupCompile.cache
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\TestCenter.g.resources
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\TestCenter.Properties.Resources.resources
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\TestCenter.exe
+E:\Demo\PreFlashCardPhone\TestCenter\obj\x86\Debug\TestCenter.pdb
+E:\Demo\PreFlashCardPhone\TestCenter\bin\Debug\TestCenter.exe.config
