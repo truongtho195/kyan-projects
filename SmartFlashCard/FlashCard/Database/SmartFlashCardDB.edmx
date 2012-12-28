@@ -507,12 +507,11 @@
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Category" Width="1.5" PointX="2.625" PointY="0.5" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.UserLesson" Width="1.5" PointX="9.75" PointY="4.375" Height="1.4279589843750031" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.User" Width="1.5" PointX="6.75" PointY="4.75" Height="1.7566536458333388" />
-        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="7.125" PointY="0.625" Height="1.9210009765625" />
+        <EntityTypeShape EntityType="SmartFlashCardDBModel.BackSide" Width="1.5" PointX="6.375" PointY="1.625" Height="1.9210009765625" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Lesson" Width="1.5" PointX="3" PointY="2.375" Height="2.4140429687500031" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_BackSides_0" >
-          <ConnectorPoint PointX="4.5" PointY="3.1012089667968752" />
-          <ConnectorPoint PointX="8.46875" PointY="3.1012089667968752" />
-          <ConnectorPoint PointX="8.46875" PointY="2.5460009765625" />
+          <ConnectorPoint PointX="4.5" PointY="2.96050048828125" />
+          <ConnectorPoint PointX="6.375" PointY="2.96050048828125" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_Lessons_1" >
           <ConnectorPoint PointX="2" PointY="3.1086531575520837" />
@@ -525,9 +524,9 @@
         <EntityTypeShape EntityType="SmartFlashCardDBModel.Study" Width="1.5" PointX="3" PointY="8" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="SmartFlashCardDBModel.StudyDetail" Width="1.5" PointX="5.25" PointY="7.625" Height="2.1725878906250031" />
         <AssociationConnector Association="SmartFlashCardDBModel.FK_StudyDetails_0" >
-          <ConnectorPoint PointX="4.5" PointY="3.8866455664062505" />
-          <ConnectorPoint PointX="5.96875" PointY="3.8866455664062505" />
-          <ConnectorPoint PointX="5.96875" PointY="7.625" />
+          <ConnectorPoint PointX="4.5" PointY="4.1987719726562514" />
+          <ConnectorPoint PointX="5.78125" PointY="4.1987719726562514" />
+          <ConnectorPoint PointX="5.78125" PointY="7.625" />
         </AssociationConnector>
         <AssociationConnector Association="SmartFlashCardDBModel.FK_StudyDetails_1" >
           <ConnectorPoint PointX="4.5" PointY="8.797841796875" />
