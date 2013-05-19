@@ -1,0 +1,1953 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E8076F45-5AB9-44A4-9328-3B040AD6CBD8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CPC.POS</RootNamespace>
+    <AssemblyName>POS</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BarcodeLib, Version=1.0.0.14, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CPCToolkitExt, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CPCToolkitExt.dll</HintPath>
+    </Reference>
+    <Reference Include="CPCToolkitExtLibraries, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CPCToolkitExtLibraries.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomTextBox, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CustomTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPDevNET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=696774c42ee28c57, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DPFPDevNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPEngNET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=7fe76e7adf19964b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DPFPEngNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPShrNET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=d902fe275a8d6cf2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DPFPShrNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DPFPVerNET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=4de0a9c4dcc83984, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\DPFPVerNET.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Messager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Messager.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Microsoft.Windows.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.0.12.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SecurityLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SecurityLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TimePicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\TimePicker.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Control\AttributeAndSize\DataGridCanAddColumnRowControl.xaml.cs">
+      <DependentUpon>DataGridCanAddColumnRowControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\AttributeAndSize\DataGridCellModel.cs" />
+    <Compile Include="Control\AttributeAndSize\DataGridModel.cs" />
+    <Compile Include="Control\ButtonFindSearch.xaml.cs">
+      <DependentUpon>ButtonFindSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ComboBoxHideItem.cs" />
+    <Compile Include="Control\ContainerView.xaml.cs">
+      <DependentUpon>ContainerView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Control\CPCComboBox.cs" />
+    <Compile Include="Control\DataGridEditable.cs" />
+    <Compile Include="Control\DataGridValidationControl.cs" />
+    <Compile Include="Control\Filters\ButtonItem.cs" />
+    <Compile Include="Control\Filters\DateComboBox.xaml.cs">
+      <DependentUpon>DateComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Filters\FilterAdvanceSearch.xaml.cs">
+      <DependentUpon>FilterAdvanceSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Filters\FilterAdvanceView.xaml.cs">
+      <DependentUpon>FilterAdvanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Filters\FilterComboBox.cs" />
+    <Compile Include="Control\Filters\FilterItemModel.cs" />
+    <Compile Include="Control\Filters\StatusComboBox.xaml.cs">
+      <DependentUpon>StatusComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\FilterText.xaml.cs">
+      <DependentUpon>FilterText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\GridReadOnlyControl.cs" />
+    <Compile Include="Control\ImageBoxControl.xaml.cs">
+      <DependentUpon>ImageBoxControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ImageList\ImageList.cs" />
+    <Compile Include="Control\ImageList\TypeHelper.cs" />
+    <Compile Include="Control\ImageViewer\Converters\PathToBitmapImageConverter.cs" />
+    <Compile Include="Control\ImageViewer\CropImageHelper\CroppingAdorner.cs" />
+    <Compile Include="Control\ImageViewer\CropImageHelper\CropThumb.cs" />
+    <Compile Include="Control\ImageViewer\CropImageHelper\PuncturedRect.cs" />
+    <Compile Include="Control\ImageViewer\ImageViewer.cs" />
+    <Compile Include="Control\ListBoxCustom.cs" />
+    <Compile Include="Control\NumericTextBox .cs" />
+    <Compile Include="Control\NumericUpDown.xaml.cs">
+      <DependentUpon>NumericUpDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PopupContainer.xaml.cs">
+      <DependentUpon>PopupContainer.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Control\SystemButton.xaml.cs">
+      <DependentUpon>SystemButton.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Control\TabItemControl.cs" />
+    <Compile Include="Converter\BinaryTotalToBooleanConverter.cs" />
+    <Compile Include="Converter\BooleanToIntegerConverter.cs" />
+    <Compile Include="Converter\BoolToStringConverter.cs" />
+    <Compile Include="Converter\ByteArrayToBitmapImageConverter.cs" />
+    <Compile Include="Converter\ComboxItemToTextConverter.cs" />
+    <Compile Include="Converter\Converter.cs" />
+    <Compile Include="Converter\DiscountRateToIntegerConverter.cs" />
+    <Compile Include="Converter\IntegerToBooleanConverter.cs" />
+    <Compile Include="Converter\IntergerToVisibilityConverter.cs" />
+    <Compile Include="Converter\IntToCalculationConverter.cs" />
+    <Compile Include="Converter\IntToProductStoreConverter.cs" />
+    <Compile Include="Converter\NullToDefaultValueConverter.cs" />
+    <Compile Include="Converter\PaymentButtonIconConverter.cs" />
+    <Compile Include="Converter\StringFormatConverter.cs" />
+    <Compile Include="Converter\StringPriceLevelConverter.cs" />
+    <Compile Include="Converter\StringToImageSourceConverter.cs" />
+    <Compile Include="Database\POS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Database\UnitOfWork.cs" />
+    <Compile Include="Define\Define.cs" />
+    <Compile Include="Interfaces\IEditableAttachment.cs" />
+    <Compile Include="Interfaces\IEditableFolder.cs" />
+    <Compile Include="Model\base_AttachmentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_AuthorizeModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ConfigurationModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_CostAdjustmentItemModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_CostAdjustmentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_CountStockDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_CountStockModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_DepartmentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_EmailAttachmentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_EmailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestAdditionalModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestAddressModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestFingerPrintModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestHiringHistoryModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestPaymentCardModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestPayRollModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestProfileModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestRewardModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_GuestScheduleModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_MemberShipModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PricingChangeModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PricingManagerModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ProductModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ProductStoreModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ProductUOMModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PromotionAffectModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PromotionModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PromotionScheduleModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PurchaseOrderDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PurchaseOrderModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_PurchaseOrderReceiveModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_QuantityAdjustmentItemModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_QuantityAdjustmentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourceAccountModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourceNoteModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourcePaymentDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourcePaymentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourcePaymentProductModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourcePhotoModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourceReturnDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_ResourceReturnModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_RewardManagerModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleCommissionModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleOrderDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleOrderInvoiceModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleOrderModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleOrderShipDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleOrderShipModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleTaxLocationModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_SaleTaxLocationOptionModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_StoreModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_TransferStockDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_TransferStockModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_UOMModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_UserLogDetailModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_UserLogModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_UserRightModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_VendorProductModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\base_VirtualFolderModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Custom\ComboItem.cs" />
+    <Compile Include="Model\Custom\CheckBoxItemModel.cs" />
+    <Compile Include="Model\Custom\DepartmentRootModel.cs" />
+    <Compile Include="Model\Custom\ItemModel.cs" />
+    <Compile Include="Model\Custom\ItemSettingModel.cs" />
+    <Compile Include="Model\Custom\PriceModel.cs" />
+    <Compile Include="Model\Custom\ProductBrandModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Custom\ProductCategoryModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Custom\ProductDepartmentModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\ModelTemplate.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Model\pga_exceptionModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_jobagentModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_jobclassModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_joblogModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_jobModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_jobsteplogModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_jobstepModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\pga_scheduleModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_HolidayHistoryModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_HolidayModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_TimeLogModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_WorkPermissionModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_WorkScheduleModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\tims_WorkWeekModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_AttachmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_AuthorizeRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ConfigurationRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_CostAdjustmentItemRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_CostAdjustmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_CountStockDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_CountStockRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_DepartmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_EmailAttachmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_EmailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestAdditionalRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestAddressRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestFingerPrintRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestHiringHistoryRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestPaymentCardRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestPayRollRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestProfileRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestRewardRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_GuestScheduleRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_MemberShipRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PricingChangeRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PricingManagerRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ProductRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ProductStoreRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ProductUOMRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PromotionAffectRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PromotionRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PromotionScheduleRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PurchaseOrderDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PurchaseOrderReceiveRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_PurchaseOrderRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_QuantityAdjustmentItemRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_QuantityAdjustmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourceAccountRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourceNoteRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourcePaymentDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourcePaymentProductRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourcePaymentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourcePhotoRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourceReturnDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_ResourceReturnRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_RewardManagerRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleCommissionRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleOrderDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleOrderInvoiceRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleOrderRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleOrderShipDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleOrderShipRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleTaxLocationOptionRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_SaleTaxLocationRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_StoreRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_TransferStockDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_TransferStockRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_UOMRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_UserLogDetailRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_UserLogRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_UserRightRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_VendorProductRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_VirtualFolderRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_exceptionRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_jobagentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_jobclassRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_joblogRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_jobRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_jobsteplogRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_jobstepRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\pga_scheduleRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\RepositoryTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_HolidayHistoryRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_HolidayRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_TimeLogRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_WorkPermissionRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_WorkScheduleRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\tims_WorkWeekRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\DialogService.cs" />
+    <Compile Include="Service\FrameworkDialogs\FileDialogViewModel.cs" />
+    <Compile Include="Service\FrameworkDialogs\FolderBrowse\FolderBrowserDialog.cs" />
+    <Compile Include="Service\FrameworkDialogs\FolderBrowse\FolderBrowserDialogViewModel.cs" />
+    <Compile Include="Service\FrameworkDialogs\FolderBrowse\IFolderBrowserDialog.cs" />
+    <Compile Include="Service\FrameworkDialogs\IFileDialog.cs" />
+    <Compile Include="Service\FrameworkDialogs\OpenFile\IOpenFileDialog.cs" />
+    <Compile Include="Service\FrameworkDialogs\OpenFile\OpenFileDialog.cs" />
+    <Compile Include="Service\FrameworkDialogs\OpenFile\OpenFileDialogViewModel.cs" />
+    <Compile Include="Service\FrameworkDialogs\WindowWrapper.cs" />
+    <Compile Include="Service\IDialogService.cs" />
+    <Compile Include="Service\IDialogServiceContract.cs" />
+    <Compile Include="Service\ServiceLocator.cs" />
+    <Compile Include="Toolkit\Base\CollectionBase.cs" />
+    <Compile Include="Toolkit\Base\ModelBase.cs" />
+    <Compile Include="Toolkit\Base\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Toolkit\Base\ViewModelBase.cs" />
+    <Compile Include="Toolkit\Behavior\BindingHelper.cs" />
+    <Compile Include="Toolkit\Behavior\DataGridStyleBehaviour.cs" />
+    <Compile Include="Toolkit\Behavior\DoubleClickCommandBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\FocusBehaviour.cs" />
+    <Compile Include="Toolkit\Behavior\MoveFocusHelper.cs" />
+    <Compile Include="Toolkit\Behavior\TabItemGeneratorBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\ValidationBehavior.cs" />
+    <Compile Include="Toolkit\Command\CommandReference.cs" />
+    <Compile Include="Toolkit\Command\CommandStoryboard.cs" />
+    <Compile Include="Toolkit\Command\RelayCommand.cs" />
+    <Compile Include="Toolkit\Command\EventToCommand.cs" />
+    <Compile Include="Toolkit\Layout\BorderLayout.cs" />
+    <Compile Include="Toolkit\Layout\DataGridStyleBehaviour.cs" />
+    <Compile Include="Toolkit\Layout\Layout.cs" />
+    <Compile Include="Toolkit\Layout\ResizeThumb.cs" />
+    <Compile Include="Toolkit\Layout\Screenshot.cs" />
+    <Compile Include="Toolkit\Scanner\CroppingAdorner.cs" />
+    <Compile Include="Toolkit\Scanner\CropThumb.cs" />
+    <Compile Include="Toolkit\Scanner\DibToBitmap.cs" />
+    <Compile Include="Toolkit\Scanner\PuncturedRect.cs" />
+    <Compile Include="Toolkit\Scanner\TwainDefs.cs" />
+    <Compile Include="Toolkit\Scanner\TwainLib.cs" />
+    <Compile Include="Toolkit\Scanner\Win32.cs" />
+    <Compile Include="Toolkit\Scanner\WpfTwain.cs" />
+    <Compile Include="Ultility\ApplicationIsolatedSettings.cs" />
+    <Compile Include="Ultility\BindingDecoratorBase.cs" />
+    <Compile Include="Ultility\Conversion.cs" />
+    <Compile Include="Ultility\Extension\CollectionUtils.cs" />
+    <Compile Include="Ultility\Extension\DateTimeExt.cs" />
+    <Compile Include="Ultility\Extension\EnumerationUtils.cs" />
+    <Compile Include="Ultility\Extension\EnumExtension.cs" />
+    <Compile Include="Ultility\Extension\GuidUtils.cs" />
+    <Compile Include="Ultility\Extension\LinqToSqlExtension.cs" />
+    <Compile Include="Ultility\Extension\NumberUtils.cs" />
+    <Compile Include="Ultility\Extension\SerializerUtils.cs" />
+    <Compile Include="Ultility\Extension\StringUtils.cs" />
+    <Compile Include="Ultility\Helper\CheckBoxFlagsBehaviour.cs" />
+    <Compile Include="Ultility\Helper\Common.cs" />
+    <Compile Include="Ultility\Helper\DateRange.cs" />
+    <Compile Include="Ultility\Helper\PasswordHelper.cs" />
+    <Compile Include="Ultility\Helper\ToStatusModel.cs" />
+    <Compile Include="Ultility\PredicateBuilder.cs" />
+    <Compile Include="Ultility\PropertyChangeNotifier.cs" />
+    <Compile Include="Ultility\Validation\DataErrorInfoExtensions.cs" />
+    <Compile Include="Ultility\Validation\DataErrorInfoSupport.cs" />
+    <Compile Include="Ultility\Validation\RowDataInfoValidationRule.cs" />
+    <Compile Include="Ultility\Validation\ValidationHelper.cs" />
+    <Compile Include="Ultility\Validation\ValidationReloadedTracker.cs" />
+    <Compile Include="Ultility\Validation\ValidationTracker.cs" />
+    <Compile Include="Ultility\VisibleBinding.cs" />
+    <Compile Include="ViewModel\Common\AttachmentViewModel.cs" />
+    <Compile Include="ViewModel\Common\ContactViewModel.cs" />
+    <Compile Include="ViewModel\Common\ImageViewModel.cs" />
+    <Compile Include="ViewModel\Common\NoteViewModel.cs" />
+    <Compile Include="ViewModel\Common\CreditCardViewModel.cs" />
+    <Compile Include="ViewModel\Common\PaymentTermViewModel.cs" />
+    <Compile Include="ViewModel\Common\PopupAddressViewModel.cs" />
+    <Compile Include="ViewModel\Common\ProductSearchViewModel.cs" />
+    <Compile Include="ViewModel\Common\ViewProfileViewModel.cs" />
+    <Compile Include="ViewModel\CompanySetting\CompanySettingViewModel.cs" />
+    <Compile Include="ViewModel\Customer\CustomerViewModel.cs" />
+    <Compile Include="ViewModel\Customer\Reward\RewardListandHistoryViewModel.cs" />
+    <Compile Include="ViewModel\Employee\EmployeeViewModel.cs" />
+    <Compile Include="ViewModel\Employee\RecordFingerprintViewModel.cs" />
+    <Compile Include="ViewModel\GiftCard\GiftCardViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\AdjustmentInformationViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\CountSheetViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\CurrentStockViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\DepartmentViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\InventoryReportViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\PriceManagement\PriceManagementViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Pricing\PricingCategoryViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Pricing\PricingCustomViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Pricing\PricingVendorViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Pricing\PricingViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\ProductMovementHistoryViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PromotionCustomViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PromotionAdvanceSearchViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PromotionReasonViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\Promotion\PromotionViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\ReorderStockViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\TransferStockViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\WorkOrderViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupDuplicateItemViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupUpdateOrderCostViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupPricingViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupAvailableQuantitiesViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupManagementUOMViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupDepartmentCategoryBrandViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupGuestViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupUOMViewModel.cs" />
+    <Compile Include="ViewModel\Product\ProductViewModel.cs" />
+    <Compile Include="ViewModel\Product\PopupAttributeAndSizeViewModel.cs" />
+    <Compile Include="ViewModel\PurchaseOrder\AddSerialNumberViewModel.cs" />
+    <Compile Include="ViewModel\PurchaseOrder\POAdvanceSearchViewModel.cs" />
+    <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderReturnViewModel.cs" />
+    <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderViewModel.cs" />
+    <Compile Include="ViewModel\Reward\RewardSetupViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\LayawayOrderHistoryViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\MultiTrackingNumberViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\PaymentCardViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\PickPackViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\QuotationViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\RedeemRewardViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\SalesOrderPaymentViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\SalesOrderViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\SalesOrder\SalesOrderReturnViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\SalesOrder\SelectTrackingNumberViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\UpdateTransactionViewModel.cs" />
+    <Compile Include="ViewModel\SalesTax\SalesTaxViewModel.cs" />
+    <Compile Include="ViewModel\SalesTax\TaxOptionViewModel.cs" />
+    <Compile Include="ViewModel\Security\User\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Security\User\ManagementUserLogViewModel.cs" />
+    <Compile Include="ViewModel\Security\User\UserListViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\AssignWorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\EmployeesListViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\HolidayViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\TimeClockManualEventEditingViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkPermissionViewModel.cs" />
+    <Compile Include="ViewModel\TimeClock\WorkScheduleViewModel.cs" />
+    <Compile Include="ViewModel\UserManagement\GroupPermissionViewModel.cs" />
+    <Compile Include="ViewModel\Vendor\VendorViewModel.cs" />
+    <Compile Include="View\Common\AttachmentView.xaml.cs">
+      <DependentUpon>AttachmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\ContactView.xaml.cs">
+      <DependentUpon>ContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\CreditCardView.xaml.cs">
+      <DependentUpon>CreditCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\NoteView.xaml.cs">
+      <DependentUpon>NoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\PaymentTermView.xaml.cs">
+      <DependentUpon>PaymentTermView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\PopupAddressView.xaml.cs">
+      <DependentUpon>PopupAddressView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\ProductSearchView.xaml.cs">
+      <DependentUpon>ProductSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\ViewProfile.xaml.cs">
+      <DependentUpon>ViewProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CompanySetting\CompanySettingView.xaml.cs">
+      <DependentUpon>CompanySettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Customer\CustomerView.xaml.cs">
+      <DependentUpon>CustomerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Customer\Reward\IssueRewardView.xaml.cs">
+      <DependentUpon>IssueRewardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Customer\Reward\RewardListandHistoryView.xaml.cs">
+      <DependentUpon>RewardListandHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee\EmployeeInformationView.xaml.cs">
+      <DependentUpon>EmployeeInformationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee\HiringHistory.xaml.cs">
+      <DependentUpon>HiringHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee\RecordFingerprintView.xaml.cs">
+      <DependentUpon>RecordFingerprintView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee\ViewWorkSchedule.xaml.cs">
+      <DependentUpon>ViewWorkSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee\WorkScheduleHistory.xaml.cs">
+      <DependentUpon>WorkScheduleHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GiftCard\GiftCardView.xaml.cs">
+      <DependentUpon>GiftCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\AdjustmentInformationView.xaml.cs">
+      <DependentUpon>AdjustmentInformationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\CountSheetView.xaml.cs">
+      <DependentUpon>CountSheetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\CurrentStockView.xaml.cs">
+      <DependentUpon>CurrentStockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\DepartmentView.xaml.cs">
+      <DependentUpon>DepartmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\InventoryReportView.xaml.cs">
+      <DependentUpon>InventoryReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\PriceManagement\PriceManagementView.xaml.cs">
+      <DependentUpon>PriceManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Pricing\Popup\PricingCategory\PricingCategoryView.xaml.cs">
+      <DependentUpon>PricingCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Pricing\Popup\PricingVendor\PricingVendorView.xaml.cs">
+      <DependentUpon>PricingVendorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Pricing\PricingView.xaml.cs">
+      <DependentUpon>PricingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\ProductMovementHistoryView.xaml.cs">
+      <DependentUpon>ProductMovementHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Promotion\CustomView.xaml.cs">
+      <DependentUpon>CustomView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Promotion\PromotionAdvanceSearchView.xaml.cs">
+      <DependentUpon>PromotionAdvanceSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\Promotion\PromotionView.xaml.cs">
+      <DependentUpon>PromotionView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\Inventory\Promotion\PromotionReasonView.xaml.cs">
+      <DependentUpon>PromotionReasonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\ReorderStockView.xaml.cs">
+      <DependentUpon>ReorderStockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\TransferStock\TransferStock.xaml.cs">
+      <DependentUpon>TransferStock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\WorkOrderView.xaml.cs">
+      <DependentUpon>WorkOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupDuplicateItemView.xaml.cs">
+      <DependentUpon>PopupDuplicateItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupAttributeAndSizeView.xaml.cs">
+      <DependentUpon>PopupAttributeAndSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupAvailableQuantitiesView.xaml.cs">
+      <DependentUpon>PopupAvailableQuantitiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupManagementUOMView.xaml.cs">
+      <DependentUpon>PopupManagementUOMView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupDepartmentCategoryBrandView.xaml.cs">
+      <DependentUpon>PopupDepartmentCategoryBrandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupGuestView.xaml.cs">
+      <DependentUpon>PopupGuestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupUOMView.xaml.cs">
+      <DependentUpon>PopupUOMView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupPricingView.xaml.cs">
+      <DependentUpon>PopupPricingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\ProductView.xaml.cs">
+      <DependentUpon>ProductView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Product\PopupUpdateOrderCostView.xaml.cs">
+      <DependentUpon>PopupUpdateOrderCostView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PurchaseOrder\AddSerialNumberView.xaml.cs">
+      <DependentUpon>AddSerialNumberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PurchaseOrder\POAdvanceSearchView.xaml.cs">
+      <DependentUpon>POAdvanceSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PurchaseOrder\PurchaseOrderPaymentHistoryView.xaml.cs">
+      <DependentUpon>PurchaseOrderPaymentHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PurchaseOrder\PurchaseOrderReturnView.xaml.cs">
+      <DependentUpon>PurchaseOrderReturnView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PurchaseOrder\PurchaseOrderView.xaml.cs">
+      <DependentUpon>PurchaseOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Reward\RewardSetupView.xaml.cs">
+      <DependentUpon>RewardSetupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\LayawayOrderHistoryView.xaml.cs">
+      <DependentUpon>LayawayOrderHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\MultiTrackingNumberView.xaml.cs">
+      <DependentUpon>MultiTrackingNumberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\PaymentCardView.xaml.cs">
+      <DependentUpon>PaymentCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\PickPackView.xaml.cs">
+      <DependentUpon>PickPackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\QuotationView.xaml.cs">
+      <DependentUpon>QuotationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\RedeemRewardView.xaml.cs">
+      <DependentUpon>RedeemRewardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\SalesOrderPaymentHistoryView.xaml.cs">
+      <DependentUpon>SalesOrderPaymentHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\SalesOrderPaymentView.xaml.cs">
+      <DependentUpon>SalesOrderPaymentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\SalesOrderReturnView.xaml.cs">
+      <DependentUpon>SalesOrderReturnView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\SalesOrderView.xaml.cs">
+      <DependentUpon>SalesOrderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\SelectTrackingNumberView.xaml.cs">
+      <DependentUpon>SelectTrackingNumberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\UpdateTransactionView.xaml.cs">
+      <DependentUpon>UpdateTransactionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesTax\MultiRateTaxView.xaml.cs">
+      <DependentUpon>MultiRateTaxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesTax\PriceDependentView.xaml.cs">
+      <DependentUpon>PriceDependentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesTax\SalesTaxView.xaml.cs">
+      <DependentUpon>SalesTaxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesTax\SingleRateTaxView.xaml.cs">
+      <DependentUpon>SingleRateTaxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Security\User\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Security\User\ManagementUserLogView.xaml.cs">
+      <DependentUpon>ManagementUserLogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Security\User\UserListView.xaml.cs">
+      <DependentUpon>UserListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\AssignWorkScheduleView.xaml.cs">
+      <DependentUpon>AssignWorkScheduleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\CalculatorView.xaml.cs">
+      <DependentUpon>CalculatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\EmployeesListView.xaml.cs">
+      <DependentUpon>EmployeesListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\HolidayView.xaml.cs">
+      <DependentUpon>HolidayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\TimeClockManualEventEditingView.xaml.cs">
+      <DependentUpon>TimeClockManualEventEditingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\WorkPermissionView.xaml.cs">
+      <DependentUpon>WorkPermissionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TimeClock\WorkScheduleView.xaml.cs">
+      <DependentUpon>WorkScheduleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserManagement\GroupPermissionView.xaml.cs">
+      <DependentUpon>GroupPermissionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Vendor\VendorView.xaml.cs">
+      <DependentUpon>VendorView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Define\DefineEnum.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EntityDeploy Include="Database\POS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>POS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="XML\en-US.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Resource Include="Image\RibbonImages\RibbonDepartment.png" />
+    <None Include="app.config" />
+    <None Include="Model\ModelTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Repository\RepositoryTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RepositoryTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModel\Login\" />
+    <Folder Include="View\Login\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Control\AttributeAndSize\DataGridCanAddColumnRowControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ButtonFindSearch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Filters\DateComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Filters\FilterAdvanceSearch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Filters\FilterAdvanceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Filters\StatusComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\FilterText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ImageBoxControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ImageList\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ImageViewer\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\NumericUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\PopupContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\SystemButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\AlignmentStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\CheckListBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\MenuStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\PasswordBoxStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\CustomControlStyle\AutoCompleteTextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\CheckboxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ComboboxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\DatagridStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\DatePickerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\CustomControlStyle\TabItemStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\NamedStyle\AutoCompleteControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\NamedStyle\ComboBoxControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\NamedStyle\TextBoxControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ExpanderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\Brushes\GreyResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\GroupBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\Brushes\ImageResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ListBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\RadioButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ScrollBarStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TabControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TextBlockStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ToggleButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TreeviewStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\ResourceLibrary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\CustomControlStyle\UserControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\CustomControlStyle\ValidationStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\AttachmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\ContactView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\CreditCardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\ImageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\NoteView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\PaymentTermView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\PopupAddressView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\ProductSearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\ViewProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CompanySetting\CompanySettingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Customer\CustomerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Customer\Reward\IssueRewardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Customer\Reward\RewardListandHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Employee\EmployeeInformationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Employee\HiringHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Employee\RecordFingerprintView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Employee\ViewWorkSchedule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Employee\WorkScheduleHistory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GiftCard\GiftCardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\AdjustmentInformationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\CountSheetView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\CurrentStockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\DepartmentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\InventoryReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\PriceManagement\PriceManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Pricing\Popup\PricingCategory\PricingCategoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Pricing\Popup\PricingVendor\PricingVendorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Pricing\PricingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\ProductMovementHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Promotion\CustomView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Promotion\PromotionAdvanceSearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\Promotion\PromotionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Inventory\Promotion\PromotionReasonView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\ReorderStockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\TransferStock\TransferStock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\WorkOrderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupDuplicateItemView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupAttributeAndSizeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupAvailableQuantitiesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupManagementUOMView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupDepartmentCategoryBrandView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupGuestView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupUOMView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupPricingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\ProductView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Product\PopupUpdateOrderCostView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PurchaseOrder\AddSerialNumberView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PurchaseOrder\POAdvanceSearchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PurchaseOrder\PurchaseOrderPaymentHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PurchaseOrder\PurchaseOrderReturnView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PurchaseOrder\PurchaseOrderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Reward\RewardSetupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\LayawayOrderHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\MultiTrackingNumberView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\PaymentCardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\PickPackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\QuotationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\RedeemRewardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\SalesOrderPaymentHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\SalesOrderPaymentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\SalesOrderReturnView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\SalesOrderView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\SelectTrackingNumberView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\UpdateTransactionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesTax\MultiRateTaxView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesTax\PriceDependentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesTax\SalesTaxView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesTax\SingleRateTaxView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Security\User\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Security\User\ManagementUserLogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Security\User\UserListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\AssignWorkScheduleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\CalculatorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\EmployeesListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\HolidayView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\TimeClockManualEventEditingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\WorkPermissionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TimeClock\WorkScheduleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserManagement\GroupPermissionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Vendor\VendorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\3D Logo Flat.jpg" />
+    <Resource Include="Image\delete.ico" />
+    <Resource Include="Image\GreenFingerprint.png" />
+    <Resource Include="Image\Hand.png" />
+    <Resource Include="Image\ManualEditing.png" />
+    <Resource Include="Image\new.ico" />
+    <Resource Include="Image\no_image.jpg" />
+    <Resource Include="Image\RedFingerprint.png" />
+    <Resource Include="Image\RibbonImages\Promotion.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Administrator.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Company.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Contact.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Drafts.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Inbox.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Message Center.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Security.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Send Email.png" />
+    <Resource Include="Image\RibbonImages\Ribbon TimeClock.png" />
+    <Resource Include="Image\RibbonImages\Ribbon Trash.png" />
+    <Resource Include="Image\RibbonImages\RibbonAdjustStock.png" />
+    <Resource Include="Image\RibbonImages\RibbonAdjustStockList.png" />
+    <Resource Include="Image\RibbonImages\RibbonArchive.png" />
+    <Resource Include="Image\RibbonImages\RibbonAttachFile.png" />
+    <Resource Include="Image\RibbonImages\RibbonCalculator.png" />
+    <Resource Include="Image\RibbonImages\RibbonConfig.png" />
+    <Resource Include="Image\RibbonImages\RibbonCountSheet.png" />
+    <Resource Include="Image\RibbonImages\RibbonCountSheetList.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateCustomer.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateEmployee.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateGroupPermission.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateHoliday.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateSchedule.png" />
+    <Resource Include="Image\RibbonImages\RibbonCreateWorkPermission.png" />
+    <Resource Include="Image\RibbonImages\RibbonCurrentStock.png" />
+    <Resource Include="Image\RibbonImages\RibbonCustomerList.png" />
+    <Resource Include="Image\RibbonImages\RibbonDiscount.png" />
+    <Resource Include="Image\RibbonImages\RibbonDiscountList.png" />
+    <Resource Include="Image\RibbonImages\RibbonEmployeeList.png" />
+    <Resource Include="Image\RibbonImages\RibbonGenerateReports.png" />
+    <Resource Include="Image\RibbonImages\RibbonGiftCard.png" />
+    <Resource Include="Image\RibbonImages\RibbonGroupPermissionList.png" />
+    <Resource Include="Image\RibbonImages\RibbonLayawayOrderHistory.png" />
+    <Resource Include="Image\RibbonImages\RibbonProduct.png" />
+    <Resource Include="Image\RibbonImages\RibbonProductList.png" />
+    <Resource Include="Image\RibbonImages\RibbonProductPricing.png" />
+    <Resource Include="Image\RibbonImages\RibbonProductPricingList.png" />
+    <Resource Include="Image\RibbonImages\RibbonPromotionHistory.png" />
+    <Resource Include="Image\RibbonImages\RibbonPunctualityComparativeAnalysis.png" />
+    <Resource Include="Image\RibbonImages\RibbonPurchaseOrder.png" />
+    <Resource Include="Image\RibbonImages\RibbonPurchaseOrderList.png" />
+    <Resource Include="Image\RibbonImages\RibbonPurchaseOrderReturn.png" />
+    <Resource Include="Image\RibbonImages\RibbonQuotation.png" />
+    <Resource Include="Image\RibbonImages\RibbonQuotationList.png" />
+    <Resource Include="Image\RibbonImages\RibbonReorderStock.png" />
+    <Resource Include="Image\RibbonImages\RibbonRewardHistory.png" />
+    <Resource Include="Image\RibbonImages\RibbonRewardSetup.png" />
+    <Resource Include="Image\RibbonImages\RibbonSaleOrder.png" />
+    <Resource Include="Image\RibbonImages\RibbonSaleOrderReturn.png" />
+    <Resource Include="Image\RibbonImages\RibbonSalesOrderList.png" />
+    <Resource Include="Image\RibbonImages\RibbonStyle.png" />
+    <Resource Include="Image\RibbonImages\RibbonTaxCode.png" />
+    <Resource Include="Image\RibbonImages\RibbonTimeClockManualEventEditing.png" />
+    <Resource Include="Image\RibbonImages\RibbonTransferStock.png" />
+    <Resource Include="Image\RibbonImages\RibbonUserPermissionList.png" />
+    <Resource Include="Image\RibbonImages\RibbonVendor.png" />
+    <Resource Include="Image\RibbonImages\RibbonVendorList.png" />
+    <Resource Include="Image\RibbonImages\RibbonWorkOrder.png" />
+    <Resource Include="Image\RibbonImages\RibbonWorkOrderList.png" />
+    <Resource Include="Image\RibbonImages\RibbonWorkPermissionList.png" />
+    <Resource Include="Image\save.ico" />
+    <Resource Include="Image\SerialNumber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Add.png" />
+    <Resource Include="Image\AddFolder.png" />
+    <Resource Include="Image\Adjust Stock.png" />
+    <Resource Include="Image\Administrator.png" />
+    <Resource Include="Image\Advertising1.png" />
+    <Resource Include="Image\Advertising2.png" />
+    <Resource Include="Image\Alarm.png" />
+    <Resource Include="Image\AllFolders.png" />
+    <Resource Include="Image\ApplyToSave.png" />
+    <Resource Include="Image\Appointment.png" />
+    <Resource Include="Image\Archive.png" />
+    <Resource Include="Image\Assign Permission.png" />
+    <Resource Include="Image\ATM.png" />
+    <Resource Include="Image\Attach File.png" />
+    <Resource Include="Image\Back Up.png" />
+    <Resource Include="Image\Back.png" />
+    <Resource Include="Image\Backward Arrow.png" />
+    <Resource Include="Image\Barcode.png" />
+    <Resource Include="Image\bg1.jpg" />
+    <Resource Include="Image\bg10.jpg" />
+    <Resource Include="Image\bg11.jpg" />
+    <Resource Include="Image\bg2.jpg" />
+    <Resource Include="Image\bg3.jpg" />
+    <Resource Include="Image\bg5.jpg" />
+    <Resource Include="Image\bg6.jpg" />
+    <Resource Include="Image\bg7.jpg" />
+    <Resource Include="Image\bg8.jpg" />
+    <Resource Include="Image\bg9.jpg" />
+    <Resource Include="Image\bussiness Card.png" />
+    <Resource Include="Image\Cancel.png" />
+    <Resource Include="Image\CancelImageDrop.png" />
+    <Resource Include="Image\Card.png" />
+    <Resource Include="Image\Case.png" />
+    <Resource Include="Image\Check Mark.png" />
+    <Resource Include="Image\Check.png" />
+    <Resource Include="Image\CheckPrimary.png" />
+    <Resource Include="Image\Clear Alarm.png" />
+    <Resource Include="Image\Clear.png" />
+    <Resource Include="Image\Close Folder.png" />
+    <Resource Include="Image\Close.png" />
+    <Resource Include="Image\Company.png" />
+    <Resource Include="Image\Config.png" />
+    <Resource Include="Image\Contact Directory.png" />
+    <Resource Include="Image\Contact.png" />
+    <Resource Include="Image\Create Customer.png" />
+    <Resource Include="Image\Create Group.png" />
+    <Resource Include="Image\Create Permission.png" />
+    <Resource Include="Image\Create Schedule.png" />
+    <Resource Include="Image\Create Shortcuts.png" />
+    <Resource Include="Image\CreateCredential.png" />
+    <Resource Include="Image\Custom Field.png" />
+    <Resource Include="Image\Delete.png" />
+    <Resource Include="Image\DocumentFile.png" />
+    <Resource Include="Image\DocumentNumbers.png" />
+    <Resource Include="Image\DocumentNumbersWhite.png" />
+    <Resource Include="Image\Drafts.png" />
+    <Resource Include="Image\Drop List Name.png" />
+    <Resource Include="Image\Drop.png" />
+    <Resource Include="Image\Edit.png" />
+    <Resource Include="Image\Employee.png" />
+    <Resource Include="Image\Enroll.png" />
+    <Resource Include="Image\Enter.png" />
+    <Resource Include="Image\Error.png" />
+    <Resource Include="Image\Exetended Description.png" />
+    <Resource Include="Image\Exit.png" />
+    <Resource Include="Image\Export.png" />
+    <Resource Include="Image\Fast Forward Arrow.png" />
+    <Resource Include="Image\Filter.png" />
+    <Resource Include="Image\Find.png" />
+    <Resource Include="Image\Fingerprint.png" />
+    <Resource Include="Image\Flag.png" />
+    <Resource Include="Image\FlagEnable.png" />
+    <Resource Include="Image\FlipX.png" />
+    <Resource Include="Image\FlipY.png" />
+    <Resource Include="Image\FolderLevel1.png" />
+    <Resource Include="Image\FolderLevel2.png" />
+    <Resource Include="Image\FolderLevel3.png" />
+    <Resource Include="Image\Forward.png" />
+    <Resource Include="Image\Generate Reports.png" />
+    <Resource Include="Image\Get Hours.png" />
+    <Resource Include="Image\GiftCard.png" />
+    <Resource Include="Image\Glasses.png" />
+    <Resource Include="Image\GotoPage.png" />
+    <Resource Include="Image\Help.png" />
+    <Resource Include="Image\Import.png" />
+    <Resource Include="Image\Importance.png" />
+    <Resource Include="Image\Inbox.png" />
+    <Resource Include="Image\Information.png" />
+    <Resource Include="Image\Invoice.png" />
+    <Resource Include="Image\Issue Reward.png" />
+    <Resource Include="Image\List.png" />
+    <Resource Include="Image\Login.png" />
+    <Resource Include="Image\Low Importance.png" />
+    <Resource Include="Image\MoreColor.png" />
+    <Resource Include="Image\New Email.png" />
+    <Resource Include="Image\New.png" />
+    <Resource Include="Image\No.png" />
+    <Resource Include="Image\Note.png" />
+    <Resource Include="Image\Ok.png" />
+    <Resource Include="Image\One Folder.png" />
+    <Resource Include="Image\OneFolder.png" />
+    <Resource Include="Image\Open Folder.png" />
+    <Resource Include="Image\Open.png" />
+    <Resource Include="Image\Outbox.png" />
+    <Resource Include="Image\Parameter.png" />
+    <Resource Include="Image\Payment History.png" />
+    <Resource Include="Image\Payment.png" />
+    <Resource Include="Image\Permission Check List Group.png" />
+    <Resource Include="Image\Permission Check List User.png" />
+    <Resource Include="Image\Play Arrow.png" />
+    <Resource Include="Image\Preview.png" />
+    <Resource Include="Image\Pricing.png" />
+    <Resource Include="Image\Primary.png" />
+    <Resource Include="Image\Print.png" />
+    <Resource Include="Image\Priority.png" />
+    <Resource Include="Image\ProductEditAddStyle.JPG" />
+    <Resource Include="Image\Promotion.png" />
+    <Resource Include="Image\Purchase Order.png" />
+    <Resource Include="Image\Question.png" />
+    <Resource Include="Image\Rating.png" />
+    <Resource Include="Image\Read Email.png" />
+    <Resource Include="Image\Recurence.png" />
+    <Resource Include="Image\Red Remark.png" />
+    <Resource Include="Image\Reference.png" />
+    <Resource Include="Image\Refresh.png" />
+    <Resource Include="Image\Refund.png" />
+    <Resource Include="Image\Reminder.png" />
+    <Resource Include="Image\Remove.png" />
+    <Resource Include="Image\Reorder Stock.png" />
+    <Resource Include="Image\Reply.png" />
+    <Resource Include="Image\Reset.png" />
+    <Resource Include="Image\ResetImage.png" />
+    <Resource Include="Image\ResetPassword.png" />
+    <Resource Include="Image\Restore Arrow.png" />
+    <Resource Include="Image\Retry.png" />
+    <Resource Include="Image\Revise Play Arrow.png" />
+    <Resource Include="Image\Reward Manager.png" />
+    <Resource Include="Image\Reward.png" />
+    <Resource Include="Image\RotateLeft.png" />
+    <Resource Include="Image\RotateRight.png" />
+    <Resource Include="Image\Save Close.png" />
+    <Resource Include="Image\Save New.png" />
+    <Resource Include="Image\Save.png" />
+    <Resource Include="Image\SaveDraft.png" />
+    <Resource Include="Image\SaveImageDropped.png" />
+    <Resource Include="Image\Scan.png" />
+    <Resource Include="Image\ScanUI.png" />
+    <Resource Include="Image\Schedule.png" />
+    <Resource Include="Image\Security.png" />
+    <Resource Include="Image\Send Email.png" />
+    <Resource Include="Image\Shoe2.png" />
+    <Resource Include="Image\Shoes.png" />
+    <Resource Include="Image\SplashScreen.png" />
+    <Resource Include="Image\Stock Swapt.png" />
+    <Resource Include="Image\Tab Geen Check.png" />
+    <Resource Include="Image\Tab Orange Check.png" />
+    <Resource Include="Image\Tab Red Check.png" />
+    <Resource Include="Image\Tasks.png" />
+    <Resource Include="Image\TaxCode.png" />
+    <Resource Include="Image\taxes.png" />
+    <Resource Include="Image\TaxLocation.png" />
+    <Resource Include="Image\TaxLocation2.jpg" />
+    <Resource Include="Image\telescope.png" />
+    <Resource Include="Image\Termination.png" />
+    <Resource Include="Image\Test.png" />
+    <Resource Include="Image\TimeClock.png" />
+    <Resource Include="Image\Trash.png" />
+    <Resource Include="Image\TurnOffTrack.png" />
+    <Resource Include="Image\Two Folder.png" />
+    <Resource Include="Image\Unread Email.png" />
+    <Resource Include="Image\Vendor.png" />
+    <Resource Include="Image\View History.png" />
+    <Resource Include="Image\view Permission.png" />
+    <Resource Include="Image\View User Permission.png" />
+    <Resource Include="Image\View.png" />
+    <Resource Include="Image\Warning.png" />
+    <Resource Include="Image\YellowAlert.png" />
+    <Resource Include="Image\ZoomIn.png" />
+    <Resource Include="Image\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Control\ImageList\Images\Add.png" />
+    <Resource Include="Control\ImageList\Images\Delete.png" />
+    <Resource Include="Control\ImageList\Images\Pencil.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\RibbonLogout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Category.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Brand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\Department.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\DepartmentRoot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Control\ImageViewer\Images\CancelImageDrop.png" />
+    <Resource Include="Control\ImageViewer\Images\Drop.png" />
+    <Resource Include="Control\ImageViewer\Images\FlipX.png" />
+    <Resource Include="Control\ImageViewer\Images\FlipY.png" />
+    <Resource Include="Control\ImageViewer\Images\ResetImage.png" />
+    <Resource Include="Control\ImageViewer\Images\RotateLeft.png" />
+    <Resource Include="Control\ImageViewer\Images\RotateRight.png" />
+    <Resource Include="Control\ImageViewer\Images\SaveImageDropped.png" />
+    <Resource Include="Control\ImageViewer\Images\ZoomIn.png" />
+    <Resource Include="Control\ImageViewer\Images\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\FileImages\BmpImage.png" />
+    <Resource Include="Image\FileImages\DocImage.png" />
+    <Resource Include="Image\FileImages\FileImage.png" />
+    <Resource Include="Image\FileImages\GifImage.png" />
+    <Resource Include="Image\FileImages\JpgImage.png" />
+    <Resource Include="Image\FileImages\PdfImage.png" />
+    <Resource Include="Image\FileImages\PngImage.png" />
+    <Resource Include="Image\FileImages\PptImage.png" />
+    <Resource Include="Image\FileImages\TifImage.png" />
+    <Resource Include="Image\FileImages\TxtImage.png" />
+    <Resource Include="Image\FileImages\XlsImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\RibbonTransferStockList.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="POS.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

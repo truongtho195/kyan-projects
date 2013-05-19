@@ -1,0 +1,1540 @@
+﻿<UserControl x:Class="CPC.POS.View.LayawayOrderHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="1092"
+             Height="555"
+             Background="{DynamicResource UserControlBackground}"
+             mc:Ignorable="d">
+    <Grid x:Name="grdLayawayOrderHistory">
+
+        <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+
+        <Grid x:Name="grdContentLayawayOrderHistory" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox x:Name="gbSearch">
+                <GroupBox.Header>
+                    <TextBlock x:Name="txtblSearch"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource GroupboxTextBlock}"
+                               TextWrapping="Wrap">
+                        <Run Text="Search" />
+                    </TextBlock>
+                </GroupBox.Header>
+                <Grid x:Name="grdgbSearch" Margin="0,4,0,0">
+                    <cpcControl:FilterAdvanceSearch VerticalAlignment="Top" d:IsHidden="True" />
+                    <Grid x:Name="grdAdvanceSearch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel x:Name="stkpContentSearch" Orientation="Vertical">
+                            <Grid x:Name="grdSearchInvoice" Height="25">
+                                <ComboBox x:Name="cmbSearchInvoice"
+                                          Width="115"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          Background="{x:Null}"
+                                          BorderBrush="#FF9C9C9C"
+                                          Foreground="White"
+                                          SelectedIndex="0"
+                                          Style="{DynamicResource CmbSearchStyle}">
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderNo"
+                                                  Content="Sales Order #"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderDate"
+                                                  Content="Sales Order Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemStatus"
+                                                  Content="Status"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemVendor"
+                                                  Content="Vendor"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemDueDate"
+                                                  Content="Due Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalFrom"
+                                                  Content="Total From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalTo"
+                                                  Content="Total To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidFrom"
+                                                  Content="Paid From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidTo"
+                                                  Content="Paid To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceFrom"
+                                                  Content="Balance From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceTo"
+                                                  Content="Balance To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemContactName"
+                                                  Content="Contact Name"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemAdd"
+                                                  Content="Add"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemRemove"
+                                                  Content="Remove"
+                                                  Foreground="Black" />
+                                </ComboBox>
+                                <TextBox x:Name="txtSearchInovoiceNo"
+                                         Grid.RowSpan="1"
+                                         Margin="135,2,10,2"
+                                         BorderBrush="#FF9C9C9C"
+                                         Padding="2,0,2,0"
+                                         TextWrapping="NoWrap" />
+                            </Grid>
+                            <Grid x:Name="grdSearchStatus" Height="25">
+                                <ComboBox x:Name="cmbSearchStatus"
+                                          Width="115"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          Background="{x:Null}"
+                                          BorderBrush="#FF9C9C9C"
+                                          Foreground="White"
+                                          SelectedIndex="1"
+                                          Style="{DynamicResource CmbSearchStyle}">
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderNo1"
+                                                  Content="Sales Order #"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderDate1"
+                                                  Content="Sales Order Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemStatus1"
+                                                  Content="Status"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemVendor1"
+                                                  Content="Vendor"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemDueDate1"
+                                                  Content="Due Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalFrom1"
+                                                  Content="Total From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalTo1"
+                                                  Content="Total To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidFrom1"
+                                                  Content="Paid From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidTo1"
+                                                  Content="Paid To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceFrom1"
+                                                  Content="Balance From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceTo1"
+                                                  Content="Balance To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemContactName1"
+                                                  Content="Contact Name"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemAdd1"
+                                                  Content="Add"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemRemove1"
+                                                  Content="Remove"
+                                                  Foreground="Black" />
+                                </ComboBox>
+                                <ComboBox x:Name="cmbSearchContentStatus"
+                                          Margin="135,2,10,2"
+                                          VerticalAlignment="Stretch"
+                                          BorderBrush="#FF9C9C9C">
+                                    <ComboBoxItem x:Name="cmbItemStatusAll" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbAll"
+                                                  Content="  All"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem x:Name="cmbItemOpen" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbOpen"
+                                                  Content="  Open"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem x:Name="cmbItemInProgress" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbInProgress"
+                                                  Content="  In Progress"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem x:Name="cmbItemFullyReceived" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbFullyReceived"
+                                                  Content="  Fully Received"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem x:Name="cmbItemPaid" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbPaid"
+                                                  Content="  Paid"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem x:Name="cmbItemCancelled" Margin="0,5,0,0">
+                                        <CheckBox x:Name="cbCancelled"
+                                                  Content="  Cancelled"
+                                                  Foreground="Black" />
+                                    </ComboBoxItem>
+                                </ComboBox>
+                            </Grid>
+                            <Grid x:Name="grdSearchInvoiceDate" Height="25">
+                                <ComboBox x:Name="cmbSearchInvoiceDate"
+                                          Width="115"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          Background="{x:Null}"
+                                          BorderBrush="#FF9C9C9C"
+                                          Foreground="White"
+                                          SelectedIndex="2"
+                                          Style="{DynamicResource CmbSearchStyle}">
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderNo2"
+                                                  Content="Sales Order #"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemSalesOrderDate2"
+                                                  Content="Sales Order Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemStatus2"
+                                                  Content="Status"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemVendor2"
+                                                  Content="Vendor"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemDueDate2"
+                                                  Content="Due Date"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalFrom2"
+                                                  Content="Total From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemTotalTo2"
+                                                  Content="Total To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidFrom2"
+                                                  Content="Paid From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemPaidTo2"
+                                                  Content="Paid To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceFrom2"
+                                                  Content="Balance From"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemBalanceTo2"
+                                                  Content="Balance To"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemContactName2"
+                                                  Content="Contact Name"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemAdd2"
+                                                  Content="Add"
+                                                  Foreground="Black" />
+                                    <ComboBoxItem x:Name="cmbItemRemove2"
+                                                  Content="Remove"
+                                                  Foreground="Black" />
+                                </ComboBox>
+                                <ComboBox x:Name="cmbSearchContentInvoiceDate"
+                                          Margin="135,2,10,2"
+                                          VerticalAlignment="Stretch"
+                                          BorderBrush="#FF9C9C9C"
+                                          MaxDropDownHeight="400">
+                                    <ComboBoxItem x:Name="cmbItemAll" Content="All" />
+                                    <Separator x:Name="stAll"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <ComboBoxItem x:Name="cmbItemToday" Content="Today" />
+                                    <ComboBoxItem x:Name="cmbItemThisWeek" Content="This Week" />
+                                    <ComboBoxItem x:Name="cmbItemThisMonth" Content="This Month" />
+                                    <ComboBoxItem x:Name="cmbItemThisQuarter" Content="This Quarter" />
+                                    <ComboBoxItem x:Name="cmbItemThisYear" Content="This Year" />
+                                    <Separator x:Name="stThisYear"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <ComboBoxItem x:Name="cmbItemYesterday" Content="Yesterday" />
+                                    <ComboBoxItem x:Name="cmbItemLastWeek" Content="Last Week" />
+                                    <ComboBoxItem x:Name="cmbItemLastMonth" Content="Last Month" />
+                                    <ComboBoxItem x:Name="cmbItemLastQuarter" Content="Last Quarter" />
+                                    <ComboBoxItem x:Name="cmbItemLastYear" Content="Last Year" />
+                                    <Separator x:Name="stLastYear"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <ComboBoxItem x:Name="cmbItemLast7Days" Content="Last 7 Days" />
+                                    <ComboBoxItem x:Name="cmbItemLast30Days" Content="Last 30 Days" />
+                                    <ComboBoxItem x:Name="cmbItemLast90Days" Content="Last 90 Days" />
+                                    <ComboBoxItem x:Name="cmbItemLast365Days" Content="Last 365 Days" />
+                                    <Separator x:Name="stLast365Days"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <ComboBoxItem x:Name="cmbItemTomorrow" Content="Tomorrow" />
+                                    <ComboBoxItem x:Name="cmbItemNextWeek" Content="Next Week" />
+                                    <ComboBoxItem x:Name="cmbItemNextMonth" Content="Next Month" />
+                                    <ComboBoxItem x:Name="cmbItemNextQuarter" Content="Next Quarter" />
+                                    <ComboBoxItem x:Name="cmbItemNextYear" Content="Next Year" />
+                                    <Separator x:Name="stNextYear"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <ComboBoxItem x:Name="cmbItemCustomDateRange" Content="Custom Date Range" />
+                                    <Separator x:Name="stCustomDateRange"
+                                               Margin="0,2"
+                                               Background="#FF9C9C9C" />
+                                    <Grid x:Name="grdFrom"
+                                          Height="20"
+                                          Margin="0,0,0,2">
+                                        <TextBlock x:Name="txtblFrom"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="Black"
+                                                   Text="From"
+                                                   TextWrapping="NoWrap" />
+                                        <DatePicker x:Name="dtpFrom"
+                                                    Width="110"
+                                                    Margin="38,0,0,0"
+                                                    BorderBrush="#FF9C9C9C"
+                                                    IsEnabled="{Binding SelectedItem.IsNew,
+                                                                        ElementName=lstSearchInventory}"
+                                                    SelectedDate="{Binding SelectedItem.DocumentDate,
+                                                                           ElementName=lstSearchInventory,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           StringFormat=\{0:d\},
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True,
+                                                                           ValidatesOnExceptions=True}"
+                                                    TabIndex="{Binding TabIndexControl}"
+                                                    Text="" />
+                                    </Grid>
+                                    <Grid x:Name="grdTo"
+                                          Height="20"
+                                          Margin="0,0,0,2">
+                                        <TextBlock x:Name="txtblTo"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="Black"
+                                                   Text="To"
+                                                   TextWrapping="NoWrap" />
+                                        <DatePicker x:Name="dtpTo"
+                                                    Width="110"
+                                                    Margin="38,0,0,0"
+                                                    BorderBrush="#FF9C9C9C"
+                                                    IsEnabled="{Binding SelectedItem.IsNew,
+                                                                        ElementName=lstSearchInventory}"
+                                                    SelectedDate="{Binding SelectedItem.DocumentDate,
+                                                                           ElementName=lstSearchInventory,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           StringFormat=\{0:d\},
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True,
+                                                                           ValidatesOnExceptions=True}"
+                                                    TabIndex="{Binding TabIndexControl}"
+                                                    Text="" />
+                                    </Grid>
+                                </ComboBox>
+                            </Grid>
+                            <Button x:Name="btnClose"
+                                    Width="75"
+                                    Height="24"
+                                    Margin="0,5"
+                                    HorizontalAlignment="Center">
+                                <StackPanel x:Name="stkpBtnClose"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgClose"
+                                               Width="15"
+                                               Height="15"
+                                               Fill="{DynamicResource Close}" />
+                                    <TextBlock x:Name="txtblClose"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonTextBlock}"
+                                               Text="Close"
+                                               TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <TextBlock x:Name="txtblResultAvance"
+                                   Grid.Column="1"
+                                   Margin="0,6,10,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="1234"
+                                   TextWrapping="NoWrap" />
+                    </Grid>
+                </Grid>
+            </GroupBox>
+            <DataGrid x:Name="dtgrdSearch"
+                      Grid.Row="1"
+                      MaxHeight="481"
+                      Margin="0,10,0,0"
+                      VerticalAlignment="Stretch"
+                      IsSynchronizedWithCurrentItem="True"
+                      Style="{DynamicResource DatagridWithoutRowHeader}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="80" Header="Sales Order #" />
+                    <DataGridTextColumn Width="90" Header="Customer #" />
+                    <DataGridTextColumn Width="100" Header="Sales Order Date" />
+                    <DataGridTextColumn Width="110" Header="Status" />
+                    <DataGridTextColumn Width="190" Header="Customer" />
+                    <DataGridTextColumn Width="100" Header="Due Date" />
+                    <DataGridTextColumn Width="100" Header="Ship Date" />
+                    <DataGridTextColumn Width="100" Header="Total" />
+                    <DataGridTextColumn Width="100" Header="Paid" />
+                    <DataGridTextColumn Width="100" Header="Balance" />
+                </DataGrid.Columns>
+                <CheckBox Width="100"
+                          Height="100"
+                          Content="CheckBox" />
+                <CheckBox Width="100"
+                          Height="100"
+                          Content="CheckBox" />
+                <CheckBox Width="100"
+                          Height="100"
+                          Content="CheckBox" />
+                <CheckBox Width="100"
+                          Height="100"
+                          Content="CheckBox" />
+            </DataGrid>
+            <Grid x:Name="dtgrdEmployeeItem1"
+                  Grid.Row="1"
+                  Margin="1,30,0,0"
+                  VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="79" />
+                    <ColumnDefinition Width="91" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="190" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="98" />
+                    <ColumnDefinition Width="102" />
+                    <ColumnDefinition Width="101" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblStartDate_Copy4"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="SO-000011"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy5"
+                           Grid.Row="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="SO-000012"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy26"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000001"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy27"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000002"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy1"
+                           Grid.Column="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/26/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy52"
+                           Grid.Row="1"
+                           Grid.Column="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/30/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy10"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Recent Layaway"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy11"
+                           Grid.Row="1"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Open Layaway"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy13"
+                           Grid.Column="8"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$0.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy14"
+                           Grid.Row="1"
+                           Grid.Column="8"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$0.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy16"
+                           Grid.Column="9"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$100.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy17"
+                           Grid.Row="1"
+                           Grid.Column="9"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$200.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy2"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="10/11/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy3"
+                           Grid.Row="1"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/25/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy20"
+                           Grid.Column="7"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$100.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy21"
+                           Grid.Row="1"
+                           Grid.Column="7"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$200.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy23"
+                           Grid.Column="4"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Sericus Deals for you"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy24"
+                           Grid.Row="1"
+                           Grid.Column="4"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Sericus Deals for you"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy6"
+                           Grid.Row="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="LO-000012"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy12"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000002"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy19"
+                           Grid.Row="2"
+                           Grid.Column="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/30/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy25"
+                           Grid.Row="2"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Invoiced Layaway"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy44"
+                           Grid.Row="2"
+                           Grid.Column="8"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$0.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy46"
+                           Grid.Row="2"
+                           Grid.Column="9"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$200.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy47"
+                           Grid.Row="2"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/25/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy48"
+                           Grid.Row="2"
+                           Grid.Column="7"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$200.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy53"
+                           Grid.Row="2"
+                           Grid.Column="4"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Sericus Deals for you"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy54"
+                           Grid.Row="3"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="LO-000013"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy55"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000003"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy56"
+                           Grid.Row="3"
+                           Grid.Column="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="1/30/2011"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy57"
+                           Grid.Row="3"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Paid Layaway"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy58"
+                           Grid.Row="3"
+                           Grid.Column="8"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$0.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy59"
+                           Grid.Row="3"
+                           Grid.Column="9"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$100.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy60"
+                           Grid.Row="3"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="2/25/2011"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy7"
+                           Grid.Column="6"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="10/12/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy8"
+                           Grid.Row="1"
+                           Grid.Column="6"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/26/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy9"
+                           Grid.Row="2"
+                           Grid.Column="6"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="9/26/2010"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy15"
+                           Grid.Row="3"
+                           Grid.Column="6"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="2/26/2011"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy61"
+                           Grid.Row="3"
+                           Grid.Column="7"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$100.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy62"
+                           Grid.Row="3"
+                           Grid.Column="4"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Sericus Deals for you"
+                           TextWrapping="NoWrap" />
+            </Grid>
+            <Grid Grid.Row="1"
+                  Height="407"
+                  Margin="0,120,0,0"
+                  VerticalAlignment="Top"
+                  d:IsHidden="True"
+                  Visibility="Collapsed">
+                <Rectangle Grid.RowSpan="8"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Stretch"
+                           Stroke="#FF000000">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="0" Color="#FFC5DDFE" />
+                            <GradientStop Offset="1" Color="#FF71A7EE" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle Grid.Row="7"
+                           Grid.RowSpan="1"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Stretch"
+                           Stroke="#FF000000" />
+                <Image Grid.Row="1"
+                       Width="120"
+                       Margin="29,0,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Source="../../Image/Shoes.png"
+                       Stretch="Uniform" />
+            </Grid>
+            <GroupBox x:Name="gbInvoiceInformation"
+                      Grid.Row="1"
+                      Width="741"
+                      Height="52"
+                      Margin="176,130,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      BorderBrush="#FF2B5596"
+                      d:IsHidden="True"
+                      Visibility="Collapsed">
+                <GroupBox.Header>
+                    <TextBlock x:Name="txtblInvoiceInformation"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="#FF2B5595"
+                               Text="Sales Order Information"
+                               TextWrapping="NoWrap" />
+                </GroupBox.Header>
+                <Grid x:Name="grdInvoiceInformation"
+                      Height="24"
+                      Margin="0,5,0,0"
+                      VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="105" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="105" />
+                        <ColumnDefinition Width="0.391*" />
+                        <ColumnDefinition Width="105" />
+                        <ColumnDefinition Width="0.609*" />
+                        <ColumnDefinition Width="120" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="txtblCustID"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               d:IsHidden="True"
+                               Foreground="Black"
+                               Text="Cust ID:"
+                               TextWrapping="NoWrap"
+                               Visibility="Collapsed" />
+                    <TextBox x:Name="txtCust"
+                             Grid.RowSpan="1"
+                             Grid.Column="1"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             d:IsHidden="True"
+                             Padding="2,0,2,0"
+                             TextWrapping="NoWrap"
+                             Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOrderNo"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Order #:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtOrderNo"
+                             Grid.RowSpan="1"
+                             Grid.Column="1"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblSalesType"
+                               Grid.Column="2"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Sales Type:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbSalesType"
+                              Grid.Column="3"
+                              Margin="0,2"
+                              VerticalAlignment="Stretch"
+                              BorderBrush="#FF9C9C9C">
+                        <ComboBoxItem x:Name="cmbItemWalkingSales" Content="Walking Sales" />
+                        <ComboBoxItem x:Name="cmbItemSalesOrder" Content="Sales Order" />
+                        <ComboBoxItem x:Name="cmbItemLayawayOrder" Content="Layaway Order" />
+                        <ComboBoxItem x:Name="cmbItemWorkOrder" Content="Work Order" />
+                    </ComboBox>
+                    <TextBlock x:Name="txtblStatus"
+                               Grid.Column="4"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Status:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbStatus"
+                              Grid.Column="5"
+                              Margin="0,2"
+                              VerticalAlignment="Stretch"
+                              BorderBrush="#FF9C9C9C">
+                        <ComboBoxItem x:Name="cmbItemStatusOpen1" Content="Open" />
+                        <ComboBoxItem x:Name="cmbItemStatusPaid" Content="Paid" />
+                        <ComboBoxItem x:Name="cmbItemProcessing" Content="Processing" />
+                        <ComboBoxItem x:Name="cmbItemInvoiced" Content="Invoiced" />
+                        <ComboBoxItem x:Name="cmbItemStatusCancelled" Content="Cancelled" />
+                        <ComboBoxItem x:Name="cmbItemQuote" Content="Quote" />
+                        <ComboBoxItem x:Name="cmbItemFullyShipped" Content="Fully Shipped" />
+                        <ComboBoxItem x:Name="cmbItemPartialShipped" Content="Partial Shipped" />
+                    </ComboBox>
+                    <TextBlock x:Name="txtblOrderDate"
+                               Grid.Column="6"
+                               Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Order Date:"
+                               TextWrapping="NoWrap" />
+                    <DatePicker x:Name="dtpOrderDate"
+                                Grid.Column="7"
+                                Width="110"
+                                Margin="0,2"
+                                HorizontalAlignment="Left"
+                                Background="White"
+                                BorderBrush="#FF9C9C9C"
+                                TabIndex="{Binding TabIndexControl}" />
+                </Grid>
+            </GroupBox>
+            <Grid x:Name="grdItemInvoice_Copy1"
+                  Grid.Row="1"
+                  Height="325.517"
+                  Margin="170,185,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  d:IsHidden="True"
+                  Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="170" />
+                </Grid.RowDefinitions>
+                <DataGrid x:Name="dtgrdInvoice3"
+                          Width="743"
+                          MaxHeight="159"
+                          Margin="5"
+                          HorizontalAlignment="Left"
+                          Background="White"
+                          BorderBrush="#FF2B5597"
+                          ColumnHeaderHeight="20"
+                          HorizontalGridLinesBrush="#FF2B5597"
+                          IsSynchronizedWithCurrentItem="True"
+                          RowHeaderWidth="0"
+                          RowHeight="30"
+                          VerticalGridLinesBrush="#FF2B5597">
+                    <DataGrid.AlternatingRowBackground>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="0" Color="#FFE6F1FF" />
+                            <GradientStop Offset="1" Color="#FFC8DFFE" />
+                        </LinearGradientBrush>
+                    </DataGrid.AlternatingRowBackground>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="75" Header="Item #" />
+                        <DataGridTextColumn Width="250" Header="Description" />
+                        <DataGridTextColumn Width="40" Header="Qty" />
+                        <DataGridTextColumn Width="70" Header="Price" />
+                        <DataGridTextColumn Width="90" Header="Qty On-Hand" />
+                        <DataGridTextColumn Width="50" Header="Disc" />
+                        <DataGridTextColumn Width="40" Header="Tax" />
+                        <DataGridTextColumn Width="120" Header="Amount" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid x:Name="dtgrdInvoiceItem5"
+                      Width="742"
+                      Height="125"
+                      Margin="6,25,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="74" />
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="71" />
+                        <ColumnDefinition Width="89" />
+                        <ColumnDefinition Width="51" />
+                        <ColumnDefinition Width="39" />
+                        <ColumnDefinition Width="128" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Rectangle Grid.Row="2"
+                               Grid.ColumnSpan="8"
+                               Fill="#FFEAE7D6" />
+                    <Rectangle Grid.RowSpan="1" Grid.ColumnSpan="8">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush SpreadMethod="Reflect" StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Offset="0.2" Color="#FFFFF5CB" />
+                                <GradientStop Offset="0.6" Color="#FFFFE290" />
+                                <GradientStop Offset="1" Color="#FFFFDB76" />
+                                <GradientStop Offset="0" Color="#FFFFF8D5" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock x:Name="txtblStartDate_Copy182"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="12875"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy203"
+                               Grid.Row="2"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="20101"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy204"
+                               Grid.Column="3"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$23.99"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy205"
+                               Grid.Row="1"
+                               Grid.Column="3"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="-$0.47"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy206"
+                               Grid.Row="2"
+                               Grid.Column="3"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$30.00"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy207"
+                               Grid.Column="4"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="20"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy208"
+                               Grid.Row="2"
+                               Grid.Column="4"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="20"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy209"
+                               Grid.Column="5"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="3%"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy210"
+                               Grid.Row="2"
+                               Grid.Column="5"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="5%"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy211"
+                               Grid.Column="6"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="T"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy212"
+                               Grid.Column="7"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$349.05"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy213"
+                               Grid.Row="1"
+                               Grid.Column="7"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="-$9.4"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy214"
+                               Grid.Row="2"
+                               Grid.Column="7"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$427.5"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy215"
+                               Grid.Column="1"
+                               Margin="5,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Mini-Truck Battery Powered Red"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy216"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="5,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Coupon: 2%"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy217"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               Margin="5,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="1:24 California Highway Patrol"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy218"
+                               Grid.Column="2"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="15"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy219"
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="15"
+                               TextWrapping="NoWrap" />
+                    <Rectangle Grid.Row="4"
+                               Grid.ColumnSpan="8"
+                               Fill="#FFEAE7D6" />
+                    <Rectangle Grid.Row="6"
+                               Grid.ColumnSpan="8"
+                               Fill="#FFEAE7D6" />
+                    <Rectangle Grid.RowSpan="7"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="1"
+                               Margin="0"
+                               Stroke="#FF000000" />
+                    <Rectangle Grid.RowSpan="7"
+                               Grid.Column="3"
+                               Margin="0"
+                               HorizontalAlignment="Stretch"
+                               Stroke="#FF000000" />
+                    <Rectangle Grid.RowSpan="7"
+                               Grid.Column="5"
+                               Margin="0"
+                               HorizontalAlignment="Stretch"
+                               Stroke="#FF000000" />
+                    <Rectangle Grid.RowSpan="7"
+                               Grid.Column="7"
+                               Margin="0"
+                               HorizontalAlignment="Stretch"
+                               Stroke="#FF000000" />
+                    <TextBlock x:Name="txtblStartDate_Copy220"
+                               Grid.Row="3"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="46101"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy221"
+                               Grid.Row="3"
+                               Grid.Column="3"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$3.99"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy222"
+                               Grid.Row="3"
+                               Grid.Column="4"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="10"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy223"
+                               Grid.Row="3"
+                               Grid.Column="5"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="2%"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy224"
+                               Grid.Row="3"
+                               Grid.Column="6"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="T"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy225"
+                               Grid.Row="3"
+                               Grid.Column="7"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="$31.28"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy226"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               Margin="5,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Alabama 1957 Police Car"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblStartDate_Copy227"
+                               Grid.Row="3"
+                               Grid.Column="2"
+                               Margin="0,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="8"
+                               TextWrapping="NoWrap" />
+                </Grid>
+                <Grid x:Name="grdSubTotal3"
+                      Grid.Row="1"
+                      Width="736"
+                      Margin="10,0,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="198" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="135" />
+                        <ColumnDefinition Width="126" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtblTerms4"
+                               Grid.Row="1"
+                               Margin="0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Terms:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbTerms4"
+                              Grid.Row="1"
+                              Width="110"
+                              Margin="0,2"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Stretch"
+                              BorderBrush="#FF9C9C9C" />
+                    <TextBlock x:Name="txtblSaleRep4"
+                               Grid.Row="2"
+                               Margin="0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Sales Rep:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbSaleRep4"
+                              Grid.Row="2"
+                              Width="110"
+                              Margin="0,2"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Stretch"
+                              BorderBrush="#FF9C9C9C" />
+                    <TextBlock x:Name="txtblPriceLevel4"
+                               Grid.Row="3"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Price Level:"
+                               TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblLocation4"
+                               Grid.Row="4"
+                               Margin="0,0,0,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Location:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbLocation4"
+                              Grid.Row="4"
+                              Width="110"
+                              Height="20"
+                              Margin="0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
+                              BorderBrush="#FF9C9C9C" />
+                    <TextBlock x:Name="txtblCouponCode3"
+                               Grid.Column="1"
+                               Margin="20,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               d:IsHidden="True"
+                               Foreground="Black"
+                               Text="Coupon:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtCouponCode3"
+                             Grid.RowSpan="1"
+                             Grid.Column="1"
+                             Width="107"
+                             Height="20"
+                             Margin="75,2,0,2"
+                             HorizontalAlignment="Left"
+                             BorderBrush="#FF9C9C9C"
+                             d:IsHidden="True"
+                             Padding="2,0,2,0"
+                             Text="A123"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblSubTotal4"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Sub-Total:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtSubTotal4"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             FontWeight="Bold"
+                             Padding="2,0,2,0"
+                             Text="$798.43"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblTax4"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Tax:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtTaxPercent4"
+                             Grid.Row="1"
+                             Grid.RowSpan="1"
+                             Grid.Column="2"
+                             Width="35"
+                             Margin="70,2,0,2"
+                             HorizontalAlignment="Left"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             Text="8.25"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblTaxPercent4"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               Margin="110,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="%"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtTax4"
+                             Grid.Row="1"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             Text="$65.87"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblDiscount3"
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Coupon:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtShowCouponCode3"
+                             Grid.Row="2"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             Text="$16.00"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblShippingHandling4"
+                               Grid.Row="3"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Shipping &amp; Handling:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtShippingHandling4"
+                             Grid.Row="3"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             Text="$50.00"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblTotal4"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Total:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtTotal4"
+                             Grid.Row="4"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             HorizontalContentAlignment="Right"
+                             VerticalContentAlignment="Center"
+                             Background="Black"
+                             BorderBrush="#FF9C9C9C"
+                             FontSize="13"
+                             FontWeight="Bold"
+                             Foreground="#FF00FF05"
+                             Padding="2,0,2,0"
+                             Text="$898.30"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblPaid2"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Paid:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtPaid2"
+                             Grid.Row="5"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             VerticalContentAlignment="Center"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             Text="$98.30"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblBalance2"
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Balance:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtTemplatePriceLevel"
+                             Grid.Row="3"
+                             Width="110"
+                             Margin="0,2"
+                             HorizontalAlignment="Right"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             TextWrapping="Wrap" />
+                    <TextBox x:Name="txtBalance2"
+                             Grid.Row="6"
+                             Grid.RowSpan="1"
+                             Grid.Column="3"
+                             Margin="0,2"
+                             HorizontalContentAlignment="Right"
+                             VerticalContentAlignment="Center"
+                             Background="Black"
+                             BorderBrush="#FF9C9C9C"
+                             FontWeight="Bold"
+                             Foreground="#FFFE1313"
+                             Padding="2,0,2,0"
+                             Text="$800.00"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblInvoiceRemark"
+                               Grid.Column="1"
+                               Margin="20,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="Black"
+                               Text="Remark:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtInvoiceRemark"
+                             Grid.Row="1"
+                             Grid.RowSpan="4"
+                             Grid.Column="1"
+                             Margin="20,2"
+                             BorderBrush="#FF9C9C9C"
+                             Padding="2,0,2,0"
+                             TextWrapping="Wrap" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

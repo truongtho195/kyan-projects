@@ -1,0 +1,758 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        x:Class="CPC.POS.View.RecordFingerprintView"
+        x:Name="UserControl"
+        
+        Width="500"
+        Height="340"
+    
+        
+        HorizontalContentAlignment="Stretch"
+        VerticalContentAlignment="Stretch"
+        mc:Ignorable="d"
+        xmlns:converter="clr-namespace:CPC.Converter"
+        xmlns:command="clr-namespace:CPC.Toolkit.Command"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        >
+    <!--xmlns:Service="clr-namespace:CPC.Service"
+        Service:DialogService.IsRegisteredView="True"-->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding LoadCommand}"
+                                    CommandParameter="{Binding .,ElementName=Window}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <!--ListviewStart-->
+        <converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <Style TargetType="{x:Type Button}"
+               x:Key="mybtnStyle">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Width="Auto"
+                              Height="Auto"
+                              x:Name="grid">
+                            <Rectangle Stroke="#FF414141"
+                                       RadiusY="3"
+                                       RadiusX="3"
+                                       StrokeThickness="1"
+                                       x:Name="rectangle">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1"
+                                                         StartPoint="0.5,0">
+                                        <GradientStop Color="#E5D8D8D8"
+                                                      Offset="0" />
+                                        <GradientStop Color="#FFD7D7D7"
+                                                      Offset="1" />
+                                        <GradientStop Color="#E5E2E2E2"
+                                                      Offset="0.455" />
+                                        <GradientStop Color="#FFC9C9C9"
+                                                      Offset="0.536" />
+                                    </LinearGradientBrush>
+
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle Stroke="#FFFFFFFF"
+                                       RadiusY="3"
+                                       RadiusX="3"
+                                       StrokeThickness="1"
+                                       x:Name="rectangle1"
+                                       Margin="1,1,1,1" />
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              RecognizesAccessKey="True"
+                                              d:LayoutOverrides="Width, Height" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true">
+                                <Setter Property="Fill"
+                                        TargetName="rectangle">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,1"
+                                                             StartPoint="0,0">
+                                            <GradientStop Color="#FFFFBD69"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FFFFB75A"
+                                                          Offset="0.0967741935483871" />
+                                            <GradientStop Color="#FFFFB14C"
+                                                          Offset="0.25806451612903225" />
+                                            <GradientStop Color="#FFFB8C3C"
+                                                          Offset="0.38709677419354838" />
+                                            <GradientStop Color="#FFFEB461"
+                                                          Offset="0.967741935483871" />
+                                            <GradientStop Color="#FFFEBB67"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Fill"
+                                        TargetName="rectangle">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,1"
+                                                             StartPoint="0,0"
+                                                             SpreadMethod="Reflect">
+                                            <GradientStop Color="#FFFFF5CB"
+                                                          Offset="0.2" />
+                                            <GradientStop Color="#FFFFE290"
+                                                          Offset="0.6" />
+                                            <GradientStop Color="#FFFFDB76"
+                                                          Offset="1" />
+                                            <GradientStop Color="#FFFFF8D5"
+                                                          Offset="0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Fill"
+                                        TargetName="rectangle">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="0,1"
+                                                             StartPoint="0,0">
+                                            <GradientStop Color="#FFFFBD69"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FFFFB75A"
+                                                          Offset="0.0967741935483871" />
+                                            <GradientStop Color="#FFFFB14C"
+                                                          Offset="0.25806451612903225" />
+                                            <GradientStop Color="#FFFB8C3C"
+                                                          Offset="0.38709677419354838" />
+                                            <GradientStop Color="#FFFEB461"
+                                                          Offset="0.967741935483871" />
+                                            <GradientStop Color="#FFFEBB67"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                <Setter Property="Opacity"
+                                        TargetName="grid"
+                                        Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="BtnMiniClose"
+               TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="#02FFFFFF">
+                            <Grid x:Name="grdOver"
+                                  Visibility="Collapsed">
+                                <Rectangle Stroke="#FF2B5597"
+                                           RadiusX="2.891"
+                                           RadiusY="2.891"
+                                           StrokeThickness="0.5">
+                                    <Rectangle.Fill>
+                                        <RadialGradientBrush>
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="1"
+                                                                    ScaleY="1" />
+                                                    <SkewTransform AngleX="0"
+                                                                   AngleY="0" />
+                                                    <RotateTransform Angle="0" />
+                                                    <TranslateTransform X="0"
+                                                                        Y="0.298" />
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#FFEBF4FF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FF79B3FF"
+                                                          Offset="1" />
+                                        </RadialGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle RadiusX="2.444"
+                                           RadiusY="2.444"
+                                           Margin="0.5,0.5,0.5,0.5"
+                                           StrokeThickness="0.5">
+                                    <Rectangle.Stroke>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFFFFFF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#33FFFFFF"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Stroke>
+                                </Rectangle>
+                                <Path Stretch="Fill"
+                                      Margin="1,1,1,9.125"
+                                      Data="M1.8699999,3.5527137E-15 L18.129999,3.5527137E-15 C19.162773,-5.9604641E-08 20,0.83722746 20,1.8699998 L20,8.1068233 C18.669236,9.3290253 16.734106,11.87514 9.8593005,11.87514 2.9844954,11.87514 1.8641568,9.5836507 -4.3630726E-15,8.1068233 L0,1.8699998 C-2.9802322E-08,0.83722746 0.83722749,-5.9604641E-08 1.8699999,3.5527137E-15 z">
+                                    <Path.Fill>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFFFFFF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#51FFFFFF"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Path.Fill>
+                                </Path>
+                            </Grid>
+                            <Grid x:Name="grdPress"
+                                  Visibility="Collapsed">
+                                <Rectangle Stroke="#FF2B5597"
+                                           RadiusX="2.891"
+                                           RadiusY="2.891"
+                                           StrokeThickness="0.5">
+                                    <Rectangle.Fill>
+                                        <RadialGradientBrush>
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleX="1"
+                                                                    ScaleY="1" />
+                                                    <SkewTransform AngleX="0"
+                                                                   AngleY="0" />
+                                                    <RotateTransform Angle="0" />
+                                                    <TranslateTransform X="0"
+                                                                        Y="0.298" />
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#FFEBF4FF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FF476996"
+                                                          Offset="1" />
+                                        </RadialGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle RadiusX="2.444"
+                                           RadiusY="2.444"
+                                           Margin="0.5,0.5,0.5,0.5"
+                                           StrokeThickness="0.5"
+                                           Opacity="0.7">
+                                    <Rectangle.Stroke>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFFFFFF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#33FFFFFF"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Stroke>
+                                </Rectangle>
+                                <Path Stretch="Fill"
+                                      Margin="1,1,1,9.125"
+                                      Data="M1.8699999,3.5527137E-15 L18.129999,3.5527137E-15 C19.162773,-5.9604641E-08 20,0.83722746 20,1.8699998 L20,8.1068233 C18.669236,9.3290253 16.734106,11.87514 9.8593005,11.87514 2.9844954,11.87514 1.8641568,9.5836507 -4.3630726E-15,8.1068233 L0,1.8699998 C-2.9802322E-08,0.83722746 0.83722749,-5.9604641E-08 1.8699999,3.5527137E-15 z"
+                                      Opacity="0.8">
+                                    <Path.Fill>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFFFFFF"
+                                                          Offset="0" />
+                                            <GradientStop Color="#51FFFFFF"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Path.Fill>
+                                </Path>
+                            </Grid>
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              RecognizesAccessKey="True"
+                                              d:LayoutOverrides="Width, Height" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Visibility"
+                                        TargetName="grdOver"
+                                        Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true" />
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Visibility"
+                                        TargetName="grdPress"
+                                        Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RemarkChooseFingerBtn"
+               TargetType="{x:Type ToggleButton}">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Height="Auto"
+                              x:Name="grid"
+                              Background="#05FFFFFF"
+                              Opacity="1">
+                            <Ellipse x:Name="ellipse"
+                                     Stroke="Red"
+                                     Visibility="Hidden" />
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              RecognizesAccessKey="True"
+                                              d:LayoutOverrides="Width, Height"
+                                              Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true" />
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Visibility"
+                                        TargetName="ellipse"
+                                        Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                <Setter Property="Opacity"
+                                        TargetName="grid"
+                                        Value="0.4" />
+                            </Trigger>
+                            <Trigger Property="IsChecked"
+                                     Value="True">
+                                <Setter Property="Visibility"
+                                        TargetName="ellipse"
+                                        Value="Visible" />
+                                <Setter Property="Stroke"
+                                        TargetName="ellipse"
+                                        Value="#FF008421" />
+                                <Setter Property="Fill"
+                                        TargetName="ellipse">
+                                    <Setter.Value>
+                                        <RadialGradientBrush>
+                                            <GradientStop Color="White"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FF5080FF"
+                                                          Offset="1" />
+                                            <GradientStop Color="#FFE4EBFF"
+                                                          Offset="0.821" />
+                                            <GradientStop Color="#FF91AFFF"
+                                                          Offset="0.69" />
+                                            <GradientStop Color="#FFC0D1FF"
+                                                          Offset="0.495" />
+                                            <GradientStop Color="#FF759AFF"
+                                                          Offset="0.382" />
+                                            <GradientStop Color="#FFE2E9FF"
+                                                          Offset="0.266" />
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="grdRecordFingerprint"
+          Background="{DynamicResource UserControlBackground}"
+          DockPanel.Dock="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="grdRecordContentFingerprint"
+              Margin="20,20,20,10">
+            <Canvas x:Name="CvsHand"
+                    Width="250"
+                    Height="155"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,25,0,0">
+                <Image x:Name="imgHand"
+                       VerticalAlignment="Top"
+                       Source="../../Image/Hand.png"
+                       HorizontalAlignment="Left"
+                       Width="250" />
+                <ToggleButton x:Name="btnLeftLittleFinger"
+                              Width="13"
+                              Content="Button"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Height="25"
+                              Canvas.Left="0.871"
+                              Canvas.Top="32.5"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=5}"
+                              RenderTransformOrigin="0.5,0.5">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="-20.995" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnLeftAnonymousFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="14.51"
+                              Height="25"
+                              Content="Button"
+                              Canvas.Left="24.81"
+                              Canvas.Top="7.911"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=4}"
+                              RenderTransformOrigin="0.5,0.5">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="-8.557" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnLeftMiddleFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="15"
+                              Height="25"
+                              Content="Button"
+                              Canvas.Left="49.165"
+                              Canvas.Top="0"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=3}"
+                              RenderTransformOrigin="0.5,0.5">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="-5.545" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnLeftForeFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="15"
+                              Height="25"
+                              Content="Button"
+                              Canvas.Left="76"
+                              Canvas.Top="6"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=2}" />
+                <ToggleButton x:Name="btnLeftThumbFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="13"
+                              Height="25"
+                              Content="Button"
+                              Canvas.Left="104.7"
+                              Canvas.Top="61.205"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=1}"
+                              RenderTransformOrigin="0.5,0.5">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="34.833" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnRightLittleFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="13"
+                              Height="25"
+                              Content="Button"
+                              RenderTransformOrigin="0.5,0.5"
+                              Canvas.Left="234.9"
+                              Canvas.Top="36.5"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=5}">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="21.486" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnRightAnonymousFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="14.51"
+                              Height="25"
+                              Content="Button"
+                              RenderTransformOrigin="0.5,0.5"
+                              Canvas.Left="211.8"
+                              Canvas.Top="8.9"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=4}">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="9.871" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnRightMiddleFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="15"
+                              Height="25"
+                              Content="Button"
+                              RenderTransformOrigin="0.5,0.5"
+                              Canvas.Left="186.2"
+                              Canvas.Top="2"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=3}">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="6.772" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <ToggleButton x:Name="btnRightForeFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="15"
+                              Height="25"
+                              Content="Button"
+                              Canvas.Left="159"
+                              Canvas.Top="6"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=2}" />
+                <ToggleButton x:Name="btnRightThumbFinger"
+                              Style="{DynamicResource RemarkChooseFingerBtn}"
+                              Width="13"
+                              Height="25"
+                              Content="Button"
+                              RenderTransformOrigin="0.5,0.5"
+                              Canvas.Left="130.7"
+                              Canvas.Top="61.205"
+                              IsChecked="{Binding FingerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=1}">
+                    <ToggleButton.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="-35.852" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ToggleButton.RenderTransform>
+                </ToggleButton>
+                <Rectangle Fill="{DynamicResource UserControlBackground}"
+                           Width="125"
+                           VerticalAlignment="Top"
+                           Height="160">
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLeft}"
+                                             Value="True">
+                                    <Setter Property="Margin"
+                                            Value="125 0 0 0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+            </Canvas>
+            <Grid x:Name="grdConfirmation"
+                  HorizontalAlignment="Left"
+                  Margin="259,25,0,0"
+                  VerticalAlignment="Top"
+                  Width="80"
+                  Height="160">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Rectangle x:Name="brdConfirmation1"
+                           Stroke="White"
+                           RadiusX="5"
+                           RadiusY="5"
+                           Margin="0,0,0,1"
+                           ToolTipService.ShowDuration="6000">
+                    <Rectangle.ToolTip>
+                        <ToolTip StaysOpen="{Binding ShowToolTip}">
+                            <TextBlock Text="{Binding StatusToolTip}" />
+                        </ToolTip>
+                    </Rectangle.ToolTip>
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchOne}"
+                                             Value="True">
+                                    <Setter Property="Fill"
+                                            Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding MatchOne}"
+                                                     Value="False">
+                                            <Setter Property="Fill"
+                                                    Value="Transparent" />
+                                        </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <TextBlock x:Name="txtblConfirmation1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="66.667"
+                           Foreground="White"
+                           Text="1"
+                           TextWrapping="Wrap"
+                           Height="80.47"
+                           Margin="21.803,0,0,0"
+                           Grid.RowSpan="2"
+                           Width="36.393" />
+                <Rectangle x:Name="brdConfirmation2"
+                           Stroke="White"
+                           RadiusX="5"
+                           RadiusY="5"
+                           Grid.Row="1"
+                           Margin="0,1,0,0">
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MatchTwo}"
+                                             Value="True">
+                                    <Setter Property="Fill"
+                                            Value="Red" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding MatchTwo}"
+                                                     Value="False">
+                                            <Setter Property="Fill"
+                                                    Value="Transparent" />
+                                        </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <TextBlock x:Name="txtblConfirmation2"
+                           HorizontalAlignment="Center"
+                           Margin="0"
+                           VerticalAlignment="Top"
+                           FontSize="66.667"
+                           Foreground="White"
+                           Text="2"
+                           TextWrapping="Wrap"
+                           Grid.Row="1" />
+            </Grid>
+            <Border x:Name="brdResult"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Width="110"
+                    Height="160"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Padding="5"
+                    Margin="0,25,0,0">
+                
+                <Image x:Name="imgResult"
+                       Stretch="Uniform">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentMatch}"
+                                             Value="0">
+                                    <Setter Property="Source"
+                                            Value="{x:Null}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentMatch}"
+                                             Value="1">
+                                    <Setter Property="Source"
+                                            Value="/../Image/GreenFingerprint.png" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentMatch}"
+                                             Value="2">
+                                    <Setter Property="Source"
+                                            Value="/../Image/RedFingerprint.png" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Border>
+        </Grid>
+        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0,2,0" />
+
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OKCommand}"
+                    Width="80"
+                    Height="28"
+                    IsDefault="True">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

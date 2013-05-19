@@ -1,0 +1,1132 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             x:Class="CPC.POS.View.PricingView"
+             x:Name="pricingView"
+             Background="{DynamicResource UserControlBackground}">
+    <UserControl.Resources>
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:IntegerToBooleanConverter x:Key="reversedIntToBoolConverter"
+                                             IsReversed="True" />
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"
+                                             FalseToVisibility="Visible" />
+        <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
+        <converter:StringFormatConverter x:Key="stringFormatConverter" />
+        <converter:StringPriceLevelConverter x:Key="stringPriceLevelConverter" />
+        <converter:IntToCalculationConverter x:Key="intToCalculationConverter" />
+        <ContextMenu x:Key="SaleOrderShipContextMenu">
+            <MenuItem Command="{Binding DataContext.NewCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="NewItem"
+                      Header="New Item">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource NewItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding DataContext.EditCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}"
+                      Header="Edit Item">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource EditItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding DataContext.ApplyCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}"
+                      Header="Apply Pricing">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource ApplyPricing}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+        <Style x:Key="DataGridMenuContextRowStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource SaleOrderShipContextMenu}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="grdCreateDiscountCoupon">
+                <Grid x:Name="grdSearch"
+                      d:LayoutOverrides="GridBox"
+                      d:IsHidden="True">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"
+                                       MinHeight="87" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,10,0">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch1"
+                                       Text="Search"
+                                       TextWrapping="NoWrap"
+                                       Style="{DynamicResource GroupboxTextBlock}" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <Grid x:Name="grdgbContentSearch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <control:WatermarkTextBox x:Name="txtKeyword"
+                                                          Margin="10,2"
+                                                          VerticalContentAlignment="Center"
+                                                          Padding="20,0,2,0"
+                                                          Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          TextWrapping="NoWrap"
+                                                          Watermark="Keyword">
+                                    <control:WatermarkTextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding SearchCommand}"
+                                                    CommandParameter="{Binding Path=Text, ElementName=txtKeyword}" />
+                                    </control:WatermarkTextBox.InputBindings>
+                                </control:WatermarkTextBox>
+                                <Rectangle x:Name="imgFind"
+                                           Fill="{DynamicResource Find}"
+                                           HorizontalAlignment="Left"
+                                           Width="20"
+                                           Margin="13,3,0,3" />
+                                <StackPanel x:Name="stkpCheckbox"
+                                            HorizontalAlignment="Left"
+                                            Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="10,0,0,0"
+                                            d:LayoutOverrides="HorizontalAlignment"
+                                            VerticalAlignment="Center">
+                                    <CheckBox x:Name="cbAccountNo"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Name"
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchPricingOptions.Name}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbPriceLevel"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Price Level"
+                                              Margin="20,0,0,0"
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchPricingOptions.PriceLevel}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="10,0,0,0"
+                                               Foreground="#FFFDFF00"
+                                               Text="{Binding SearchAlert}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                                <TextBlock x:Name="txtblAdvanceSearch"
+                                           HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Cursor="Hand"
+                                           Margin="10,5.861,0,5.862"
+                                           d:LayoutOverrides="HorizontalAlignment, Height"
+                                           Grid.Row="2"
+                                           Visibility="Collapsed"><Hyperlink Foreground="#FF89A0FF"><Run Text="Advance Search" /></Hyperlink></TextBlock>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <dataGridControl:DataGridControl x:Name="dtgrdDiscountCoupon"
+                                                     Grid.Row="1"
+                                                     Margin="10,10.1,10,10"
+                                                     AutoGenerateColumns="False"
+                                                     CanUserAddRows="False"
+                                                     CanUserDeleteRows="False"
+                                                     IsRollBackData="False"
+                                                     CurrentPageIndex="{Binding CurrentPagePricingIndex}"
+                                                     DisplayItems="{Binding NumberOfDisplayItems}"
+                                                     NumberOfItems="{Binding TotalPricings}"
+                                                     Command="{Binding LoadStepCommand}"
+                                                     ItemsSource="{Binding PricingCollection}"
+                                                     SelectedItem="{Binding SelectedItemPricing}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdDiscountCoupon}"
+                                                     RowStyle="{DynamicResource DataGridMenuContextRowStyle}"
+                                                     Style="{DynamicResource DatagridWithRowHeader}">
+                        <dataGridControl:DataGridControl.Columns>
+                            <DataGridTemplateColumn Header="Name"
+                                                    IsReadOnly="True"
+                                                    Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name,Mode=OneWay}"  />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Status"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status,Mode=OneWay}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Item Count"
+                                                    IsReadOnly="True"
+                                                    Width="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ItemCount,Mode=OneWay}"  TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Price Level"
+                                                Binding="{Binding PriceLevel}"
+                                                IsReadOnly="True"
+                                                Width="80" />
+                            <DataGridTemplateColumn Header="Base Price"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextAlignment="Center"
+                                                   Text="{Binding BasePrice,StringFormat=c,Converter={StaticResource intToCalculationConverter},ConverterParameter=1}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Ajustment Method"
+                                                    IsReadOnly="True"
+                                                    Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextAlignment="Center"
+                                                   Text="{Binding CalculateMethod,StringFormat=c,Converter={StaticResource intToCalculationConverter},ConverterParameter=0}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Amount Change"
+                                                    IsReadOnly="True"
+                                                    Width="85">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextAlignment="Right">
+                                        <TextBlock.Text>
+    					                <MultiBinding StringFormat=" {0}{1}">
+    						<Binding Path="AmountChange" />
+    						<Binding Path="AmountUnit"
+                                                    Converter="{StaticResource intToCalculationConverter}"
+                                                    ConverterParameter="2" />
+    					</MultiBinding>
+    				</TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Date Created"
+                                                    IsReadOnly="True"
+                                                    Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateCreated, Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="User Created"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserCreated, Mode=OneWay}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Date Applied"
+                                                    IsReadOnly="True"
+                                                    Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateApplied, Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="User Applied"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserApplied, Mode=OneWay}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Date Restored"
+                                                    IsReadOnly="True"
+                                                    Width="75">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateRestored, Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="User Restored"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserRestored, Mode=OneWay}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </dataGridControl:DataGridControl.Columns>
+                    </dataGridControl:DataGridControl>
+                </Grid>
+
+                <Grid x:Name="grdContentCreateDiscountCoupon"
+                      Grid.Column="1">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnBarSearch"
+                            Command="{Binding DoubleClickViewCommand}"
+                            Style="{DynamicResource ButtonBarSearch}">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Search"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Center"
+                                   x:Name="txtblShowSearch1"
+                                   Style="{DynamicResource ButtonBarSearchTextBlock}">
+						<TextBlock.LayoutTransform>
+							<TransformGroup>
+								<ScaleTransform />
+								<SkewTransform />
+								<RotateTransform Angle="-90" />
+								<TranslateTransform />
+							</TransformGroup>
+						</TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                    <Rectangle x:Name="grdSpliter"
+                               Width="1"
+                               HorizontalAlignment="Left"
+                               Fill="{DynamicResource Spilter_Line_Background}"
+                               d:LayoutOverrides="GridBox" />
+
+                    <Grid x:Name="grdSubDiscountPriceCoupon"
+                          d:LayoutOverrides="Height"
+                          Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Height="Auto"
+                                    HorizontalAlignment="Left"
+                                    x:Name="stkpBtn"
+                                    Orientation="Horizontal"
+                                    Margin="20,0,0,5"
+                                    Width="257.569">
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnSaveNew"
+                                    Height="40"
+                                    Width="40"
+                                    Margin="0"
+                                    Visibility="Collapsed"
+                                    d:IsHidden="True">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnSaveNew"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgSaveNew"
+                                               Fill="{DynamicResource SaveNew}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblSaveNew"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnSaveClose"
+                                    Height="40"
+                                    Width="40"
+                                    Visibility="Collapsed"
+                                    d:IsHidden="True">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnSaveClose"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSaveClose"
+                                               Fill="{DynamicResource SaveClose}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblSaveClose"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnSaveDraft"
+                                    Height="40"
+                                    Width="40"
+                                    Visibility="Collapsed"
+                                    d:IsHidden="True">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnSaveDraft"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSaveDraft"
+                                               Fill="{DynamicResource SaveDraft}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblSaveDraft"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnNew"
+                                    Height="40"
+                                    Command="{Binding NewCommand}"
+                                    Width="40"
+                                    Margin="0"
+                                    Visibility="Visible">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnNew"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgNew"
+                                               Fill="{DynamicResource New}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblNew"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnSave"
+                                    Command="{Binding SaveCommand}"
+                                    Height="40"
+                                    Width="40"
+                                    Visibility="Visible">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnSave"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSave"
+                                               Fill="{DynamicResource Save}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblSave"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnEdit"
+                                    Height="40"
+                                    Width="40"
+                                    Visibility="Collapsed"
+                                    d:IsHidden="True">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnEdit"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgEdit"
+                                               Fill="{DynamicResource Edit}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Edit"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblEdit"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnClear"
+                                    Height="40"
+                                    Width="40"
+                                    d:IsHidden="True"
+                                    Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnClear"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgClear"
+                                               Fill="{DynamicResource Clear}"
+                                               Height="33"
+                                               Width="33" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblClear"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnDelete"
+                                    Height="40"
+                                    Visibility="Collapsed"
+                                    Command="{Binding DeleteCommand}"
+                                    Width="40">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnDelete"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgDelete"
+                                               Fill="{DynamicResource Delete}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblDelete"
+                                               VerticalAlignment="Center"
+                                               Text="Close"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnPrint"
+                                    Width="40"
+                                    VerticalAlignment="Center"
+                                    Height="40"
+                                    Visibility="Collapsed"
+                                    d:IsHidden="True">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnPrint"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgPrint"
+                                               Fill="{DynamicResource Print}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblPrint"
+                                               VerticalAlignment="Center"
+                                               Text="Preview"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnAttachment"
+                                    Height="40"
+                                    Width="40"
+                                    Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnAttachment"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgAttachment"
+                                               Fill="{DynamicResource Attachment}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblAttachment"
+                                               VerticalAlignment="Center"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Grid x:Name="grdRemark1"
+                                  Height="40"
+                                  Margin="0"
+                                  Width="50">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid x:Name="grdRemark"
+                                      Width="30"
+                                      Height="30">
+                                    <Rectangle x:Name="imgRemark"
+                                               Fill="{DynamicResource Remark}" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblRemark"
+                                               VerticalAlignment="Center"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               d:LayoutOverrides="Width, HorizontalMargin" />
+                                    <TextBox x:Name="txtbBindingRemark"
+                                             TextWrapping="Wrap"
+                                             Text="{Binding SelectedItemPricing.ResourceNoteCollection.Count, Mode=OneWay}"
+                                             d:LayoutOverrides="Width, Height"
+                                             Style="{DynamicResource TextBoxRemark}" />
+                                </Grid>
+                                <ComboBox x:Name="cmbStick"
+                                          Grid.ColumnSpan="2"
+                                          SelectedIndex="0"
+                                          Style="{DynamicResource RemarkComboboxStyle}">
+                                    <Button Width="75"
+                                            Height="20"
+                                            Command="{Binding NewNoteCommand}"
+                                            Content="Add Sticky"
+                                            Style="{DynamicResource ButtonComboboxItemRemark}" />
+                                    <Button Width="75"
+                                            Height="20"
+                                            Command="{Binding ShowOrHiddenNoteCommand}"
+                                            Content="{Binding ShowOrHiddenNote,
+                                                          Mode=OneWay}"
+                                            Style="{DynamicResource ButtonComboboxItemRemark}"
+                                            Visibility="{Binding SelectedItemPricing.ResourceNoteCollection.Count,
+                                                             Converter={StaticResource enumToCollapsedConverter},
+                                                             ConverterParameter=0}" />
+                                </ComboBox>
+                            </Grid>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnExit"
+                                    Height="40"
+                                    Width="40"
+                                    d:IsHidden="True"
+                                    Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnExit"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgExit"
+                                               Fill="{DynamicResource Exit}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblExit"
+                                               VerticalAlignment="Center"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnRestore"
+                                    Height="40"
+                                    Visibility="{Binding SelectedItemPricing.VisibilityRestore,Mode=OneWay}"
+                                    Command="{Binding RestoreCommand}"
+                                    Width="40">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpRestore"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgRestore"
+                                               Fill="{DynamicResource Restore}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblRestore"
+                                               VerticalAlignment="Center"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnApply"
+                                    Height="40"
+                                    Visibility="{Binding SelectedItemPricing.VisibilityApplied,Mode=OneWay}"
+                                    Command="{Binding ApplyCommand}"
+                                    Width="40">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpApply"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgApply"
+                                               Height="30"
+                                               Width="30"
+                                               Fill="{DynamicResource OK}" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblApply"
+                                               VerticalAlignment="Center"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Rectangle HorizontalAlignment="Stretch"
+                                   x:Name="Line"
+                                   VerticalAlignment="Top"
+                                   Height="1"
+                                   Grid.Row="1"
+                                   Margin="2,0,2,0"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <TextBlock x:Name="txtblBindingDiscountType1"
+                                   Text="Pricing"
+                                   TextWrapping="NoWrap"
+                                   Margin="0,0,20,7"
+                                   HorizontalAlignment="Right"
+                                   FontFamily="Times New Roman"
+                                   VerticalAlignment="Bottom"
+                                   Style="{DynamicResource TextBlockTitleFormView}" />
+                        <Grid x:Name="grdBasic"
+                              Grid.Row="1"
+                              Width="747"
+                              IsEnabled="{Binding SelectedItemPricing.IsEnable}"
+                              HorizontalAlignment="Left"
+                              Margin="0,10,0,0"
+                              VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblName"
+                                       Text="Name:"
+                                       TextWrapping="NoWrap"
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <textBoxControl:TextBox x:Name="txtName"
+                                                    Margin="60,2,0,2"
+                                                    TextWrapping="NoWrap"
+                                                    Padding="2,0,2,0"
+                                                    Background="#FFF8F49A"
+                                                    Width="336"
+                                                    MaxLength="36"
+                                                    Text="{Binding SelectedItemPricing.Name,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                                    HorizontalAlignment="Left" />
+                            <TextBlock x:Name="txtblStatus"
+                                       Text="Status:"
+                                       TextWrapping="NoWrap"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Margin="530,0,0,0"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <ComboBox VerticalAlignment="Stretch"
+                                      Margin="575,2,0,2"
+                                      x:Name="cmbStatus"
+                                      IsEnabled="False"
+                                      DisplayMemberPath="Text"
+                                      SelectedValuePath="Text"
+                                      ItemsSource="{x:Static helper:Common.PricingStatus}"
+                                      SelectedValue="{Binding SelectedItemPricing.Status,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                      HorizontalAlignment="Left"
+                                      Width="110" />
+                        </Grid>
+                        <Border x:Name="brdDiscountPriceCoupon"
+                                BorderThickness="1"
+                                Grid.Row="2"
+                                Margin="10"
+                                Background="{DynamicResource TabControlBackground}"
+                                BorderBrush="{DynamicResource TabControlBorder}">
+                            <Grid x:Name="grdContentDiscountPriceCoupon">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid x:Name="grdSet">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition />
+
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblSet"
+                                               Text="Set"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               d:LayoutOverrides="HorizontalAlignment" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LineSet"
+                                               VerticalAlignment="Center"
+                                               Height="1.088"
+                                               Margin="38,0,10,0" />
+                                    <Grid x:Name="grdContentSet"
+                                          Grid.Row="1"
+                                          IsEnabled="{Binding SelectedItemPricing.IsEnable}"
+                                          HorizontalAlignment="Left">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txblPriceLevel"
+                                                   TextWrapping="Wrap"
+                                                   Text="PriceLevel"
+                                                   Foreground="White"
+                                                   Margin="35.773,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock x:Name="txblBasePrice"
+                                                   Margin="120.1,0,0,0"
+                                                   TextWrapping="Wrap"
+                                                   Text="Base Price"
+                                                   Foreground="White"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock x:Name="txblAdjustment"
+                                                   TextWrapping="Wrap"
+                                                   Text="Adjustment"
+                                                   Foreground="White"
+                                                   Margin="187.33,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock x:Name="txblAmount"
+                                                   TextWrapping="Wrap"
+                                                   Text="Amount"
+                                                   Foreground="White"
+                                                   Margin="281.123,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center" />
+                                        <ComboBox x:Name="cmbPriceLevel"
+                                                  Width="100"
+                                                  DisplayMemberPath="Text"
+                                                  SelectedValuePath="Text"
+                                                  ItemsSource="{x:Static helper:Common.MarkdownPriceLevels}"
+                                                  SelectedValue="{Binding SelectedItemPricing.PriceLevel,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                  Height="21"
+                                                  Margin="10,2,0,2"
+                                                  Grid.Row="1"
+                                                  HorizontalAlignment="Left"
+                                                  d:LayoutOverrides="GridBox" />
+                                        <ComboBox x:Name="cmbBasePrice"
+                                                  Width="60"
+                                                  Height="21"
+                                                  ItemsSource="{x:Static helper:Common.BasePriceTypes}"
+                                                  DisplayMemberPath="Text"
+                                                  SelectedValuePath="Value"
+                                                  SelectedValue="{Binding SelectedItemPricing.BasePrice,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  Margin="115,2,0,2"
+                                                  HorizontalAlignment="Left"
+                                                  d:LayoutOverrides="GridBox"
+                                                  Grid.Row="1">
+                                        </ComboBox>
+                                        <ComboBox x:Name="cmbAdjustment"
+                                                  Width="70"
+                                                  Height="21"
+                                                  Margin="180,2,0,2"
+                                                  Grid.Row="1"
+                                                  ItemsSource="{x:Static helper:Common.AdjustmentTypes}"
+                                                  DisplayMemberPath="Text"
+                                                  SelectedValuePath="Value"
+                                                  SelectedValue="{Binding SelectedItemPricing.CalculateMethod,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left"
+                                                  d:LayoutOverrides="GridBox">
+                                        </ComboBox>
+                                        <textBoxControl:TextBoxNumeric DecimalPlaces="2"
+                                                                       IntegerLength="12"
+                                                                       x:Name="txtAmount"
+                                                                       HorizontalAlignment="Left"
+                                                                       Margin="255,2,0,2"
+                                                                       TextWrapping="Wrap"
+                                                                       Grid.Row="1"
+                                                                       Height="21"
+                                                                       Width="90"
+                                                                       Value="{Binding SelectedItemPricing.AmountChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                       d:LayoutOverrides="GridBox" />
+                                        <ComboBox x:Name="cmbAmount"
+                                                  Width="40"
+                                                  Height="21"
+                                                  Grid.Row="1"
+                                                  ItemsSource="{x:Static helper:Common.ProductCommissionTypes}"
+                                                  DisplayMemberPath="Text"
+                                                  SelectedValuePath="ObjValue"
+                                                  SelectedValue="{Binding SelectedItemPricing.AmountUnit,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left"
+                                                  d:LayoutOverrides="GridBox"
+                                                  Margin="350,0,0,0" />
+                                    </Grid>
+                                </Grid>
+                                <Grid x:Name="grdProduct"
+                                      Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblProduct"
+                                               Text="Product"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockValidationStyle}"
+                                               Tag="{Binding SelectedItemPricing.IsErrorProductCollection, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               d:LayoutOverrides="HorizontalAlignment" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LineProductAffect"
+                                               VerticalAlignment="Center"
+                                               Height="1.058"
+                                               Margin="64,0,10,0" />
+                                    <Grid x:Name="grdContentProduct"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel x:Name="stkpChek"
+                                                    IsEnabled="{Binding SelectedItemPricing.IsEnable}"
+                                                    Orientation="Horizontal"
+                                                    d:LayoutOverrides="Width"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="10,0,0,0">
+                                            <RadioButton x:Name="rbAllItem"
+                                                         Command="{Binding FilterProductCommand}"
+                                                         CommandParameter="All"
+                                                         HorizontalAlignment="Left"
+                                                         VerticalAlignment="Center"
+                                                         Content="All Item"
+                                                         IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}"
+                                                         Cursor="Hand" />
+                                            <RadioButton x:Name="rbAllItemsinCategory"
+                                                         IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}"
+                                                         Command="{Binding FilterProductCommand}"
+                                                         CommandParameter="Category"
+                                                         VerticalAlignment="Center"
+                                                         Content="All Items in Category"
+                                                         Margin="10,0,0,0"
+                                                         Cursor="Hand" />
+                                            <RadioButton x:Name="cbAllItemsinVednor"
+                                                         VerticalAlignment="Center"
+                                                         IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}"
+                                                         Command="{Binding FilterProductCommand}"
+                                                         CommandParameter="Vendor"
+                                                         Content="All Items in Vendor"
+                                                         Margin="10,0,0,0"
+                                                         Cursor="Hand" />
+                                            <RadioButton x:Name="cbCustom"
+                                                         IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=3}"
+                                                         Command="{Binding FilterProductCommand}"
+                                                         CommandParameter="Custom"
+                                                         HorizontalAlignment="Left"
+                                                         VerticalAlignment="Center"
+                                                         Content="Custom"
+                                                         Margin="10,0,0,0"
+                                                         Cursor="Hand" />
+                                        </StackPanel>
+                                        <dataGridControl:DataGridControl x:Name="dtgrdProductDirectory"
+                                                                         VerticalAlignment="Stretch"
+                                                                         Grid.Row="1"
+                                                                         IsRollBackData="False"
+                                                                         AutoGenerateColumns="False"
+                                                                         CanUserAddRows="False"
+                                                                         CanUserDeleteRows="False"
+                                                                         NumberOfItems="{Binding TotalProducts,Mode=OneWay}"
+                                                                         ItemsSource="{Binding SelectedItemPricing.ProductCollection,Mode=OneWay}"
+                                                                         HorizontalAlignment="Stretch"
+                                                                         Style="{DynamicResource DatagridWithoutRowHeader}"
+                                                                         Margin="10,5,10,10">
+                                            <dataGridControl:DataGridControl.Columns>
+                                                <DataGridTemplateColumn Header="Item Code"
+                                                                        IsReadOnly="True"
+                                                                        Width="100">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Code,Mode=OneWay}"
+                                                                       TextAlignment="Center" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Name"
+                                                                        IsReadOnly="True"
+                                                                        Width="*">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ProductName,Mode=OneWay}"
+                                                                       TextAlignment="Center" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Attribute"
+                                                                        IsReadOnly="True"
+                                                                        Width="70">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Attribute, Mode=OneWay}"
+                                                                       TextAlignment="Center" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Size"
+                                                                        IsReadOnly="True"
+                                                                        Width="70">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Size,Mode=OneWay}"
+                                                                       TextAlignment="Center" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Cost"
+                                                                        IsReadOnly="True"
+                                                                        Width="70">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding AverageUnitCost,Mode=OneWay,StringFormat=\{0:c2\}}"
+                                                                       TextAlignment="Right" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Current Price"
+                                                                        IsReadOnly="True"
+                                                                        Width="70">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextAlignment="Right"
+                                                                       Text="{Binding CurrentPrice,StringFormat=\{0:c2\}}">
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="New Price"
+                                                                        IsReadOnly="True"
+                                                                        Width="70">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding NewPrice,Mode=OneWay,StringFormat=\{0:c2\}}"
+                                                                       TextAlignment="Right" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  IsReadOnly="True"
+                                                                         Width="70">
+                                                    <DataGridTemplateColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock TextAlignment="Right">
+                                                                <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding DataContext.SelectedItemPricing.BasePrice,Mode=OneWay,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl},AncestorLevel=1}}"
+                                                                             Value="1">
+                                                                    <Setter Property="Text"
+                                                                                Value="Cost Change"></Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding DataContext.SelectedItemPricing.BasePrice,Mode=OneWay,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl},AncestorLevel=1}}"
+                                                                             Value="2">
+                                                                    <Setter Property="Text"
+                                                                                Value="Price Change"></Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.HeaderTemplate>
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding PriceChange,StringFormat=\{0:c2\},Mode=OneWay}"
+                                                                       TextAlignment="Right" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </dataGridControl:DataGridControl.Columns>
+                                        </dataGridControl:DataGridControl>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>
+	
