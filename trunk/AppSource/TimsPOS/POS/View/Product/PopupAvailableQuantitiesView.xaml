@@ -1,0 +1,344 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupAvailableQuantitiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="745"
+             Height="462"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+        <Style x:Key="ListBoxItemAvailableQty"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                SnapsToDevicePixels="true">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="grdAvailableQuantities">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentAvailableQuantities"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentQuantitiesforthisItem"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="450" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <GroupBox x:Name="gbQuantityforthisItem"
+                          Margin="0,0,5,0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblQuantityforthisItem"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Quantity for this Item"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdContentQuantityforthisItem"
+                          Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="Auto"
+                                           MinHeight="4.707" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblQuantityOnHand"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Quantity On Hand"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingQuantityOnHand"
+                                   Margin="220,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding CompanyQuantities, Mode=OneWay}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblQuantityOnOrder"
+                                   Margin="250,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Quantity On PO"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingQuantityOnOrder"
+                                   Margin="400,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding QuantityOnPO, Mode=OneWay}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblQuantityOnCustomerOrders"
+                                   Grid.Row="1"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Quantity On SO"
+                                   TextWrapping="NoWrap"
+                                   UseLayoutRounding="False" />
+                        <TextBlock x:Name="txtblBindingQuantityOnCustomerOrders"
+                                   Grid.Row="1"
+                                   Margin="220,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding QuantityOnSO, Mode=OneWay}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblQuantityPending"
+                                   Grid.Row="1"
+                                   Margin="250,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Quantity Pending"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingQuantityPending"
+                                   Grid.Row="1"
+                                   Margin="400,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="0"
+                                   TextWrapping="NoWrap" />
+                        <Rectangle x:Name="Line_Copy"
+                                   Grid.Row="2"
+                                   Width="219"
+                                   Height="1"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <TextBlock x:Name="txtblQuantityAvailable"
+                                   Grid.Row="3"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Quantity Available"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingQuantityAvailable"
+                                   Grid.Row="3"
+                                   Margin="220,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding QuantityAvailable, Mode=OneWay}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblShow"
+                                   Grid.Row="5"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Show:"
+                                   TextWrapping="NoWrap" />
+                        <ComboBox x:Name="cmbShow"
+                                  Grid.Row="5"
+                                  Width="140"
+                                  Margin="55,2,0,2"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Stretch"
+                                  DisplayMemberPath="Text"
+                                  ItemsSource="{x:Static helper:Common.AvailableQuantities}"
+                                  SelectedValue="{Binding SelectedAvailableQuantity}"
+                                  SelectedValuePath="Value" />
+                        <dataGridControl:DataGridControl x:Name="dtgrdQuantities"
+                                                         Grid.Row="7"
+                                                         Margin="5,0,5,5"
+                                                         AutoGenerateColumns="False"
+                                                         CanUserAddRows="False"
+                                                         CanUserDeleteRows="False"
+                                                         IsReadOnly="True"
+                                                         IsRollBackData="False"
+                                                         ItemsSource="{Binding OrderDetailCollection, Mode=OneWay}"
+                                                         NumberOfItems="{Binding OrderDetailCollection.Count}"
+                                                         Style="{DynamicResource DatagridWithRowHeader}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Type"
+                                                    Binding="{Binding DocType, Mode=OneWay}"
+                                                    Width="*" />
+                                <DataGridTextColumn Header="Date"
+                                                    Binding="{Binding SaleOrderModel.OrderDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+                                                    Width="*" />
+                                <DataGridTextColumn Header="Doc #"
+                                                    Binding="{Binding SaleOrderModel.SONumber, Mode=OneWay}"
+                                                    Width="*" />
+                                <DataGridTextColumn Header="Qty"
+                                                    Binding="{Binding Quantity, Mode=OneWay}"
+                                                    Width="*" />
+                            </DataGrid.Columns>
+                        </dataGridControl:DataGridControl>
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="gbStoreQuantity"
+                          Grid.Column="2"
+                          Margin="5,0,0,0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblStoreQuantity"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Store Quantities ( Base Unit )"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdStoreQuantity"
+                          Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblShow1"
+                                   Margin="0,0,10,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Show:"
+                                   TextWrapping="NoWrap" />
+                        <ComboBox x:Name="cmbShow1"
+                                  Grid.Column="1"
+                                  Height="21"
+                                  Margin="0,2,10,2"
+                                  DisplayMemberPath="Text"
+                                  ItemsSource="{x:Static helper:Common.StockStatus}"
+                                  SelectedValue="{Binding StockStatus}"
+                                  SelectedValuePath="Value" />
+                        <ListBox x:Name="lbStoreQty"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 Background="{x:Null}"
+                                 BorderBrush="{x:Null}"
+                                 BorderThickness="0"
+                                 ItemContainerStyle="{DynamicResource ListBoxItemAvailableQty}"
+                                 ItemsSource="{Binding OnHandStoreList}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="25"
+                                          Background="{x:Null}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="59.5" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="0,0,10,0"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{Binding Text}"
+                                                   TextWrapping="NoWrap" />
+                                        <textBoxControl:TextBoxNumeric Grid.Column="1"
+                                                                       Grid.ColumnSpan="1"
+                                                                       Width="80"
+                                                                       Margin="0,2"
+                                                                       IsEnabled="{Binding SelectedValue, Mode=OneWay, ElementName=cmbShow1, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}"
+                                                                       Padding="2,0,2,0"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <TextBlock x:Name="txtblCompanyQuantity"
+                                   Grid.Row="2"
+                                   Grid.ColumnSpan="2"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Company Quantity:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingCompanyQuantity"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Margin="65,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   RenderTransformOrigin="-6.746,2.097"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding CompanyQuantities}"
+                                   TextWrapping="NoWrap" />
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

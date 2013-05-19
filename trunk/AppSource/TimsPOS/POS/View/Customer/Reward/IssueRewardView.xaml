@@ -1,0 +1,304 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
+	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	x:Class="CPC.POS.View.IssueRewardView"
+	x:Name="UserControl" Background="{x:Null}" Width="335" Height="285">
+	<UserControl.Resources>
+
+
+
+
+
+		<!--ListviewStart-->
+		
+		
+		
+	</UserControl.Resources>
+
+	<Border 
+		x:Name="brdNewIssueReward" 
+		BorderThickness="1,1,1,1"
+		 CornerRadius="5,5,5,5" 
+		 BorderBrush="{DynamicResource TitleBarBorder}" Background="{DynamicResource UserControlBackground}">
+
+		<DockPanel 
+			x:Name="dkpNewIssueReward" 
+			LastChildFill="True">
+			<Border 
+				Height="26" 
+				x:Name="BrdTopBar" 
+				BorderThickness="0,1,0,0" 
+				BorderBrush="{DynamicResource TitleBarBorder}" 
+				CornerRadius="4.5,4.5,0,0" 
+				DockPanel.Dock="Top" Background="{DynamicResource TitleBarBackground}">
+				<Grid x:Name="grdTopBar">
+					<TextBlock 
+						Text="New Issue Reward" 
+						TextWrapping="Wrap" 
+						HorizontalAlignment="Left" 
+						VerticalAlignment="Center" 
+						x:Name="txtblNewIssueReward" 
+						Margin="10,0,0,0" Style="{DynamicResource TextBlockTitleFormPopup}"/>
+					<Rectangle StrokeThickness="0" x:Name="TopBarLine" VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource TitleBarBorder}"/>
+					<StackPanel 
+						Orientation="Horizontal"
+						HorizontalAlignment="Right"
+						x:Name="stkpBtnNewIssueReward" 
+						VerticalAlignment="Top" 
+						Height="22">
+						<Button 
+							Style="{DynamicResource ButtonMiniClose}"
+							Width="22"
+							x:Name="btnClose" 
+							Margin="5,0,5,0">
+							<Grid x:Name="grdClose">
+								<Path 
+									Stretch="Fill"
+									StrokeThickness="0.5"
+									RenderTransformOrigin="0.5,0.5"
+									Data="M5.75,0.25 L9.25,0.25 9.25,5.7499999 14.75,5.7499999 14.75,9.25 9.25,9.25 9.25,14.75 5.75,14.75 5.75,9.25 0.25,9.25 0.25,5.7499999 5.75,5.7499999 z"
+									Width="14"
+									Height="14"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center" 
+									Fill="{DynamicResource TitleBar_ButtonClose_Arrow}">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform ScaleX="1"
+												ScaleY="1" />
+											<SkewTransform AngleX="0"
+												AngleY="0" />
+											<RotateTransform Angle="-45" />
+											<TranslateTransform X="0"
+												Y="0" />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+							</Grid>
+						</Button>
+					</StackPanel>
+				</Grid>
+			</Border>
+			<Border 
+				Height="20" 
+				x:Name="BrdBottomBar" 
+				BorderThickness="0,1,0,0" 
+				BorderBrush="#FFFFFFFF" 
+				CornerRadius="0,0,4.5,4.5" 
+				DockPanel.Dock="Bottom" Visibility="Collapsed" d:IsHidden="True">
+				<Border.Background>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FFF7EDED" Offset="0.037"/>
+		<GradientStop Color="#FFFB4949" Offset="0.533"/>
+		<GradientStop Color="#FFAB1111" Offset="0.207"/>
+		<GradientStop Color="#FF831C1C" Offset="0.841"/>
+		<GradientStop Color="#FFF9F8F8" Offset="0.967"/>
+					</LinearGradientBrush>
+				</Border.Background>
+				<Grid x:Name="grdBottomBar">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="154"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock 
+						 
+						Text="2010 @ All rights are Reserved" 
+						TextWrapping="Wrap" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center" 
+						x:Name="txtblAllright" Foreground="White"/>
+					<TextBlock 
+						 
+						Text="http://www.CPC.com" 
+						TextWrapping="Wrap" 
+						VerticalAlignment="Center" 
+						Grid.Column="1" 
+						HorizontalAlignment="Left" 
+						x:Name="txtblhttp" 
+						Margin="10,0,0,0" Foreground="White"/>
+					<Rectangle 
+						StrokeThickness="0" 
+						HorizontalAlignment="Left" 
+						x:Name="Break" 
+						Width="2" 
+						Grid.Column="1">
+						<Rectangle.Fill>
+							<LinearGradientBrush EndPoint="0.895,0.5" StartPoint="0.105,0.5">
+								<GradientStop Color="#FF6594D4" Offset="0.5"/>
+								<GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+							</LinearGradientBrush>
+						</Rectangle.Fill>
+					</Rectangle>
+					<ResizeGrip 
+						HorizontalAlignment="Right" 
+						VerticalAlignment="Center" 
+						Grid.Column="1" 
+						Margin="0,0,5,0" 
+						x:Name="rzg"/>
+				</Grid>
+			</Border>
+
+			<Grid 
+				x:Name="grdNewIssueReward" 
+				DockPanel.Dock="Top">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition Height="50"/>
+				</Grid.RowDefinitions>
+				<Border x:Name="brdContentNewIssueReward" BorderBrush="White" BorderThickness="1" Background="#19FFFFFF" Margin="15,20,15,15">
+					<Grid
+						x:Name="grdContentNewIssueReward" Margin="10">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="25" />
+							<RowDefinition Height="25"/>
+							<RowDefinition Height="25"/>
+							<RowDefinition Height="25" />
+							<RowDefinition Height="25"/>
+							<RowDefinition Height="25"/>
+						</Grid.RowDefinitions>
+						<TextBlock x:Name="txtblPurchaseToNextReward"
+							Text="Purchase To Next Reward:"
+							TextWrapping="NoWrap"
+							Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" />
+						<TextBox 
+							x:Name="txtPurchaseToNextReward"
+								 
+							TextWrapping="NoWrap" 
+							Margin="150,2,10,2" 
+							VerticalAlignment="Stretch" 
+							Padding="2,0,2,0" 
+							Text="Display Only" />
+						<TextBlock 
+							Text="Purchase Date:" 
+							TextWrapping="Wrap" 
+							x:Name="txtblPurchaseDate" 
+							HorizontalAlignment="Left" 
+								 
+							VerticalAlignment="Center" 
+							Margin="10,0,0,0" 
+							Grid.Row="1" Style="{DynamicResource TextBlockNormal}"/>
+						<DatePicker Margin="150,2,10,2"
+							IsEnabled="{Binding SelectedItem.IsNew, ElementName=lstSearchInventory}"
+							Text=""
+							TabIndex="{Binding TabIndexControl}"
+							SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+							x:Name="dtpPurchaseDate" Grid.Row="1" />
+						<TextBlock 
+							Text="Purchase Amount:" 
+							TextWrapping="Wrap" 
+							x:Name="txtblPurchaseAmount" 
+							HorizontalAlignment="Left" 
+								 
+							VerticalAlignment="Center" 
+							Margin="10,0,0,0" 
+							Grid.Row="2" Style="{DynamicResource TextBlockNormal}"/>
+						<TextBox 
+							x:Name="txtPurchaseAmount"
+								 
+							TextWrapping="NoWrap" 
+							Margin="150,2,10,2" 
+							VerticalAlignment="Stretch" 
+							Padding="2,0,2,0" 
+							Text="$ 100.00" 
+							HorizontalContentAlignment="Right" Grid.Row="2" />
+						<TextBlock 
+							Text="Reward Amount:" 
+							TextWrapping="Wrap" 
+							x:Name="txtblRewardAmount" 
+							HorizontalAlignment="Left" 
+								 
+							VerticalAlignment="Center" 
+							Margin="10,0,0,0" 
+							Grid.Row="3" Style="{DynamicResource TextBlockNormal}"/>
+						<TextBox 
+							x:Name="txtRewardAmount"
+								 
+							TextWrapping="NoWrap" 
+							Margin="150,2,0,2" 
+							VerticalAlignment="Stretch" 
+							Padding="2,0,2,0" 
+							Width="58" 
+							HorizontalAlignment="Left" 
+							Text="10,000.00" 
+							HorizontalContentAlignment="Right" 
+							Grid.Row="3" />
+						<ComboBox
+							Margin="0,2,10,2"
+								 
+							x:Name="cmbRewardAmout" 
+							HorizontalAlignment="Right" 
+							Width="60" 
+							SelectedIndex="0" 
+							Grid.Row="3">
+							<ComboBoxItem Content="$ off"/>
+							<ComboBoxItem Content="% off"/>
+							<ComboBoxItem Content="Point"/>
+						</ComboBox>
+						<TextBlock 
+							Text="Active Date:" 
+							TextWrapping="Wrap" 
+							x:Name="txtblActiveDate" 
+							HorizontalAlignment="Left" 
+								 
+							VerticalAlignment="Center" 
+							Margin="10,0,0,0" 
+							Grid.Row="4" Style="{DynamicResource TextBlockNormal}"/>
+						<DatePicker Margin="150,2,10,2"
+							Text=""
+							TabIndex="{Binding TabIndexControl}"
+							SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+							x:Name="dtpActiveDate" Grid.Row="4" />
+						<TextBlock 
+							Text="Expired Date:" 
+							TextWrapping="Wrap" 
+							x:Name="txtblExpiredDate" 
+							HorizontalAlignment="Left" 
+								 
+							VerticalAlignment="Center" 
+							Margin="10,0,0,0" 
+							Grid.Row="5" Style="{DynamicResource TextBlockNormal}"/>
+						<DatePicker Margin="150,2,10,2"
+							Text=""
+							TabIndex="{Binding TabIndexControl}"
+							SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+							x:Name="dtpExpiredDate" Grid.Row="5" />
+					</Grid>
+				</Border>
+				<Rectangle 
+					Fill="{DynamicResource Spilter_Line_Background}"
+					HorizontalAlignment="Stretch" 
+					x:Name="Line" 
+					VerticalAlignment="Top" 
+					Height="1" 
+					Grid.Row="1" 
+					Margin="2,0,2,0"/>
+				<StackPanel VerticalAlignment="Center" Height="Auto" x:Name="stkpBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+					<Button
+						
+						
+						x:Name="btnOK" Height="28" Width="80" >
+						<StackPanel HorizontalAlignment="Center" x:Name="stkpBtnOK" VerticalAlignment="Center" Orientation="Horizontal">
+							<Rectangle x:Name="imgOK" Fill="{DynamicResource OK}" Height="20" Width="20"/>
+							<TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="OK" TextWrapping="NoWrap" x:Name="txtblOK" Style="{DynamicResource ButtonTextBlock}"/>
+						</StackPanel>
+					</Button>
+					<Button
+						
+						
+						x:Name="btnCancel" Height="28" Width="80" Margin="10,0,0,0" >
+						<StackPanel HorizontalAlignment="Center" x:Name="stkpBtnCancel" VerticalAlignment="Center" Orientation="Horizontal">
+							<Rectangle x:Name="imgCancel" Fill="{DynamicResource Cancel}" Height="20" Width="20"/>
+							<TextBlock Margin="5,0,0,0" x:Name="txtblExit" VerticalAlignment="Center" Text="Cancel" TextWrapping="NoWrap" Style="{DynamicResource ButtonTextBlock}"/>
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</Grid>
+		</DockPanel>
+	</Border>
+</UserControl>
+	

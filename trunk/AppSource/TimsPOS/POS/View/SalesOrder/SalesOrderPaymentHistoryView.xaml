@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="CPC.POS.View.SalesOrderPaymentHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="770"
+             Height="555"
+             Background="{DynamicResource UserControlBackground}"
+             d:DesignHeight="640"
+             d:DesignWidth="480"
+             mc:Ignorable="d Anno">
+    <UserControl.Resources>
+
+
+    </UserControl.Resources>
+    <Anno:AnnotationManager.Annotations>
+        <Anno:Annotation Author="bill pho"
+                         AuthorInitials="Double Click SO or SO Return"
+                         Left="368"
+                         SerialNumber="1"
+                         Text="- khi Double Click SO Return thi xuat hien Form View SO Return&#10;- khi Double Click SO  thi xuat hien Form View SO"
+                         Timestamp="05/16/2012 04:44:46"
+                         Top="-59" />
+    </Anno:AnnotationManager.Annotations>
+
+    <Grid x:Name="GridLayout" d:LayoutOverrides="Height">
+
+        <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+        <Grid x:Name="grdSOPaymentHistory">
+            <DataGrid x:Name="dtgrdPaymentHistory"
+                      Margin="20"
+                      IsSynchronizedWithCurrentItem="True"
+                      Style="{DynamicResource DatagridWithoutRowHeader}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="110" Header="Paid Date" />
+                    <DataGridTextColumn Width="100" Header="SO/ Return #" />
+                    <DataGridTextColumn Width="90" Header="Type" />
+                    <DataGridTextColumn Width="*" Header="Payment Method" />
+                    <DataGridTextColumn Width="70" Header="Check #" />
+                    <DataGridTextColumn Width="110" Header="Amount" />
+
+
+                </DataGrid.Columns>
+                <CheckBox HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          Content="CheckBox" />
+                <CheckBox HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          Content="CheckBox" />
+                <CheckBox HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          Content="CheckBox" />
+            </DataGrid>
+            <Grid Margin="21,42,21,0" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="109" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="91" />
+                    <ColumnDefinition Width="247" />
+                    <ColumnDefinition Width="71" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblStartDate_Copy30"
+                           Grid.Row="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           Text="05/01/2012"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy36"
+                           Grid.Row="1"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           Text="Credit On Account"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy51"
+                           Grid.Row="1"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           Text="($40.00)"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy33"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           Text="0000002"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy7"
+                           Grid.Row="2"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="06/01/2012"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy8"
+                           Grid.Row="2"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Visa"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy40"
+                           Grid.Row="2"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$50.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy42"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000003"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy9"
+                           Grid.Column="2"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="SO"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy29"
+                           Grid.Row="1"
+                           Grid.Column="2"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="Red"
+                           Text="SO Return"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy37"
+                           Grid.Row="2"
+                           Grid.Column="2"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="SO"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy28"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="04/20/2012"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy34"
+                           Grid.Column="3"
+                           Margin="5,0,0,0"
+                           HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="Check"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy2"
+                           Grid.Column="4"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="1234"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy49"
+                           Grid.Column="5"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="$60.00"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblStartDate_Copy31"
+                           Grid.Column="1"
+                           Margin="0,0,5,0"
+                           HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource DatagridForeground}"
+                           Text="0000001"
+                           TextWrapping="NoWrap" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

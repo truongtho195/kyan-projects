@@ -1,0 +1,1108 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Class="CPC.POS.View.CountSheetView"
+             x:Name="UserControl"
+             Height="Auto"
+             Width="Auto"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             Background="{DynamicResource UserControlBackground}">
+    <UserControl.Resources>
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:IntegerToBooleanConverter x:Key="reversedIntToBoolConverter"
+                                             IsReversed="True" />
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"
+                                             FalseToVisibility="Visible" />
+        <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
+        <converter:StringFormatConverter x:Key="stringFormatConverter" />
+        <converter:StringPriceLevelConverter x:Key="stringPriceLevelConverter" />
+        <converter:IntToCalculationConverter x:Key="intToCalculationConverter" />
+        <converter:IntToProductStoreConverter x:Key="intToProductStoreConverter" />
+
+        <ContextMenu x:Key="CountStockContextMenu">
+            <MenuItem Command="{Binding DataContext.NewCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="NewItem"
+                      Header="New Item">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource NewItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding DataContext.EditCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}"
+                      Header="Edit Item">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource EditItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding DataContext.ApplyCommand,
+                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                      CommandParameter="{Binding .}"
+                      Header="Adjust Stock">
+                <MenuItem.Icon>
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource AdjustStock}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+        <Style x:Key="DataGridMenuContextRowStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource CountStockContextMenu}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="grdCountSheet">
+                <Grid x:Name="grdSearch"
+                      Grid.Row="0"
+                      Margin="0,0,15,0"
+                      d:LayoutOverrides="GridBox"
+                      d:IsHidden="True">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="87" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,-5,-0.707">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch"
+                                       Text="Search"
+                                       TextWrapping="NoWrap"
+                                       Style="{DynamicResource GroupboxTextBlock}" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <Grid x:Name="grdgbContentSearch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <control:WatermarkTextBox x:Name="txtKeyword"
+                                                          Margin="10,2"
+                                                          VerticalContentAlignment="Center"
+                                                          Padding="20,0,2,0"
+                                                          Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          TextWrapping="NoWrap"
+                                                          Watermark="Keyword">
+                                    <control:WatermarkTextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding SearchCommand}"
+                                                    CommandParameter="{Binding Path=Text, ElementName=txtKeyword}" />
+                                    </control:WatermarkTextBox.InputBindings>
+                                </control:WatermarkTextBox>
+                                <Rectangle x:Name="imgFind"
+                                           Fill="{DynamicResource Find}"
+                                           HorizontalAlignment="Left"
+                                           Width="20"
+                                           Margin="13,3,0,3" />
+                                <StackPanel x:Name="stkpCheckbox"
+                                            HorizontalAlignment="Left"
+                                            Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="10,0,0,0"
+                                            d:LayoutOverrides="HorizontalAlignment"
+                                            VerticalAlignment="Center">
+                                    <CheckBox x:Name="cbSheetNo"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Sheet No."
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchCountSheetOptions.SheetNo}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbStatus"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Status"
+                                              Margin="10,0,0,0"
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchCountSheetOptions.Status}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbStartedDate"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Started Date"
+                                              Margin="10,0,0,0"
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchCountSheetOptions.StartedDate}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbCompletedDate"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="Completed Date"
+                                              Margin="10,0,0,0"
+                                              IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchCountSheetOptions.CompletedDate}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="10,0,0,0"
+                                               Foreground="#FFFDFF00"
+                                               Text="{Binding SearchAlert}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                                <TextBlock x:Name="txtblAdvanceSearch"
+                                           HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Cursor="Hand"
+                                           Margin="10,5.861,0,5.862"
+                                           d:LayoutOverrides="HorizontalAlignment, Height"
+                                           Grid.Row="2"
+                                           Visibility="Collapsed"><Hyperlink Foreground="#FF89A0FF"><Run Text="Advance Search" /></Hyperlink></TextBlock>
+                                <Button Style="{DynamicResource ButtonAdvanceSearch}"
+                                        x:Name="btnAdvanceSearch"
+                                        Grid.Row="2"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        Width="100"
+                                        VerticalAlignment="Center"
+                                        Content="Advance Search"
+                                        Margin="10,0,0,0"
+                                        d:LayoutOverrides="HorizontalAlignment, Height, GridBox"
+                                        Visibility="Collapsed" />
+                            </Grid>
+                            <Grid x:Name="grdAdvanceSearch"
+                                  Visibility="Collapsed"
+                                  d:IsHidden="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="stkpContentSearch"
+                                            Orientation="Vertical"
+                                            VerticalAlignment="Top"
+                                            d:IsHidden="True"
+                                            Visibility="Collapsed">
+                                    <Grid x:Name="grdSearchName"
+                                          Height="25">
+                                        <TextBlock x:Name="txtblUsername_Copy"
+                                                   Text="Status:"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  x:Name="cmbSearchName"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  HorizontalAlignment="Left"
+                                                  Width="100"
+                                                  Style="{DynamicResource CmbSearchStyle}"
+                                                  Background="{x:Null}"
+                                                  SelectedIndex="0"
+                                                  Margin="10,0,0,0"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  d:IsHidden="True">
+                                            <ComboBoxItem Content="Status"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Account #"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Customer Type"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="First Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Last Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Company"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Job Title"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="City"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Country"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Phone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Cellphone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Email"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Website"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Add"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtSearchCustomerName"
+                                                 Margin="120,2,10,2"
+                                                 TextWrapping="NoWrap"
+                                                 Padding="2,0,2,0"
+                                                 Grid.RowSpan="1" />
+                                    </Grid>
+                                    <Grid x:Name="grdSearchName1"
+                                          Height="25">
+                                        <TextBlock x:Name="txtblUsername_Copy1"
+                                                   Text="Account #:"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  x:Name="cmbSearchName1"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  HorizontalAlignment="Left"
+                                                  Width="100"
+                                                  Style="{DynamicResource CmbSearchStyle}"
+                                                  Background="{x:Null}"
+                                                  SelectedIndex="1"
+                                                  Margin="10,0,0,0"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  d:IsHidden="True">
+                                            <ComboBoxItem Content="Status"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Account #"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Customer Type"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="First Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Last Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Company"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Job Title"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="City"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Country"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Phone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Cellphone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Email"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Website"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Add"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtSearchCustomerName1"
+                                                 Margin="120,2,10,2"
+                                                 TextWrapping="NoWrap"
+                                                 Padding="2,0,2,0"
+                                                 Grid.RowSpan="1" />
+                                    </Grid>
+                                    <Grid x:Name="grdSearchName2"
+                                          Height="25">
+                                        <TextBlock x:Name="txtblUsername_Copy2"
+                                                   Text="Customer Type:"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  x:Name="cmbSearchName2"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  HorizontalAlignment="Left"
+                                                  Width="100"
+                                                  Style="{DynamicResource CmbSearchStyle}"
+                                                  Background="{x:Null}"
+                                                  SelectedIndex="2"
+                                                  Margin="10,0,0,0"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  d:IsHidden="True">
+                                            <ComboBoxItem Content="Status"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Account #"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Customer Type"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="First Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Last Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Company"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Job Title"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="City"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Country"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Phone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Cellphone"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Email"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Website"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Add"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtSearchCustomerName2"
+                                                 Margin="120,2,10,2"
+                                                 TextWrapping="NoWrap"
+                                                 Padding="2,0,2,0"
+                                                 Grid.RowSpan="1" />
+                                    </Grid>
+                                    <Grid Height="24">
+                                        <Button x:Name="btnClose"
+                                                Width="75"
+                                                HorizontalAlignment="Center">
+                                            <StackPanel HorizontalAlignment="Center"
+                                                        x:Name="stkpBtnClose"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <Rectangle x:Name="imgClose"
+                                                           Height="15"
+                                                           Width="15"
+                                                           Fill="{DynamicResource Close}" />
+                                                <TextBlock Margin="5,0,0,0"
+                                                           x:Name="txtblClose"
+                                                           VerticalAlignment="Center"
+                                                           Text="Close"
+                                                           TextWrapping="NoWrap"
+                                                           Style="{DynamicResource ButtonTextBlock}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </StackPanel>
+                                <TextBlock x:Name="txtblResultAvance"
+                                           Text="1234"
+                                           TextWrapping="NoWrap"
+                                           VerticalAlignment="Top"
+                                           FontWeight="Bold"
+                                           Margin="0,6,10,0"
+                                           HorizontalAlignment="Right"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Visibility="Collapsed" />
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <dataGridControl:DataGridControl x:Name="dtgrdCountSheetDirectory"
+                                                     IsRollBackData="False"
+                                                     AutoGenerateColumns="False"
+                                                     CanUserAddRows="False"
+                                                     CanUserDeleteRows="False"
+                                                     Command="{Binding LoadStepCommand}"
+                                                     ItemsSource="{Binding CountStockCollection}"
+                                                     SelectedItem="{Binding SelectedCountStock}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="DoubleClick"
+                                                     NumberOfItems="{Binding TotalCountSheet}"
+                                                     DisplayItems="{Binding NumberOfDisplayItems}"
+                                                     CurrentPageIndex="{Binding CurrentPageIndex}"
+                                                     VerticalAlignment="Stretch"
+                                                     Grid.Row="1"
+                                                     Margin="10,10,0,10"
+                                                     HorizontalAlignment="Stretch"
+                                                     RowStyle="{StaticResource DataGridMenuContextRowStyle}"
+                                                     Style="{DynamicResource DatagridWithoutRowHeader}">
+                        <dataGridControl:DataGridControl.Columns>
+                            <DataGridTemplateColumn Header="Sheet #"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding DocumentNo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <!--comboxItemToTextConverter-->
+                            <DataGridTemplateColumn Header="Status"
+                                                    IsReadOnly="True"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   Text="{Binding Status,Converter={StaticResource comboxItemToTextConverter},ConverterParameter=CountStockStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Started Date"
+                                                    IsReadOnly="True"
+                                                    Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding DateCreated,StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Completed Date"
+                                                    IsReadOnly="True"
+                                                    Width="82">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding CompletedDate,StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Counted By"
+                                                    IsReadOnly="True"
+                                                    Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding UserCounted, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </dataGridControl:DataGridControl.Columns>
+                    </dataGridControl:DataGridControl>
+                </Grid>
+                <Grid x:Name="grdContentCoutSheet"
+                      Grid.Column="1">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnBarSearch"
+                            BorderThickness="1"
+                            Command="{Binding DoubleClickViewCommand}"
+                            Style="{DynamicResource ButtonBarSearch}"
+                            d:LayoutOverrides="GridBox">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Search"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Center"
+                                   x:Name="txtblShowSearch1"
+                                   Style="{DynamicResource ButtonBarSearchTextBlock}">
+						<TextBlock.LayoutTransform>
+							<TransformGroup>
+								<ScaleTransform />
+								<SkewTransform />
+								<RotateTransform Angle="-90" />
+								<TranslateTransform />
+							</TransformGroup>
+						</TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                    <Rectangle x:Name="grdSpliter"
+                               Width="1"
+                               Margin="0"
+                               HorizontalAlignment="Left"
+                               Fill="{DynamicResource Spilter_Line_Background}"
+                               d:LayoutOverrides="GridBox"
+                               Grid.Column="1" />
+                    <Grid x:Name="grdSubCountSheet"
+                          Grid.Column="1"
+                          d:LayoutOverrides="GridBox">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="62" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Height="Auto"
+                                    HorizontalAlignment="Left"
+                                    x:Name="stkpBtn"
+                                    Orientation="Horizontal"
+                                    Margin="20,0,0,5">
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnNew"
+                                    Command="{Binding NewCommand}"
+                                    Height="40"
+                                    Width="40"
+                                    Margin="0">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnNew"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgNew"
+                                               Fill="{DynamicResource New}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblNew"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnSave"
+                                    Command="{Binding SaveCommand}"
+                                    Height="40"
+                                    Width="40">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnSave"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSave"
+                                               Fill="{DynamicResource Save}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblSave"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnApply"
+                                    Height="40"
+                                    Command="{Binding ApplyCommand}"
+                                    Width="40">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnDelete"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgDelete"
+                                               Fill="{DynamicResource AdjustStock}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblDelete"
+                                               VerticalAlignment="Center"
+                                               Text="Close"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource ButtonSystem}"
+                                    x:Name="btnPrint"
+                                    Width="40"
+                                    Command="{Binding ApplyCommand}"
+                                    VerticalAlignment="Center"
+                                    Height="40"
+                                    Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnPrint"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgPrint"
+                                               Fill="{DynamicResource Print}"
+                                               Height="30"
+                                               Width="30" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               x:Name="txtblPrint"
+                                               VerticalAlignment="Center"
+                                               Text="Preview"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Rectangle HorizontalAlignment="Stretch"
+                                   x:Name="Line"
+                                   VerticalAlignment="Top"
+                                   Height="1"
+                                   Grid.Row="1"
+                                   Margin="2,0"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <TextBlock x:Name="txtblBindingCountSheet"
+                                   Text="Count Sheet"
+                                   TextWrapping="NoWrap"
+                                   FontFamily="Times New Roman"
+                                   VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Right"
+                                   Style="{DynamicResource TextBlockTitleFormView}"
+                                   Margin="0,0,20,7"
+                                   d:LayoutOverrides="HorizontalAlignment" />
+                        <Grid x:Name="grdtCountSheetInformation"
+                              HorizontalAlignment="Left"
+                              Margin="0,10,0,0"
+                              Width="747"
+                              IsEnabled="{Binding SelectedCountStock.IsEnable}"
+                              VerticalAlignment="Top"
+                              Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="txtblSheetNo"
+                                       Text="Sheet #:"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="0"
+                                       Margin="10,0,0,0"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <TextBox x:Name="txtSheetNo"
+                                     Margin="0,2"
+                                     TextWrapping="NoWrap"
+                                     Grid.Column="1"
+                                     Padding="2,0,2,0"
+                                     HorizontalContentAlignment="Right"
+                                     IsReadOnly="True"
+                                     Text="{Binding SelectedCountStock.DocumentNo,Mode=OneWay}" />
+                            <TextBlock x:Name="txtblStatus"
+                                       Text="Status:"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,5,0"
+                                       VerticalAlignment="Center"
+                                       Grid.Column="2"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <ComboBox x:Name="cmbStatus"
+                                      IsEditable="True"
+                                      Grid.Column="3"
+                                      Margin="0,2"
+                                      IsEnabled="False"
+                                      DisplayMemberPath="Text"
+                                      SelectedValuePath="Value"
+                                      ItemsSource="{x:Static helper:Common.CountStockStatus}"
+                                      SelectedValue="{Binding SelectedCountStock.Status,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                            </ComboBox>
+                            <TextBlock x:Name="txtblStartedDate"
+                                       Text="Started Date:"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Left"
+                                       Grid.Column="4"
+                                       d:LayoutOverrides="Height"
+                                       VerticalAlignment="Center"
+                                       Margin="35,0,0,0"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <DatePicker TabIndex="{Binding TabIndexControl}"
+                                        SelectedDate="{Binding SelectedCountStock.DateCreated, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                        x:Name="dtpStartedDate"
+                                        Grid.Column="5"
+                                        IsEnabled="False"
+                                        Margin="0,2,10,2" />
+                            <TextBlock x:Name="txtblLocation"
+                                       Text="Location:"
+                                       TextWrapping="NoWrap"
+                                       HorizontalAlignment="Left"
+                                       Grid.Row="1"
+                                       d:LayoutOverrides="Height"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <ComboBox x:Name="cmbLocation"
+                                      IsEditable="True"
+                                      Grid.Column="1"
+                                      Margin="0,2"
+                                      DisplayMemberPath="Name"
+                                      ItemsSource="{Binding StoreCollection}"
+                                      SelectedItem="{Binding SelectedStore}"
+                                      Grid.Row="1"
+                                      Grid.ColumnSpan="3" />
+                            <TextBlock x:Name="txtblCompletedDate"
+                                       Text="Completed Date:"
+                                       TextWrapping="NoWrap"
+                                       Grid.Column="4"
+                                       HorizontalAlignment="Left"
+                                       Grid.Row="1"
+                                       d:LayoutOverrides="Height"
+                                       VerticalAlignment="Center"
+                                       Margin="35,0,0,0"
+                                       Style="{DynamicResource TextBlockNormal}" />
+                            <DatePicker SelectedDate="{Binding SelectedCountStock.CompletedDate, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                        x:Name="dtpCompletedDate"
+                                        Grid.Column="5"
+                                        Grid.Row="1"
+                                        IsEnabled="False"
+                                        Margin="0,2,10,2" />
+                        </Grid>
+                        <Border x:Name="brdCountSheet"
+                                Margin="10"
+                                Grid.Row="2"
+                                Background="{DynamicResource TabControlBackground}"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource TabControlBorder}">
+                            <Grid x:Name="grdContentCountSheet">
+                                <dataGridControl:DataGridControl x:Name="dtgrdCountSheetVendor"
+                                                                 Margin="10"
+                                                                 IsRollBackData="False"
+                                                                 AutoGenerateColumns="False"
+                                                                 CanUserAddRows="False"
+                                                                 CanUserDeleteRows="False"
+                                                                 IsPaging="False"
+                                                                 NumberOfItems="{Binding TotalProducts}"
+                                                                 ItemsSource="{Binding SelectedCountStock.CountStockDetailCollection}"
+                                                                 Style="{DynamicResource DatagridWithRowHeader}">
+                                    <dataGridControl:DataGridControl.Columns>
+                                        <DataGridTextColumn Header="Code"
+                                                            IsReadOnly="True"
+                                                            Binding="{Binding ProductCode}"
+                                                            Width="80" />
+                                        <DataGridTemplateColumn Header="Name"
+                                                                IsReadOnly="True"
+                                                                Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Left"
+                                                               Text="{Binding ProductName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Description"
+                                                            IsReadOnly="True"
+                                                            Binding="{Binding Description}"
+                                                            Width="*" />
+                                        <DataGridTemplateColumn Header="Attribute"
+                                                                IsReadOnly="True"
+                                                                Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Left"
+                                                               Text="{Binding Attribute, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Size"
+                                                                IsReadOnly="True"
+                                                                Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Left"
+                                                               Text="{Binding Size, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Location"
+                                                                IsReadOnly="True"
+                                                                Width="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Left">
+                                                    <TextBlock.Text>
+                                                         <MultiBinding ConverterParameter="CountStock"
+                                                                       Converter="{StaticResource intToProductStoreConverter}">
+                                                    <Binding Path="StoreId" />
+                                                    <Binding Path="DataContext.StoreCollection"
+                                                                RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl}}" />
+                                                </MultiBinding>
+                                                    </TextBlock.Text>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="On-Hand Qty"
+                                                                IsReadOnly="True"
+                                                                Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Right"
+                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Counted Quantity"
+                                                                Width="95">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock HorizontalAlignment="Right"
+                                                               Text="{Binding CountedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <Grid IsEnabled="{Binding DataContext.SelectedCountStock.IsEnable,Mode=OneWay,RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}">
+                                                        <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
+                                                                                       TextAlignment="Right"
+                                                                                       Width="70"
+                                                                                       HorizontalAlignment="Center"
+                                                                                       HorizontalContentAlignment="Center"
+                                                                                       Value="{Binding CountedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                            <!--<i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="LostFocus">
+                                                                    <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                                                            CommandParameter="{Binding .}" />
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>-->
+                                                        </textBoxControl:TextBoxNumeric>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                    </dataGridControl:DataGridControl.Columns>
+                                </dataGridControl:DataGridControl>
+                            </Grid>
+                        </Border>
+                        <Grid x:Name="grdCountSheet1"
+                              Margin="0,0,0,10"
+                              Grid.Row="1"
+                              Grid.RowSpan="2"
+                              Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="62" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <GroupBox x:Name="gbCountSheetInformation"
+                                      BorderBrush="#FFEA4016"
+                                      Margin="10,10,10,0"
+                                      VerticalAlignment="Top"
+                                      Height="52"
+                                      Width="727"
+                                      HorizontalAlignment="Left"
+                                      Visibility="Collapsed"
+                                      d:IsHidden="True">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblCountSheetInformation"
+                                               Text="Count Sheet Information"
+                                               Foreground="White"
+                                               TextWrapping="NoWrap"
+                                               FontSize="14"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                            </GroupBox>
+                            <Grid x:Name="grdCountedBy"
+                                  Grid.Row="2"
+                                  Margin="10,10,10,0"
+                                  Width="430"
+                                  HorizontalAlignment="Left"
+                                  Visibility="Collapsed"
+                                  d:IsHidden="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="52" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblRemarks"
+                                           Text="Remarks:"
+                                           Foreground="White"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Margin="0"
+                                           VerticalAlignment="Center" />
+                                <TextBox x:Name="txtRemarks"
+                                         BorderBrush="Black"
+                                         Margin="0,2"
+                                         TextWrapping="Wrap"
+                                         Grid.Column="1"
+                                         Padding="2,0,2,0"
+                                         Grid.RowSpan="2" />
+                                <TextBlock x:Name="txtblCountedBy"
+                                           Text="Counted By:"
+                                           Foreground="White"
+                                           TextWrapping="NoWrap"
+                                           Margin="0"
+                                           VerticalAlignment="Center"
+                                           Grid.Row="3"
+                                           HorizontalAlignment="Left" />
+                                <TextBox x:Name="txtCountedBy"
+                                         BorderBrush="Black"
+                                         Margin="0,2"
+                                         TextWrapping="NoWrap"
+                                         Grid.Column="1"
+                                         Padding="2,0,2,0"
+                                         Grid.Row="2" />
+                            </Grid>
+                            <Grid VerticalAlignment="Top"
+                                  Height="144"
+                                  Margin="11,121,11,0"
+                                  Grid.Row="1"
+                                  Visibility="Collapsed"
+                                  d:IsHidden="True">
+                                <Rectangle Stroke="#FF000000"
+                                           HorizontalAlignment="Stretch"
+                                           Grid.ColumnSpan="3"
+                                           Grid.RowSpan="8">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush EndPoint="0.5,1"
+                                                             StartPoint="0.5,0">
+                                            <GradientStop Color="#FFC5DDFE"
+                                                          Offset="0" />
+                                            <GradientStop Color="#FF71A7EE"
+                                                          Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <Rectangle Stroke="#FF000000"
+                                           HorizontalAlignment="Stretch"
+                                           Grid.ColumnSpan="3"
+                                           Grid.RowSpan="1"
+                                           Grid.Row="7" />
+                                <Image Source="..\..\Images\Shoes.png"
+                                       Stretch="Uniform"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="1"
+                                       Margin="29,0,0,0"
+                                       Width="120"
+                                       HorizontalAlignment="Left" />
+                            </Grid>
+                            <Grid x:Name="grdTemplateCountSheet"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  Height="Auto"
+                                  Margin="186,136,0,0"
+                                  Grid.Row="1"
+                                  Visibility="Collapsed"
+                                  d:IsHidden="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="443.841" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="24" />
+                                    <RowDefinition Height="24" />
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblTemplateItem"
+                                           Text="Item:"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <TextBlock x:Name="txtblBindingTemplateItem"
+                                           Text="090821A"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBlock x:Name="txtblTemplateDescription"
+                                           Text="Description:"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           Grid.Row="1"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                <TextBlock x:Name="txtblBindingTemplateDescription"
+                                           Text="3.75&quot; Military Classics Warship"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Grid.Column="1"
+                                           Grid.Row="1"
+                                           VerticalAlignment="Center" />
+                                <TextBlock x:Name="txtblTemplateLocation"
+                                           Text="Location:"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           Grid.Row="2"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                <TextBlock x:Name="txtblBindingTemplateLocation"
+                                           Text="NY Warehouse"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Grid.Column="1"
+                                           Grid.Row="2"
+                                           VerticalAlignment="Center" />
+                                <TextBlock x:Name="txtblTemplateSystemQty"
+                                           Text="System Qty:"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           VerticalAlignment="Center"
+                                           Grid.Row="3"
+                                           HorizontalAlignment="Left" />
+                                <TextBlock x:Name="txtblBindingTemplateSystemQty"
+                                           Text="10"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Grid.Column="1"
+                                           Grid.Row="3"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,0,0" />
+                                <TextBlock x:Name="txtblTemplateCountedQty"
+                                           Text="Counted Qty:"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           Grid.Row="4"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" />
+                                <TextBlock x:Name="txtblBindingTemplateCountedQty"
+                                           Text="5"
+                                           Foreground="Black"
+                                           TextWrapping="NoWrap"
+                                           HorizontalAlignment="Left"
+                                           Grid.Column="1"
+                                           Grid.Row="4"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>

@@ -1,0 +1,908 @@
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-03-2013 13:34:38.242 - [9] System.InvalidOperationException: The element at index 0 in the collection of objects to refresh is in the added state. Objects in this state cannot be refreshed.
+   at System.Data.Objects.ObjectContext.RefreshCheck(Dictionary`2 entities, Object entity, EntityKey key)
+   at System.Data.Objects.ObjectContext.AddRefreshKey(Object entityLike, Dictionary`2 entities, Dictionary`2 currentKeys)
+   at System.Data.Objects.ObjectContext.RefreshEntities(RefreshMode refreshMode, IEnumerable collection)
+   at System.Data.Objects.ObjectContext.Refresh(RefreshMode refreshMode, Object entity)
+   at CPC.POS.Database.UnitOfWork.Refresh[T](T entity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 251
+   at CPC.POS.Repository.base_SaleOrderDetailRepository.Refresh(base_SaleOrderDetail base_SaleOrderDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderDetailRepository.cs:line 183
+   at CPC.POS.Repository.base_SaleOrderDetailRepository.Delete(base_SaleOrderDetail base_SaleOrderDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderDetailRepository.cs:line 65
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 1716
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 612 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-04-2013 11:42:02.189 - [10] System.Data.EntityCommandExecutionException: An error occurred while executing the command definition. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 42703: column ALIAS1.PrefixVendor does not exist
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   --- End of inner exception stack trace ---
+   at System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   at System.Data.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
+   at System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   at System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   at CPC.POS.App.InitialData() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\App.xaml.cs:line 77 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[ERROR] 05-06-2013 11:28:20.855 - [10] System.InvalidOperationException: The element at index 0 in the collection of objects to refresh has a null EntityKey property value or is not attached to this ObjectStateManager.
+   at System.Data.Objects.ObjectContext.RefreshCheck(Dictionary`2 entities, Object entity, EntityKey key)
+   at System.Data.Objects.ObjectContext.AddRefreshKey(Object entityLike, Dictionary`2 entities, Dictionary`2 currentKeys)
+   at System.Data.Objects.ObjectContext.RefreshEntities(RefreshMode refreshMode, IEnumerable collection)
+   at System.Data.Objects.ObjectContext.Refresh(RefreshMode refreshMode, Object entity)
+   at CPC.POS.Database.UnitOfWork.Refresh[T](T entity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 251
+   at CPC.POS.Repository.base_SaleOrderShipDetailRepository.Refresh(base_SaleOrderShipDetail base_SaleOrderShipDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderShipDetailRepository.cs:line 183
+   at CPC.POS.Repository.base_SaleOrderShipDetailRepository.Delete(base_SaleOrderShipDetail base_SaleOrderShipDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderShipDetailRepository.cs:line 65
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 1834
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 631 [App]
+[ERROR] 05-06-2013 11:28:29.433 - [10] System.InvalidOperationException: The element at index 0 in the collection of objects to refresh has a null EntityKey property value or is not attached to this ObjectStateManager.
+   at System.Data.Objects.ObjectContext.RefreshCheck(Dictionary`2 entities, Object entity, EntityKey key)
+   at System.Data.Objects.ObjectContext.AddRefreshKey(Object entityLike, Dictionary`2 entities, Dictionary`2 currentKeys)
+   at System.Data.Objects.ObjectContext.RefreshEntities(RefreshMode refreshMode, IEnumerable collection)
+   at System.Data.Objects.ObjectContext.Refresh(RefreshMode refreshMode, Object entity)
+   at CPC.POS.Database.UnitOfWork.Refresh[T](T entity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 251
+   at CPC.POS.Repository.base_SaleOrderShipDetailRepository.Refresh(base_SaleOrderShipDetail base_SaleOrderShipDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderShipDetailRepository.cs:line 183
+   at CPC.POS.Repository.base_SaleOrderShipDetailRepository.Delete(base_SaleOrderShipDetail base_SaleOrderShipDetail) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_SaleOrderShipDetailRepository.cs:line 65
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 1834
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 631 [App]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[INFO] 05-06-2013 13:53:24.194 - [9] InitialCommand [App]
+[INFO] 05-06-2013 13:53:24.288 - [9] Time For Refesh WorkPermission: 29 ms [App]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[INFO] 05-07-2013 09:47:28.514 - [9] InitialCommand [App]
+[INFO] 05-07-2013 09:47:28.608 - [9] Time For Refesh WorkPermission: 60 ms [App]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[INFO] 05-09-2013 17:37:30.199 - [9] Time For Refesh TimeLogManual Editing: 0 ms [App]
+
+[Begin Session - {CPCVN\kyan nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-14-2013 11:42:39.655 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateCustomer(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2152
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 669 [App]
+[ERROR] 05-14-2013 11:42:59.750 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateCustomer(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2152
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 669 [App]
+[ERROR] 05-14-2013 11:43:32.860 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateCustomer(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2152
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 669 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-15-2013 14:46:22.558 - [1] Message: An error occurred while executing the command definition. See the inner exception for details.. Source: System.Data.Entity. [App]
+[ERROR] 05-15-2013 14:46:22.590 - [1] Npgsql.NpgsqlException:
+column Extent1.OrderDetailId does not exist
+Severity: ERROR
+Code: 42703
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) [App]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-15-2013 19:24:53.277 - [10] System.Data.ConstraintException: This property cannot be set to a null value.
+   at System.Data.Objects.DataClasses.StructuralObject.SetValidValue(String value, Boolean isNullable)
+   at CPC.POS.Database.base_ResourceReturn.set_DocumentResource(String value) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\POS.Designer.cs:line 21019
+   at CPC.POS.Model.base_ResourceReturnModel.ToEntity() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Model\base_ResourceReturnModel.cs:line 403
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2291
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 714 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-15-2013 20:11:27.380 - [9] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ProductRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ProductRepository.cs:line 212
+   at CPC.POS.Repository.base_ProductRepository.UpdateOnHandQuantity(String productResource, Int32 storeNumber, Int32 quantity, Boolean isDecreased) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ProductRepository.cs:line 389
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2323
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[INFO] 05-15-2013 20:26:11.137 - [9] InitialCommand [App]
+[INFO] 05-15-2013 20:26:11.231 - [9] Time For Refesh WorkPermission: 63 ms [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-15-2013 20:31:05.598 - [9] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2331
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-15-2013 20:38:57.601 - [10] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2332
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+[ERROR] 05-15-2013 20:39:12.008 - [10] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ProductRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ProductRepository.cs:line 212
+   at CPC.POS.Repository.base_ProductRepository.UpdateOnHandQuantity(String productResource, Int32 storeNumber, Int32 quantity, Boolean isDecreased) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ProductRepository.cs:line 389
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2322
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-16-2013 09:51:53.137 - [9] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2336
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 717 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-16-2013 10:04:09.023 - [9] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2336
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 717 [App]
+[ERROR] 05-16-2013 10:04:14.509 - [9] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 23503: insert or update on table "base_ResourceReturnDetail" violates foreign key constraint "FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu"
+   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
+   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
+   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
+   at Npgsql.ForwardsOnlyDataReader.NextResult()
+   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
+   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   --- End of inner exception stack trace ---
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2336
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 717 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-16-2013 18:19:39.407 - [9] System.InvalidOperationException: The property 'Id' is part of the object's key information and cannot be modified. 
+   at System.Data.Objects.EntityEntry.VerifyEntityValueIsEditable(StateManagerTypeMetadata typeMetadata, Int32 ordinal, String memberName)
+   at System.Data.Objects.EntityEntry.GetAndValidateChangeMemberInfo(String entityMemberName, Object complexObject, String complexObjectMemberName, StateManagerTypeMetadata& typeMetadata, String& changingMemberName, Object& changingObject)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName, Object complexObject, String complexObjectMemberName)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.ObjectStateEntry.System.Data.Objects.DataClasses.IEntityChangeTracker.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.DataClasses.EntityObject.ReportPropertyChanging(String property)
+   at CPC.POS.Database.base_ResourcePayment.set_Id(Int64 value) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\POS.Designer.cs:line 19898
+   at CPC.POS.Model.base_ResourcePaymentModel.ToEntity() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Model\base_ResourcePaymentModel.cs:line 396
+   at CPC.POS.ViewModel.SalesOrderViewModel.SavePaymentProductCollection(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 3945
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2393
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+[ERROR] 05-16-2013 18:20:28.972 - [9] System.InvalidOperationException: The property 'Id' is part of the object's key information and cannot be modified. 
+   at System.Data.Objects.EntityEntry.VerifyEntityValueIsEditable(StateManagerTypeMetadata typeMetadata, Int32 ordinal, String memberName)
+   at System.Data.Objects.EntityEntry.GetAndValidateChangeMemberInfo(String entityMemberName, Object complexObject, String complexObjectMemberName, StateManagerTypeMetadata& typeMetadata, String& changingMemberName, Object& changingObject)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName, Object complexObject, String complexObjectMemberName)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.ObjectStateEntry.System.Data.Objects.DataClasses.IEntityChangeTracker.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.DataClasses.EntityObject.ReportPropertyChanging(String property)
+   at CPC.POS.Database.base_ResourcePayment.set_Id(Int64 value) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\POS.Designer.cs:line 19898
+   at CPC.POS.Model.base_ResourcePaymentModel.ToEntity() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Model\base_ResourcePaymentModel.cs:line 396
+   at CPC.POS.ViewModel.SalesOrderViewModel.SavePaymentProductCollection(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 3945
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2393
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-16-2013 18:23:43.042 - [10] System.InvalidOperationException: The property 'Id' is part of the object's key information and cannot be modified. 
+   at System.Data.Objects.EntityEntry.VerifyEntityValueIsEditable(StateManagerTypeMetadata typeMetadata, Int32 ordinal, String memberName)
+   at System.Data.Objects.EntityEntry.GetAndValidateChangeMemberInfo(String entityMemberName, Object complexObject, String complexObjectMemberName, StateManagerTypeMetadata& typeMetadata, String& changingMemberName, Object& changingObject)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName, Object complexObject, String complexObjectMemberName)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.ObjectStateEntry.System.Data.Objects.DataClasses.IEntityChangeTracker.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.DataClasses.EntityObject.ReportPropertyChanging(String property)
+   at CPC.POS.Database.base_ResourcePayment.set_Id(Int64 value) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\POS.Designer.cs:line 19898
+   at CPC.POS.Model.base_ResourcePaymentModel.ToEntity() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Model\base_ResourcePaymentModel.cs:line 396
+   at CPC.POS.ViewModel.SalesOrderViewModel.SavePaymentProductCollection(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 3945
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2393
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-16-2013 18:31:34.138 - [9] System.InvalidOperationException: The property 'Id' is part of the object's key information and cannot be modified. 
+   at System.Data.Objects.EntityEntry.VerifyEntityValueIsEditable(StateManagerTypeMetadata typeMetadata, Int32 ordinal, String memberName)
+   at System.Data.Objects.EntityEntry.GetAndValidateChangeMemberInfo(String entityMemberName, Object complexObject, String complexObjectMemberName, StateManagerTypeMetadata& typeMetadata, String& changingMemberName, Object& changingObject)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName, Object complexObject, String complexObjectMemberName)
+   at System.Data.Objects.EntityEntry.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.ObjectStateEntry.System.Data.Objects.DataClasses.IEntityChangeTracker.EntityMemberChanging(String entityMemberName)
+   at System.Data.Objects.DataClasses.EntityObject.ReportPropertyChanging(String property)
+   at CPC.POS.Database.base_ResourcePayment.set_Id(Int64 value) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\POS.Designer.cs:line 19898
+   at CPC.POS.Model.base_ResourcePaymentModel.ToEntity() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Model\base_ResourcePaymentModel.cs:line 396
+   at CPC.POS.ViewModel.SalesOrderViewModel.SavePaymentProductCollection(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 3945
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2393
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[ERROR] 05-17-2013 10:40:13.056 - [8] System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Where[TSource](IEnumerable`1 source, Func`2 predicate)
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2279
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+[ERROR] 05-17-2013 10:40:56.347 - [8] System.Data.OptimisticConcurrencyException: Store update, insert, or delete statement affected an unexpected number of rows (0). Entities may have been modified or deleted since entities were loaded. Refresh ObjectStateManager entries.
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.ValidateRowsAffected(Int64 rowsAffected, UpdateCommand source)
+   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
+   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
+   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Objects.ObjectContext.SaveChanges()
+   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Database\UnitOfWork.cs:line 278
+   at CPC.POS.Repository.base_ResourceReturnRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\Repository\base_ResourceReturnRepository.cs:line 212
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2370
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in E:\Projects\POS SOURCE\Source 2013\Project 2013\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 715 [App]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {CPCVN\Kyan Nguyen}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[ERROR] 05-18-2013 19:34:40.918 - [1] System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Where[TSource](IEnumerable`1 source, Func`2 predicate)
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in f:\Workplace\WPF-WCF\SourceProject\POS Project\May18\TimsPOS_3\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2323
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in f:\Workplace\WPF-WCF\SourceProject\POS Project\May18\TimsPOS_3\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 720 [App]
+
+[Begin Session - {truongtho-pc\kyan}]
+[ERROR] 05-18-2013 19:36:25.282 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Where[TSource](IEnumerable`1 source, Func`2 predicate)
+   at CPC.POS.ViewModel.SalesOrderViewModel.UpdateSaleOrder() in f:\Workplace\WPF-WCF\SourceProject\POS Project\May18\TimsPOS_3\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2323
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder() in f:\Workplace\WPF-WCF\SourceProject\POS Project\May18\TimsPOS_3\TimsPOS\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 720 [App]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]
+
+[Begin Session - {truongtho-pc\kyan}]
+[End Session-{timestamp}]

@@ -1,0 +1,1164 @@
+﻿<UserControl x:Class="CPC.POS.View.WorkPermissionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcTexbox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:timsToolkitBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             x:Name="UserControl"
+             Background="{DynamicResource UserControlBackground}"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid,
+                                                       Mode=OneWayToSource}"
+             mc:Ignorable="d Anno">
+
+    <UserControl.Resources>
+        <!--  #Region Converter  -->
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:EnumToBoolConverter x:Key="enumOTToBoolConverter" />
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:VisibilityToBoolConverter x:Key="visibilityToBoolConverter" />
+        <!--  #EndRegion Converter  -->
+
+        <!--  #region DataTemplate  -->
+        <DataTemplate x:Key="RowDetailTemplate">
+            <Grid x:Name="Layout"
+                  Height="226"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Rectangle Fill="{DynamicResource Datagrid_RowDetailTemplate_Background1}"
+                           Stroke="{DynamicResource Datagrid_RowDetailTemplate_Border}" />
+                <cpcDataGrid:DataGridControl x:Name="dtgrdWorkPermission"
+                          Margin="10"
+                          HorizontalAlignment="Stretch"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsSynchronizedWithCurrentItem="False"
+                          ItemsSource="{Binding WorkPermissionCollection}"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          Style="{DynamicResource DatagridWithRowHeader}"
+                          timsToolkitBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="True"
+                          timsToolkitBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DataContext.MouseDoubleClickCommand,
+                                                                                                      RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                                                                                     Mode=FindAncestor}}"
+                          timsToolkitBehavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem,
+                                                                                                               ElementName=dtgrdWorkPermission}" NumberOfItems="{Binding WorkPermissionCollection.Count}">
+                    <!--  MaxWidth="{Binding ActualWidth,Mode=OneWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}, Mode=FindAncestor}}"  -->
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <command:EventToCommand Command="{Binding DataContext.WorkPermissionSelectionChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                    CommandParameter="{Binding SelectedItem, ElementName=dtgrdWorkPermission}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <cpcDataGrid:DataGridControl.Columns>
+                        <DataGridTextColumn Width="80"
+                                            Binding="{Binding FromDate,
+                                                              StringFormat=\d}"
+                                            Header="From"
+                                            IsReadOnly="True" />
+                        <DataGridTextColumn Width="80"
+                                            Binding="{Binding ToDate,
+                                                              StringFormat=\d}"
+                                            Header="To"
+                                            IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding WorkPermissionText,
+                                                              Mode=OneWay}"
+                                            Header="Permission Type"
+                                            IsReadOnly="True" />
+                        <DataGridTextColumn Width="*"
+                                            MaxWidth="Infinity"
+                                            Binding="{Binding Note}"
+                                            Header="Note"
+                                            IsReadOnly="True" />
+                    </cpcDataGrid:DataGridControl.Columns>
+                </cpcDataGrid:DataGridControl>
+
+            </Grid>
+        </DataTemplate>
+        <!--  #endregion DataTemplate  -->
+
+        <!--  #region Style  -->
+        <!--  #EndRegion Style  -->
+    </UserControl.Resources>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <AdornerDecorator>
+            <Grid x:Name="grdPermissionManagement">
+                <Grid x:Name="grdSearch" d:IsHidden="True">
+                    <Grid.Visibility>
+                        <Binding Mode="OneWay"
+                                 Path="IsSearchMode"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid x:Name="grdContentSearch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <GroupBox x:Name="gbSearch"
+                                  Margin="10,10,10,0">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblPeriodPermissionSearch"
+                                           Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                           Style="{DynamicResource GroupboxTextBlock}"
+                                           Text="Search"
+                                           TextWrapping="NoWrap" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdgbSearch"
+                                  Margin="0,4,0,0">
+                                <cpcControl:FilterAdvanceSearch VerticalAlignment="Top"
+                                                                FilterCommand="{Binding SearchCommand}"
+                                                                FilterText="{Binding FilterText,
+                                                                                Mode=TwoWay,
+                                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                                IsAdvanceMode="{Binding IsAdvanceMode,
+                                                                                   Mode=OneWayToSource,
+                                                                                   UpdateSourceTrigger=PropertyChanged}"
+                                                                ItemsCount="{Binding TotalItem,
+                                                                                Mode=OneWay,
+                                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                                ItemsSource="{Binding Searches}" />
+                            </Grid>
+                        </GroupBox>
+                        <cpcDataGrid:DataGridControl x:Name="dtgrdPermission"
+                                                     Grid.Row="1"
+                                                     Margin="10,10.2,10,10"
+                                                     AutoGenerateColumns="False"
+                                                     CanUserAddRows="False"
+                                                     CanUserDeleteRows="False"
+                                                     Foreground="Black"
+                                                     IsSynchronizedWithCurrentItem="False"
+                                                     ItemsSource="{Binding EmployeeCollection}"
+                                                     RowDetailsTemplate="{DynamicResource RowDetailTemplate}"
+                                                     ScrollViewer.CanContentScroll="True"
+                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                     SelectionMode="Single"
+                                                     SelectionUnit="FullRow"
+                                                     Style="{DynamicResource DatagridWithRowHeader}"
+                                                     VirtualizingStackPanel.IsVirtualizing="True"
+                                                     RowStyle="{DynamicResource DataGridToggleRowStyle}"
+                                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                                     d:LayoutOverrides="HorizontalAlignment" NumberOfItems="{Binding TotalItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <command:EventToCommand Command="{Binding EmployeeSelectionChangedCommand}"
+                                                            CommandParameter="{Binding SelectedItem, ElementName=dtgrdPermission}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <cpcDataGrid:DataGridControl.Columns>
+                                <DataGridTemplateColumn Width="25"
+                                                        Header=""
+                                                        IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ToggleButton x:Name="TgPlus"
+                                                          HorizontalAlignment="Center"
+                                                          IsChecked="{Binding IsChecked,
+                                                                              Mode=TwoWay,
+                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                          Style="{DynamicResource PlusMinusToggleButtonStyle}" />
+
+
+
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding base_Guest.tims_WorkPermission.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Value="0">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Width="110"
+                                                    Binding="{Binding GuestNo}"
+                                                    Header="Employee #"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding FirstName}"
+                                                    Header="First Name"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Width="*"
+                                                    Binding="{Binding LastName}"
+                                                    Header="Last Name"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Width="150"
+                                                    Binding="{Binding base_Guest.tims_WorkPermission.Count,
+                                                                      Mode=OneWay,
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                    Header="Total Work Permission"
+                                                    IsReadOnly="True" />
+                            </cpcDataGrid:DataGridControl.Columns>
+                        </cpcDataGrid:DataGridControl>
+                    </Grid>
+                    <Grid x:Name="grdBtnSearchBackNext"
+                          Width="15"
+                          Height="61"
+                          Margin="0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Button x:Name="tglbtnSearchBack"
+                                Width="15"
+                                Margin="0"
+                                HorizontalAlignment="Right"
+                                Background="#02FFFFFF"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="1"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Style="{DynamicResource ButtonSearch}"
+                                ToolTip="Search [Ctrl + F]"
+                                Visibility="Collapsed">
+                            <Grid x:Name="grdtglbtnSearchBack1">
+                                <Path x:Name="pathBack1"
+                                      Width="7"
+                                      Height="14"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M9.9166667,11.666667 L6.499667,15.999667 9.9163337,19.666334"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Stretch="Fill"
+                                      Stroke="White"
+                                      StrokeThickness="2.5" />
+                            </Grid>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <command:EventToCommand Command="{Binding MouseDoubleClickCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <Rectangle x:Name="Linebtn"
+                                   Grid.Row="1"
+                                   Height="1"
+                                   VerticalAlignment="Center"
+                                   Fill="White"
+                                   StrokeThickness="0"
+                                   Visibility="Collapsed" />
+                        <Button x:Name="tglbtnSearchNext"
+                                Grid.Row="2"
+                                Width="15"
+                                Height="30"
+                                Margin="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Background="#02E4E4E4"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="1"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Style="{DynamicResource ButtonSearch}"
+                                Visibility="Collapsed">
+                            <Grid x:Name="grdtglbtnSearchNext1">
+                                <Path x:Name="path2"
+                                      Width="7"
+                                      Height="14"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M9.9166667,11.666667 L6.499667,15.999667 9.9163337,19.666334"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Stretch="Fill"
+                                      Stroke="White"
+                                      StrokeThickness="2.5">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"
+                                                            ScaleY="1" />
+                                            <SkewTransform AngleX="0"
+                                                           AngleY="0" />
+                                            <RotateTransform Angle="180" />
+                                            <TranslateTransform X="0"
+                                                                Y="0" />
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="grdPermissionForm">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Visibility>
+                        <Binding Mode="OneWay"
+                                 Path="IsSearchMode"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Button x:Name="btnBarSearch"
+                            Grid.Column="0"
+                            Background="#02DFEDFF"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="1"
+                            ToolTip="Search [Ctrl + F]"
+                            Command="{Binding MouseDoubleClickCommand}"
+                            Style="{DynamicResource ButtonBarSearch}"
+                            d:LayoutOverrides="GridBox" SnapsToDevicePixels="True">
+                        <TextBlock x:Name="txtblShowSearch1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource ButtonBarSearchTextBlock}"
+                                   Text="Search"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform Angle="-90" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                    <Grid x:Name="grdSubPermissionManagement"
+                          Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Rectangle x:Name="grdSpliter"
+                                   Grid.RowSpan="3"
+                                   Width="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Left"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <StackPanel x:Name="stkpBtn"
+                                    Height="Auto"
+                                    Margin="20,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal">
+                            <Button x:Name="btnSaveNew"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <StackPanel x:Name="stkpBtnSaveNew"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgSaveNew"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource SaveNew}" />
+                                    <TextBlock x:Name="txtblSaveNew"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSaveClose"
+                                    Width="40"
+                                    Height="40"
+                                    Command="{Binding SaveCommand}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Save &amp; Close [Ctrl + S]">
+                                <StackPanel x:Name="stkpBtnSaveClose"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSaveClose"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource SaveClose}" />
+                                    <TextBlock x:Name="txtblSaveClose"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnClear"
+                                    Width="40"
+                                    Height="40"
+                                    Command="{Binding ClearCommand}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    ToolTip="Clear"
+                                    Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                         ConverterParameter=True,
+                                                         Converter={StaticResource boolToVisibilityConverter}}">
+                                <StackPanel x:Name="stkpBtnClear"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgClear"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Clear}" />
+                                    <TextBlock x:Name="txtblClear"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnEdit"
+                                    Width="40"
+                                    Height="40"
+                                    d:IsHidden="True"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <StackPanel x:Name="stkpBtnEdit"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgEdit"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Edit}"
+                                               Stroke="Black" />
+                                    <TextBlock x:Name="txtblEdit"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Edit"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnDelete"
+                                    Width="40"
+                                    Height="40"
+                                    d:IsHidden="True"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <StackPanel x:Name="stkpBtnDelete"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgDelete"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Delete}" />
+                                    <TextBlock x:Name="txtblDelete"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Close"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnExit"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0"
+                                    d:IsHidden="True"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <StackPanel x:Name="stkpBtnExit"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgExit"
+                                               Width="28"
+                                               Height="30"
+                                               Fill="{DynamicResource Exit}" />
+                                    <TextBlock x:Name="txtblExit"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Exit"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnRemark"
+                                    Width="40"
+                                    Height="40"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <Grid x:Name="grdRemark"
+                                      Width="30"
+                                      Height="30">
+                                    <Rectangle x:Name="imgRemark"
+                                               Fill="{DynamicResource Remark}" />
+                                    <TextBlock x:Name="txtblRemark"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed"
+                                               d:LayoutOverrides="Width, HorizontalMargin" />
+                                    <TextBox x:Name="txtbBindingRemark"
+                                             Style="{DynamicResource TextBoxRemark}"
+                                             Text="1234"
+                                             TextWrapping="Wrap"
+                                             d:LayoutOverrides="Width, Height" />
+                                </Grid>
+                            </Button>
+                            <Button x:Name="btnAttachment"
+                                    Width="40"
+                                    Height="40"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Collapsed">
+                                <StackPanel x:Name="stkpBtnAttachment"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgAttachment"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Attachment}" />
+                                    <TextBlock x:Name="txtblAttachment"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel x:Name="stkpCreatePermissionDetail"
+                                    Margin="0,0,20,7"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal"
+                                    d:LayoutOverrides="Height">
+                            <TextBlock x:Name="txtblBindingCreatePermission"
+                                       VerticalAlignment="Center"
+                                       FontFamily="Times New Roman"
+                                       FontSize="33.333"
+                                       FontWeight="Bold"
+                                       Style="{DynamicResource TextBlockTitleFormView}"
+                                       Text="Work Permission"
+                                       TextWrapping="NoWrap"
+                                       Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                            ConverterParameter=True,
+                                                            Converter={StaticResource boolToVisibilityConverter}}"
+                                       d:LayoutOverrides="Width" />
+                            <TextBlock x:Name="txtblBindingPermissionDetail"
+                                       VerticalAlignment="Center"
+                                       FontFamily="Times New Roman"
+                                       FontSize="33.333"
+                                       FontWeight="Bold"
+                                       Style="{DynamicResource TextBlockTitleFormView}"
+                                       Text="Work Permission Detail"
+                                       TextWrapping="NoWrap"
+                                       Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                            ConverterParameter=false,
+                                                            Converter={StaticResource boolToVisibilityConverter}}"
+                                       d:LayoutOverrides="Width" />
+                        </StackPanel>
+                        <Rectangle x:Name="Line"
+                                   Height="1"
+                                   Margin="2,0"
+                                   VerticalAlignment="Bottom"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <Grid x:Name="grdBasic"
+                              Grid.Row="1"
+                              Height="25"
+                              Margin="0,10,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                   ConverterParameter=false,
+                                                   Converter={StaticResource boolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="92.503" />
+                                <ColumnDefinition Width="379" />
+                                <ColumnDefinition Width="92.363" />
+                                <ColumnDefinition Width="121" />
+                                <ColumnDefinition Width="69.217" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="chkActivedFlag"
+                                      Grid.Column="4"
+                                      Margin="9,0,10,0"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Content="Actived"
+                                      IsChecked="{Binding SelectedWorkPermission.ActiveFlag,
+                                                          Mode=TwoWay,
+                                                          UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding Deactivated,
+                                                          Mode=OneWay,
+                                                          UpdateSourceTrigger=PropertyChanged}"
+                                      RenderTransformOrigin="12.207,4.266"
+                                      Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                           ConverterParameter=false,
+                                                           Converter={StaticResource boolToVisibilityConverter}}" />
+                            <TextBlock x:Name="txtblEmployeeName"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Text="Employee Name:"
+                                       TextWrapping="NoWrap" />
+                            <TextBox x:Name="txtEmployeeName1"
+                                     Grid.Column="1"
+                                     Width="370"
+                                     Margin="9,2,0,2"
+                                     HorizontalAlignment="Left"
+                                     IsReadOnly="True"
+                                     Padding="2,0,2,0"
+                                     Tag="{Binding SelectedWorkPermission.HasDuplicated,
+                                                   NotifyOnValidationError=True,
+                                                   UpdateSourceTrigger=PropertyChanged,
+                                                   ValidatesOnDataErrors=True}"
+                                     TextWrapping="NoWrap">
+                                <MultiBinding StringFormat="{}{1} {0}">
+                                    <Binding Path="SelectedWorkPermission.tims_WorkPermission.base_Guest.FirstName" />
+                                    <Binding Path="SelectedWorkPermission.tims_WorkPermission.base_Guest.LastName" />
+                                </MultiBinding>
+                            </TextBox>
+                            <TextBlock x:Name="txtblEmployeeNo"
+                                       Grid.Column="2"
+                                       Margin="30,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Text="Employee #:"
+                                       TextWrapping="NoWrap" />
+                            <TextBox x:Name="txtEmployeeNo1"
+                                     Grid.Column="3"
+                                     Width="110"
+                                     Margin="11,2,0,2"
+                                     HorizontalAlignment="Left"
+                                     HorizontalContentAlignment="Right"
+                                     BorderBrush="Black"
+                                     IsReadOnly="True"
+                                     Padding="2,0,2,0"
+                                     Text="{Binding SelectedWorkPermission.tims_WorkPermission.base_Guest.GuestNo}"
+                                     TextWrapping="NoWrap" />
+                        </Grid>
+                        <Border x:Name="brdContentPermissionManagement"
+                                Grid.Row="6"
+                                Margin="10"
+                                Background="{DynamicResource TabControlBackground}"
+                                BorderBrush="{DynamicResource TabControlBorder}"
+                                BorderThickness="1"
+                                IsEnabled="{Binding SelectedWorkPermission.ActiveFlag,
+                                                    Mode=OneWay}">
+                            <Grid x:Name="grdContentPermissionDetail"
+                                  Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="55" />
+                                    <RowDefinition Height="87" />
+                                    <RowDefinition Height="65" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <GroupBox x:Name="gbDate"
+                                          Margin="0"
+                                          d:LayoutOverrides="Height">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblDate"
+                                                   Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Date"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdDate"
+                                          Height="25"
+                                          Margin="0,4,0,0"
+                                          VerticalAlignment="Top">
+                                        <TextBlock x:Name="txtblFrom"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="White"
+                                                   Text="From:"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="HorizontalMargin" />
+                                        <DatePicker x:Name="dtpFrom"
+                                                    Width="110"
+                                                    Margin="48.8,2,0,2"
+                                                    HorizontalAlignment="Left"
+                                                    SelectedDate="{Binding SelectedWorkPermission.FromDate,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True}" />
+                                        <TextBlock x:Name="txtblTo"
+                                                   Margin="188.8,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="White"
+                                                   Text="To:"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                        <DatePicker x:Name="dtpTo"
+                                                    Width="110"
+                                                    Margin="215.087,2,0,2"
+                                                    HorizontalAlignment="Left"
+                                                    Background="White"
+                                                    BorderBrush="Black"
+                                                    SelectedDate="{Binding SelectedWorkPermission.ToDate,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True}"
+                                                    d:LayoutOverrides="HorizontalAlignment" />
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbCriteria"
+                                          Grid.Row="1"
+                                          Width="390"
+                                          Margin="0,10,0,0"
+                                          HorizontalAlignment="Left"
+                                          d:LayoutOverrides="Height">
+                                    <GroupBox.Header>
+                                        <AdornerDecorator>
+                                            <TextBlock x:Name="txtblCriteria"
+                                                       
+                                                       Style="{DynamicResource TextBlockValidationStyle}"
+                                                       Tag="{Binding SelectedWorkPermission.PermissionType,
+                                                                     Mode=OneWay,
+                                                                     UpdateSourceTrigger=PropertyChanged,
+                                                                     NotifyOnValidationError=True,
+                                                                     ValidatesOnDataErrors=True}"
+                                                       Text="Criteria"
+                                                       TextWrapping="NoWrap" FontWeight="Bold" FontSize="13.5" />
+                                        </AdornerDecorator>
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdCriteria"
+                                          Margin="0,4,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <CheckBox x:Name="cbArriving"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Permission for arriving late"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.ArrivingLate},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbLeaving"
+                                                  Grid.Row="1"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Permission for leaving early"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.LeavingEarly},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbAbsence"
+                                                  Margin="180,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Absence"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.Absence},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbSick"
+                                                  Grid.Row="1"
+                                                  Margin="180,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Sick Leave"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.SickLeave},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbVacations"
+                                                  Grid.Row="1"
+                                                  Margin="259.453,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Vacations"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.Vacations},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbDisciplinaryLeave"
+                                                  Margin="0,0,10,0"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Disciplinary Leave"
+                                                  Foreground="White"
+                                                  IsChecked="{Binding SelectedWorkPermission.PermissionType,
+                                                                      ConverterParameter={x:Static local:WorkPermissionTypes.DisciplinaryLeave},
+                                                                      Converter={StaticResource enumToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="Height" />
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbOvertime"
+                                          Grid.Row="1"
+                                          Margin="400,10,0,0"
+                                          d:LayoutOverrides="Height">
+                                    <GroupBox.Header>
+                                        <AdornerDecorator>
+                                            <TextBlock x:Name="txtblOvertime"
+                                                       Margin="2,2,8,2"
+                                                       Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                       Style="{DynamicResource TextBlockValidationStyle}"
+                                                       Tag="{Binding SelectedWorkPermission.OvertimeOptions,
+                                                                     Mode=OneWay,
+                                                                     UpdateSourceTrigger=PropertyChanged,
+                                                                     NotifyOnValidationError=True,
+                                                                     ValidatesOnDataErrors=True}"
+                                                       Text="Overtime"
+                                                       TextWrapping="NoWrap" FontWeight="Bold" />
+                                        </AdornerDecorator>
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdOvertime"
+                                          Margin="0,4,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+
+                                        </Grid.RowDefinitions>
+                                        <CheckBox x:Name="cbBefore"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Before Clock-In hour"
+                                                  IsChecked="{Binding SelectedWorkPermission.OvertimeOptions,
+                                                                      ConverterParameter={x:Static local:Overtime.Before},
+                                                                      Converter={StaticResource enumOTToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbDuring"
+                                                  Grid.Row="1"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Break/ lunch time"
+                                                  IsChecked="{Binding SelectedWorkPermission.OvertimeOptions,
+                                                                      ConverterParameter={x:Static local:Overtime.Break},
+                                                                      Converter={StaticResource enumOTToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="GridBox" />
+                                        <CheckBox x:Name="cbAfter"
+                                                  Grid.Row="1"
+                                                  Margin="160,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  After Clock-Out hour"
+                                                  IsChecked="{Binding SelectedWorkPermission.OvertimeOptions,
+                                                                      ConverterParameter={x:Static local:Overtime.After},
+                                                                      Converter={StaticResource enumOTToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbHoliday1"
+                                                  Margin="160,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Holiday or days - off"
+                                                  IsChecked="{Binding SelectedWorkPermission.OvertimeOptions,
+                                                                      ConverterParameter={x:Static local:Overtime.Holiday},
+                                                                      Converter={StaticResource enumOTToBoolConverter},
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="Width, GridBox" />
+
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbWorkHours"
+                                          Grid.Row="2"
+                                          Width="390"
+                                          Margin="0,10,0,0"
+                                          HorizontalAlignment="Left"
+                                          d:LayoutOverrides="Height">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblWorkHours"
+                                                   Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Work Hours"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdWorkHours"
+                                          Height="25"
+                                          Margin="0,4,0,0"
+                                          VerticalAlignment="Top">
+                                        <StackPanel x:Name="stkpEventTime"
+                                                    Grid.Row="2"
+                                                    Height="21"
+                                                    Orientation="Horizontal"
+                                                    d:LayoutOverrides="Width">
+                                            <TextBlock x:Name="txtblHour"
+                                                       Margin="10,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="White"
+                                                       Text="Hours:"
+                                                       TextWrapping="Wrap" />
+                                            <AdornerDecorator>
+                                                <cpcTexbox:TextBoxNumeric x:Name="txtHour"
+                                                                          Width="40"
+                                                                          Margin="10,0,0,0"
+                                                                          HorizontalContentAlignment="Right"
+                                                                          Padding="2,0,2,0"
+                                                                          Value="{Binding SelectedWorkPermission.HourPerDay,
+                                                                                              Mode=TwoWay,
+                                                                                              NotifyOnValidationError=True,
+                                                                                              UpdateSourceTrigger=PropertyChanged,
+                                                                                              ValidatesOnDataErrors=True}"
+                                                                          TextWrapping="NoWrap" />
+                                            </AdornerDecorator>
+                                            <TextBlock x:Name="txtblPerDay"
+                                                       Margin="5,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="White"
+                                                       Text="Per day"
+                                                       TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbPay"
+                                          Grid.Row="2"
+                                          Margin="400,10,0,0"
+                                          d:LayoutOverrides="Height">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblPay"
+                                                   Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Pay"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdPay"
+                                          Height="25"
+                                          Margin="0,4,0,0"
+                                          VerticalAlignment="Top">
+                                        <AdornerDecorator>
+                                            <ComboBox x:Name="cmbPayEvent"
+                                                      Width="150"
+                                                      Height="21"
+                                                      Margin="10,2,0,2"
+                                                      HorizontalAlignment="Left"
+                                                      DisplayMemberPath="Text"
+                                                      ItemsSource="{x:Static helper:Common.PayEvents}"
+                                                      SelectedValue="{Binding SelectedWorkPermission.PayEventSelected,
+                                                                              UpdateSourceTrigger=PropertyChanged,
+                                                                              Mode=TwoWay,
+                                                                              NotifyOnValidationError=True,
+                                                                              ValidatesOnDataErrors=True}"
+                                                      SelectedValuePath="ObjValue" />
+                                        </AdornerDecorator>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbList"
+                                          Grid.Row="3"
+                                          Margin="0,10,0,0"
+                                          Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                               ConverterParameter=True,
+                                                               Converter={StaticResource boolToVisibilityConverter}}">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblList"
+                                                   Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="List"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdList"
+                                          Height="Auto"
+                                          Margin="0,4,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40" />
+                                            <RowDefinition Height="Auto" MinHeight="4.707" />
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel x:Name="stkpBtnAddRemoveWorkPermission"
+                                                    Height="Auto"
+                                                    Margin="10,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <Button x:Name="btnAssignWorkPermission"
+                                                    Width="35"
+                                                    Height="35"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Command="{Binding AssignEmployeeCommand}"
+                                                    Style="{DynamicResource ButtonSystem}"
+                                                    ToolTip="Assign Employee">
+                                                <StackPanel x:Name="stkpBtnAssignWorkPermission"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Rectangle x:Name="imgAssignWorkPermission"
+                                                               Width="30"
+                                                               Height="30"
+                                                               Fill="{DynamicResource AssignWorkPermission}" />
+                                                    <TextBlock x:Name="txtblAssignWorkPermission"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                                               Text="Assign Permission"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="Collapsed" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button x:Name="btnRemoveWorkPermission"
+                                                    Width="35"
+                                                    Height="35"
+                                                    Margin="10,0,0,0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Command="{Binding RemoveEmployeeCommand}"
+                                                    CommandParameter="{Binding SelectedItems,
+                                                                               ElementName=dtgrdEmployeeList}"
+                                                    Style="{DynamicResource ButtonSystem}"
+                                                    ToolTip="Unassign Employee">
+                                                <StackPanel x:Name="stkpBtnRemoveWorkPermission"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Rectangle x:Name="imgRemoveWorkPermission"
+                                                               Width="30"
+                                                               Height="30"
+                                                               Fill="{DynamicResource RemoveWorkPermission}" />
+                                                    <TextBlock x:Name="txtblRemoveWorkPermission"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                                               Text="Remove Permission"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="Collapsed" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                        <cpcDataGrid:DataGridControl  x:Name="dtgrdEmployeeList"
+                                                                      Grid.Row="3"
+                                                                      Margin="5,0.5,5,5"
+                                                                      AutoGenerateColumns="False"
+                                                                      CanUserAddRows="False"
+                                                                      CanUserDeleteRows="False"
+                                                                      IsRollBackData="False"
+                                                                      IsSynchronizedWithCurrentItem="False"
+                                                                      ItemsSource="{Binding EmployeeList}"
+                                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                      Style="{DynamicResource DatagridWithRowHeader}" SnapsToDevicePixels="True">
+                                            <cpcDataGrid:DataGridControl.InputBindings>
+                                                <KeyBinding Key="Delete"
+                                                            Command="{Binding RemoveEmployeeCommand}"
+                                                            CommandParameter="{Binding SelectedItems,
+                                                                                       ElementName=dtgrdEmployeeList}" />
+                                            </cpcDataGrid:DataGridControl.InputBindings>
+                                            <cpcDataGrid:DataGridControl.RowHeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock x:Name="tbDuplicated"
+                                                               Margin="10,0,20,0"
+                                                               HorizontalAlignment="Stretch"
+                                                               Tag="{Binding DataContext.DuplicateWorkPermission,
+                                                                             RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                                            AncestorType={x:Type DataGridRow}},
+                                                                             UpdateSourceTrigger=PropertyChanged,
+                                                                             ValidatesOnDataErrors=True,
+                                                                             NotifyOnValidationError=True}"
+                                                               Text=""
+                                                               TextAlignment="Center" />
+                                                    <DataTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding DataContext.DuplicateWorkPermission, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                                                     Value="False">
+                                                            <Setter TargetName="tbDuplicated"
+                                                                    Property="Visibility"
+                                                                    Value="Hidden" />
+                                                        </DataTrigger>
+                                                    </DataTemplate.Triggers>
+
+                                                </DataTemplate>
+                                            </cpcDataGrid:DataGridControl.RowHeaderTemplate>
+                                            <cpcDataGrid:DataGridControl.Columns>
+                                                <DataGridTextColumn Width="25"
+                                                                    Visibility="Collapsed">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox />
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+
+                                                <DataGridTextColumn Width="90"
+                                                                    Binding="{Binding GuestNo}"
+                                                                    Header="Employee #"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Width="*"
+                                                                    Binding="{Binding FirstName}"
+                                                                    Header="First Name"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Width="*"
+                                                                    Binding="{Binding LastName}"
+                                                                    Header="Last Name"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Width="110"
+                                                                    Header="Assign Date"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Collapsed" />
+                                            </cpcDataGrid:DataGridControl.Columns>
+                                        </cpcDataGrid:DataGridControl >
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbNote"
+                                          Grid.Row="3"
+                                          Margin="0,10,0,0"
+                                          Visibility="{Binding SelectedWorkPermission.IsNew,
+                                                               ConverterParameter=false,
+                                                               Converter={StaticResource boolToVisibilityConverter}}"
+                                          d:LayoutOverrides="Height, GridBox" d:IsHidden="True">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblNote"
+                                                   Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Note"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdNote"
+                                          Margin="0,4,0,0">
+                                        <TextBox x:Name="txtNote"
+                                                 Margin="5"
+                                                 VerticalContentAlignment="Top"
+                                                 Padding="2,0,2,0"
+                                                 Text="{Binding SelectedWorkPermission.Note,
+                                                                Mode=TwoWay,
+                                                                UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </AdornerDecorator>
+    </Grid>
+    <UserControl.InputBindings>
+        <KeyBinding Key="S"
+                    Command="{Binding SaveCommand}"
+                    Modifiers="Control" />
+        <KeyBinding Key="L"
+                    Command="{Binding ClearCommand}"
+                    Modifiers="Control" />
+        <KeyBinding Key="F"
+                    Command="{Binding MouseDoubleClickCommand}"
+                    Modifiers="Control" />
+
+
+    </UserControl.InputBindings>
+</UserControl>
