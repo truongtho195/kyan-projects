@@ -1137,7 +1137,8 @@ namespace CPC.Helper
                             Group = item.Element("group") != null ? item.Element("group").Value : string.Empty,
                             Symbol = item.Element("symbol") != null ? item.Element("symbol").Value : string.Empty,
                             ParentId = item.Element("ParentId") != null ? Convert.ToInt32(item.Element("ParentId").Value) : 0,
-                            Detail = item.Element("detail") != null ? item.Element("detail").Value : "0"
+                            Detail = item.Element("detail") != null ? item.Element("detail").Value : "0",
+                            Islocked = item.Element("islocked") != null ? bool.Parse(item.Element("islocked").Value) : false
                         };
 
                         if ((!isAll && comboItem.Value > 0) || isAll)
