@@ -433,6 +433,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected decimal _discount;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Discount</para>
+        /// </summary>
+        public decimal Discount
+        {
+            get { return this._discount; }
+            set
+            {
+                if (this._discount != value)
+                {
+                    this.IsDirty = true;
+                    this._discount = value;
+                    OnPropertyChanged(() => Discount);
+                    PropertyChangedCompleted(() => Discount);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -473,6 +493,7 @@ namespace CPC.POS.Model
             this.base_PurchaseOrderDetail.LastReceived = this.LastReceived;
             this.base_PurchaseOrderDetail.Resource = this.Resource;
             this.base_PurchaseOrderDetail.IsFullReceived = this.IsFullReceived;
+            this.base_PurchaseOrderDetail.Discount = this.Discount;
         }
 
         /// <summary>
@@ -500,6 +521,7 @@ namespace CPC.POS.Model
             this._lastReceived = this.base_PurchaseOrderDetail.LastReceived;
             this._resource = this.base_PurchaseOrderDetail.Resource;
             this._isFullReceived = this.base_PurchaseOrderDetail.IsFullReceived;
+            this._discount = this.base_PurchaseOrderDetail.Discount;
         }
 
         /// <summary>
@@ -527,6 +549,7 @@ namespace CPC.POS.Model
             this.LastReceived = this.base_PurchaseOrderDetail.LastReceived;
             this.Resource = this.base_PurchaseOrderDetail.Resource;
             this.IsFullReceived = this.base_PurchaseOrderDetail.IsFullReceived;
+            this.Discount = this.base_PurchaseOrderDetail.Discount;
         }
 
         #endregion
@@ -888,6 +911,7 @@ namespace CPC.POS.Model
                 OnHandQty = _backup.OnHandQty;
                 OnHandQtyTemp = _backup.OnHandQtyTemp;
                 Quantity = _backup.Quantity;
+                Discount = _backup.Discount;
                 BackupQuantity = _backup.BackupQuantity;
                 ReceivedQty = _backup.ReceivedQty;
                 DueQty = _backup.DueQty;

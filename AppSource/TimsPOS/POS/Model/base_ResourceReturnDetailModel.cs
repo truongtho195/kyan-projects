@@ -47,11 +47,7 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_ResourceReturnDetail base_ResourceReturnDetail
-        {
-            get;
-            private set;
-        }
+        public base_ResourceReturnDetail base_ResourceReturnDetail { get; private set; }
 
         #endregion
 
@@ -64,10 +60,7 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get
-            {
-                return this._id;
-            }
+            get { return this._id; }
             set
             {
                 if (this._id != value)
@@ -87,10 +80,7 @@ namespace CPC.POS.Model
         /// </summary>
         public long ResourceReturnId
         {
-            get
-            {
-                return this._resourceReturnId;
-            }
+            get { return this._resourceReturnId; }
             set
             {
                 if (this._resourceReturnId != value)
@@ -110,10 +100,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string OrderDetailResource
         {
-            get
-            {
-                return this._orderDetailResource;
-            }
+            get { return this._orderDetailResource; }
             set
             {
                 if (this._orderDetailResource != value)
@@ -133,10 +120,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ProductResource
         {
-            get
-            {
-                return this._productResource;
-            }
+            get { return this._productResource; }
             set
             {
                 if (this._productResource != value)
@@ -156,10 +140,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemCode
         {
-            get
-            {
-                return this._itemCode;
-            }
+            get { return this._itemCode; }
             set
             {
                 if (this._itemCode != value)
@@ -179,10 +160,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemName
         {
-            get
-            {
-                return this._itemName;
-            }
+            get { return this._itemName; }
             set
             {
                 if (this._itemName != value)
@@ -202,10 +180,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemAtribute
         {
-            get
-            {
-                return this._itemAtribute;
-            }
+            get { return this._itemAtribute; }
             set
             {
                 if (this._itemAtribute != value)
@@ -225,10 +200,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemSize
         {
-            get
-            {
-                return this._itemSize;
-            }
+            get { return this._itemSize; }
             set
             {
                 if (this._itemSize != value)
@@ -248,10 +220,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Price
         {
-            get
-            {
-                return this._price;
-            }
+            get { return this._price; }
             set
             {
                 if (this._price != value)
@@ -271,10 +240,7 @@ namespace CPC.POS.Model
         /// </summary>
         public int ReturnQty
         {
-            get
-            {
-                return this._returnQty;
-            }
+            get { return this._returnQty; }
             set
             {
                 if (this._returnQty != value)
@@ -294,10 +260,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Amount
         {
-            get
-            {
-                return this._amount;
-            }
+            get { return this._amount; }
             set
             {
                 if (this._amount != value)
@@ -317,10 +280,7 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsReturned
         {
-            get
-            {
-                return this._isReturned;
-            }
+            get { return this._isReturned; }
             set
             {
                 if (this._isReturned != value)
@@ -340,10 +300,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.DateTime ReturnedDate
         {
-            get
-            {
-                return this._returnedDate;
-            }
+            get { return this._returnedDate; }
             set
             {
                 if (this._returnedDate != value)
@@ -352,6 +309,26 @@ namespace CPC.POS.Model
                     this._returnedDate = value;
                     OnPropertyChanged(() => ReturnedDate);
                     PropertyChangedCompleted(() => ReturnedDate);
+                }
+            }
+        }
+
+        protected decimal _discount;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Discount</para>
+        /// </summary>
+        public decimal Discount
+        {
+            get { return this._discount; }
+            set
+            {
+                if (this._discount != value)
+                {
+                    this.IsDirty = true;
+                    this._discount = value;
+                    OnPropertyChanged(() => Discount);
+                    PropertyChangedCompleted(() => Discount);
                 }
             }
         }
@@ -390,6 +367,7 @@ namespace CPC.POS.Model
             this.base_ResourceReturnDetail.Amount = this.Amount;
             this.base_ResourceReturnDetail.IsReturned = this.IsReturned;
             this.base_ResourceReturnDetail.ReturnedDate = this.ReturnedDate;
+            this.base_ResourceReturnDetail.Discount = this.Discount;
         }
 
         /// <summary>
@@ -411,6 +389,7 @@ namespace CPC.POS.Model
             this._amount = this.base_ResourceReturnDetail.Amount;
             this._isReturned = this.base_ResourceReturnDetail.IsReturned;
             this._returnedDate = this.base_ResourceReturnDetail.ReturnedDate;
+            this._discount = this.base_ResourceReturnDetail.Discount;
         }
 
         /// <summary>
@@ -432,6 +411,7 @@ namespace CPC.POS.Model
             this.Amount = this.base_ResourceReturnDetail.Amount;
             this.IsReturned = this.base_ResourceReturnDetail.IsReturned;
             this.ReturnedDate = this.base_ResourceReturnDetail.ReturnedDate;
+            this.Discount = this.base_ResourceReturnDetail.Discount;
         }
 
         #endregion
@@ -690,7 +670,7 @@ namespace CPC.POS.Model
                                 message = "Please select an item.....";
                             break;
                         case "ReturnQty":
-                            if (SaleOrderModel != null && SaleOrderModel.SaleOrderShippedCollection.Any() && SaleOrderModel.ReturnModel != null && SaleOrderModel.ReturnModel.ReturnDetailCollection != null)
+                            if (SaleOrderModel != null && SaleOrderModel.SaleOrderShippedCollection != null && SaleOrderModel.ReturnModel != null && SaleOrderModel.ReturnModel.ReturnDetailCollection != null)
                             {
                                 int totalItemShipped = SaleOrderModel.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(OrderDetailResource)).Sum(x => x.PickQty);
                                 int totalItemReturn = SaleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && !string.IsNullOrWhiteSpace(x.OrderDetailResource) && x.OrderDetailResource.Equals(OrderDetailResource)).Sum(x => x.ReturnQty);

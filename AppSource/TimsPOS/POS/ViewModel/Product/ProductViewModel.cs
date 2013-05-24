@@ -298,11 +298,12 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Initializes a new instance of the ProductViewModel class with parameter.
         /// </summary>
-        /// <param name="isList">true if show list, otherwise, false.</param>
-        public ProductViewModel(bool isList)
+        /// <param name="isList">True if show search list, otherwise show detail form</param>
+        /// <param name="param">Optional parameter. Default is null</param>
+        public ProductViewModel(bool isList, object param = null)
             : this()
         {
-            ChangeSearchMode(isList);
+            ChangeSearchMode(isList, param);
         }
 
         #endregion
@@ -427,7 +428,14 @@ namespace CPC.POS.ViewModel
             DataGridControl dataGridControl = param as DataGridControl;
 
             // Edit selected item
-            OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
+            //OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
+
+            PopupEditProductViewModel viewModel = new PopupEditProductViewModel();
+            bool? result = _dialogService.ShowDialog<PopupEditProductView>(_ownerViewModel, viewModel, "Edit product");
+            if (result.HasValue && result.Value)
+            {
+
+            }
         }
 
         #endregion
@@ -1243,7 +1251,7 @@ namespace CPC.POS.ViewModel
             NotePopupCollection = new ObservableCollection<PopupContainer>();
             NotePopupCollection.CollectionChanged += (sender, e) => { OnPropertyChanged(() => ShowOrHiddenNote); };
         }
-
+         
         /// <summary>
         /// Initial commands for binding on form
         /// </summary>
@@ -2888,25 +2896,49 @@ namespace CPC.POS.ViewModel
         /// Process when change display view
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ShowNotification(null))
+            if (param == null)
             {
-                // When user clicked create new button
-                if (!isList)
+                if (ShowNotification(null))
                 {
-                    // Create new product
-                    NewProduct();
+                    // When user clicked create new button
+                    if (!isList)
+                    {
+                        // Create new product
+                        NewProduct();
 
-                    // Display product detail
-                    IsSearchMode = false;
+                        // Display product detail
+                        IsSearchMode = false;
+                    }
+                    else
+                    {
+                        // When user click view list button
+                        // Display product list
+                        IsSearchMode = true;
+                    }
                 }
-                else
+            }
+            else
+            {
+                base_ProductModel productModel = null;
+                Guid productGuid = new Guid();
+                if (param is base_ProductModel)
                 {
-                    // When user click view list button
-                    // Display product list
-                    IsSearchMode = true;
+                    productModel = param as base_ProductModel;
                 }
+                else if (Guid.TryParse(param.ToString(), out productGuid))
+                {
+                    productModel = new base_ProductModel(_productRepository.Get(x => x.Resource.Equals(productGuid)));
+                }
+
+                if (productModel != null)
+                {
+                    OnDoubleClickViewCommandExecute(productModel);
+                }
+
+                // Display product detail
+                IsSearchMode = false;
             }
         }
 

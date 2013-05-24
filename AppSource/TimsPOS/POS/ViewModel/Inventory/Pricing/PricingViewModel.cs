@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using CPC.POS.Model;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
-using CPC.POS.Database;
-using CPC.POS.Repository;
+using System.ComponentModel;
 using System.Diagnostics;
-using SecurityLib;
-using System.Windows;
+using System.Linq;
 using System.Linq.Expressions;
-using CPC.POS.View;
-using CPC.Helper;
+using System.Windows;
 using CPC.Control;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.POS.View;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -45,17 +43,20 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Constructors
+
         public PricingViewModel()
         {
             _ownerViewModel = App.Current.MainWindow.DataContext;
             this.InitialCommand();
             this.InitialData();
         }
-        public PricingViewModel(bool isList)
+
+        public PricingViewModel(bool isList, object param = null)
             : this()
         {
-            this.ChangeSearchMode(isList);
+            this.ChangeSearchMode(isList, param);
         }
+
         #endregion
 
         #region Properties
@@ -1789,23 +1790,28 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region ChangeSearchMode
+
         /// <summary>
         /// ChangeSearchMode
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (this.ChangeViewExecute(null))
+            if (param == null)
             {
-                if (!isList)
+                if (this.ChangeViewExecute(null))
                 {
-                    this.OnNewCommandExecute(null);
-                    this.IsSearchMode = false;
+                    if (!isList)
+                    {
+                        this.OnNewCommandExecute(null);
+                        this.IsSearchMode = false;
+                    }
+                    else
+                        this.IsSearchMode = true;
                 }
-                else
-                    this.IsSearchMode = true;
             }
         }
+
         #endregion
 
         #endregion

@@ -63,7 +63,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-
         #region SelectedSaleTaxLocation
         private base_SaleTaxLocationModel _selectedSaleTaxLocation;
         /// <summary>
@@ -362,14 +361,29 @@ namespace CPC.POS.ViewModel
                 if (!SelectedSaleTaxLocation.IsNew)
                 {
                     //Check if TaxCode is default
-                    if (SelectedSaleTaxLocation.ParentId != 0 && DefaultTaxCode.TaxCode == SelectedSaleTaxLocation.TaxCode)
+                    if (SelectedSaleTaxLocation.ParentId != 0)
                     {
-                        if (PrimaryTaxLocation.TaxCodeCollection.Any(x => x.Id != SelectedSaleTaxLocation.Id))
+                        if (DefaultTaxCode.TaxCode == SelectedSaleTaxLocation.TaxCode)
                         {
-                            DefaultTaxCode = PrimaryTaxLocation.TaxCodeCollection.FirstOrDefault(x => x.Id != SelectedSaleTaxLocation.Id);
-                            UpdatePrimaryTaxLocation();
+                            if (PrimaryTaxLocation.TaxCodeCollection.Any(x => x.Id != SelectedSaleTaxLocation.Id))
+                            {
+                                DefaultTaxCode = PrimaryTaxLocation.TaxCodeCollection.FirstOrDefault(x => x.Id != SelectedSaleTaxLocation.Id);
+                                UpdatePrimaryTaxLocation();
+                            }
+                        }
+                        //check item Remove has using for shipping && update ShippingTaxCodeId
+                        if (SaleTaxLocationCollection.Any(x => x.ShippingTaxCodeId.Equals(SelectedSaleTaxLocation.Id)))
+                        {
+                            foreach (base_SaleTaxLocationModel TaxLocationModel in SaleTaxLocationCollection.Where(x => x.ParentId==0 && x.ShippingTaxCodeId.Equals(SelectedSaleTaxLocation.Id)))
+                            {
+                                TaxLocationModel.ShippingTaxCodeId = DefaultTaxCode.Id;
+                                TaxLocationModel.ToEntity();
+                                TaxLocationModel.EndUpdate();
+                            }
+                            _saleTaxRespository.Commit();
                         }
                     }
+                    
                     UpdateDepartment(SelectedSaleTaxLocation.TaxCode, DefaultTaxCode.TaxCode);
                     DeleteSaleTax(SelectedSaleTaxLocation);
                 }
@@ -639,10 +653,7 @@ namespace CPC.POS.ViewModel
             saleTaxLocationModel.RaiseProperyChanged("HasTaxCodeOption");
         }
 
-        private void Refresh()
-        {
-
-        }
+       
 
         /// <summary>
         /// Create New Sales Tax Location or Tax Code
@@ -785,7 +796,7 @@ namespace CPC.POS.ViewModel
                 //Set Id to TaxCode Collection of this TaxLocation
                 foreach (base_SaleTaxLocationModel taxCodeModel in SaleTaxLocationCollection.Where(x => x.IsDirty))
                 {
-                    taxCodeModel.Id = taxCodeModel.base_SaleTaxLocation.Id;
+                    taxCodeModel.ToModel();
                     taxCodeModel.EndUpdate();
                 }
             }
@@ -840,11 +851,11 @@ namespace CPC.POS.ViewModel
                 {
                     foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxModel.SaleTaxLocationOptionCollection)
                     {
-                        taxCodeOptionModel.Id = taxCodeOptionModel.base_SaleTaxLocationOption.Id;
+                        taxCodeOptionModel.ToModel();
                         taxCodeOptionModel.EndUpdate();
                     }
                 }
-                saleTaxModel.Id = saleTaxModel.base_SaleTaxLocation.Id;
+                saleTaxCodeModel.ToModel();
                 saleTaxModel.EndUpdate();
             }
             saleTaxCodeModel.EndUpdate();
@@ -964,7 +975,7 @@ namespace CPC.POS.ViewModel
             //Set Primary TaxLocation & Set ShippingTaxCodeID
             foreach (base_SaleTaxLocationModel saleTaxLocationModel in SaleTaxLocationCollection.Where(x => x.ParentId == 0))
             {
-                saleTaxLocationModel.ShippingTaxCodeId = DefaultTaxCode.Id;
+                //saleTaxLocationModel.ShippingTaxCodeId = DefaultTaxCode.Id;
                 if (saleTaxLocationModel.Id == PrimaryTaxLocation.Id)
                     saleTaxLocationModel.IsPrimary = true;
                 else
@@ -980,9 +991,6 @@ namespace CPC.POS.ViewModel
                 base_Configuration config = configQuery.FirstOrDefault();
 
                 string defaultTaxCode = PrimaryTaxLocation.TaxCodeCollection.SingleOrDefault(x => x.Id == DefaultTaxCode.Id).TaxCode;
-
-                //if (this.PrimaryTaxLocation.PrimarySaleTaxEdited && SelectedSaleTaxLocation.ParentId != 0)//Update TaxCode for Departmet
-                //    UpdateDepartment(config.DefaultTaxCodeNewDepartment, defaultTaxCode);
 
                 //Set taxCode for config
                 config.DefaultSaleTaxLocation = (short)PrimaryTaxLocation.Id;
@@ -1122,7 +1130,6 @@ namespace CPC.POS.ViewModel
             bgWorker.DoWork += (sender, e) =>
             {
                 IsBusy = true;
-                Refresh();
                 //Get data with range
                 //NumberOfDisplayItems
                 IList<base_SaleTaxLocation> saleTaxtLocations = _saleTaxRespository.GetRange(0, NumberOfDisplayItems, "It.SortIndex");

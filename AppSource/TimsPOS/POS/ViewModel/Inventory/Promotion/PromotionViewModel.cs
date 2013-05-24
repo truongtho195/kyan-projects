@@ -228,10 +228,10 @@ namespace CPC.POS.ViewModel
         /// Initializes a new instance of the PromotionViewModel class with parameter.
         /// </summary>
         /// <param name="isList">true if show list, otherwise, false.</param>
-        public PromotionViewModel(bool isList)
+        public PromotionViewModel(bool isList, object param = null)
             : this()
         {
-            ChangeSearchMode(isList);
+            ChangeSearchMode(isList, param);
         }
 
         #endregion
@@ -1203,6 +1203,8 @@ namespace CPC.POS.ViewModel
         public override void LoadData()
         {
             LoadPriceSchemas();
+            if (SelectedPromotion != null)
+                OnLoadPriceSchema();
 
             Expression<Func<base_Promotion, bool>> predicate = PredicateBuilder.True<base_Promotion>();
             if (!string.IsNullOrWhiteSpace(Keyword) && SearchOption > 0)//Load with Search Condition
@@ -1220,24 +1222,27 @@ namespace CPC.POS.ViewModel
         /// Process when change display view
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ShowNotification(null))
+            if (param == null)
             {
-                // When user clicked create new button
-                if (!isList)
+                if (ShowNotification(null))
                 {
-                    // Create new promotion
-                    NewPromotion();
+                    // When user clicked create new button
+                    if (!isList)
+                    {
+                        // Create new promotion
+                        NewPromotion();
 
-                    // Display promotion detail
-                    IsSearchMode = false;
-                }
-                else
-                {
-                    // When user click view list button
-                    // Display promotion list
-                    IsSearchMode = true;
+                        // Display promotion detail
+                        IsSearchMode = false;
+                    }
+                    else
+                    {
+                        // When user click view list button
+                        // Display promotion list
+                        IsSearchMode = true;
+                    }
                 }
             }
         }

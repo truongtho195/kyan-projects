@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using CPC.POS.Repository;
 using System.Collections.ObjectModel;
-using CPC.POS.Model;
+using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using CPC.POS.Database;
-using System.ComponentModel;
+using CPC.POS.Model;
+using CPC.POS.Repository;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
     class CurrentStockViewModel : ViewModelBase
     {
         #region Define
+
         private base_StoreRepository _storeRepository = new base_StoreRepository();
         private base_ProductRepository _productRepository = new base_ProductRepository();
-        public RelayCommand NewCommand { get; private set; }
-        public RelayCommand SaveCommand { get; private set; }
-        public RelayCommand DeleteCommand { get; private set; }
         public RelayCommand<object> SearchCommand { get; private set; }
+
         #endregion
 
         #region Constructors
+
         public CurrentStockViewModel()
         {
             InitialCommand();
         }
+
         #endregion
 
         #region Properties
@@ -205,63 +205,8 @@ namespace CPC.POS.ViewModel
 
         #region Commands Methods
 
-        #region NewCommand
-        /// <summary>
-        /// Method to check whether the NewCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnNewCommandCanExecute()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the NewCommand command is executed.
-        /// </summary>
-        private void OnNewCommandExecute()
-        {
-            // TODO: Handle command logic here
-        }
-        #endregion
-
-        #region Save Command
-        /// <summary>
-        /// Method to check whether the SaveCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnSaveCommandCanExecute()
-        {
-            return true;
-        }
-        /// <summary>
-        /// Method to invoke when the SaveCommand command is executed.
-        /// </summary>
-        private void OnSaveCommandExecute()
-        {
-            // TODO: Handle command logic here
-        }
-        #endregion
-
-        #region DeleteCommand
-        /// <summary>
-        /// Method to check whether the DeleteCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnDeleteCommandCanExecute()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the DeleteCommand command is executed.
-        /// </summary>
-        private void OnDeleteCommandExecute()
-        {
-            // TODO: Handle command logic here
-        }
-        #endregion
-
         #region SearchCommand
+
         /// <summary>
         /// Method to check whether the SearchCommand command can be executed.
         /// </summary>
@@ -328,6 +273,7 @@ namespace CPC.POS.ViewModel
                 predicate = this.CreateSearchPredicate(this.Keyword);
             this.LoadProduct(predicate, false, this.CurrentPageIndex);
         }
+
         #endregion
 
         #endregion
@@ -335,18 +281,18 @@ namespace CPC.POS.ViewModel
         #region Private Methods
 
         #region InitialCommand
+
         private void InitialCommand()
         {
             // Route the commands
-            this.NewCommand = new RelayCommand(OnNewCommandExecute, OnNewCommandCanExecute);
-            this.SaveCommand = new RelayCommand(OnSaveCommandExecute, OnSaveCommandCanExecute);
-            this.DeleteCommand = new RelayCommand(OnDeleteCommandExecute, OnDeleteCommandCanExecute);
             this.SearchCommand = new RelayCommand<object>(OnSearchCommandExecute, OnSearchCommandCanExecute);
             this.LoadStepCommand = new RelayCommand<object>(this.OnLoadStepCommandExecute, this.OnLoadStepCommandCanExecute);
         }
+
         #endregion
 
         #region SearchProduct
+
         /// <summary>
         /// Create predicate with condition for search
         /// </summary>
@@ -378,9 +324,11 @@ namespace CPC.POS.ViewModel
             }
             return predicate;
         }
+
         #endregion
 
         #region LoadProduct
+
         private void LoadProduct(Expression<Func<base_Product, bool>> predicate, bool refreshData = false, int currentIndex = 0)
         {
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
@@ -406,7 +354,7 @@ namespace CPC.POS.ViewModel
                 base_ProductModel model = new base_ProductModel(e.UserState as base_Product);
                 model.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
                 foreach (var item in model.base_Product.base_ProductStore.OrderBy(x => x.StoreCode))
-                   model.ProductStoreCollection.Add(new base_ProductStoreModel(item));
+                    model.ProductStoreCollection.Add(new base_ProductStoreModel(item));
                 this.ProductCollection.Add(model);
             };
             bgWorker.RunWorkerCompleted += (sender, e) =>
@@ -415,12 +363,15 @@ namespace CPC.POS.ViewModel
             };
             bgWorker.RunWorkerAsync();
         }
+
         #endregion
 
         #endregion
 
         #region Public Methods
+
         #region OnViewChangingCommandCanExecute
+
         /// Check save data when changing view
         /// </summary>
         /// <param name="isClosing"></param>
@@ -429,25 +380,11 @@ namespace CPC.POS.ViewModel
         {
             return true;
         }
-        #endregion
 
-        #region ChangeSearchMode
-        /// <summary>
-        /// ChangeSearchMode
-        /// </summary>
-        /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
-        {
-            this.IsSearchMode = true;
-        }
-
-        public override void ChangeSearchMode(object param)
-        {
-            base.ChangeSearchMode(param);
-        }
         #endregion
 
         #region LoadData
+
         /// <summary>
         /// Loading data in Change view or Inititial
         /// </summary>
@@ -463,7 +400,9 @@ namespace CPC.POS.ViewModel
             }
             this.LoadProduct(predicate, true);
         }
+
         #endregion
+
         #endregion
     }
 }

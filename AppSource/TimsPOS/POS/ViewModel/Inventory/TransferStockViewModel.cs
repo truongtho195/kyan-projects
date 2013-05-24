@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
 using System.Collections.ObjectModel;
-using CPC.POS.Model;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
-using CPCToolkitExtLibraries;
+using System.Windows.Data;
+using CPC.POS.Database;
+using CPC.POS.Model;
 using CPC.POS.Repository;
 using CPC.POS.View;
-using CPC.POS.Database;
-using System.Diagnostics;
-using System.Windows.Data;
-using System.Linq.Expressions;
-using System.Data.Objects.SqlClient;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
+using CPCToolkitExtLibraries;
 
 namespace CPC.POS.ViewModel
 {
@@ -41,23 +39,20 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Constructors
+
         public TransferStockViewModel()
         {
             _ownerViewModel = App.Current.MainWindow.DataContext;
             this.InitialCommand();
             this.LoadStaticData();
         }
-        public TransferStockViewModel(bool isList)
+
+        public TransferStockViewModel(bool isList, object param = null)
             : this()
         {
-            this.ChangeSearchMode(isList);
+            this.ChangeSearchMode(isList, param);
         }
 
-        public TransferStockViewModel(object param)
-            : this()
-        {
-            this.ChangeSearchMode(param);
-        }
         #endregion
 
         #region Properties
@@ -1399,29 +1394,33 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region ChangeSearchMode
+
         /// <summary>
         /// ChangeSearchMode
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        /// <param name="param"></param>
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (this.ChangeViewExecute(null))
+            if (param == null)
             {
-                if (!isList)
+                if (this.ChangeViewExecute(null))
                 {
-                    this.OnNewCommandExecute(null);
-                    this.IsSearchMode = false;
+                    if (!isList)
+                    {
+                        this.OnNewCommandExecute(null);
+                        this.IsSearchMode = false;
+                    }
+                    else
+                        this.IsSearchMode = true;
                 }
-                else
-                    this.IsSearchMode = true;
+            }
+            else
+            {
+                this.TranferSotckFromProduct(param as IEnumerable<base_ProductModel>);
             }
         }
 
-        public override void ChangeSearchMode(object param)
-        {
-            this.TranferSotckFromProduct(param as IEnumerable<base_ProductModel>);
-            base.ChangeSearchMode(param);
-        }
         #endregion
 
         #region LoadData

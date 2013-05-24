@@ -959,6 +959,45 @@ namespace CPC.POS.Model
             DueQty = Quantity - PickQty;
         }
 
+
+        public void CopyFrom(base_SaleOrderDetailModel saleOrderDetailModel)
+        {
+            //this._id = saleOrderDetailModel.Id;
+            //this._saleOrderId = saleOrderDetailModel.SaleOrderId;
+            this._productResource = saleOrderDetailModel.ProductResource;
+            this._itemCode = saleOrderDetailModel.ItemCode;
+            this._itemName = saleOrderDetailModel.ItemName;
+            this._itemAtribute = saleOrderDetailModel.ItemAtribute;
+            this._itemSize = saleOrderDetailModel.ItemSize;
+            this._taxCode = saleOrderDetailModel.TaxCode;
+            this._quantity = saleOrderDetailModel.Quantity;
+            this._pickQty = 0;
+            //this._dueQty = saleOrderDetailModel.DueQty;
+            //this._unFilled = saleOrderDetailModel.UnFilled;
+            this._regularPrice = saleOrderDetailModel.RegularPrice;
+            this._salePrice = saleOrderDetailModel.SalePrice;
+            this._uOMId = saleOrderDetailModel.UOMId;
+            this._baseUOM = saleOrderDetailModel.BaseUOM;
+            this._discountPercent = saleOrderDetailModel.DiscountPercent;
+            this._discountAmount = saleOrderDetailModel.DiscountAmount;
+            this._subTotal = saleOrderDetailModel.SubTotal;
+            this._onHandQty = saleOrderDetailModel.OnHandQty;
+            this._serialTracking = saleOrderDetailModel.SerialTracking;
+            //this._resource = saleOrderDetailModel.Resource;
+            //this._balanceShipped = saleOrderDetailModel.BalanceShipped;
+            this._comment = saleOrderDetailModel.Comment;
+            this._totalDiscount = saleOrderDetailModel.TotalDiscount;
+
+            //ExtentionProperty
+            this.UnitName = saleOrderDetailModel.UnitName;
+            this.ProductModel = saleOrderDetailModel.ProductModel;
+            this.ProductUOMCollection = saleOrderDetailModel.ProductUOMCollection;
+            this.Qty = saleOrderDetailModel.Quantity;
+            this.TotalDiscount = saleOrderDetailModel.TotalDiscount;
+            this.UnitDiscount = saleOrderDetailModel.UnitDiscount;
+            this.IsVisibleRowDetail = saleOrderDetailModel.IsVisibleRowDetail;
+
+        }
         #endregion
 
         #region Override Methods
