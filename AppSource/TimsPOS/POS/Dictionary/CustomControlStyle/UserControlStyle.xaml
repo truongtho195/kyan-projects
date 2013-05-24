@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:timePicker="clr-namespace:TimePicker;assembly=TimePicker"
+                    xmlns:WPFToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended">
+    <!--TimePickerControlStyle-->
+    <Style TargetType="{x:Type timePicker:TimePickerControl}">
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="ButtonUpDownStyle"
+                Value="{DynamicResource ButtonUpDownStyle}" />
+        <!--<Style.Triggers>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource validationTemplate}" />
+                <Setter Property="ToolTip"
+                        Value="{Binding Path=(Validation.Errors).CurrentItem.ErrorContent,
+                        RelativeSource={RelativeSource Self}}" />
+            </Trigger>
+        </Style.Triggers>-->
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{DynamicResource DataErrorTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="False">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsVisible"
+                     Value="True">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource DataErrorTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--IntegerUpDown-->
+    <Style TargetType="{x:Type WPFToolkit:IntegerUpDown}">
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{DynamicResource DataErrorTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="False">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsVisible"
+                     Value="True">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource DataErrorTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
