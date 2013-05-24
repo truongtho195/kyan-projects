@@ -38,6 +38,7 @@
                                               AutoGenerateColumns="False"
                                               CanUserAddRows="False"
                                               CanUserDeleteRows="False"
+                                              SelectedItem="{Binding SelectedReward,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                               Style="{DynamicResource DatagridWithoutRowHeader}"
                                               VisibilityNavigationBar="Collapsed"
                                               ItemsSource="{Binding GuestRewardCollection}">

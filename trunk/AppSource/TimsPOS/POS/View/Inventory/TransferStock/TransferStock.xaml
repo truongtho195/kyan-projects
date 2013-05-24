@@ -40,8 +40,8 @@
                       CommandParameter="NewItem"
                       Header="New Item">
                 <MenuItem.Icon>
-                    <Rectangle Width="20"
-                               Height="20"
+                    <Rectangle Width="16"
+                               Height="16"
                                Fill="{DynamicResource NewItem}"
                                Stretch="Fill" />
                 </MenuItem.Icon>
@@ -52,8 +52,8 @@
                       CommandParameter="{Binding .}"
                       Header="Edit Item">
                 <MenuItem.Icon>
-                    <Rectangle Width="20"
-                               Height="20"
+                    <Rectangle Width="16"
+                               Height="16"
                                Fill="{DynamicResource EditItem}"
                                Stretch="Fill" />
                 </MenuItem.Icon>
@@ -64,8 +64,8 @@
                       CommandParameter="{Binding .}"
                       Header="Apply TransferStock">
                 <MenuItem.Icon>
-                    <Rectangle Width="20"
-                               Height="20"
+                    <Rectangle Width="16"
+                               Height="16"
                                Fill="{DynamicResource ApplyPricing}"
                                Stretch="Fill" />
                 </MenuItem.Icon>

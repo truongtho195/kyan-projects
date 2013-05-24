@@ -5,11 +5,13 @@
                 xmlns:close="clr-namespace:CPC.Toolkit.Behavior"
                 xmlns:converter="clr-namespace:CPC.Converter"
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:helper="clr-namespace:CPC.Helper"
                 xmlns:local="clr-namespace:CPC.POS"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                 xmlns:Service="clr-namespace:CPC.Service"
                 xmlns:System="clr-namespace:System;assembly=mscorlib"
+                xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
                 xmlns:themeClassic="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
                 xmlns:themeLuna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
                 x:Name="Window"
@@ -19,11 +21,11 @@
                 MinWidth="800"
                 MinHeight="600"
                 Background="{DynamicResource WindowBackgroundBrush}"
+                Icon="/POS.ico"
                 Service:DialogService.IsRegisteredView="True"
                 WindowStartupLocation="CenterScreen"
                 WindowState="Maximized"
-                mc:Ignorable="d"
-                Icon="/POS.ico">
+                mc:Ignorable="d">
     <!--  Window Resources  -->
     <r:RibbonWindow.Resources>
         <converter:ListToCollapsedConverter x:Key="listToCollapsedConverter" />
@@ -1161,368 +1163,554 @@
         </Style>
     </r:RibbonWindow.Resources>
     <Grid x:Name="grdLayout">
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="RibbonRow"
-                           Height="Auto" />
-            <RowDefinition x:Name="ClientRow"
-                           Height="*" />
-            <RowDefinition x:Name="StatusRow"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
-        <r:Ribbon x:Name="ribbon"
-                  Background="#FFD4D4D4">
-            <!--
-                <r:Ribbon.QuickAccessToolBar>
-                <r:RibbonQuickAccessToolBar>
-                <r:RibbonButton Label="Delete All"
-                SmallImageSource="/Image/delete.ico"
-                Command="{Binding CloseAllViewCommand}" />
-                </r:RibbonQuickAccessToolBar>
-                </r:Ribbon.QuickAccessToolBar>
-            -->
-            <!--
-                <r:RibbonGroup Header="">
-                <r:RibbonButton Command="{Binding OpenViewCommand}"
-                CommandParameter=""
-                Label=""
-                LargeImageSource="/Image/RibbonImages/" />
-                <r:RibbonButton Command="{Binding OpenViewCommand}"
-                CommandParameter=""
-                Label=""
-                LargeImageSource="/Image/RibbonImages/" />
-                </r:RibbonGroup>
-            -->
-            <r:Ribbon.ApplicationMenu>
-                <r:RibbonApplicationMenu>
-                    <r:RibbonApplicationMenuItem Header="Company Setting"
-                                                 Command="{Binding OpenViewCommand}"
-                                                 CommandParameter="CompanySetting"
-                                                 ImageSource="/Image/RibbonImages/Ribbon Company.png" />
-                    <r:RibbonApplicationMenuItem Header="Department"
-                                                 Command="{Binding OpenViewCommand}"
-                                                 CommandParameter="Department"
-                                                 ImageSource="/Image/RibbonImages/RibbonDepartment.png" />
-                    <r:RibbonApplicationMenuItem Header="LogOut"
-                                                 Command="{Binding LogOutCommand}"
-                                                 ImageSource="/Image/RibbonImages/RibbonLogout.png"
-                                                 ToolTipDescription="LogOut"
-                                                 ToolTipTitle="LogOut" />
-                </r:RibbonApplicationMenu>
-            </r:Ribbon.ApplicationMenu>
-            <r:RibbonTab Header="Employee">
-                <r:RibbonGroup Header="Employee">
+        <Grid x:Name="grdMain">
+            <Grid.IsEnabled>
+                <Binding Path="IsLockScreen"
+                         Mode="OneWay"
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.Converter>
+                        <converter:ReserseBoolConverter />
+                    </Binding.Converter>
+                </Binding>
+            </Grid.IsEnabled>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="RibbonRow"
+                               Height="Auto" />
+                <RowDefinition x:Name="ClientRow"
+                               Height="*" />
+                <RowDefinition x:Name="StatusRow"
+                               Height="Auto" />
+            </Grid.RowDefinitions>
+            <r:Ribbon x:Name="ribbon"
+                      Background="#FFD4D4D4">
+                <!--
+                    <r:Ribbon.QuickAccessToolBar>
+                    <r:RibbonQuickAccessToolBar>
+                    <r:RibbonButton Label="Delete All"
+                    SmallImageSource="/Image/delete.ico"
+                    Command="{Binding CloseAllViewCommand}" />
+                    </r:RibbonQuickAccessToolBar>
+                    </r:Ribbon.QuickAccessToolBar>
+                -->
+                <!--
+                    <r:RibbonTab Header="Unknown">
+                    <r:RibbonGroup Header="Unknown">
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Employee"
-                                    Label="Create New"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCreateEmployee.png" />
+                    CommandParameter="Archive"
+                    Label="Archive"
+                    LargeImageSource="/Image/RibbonImages/RibbonArchive.png" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="EmployeeList"
-                                    Label="Employee List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonEmployeeList.png" />
-                </r:RibbonGroup>
-                <!--Begin TimeClock-->
-                <r:RibbonGroup Header="Holiday and Schedule"
-                               SmallImageSource="/Image/RibbonImages/RibbonCreateSchedule.png">
-                    <r:RibbonButton Label="Schedule"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCreateSchedule.png"
-                                    Command="{Binding OpenViewCommand}"
-                                    CommandParameter="WorkSchedule" />
-                    <r:RibbonButton Label="Holiday"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCreateHoliday.png"
-                                    Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Holiday" />
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Timelog &amp; work permission"
-                               SmallImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png">
-                    <r:RibbonButton Label="Manual editing timelog"
-                                    LargeImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png"
-                                    Command="{Binding OpenViewCommand}"
-                                    CommandParameter="ManualEventEditing" />
-                    <r:RibbonButton Label="Create permission"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCreateWorkPermission.png"
-                                    Command="{Binding OpenViewCommand}"
-                                    CommandParameter="WorkPermission" />
-                    <r:RibbonButton Label="Permission list"
-                                    LargeImageSource="/Image/RibbonImages/RibbonWorkPermissionList.png"
-                                    Command="{Binding OpenViewCommand}"
-                                    CommandParameter="WorkPermissionList" />
-                </r:RibbonGroup>
-                <!--End TimeClock-->
-            </r:RibbonTab>
-            <r:RibbonTab Header="Sales">
-                <r:RibbonGroup Header="Customer">
+                    CommandParameter="GroupPermission"
+                    Label="Permission Group"
+                    LargeImageSource="/Image/RibbonImages/RibbonGroupPermissionList.png" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Customer"
-                                    Label="Create New"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCreateCustomer.png" />
+                    CommandParameter="CurrentStock"
+                    Label="Current Stock"
+                    LargeImageSource="/Image/RibbonImages/RibbonCurrentStock.png" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="CustomerList"
-                                    Label="Customer List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCustomerList.png" />
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Reward">
+                    CommandParameter="LayawayHistory"
+                    Label="Layaway History"
+                    LargeImageSource="/Image/RibbonImages/RibbonLayawayOrderHistory.png" />
+                    </r:RibbonGroup>
+                    </r:RibbonTab>
+                -->
+                <!--
+                    <r:RibbonGroup Header="">
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="RewardSetup"
-                                    Label="Reward Setup"
-                                    LargeImageSource="/Image/RibbonImages/RibbonRewardSetup.png" />
-                    <!--<r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="RewardHistory"
-                                    Label="Reward History"
-                                    LargeImageSource="/Image/RibbonImages/RibbonRewardHistory.png" />-->
-                </r:RibbonGroup>
-                <!--<r:RibbonGroup>
+                    CommandParameter=""
+                    Label=""
+                    LargeImageSource="/Image/RibbonImages/" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="GiftCard"
-                                    Label="Gift Card"
-                                    LargeImageSource="/Image/RibbonImages/RibbonGiftCard.png" />
-                </r:RibbonGroup>-->
-                <r:RibbonGroup Header="Sales Quote">
+                    CommandParameter=""
+                    Label=""
+                    LargeImageSource="/Image/RibbonImages/" />
+                    </r:RibbonGroup>
+                -->
+                <r:Ribbon.ApplicationMenu>
+                    <r:RibbonApplicationMenu>
+                        <r:RibbonApplicationMenuItem Header="Company Setting"
+                                                     Command="{Binding OpenViewCommand}"
+                                                     CommandParameter="CompanySetting"
+                                                     ImageSource="/Image/RibbonImages/Ribbon Company.png" />
+                        <r:RibbonApplicationMenuItem Header="Department"
+                                                     Command="{Binding OpenViewCommand}"
+                                                     CommandParameter="Department"
+                                                     ImageSource="/Image/RibbonImages/RibbonDepartment.png" />
+                        <r:RibbonApplicationMenuItem Header="LogOut"
+                                                     Command="{Binding LogOutCommand}"
+                                                     ImageSource="/Image/RibbonImages/RibbonLogout.png"
+                                                     ToolTipDescription="LogOut"
+                                                     ToolTipTitle="LogOut" />
+                    </r:RibbonApplicationMenu>
+                </r:Ribbon.ApplicationMenu>
+                <r:RibbonTab Header="Employee">
+                    <r:RibbonGroup Header="Employee">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Employee"
+                                        Label="Create New"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCreateEmployee.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="EmployeeList"
+                                        Label="Employee List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonEmployeeList.png" />
+                    </r:RibbonGroup>
+                    <!--  End TimeClock  -->
+                    <!--  Begin TimeClock  -->
+                    <r:RibbonGroup Header="Holiday and Schedule"
+                                   SmallImageSource="/Image/RibbonImages/RibbonCreateSchedule.png">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="WorkSchedule"
+                                        Label="Schedule"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCreateSchedule.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Holiday"
+                                        Label="Holiday"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCreateHoliday.png" />
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Timelog &amp; work permission"
+                                   SmallImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="ManualEventEditing"
+                                        Label="Manual editing timelog"
+                                        LargeImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="WorkPermission"
+                                        Label="Create permission"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCreateWorkPermission.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="WorkPermissionList"
+                                        Label="Permission list"
+                                        LargeImageSource="/Image/RibbonImages/RibbonWorkPermissionList.png" />
+                    </r:RibbonGroup>
+                </r:RibbonTab>
+                <r:RibbonTab Header="Sales">
+                    <r:RibbonGroup Header="Customer">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Customer"
+                                        Label="Create New"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCreateCustomer.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="CustomerList"
+                                        Label="Customer List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCustomerList.png" />
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Reward">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="RewardSetup"
+                                        Label="Reward Setup"
+                                        LargeImageSource="/Image/RibbonImages/RibbonRewardSetup.png" />
+                        <!--
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="RewardHistory"
+                            Label="Reward History"
+                            LargeImageSource="/Image/RibbonImages/RibbonRewardHistory.png" />
+                        -->
+                    </r:RibbonGroup>
+                    <!--
+                        <r:RibbonGroup Header="Sales Return">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                        CommandParameter="SOReturn"
+                        Label="SO Return"
+                        LargeImageSource="/Image/RibbonImages/RibbonSaleOrderReturn.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                        CommandParameter="SOReturnList"
+                        Label="SO Return List"
+                        LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
+                        </r:RibbonGroup>
+                    -->
+                    <!--
+                        <r:RibbonGroup>
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                        CommandParameter="GiftCard"
+                        Label="Gift Card"
+                        LargeImageSource="/Image/RibbonImages/RibbonGiftCard.png" />
+                        </r:RibbonGroup>
+                    -->
+                    <r:RibbonGroup Header="Sales Quote">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Quotation"
+                                        Label="Quotation"
+                                        LargeImageSource="/Image/RibbonImages/RibbonQuotation.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="QuotationList"
+                                        Label="Quotation List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonQuotationList.png" />
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Sales Order">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="SalesOrder"
+                                        Label="Sales Order"
+                                        LargeImageSource="/Image/RibbonImages/RibbonSaleOrder.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="SalesOrderList"
+                                        Label="SO List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
+                    </r:RibbonGroup>
+                </r:RibbonTab>
+                <r:RibbonTab Header="Purchase">
+                    <r:RibbonGroup Header="Vendor">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Vendor"
+                                        Label="Create New"
+                                        LargeImageSource="/Image/RibbonImages/RibbonVendor.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Vendor List"
+                                        Label="Vendor List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonVendorList.png" />
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Purchase Order">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="PurchaseOrder"
+                                        Label="Purchase Order"
+                                        LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrder.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="PurchaseOrderList"
+                                        Label="PO List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderList.png" />
+                    </r:RibbonGroup>
+                    <!--
+                        <r:RibbonGroup Header="Purchase Return">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                        CommandParameter="POReturn"
+                        Label="PO Return"
+                        LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderReturn.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                        CommandParameter="POReturnList"
+                        Label="PO Return List"
+                        LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderReturn.png" />
+                        </r:RibbonGroup>
+                    -->
+                </r:RibbonTab>
+                <r:RibbonTab Header="Inventory">
+                    <r:RibbonGroup Header="Product">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Product"
+                                        Label="Create New"
+                                        LargeImageSource="/Image/RibbonImages/RibbonProduct.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="ProductList"
+                                        Label="Product List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonProductList.png" />
+                        <!--
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="MovementHistory"
+                            Label="Movement History"
+                            LargeImageSource="/Image/RibbonImages/RibbonPromotionHistory.png" />
+                        -->
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Pricing">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Pricing"
+                                        Label="Pricing"
+                                        LargeImageSource="/Image/RibbonImages/RibbonProductPricing.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="PricingList"
+                                        Label="Pricing List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonProductPricingList.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Discount"
+                                        Label="Discount"
+                                        LargeImageSource="/Image/RibbonImages/RibbonDiscount.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="DiscountList"
+                                        Label="Discount List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonDiscountList.png" />
+                    </r:RibbonGroup>
+                    <r:RibbonGroup Header="Stock">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="CurrentStock"
+                                        Label="Current Stock"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCurrentStock.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="CountSheet"
+                                        Label="Count Sheet"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCountSheet.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="CountSheetList"
+                                        Label="Count Sheet List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonCountSheetList.png" />
+                        <!--
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="ReorderStock"
+                            Label="Reorder Stock"
+                            LargeImageSource="/Image/RibbonImages/RibbonReorderStock.png" />
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="WorkOrder"
+                            Label="Work Order"
+                            LargeImageSource="/Image/RibbonImages/RibbonWorkOrder.png" />
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="WorkOrderList"
+                            Label="Work Order List"
+                            LargeImageSource="/Image/RibbonImages/RibbonWorkOrderList.png" />
+                        -->
+                        <!--
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="StockAdjustment"
+                            Label="Stock Adjustment"
+                            LargeImageSource="/Image/RibbonImages/RibbonAdjustStock.png" />
+                            <r:RibbonButton Command="{Binding OpenViewCommand}"
+                            CommandParameter="StockAdjustmentList"
+                            Label="Stock Adjustment List"
+                            LargeImageSource="/Image/RibbonImages/RibbonAdjustStockList.png" />
+                        -->
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="TransferStock"
+                                        Label="Transfer Stock"
+                                        LargeImageSource="/Image/RibbonImages/RibbonTransferStock.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="TransferStockList"
+                                        Label="Transfer List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonTransferStockList.png" />
+                    </r:RibbonGroup>
+                </r:RibbonTab>
+                <!--
+                    <r:RibbonTab Header="Report">
+                    <r:RibbonGroup Header="Report">
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Quotation"
-                                    Label="Quotation"
-                                    LargeImageSource="/Image/RibbonImages/RibbonQuotation.png" />
+                    CommandParameter="InventoryReport"
+                    Label="Inventory Report"
+                    LargeImageSource="/Image/RibbonImages/RibbonProductList.png" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="QuotationList"
-                                    Label="Quotation List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonQuotationList.png" />
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Sales Order">
+                    CommandParameter="SalesReport"
+                    Label="Sales Report"
+                    LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
                     <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SalesOrder"
-                                    Label="Sales Order"
-                                    LargeImageSource="/Image/RibbonImages/RibbonSaleOrder.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SalesOrderList"
-                                    Label="SO List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
-                </r:RibbonGroup>
-                <!--<r:RibbonGroup Header="Sales Return">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SOReturn"
-                                    Label="SO Return"
-                                    LargeImageSource="/Image/RibbonImages/RibbonSaleOrderReturn.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SOReturnList"
-                                    Label="SO Return List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
-                </r:RibbonGroup>-->
-            </r:RibbonTab>
-            <r:RibbonTab Header="Purchase">
-                <r:RibbonGroup Header="Vendor">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Vendor"
-                                    Label="Create New"
-                                    LargeImageSource="/Image/RibbonImages/RibbonVendor.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Vendor List"
-                                    Label="Vendor List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonVendorList.png" />
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Purchase Order">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="PurchaseOrder"
-                                    Label="Purchase Order"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrder.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="PurchaseOrderList"
-                                    Label="PO List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderList.png" />
-                </r:RibbonGroup>
-                <!--<r:RibbonGroup Header="Purchase Return">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="POReturn"
-                                    Label="PO Return"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderReturn.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="POReturnList"
-                                    Label="PO Return List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderReturn.png" />
-                </r:RibbonGroup>-->
-            </r:RibbonTab>
-            <r:RibbonTab Header="Inventory">
-                <r:RibbonGroup Header="Product">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Product"
-                                    Label="Create New"
-                                    LargeImageSource="/Image/RibbonImages/RibbonProduct.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="ProductList"
-                                    Label="Product List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonProductList.png" />
-                    <!--<r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="MovementHistory"
-                                    Label="Movement History"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPromotionHistory.png" />-->
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Pricing">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Pricing"
-                                    Label="Pricing"
-                                    LargeImageSource="/Image/RibbonImages/RibbonProductPricing.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="PricingList"
-                                    Label="Pricing List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonProductPricingList.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Discount"
-                                    Label="Discount"
-                                    LargeImageSource="/Image/RibbonImages/RibbonDiscount.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="DiscountList"
-                                    Label="Discount List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonDiscountList.png" />
-                </r:RibbonGroup>
-                <r:RibbonGroup Header="Stock">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="CurrentStock"
-                                    Label="Current Stock"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCurrentStock.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="CountSheet"
-                                    Label="Count Sheet"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCountSheet.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="CountSheetList"
-                                    Label="Count Sheet List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCountSheetList.png" />
-                    <!--<r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="StockAdjustment"
-                                    Label="Stock Adjustment"
-                                    LargeImageSource="/Image/RibbonImages/RibbonAdjustStock.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="StockAdjustmentList"
-                                    Label="Stock Adjustment List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonAdjustStockList.png" />-->
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="TransferStock"
-                                    Label="Transfer Stock"
-                                    LargeImageSource="/Image/RibbonImages/RibbonTransferStock.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="TransferStockList"
-                                    Label="Transfer List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonTransferStockList.png" />
-                    <!--<r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="ReorderStock"
-                                    Label="Reorder Stock"
-                                    LargeImageSource="/Image/RibbonImages/RibbonReorderStock.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="WorkOrder"
-                                    Label="Work Order"
-                                    LargeImageSource="/Image/RibbonImages/RibbonWorkOrder.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="WorkOrderList"
-                                    Label="Work Order List"
-                                    LargeImageSource="/Image/RibbonImages/RibbonWorkOrderList.png" />-->
-                </r:RibbonGroup>
-            </r:RibbonTab>
-            <!--<r:RibbonTab Header="Report">
-                <r:RibbonGroup Header="Report">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="InventoryReport"
-                                    Label="Inventory Report"
-                                    LargeImageSource="/Image/RibbonImages/RibbonProductList.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SalesReport"
-                                    Label="Sales Report"
-                                    LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="PurchaseReport"
-                                    Label="Purchase Report"
-                                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderList.png" />
-                </r:RibbonGroup>
-            </r:RibbonTab>-->
-            <r:RibbonTab Header="Configuration">
-                <r:RibbonGroup Header="Settings">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Attachment"
-                                    Label="Attachment"
-                                    LargeImageSource="/Image/RibbonImages/RibbonAttachFile.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="SalesTax"
-                                    Label="Sales Tax"
-                                    LargeImageSource="/Image/RibbonImages/RibbonTaxCode.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="UserPermission"
-                                    Label="User Permission"
-                                    LargeImageSource="/Image/RibbonImages/RibbonUserPermissionList.png" />
-                    <r:RibbonMenuButton Label="Style"
-                                        LargeImageSource="/Image/RibbonImages/RibbonStyle.png">
-                        <r:RibbonMenuItem Header="Grey"
-                                          Command="{Binding ChangeStyleCommand}"
-                                          CommandParameter="Grey" />
+                    CommandParameter="PurchaseReport"
+                    Label="Purchase Report"
+                    LargeImageSource="/Image/RibbonImages/RibbonPurchaseOrderList.png" />
+                    </r:RibbonGroup>
+                    </r:RibbonTab>
+                -->
+                <r:RibbonTab Header="Configuration">
+                    <r:RibbonGroup Header="Settings">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="Attachment"
+                                        Label="Attachment"
+                                        LargeImageSource="/Image/RibbonImages/RibbonAttachFile.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="SalesTax"
+                                        Label="Sales Tax"
+                                        LargeImageSource="/Image/RibbonImages/RibbonTaxCode.png" />
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="UserPermission"
+                                        Label="User Permission"
+                                        LargeImageSource="/Image/RibbonImages/RibbonUserPermissionList.png" />
+                        <r:RibbonMenuButton Label="Style"
+                                            LargeImageSource="/Image/RibbonImages/RibbonStyle.png">
+                            <r:RibbonMenuItem Header="Grey"
+                                              Command="{Binding ChangeStyleCommand}"
+                                              CommandParameter="Grey" />
 
-                        <r:RibbonMenuItem Header="Red"
-                                          Command="{Binding ChangeStyleCommand}"
-                                          CommandParameter="Red" />
-                    </r:RibbonMenuButton>
-                </r:RibbonGroup>
-            </r:RibbonTab>
-            <!--<r:RibbonTab Header="Unknown">
-                <r:RibbonGroup Header="Unknown">
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="Archive"
-                                    Label="Archive"
-                                    LargeImageSource="/Image/RibbonImages/RibbonArchive.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="GroupPermission"
-                                    Label="Permission Group"
-                                    LargeImageSource="/Image/RibbonImages/RibbonGroupPermissionList.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="CurrentStock"
-                                    Label="Current Stock"
-                                    LargeImageSource="/Image/RibbonImages/RibbonCurrentStock.png" />
-                    <r:RibbonButton Command="{Binding OpenViewCommand}"
-                                    CommandParameter="LayawayHistory"
-                                    Label="Layaway History"
-                                    LargeImageSource="/Image/RibbonImages/RibbonLayawayOrderHistory.png" />
-                </r:RibbonGroup>
-            </r:RibbonTab>-->
+                            <r:RibbonMenuItem Header="Red"
+                                              Command="{Binding ChangeStyleCommand}"
+                                              CommandParameter="Red" />
+                        </r:RibbonMenuButton>
+                    </r:RibbonGroup>
+                </r:RibbonTab>
 
-        </r:Ribbon>
-        <StatusBar x:Name="statusBar"
-                   Grid.Row="2"
-                   Background="{DynamicResource Bottom_TitleBar_Background}">
-            <StatusBarItem DockPanel.Dock="Right">
-                <ComboBox x:Name="cboOpenedOverControlList"
-                          MinWidth="32"
-                          VerticalAlignment="Center"
-                          FontWeight="Bold"
-                          IsReadOnly="True"
-                          ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
-                          ItemsSource="{Binding HiddenHostList}"
-                          SelectedItem="{Binding SelectedHiddenHost}"
-                          Style="{DynamicResource ComboBoxStyle}"
-                          Visibility="{Binding HiddenHostVisibility}" />
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock x:Name="tbUserLogin"
-                           Margin="8,0,0,0"
-                           Foreground="Red"
-                           Text="{Binding LoginName}"
-                           TextWrapping="Wrap" />
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock x:Name="tbStatus"
-                           Margin="8,0,0,0"
-                           DockPanel.Dock="Left"
-                           Foreground="#FF2D2D2D"
-                           Text="Status"
-                           TextWrapping="Wrap" />
-            </StatusBarItem>
-            <StatusBarItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="txtblServer"
-                               Margin="3"
-                               Text="{Binding Server}" />
-                    <TextBlock x:Name="txtblDatabse"
-                               Margin="3"
-                               Text="{Binding Database}" />
-                </StackPanel>
-            </StatusBarItem>
-        </StatusBar>
-        <Grid x:Name="grdMainView"
-              Grid.Row="1"
-              Margin="5"
-              Background="{DynamicResource UserControl_Background_Image}" />
+            </r:Ribbon>
+            <StatusBar x:Name="statusBar"
+                       Grid.Row="2"
+                       Background="{DynamicResource Bottom_TitleBar_Background}">
+                <StatusBarItem DockPanel.Dock="Right">
+                    <ComboBox x:Name="cboOpenedOverControlList"
+                              MinWidth="32"
+                              VerticalAlignment="Center"
+                              FontWeight="Bold"
+                              IsReadOnly="True"
+                              ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                              ItemsSource="{Binding HiddenHostList}"
+                              SelectedItem="{Binding SelectedHiddenHost}"
+                              Style="{DynamicResource ComboBoxStyle}"
+                              Visibility="{Binding HiddenHostVisibility}" />
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock x:Name="tbUserLogin"
+                               Margin="8,0,0,0"
+                               Foreground="Red"
+                               Text="{Binding LoginName}"
+                               TextWrapping="Wrap" />
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock x:Name="tbStatus"
+                               Margin="8,0,0,0"
+                               DockPanel.Dock="Left"
+                               Foreground="#FF2D2D2D"
+                               Text="Status"
+                               TextWrapping="Wrap" />
+                </StatusBarItem>
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="txtblServer"
+                                   Margin="3"
+                                   Text="{Binding Server}" />
+                        <TextBlock x:Name="txtblDatabse"
+                                   Margin="3"
+                                   Text="{Binding Database}" />
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+            <Grid x:Name="grdMainView"
+                  Grid.Row="1"
+                  Margin="5"
+                  Background="{DynamicResource UserControl_Background_Image}" />
+        </Grid>
+        <Grid x:Name="grdLogin"
+              Background="#F2000000">
+            <Grid.Visibility>
+                <Binding Path="IsLockScreen"
+                         Mode="OneWay"
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.Converter>
+                        <converter:BoolToVisibilityConverter />
+                    </Binding.Converter>
+                </Binding>
+            </Grid.Visibility>
+            <Border x:Name="brdLogin"
+                    Width="377"
+                    Height="328"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="{DynamicResource UserControlBackground}"
+                    BorderBrush="{DynamicResource TitleBarBorder}"
+                    BorderThickness="5,5,5,5"
+                    CornerRadius="5,5,5,5">
+                <Grid x:Name="grdContentLogin1">
+                    <Rectangle x:Name="UserControl_Background_Image"
+                               Fill="{DynamicResource UserControl_Background_Image}" />
+                    <Border x:Name="brdContentLogin"
+                            Margin="10,10,10,10"
+                            Background="{DynamicResource TimeClockDisplayBackground}"
+                            BorderBrush="{DynamicResource TimeClockDisplayBorder}"
+                            BorderThickness="1,1,1,1"
+                            CornerRadius="5,5,5,5">
+                        <Grid x:Name="grdContentLogin"
+                              Margin="5,5,5,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="124" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid x:Name="grdLogoCompany"
+                                  HorizontalAlignment="Stretch">
+                                <Rectangle x:Name="bgInOut"
+                                           Grid.RowSpan="2"
+                                           Grid.ColumnSpan="2"
+                                           Fill="#FFFFFFFF"
+                                           RadiusX="5"
+                                           RadiusY="5"
+                                           Stroke="White" />
+                                <Image x:Name="imgLogo"
+                                       Grid.RowSpan="2"
+                                       Margin="3"
+                                       Source="/POS;component/Image/3D Logo Flat.jpg"
+                                       Stretch="Uniform" />
+                            </Grid>
+                            <Border Grid.Row="1"
+                                    BorderBrush="White"
+                                    BorderThickness="0,0,0,1">
+                                <TextBlock x:Name="txtblPhoneNumber1"
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           TextWrapping="Wrap">
+                                    <Run Text="This transaction is in use and has been locked. Only &quot;" />
+                                    <Run Text="{Binding LoginName, Mode=OneWay}" />
+                                    <Run Text="&quot; or an administrator can unlock." />
+                                </TextBlock>
+                            </Border>
+                            <Grid x:Name="grdLoginPassword"
+                                  Grid.Row="2"
+                                  Margin="0,10,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="18" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblUsername"
+                                           Margin="30,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="User Name:"
+                                           TextWrapping="NoWrap" />
+                                <textBoxControl:TextBox x:Name="txtUsername"
+                                                        Width="200"
+                                                        Margin="95,2,10,2"
+                                                        HorizontalAlignment="Left"
+                                                        MaxLength="50"
+                                                        Padding="20,0,2,0"
+                                                        Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                        TextWrapping="NoWrap" />
+                                <Rectangle x:Name="imgUser"
+                                           Width="16"
+                                           Height="16"
+                                           Margin="96,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           Fill="{DynamicResource User}" />
+                                <TextBlock x:Name="txtblPassword"
+                                           Grid.Row="1"
+                                           Margin="30,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="Password:"
+                                           TextWrapping="NoWrap" />
+                                <PasswordBox x:Name="txtPassword"
+                                             Grid.Row="1"
+                                             Width="200"
+                                             Margin="95,2,0,2"
+                                             HorizontalAlignment="Left"
+                                             VerticalContentAlignment="Center"
+                                             helper:PasswordHelper.BindPassword="true"
+                                             helper:PasswordHelper.BoundPassword="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                             Padding="20,0,2,0"
+                                             PasswordChar="*" />
+                                <Rectangle x:Name="imgPassword"
+                                           Grid.Row="1"
+                                           Width="16"
+                                           Height="16"
+                                           Margin="96,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           Fill="{DynamicResource Password}" />
+                                <Rectangle x:Name="Line"
+                                           Grid.Row="2"
+                                           Height="1"
+                                           Margin="0,10,0,0"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Top"
+                                           Fill="{DynamicResource Spilter_Line_Background}" />
+                                <Button x:Name="btnLogin"
+                                        Command="{Binding LoginCommand}"
+                                        Grid.Row="5"
+                                        Width="80"
+                                        Height="28"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsDefault="True">
+                                    <StackPanel x:Name="stkpBtnLogin"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgLogin"
+                                                   Width="20"
+                                                   Height="20"
+                                                   Fill="{DynamicResource Login}" />
+                                        <TextBlock x:Name="txtblLogin"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="Login"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </r:RibbonWindow>
