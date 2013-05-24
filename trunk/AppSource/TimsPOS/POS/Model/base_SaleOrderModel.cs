@@ -1133,6 +1133,46 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isPurge;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsPurge</para>
+        /// </summary>
+        public bool IsPurge
+        {
+            get { return this._isPurge; }
+            set
+            {
+                if (this._isPurge != value)
+                {
+                    this.IsDirty = true;
+                    this._isPurge = value;
+                    OnPropertyChanged(() => IsPurge);
+                    PropertyChangedCompleted(() => IsPurge);
+                }
+            }
+        }
+
+        protected Nullable<bool> _isHold;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsHold</para>
+        /// </summary>
+        public Nullable<bool> IsHold
+        {
+            get { return this._isHold; }
+            set
+            {
+                if (this._isHold != value)
+                {
+                    this.IsDirty = true;
+                    this._isHold = value;
+                    OnPropertyChanged(() => IsHold);
+                    PropertyChangedCompleted(() => IsHold);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1208,6 +1248,8 @@ namespace CPC.POS.Model
             this.base_SaleOrder.WeightUnit = this.WeightUnit;
             this.base_SaleOrder.StoreCode = this.StoreCode;
             this.base_SaleOrder.IsRedeeem = this.IsRedeeem;
+            this.base_SaleOrder.IsPurge = this.IsPurge;
+            this.base_SaleOrder.IsHold = this.IsHold;
         }
 
         /// <summary>
@@ -1270,6 +1312,8 @@ namespace CPC.POS.Model
             this._weightUnit = this.base_SaleOrder.WeightUnit;
             this._storeCode = this.base_SaleOrder.StoreCode;
             this._isRedeeem = this.base_SaleOrder.IsRedeeem;
+            this._isPurge = this.base_SaleOrder.IsPurge;
+            this._isHold = this.base_SaleOrder.IsHold;
         }
 
         /// <summary>
@@ -1332,6 +1376,8 @@ namespace CPC.POS.Model
             this.WeightUnit = this.base_SaleOrder.WeightUnit;
             this.StoreCode = this.base_SaleOrder.StoreCode;
             this.IsRedeeem = this.base_SaleOrder.IsRedeeem;
+            this.IsPurge = this.base_SaleOrder.IsPurge;
+            this.IsHold = this.base_SaleOrder.IsHold;
         }
 
         #endregion
@@ -1649,6 +1695,45 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region ShipTaxAmount
+        private decimal _shipTaxAmount;
+        /// <summary>
+        /// Gets or sets the ShipTaxAmount.
+        /// </summary>
+        public decimal ShipTaxAmount
+        {
+            get { return _shipTaxAmount; }
+            set
+            {
+                if (_shipTaxAmount != value)
+                {
+                    _shipTaxAmount = value;
+                    OnPropertyChanged(() => ShipTaxAmount);
+                }
+            }
+        }
+        #endregion
+
+        #region ProductTaxAmount
+        private decimal _productTaxAmount;
+        /// <summary>
+        /// Gets or sets the ProductTaxAmount.
+        /// </summary>
+        public decimal ProductTaxAmount
+        {
+            get { return _productTaxAmount; }
+            set
+            {
+                if (_productTaxAmount != value)
+                {
+                    _productTaxAmount = value;
+                    OnPropertyChanged(() => ProductTaxAmount);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
 
         #region Methods
@@ -1730,6 +1815,99 @@ namespace CPC.POS.Model
         public void RaiseAnyShipped()
         {
             OnPropertyChanged(() => AnyShipped);
+        }
+
+        /// <summary>
+        /// Public Method
+        /// <para>Method for set Entity to PropertyModel</para>
+        /// </summary
+        private void ToModel(base_SaleOrderModel saleOrderModel)
+        {
+            //this._id = saleOrderModel.Id;
+            //this._sONumber = saleOrderModel.SONumber;
+            //this._orderDate = saleOrderModel.OrderDate;
+            //this._orderStatus = saleOrderModel.OrderStatus;
+            this.BillAddressId = saleOrderModel.BillAddressId;
+            this.BillAddress = saleOrderModel.BillAddress;
+            this.ShipAddressId = saleOrderModel.ShipAddressId;
+            this.ShipAddress = saleOrderModel.ShipAddress;
+            this.PromotionCode = saleOrderModel.PromotionCode;
+            this.SaleRep = saleOrderModel.SaleRep;
+            this.CustomerResource = saleOrderModel.CustomerResource;
+            this.PriceSchemaId = saleOrderModel.PriceSchemaId;
+            this.DueDate = saleOrderModel.DueDate;
+            this.RequestShipDate = saleOrderModel.RequestShipDate;
+            this.SubTotal = saleOrderModel.SubTotal;
+            this.TaxLocation = saleOrderModel.TaxLocation;
+            this.TaxCode = saleOrderModel.TaxCode;
+            this.DiscountAmount = saleOrderModel.DiscountAmount;
+            this.TaxAmount = saleOrderModel.TaxAmount;
+            this.DiscountPercent = saleOrderModel.DiscountPercent;
+            this.TaxPercent = saleOrderModel.TaxPercent;
+            this.Shipping = saleOrderModel.Shipping;
+            this.Total = saleOrderModel.Total;
+            //this.Paid = saleOrderModel.Paid;
+            //this.Balance = saleOrderModel.Balance;
+            //this._refundFee = saleOrderModel.RefundFee;
+            this.IsMultiPayment = saleOrderModel.IsMultiPayment;
+            this.Remark = saleOrderModel.Remark;
+            this.IsFullWorkflow = saleOrderModel.IsFullWorkflow;
+            this.QtyOrdered = saleOrderModel.QtyOrdered;
+            //this.QtyDue = saleOrderModel.QtyDue;
+            this.QtyReceived = saleOrderModel.QtyReceived;
+            //this.UnFilled = saleOrderModel.UnFilled;
+            //this._userCreated = saleOrderModel.UserCreated;
+            //this._dateCreated = saleOrderModel.DateCreated;
+            //this._userUpdated = saleOrderModel.UserUpdated;
+            //this._dateUpdated = saleOrderModel.DateUpdated;
+            //this._resource = saleOrderModel.Resource;
+            this._bookingChanel = saleOrderModel.BookingChanel;
+            //this._shippedCount = saleOrderModel.ShippedCount;
+            //this.Deposit = saleOrderModel.Deposit;
+            this.Transaction = saleOrderModel.Transaction;
+            this.TermDiscountPercent = saleOrderModel.TermDiscountPercent;
+            this.TermNetDue = saleOrderModel.TermNetDue;
+            this.TermPaidWithinDay = saleOrderModel.TermPaidWithinDay;
+            this.PaymentTermDescription = saleOrderModel.PaymentTermDescription;
+            this.IsTaxExemption = saleOrderModel.IsTaxExemption;
+            this.TaxExemption = saleOrderModel.TaxExemption;
+            //this._shippedBox = saleOrderModel.ShippedBox;
+            //this._packedQty = saleOrderModel.PackedQty;
+            //this._totalWeight = saleOrderModel.TotalWeight;
+            this.WeightUnit = saleOrderModel.WeightUnit;
+            this.StoreCode = saleOrderModel.StoreCode;
+            //this._isRedeeem = saleOrderModel.IsRedeeem;
+            this.IsPurge = saleOrderModel.IsPurge;
+        }
+
+        public void CopyFrom(base_SaleOrderModel saleOrderModel)
+        {
+            ToModel(saleOrderModel);
+            if (saleOrderModel.GuestModel != null)
+            {
+                this.GuestModel = saleOrderModel.GuestModel;
+                if(saleOrderModel.GuestModel.GuestRewardCollection!=null)
+                    this.GuestModel.GuestRewardCollection = saleOrderModel.GuestModel.GuestRewardCollection;
+            }
+            if (saleOrderModel.TaxCode!=null)
+            {
+                //Get TaxCode
+                this.TaxCodeModel = saleOrderModel.TaxCodeModel;
+            }
+
+            if (saleOrderModel.TaxLocationModel != null)
+            {
+                //Get TaxLocation
+                this.TaxLocationModel = saleOrderModel.TaxLocationModel;
+            }
+            if(saleOrderModel.BillAddressModel!=null)
+               this.BillAddressModel=saleOrderModel.BillAddressModel;
+            if (saleOrderModel.ShipAddressModel != null)
+                this.ShipAddressModel = saleOrderModel.ShipAddressModel;
+            
+
+            //Check Deposit is accepted?
+            this.IsDeposit = saleOrderModel.IsDeposit;
         }
 
         #endregion

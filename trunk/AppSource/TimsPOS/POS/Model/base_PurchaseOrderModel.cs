@@ -932,6 +932,52 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isPurge;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsPurge</para>
+        /// </summary>
+        public bool IsPurge
+        {
+            get
+            {
+                return this._isPurge;
+            }
+            set
+            {
+                if (this._isPurge != value)
+                {
+                    this.IsDirty = true;
+                    this._isPurge = value;
+                    OnPropertyChanged(() => IsPurge);
+                    PropertyChangedCompleted(() => IsPurge);
+                }
+            }
+        }
+
+        protected bool _isLocked;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsLocked</para>
+        /// </summary>
+        public bool IsLocked
+        {
+            get
+            {
+                return this._isLocked;
+            }
+            set
+            {
+                if (this._isLocked != value)
+                {
+                    this.IsDirty = true;
+                    this._isLocked = value;
+                    OnPropertyChanged(() => IsLocked);
+                    PropertyChangedCompleted(() => IsLocked);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -991,6 +1037,8 @@ namespace CPC.POS.Model
             this.base_PurchaseOrder.StoreCode = this.StoreCode;
             this.base_PurchaseOrder.RecRemark = this.RecRemark;
             this.base_PurchaseOrder.PaymentName = this.PaymentName;
+            this.base_PurchaseOrder.IsPurge = this.IsPurge;
+            this.base_PurchaseOrder.IsLocked = this.IsLocked;
         }
 
         /// <summary>
@@ -1037,6 +1085,8 @@ namespace CPC.POS.Model
             this._storeCode = this.base_PurchaseOrder.StoreCode;
             this._recRemark = this.base_PurchaseOrder.RecRemark;
             this._paymentName = this.base_PurchaseOrder.PaymentName;
+            this._isPurge = this.base_PurchaseOrder.IsPurge;
+            this._isLocked = this.base_PurchaseOrder.IsLocked;
         }
 
         /// <summary>
@@ -1083,6 +1133,8 @@ namespace CPC.POS.Model
             this.StoreCode = this.base_PurchaseOrder.StoreCode;
             this.RecRemark = this.base_PurchaseOrder.RecRemark;
             this.PaymentName = this.base_PurchaseOrder.PaymentName;
+            this.IsPurge = this.base_PurchaseOrder.IsPurge;
+            this.IsLocked = this.base_PurchaseOrder.IsLocked;
         }
 
         #endregion
@@ -1457,58 +1509,7 @@ namespace CPC.POS.Model
         {
             switch (propertyName)
             {
-                case "DiscountAmount":
-
-                    _discountPercent = 0;
-                    OnPropertyChanged(() => DiscountPercent);
-
-                    _total = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => Total);
-
-                    if (_resourceReturn != null)
-                    {
-                        _resourceReturn.TotalAmount = _total;
-                    }
-
-                    break;
-
-                case "DiscountPercent":
-
-                    _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                    OnPropertyChanged(() => DiscountAmount);
-
-                    _total = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => Total);
-
-                    if (_resourceReturn != null)
-                    {
-                        _resourceReturn.TotalAmount = _total;
-                    }
-
-                    break;
-
-                case "SubTotal":
-
-                    if (_discountPercent > 0)
-                    {
-                        _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                        OnPropertyChanged(() => DiscountAmount);
-                    }
-
-                    _total = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => Total);
-
-                    if (_resourceReturn != null)
-                    {
-                        _resourceReturn.TotalAmount = _total;
-                    }
-
-                    break;
-
-                case "Freight":
-
-                    _total = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => Total);
+                case "Total":
 
                     if (_resourceReturn != null)
                     {

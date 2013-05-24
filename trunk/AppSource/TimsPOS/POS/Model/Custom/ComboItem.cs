@@ -81,6 +81,13 @@ namespace CPC.POS.Model
             get { return _detail; }
             set { _detail = value; }
         }
+
+        private bool _islocked;
+        public bool Islocked
+        {
+            get { return _islocked; }
+            set { _islocked = value; }
+        }
     }
 
 

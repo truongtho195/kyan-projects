@@ -1174,6 +1174,86 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isRewardOnTax;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsRewardOnTax</para>
+        /// </summary>
+        public bool IsRewardOnTax
+        {
+            get { return this._isRewardOnTax; }
+            set
+            {
+                if (this._isRewardOnTax != value)
+                {
+                    this.IsDirty = true;
+                    this._isRewardOnTax = value;
+                    OnPropertyChanged(() => IsRewardOnTax);
+                    PropertyChangedCompleted(() => IsRewardOnTax);
+                }
+            }
+        }
+
+        protected bool _isRewardOnMultiPayment;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsRewardOnMultiPayment</para>
+        /// </summary>
+        public bool IsRewardOnMultiPayment
+        {
+            get { return this._isRewardOnMultiPayment; }
+            set
+            {
+                if (this._isRewardOnMultiPayment != value)
+                {
+                    this.IsDirty = true;
+                    this._isRewardOnMultiPayment = value;
+                    OnPropertyChanged(() => IsRewardOnMultiPayment);
+                    PropertyChangedCompleted(() => IsRewardOnMultiPayment);
+                }
+            }
+        }
+
+        protected bool _isIncludeReturnFee;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsIncludeReturnFee</para>
+        /// </summary>
+        public bool IsIncludeReturnFee
+        {
+            get { return this._isIncludeReturnFee; }
+            set
+            {
+                if (this._isIncludeReturnFee != value)
+                {
+                    this.IsDirty = true;
+                    this._isIncludeReturnFee = value;
+                    OnPropertyChanged(() => IsIncludeReturnFee);
+                    PropertyChangedCompleted(() => IsIncludeReturnFee);
+                }
+            }
+        }
+
+        protected bool _returnFeePercent;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ReturnFeePercent</para>
+        /// </summary>
+        public bool ReturnFeePercent
+        {
+            get { return this._returnFeePercent; }
+            set
+            {
+                if (this._returnFeePercent != value)
+                {
+                    this.IsDirty = true;
+                    this._returnFeePercent = value;
+                    OnPropertyChanged(() => ReturnFeePercent);
+                    PropertyChangedCompleted(() => ReturnFeePercent);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1251,6 +1331,10 @@ namespace CPC.POS.Model
             this.base_Configuration.IsAllowChangeOrder = this.IsAllowChangeOrder;
             this.base_Configuration.IsAllowNegativeStore = this.IsAllowNegativeStore;
             this.base_Configuration.AcceptedGiftCardMethod = this.AcceptedGiftCardMethod;
+            this.base_Configuration.IsRewardOnTax = this.IsRewardOnTax;
+            this.base_Configuration.IsRewardOnMultiPayment = this.IsRewardOnMultiPayment;
+            this.base_Configuration.IsIncludeReturnFee = this.IsIncludeReturnFee;
+            this.base_Configuration.ReturnFeePercent = this.ReturnFeePercent;
         }
 
         /// <summary>
@@ -1315,6 +1399,10 @@ namespace CPC.POS.Model
             this._isAllowChangeOrder = this.base_Configuration.IsAllowChangeOrder;
             this._isAllowNegativeStore = this.base_Configuration.IsAllowNegativeStore;
             this._acceptedGiftCardMethod = this.base_Configuration.AcceptedGiftCardMethod;
+            this._isRewardOnTax = this.base_Configuration.IsRewardOnTax;
+            this._isRewardOnMultiPayment = this.base_Configuration.IsRewardOnMultiPayment;
+            this._isIncludeReturnFee = this.base_Configuration.IsIncludeReturnFee;
+            this._returnFeePercent = this.base_Configuration.ReturnFeePercent;
         }
 
         /// <summary>
@@ -1379,6 +1467,10 @@ namespace CPC.POS.Model
             this.IsAllowChangeOrder = this.base_Configuration.IsAllowChangeOrder;
             this.IsAllowNegativeStore = this.base_Configuration.IsAllowNegativeStore;
             this.AcceptedGiftCardMethod = this.base_Configuration.AcceptedGiftCardMethod;
+            this.IsRewardOnTax = this.base_Configuration.IsRewardOnTax;
+            this.IsRewardOnMultiPayment = this.base_Configuration.IsRewardOnMultiPayment;
+            this.IsIncludeReturnFee = this.base_Configuration.IsIncludeReturnFee;
+            this.ReturnFeePercent = this.base_Configuration.ReturnFeePercent;
         }
 
         #endregion

@@ -9,15 +9,21 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CPC.Control;
+using CPC.Helper;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPC.Toolkit.Layout;
+using System.ComponentModel;
+using CPC.POS.Repository;
+using SecurityLib;
+using CPC.POS.Database;
 
 namespace CPC.POS.ViewModel
 {
-    class MainViewModel : ViewModelBase
+    class MainViewModel : ViewModelBase, IDataErrorInfo
     {
         #region Layout Defines
 
@@ -42,6 +48,19 @@ namespace CPC.POS.ViewModel
         // Store columns to expand
         private ColumnDefinition _colSubItem;
         private ColumnDefinition _colSubItemExpanded;
+
+        #endregion
+
+        #region Defines
+
+        private base_UserLogRepository _userLogRepository = new base_UserLogRepository();
+        private base_ResourceAccountRepository _accountRepository = new base_ResourceAccountRepository();
+
+        private DispatcherTimer _idleTimer;
+        private Regex _regexPassWord = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
+
+        private string _defaultUsernName = "admin";
+        private string _defaultPassword = "iktfcGzCJQ13CBk3uR6n9A==";
 
         #endregion
 
@@ -132,6 +151,40 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private string _userName = string.Empty;
+        /// <summary>
+        /// Gets or sets the UserName.
+        /// </summary>
+        public string UserName
+        {
+            get { return _userName; }
+            set
+            {
+                if (_userName != value)
+                {
+                    _userName = value;
+                    OnPropertyChanged(() => UserName);
+                }
+            }
+        }
+
+        private string _userPassword = string.Empty;
+        /// <summary>
+        /// Gets or sets the UserPassword.
+        /// </summary>
+        public string UserPassword
+        {
+            get { return _userPassword; }
+            set
+            {
+                if (_userPassword != value)
+                {
+                    _userPassword = value;
+                    OnPropertyChanged(() => UserPassword);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the Status
         /// </summary>
@@ -162,6 +215,23 @@ namespace CPC.POS.ViewModel
             private set;
         }
 
+        private bool _isLockScreen;
+        /// <summary>
+        /// Gets or sets the IsLockScreen.
+        /// </summary>
+        public bool IsLockScreen
+        {
+            get { return _isLockScreen; }
+            set
+            {
+                if (_isLockScreen != value)
+                {
+                    _isLockScreen = value;
+                    OnPropertyChanged(() => IsLockScreen);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -172,6 +242,7 @@ namespace CPC.POS.ViewModel
         public MainViewModel()
         {
             InitialCommand();
+            CheckIdleTime();
             LoadLayout();
             GetConnectionStringInfo(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
         }
@@ -324,6 +395,63 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region LoginCommand
+
+        /// <summary>
+        /// Gets the LoginCommand command.
+        /// </summary>
+        public ICommand LoginCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the LoginCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLoginCommandCanExecute()
+        {
+            return ExtensionErrors.Count == 0;
+        }
+
+        /// <summary>
+        /// Method to invoke when the LoginCommand command is executed.
+        /// </summary>
+        private void OnLoginCommandExecute()
+        {
+            try
+            {
+                // Encrypt password
+                string encryptPassword = AESSecurity.Encrypt(UserPassword);
+
+                if (UserName.Equals(_defaultUsernName) || UserName.Equals(LoginName))
+                {
+                    // Get login account
+                    base_ResourceAccount account = _accountRepository.Get(x => x.LoginName.Equals(UserName) && x.Password.Equals(encryptPassword));
+
+                    if (account != null || encryptPassword.Equals(_defaultPassword))
+                    {
+                        // Clear user password
+                        UserPassword = string.Empty;
+
+                        // Turn off lock screen
+                        IsLockScreen = false;
+
+                        // Star idle timer
+                        _idleTimer.Start();
+                    }
+                    else
+                        MessageBox.Show("Password is not valid, please try again!", "POS", MessageBoxButton.OK);
+                }
+                else
+                    MessageBox.Show("UserName is not valid, please try again!", "POS", MessageBoxButton.OK);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("OnLoginCommand" + ex.ToString());
+            }
+        }
+
+        #endregion
+
         #region LogOutCommand
 
         /// <summary>
@@ -443,10 +571,7 @@ namespace CPC.POS.ViewModel
                 else
                 {
                     ChangeLayoutItem(hostClicked);
-                    if (host.Tag == null)
-                        hostClicked.ViewModelBase.ChangeSearchMode(host.IsOpenList);
-                    else
-                        hostClicked.ViewModelBase.ChangeSearchMode(host.Tag);
+                    hostClicked.ViewModelBase.ChangeSearchMode(host.IsOpenList, host.Tag);
                 }
             }
         }
@@ -529,10 +654,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "SalesOrder":
                     view = new SalesOrderView();
-                    if (host.Tag == null)
-                        viewModel = new SalesOrderViewModel(host.IsOpenList);
-                    else
-                        viewModel = new SalesOrderViewModel(host.Tag);
+                    viewModel = new SalesOrderViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "SOReturn":
                     view = new SalesOrderReturnView();
@@ -553,10 +675,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "PurchaseOrder":
                     view = new PurchaseOrderView();
-                    if (host.Tag == null)
-                        viewModel = new PurchaseOrderViewModel(host.IsOpenList);
-                    else
-                        viewModel = new PurchaseOrderViewModel(host.Tag);
+                    viewModel = new PurchaseOrderViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "POReturn":
                     view = new PurchaseOrderReturnView();
@@ -575,10 +694,6 @@ namespace CPC.POS.ViewModel
                     view = new ProductView();
                     viewModel = new ProductViewModel(host.IsOpenList);
                     break;
-                //case "ProductList":
-                //    view = new ProductView();
-                //    viewModel = new ProductViewModel(true);
-                //    break;
                 case "MovementHistory":
                     view = new ProductMovementHistoryView();
                     viewModel = new ProductMovementHistoryViewModel();
@@ -595,10 +710,6 @@ namespace CPC.POS.ViewModel
                     view = new PromotionView();
                     viewModel = new PromotionViewModel(host.IsOpenList);
                     break;
-                //case "DiscountList":
-                //    view = new PromotionView();
-                //    viewModel = new PromotionViewModel(true);
-                //    break;
                 case "CountSheet":
                     view = new CountSheetView();
                     viewModel = new CountSheetViewModel(host.IsOpenList);
@@ -617,10 +728,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "TransferStock":
                     view = new TransferStockView();
-                    if (host.Tag == null)
-                        viewModel = new TransferStockViewModel(host.IsOpenList);
-                    else
-                        viewModel = new TransferStockViewModel(host.Tag);
+                    viewModel = new TransferStockViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "ReorderStock":
                     view = new ReorderStockView();
@@ -994,6 +1102,7 @@ namespace CPC.POS.ViewModel
             ClearViewCommand = new RelayCommand(OnClearViewCommandExecute);
             CloseCommand = new RelayCommand(OnCloseCommandExecute, OnCloseCommandCanExecute);
             ChangeStyleCommand = new RelayCommand<object>(OnChangeStyleCommandExecute, OnChangeStyleCommandCanExecute);
+            LoginCommand = new RelayCommand(OnLoginCommandExecute, OnLoginCommandCanExecute);
             LogOutCommand = new RelayCommand(OnLogOutExecuted, CanOnLogOutExecute);
             OpenManagementUserCommand = new RelayCommand<object>(OnOpenManagermentUserCommandExecute);
         }
@@ -1021,6 +1130,59 @@ namespace CPC.POS.ViewModel
             {
                 Debug.WriteLine("Logout Fail" + ex.ToString());
             }
+        }
+
+        /// <summary>
+        /// Check idle time function
+        /// </summary>
+        private void CheckIdleTime()
+        {
+            _idleTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
+            _idleTimer.Interval = TimeSpan.FromSeconds(1);
+            _idleTimer.Tick += (sender, e) =>
+            {
+                if (IsIdle())
+                {
+                    // Set user name default
+                    UserName = LoginName;
+
+                    // Turn on lock screen
+                    IsLockScreen = true;
+
+                    // Stop idle timer
+                    _idleTimer.Stop();
+                }
+            };
+            _idleTimer.Start();
+        }
+
+        /// <summary>
+        /// Check system and application idle
+        /// </summary>
+        /// <returns></returns>
+        private bool IsIdle()
+        {
+            // Check idle to LogOut application if TimeOutMinute is not null
+            if (!Define.CONFIGURATION.TimeOutMinute.HasValue)
+                return false;
+
+            // Define time out minute value
+            TimeSpan activityThreshold = TimeSpan.FromMinutes(Define.CONFIGURATION.TimeOutMinute.Value);
+            //TimeSpan activityThreshold = TimeSpan.FromSeconds(5);
+
+            // Get last input time to get system idle time
+            TimeSpan machineIdle = IdleTimeHelper.GetIdleTime();
+
+            // Get application idle time
+            TimeSpan? appIdle = !IdleTimeHelper.LostFocusTime.HasValue ? null : (TimeSpan?)DateTime.Now.Subtract(IdleTimeHelper.LostFocusTime.Value);
+
+            // Check is system idle
+            bool isMachineIdle = machineIdle > activityThreshold;
+
+            // Check is application idle
+            bool isAppIdle = appIdle.HasValue && appIdle > activityThreshold;
+
+            return isMachineIdle || isAppIdle;
         }
 
         #endregion
@@ -1154,6 +1316,56 @@ namespace CPC.POS.ViewModel
                     //    port = m.Groups["val"].ToString();
                     //    break;
                 }
+            }
+        }
+
+        #endregion
+
+        #region IDataErrorInfo Members
+
+        protected HashSet<string> _extensionErrors = new HashSet<string>();
+        /// <summary>
+        /// <para> Gets or sets the ExtensionErrors </para>
+        /// </summary>
+        public HashSet<string> ExtensionErrors
+        {
+            get { return _extensionErrors; }
+            set
+            {
+                if (_extensionErrors != value)
+                {
+                    _extensionErrors = value;
+                    OnPropertyChanged(() => ExtensionErrors);
+                }
+            }
+        }
+
+        public string Error
+        {
+            get { return null; }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string message = null;
+                this.ExtensionErrors.Clear();
+
+                switch (columnName)
+                {
+                    case "UserPassword":
+                        if (string.IsNullOrEmpty(UserPassword))
+                            message = "Password is required.";
+                        else if (!_regexPassWord.IsMatch(UserPassword))
+                            message = "Password must a-z and length of 3-50 characters";
+                        break;
+                }
+
+                if (!string.IsNullOrWhiteSpace(message))
+                    this.ExtensionErrors.Add(columnName);
+
+                return message;
             }
         }
 

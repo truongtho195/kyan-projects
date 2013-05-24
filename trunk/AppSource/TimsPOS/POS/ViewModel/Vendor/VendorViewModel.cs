@@ -1969,17 +1969,20 @@ namespace CPC.POS.ViewModel
         /// Switch to search mode
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ShowNotification(null))
+            if (param == null)
             {
-                if (!isList)
+                if (ShowNotification(null))
                 {
-                    NewVendor();
-                    IsSearchMode = false;
+                    if (!isList)
+                    {
+                        NewVendor();
+                        IsSearchMode = false;
+                    }
+                    else
+                        IsSearchMode = true;
                 }
-                else
-                    IsSearchMode = true;
             }
         }
 

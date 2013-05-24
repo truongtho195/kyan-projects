@@ -16,6 +16,7 @@ using CPC.Helper;
 using System.Windows.Data;
 using System.Data.Objects.SqlClient;
 using System.Collections.Specialized;
+using CPCToolkitExt.DataGridControl;
 
 namespace CPC.POS.ViewModel
 {
@@ -81,17 +82,10 @@ namespace CPC.POS.ViewModel
             LoadStaticData();
         }
 
-        public SalesOrderViewModel(bool isList)
+        public SalesOrderViewModel(bool isList, object param)
             : this()
         {
-            ChangeSearchMode(isList);
-        }
-
-        public SalesOrderViewModel(object param)
-            : this()
-        {
-            ChangeSearchMode(param);
-
+            ChangeSearchMode(isList, param);
         }
 
         /// <summary>
@@ -103,8 +97,9 @@ namespace CPC.POS.ViewModel
             : this()
         {
             IsQuotation = quotation;
-            ChangeSearchMode(isList);
+            ChangeSearchMode(isList, null);
         }
+
         #endregion
 
         #region Properties
@@ -759,7 +754,9 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnDeleteCommandCanExecute()
         {
-            return true;
+            if (SelectedSaleOrder == null)
+                return false;
+            return SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Open) || SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Quote);
         }
 
         /// <summary>
@@ -767,7 +764,18 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDeleteCommandExecute()
         {
-            // TODO: Handle command logic here
+            if (SelectedSaleOrder != null)
+            {
+                  MessageBoxResult result = MessageBox.Show("Do you want to delete this item?", "POS", MessageBoxButton.YesNo);
+                  if (result.Is(MessageBoxResult.Yes))
+                  {
+                      SelectedSaleOrder.IsPurge = true;
+                      SaveSalesOrder();
+                      this.SaleOrderCollection.Remove(SelectedSaleOrder);
+                      IsSearchMode = true;
+                  }
+
+            }
         }
         #endregion
 
@@ -801,6 +809,7 @@ namespace CPC.POS.ViewModel
                 else
                 {
                     Expression<Func<base_SaleOrder, bool>> predicate = CreatePredicateWithConditionSearch(Keyword);
+
                     LoadDataByPredicate(predicate, false, 0);
                 }
             }
@@ -1352,6 +1361,9 @@ namespace CPC.POS.ViewModel
                 SelectedSaleOrder.RaiseAnyShipped();
                 SetShipStatus();
                 UpdateSaleOrder();
+                if (SelectedSaleOrder.PaymentCollection == null)
+                    SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+
                 foreach (base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderShipModel.SaleOrderShipDetailCollection)
                 {
                     base_SaleOrderShipDetailModel saleOrderShipClone = saleOrderShipDetailModel.Clone();
@@ -1465,6 +1477,140 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        //Main Grid
+
+        #region DeleteItemsCommand
+        /// <summary>
+        /// Gets the DeleteItems Command.
+        /// <summary>
+
+        public RelayCommand<object> DeleteItemsCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the DeleteItems command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeleteItemsCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            DataGridControl datagrid = param as DataGridControl;
+            if (IsQuotation)
+                return datagrid.SelectedItems.Count > 0;
+            else
+                return !datagrid.SelectedItems.Cast<base_SaleOrderModel>().Any(x => !x.OrderStatus.Equals((short)SaleOrderStatus.Open));
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the DeleteItems command is executed.
+        /// </summary>
+        private void OnDeleteItemsCommandExecute(object param)
+        {
+            MessageBoxResult msgResult = MessageBox.Show("Do you want to delete these items?", "POS", MessageBoxButton.YesNo);
+
+            if (msgResult.Is(MessageBoxResult.No))
+                return;
+            DataGridControl datagrid = param as DataGridControl;
+
+            foreach (base_SaleOrderModel saleOrderModel in datagrid.SelectedItems.Cast<base_SaleOrderModel>().ToList())
+            {
+                saleOrderModel.IsPurge = true;
+                saleOrderModel.ToEntity();
+                _saleOrderRepository.Commit();
+                SaleOrderCollection.Remove(saleOrderModel);
+            }
+        }
+        #endregion
+
+        #region DuplicateItemCommand
+        /// <summary>
+        /// Gets the DuplicateItem Command.
+        /// <summary>
+
+        public RelayCommand<object> DuplicateItemCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the DuplicateItem command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDuplicateItemCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            DataGridControl datagrid = param as DataGridControl;
+            return datagrid.SelectedItems.Count == 1;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the DuplicateItem command is executed.
+        /// </summary>
+        private void OnDuplicateItemCommandExecute(object param)
+        {
+            DataGridControl datagrid = param as DataGridControl;
+            base_SaleOrderModel saleOrderSource = datagrid.SelectedItem as base_SaleOrderModel;
+            CreateNewSaleOrder();
+            SelectedSaleOrder.CopyFrom(saleOrderSource);
+            SelectedSaleOrder.CalcBalance();
+            
+            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderSource.SaleOrderDetailCollection)
+            {
+                base_SaleOrderDetailModel newSaleOrderDetailModel = new base_SaleOrderDetailModel();
+                newSaleOrderDetailModel.Resource = Guid.NewGuid();
+                newSaleOrderDetailModel.CopyFrom(saleOrderDetailModel);
+                newSaleOrderDetailModel.CalcDueQty();
+                newSaleOrderDetailModel.PropertyChanged += new PropertyChangedEventHandler(SaleOrderDetailModel_PropertyChanged);
+                SelectedSaleOrder.SaleOrderDetailCollection.Add(newSaleOrderDetailModel);
+            }
+
+            SaveSalesOrder();
+
+            SelectedTabIndex = (int)SaleOrderTab.Order;
+            _selectedCustomer = null;
+            //Set for selectedCustomer
+            _flagCustomerSetRelate = false;
+            SelectedCustomer = CustomerCollection.SingleOrDefault(x => x.Resource.ToString().Equals(SelectedSaleOrder.CustomerResource));
+
+            SetAllowChangeOrder(SelectedSaleOrder);
+            SelectedSaleOrder.IsDirty = false;
+            _flagCustomerSetRelate = true;
+
+            IsSearchMode = false;
+
+        }
+        #endregion
+
+        #region EditItemCommand
+        /// <summary>
+        /// Gets the EditItem Command.
+        /// <summary>
+
+        public RelayCommand<object> EditItemCommand { get; private set; }
+
+
+        /// <summary>
+        /// Method to check whether the EditItem command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnEditItemCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            DataGridControl datagrid = param as DataGridControl;
+            return datagrid.SelectedItems.Count == 1;
+        }
+
+        /// <summary>
+        /// Method to invoke when the EditItem command is executed.
+        /// </summary>
+        private void OnEditItemCommandExecute(object param)
+        {
+            DataGridControl datagrid = param as DataGridControl;
+            OnDoubleClickViewCommandExecute(datagrid.SelectedItem);
+        }
+        #endregion
+
         //Return
         #region ReturnAllCommand
         /// <summary>
@@ -1524,21 +1670,39 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDeleteReturnDetailCommandExecute(object param)
         {
-            if (SelectedReturnDetail == null)
-                return;
             base_ResourceReturnDetailModel returnDetailModel = SelectedReturnDetail as base_ResourceReturnDetailModel;
+            if (SelectedReturnDetail == null || returnDetailModel.IsTemporary)
+                return;
 
             if (returnDetailModel.IsReturned)
             {
                 MessageBox.Show("Item has been returned in this purchase order, can not delete this item.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
-
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            // Try to find ResourceReturnDetail error.
+            base_ResourceReturnDetailModel resourceReturnDetailError = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.FirstOrDefault(x => x.HasError);
+            bool isContainsErrorItem = false;
+            if (resourceReturnDetailError != null)
             {
-                SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Remove(returnDetailModel);
-                CalculateReturnSubtotal(SelectedSaleOrder);
+                ListCollectionView resourceReturnDetailView = CollectionViewSource.GetDefaultView(SelectedSaleOrder.ReturnModel.ReturnDetailCollection) as ListCollectionView;
+                if (resourceReturnDetailView != null)
+                {
+                    if (resourceReturnDetailView.CurrentEditItem != null)
+                    {
+                        isContainsErrorItem = object.ReferenceEquals(resourceReturnDetailView.CurrentEditItem, returnDetailModel);
+                    }
+                }
+            }
+
+            if (resourceReturnDetailError == null || isContainsErrorItem)
+            {
+
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Remove(returnDetailModel);
+                    CalculateReturnSubtotal(SelectedSaleOrder);
+                }
             }
 
 
@@ -1552,36 +1716,66 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the ConvertToSaleOrder Command.
         /// <summary>
-        public RelayCommand ConvertToSaleOrderCommand { get; private set; }
-
-
-
+        public RelayCommand<object> ConvertToSaleOrderCommand { get; private set; }
 
         /// <summary>
         /// Method to check whether the ConvertToSaleOrder command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnConvertToSaleOrderCommandCanExecute()
+        private bool OnConvertToSaleOrderCommandCanExecute(object param)
         {
             if (SelectedSaleOrder == null)
                 return false;
-            return !SelectedSaleOrder.IsNew & IsValid && IsOrderValid;
+            return !SelectedSaleOrder.IsNew && IsValid && IsOrderValid;
         }
-
 
         /// <summary>
         /// Method to invoke when the ConvertToSaleOrder command is executed.
         /// </summary>
-        private void OnConvertToSaleOrderCommandExecute()
+        private void OnConvertToSaleOrderCommandExecute(object param)
         {
             SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Open;
-
             SaveSalesOrder();
             IsSearchMode = true;
             (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", SelectedSaleOrder);
-
         }
 
+        #endregion
+
+        #region ConvertItemToSaleOrderCommand
+        /// <summary>
+        /// Gets the ConvertItemToSaleOrder Command.
+        /// Using on selected in datagrid
+        /// <summary>
+
+        public RelayCommand<object> ConvertItemToSaleOrderCommand { get; private set; }
+
+
+        /// <summary>
+        /// Method to check whether the ConvertItemToSaleOrder command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnConvertItemToSaleOrderCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            DataGridControl datagrid = param as DataGridControl;
+            return datagrid.SelectedItems.Count == 1;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the ConvertItemToSaleOrder command is executed.
+        /// </summary>
+        private void OnConvertItemToSaleOrderCommandExecute(object param)
+        {
+            DataGridControl datagrid = param as DataGridControl;
+            _selectedSaleOrder = datagrid.SelectedItem as base_SaleOrderModel;
+            SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.Open;
+            SaveSalesOrder();
+            IsSearchMode = true;
+            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", SelectedSaleOrder);
+        } 
         #endregion
 
         #endregion "Commands Methods"
@@ -1614,12 +1808,19 @@ namespace CPC.POS.ViewModel
             ShipProcessCommand = new RelayCommand<object>(OnShipProcessCommandExecute, OnShipProcessCommandCanExecute);
             PaymentCommand = new RelayCommand<object>(OnPaymentCommandExecute, OnPaymentCommandCanExecute);
 
+            //Using for Main Datagrid
+            DeleteItemsCommand = new RelayCommand<object>(OnDeleteItemsCommandExecute, OnDeleteItemsCommandCanExecute);
+            DuplicateItemCommand = new RelayCommand<object>(OnDuplicateItemCommandExecute, OnDuplicateItemCommandCanExecute);
+            EditItemCommand = new RelayCommand<object>(OnEditItemCommandExecute, OnEditItemCommandCanExecute);
+
             //Return
             ReturnAllCommand = new RelayCommand<object>(OnReturnAllCommandExecute, OnReturnAllCommandCanExecute);
             DeleteReturnDetailCommand = new RelayCommand<object>(OnDeleteReturnDetailCommandExecute, OnDeleteReturnDetailCommandCanExecute);
 
             //Quotation
-            ConvertToSaleOrderCommand = new RelayCommand(OnConvertToSaleOrderCommandExecute, OnConvertToSaleOrderCommandCanExecute);
+            ConvertToSaleOrderCommand = new RelayCommand<object>(OnConvertToSaleOrderCommandExecute, OnConvertToSaleOrderCommandCanExecute);
+            ConvertItemToSaleOrderCommand = new RelayCommand<object>(OnConvertItemToSaleOrderCommandExecute, OnConvertItemToSaleOrderCommandCanExecute);
+
         }
 
         /// <summary>
@@ -1761,6 +1962,7 @@ namespace CPC.POS.ViewModel
         private Expression<Func<base_SaleOrder, bool>> CreatePredicateWithConditionSearch(string keyword)
         {
             Expression<Func<base_SaleOrder, bool>> predicate = PredicateBuilder.True<base_SaleOrder>();
+            predicate = predicate.And(x => !x.IsPurge);
             if (!string.IsNullOrWhiteSpace(keyword) && SearchOption > 0)
             {
                 if (SearchOption.Has(SearchOptions.SoNum))
@@ -1811,11 +2013,22 @@ namespace CPC.POS.ViewModel
             //Get TaxCode
             saleOrderModel.TaxCodeModel = GetTaxCode(saleOrderModel.TaxLocation, saleOrderModel.TaxCode);
 
+
             //Get TaxLocation
             saleOrderModel.TaxLocationModel = SaleTaxLocationCollection.SingleOrDefault(x => x.Id == saleOrderModel.TaxLocation);
 
+            //Using for Calc Tax for Shipping if Tax is Price
+            if (saleOrderModel.TaxLocationModel != null
+                && saleOrderModel.TaxCodeModel != null
+                && saleOrderModel.TaxLocationModel.IsShipingTaxable)
+            {
+                saleOrderModel.ShipTaxAmount = CalcShipTaxAmount(saleOrderModel);
+                saleOrderModel.ProductTaxAmount = saleOrderModel.TaxAmount - saleOrderModel.ShipTaxAmount;
+            }
+
             //Check Deposit is accepted?
             saleOrderModel.IsDeposit = Define.CONFIGURATION.AcceptedPaymentMethod.HasValue ? Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(16) : false;//Accept Payment with deposit
+
             #region Get & Set SaleOrderDetail
             //Load sale order detail
             saleOrderModel.SaleOrderDetailCollection = new CollectionBase<base_SaleOrderDetailModel>();
@@ -1846,6 +2059,7 @@ namespace CPC.POS.ViewModel
             #region Get & Set data for Ship
             //Collection Sale Order Ship
             saleOrderModel.SaleOrderShipCollection = new CollectionBase<base_SaleOrderShipModel>();
+
             foreach (base_SaleOrderShip saleOrderShip in saleOrderModel.base_SaleOrder.base_SaleOrderShip)
             {
                 base_SaleOrderShipModel saleOrderShipModel = new base_SaleOrderShipModel(saleOrderShip);
@@ -1870,6 +2084,7 @@ namespace CPC.POS.ViewModel
             //Get Return Resource
             string saleOrderResource = saleOrderModel.Resource.ToString();
             base_ResourceReturn resourceReturn = _resourceReturnRepository.Get(x => x.DocumentResource.Equals(saleOrderResource));
+
             if (resourceReturn != null)
                 saleOrderModel.ReturnModel = new base_ResourceReturnModel(resourceReturn);
             else
@@ -1888,6 +2103,7 @@ namespace CPC.POS.ViewModel
 
             saleOrderModel.ReturnModel.ReturnDetailCollection = new CollectionBase<base_ResourceReturnDetailModel>();
             saleOrderModel.ReturnModel.ReturnDetailCollection.CollectionChanged += ReturnDetailCollection_CollectionChanged;
+
             foreach (base_ResourceReturnDetail resourceReturnDetail in saleOrderModel.ReturnModel.base_ResourceReturn.base_ResourceReturnDetail)
             {
                 base_ResourceReturnDetailModel returnDetailModel = new base_ResourceReturnDetailModel(resourceReturnDetail);
@@ -2152,17 +2368,24 @@ namespace CPC.POS.ViewModel
             {
                 decimal taxPercent;
                 decimal taxAmount;
-                if (SelectedSaleOrder.TaxCodeModel != null && !Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+                if (SelectedSaleOrder.TaxCodeModel != null)
                 {
-                    CalcMultiTaxForProduct(SelectedSaleOrder, out taxPercent, out taxAmount);
-                    SelectedSaleOrder.TaxAmount = taxAmount;
-                    SelectedSaleOrder.TaxPercent = 0;
-                }
-                else
-                {
-                    CalcSingleOrDependentTax(SelectedSaleOrder, SelectedSaleOrder.SubTotal, out taxPercent, out taxAmount);
-                    SelectedSaleOrder.TaxAmount = taxAmount;
-                    SelectedSaleOrder.TaxPercent = 0;
+
+                    if (Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+                    {
+                        SelectedSaleOrder.ProductTaxAmount = CalcMultiTaxForProduct(SelectedSaleOrder);
+                    }
+                    else if (Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price))
+                    {
+                        SelectedSaleOrder.ProductTaxAmount = CalcPriceDependentTax(SelectedSaleOrder);
+                        SelectedSaleOrder.ShipTaxAmount = CalcShipTaxAmount(SelectedSaleOrder);
+                    }
+                    else
+                    {
+                        CalcSingleTax(SelectedSaleOrder, SelectedSaleOrder.SubTotal, out taxPercent, out taxAmount);
+                        SelectedSaleOrder.ProductTaxAmount = taxAmount;
+                        SelectedSaleOrder.TaxPercent = 0;
+                    }
                 }
             }
 
@@ -2192,6 +2415,9 @@ namespace CPC.POS.ViewModel
 
                 SetPriceUOM(salesOrderDetailModel);
 
+                //Calculate Discount for product
+                CalcProductDiscount(salesOrderDetailModel);
+
                 //Check Show Detail
                 CheckToShowDatagridRowDetail(salesOrderDetailModel);
 
@@ -2202,6 +2428,29 @@ namespace CPC.POS.ViewModel
                 SetShipStatus();
             }
             SelectedProduct = null;
+        }
+
+        /// <summary>
+        /// Selected Return Detail Changed
+        /// when item is selected,is check collection reference  exited with item choice (compare saleOrderResource)?
+        /// unless get item from DeletedItems(used for store item) add to collection shipped(collection autocompelete choice item)
+        /// </summary>
+        private void SelectedReturnDetailChanged()
+        {
+            base_ResourceReturnDetailModel selectedReturnDetail = SelectedReturnDetail as base_ResourceReturnDetailModel;
+            if (selectedReturnDetail == null || selectedReturnDetail.SaleOrderDetailModel == null)
+                return;
+
+            if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any(x => x.OrderDetailResource.Equals(selectedReturnDetail.OrderDetailResource)))
+            {
+                base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
+                if (saleOrderShippedRemoved != null)
+                {
+                    SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
+                    SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
+                }
+            }
+
         }
 
         /// <summary>
@@ -2239,17 +2488,30 @@ namespace CPC.POS.ViewModel
             salesOrderDetailModel.CalcSubTotal();
             salesOrderDetailModel.PropertyChanged += new PropertyChangedEventHandler(SaleOrderDetailModel_PropertyChanged);
             SelectedSaleOrder.SaleOrderDetailCollection.Add(salesOrderDetailModel);
-            if (SelectedSaleOrder.TaxCodeModel != null && !Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+            if (SelectedSaleOrder.TaxCodeModel != null)
             {
-                decimal taxAmount = 0;
-                decimal taxPercent = 0;
+                if (Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+                {
+                    SelectedSaleOrder.TaxPercent = 0;
+                    SelectedSaleOrder.TaxAmount = CalcMultiTaxForProduct(SelectedSaleOrder);
+                }
+                else if (!Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price))
+                {
+                    SelectedSaleOrder.TaxPercent = 0;
+                    SelectedSaleOrder.ProductTaxAmount = CalcPriceDependentTax(SelectedSaleOrder);
+                    SelectedSaleOrder.ShipTaxAmount = CalcShipTaxAmount(SelectedSaleOrder);
+                }
+                else
+                {
+                    decimal taxAmount = 0;
+                    decimal taxPercent = 0;
+                    CalcSingleTax(SelectedSaleOrder, SelectedSaleOrder.SubTotal, out taxPercent, out taxAmount);
+                    SelectedSaleOrder.ProductTaxAmount = taxAmount;
+                    SelectedSaleOrder.TaxPercent = taxPercent;
+                }
 
-                CalcMultiTaxForProduct(SelectedSaleOrder, out taxPercent, out taxAmount);
-                SelectedSaleOrder.TaxAmount = taxAmount;
-                SelectedSaleOrder.TaxPercent = 0;
             }
-            //Calculate Discount for product
-            CalcProductDiscount(salesOrderDetailModel);
+
             return salesOrderDetailModel;
         }
 
@@ -2598,7 +2860,7 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Execute payment & save SaveOrder
+        /// Execute payment
         /// </summary>
         private void SaleOrderPayment()
         {
@@ -2606,22 +2868,36 @@ namespace CPC.POS.ViewModel
                 return;
 
             bool? resultReward;
-            //Show Gird Reward
+            bool isPayFull = false;
+            //Show Reward Form
             //Need check has any Guest Reward
             //Show Reward only SaleOrder Payment
-
-            if (!IsQuotation && SelectedSaleOrder.GuestModel.IsRewardMember && SelectedSaleOrder.SubTotal.Equals(SelectedSaleOrder.PaymentSubTotal)/*in Paid Full => show Reward*/
-                && SelectedSaleOrder.GuestModel.GuestRewardCollection != null && SelectedSaleOrder.GuestModel.GuestRewardCollection.Any())
+            if (!IsQuotation && SelectedSaleOrder.GuestModel.IsRewardMember
+                && SelectedSaleOrder.GuestModel.GuestRewardCollection != null && SelectedSaleOrder.GuestModel.GuestRewardCollection.Any()
+                && SelectedSaleOrder.PaymentCollection != null
+                && !SelectedSaleOrder.PaymentCollection.Any(x => !x.IsDeposit.Value) /* This order is paid with multi pay*/
+                )
             {
-                RedeemRewardViewModel redeemRewardViewModel = new RedeemRewardViewModel(SelectedSaleOrder);
-                resultReward = _dialogService.ShowDialog<RedeemRewardView>(_ownerViewModel, redeemRewardViewModel, "Redeem Reward");
-
-                if (resultReward == true)
+                //Confirm User want to Payment Full
+                MessageBoxResult confirmPayFull = MessageBox.Show("You have some rewards, you need to pay fully and use these rewards. Do you?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (confirmPayFull.Equals(MessageBoxResult.Yes))//User Payment full
                 {
-                    if (redeemRewardViewModel.ViewActionType == RedeemRewardViewModel.ReeedemRewardType.Redeemded)
-                        SelectedSaleOrder.RewardValueApply = 0;
-                    else
-                        SelectedSaleOrder.IsRedeeem = true;//Customer used reward
+                    isPayFull = true;
+
+                    RedeemRewardViewModel redeemRewardViewModel = new RedeemRewardViewModel(SelectedSaleOrder);
+                    resultReward = _dialogService.ShowDialog<RedeemRewardView>(_ownerViewModel, redeemRewardViewModel, "Redeem Reward");
+                    if (resultReward == true)
+                    {
+                        if (redeemRewardViewModel.ViewActionType == RedeemRewardViewModel.ReeedemRewardType.Redeemded)
+                            SelectedSaleOrder.RewardValueApply = 0;
+                        else
+                            SelectedSaleOrder.IsRedeeem = true;//Customer used reward
+                    }
+                }
+                else
+                {
+                    isPayFull = false;
+                    resultReward = true;
                 }
             }
             else
@@ -2634,26 +2910,32 @@ namespace CPC.POS.ViewModel
                 if (!IsQuotation && SelectedSaleOrder.GuestModel.GuestRewardCollection != null && SelectedSaleOrder.GuestModel.GuestRewardCollection.Any(x => x.IsChecked))
                 {
                     base_GuestRewardModel guestReward = SelectedSaleOrder.GuestModel.GuestRewardCollection.Single(x => x.IsChecked);
+                    if (guestReward != null)
+                    {
+                        //Update Subtoal After apply reward
+                        if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Is(RewardAmtType.Pecent))
+                        {
+                            decimal subTotal = 0;
+                            if (Define.CONFIGURATION.IsRewardOnTax)//Check reward include tax ?
+                                subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount + SelectedSaleOrder.TaxAmount;
+                            else
+                                subTotal = SelectedSaleOrder.SubTotal - SelectedSaleOrder.DiscountAmount;
 
-                    //Update Subtoal After apply reward
-                    if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Is(RewardAmtType.Pecent))
-                        SelectedSaleOrder.RewardValueApply = SelectedSaleOrder.SubTotal * guestReward.base_GuestReward.base_RewardManager.RewardAmount / 100;
-                    else
-                        SelectedSaleOrder.RewardValueApply = guestReward.base_GuestReward.base_RewardManager.RewardAmount;
+                            SelectedSaleOrder.RewardValueApply = subTotal * guestReward.base_GuestReward.base_RewardManager.RewardAmount / 100;
+                        }
+                        else
+                            SelectedSaleOrder.RewardValueApply = guestReward.base_GuestReward.base_RewardManager.RewardAmount;
+                    }
                 }
 
-                //Get reward id reedeem
-                if (SelectedSaleOrder.IsRedeeem && SelectedSaleOrder.PaymentCollection != null)
-                    SelectedSaleOrder.RewardValueApply = SelectedSaleOrder.PaymentCollection.Sum(x => x.LastRewardAmount);
-                //
                 decimal balance = 0;
                 if (IsQuotation)
-                    balance = SelectedSaleOrder.SubTotal - SelectedSaleOrder.Deposit.Value;
+                    balance = SelectedSaleOrder.Total - SelectedSaleOrder.Deposit.Value;
                 else
-                    balance = SelectedSaleOrder.PaymentTotal - SelectedSaleOrder.RewardValueApply - SelectedSaleOrder.Paid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
+                    balance = SelectedSaleOrder.Total - SelectedSaleOrder.RewardValueApply - SelectedSaleOrder.Paid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
 
                 //Show Payment
-                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, IsQuotation);
+                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, isPayFull, IsQuotation);
                 bool? dialogResult = _dialogService.ShowDialog<SalesOrderPaymentView>(_ownerViewModel, paymentViewModel, "Payment");
                 if (dialogResult == true)
                 {
@@ -2678,21 +2960,35 @@ namespace CPC.POS.ViewModel
                         // Update payment product collection
                         UpdatePaymentCollection(SelectedSaleOrder, paymentViewModel);
 
-                        SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Sum(x => x.TotalPaid);
+                        SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Where(x=>!x.IsDeposit.Value).Sum(x => x.TotalPaid);
                         //paymentViewModel.PaymentModel.TotalPaid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
                         //Set Status
 
-                        if (SelectedSaleOrder.Paid == SelectedSaleOrder.Total)
+                        if (SelectedSaleOrder.Paid + SelectedSaleOrder.Deposit.Value >= SelectedSaleOrder.Total)
                         {
                             CreateNewReward(SelectedSaleOrder);
                             SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.PaidInFull;
+                            SaveSalesOrder();
+                            this.IsSearchMode = true;
                         }
+                    }
+                }
+                else
+                {
+                    if (SelectedSaleOrder.GuestModel != null //Need for Quotation
+                        && SelectedSaleOrder.GuestModel.GuestRewardCollection != null)
+                    {
+                        //Reset check
+                        IEnumerable<base_GuestRewardModel> guestRewards = SelectedSaleOrder.GuestModel.GuestRewardCollection.Where(x => x.IsChecked);
+                        foreach (base_GuestRewardModel guestReward in guestRewards)
+                            guestReward.IsChecked = false;
                     }
                 }
                 // Reset reward apply after use
                 SelectedSaleOrder.RewardValueApply = 0;
-
             }
+
+            SetAllowChangeOrder(SelectedSaleOrder);
         }
 
         /// <summary>
@@ -2788,7 +3084,7 @@ namespace CPC.POS.ViewModel
                     rewardProgram = string.Format("Reward $ {0}", reward.RewardAmount);
                 else
                     rewardProgram = string.Format("Reward {0}%", reward.RewardAmount);
-                MessageBox.Show(string.Format("You are received : {0} reward(s) {1}  \nExpire Date : {2} \nRequire Purchase Next Reward :{3}", totalOfReward, rewardProgram, expireDate.Date, saleOrderModel.GuestModel.RequirePurchaseNextReward.ToString(Define.CurrencyFormat)), "POS", MessageBoxButton.OK);
+                MessageBox.Show(string.Format("You are received : {0} reward(s) {1}  \nExpire Date : {2} \nRequire Purchase Next Reward :{3}", totalOfReward, rewardProgram, expireDate.Date.ToString(Define.DateFormat), saleOrderModel.GuestModel.RequirePurchaseNextReward.ToString(Define.CurrencyFormat)), "POS", MessageBoxButton.OK);
             }
             else
             {
@@ -2809,7 +3105,8 @@ namespace CPC.POS.ViewModel
             if (taxLocation > 0)
             {
                 base_SaleTaxLocationModel TaxCodeModel = SaleTaxLocationCollection.SingleOrDefault(x => x.ParentId == taxLocation && x.TaxCode.Equals(taxCode));
-                TaxCodeModel.SaleTaxLocationOptionCollection = new CollectionBase<base_SaleTaxLocationOptionModel>(TaxCodeModel.base_SaleTaxLocation.base_SaleTaxLocationOption.Select(x => new base_SaleTaxLocationOptionModel(x)));
+                if (TaxCodeModel != null)
+                    TaxCodeModel.SaleTaxLocationOptionCollection = new CollectionBase<base_SaleTaxLocationOptionModel>(TaxCodeModel.base_SaleTaxLocation.base_SaleTaxLocationOption.Select(x => new base_SaleTaxLocationOptionModel(x)));
                 return TaxCodeModel;
             }
             return null;
@@ -2819,13 +3116,12 @@ namespace CPC.POS.ViewModel
         /// Calculator Tax Amount & Percent with Subtotal
         /// </summary>
         /// <param name="saleOrderModel"></param>
-        private void CalcSingleOrDependentTax(base_SaleOrderModel saleOrderModel, decimal subTotal, out decimal taxPercent, out decimal taxAmount)
+        private void CalcSingleTax(base_SaleOrderModel saleOrderModel, decimal subTotal, out decimal taxPercent, out decimal taxAmount)
         {
             if (saleOrderModel.IsTaxExemption == true)
             {
                 taxAmount = 0;
                 taxPercent = 0;
-
             }
             else
             {
@@ -2845,73 +3141,112 @@ namespace CPC.POS.ViewModel
                     else
                         taxAmount = subTotal * taxPercent / 100;
                 }
-                else if (Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price))
-                {
-                    base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
-                    if (saleTaxLocationOptionModel.IsApplyAmountOver)//Apply Sale Tax Only the amount over the unit price
-                    {
-                        if (subTotal <= saleTaxLocationOptionModel.TaxCondition)
-                        {
-                            taxPercent = 0;
-                            taxAmount = 0;
-                        }
-                        else //Subtotal over TaxCondition
-                        {
-                            taxPercent = saleTaxLocationOptionModel.TaxRate;
-
-                            if (saleOrderModel.TaxCodeModel.IsTaxAfterDiscount)
-                                taxAmount = (subTotal - saleTaxLocationOptionModel.TaxCondition - saleOrderModel.DiscountAmount) * taxPercent / 100;
-                            else
-                                taxAmount = (subTotal - saleTaxLocationOptionModel.TaxCondition) * taxPercent / 100;
-
-                            //saleOrderModel.TaxAmount = (saleOrderModel.SubTotal - saleTaxLocationOptionModel.TaxCondition) * saleTaxLocationOptionModel.TaxRate / 100;
-                        }
-                    }
-                    else
-                    {
-                        taxPercent = saleTaxLocationOptionModel.TaxRate;
-                        if (saleOrderModel.TaxCodeModel.IsTaxAfterDiscount)
-                            taxAmount = (subTotal - saleOrderModel.DiscountAmount) * taxPercent / 100;
-                        else
-                            taxAmount = subTotal * taxPercent / 100;
-                        //saleOrderModel.TaxAmount = saleOrderModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
-                    }
-                }
                 else
                 {
                     taxAmount = 0;
                     taxPercent = 0;
                 }
             }
-            //else if (Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
-            //{
-            //    decimal taxPercent;
-            //    decimal taxAmount;
-            //    CalcMultiTaxForProduct(saleOrderModel, out taxPercent, out taxAmount);
+        }
 
-            //}
+        /// <summary>
+        /// Calculate Price Dependent Tax
+        /// </summary>
+        /// <param name="saleOrderModel"></param>
+        /// <param name="subTotal"></param>
+        /// <param name="taxPercent"></param>
+        /// <param name="taxAmount"></param>
+        private decimal CalcPriceDependentTax(base_SaleOrderModel saleOrderModel)
+        {
+            decimal taxAmount = 0;
+            if (saleOrderModel.IsTaxExemption == true)
+            {
+                taxAmount = 0;
+            }
+            else if (Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price))
+            {
+                if (saleOrderModel.TaxCodeModel == null)
+                    saleOrderModel.TaxCodeModel = GetTaxCode(saleOrderModel.TaxLocation, saleOrderModel.TaxCode);
+
+                base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
+                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    taxAmount += CalcPriceDependentItem(saleOrderDetailModel.SubTotal, saleOrderDetailModel.SalePrice, saleTaxLocationOptionModel);
+            }
+            else
+            {
+                taxAmount = 0;
+            }
+            return taxAmount;
+        }
+
+        /// <summary>
+        /// Calc Ship Tax with PriceDepent
+        /// </summary>
+        /// <param name="saleOrderModel"></param>
+        private decimal CalcShipTaxAmount(base_SaleOrderModel saleOrderModel)
+        {
+            if (saleOrderModel.TaxCodeModel != null
+                && saleOrderModel.TaxLocationModel.IsShipingTaxable)
+            {
+                base_SaleTaxLocationModel shippingTaxCode = SaleTaxLocationCollection.SingleOrDefault(x => x.Id.Equals(saleOrderModel.TaxLocationModel.ShippingTaxCodeId));
+                if (shippingTaxCode != null
+                    && Convert.ToInt32(shippingTaxCode.TaxOption).Is(SalesTaxOption.Price)
+                    && shippingTaxCode.base_SaleTaxLocation.base_SaleTaxLocationOption.FirstOrDefault() != null
+                    && shippingTaxCode.base_SaleTaxLocation.base_SaleTaxLocationOption.FirstOrDefault().IsApplyAmountOver)
+                {
+                    base_SaleTaxLocationOptionModel taxOptionModel = new base_SaleTaxLocationOptionModel(shippingTaxCode.base_SaleTaxLocation.base_SaleTaxLocationOption.FirstOrDefault());
+                    return CalcPriceDependentItem(saleOrderModel.Shipping, saleOrderModel.Shipping, taxOptionModel);
+                }
+                else
+                    return 0;
+            }
+            else
+                return 0;
+        }
+
+        /// <summary>
+        /// Calculate TaxPreice dependent for item. 
+        /// Using for Shipping Tax & SaleOrderTax
+        /// </summary>
+        /// <param name="subTotal"></param>
+        /// <param name="compareValue"></param>
+        /// <param name="saleTaxLocationOptionModel"></param>
+        /// <returns></returns>
+        private decimal CalcPriceDependentItem(decimal subTotal, decimal compareValue, base_SaleTaxLocationOptionModel saleTaxLocationOptionModel)
+        {
+            decimal taxAmountResult = 0;
+            if (saleTaxLocationOptionModel.IsApplyAmountOver)//Apply Sale Tax Only the amount over the unit price
+            {
+                if (compareValue > saleTaxLocationOptionModel.TaxCondition) //Subtotal over TaxCondition
+                {
+                    taxAmountResult = (subTotal - saleTaxLocationOptionModel.TaxCondition) * saleTaxLocationOptionModel.TaxRate / 100;
+                    //saleOrderModel.TaxAmount = (saleOrderModel.SubTotal - saleTaxLocationOptionModel.TaxCondition) * saleTaxLocationOptionModel.TaxRate / 100;
+                }
+            }
+            else
+            {
+                taxAmountResult = subTotal * saleTaxLocationOptionModel.TaxRate / 100;
+                //saleOrderModel.TaxAmount = saleOrderModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
+            }
+            return taxAmountResult;
         }
 
         /// <summary>
         /// Calculate Tax for each other saleOrderDetail with itemprice (regular price)
         /// </summary>
         /// <param name="saleOrderModel"></param>
-        private void CalcMultiTaxForProduct(base_SaleOrderModel saleOrderModel, out decimal taxPercent, out decimal taxAmountResult)
+        private decimal CalcMultiTaxForProduct(base_SaleOrderModel saleOrderModel)
         {
-            //if (!Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
-            //{
-            //    return;
-            //}
+            decimal taxAmount = 0;
             if (saleOrderModel.IsTaxExemption == true)
             {
-                taxAmountResult = 0;
-                taxPercent = 0;
+                taxAmount = 0;
             }
             else
             {
                 if (saleOrderModel.TaxCodeModel == null)
                     saleOrderModel.TaxCodeModel = GetTaxCode(saleOrderModel.TaxLocation, saleOrderModel.TaxCode);
-                decimal taxAmount = 0;
+
                 foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
                 {
                     //Calculate Tax for saleOrderDetail
@@ -2920,7 +3255,7 @@ namespace CPC.POS.ViewModel
                         if (!saleTaxLocationOptionModel.IsAllowAmountItemPriceRange)//Not check Allow ItemPrice Range=false
                         {
                             //taxAmount += subTotal * TaxRate
-                            taxAmount += saleOrderDetailModel.SalePrice * saleTaxLocationOptionModel.TaxRate / 100;
+                            taxAmount += saleOrderDetailModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
                         }
                         else //Check Allow ItemPriceRange = true
                         {
@@ -2928,11 +3263,11 @@ namespace CPC.POS.ViewModel
                             {
                                 if (saleTaxLocationOptionModel.IsAllowSpecificItemPriceRange)
                                 {
-                                    //Subtotal In Range (Ex: [10,12] subtotal =11) => (Subtotal - Min)*Taxrate
+                                    //SalePrice In Range (Ex: [10,12] subtotal =11) => (Subtotal - Min)*Taxrate
                                     if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceFrom && saleOrderDetailModel.SalePrice <= saleTaxLocationOptionModel.PriceTo)
                                     {
                                         //taxAmount += (Subtotal - PriceFrom)* TaxRate
-                                        taxAmount += (saleOrderDetailModel.SalePrice - saleTaxLocationOptionModel.PriceFrom) * saleTaxLocationOptionModel.TaxRate / 100;
+                                        taxAmount += (saleOrderDetailModel.SubTotal - saleTaxLocationOptionModel.PriceFrom) * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
                                     //Out Of Range grather max value (Ex: [10,12] subtotal =14) => (Max-min) * TaxRate
                                     else if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceTo)
@@ -2940,56 +3275,47 @@ namespace CPC.POS.ViewModel
                                         // taxAmount += = ( PriceTo -PriceFrom)* TaxRate
                                         taxAmount += (saleTaxLocationOptionModel.PriceTo - saleTaxLocationOptionModel.PriceFrom) * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
-                                    //Out Of Range(smaller than min value)(Ex: [10,12] subtotal =9) => taxAmount =0 :  
-                                    else
-                                    {
-                                        taxAmount += 0;
-                                    }
+                                    //else Out Of Range(smaller than min value)(Ex: [10,12] subtotal =9) => taxAmount =0 :  +=0
+
                                 }
                                 else
                                 {
-                                    //Subtotal In Range (Ex: [10,12] subtotal =11)=> Subtotal * TaxRate
+                                    //SalePrice In Range (Ex: [10,12] subtotal =11)=> Subtotal * TaxRate
                                     if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceFrom && saleOrderDetailModel.SalePrice <= saleTaxLocationOptionModel.PriceTo)
                                     {
                                         //taxAmount +=  subTotal* TaxRate
 
-                                        taxAmount += saleOrderDetailModel.SalePrice * saleTaxLocationOptionModel.TaxRate / 100;
+                                        taxAmount += saleOrderDetailModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
                                     //Out of PriceFrom & Price To (Ex: [10,12] subtotal =14 or 9)=> TaxAmount =0
-                                    else if (saleOrderDetailModel.SalePrice <= saleTaxLocationOptionModel.PriceFrom || saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceTo)
-                                    {
-                                        taxAmount += 0;
-                                    }
+                                    //else if (saleOrderDetailModel.SalePrice <= saleTaxLocationOptionModel.PriceFrom || saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceTo)
+                                    //{
+                                    //    taxAmount += 0;
+                                    //}
                                 }
                             }
                             else if (saleTaxLocationOptionModel.PriceFrom > 0 && saleTaxLocationOptionModel.PriceTo == 0)//Above
                             {
                                 if (saleTaxLocationOptionModel.IsAllowSpecificItemPriceRange)
                                 {
-                                    //Subtotal greather than PriceFrom (Ex: [10,~] subtotal =11)=>(Subtotal - Min)* TaxRate
+                                    //SalePrice greather than PriceFrom (Ex: [10,~] subtotal =11)=>(Subtotal - Min)* TaxRate
                                     if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceFrom)
                                     {
                                         //taxAmount += (SubTotal - FriceFrom) * TaxRate
-                                        taxAmount += (saleOrderDetailModel.SalePrice - saleTaxLocationOptionModel.PriceFrom) * saleTaxLocationOptionModel.TaxRate / 100;
-
+                                        taxAmount += (saleOrderDetailModel.SubTotal - saleTaxLocationOptionModel.PriceFrom) * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
-                                    else //Subtotal smaller than PriceFrom (Ex: [10,~] subtotal =9)
-                                    {
-                                        taxAmount += 0;
-                                    }
+                                    //SalePrice smaller than PriceFrom (Ex: [10,~] subtotal =9)+0
                                 }
                                 else
                                 {
-                                    //Subtotal greather than PriceFrom (Ex: [10,~] subtotal =11)=>Subtotal* TaxRate
-                                    if (saleOrderDetailModel.SubTotal >= saleTaxLocationOptionModel.PriceFrom)
+                                    //SalePrice greather than PriceFrom (Ex: [10,~] subtotal =11)=>Subtotal* TaxRate
+                                    if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceFrom)
                                     {
                                         //taxAmount += saleOrderDetailModel.SubTotal * TaxRate
-                                        taxAmount += saleOrderDetailModel.SalePrice * saleTaxLocationOptionModel.TaxRate / 100;
+                                        taxAmount += saleOrderDetailModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
-                                    else// Subtotal Smaller than PriceFrom (Ex: [10,~] subtotal = 9) => TaxAmout =0
-                                    {
-                                        taxAmount += 0;
-                                    }
+                                    // else Subtotal Smaller than PriceFrom (Ex: [10,~] subtotal = 9) => TaxAmout +=0
+
                                 }
                             }
                             else if (saleTaxLocationOptionModel.PriceFrom == 0 && saleTaxLocationOptionModel.PriceTo > 0) //Below
@@ -3004,20 +3330,18 @@ namespace CPC.POS.ViewModel
                                     }
                                     else//Subtotal smaller than PriceTo (Ex: [~,10] subtotal =9)=>Subtotal * TaxRate
                                     {
-                                        taxAmount += saleOrderDetailModel.SalePrice * saleTaxLocationOptionModel.TaxRate / 100;
+                                        taxAmount += saleOrderDetailModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
                                 }
                                 else
                                 {
-                                    //Subtotal greather than PriceTo (Ex: [~,10] subtotal =11)=>TaxAmout =0
-                                    if (saleOrderDetailModel.SalePrice >= saleTaxLocationOptionModel.PriceTo)
+
+                                    if (saleOrderDetailModel.SalePrice < saleTaxLocationOptionModel.PriceTo)
+                                    //Subtotal smaller than PriceTo (Ex: [~,10] subtotal =9)=>Subtotal * TaxRate
                                     {
-                                        taxAmount += 0;
+                                        taxAmount += saleOrderDetailModel.SubTotal * saleTaxLocationOptionModel.TaxRate / 100;
                                     }
-                                    else//Subtotal smaller than PriceTo (Ex: [~,10] subtotal =9)=>Subtotal * TaxRate
-                                    {
-                                        taxAmount += saleOrderDetailModel.SalePrice * saleTaxLocationOptionModel.TaxRate / 100;
-                                    }
+                                    //Subtotal greather than PriceTo (Ex: [~,10] subtotal =11)=>TaxAmout +=0
                                 }
                             }
 
@@ -3026,12 +3350,8 @@ namespace CPC.POS.ViewModel
                 }
 
                 //End foreach
-                taxPercent = 0;
-                if (saleOrderModel.TaxCodeModel.IsTaxAfterDiscount)
-                    taxAmountResult = taxAmount - saleOrderModel.DiscountAmount;
-                else
-                    taxAmountResult = taxAmount;
             }
+            return taxAmount;
         }
 
         /// <summary>
@@ -3345,11 +3665,35 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        /// <summary>
+        /// Calculate Remain Return Quantity
+        /// </summary>
+        /// <param name="returnDetailModel"></param>
+        private void CalculateRemainReturnQty(base_ResourceReturnDetailModel returnDetailModel)
+        {
+            int TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
+            var remainQuantity = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.PickQty) - TotalItemReturn;
+            returnDetailModel.ReturnQty = remainQuantity;
+        }
+
+        /// <summary>
+        /// Calculate Subtotal of Return
+        /// </summary>
+        /// <param name="saleOrderModel"></param>
+        private void CalculateReturnSubtotal(base_SaleOrderModel saleOrderModel)
+        {
+            if (saleOrderModel.ReturnModel != null && saleOrderModel.ReturnModel.ReturnDetailCollection.Any())
+                saleOrderModel.ReturnModel.SubTotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount);
+            else
+                saleOrderModel.ReturnModel.SubTotal = 0;
+        }
+
         //Update value
         /// <summary>
         /// Get UOM Collection For sale order detail
         /// </summary>
         /// <param name="salesOrderDetailModel"></param>
+        /// <param name="SetPrice"> True : Set price after set Product Unit</param>
         private void GetProductUOMforSaleOrderDetail(base_SaleOrderDetailModel salesOrderDetailModel, bool SetPrice = true)
         {
             salesOrderDetailModel.ProductUOMCollection = new ObservableCollection<base_ProductUOMModel>();
@@ -3375,7 +3719,6 @@ namespace CPC.POS.ViewModel
                     IsDirty = false
                 });
             }
-
 
             // Gets the remaining units.
             foreach (base_ProductUOM item in salesOrderDetailModel.ProductModel.base_Product.base_ProductUOM)
@@ -3503,6 +3846,8 @@ namespace CPC.POS.ViewModel
         /// <param name="param"></param>
         private void TabChanged(int saleTab)
         {
+            if (!IsDirty)
+                return;
             bool allowChangeTab = true;
             switch (saleTab)
             {
@@ -3516,7 +3861,7 @@ namespace CPC.POS.ViewModel
                         allowChangeTab = false;
                     }
                     else
-                        if (IsDirty && _previousTabIndex.Is(SaleOrderTab.Order))//Change from SaleOrderTab
+                        if (SelectedSaleOrder.SaleOrderDetailCollection.Any(x => x.IsDirty) && _previousTabIndex.Is(SaleOrderTab.Order))//Change from SaleOrderTab
                         {
                             if (IsValid & IsOrderValid)
                                 SaveSalesOrder();
@@ -3593,6 +3938,8 @@ namespace CPC.POS.ViewModel
                 this.IsAllowChangeOrder = true;
             else if (saleOrderModel.OrderStatus < (short)SaleOrderStatus.FullyShipped)//Open or Shipping
                 this.IsAllowChangeOrder = true;
+            else if (saleOrderModel.PaymentCollection != null && saleOrderModel.PaymentCollection.Any(x => !x.IsDeposit.Value))/*has paid*/
+                this.IsAllowChangeOrder = false;
             else if (saleOrderModel.OrderStatus.Equals((short)SaleOrderStatus.PaidInFull))
                 this.IsAllowChangeOrder = false;
             else
@@ -3600,51 +3947,10 @@ namespace CPC.POS.ViewModel
 
         }
 
-        //Handle from another form
-        /// <summary>
-        /// Open form tracking serial number
-        /// </summary>
-        /// <param name="salesOrderDetailModel"></param>
-        /// <param name="isShowQty"></param>
-        private void OpenTrackingSerialNumber(base_SaleOrderDetailModel salesOrderDetailModel, bool isShowQty = false)
-        {
-            //Show Tracking Serial
-            SelectTrackingNumberViewModel trackingNumberViewModel = new SelectTrackingNumberViewModel(salesOrderDetailModel, isShowQty);
-            bool? result = _dialogService.ShowDialog<SelectTrackingNumberView>(_ownerViewModel, trackingNumberViewModel, "Tracking Serial Number");
-
-            if (result == true)
-                salesOrderDetailModel = trackingNumberViewModel.SaleOrderDetailModel;
-            CalcProductDiscount(salesOrderDetailModel);
-        }
-
-        /// <summary>
-        /// Update price when product price is 0
-        /// </summary>
-        /// <param name="productModel"></param>
-        private base_SaleOrderDetailModel UpdateProductPrice(base_SaleOrderDetailModel saleOrderDetailModel)
-        {
-            if (saleOrderDetailModel.ProductModel.RegularPrice == 0)
-            {
-                UpdateTransactionViewModel updateTransactionViewModel = new UpdateTransactionViewModel(saleOrderDetailModel.ProductModel);
-                bool? result = _dialogService.ShowDialog<UpdateTransactionView>(_ownerViewModel, updateTransactionViewModel, "Update Product Price");
-                if (result == true)
-                {
-                    saleOrderDetailModel.ProductModel = updateTransactionViewModel.ProductModel;
-                    if (!updateTransactionViewModel.IsUpdateProductPrice)//If user dont update to db. Set new price to saleprice & regular price still 0
-                        saleOrderDetailModel.SalePrice = updateTransactionViewModel.NewPrice;
-                    else
-                    {
-                        //Update BaseUnit & UnitCollection
-                        GetProductUOMforSaleOrderDetail(saleOrderDetailModel);
-                    }
-                    return saleOrderDetailModel;
-                }
-            }
-            return saleOrderDetailModel;
-        }
-
         /// <summary>
         /// Return All 
+        /// Set all item is shipped to return collection
+        /// If exited item in return collection and item is not set returned, it will be added quantity. Otherwise create new item to return collection 
         /// </summary>
         private void ReturnAll()
         {
@@ -3690,42 +3996,9 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Calculate Remain Return Quantity
+        /// Check item is return all. 
+        /// if item is return all, remove collection shipped to not show in autocomplete choice Product
         /// </summary>
-        /// <param name="returnDetailModel"></param>
-        private void CalculateRemainReturnQty(base_ResourceReturnDetailModel returnDetailModel)
-        {
-            int TotalItemReturn = SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && x.OrderDetailResource.Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.ReturnQty);
-            var remainQuantity = SelectedSaleOrder.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(returnDetailModel.OrderDetailResource)).Sum(x => x.PickQty) - TotalItemReturn;
-            returnDetailModel.ReturnQty = remainQuantity;
-        }
-
-        private void CalculateReturnSubtotal(base_SaleOrderModel saleOrderModel)
-        {
-            if (saleOrderModel.ReturnModel != null && saleOrderModel.ReturnModel.ReturnDetailCollection.Any())
-                saleOrderModel.ReturnModel.SubTotal = saleOrderModel.ReturnModel.ReturnDetailCollection.Sum(x => x.Amount);
-            else
-                saleOrderModel.ReturnModel.SubTotal = 0;
-        }
-
-        private void SelectedReturnDetailChanged()
-        {
-            base_ResourceReturnDetailModel selectedReturnDetail = SelectedReturnDetail as base_ResourceReturnDetailModel;
-            if (selectedReturnDetail == null || selectedReturnDetail.SaleOrderDetailModel == null)
-                return;
-
-            if (SelectedSaleOrder.ReturnModel.ReturnDetailCollection.Any(x => x.OrderDetailResource.Equals(selectedReturnDetail.OrderDetailResource)))
-            {
-                base_SaleOrderDetailModel saleOrderShippedRemoved = SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.SingleOrDefault(x => x.Resource.ToString().Equals(selectedReturnDetail.OrderDetailResource));
-                if (saleOrderShippedRemoved != null)
-                {
-                    SelectedSaleOrder.SaleOrderShippedCollection.Add(saleOrderShippedRemoved);
-                    SelectedSaleOrder.SaleOrderShippedCollection.DeletedItems.Remove(saleOrderShippedRemoved);
-                }
-            }
-
-        }
-
         private void CheckReturned()
         {
             if (SelectedSaleOrder == null)
@@ -3756,6 +4029,49 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        //Handle from another form
+        /// <summary>
+        /// Open form tracking serial number
+        /// </summary>
+        /// <param name="salesOrderDetailModel"></param>
+        /// <param name="isShowQty"></param>
+        private void OpenTrackingSerialNumber(base_SaleOrderDetailModel salesOrderDetailModel, bool isShowQty = false)
+        {
+            //Show Tracking Serial
+            SelectTrackingNumberViewModel trackingNumberViewModel = new SelectTrackingNumberViewModel(salesOrderDetailModel, isShowQty);
+            bool? result = _dialogService.ShowDialog<SelectTrackingNumberView>(_ownerViewModel, trackingNumberViewModel, "Tracking Serial Number");
+
+            if (result == true)
+                salesOrderDetailModel = trackingNumberViewModel.SaleOrderDetailModel;
+            CalcProductDiscount(salesOrderDetailModel);
+        }
+
+        /// <summary>
+        /// Update price when product price is 0
+        /// </summary>
+        /// <param name="productModel"></param>
+        private base_SaleOrderDetailModel UpdateProductPrice(base_SaleOrderDetailModel saleOrderDetailModel)
+        {
+            if (saleOrderDetailModel.ProductModel.RegularPrice == 0)
+            {
+                UpdateTransactionViewModel updateTransactionViewModel = new UpdateTransactionViewModel(saleOrderDetailModel.ProductModel);
+                bool? result = _dialogService.ShowDialog<UpdateTransactionView>(_ownerViewModel, updateTransactionViewModel, "Update Product Price");
+                if (result == true)
+                {
+                    saleOrderDetailModel.ProductModel = updateTransactionViewModel.ProductModel;
+                    if (!updateTransactionViewModel.IsUpdateProductPrice)//If user dont update to db. Set new price to saleprice & regular price still 0
+                        saleOrderDetailModel.SalePrice = updateTransactionViewModel.NewPrice;
+                    else
+                    {
+                        //Update BaseUnit & UnitCollection
+                        GetProductUOMforSaleOrderDetail(saleOrderDetailModel);
+                    }
+                    return saleOrderDetailModel;
+                }
+            }
+            return saleOrderDetailModel;
+        }
+
         #endregion
 
         #region Propertychanged
@@ -3769,15 +4085,21 @@ namespace CPC.POS.ViewModel
                 case "SalePrice":
                     saleOrderDetailModel.CalcSubTotal();
 
-
-                    if (SelectedSaleOrder.TaxCodeModel != null && Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+                    if (SelectedSaleOrder.TaxCodeModel != null)
                     {
-                        decimal taxAmount = 0;
-                        decimal taxPercent = 0;
-                        CalcMultiTaxForProduct(SelectedSaleOrder, out taxPercent, out taxAmount);
-                        SelectedSaleOrder.TaxAmount = taxAmount;
+                        if (Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Multi))
+                        {
+                            SelectedSaleOrder.ProductTaxAmount = CalcMultiTaxForProduct(SelectedSaleOrder);
+                        }
+                        else if (!Convert.ToInt32(SelectedSaleOrder.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price))
+                        {
+                            SelectedSaleOrder.ProductTaxAmount = CalcPriceDependentTax(SelectedSaleOrder);
+                        }
+
+                        SelectedSaleOrder.TaxAmount = SelectedSaleOrder.ProductTaxAmount + SelectedSaleOrder.ShipTaxAmount;
                         SelectedSaleOrder.TaxPercent = 0;
                     }
+
                     CheckToShowDatagridRowDetail(saleOrderDetailModel);
                     break;
                 case "Quantity":
@@ -3807,12 +4129,12 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "SubTotal":
-                    if (saleOrderModel.TaxCodeModel != null && (Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Single) || Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price)))
+                    if (saleOrderModel.TaxCodeModel != null && Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Single))
                     {
                         decimal taxPercent;
                         decimal taxAmount;
-                        CalcSingleOrDependentTax(saleOrderModel, saleOrderModel.SubTotal, out taxPercent, out taxAmount);
-                        saleOrderModel.TaxAmount = taxAmount;
+                        CalcSingleTax(saleOrderModel, saleOrderModel.SubTotal, out taxPercent, out taxAmount);
+                        saleOrderModel.ProductTaxAmount = taxAmount;
                         saleOrderModel.TaxPercent = taxPercent;
                     }
                     saleOrderModel.CalcDiscountPercent();
@@ -3825,19 +4147,27 @@ namespace CPC.POS.ViewModel
                     saleOrderModel.CalcBalance();
                     break;
                 case "Shipping":
+                    saleOrderModel.ShipTaxAmount = CalcShipTaxAmount(saleOrderModel);
                     saleOrderModel.CalcTotal();
+                    break;
+                case "ProductTaxAmount":
+                case "ShipTaxAmount":
+                    if (saleOrderModel.TaxCodeModel.IsTaxAfterDiscount)
+                        saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
+                    else
+                        saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
+
                     break;
                 case "TaxAmount":
                     saleOrderModel.CalcTotal();
                     break;
                 case "DiscountAmount":
-                    if (saleOrderModel.TaxCodeModel != null && (Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Single) || Convert.ToInt32(saleOrderModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Price)))
+                    if (saleOrderModel.TaxCodeModel != null)
                     {
-                        decimal taxPercent;
-                        decimal taxAmount;
-                        CalcSingleOrDependentTax(saleOrderModel, saleOrderModel.SubTotal, out taxPercent, out taxAmount);
-                        saleOrderModel.TaxAmount = taxAmount;
-                        saleOrderModel.TaxPercent = taxPercent;
+                        if (saleOrderModel.TaxCodeModel.IsTaxAfterDiscount)
+                            saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
+                        else
+                            saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
                     }
                     saleOrderModel.CalcTotal();
 
@@ -3898,7 +4228,7 @@ namespace CPC.POS.ViewModel
                         resourceReturnDetailModel.UnitName = resourceReturnDetailModel.SaleOrderDetailModel.UnitName;
                         resourceReturnDetailModel.Price = resourceReturnDetailModel.SaleOrderDetailModel.SalePrice;
                         CalculateRemainReturnQty(resourceReturnDetailModel);
-                        resourceReturnDetailModel.IsTemporary = false;
+                        
                     }
                     else
                     {
@@ -3965,6 +4295,7 @@ namespace CPC.POS.ViewModel
                     resourceReturnDetail = item as base_ResourceReturnDetailModel;
                     resourceReturnDetail.ReturnedDate = DateTime.Now;
                     resourceReturnDetail.IsTemporary = true;
+                    resourceReturnDetail.IsDirty = false;
                     resourceReturnDetail.PropertyChanged += ResourceReturnDetailModel_PropertyChanged;
                 }
                 CheckReturned();
@@ -3981,14 +4312,15 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Override Methods
+
         public override void LoadData()
         {
             Expression<Func<base_SaleOrder, bool>> predicate = PredicateBuilder.True<base_SaleOrder>();
             short orderStatus = (short)SaleOrderStatus.Quote;
             if (IsQuotation)
-                predicate = predicate.And(x => x.OrderStatus == orderStatus);
+                predicate = predicate.And(x => x.OrderStatus == orderStatus && !x.IsPurge);
             else
-                predicate = predicate.And(x => x.OrderStatus != orderStatus);
+                predicate = predicate.And(x => x.OrderStatus != orderStatus && !x.IsPurge);
 
             LoadDataByPredicate(predicate);
         }
@@ -4002,23 +4334,22 @@ namespace CPC.POS.ViewModel
         /// Change view from Ribbon
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ChangeViewExecute(null))
+            if (param == null)
             {
-                if (!isList)
+                if (ChangeViewExecute(null))
                 {
-                    CreateNewSaleOrder();
-                    IsSearchMode = false;
+                    if (!isList)
+                    {
+                        CreateNewSaleOrder();
+                        IsSearchMode = false;
+                    }
+                    else
+                        IsSearchMode = true;
                 }
-                else
-                    IsSearchMode = true;
             }
-        }
-
-        public override void ChangeSearchMode(object param)
-        {
-            if (param != null)
+            else
             {
                 if (param is base_SaleOrderModel)
                 {
@@ -4047,6 +4378,10 @@ namespace CPC.POS.ViewModel
                         base_SaleOrderDetailModel salesOrderDetailModel = AddNewSaleOrderDetail(productModel);
                         //Get Product UOMCollection
                         GetProductUOMforSaleOrderDetail(salesOrderDetailModel);
+                        //Set Price follow PriceLevel
+                        SetPriceUOM(salesOrderDetailModel);
+                        //Calculate Discount for product
+                        CalcProductDiscount(salesOrderDetailModel);
                         //Check Show gridDetail Discount or Serial
                         CheckToShowDatagridRowDetail(salesOrderDetailModel);
                     }
@@ -4121,7 +4456,8 @@ namespace CPC.POS.ViewModel
             {
                 // Load payment product from payment
                 saleOrderModel.PaymentProductCollection = new ObservableCollection<base_ResourcePaymentProductModel>(_paymentProducts);
-            }else
+            }
+            else
                 saleOrderModel.PaymentProductCollection = new ObservableCollection<base_ResourcePaymentProductModel>();
 
             // Load payment product from shipped product

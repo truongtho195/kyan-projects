@@ -1,64 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Repository;
+using CPC.POS.View;
+using CPC.POS.ViewModel;
 using CPC.Service;
 using CPC.Service.FrameworkDialogs.OpenFile;
+using CPC.Utility;
 using log4net;
 using log4net.Config;
-using CPC.POS.ViewModel;
-using CPC.POS.Repository;
-using CPC.POS.Database;
-using CPC.POS.View;
-using CPC.Utility;
-using System.Diagnostics;
 
 namespace CPC.POS
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, ISingleInstanceApp
     {
-        #region Fields
+        #region Defines
+
         private static readonly ILog m_Logger = LogManager.GetLogger(typeof(App).Name);
         private LoginView _loginView;
         private bool IsUserAuthenicated { set; get; }
         private bool _isLogout = false;
+
         #endregion
 
-        #region Ctor
+        #region Properties
+
+        readonly static Messenger.Message _messenger = new Messenger.Message();
+        /// <summary>
+        /// Gets the Messenger
+        /// </summary>
+        internal static Messenger.Message Messenger
+        {
+            get { return _messenger; }
+        }
+
+        #endregion
+
+        #region Constructors
+
         public App()
         {
+            this.InitializeComponent();
+
             // Configure the service locator
             ServiceLocator.RegisterSingleton<IDialogService, DialogService>();
             ServiceLocator.Register<IOpenFileDialog, OpenFileDialogViewModel>();
         }
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            try
-            {
-                base.OnStartup(e);
-                // Configure Log4Net
-                XmlConfigurator.Configure();
-                //Get Configuration data from database
-                this.InitialData();
-                //To register to execute logout
-                App.Messenger.Register(Define.USER_LOGOUT_RESULT,
-                                          new Action(() => LogOutCallback()));
-                //To register to execute opening MainWindow.
-                App.Messenger.Register(Define.USER_LOGIN_RESULT,
-                                       new Action<bool>((result) => AuthenticateCallback(result)));
-                //To open LoginView
-                this.OpenLoginView(false);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("OnStartup" + ex.ToString());
-            }
-        }
+
         #endregion
 
         #region Methods
@@ -119,6 +114,18 @@ namespace CPC.POS
         {
             try
             {
+                // Register Deactivated event to auto lock screen
+                this.Deactivated += (sender, e) =>
+                {
+                    IdleTimeHelper.LostFocusTime = DateTimeExt.Now;
+                };
+
+                // Register Activated event to auto lock screen
+                this.Activated += (sender, e) =>
+                {
+                    IdleTimeHelper.LostFocusTime = null;
+                };
+
                 MainWindow window = new MainWindow();
                 MainViewModel mainViewModel = new MainViewModel();
                 window.Closing += (sender, e) =>
@@ -258,13 +265,41 @@ namespace CPC.POS
 
         #endregion
 
-        #region Properties
-        readonly static Messenger.Message _messenger = new Messenger.Message();
-        internal static Messenger.Message Messenger
+        #region Override Methods
+
+        protected override void OnStartup(StartupEventArgs e)
         {
-            get { return _messenger; }
+            try
+            {
+                base.OnStartup(e);
+                // Configure Log4Net
+                XmlConfigurator.Configure();
+                //Get Configuration data from database
+                this.InitialData();
+                //To register to execute logout
+                App.Messenger.Register(Define.USER_LOGOUT_RESULT,
+                                          new Action(() => LogOutCallback()));
+                //To register to execute opening MainWindow.
+                App.Messenger.Register(Define.USER_LOGIN_RESULT,
+                                       new Action<bool>((result) => AuthenticateCallback(result)));
+                //To open LoginView
+                this.OpenLoginView(false);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("OnStartup" + ex.ToString());
+            }
         }
+
         #endregion
 
+        #region ISingleInstanceApp Members
+
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            return true;
+        }
+
+        #endregion
     }
 }

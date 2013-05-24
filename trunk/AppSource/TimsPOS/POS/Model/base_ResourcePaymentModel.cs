@@ -667,48 +667,6 @@ namespace CPC.POS.Model
             {
                 switch (propertyName)
                 {
-                    case "DiscountAmount":
-
-                        _discountPercent = 0;
-                        OnPropertyChanged(() => DiscountPercent);
-
-                        _totalAmount = _subTotal - _discountAmount;
-                        OnPropertyChanged(() => TotalAmount);
-
-                        _balance = _totalAmount - _totalPaid;
-                        OnPropertyChanged(() => Balance);
-
-                        break;
-
-                    case "DiscountPercent":
-
-                        _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                        OnPropertyChanged(() => DiscountAmount);
-
-                        _totalAmount = _subTotal - _discountAmount;
-                        OnPropertyChanged(() => TotalAmount);
-
-                        _balance = _totalAmount - _totalPaid;
-                        OnPropertyChanged(() => Balance);
-
-                        break;
-
-                    case "SubTotal":
-
-                        if (_discountPercent > 0)
-                        {
-                            _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                            OnPropertyChanged(() => DiscountAmount);
-                        }
-
-                        _totalAmount = _subTotal - _discountAmount;
-                        OnPropertyChanged(() => TotalAmount);
-
-                        _balance = _totalAmount - _totalPaid;
-                        OnPropertyChanged(() => Balance);
-
-                        break;
-
                     case "TotalAmount":
 
                         _balance = _totalAmount - _totalPaid;

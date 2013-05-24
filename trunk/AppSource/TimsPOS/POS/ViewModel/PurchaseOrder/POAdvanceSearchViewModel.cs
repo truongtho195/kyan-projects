@@ -288,6 +288,8 @@ namespace CPC.POS.ViewModel
                 base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
 
                 _predicate = PredicateBuilder.True<base_PurchaseOrder>();
+                _predicate = _predicate.And(x => !x.IsPurge);
+
                 if (!string.IsNullOrWhiteSpace(_code))
                 {
                     IEnumerable<string> GUIDList = productRepository.GetIEnumerable(x =>

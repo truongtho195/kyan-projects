@@ -19,10 +19,10 @@ namespace CPC.POS.ViewModel
         private base_RewardManagerRepository _rewardManagerRepository = new base_RewardManagerRepository();
 
         public enum ReeedemRewardType
-        { 
-            Apply=1,
-            Redeemded=2,
-            Cancel=3
+        {
+            Apply = 1,
+            Redeemded = 2,
+            Cancel = 3
         }
         #endregion
 
@@ -35,29 +35,30 @@ namespace CPC.POS.ViewModel
             SaleOrderModel = saleOrderModel;
             foreach (base_GuestRewardModel item in saleOrderModel.GuestModel.GuestRewardCollection)
             {
-                try
-                {
-                    base_GuestRewardModel guestReward = new base_GuestRewardModel(item.base_GuestReward);
-                    if (guestReward.base_GuestReward.base_RewardManager != null)
-                    {
-                        if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Equals(RewardAmtType.Money))
-                        {
-                            guestReward.RewardName = string.Format("Reward $ {0}", guestReward.base_GuestReward.base_RewardManager.RewardAmount);
-                            guestReward.TotalAfterReward = saleOrderModel.SubTotal - guestReward.base_GuestReward.base_RewardManager.RewardAmount;
-                        }
-                        else
-                        {
-                            guestReward.RewardName = string.Format("Reward {0}%", guestReward.base_GuestReward.base_RewardManager.RewardAmount);
-                            guestReward.TotalAfterReward = saleOrderModel.SubTotal - (saleOrderModel.SubTotal * guestReward.base_GuestReward.base_RewardManager.RewardAmount / 100);
-                        }
-                    }
-                    GuestRewardCollection.Add(guestReward);
-                }
-                catch (Exception ex)
-                {
 
-                    throw;
+                base_GuestRewardModel guestReward = new base_GuestRewardModel(item.base_GuestReward);
+                if (guestReward.base_GuestReward.base_RewardManager != null)
+                {
+                    if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Equals(RewardAmtType.Money))
+                    {
+                        guestReward.RewardName = string.Format("Reward $ {0}", guestReward.base_GuestReward.base_RewardManager.RewardAmount);
+                        guestReward.TotalAfterReward = saleOrderModel.Total - guestReward.base_GuestReward.base_RewardManager.RewardAmount;
+                    }
+                    else
+                    {
+                      
+                        guestReward.RewardName = string.Format("Reward {0}%", guestReward.base_GuestReward.base_RewardManager.RewardAmount);
+                        decimal subTotal = 0;
+                        if (Define.CONFIGURATION.IsRewardOnTax)
+                            subTotal = saleOrderModel.SubTotal - saleOrderModel.DiscountAmount + saleOrderModel.TaxAmount;
+                        else
+                            subTotal = saleOrderModel.SubTotal - saleOrderModel.DiscountAmount;
+
+                        guestReward.TotalAfterReward = saleOrderModel.Total - (subTotal * guestReward.base_GuestReward.base_RewardManager.RewardAmount / 100);
+                    }
                 }
+                GuestRewardCollection.Add(guestReward);
+
             }
         }
         #endregion
@@ -86,7 +87,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-
         #region GuestRewardCollection
         private CollectionBase<base_GuestRewardModel> _guestRewardCollection = new CollectionBase<base_GuestRewardModel>();
         /// <summary>
@@ -108,6 +108,27 @@ namespace CPC.POS.ViewModel
 
         public ReeedemRewardType ViewActionType { get; set; }
 
+
+        #region SelectedReward
+        private base_GuestRewardModel _selectedReward;
+        /// <summary>
+        /// Gets or sets the SelectedReward.
+        /// </summary>
+        public base_GuestRewardModel SelectedReward
+        {
+            get { return _selectedReward; }
+            set
+            {
+                if (_selectedReward != value)
+                {
+                    _selectedReward = value;
+                    OnPropertyChanged(() => SelectedReward);
+                }
+            }
+        }
+        #endregion
+
+
         #endregion
 
         #region Commands Methods
@@ -119,7 +140,9 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnApplyCommandCanExecute()
         {
-            return true;
+            if (SelectedReward == null)
+                return false;
+            return SelectedReward.TotalAfterReward>0;
         }
 
         /// <summary>
@@ -131,7 +154,7 @@ namespace CPC.POS.ViewModel
             foreach (base_GuestRewardModel guestRewardModel in GuestRewardCollection.Where(x => x.IsChecked))
             {
                 base_GuestRewardModel guestRewardUpdated = SaleOrderModel.GuestModel.GuestRewardCollection.Single(x => x.Id == guestRewardModel.Id);
-                if (guestRewardUpdated!=null)
+                if (guestRewardUpdated != null)
                     guestRewardUpdated.IsChecked = guestRewardModel.IsChecked;
             }
             FindOwnerWindow(_ownerViewModel).DialogResult = true;

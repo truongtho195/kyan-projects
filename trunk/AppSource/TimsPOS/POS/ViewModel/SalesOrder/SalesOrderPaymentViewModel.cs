@@ -34,9 +34,10 @@ namespace CPC.POS.ViewModel
             _ownerViewModel = this;
             InitialCommand();
         }
-        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel,decimal balance ,bool isQuotation = false)
+        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel,decimal balance,bool isPaidFull=false ,bool isQuotation = false)
             : this()
         {
+            IsPaidFull = isPaidFull;
             this.IsQuotation = isQuotation;
             if (IsQuotation)
             {
@@ -52,6 +53,63 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Properties
+
+        #region TotalDiscount
+        private decimal _totalDiscount;
+        /// <summary>
+        /// Gets or sets the TotalDiscount.
+        /// </summary>
+        public decimal TotalDiscount
+        {
+            get { return _totalDiscount; }
+            set
+            {
+                if (_totalDiscount != value)
+                {
+                    _totalDiscount = value;
+                    OnPropertyChanged(() => TotalDiscount);
+                }
+            }
+        }
+        #endregion
+
+        #region TotalDeposit
+        private decimal _totalDeposit;
+        /// <summary>
+        /// Gets or sets the TotalDeposit.
+        /// </summary>
+        public decimal TotalDeposit
+        {
+            get { return _totalDeposit; }
+            set
+            {
+                if (_totalDeposit != value)
+                {
+                    _totalDeposit = value;
+                    OnPropertyChanged(() => TotalDeposit);
+                }
+            }
+        }
+        #endregion
+
+        #region LastPayment
+        private decimal _lastPayment;
+        /// <summary>
+        /// Gets or sets the LastPayment.
+        /// </summary>
+        public decimal LastPayment
+        {
+            get { return _lastPayment; }
+            set
+            {
+                if (_lastPayment != value)
+                {
+                    _lastPayment = value;
+                    OnPropertyChanged(() => LastPayment);
+                }
+            }
+        }
+        #endregion
 
         #region PaymentModel
         private base_ResourcePaymentModel _paymentModel;
@@ -110,6 +168,8 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        public bool IsPaidFull { get; set; }
+
 
         #endregion
 
@@ -124,8 +184,9 @@ namespace CPC.POS.ViewModel
         {
             if (PaymentModel == null)
                 return false;
-            return PaymentModel.IsDirty && (!IsQuotation && PaymentModel.Balance==0 &&  PaymentModel.CurrentTotalAmount > 0 && PaymentModel.CurrentTotalPaid > 0)
-                || (IsQuotation && PaymentModel.CurrentTotalPaid > 0);
+            return PaymentModel.IsDirty
+                && (!IsQuotation && PaymentModel.CurrentTotalAmount > 0 && PaymentModel.CurrentTotalPaid > 0 && ((IsPaidFull && PaymentModel.Balance == 0) || !IsPaidFull))
+                   || (IsQuotation && PaymentModel.CurrentTotalPaid > 0);
         }
 
         /// <summary>
@@ -270,7 +331,7 @@ namespace CPC.POS.ViewModel
 
             if (Define.CONFIGURATION.AcceptedPaymentMethod.HasValue)
             {
-                foreach (ComboItem paymentMethod in Common.PaymentMethods)
+                foreach (ComboItem paymentMethod in Common.PaymentMethods.Where(x=>!x.Islocked))
                 {
                     //Check payment methods accepted
                     if (Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has((int)paymentMethod.Value))

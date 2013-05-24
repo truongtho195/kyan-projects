@@ -212,12 +212,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<int> _storeNumber;
+        protected int _storeNumber;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the StoreNumber</para>
         /// </summary>
-        public Nullable<int> StoreNumber
+        public int StoreNumber
         {
             get { return this._storeNumber; }
             set

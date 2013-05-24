@@ -378,6 +378,29 @@ namespace CPC.POS.Model
             }
         }
 
+        protected decimal _returnFee;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ReturnFee</para>
+        /// </summary>
+        public decimal ReturnFee
+        {
+            get
+            {
+                return this._returnFee;
+            }
+            set
+            {
+                if (this._returnFee != value)
+                {
+                    this.IsDirty = true;
+                    this._returnFee = value;
+                    OnPropertyChanged(() => ReturnFee);
+                    PropertyChangedCompleted(() => ReturnFee);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -413,6 +436,7 @@ namespace CPC.POS.Model
             this.base_ResourceReturn.DiscountAmount = this.DiscountAmount;
             this.base_ResourceReturn.Freight = this.Freight;
             this.base_ResourceReturn.SubTotal = this.SubTotal;
+            this.base_ResourceReturn.ReturnFee = this.ReturnFee;
         }
 
         /// <summary>
@@ -435,6 +459,7 @@ namespace CPC.POS.Model
             this._discountAmount = this.base_ResourceReturn.DiscountAmount;
             this._freight = this.base_ResourceReturn.Freight;
             this._subTotal = this.base_ResourceReturn.SubTotal;
+            this._returnFee = this.base_ResourceReturn.ReturnFee;
         }
 
         /// <summary>
@@ -457,6 +482,7 @@ namespace CPC.POS.Model
             this.DiscountAmount = this.base_ResourceReturn.DiscountAmount;
             this.Freight = this.base_ResourceReturn.Freight;
             this.SubTotal = this.base_ResourceReturn.SubTotal;
+            this.ReturnFee = this.base_ResourceReturn.ReturnFee;
         }
 
         #endregion
@@ -472,7 +498,10 @@ namespace CPC.POS.Model
         /// </summary>
         public CollectionBase<base_ResourceReturnDetailModel> ReturnDetailCollection
         {
-            get { return _returnDetailCollection; }
+            get
+            {
+                return _returnDetailCollection;
+            }
             set
             {
                 if (_returnDetailCollection != value)
@@ -502,64 +531,16 @@ namespace CPC.POS.Model
         {
             switch (propertyName)
             {
-                case "DiscountAmount":
-
-                    _discountPercent = 0;
-                    OnPropertyChanged(() => DiscountPercent);
-
-                    _totalRefund = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => TotalRefund);
-
-                    _balance = _totalAmount - _totalRefund;
-                    OnPropertyChanged(() => Balance);
-
-                    break;
-
-                case "DiscountPercent":
-
-                    _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                    OnPropertyChanged(() => DiscountAmount);
-
-                    _totalRefund = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => TotalRefund);
-
-                    _balance = _totalAmount - _totalRefund;
-                    OnPropertyChanged(() => Balance);
-
-                    break;
-
                 case "SubTotal":
+                case "ReturnFee":
+                case "TotalRefund":
 
-                    if (_discountPercent > 0)
-                    {
-                        _discountAmount = Math.Round(Math.Round((_discountPercent * _subTotal) / 100, 2) - 0.01M, 1, MidpointRounding.AwayFromZero);
-                        OnPropertyChanged(() => DiscountAmount);
-                    }
-
-                    _totalRefund = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => TotalRefund);
-
-                    _balance = _totalAmount - _totalRefund;
+                    _balance = _subTotal - _returnFee - _totalRefund;
                     OnPropertyChanged(() => Balance);
 
                     break;
 
-                case "Freight":
 
-                    _totalRefund = _subTotal + _freight - _discountAmount;
-                    OnPropertyChanged(() => TotalRefund);
-
-                    _balance = _totalAmount - _totalRefund;
-                    OnPropertyChanged(() => Balance);
-
-                    break;
-
-                case "TotalAmount":
-
-                    _balance = _totalAmount - _totalRefund;
-                    OnPropertyChanged(() => Balance);
-
-                    break;
             }
         }
 
