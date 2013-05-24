@@ -20,7 +20,7 @@
     <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -37,6 +37,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CPC.Helper.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BarcodeLib, Version=1.0.0.14, Culture=neutral, processorArchitecture=MSIL">
@@ -109,6 +112,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
@@ -469,6 +473,10 @@
     <Compile Include="Model\tims_WorkWeekModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Ultility\Helper\IdleTimeHelper.cs" />
+    <Compile Include="Ultility\Singleton\Program.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Repository\base_AttachmentRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
@@ -709,6 +717,7 @@
     <Compile Include="Service\IDialogService.cs" />
     <Compile Include="Service\IDialogServiceContract.cs" />
     <Compile Include="Service\ServiceLocator.cs" />
+    <Compile Include="Ultility\Singleton\SingleInstance.cs" />
     <Compile Include="Toolkit\Base\CollectionBase.cs" />
     <Compile Include="Toolkit\Base\ModelBase.cs" />
     <Compile Include="Toolkit\Base\NotifyPropertyChangedBase.cs" />
@@ -797,6 +806,7 @@
     <Compile Include="ViewModel\Inventory\TransferStockViewModel.cs" />
     <Compile Include="ViewModel\Inventory\WorkOrderViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Common\PopupEditProductViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupDuplicateItemViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupUpdateOrderCostViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupPricingViewModel.cs" />
@@ -832,6 +842,7 @@
     <Compile Include="ViewModel\Security\User\LoginViewModel.cs" />
     <Compile Include="ViewModel\Security\User\ManagementUserLogViewModel.cs" />
     <Compile Include="ViewModel\Security\User\UserListViewModel.cs" />
+    <Compile Include="ViewModel\SplashScreenViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\AssignWorkScheduleViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\EmployeesListViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\HolidayViewModel.cs" />
@@ -848,6 +859,9 @@
     </Compile>
     <Compile Include="View\Common\CreditCardView.xaml.cs">
       <DependentUpon>CreditCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Common\PopupEditProductView.xaml.cs">
+      <DependentUpon>PopupEditProductView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Common\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
@@ -1056,6 +1070,9 @@
     </Compile>
     <Compile Include="View\Security\User\UserListView.xaml.cs">
       <DependentUpon>UserListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SplashScreenView.xaml.cs">
+      <DependentUpon>SplashScreenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TimeClock\AssignWorkScheduleView.xaml.cs">
       <DependentUpon>AssignWorkScheduleView.xaml</DependentUpon>
@@ -1318,6 +1335,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Common\CreditCardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Common\PopupEditProductView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1596,6 +1617,10 @@
     <Page Include="View\Security\User\UserListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SplashScreenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TimeClock\AssignWorkScheduleView.xaml">
       <Generator>MSBuild:Compile</Generator>
