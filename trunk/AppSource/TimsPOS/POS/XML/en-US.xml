@@ -1087,42 +1087,49 @@
       <default>1</default>
       <name>Cash</name>
       <symbol>Payment</symbol>
+	  <islocked>false</islocked>
     </item>
     <item>
       <value>2</value>
       <default>0</default>
       <name>Cheque</name>
       <symbol>Check</symbol>
+		<islocked>false</islocked>
     </item>
     <item>
       <value>4</value>
       <default>0</default>
       <name>Credit Card</name>
       <symbol>Credit</symbol>
+		<islocked>false</islocked>
     </item>
     <item>
       <value>8</value>
       <default>0</default>
       <name>Debit / ATM Card</name>
       <symbol>ATM</symbol>
+		<islocked>false</islocked>
     </item>
     <item>
       <value>16</value>
       <default>0</default>
       <name>Deposit</name>
       <symbol></symbol>
+		<islocked>true</islocked>
     </item>
     <item>
       <value>32</value>
       <default>0</default>
       <name>Account</name>
       <symbol>ChargeOnAccount</symbol>
+		<islocked>false</islocked>
     </item>
     <item>
       <value>64</value>
       <default>0</default>
       <name>Gift Card</name>
       <symbol>GiftCard</symbol>
+		<islocked>false</islocked>
     </item>
   </combo>
   <combo key="GiftCardType">
