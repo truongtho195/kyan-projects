@@ -31,10 +31,18 @@
 
         <ContextMenu x:Key="SaleTaxLocationMenu">
             <MenuItem Header="New Tax Location">
+                <MenuItem.Visibility>
+                    <Binding Path="ParentId" ConverterParameter="0">
+                            <Binding.Converter>
+                                <converter:IntergerToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                </MenuItem.Visibility>
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
                                Fill="{DynamicResource NewTaxLocation}"
+                               
                                Stretch="Fill" />
                 </MenuItem.Icon>
                 <i:Interaction.Triggers>
@@ -44,6 +52,14 @@
                 </i:Interaction.Triggers>
             </MenuItem>
             <MenuItem Header="New Tax Code">
+                <MenuItem.Visibility>
+                    <Binding Path="ParentId"
+                             ConverterParameter="0">
+                        <Binding.Converter>
+                            <converter:IntergerToVisibilityConverter />
+                        </Binding.Converter>
+                    </Binding>
+                </MenuItem.Visibility>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <command:EventToCommand Command="{Binding DataContext.NewCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding Id, Mode=TwoWay}" />
@@ -68,14 +84,6 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-        </ContextMenu>
-
-        <ContextMenu x:Key="TaxCodeContextMenu">
-            <MenuItem Command="{Binding DataContext.DeleteCommand,
-                                        RelativeSource={RelativeSource AncestorType={x:Type UserControl},
-                                                                       Mode=FindAncestor}}"
-                      CommandParameter="{Binding .}"
-                      Header="Delete" />
         </ContextMenu>
 
         <Style x:Key="listTaxCodeOptionStyle" TargetType="{x:Type ListBoxItem}">
@@ -315,13 +323,8 @@
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Setter Property="ContextMenu" Value="{StaticResource TaxCodeContextMenu}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ParentId}" Value="0">
-                    <Setter Property="ContextMenu" Value="{StaticResource SaleTaxLocationMenu}" />
-
-                </DataTrigger>
-            </Style.Triggers>
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource SaleTaxLocationMenu}" />
         </Style>
     </UserControl.Resources>
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">

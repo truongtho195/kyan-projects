@@ -35,6 +35,10 @@
                     <ColumnDefinition Width="240" />
                 </Grid.ColumnDefinitions>
                 <Grid x:Name="grdDatagridTotalPayment">
+                	<Grid.RowDefinitions>
+                		<RowDefinition Height="80"/>
+								<RowDefinition/>
+                	</Grid.RowDefinitions>
                     <cpcDataGrid:DataGridControl x:Name="dtgrdPayment"
                                                  AutoGenerateColumns="False"
                                                  CanUserAddRows="False"
@@ -48,7 +52,7 @@
                                                  RowHeight="30"
                                                  
                                                  Style="{DynamicResource DatagridWithoutRowHeader}"
-                                                 VisibilityNavigationBar="Collapsed" Grid.Row="1" Margin="0,0.1,0,0">
+                                                 VisibilityNavigationBar="Collapsed" Margin="0,0.1,0,0" Grid.Row="1">
                         <cpcDataGrid:DataGridControl.Columns>
                         	<DataGridTemplateColumn Width="120"
                         		Header="Methods"
@@ -150,6 +154,40 @@
                         	</DataGridTemplateColumn>
                         </cpcDataGrid:DataGridControl.Columns>
                     </cpcDataGrid:DataGridControl>
+                    <Grid x:Name="grdTotal1" VerticalAlignment="Top">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="95"/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="25"/>
+									<RowDefinition Height="25"/>
+									<RowDefinition Height="25"/>
+								</Grid.RowDefinitions>
+								<TextBlock x:Name="txtblTotalDeposit"
+									Text="Total Deposit:"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
+								<TextBlock x:Name="txtblBindingTotalDeposit"
+									Text="$ 100.00"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
+								<TextBlock x:Name="txtblTotalDiscount"
+									Text="Total Discount:"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
+								<TextBlock x:Name="txtblBindingTotalDiscount"
+									Text="$ 100.00"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
+								<TextBlock x:Name="txtblLastPaid"
+									Text="Last Paid:"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
+								<TextBlock x:Name="txtblBindingLastPaid"
+									TextWrapping="NoWrap"
+									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
+							</Grid>
                     <!--
                         <Grid x:Name="dtgrdEmployeeItem1"
                         Margin="1,29,0,0"
