@@ -148,7 +148,7 @@ namespace CPC.Toolkit.Base
             // TODO: Handle command logic here
         }
 
-        public virtual void ChangeSearchMode(object param)
+        public virtual void ChangeSearchMode(bool isList, object param = null)
         {
             // TODO: Handle command logic here
         }
