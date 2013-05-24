@@ -1,0 +1,129 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:customTexBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+                    xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                    xmlns:local="clr-namespace:CPC.POS"
+                    xmlns:cpcControl="clr-namespace:CPC.Control">
+    <!--DataErrorTemplate-->
+    <ControlTemplate x:Key="DataErrorTemplate">
+        <DockPanel>
+            <TextBlock Margin="2,0,0,0"
+                       DockPanel.Dock="Right"
+                       Foreground="Red"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       Text="!"
+                       ToolTip="{Binding Path=AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=adornedElementPlaceholder}" />
+            <AdornedElementPlaceholder x:Name="adornedElementPlaceholder" />
+        </DockPanel>
+    </ControlTemplate>
+
+    <!--DataErrorWithBorderTemplate-->
+    <ControlTemplate x:Key="DataErrorWithBorderTemplate">
+        <Border BorderBrush="Red"
+                BorderThickness="1"
+                Margin="2,0,2,0">
+            <DockPanel>
+                <TextBlock Margin="2,0,3,0"
+                           DockPanel.Dock="Right"
+                           Foreground="Red"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           Text="!"
+                           ToolTip="{Binding Path=AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=adornedElementPlaceholder}" />
+                <AdornedElementPlaceholder x:Name="adornedElementPlaceholder" />
+            </DockPanel>
+        </Border>
+    </ControlTemplate>
+
+    <!--DataErrorImageTemplate-->
+    <ControlTemplate x:Key="DataErrorImageTemplate">
+        <DockPanel>
+            <Rectangle Fill="{DynamicResource Error}"
+                       Width="12"
+                       Height="12"
+                       DockPanel.Dock="Right"
+                       Margin="5,0,0,0"
+                       ToolTip="{Binding Path=AdornedElement.(Validation.Errors).CurrentItem.ErrorContent, ElementName=adornedElementPlaceholder}" />
+            <AdornedElementPlaceholder x:Name="adornedElementPlaceholder" />
+        </DockPanel>
+    </ControlTemplate>
+
+    <!--TextBoxMoney Error Style-->
+    <Style TargetType="{x:Type customTexBox:TextBoxMoney}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--TextBoxDecimal Error Style-->
+    <Style TargetType="{x:Type customTexBox:TextBoxDecimal}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--TextBoxPercent Error Style-->
+    <Style TargetType="{x:Type customTexBox:TextBoxPercent}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--NumericTextBox Error Style-->
+    <Style TargetType="{x:Type cpcControl:NumericTextBox}"
+           BasedOn="{StaticResource {x:Type TextBox}}" >
+    	<Setter Property="BorderBrush" Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"/>
+    </Style>
+
+    <!--TextBoxNumber Error Style-->
+    <Style TargetType="{x:Type customTexBox:TextBoxNumber}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--CPCTextBoxPhone-->
+    <Style TargetType="{x:Type customTexBox:TextBoxPhone}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--CPCTextBoxFax-->
+    <Style TargetType="{x:Type customTexBox:TextBoxFax}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--CPCTextBoxEmail-->
+    <Style TargetType="{x:Type customTexBox:TextBoxEmail}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--CPCTextBox-->
+    <Style TargetType="{x:Type customTexBox:TextBox}"
+           BasedOn="{StaticResource {x:Type TextBox}}" />
+
+    <!--DateComboBox Error Style-->
+    <Style TargetType="{x:Type cpcControl:DateComboBox}">
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="false">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsVisible"
+                     Value="true">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource DataErrorTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--DateComboBox Error Style-->
+    <Style TargetType="{x:Type PasswordBox}">
+        <Style.Triggers>
+            <Trigger Property="IsVisible"
+                     Value="false">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{x:Null}" />
+            </Trigger>
+            <Trigger Property="IsVisible"
+                     Value="true">
+                <Setter Property="Validation.ErrorTemplate"
+                        Value="{DynamicResource DataErrorTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--validationTemplate-->
+    <ControlTemplate x:Key="validationTemplate">
+        <Border BorderBrush="Red"
+                BorderThickness="2">
+            <AdornedElementPlaceholder />
+        </Border>
+    </ControlTemplate>
+</ResourceDictionary>
