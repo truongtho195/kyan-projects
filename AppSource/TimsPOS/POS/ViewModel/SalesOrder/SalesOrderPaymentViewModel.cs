@@ -30,26 +30,27 @@ namespace CPC.POS.ViewModel
         public SalesOrderPaymenViewModel()
             : base()
         {
-
             _ownerViewModel = this;
             InitialCommand();
         }
-        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel,decimal balance,bool isPaidFull=false ,bool isQuotation = false)
+        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel, decimal balance, decimal totalDeposit = 0, decimal lastPayment = 0, bool isPaidFull = false)
             : this()
         {
             IsPaidFull = isPaidFull;
-            this.IsQuotation = isQuotation;
-            if (IsQuotation)
-            {
-                InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance,0);
-            }
-            else
-            {
-
-                InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance, saleOrderModel.RewardValueApply);
-            }
+            TotalDiscount = saleOrderModel.DiscountAmount;
+            TotalDeposit = totalDeposit;
+            LastPayment = lastPayment;
+            this.IsQuotation = false;
+            InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance, saleOrderModel.RewardValueApply);
         }
 
+
+        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel, decimal balance)
+            : this()
+        {
+            IsQuotation = true;
+            InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance, 0);
+        }
         #endregion
 
         #region Properties
@@ -285,7 +286,7 @@ namespace CPC.POS.ViewModel
             OpenPaymentCardViewCommand = new RelayCommand<object>(OnOpenPaymentCardViewCommandExecute, OnOpenPaymentCardViewCommandCanExecute);
         }
 
-        private void InitialPaymentMethod(string remark, string docResource, string docNumber, decimal totalAmount, decimal balance,decimal rewardValue)
+        private void InitialPaymentMethod(string remark, string docResource, string docNumber, decimal totalAmount, decimal balance, decimal rewardValue)
         {
             _isInitialData = true;
             if (IsQuotation)//Using For Quotation
@@ -331,7 +332,7 @@ namespace CPC.POS.ViewModel
 
             if (Define.CONFIGURATION.AcceptedPaymentMethod.HasValue)
             {
-                foreach (ComboItem paymentMethod in Common.PaymentMethods.Where(x=>!x.Islocked))
+                foreach (ComboItem paymentMethod in Common.PaymentMethods.Where(x => !x.Islocked))
                 {
                     //Check payment methods accepted
                     if (Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has((int)paymentMethod.Value))
