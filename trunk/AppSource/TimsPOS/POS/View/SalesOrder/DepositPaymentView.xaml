@@ -16,8 +16,6 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         
-
-        
     </UserControl.Resources>
     <Grid x:Name="grdDepositPayment" d:LayoutOverrides="Height">
         <Grid.RowDefinitions>
