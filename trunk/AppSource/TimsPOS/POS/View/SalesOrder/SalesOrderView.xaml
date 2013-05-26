@@ -284,7 +284,7 @@
         <Style x:Key="DataGridDetailRowStyle"
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
-            
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRow}">
@@ -3035,17 +3035,18 @@
                                                            Text="Sub-Total:"
                                                            TextWrapping="NoWrap" />
                                                 <!--  SubTotal  -->
-                                                <cpcTextBox:TextBoxMoney x:Name="txtReturnSubTotal1"
+                                                <TextBox x:Name="txtReturnSubTotal1"
                                                                          Grid.RowSpan="1"
                                                                          Grid.Column="4"
                                                                          Margin="0,2"
                                                                          HorizontalContentAlignment="Right"
                                                                          IsReadOnly="True"
                                                                          Padding="2,0,2,0"
-                                                                         TextLength="{StaticResource SubTotalMaxLength}"
+                                                                         MaxLength="{StaticResource SubTotalMaxLength}"
                                                                          TextWrapping="NoWrap"
-                                                                         Value="{Binding SelectedSaleOrder.ReturnModel.SubTotal,
+                                                                         Text="{Binding SelectedSaleOrder.ReturnModel.SubTotal,
                                                                                          Mode=TwoWay,
+                                                    StringFormat=\{0:c2\},
                                                                                          UpdateSourceTrigger=PropertyChanged}" />
                                                 <TextBlock x:Name="txtblReturnFee"
                                                            Grid.Row="1"
@@ -3056,14 +3057,14 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Return Fee:"
                                                            TextWrapping="NoWrap" />
-                                                <TextBox x:Name="txtReturnReturnFee"
+                                                <cpcTextBox:TextBoxMoney x:Name="txtReturnReturnFee"
                                                          Grid.Row="1"
                                                          Grid.RowSpan="1"
                                                          Grid.Column="4"
                                                          Margin="0,2"
                                                          HorizontalContentAlignment="Right"
                                                          Padding="2,0,2,0"
-                                                         Text="$1.00"
+                                                         Value="{Binding SelectedSaleOrder.ReturnModel.ReturnFee,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="NoWrap" />
                                                 <TextBox x:Name="txtReturnTax"
                                                          Grid.Row="2"
@@ -3084,14 +3085,17 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Refunded:"
                                                            TextWrapping="NoWrap" />
-                                                <TextBox x:Name="txtRefunded"
+                                                <cpcTextBox:TextBoxMoney x:Name="txtRefunded"
                                                          Grid.Row="2"
                                                          Grid.RowSpan="1"
                                                          Grid.Column="4"
                                                          Margin="0,2"
                                                          HorizontalContentAlignment="Right"
                                                          Padding="2,0,2,0"
-                                                         Text="$50.00"
+                                                         Value="{Binding SelectedSaleOrder.ReturnModel.TotalRefund,
+                                                                        Mode=TwoWay,
+                                                                        
+                                                                        UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="NoWrap" />
                                                 <TextBlock x:Name="txtblReturnTotal"
                                                            Grid.Row="3"
@@ -3113,10 +3117,7 @@
                                                          MaxLength="{StaticResource TotalMaxLength}"
                                                          Padding="2,0,2,0"
                                                          Style="{DynamicResource TextBoxTotal}"
-                                                         Text="{Binding SelectedSaleOrder.ReturnModel.TotalRefund,
-                                                                        Mode=TwoWay,
-                                                                        StringFormat=\{0:c2\},
-                                                                        UpdateSourceTrigger=PropertyChanged}"
+                                                         Text="{Binding  SelectedSaleOrder.ReturnModel.Balance,Mode=OneWay,StringFormat=\{0:c2\},UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="NoWrap" />
                                             </Grid>
                                         </Grid>
