@@ -169,7 +169,7 @@
 									TextWrapping="NoWrap"
 									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
 								<TextBlock x:Name="txtblBindingTotalDeposit"
-									Text="$ 100.00"
+									Text="{Binding TotalDeposit,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
 									TextWrapping="NoWrap"
 									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
 								<TextBlock x:Name="txtblTotalDiscount"
@@ -177,7 +177,7 @@
 									TextWrapping="NoWrap"
 									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
 								<TextBlock x:Name="txtblBindingTotalDiscount"
-									Text="$ 100.00"
+									Text="{Binding TotalDiscount,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
 									TextWrapping="NoWrap"
 									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
 								<TextBlock x:Name="txtblLastPaid"
@@ -186,6 +186,7 @@
 									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
 								<TextBlock x:Name="txtblBindingLastPaid"
 									TextWrapping="NoWrap"
+                                           Text="{Binding LastPayment,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
 									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
 							</Grid>
                     <!--
