@@ -766,14 +766,14 @@ namespace CPC.POS.ViewModel
         {
             if (SelectedSaleOrder != null)
             {
-                  MessageBoxResult result = MessageBox.Show("Do you want to delete this item?", "POS", MessageBoxButton.YesNo);
-                  if (result.Is(MessageBoxResult.Yes))
-                  {
-                      SelectedSaleOrder.IsPurge = true;
-                      SaveSalesOrder();
-                      this.SaleOrderCollection.Remove(SelectedSaleOrder);
-                      IsSearchMode = true;
-                  }
+                MessageBoxResult result = MessageBox.Show("Do you want to delete this item?", "POS", MessageBoxButton.YesNo);
+                if (result.Is(MessageBoxResult.Yes))
+                {
+                    SelectedSaleOrder.IsPurge = true;
+                    SaveSalesOrder();
+                    this.SaleOrderCollection.Remove(SelectedSaleOrder);
+                    IsSearchMode = true;
+                }
 
             }
         }
@@ -1473,7 +1473,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnPaymentCommandExecute(object param)
         {
-            SaleOrderPayment();
+            if (IsQuotation)
+                DepositProcess();
+            else
+                SaleOrderPayment();
         }
         #endregion
 
@@ -1553,7 +1556,7 @@ namespace CPC.POS.ViewModel
             CreateNewSaleOrder();
             SelectedSaleOrder.CopyFrom(saleOrderSource);
             SelectedSaleOrder.CalcBalance();
-            
+
             foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderSource.SaleOrderDetailCollection)
             {
                 base_SaleOrderDetailModel newSaleOrderDetailModel = new base_SaleOrderDetailModel();
@@ -1775,7 +1778,7 @@ namespace CPC.POS.ViewModel
             SaveSalesOrder();
             IsSearchMode = true;
             (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", SelectedSaleOrder);
-        } 
+        }
         #endregion
 
         #endregion "Commands Methods"
@@ -2928,49 +2931,38 @@ namespace CPC.POS.ViewModel
                     }
                 }
 
-                decimal balance = 0;
-                if (IsQuotation)
-                    balance = SelectedSaleOrder.Total - SelectedSaleOrder.Deposit.Value;
-                else
-                    balance = SelectedSaleOrder.Total - SelectedSaleOrder.RewardValueApply - SelectedSaleOrder.Paid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
+                decimal balance = SelectedSaleOrder.Total - SelectedSaleOrder.RewardValueApply - SelectedSaleOrder.Paid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
 
+                decimal totalDeposit = 0;
+                decimal lastPayment = 0;
+                if (SelectedSaleOrder.PaymentCollection != null)
+                {
+                    totalDeposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                    base_ResourcePaymentModel paymentModel = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value).OrderBy(x => x.DateCreated).LastOrDefault();
+                    if (paymentModel != null)
+                        lastPayment = paymentModel.TotalPaid;
+                }
                 //Show Payment
-                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, isPayFull, IsQuotation);
+                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, totalDeposit, lastPayment, isPayFull);
                 bool? dialogResult = _dialogService.ShowDialog<SalesOrderPaymentView>(_ownerViewModel, paymentViewModel, "Payment");
                 if (dialogResult == true)
                 {
-                    if (IsQuotation)
+                    //Calc Reaward , redeem & update subtotal
+                    CalcRedeemReward(SelectedSaleOrder);
+
+                    // Update payment product collection
+                    UpdatePaymentCollection(SelectedSaleOrder, paymentViewModel);
+
+                    SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Where(x => !x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                    //paymentViewModel.PaymentModel.TotalPaid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
+                    //Set Status
+
+                    if (SelectedSaleOrder.Paid + SelectedSaleOrder.Deposit.Value >= SelectedSaleOrder.Total)
                     {
-                        if (SelectedSaleOrder.PaymentModel == null)
-                            SelectedSaleOrder.PaymentModel = paymentViewModel.PaymentModel;
-                        else
-                        {
-                            foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentViewModel.PaymentModel.PaymentDetailCollection)
-                                SelectedSaleOrder.PaymentModel.PaymentDetailCollection.Add(paymentDetailModel);
-                        }
-                        //Sum paid of payament method & Total paid in db
-                        SelectedSaleOrder.PaymentModel.TotalPaid = SelectedSaleOrder.PaymentModel.base_ResourcePayment.TotalPaid + SelectedSaleOrder.PaymentModel.PaymentDetailCollection.Where(x => !x.IsCard).Sum(x => x.Paid);
-                        SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentModel.TotalPaid;
-                    }
-                    else
-                    {
-                        //Calc Reaward , redeem & update subtotal
-                        CalcRedeemReward(SelectedSaleOrder);
-
-                        // Update payment product collection
-                        UpdatePaymentCollection(SelectedSaleOrder, paymentViewModel);
-
-                        SelectedSaleOrder.Paid = SelectedSaleOrder.PaymentCollection.Where(x=>!x.IsDeposit.Value).Sum(x => x.TotalPaid);
-                        //paymentViewModel.PaymentModel.TotalPaid - (SelectedSaleOrder.Deposit.HasValue ? SelectedSaleOrder.Deposit.Value : 0);
-                        //Set Status
-
-                        if (SelectedSaleOrder.Paid + SelectedSaleOrder.Deposit.Value >= SelectedSaleOrder.Total)
-                        {
-                            CreateNewReward(SelectedSaleOrder);
-                            SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.PaidInFull;
-                            SaveSalesOrder();
-                            this.IsSearchMode = true;
-                        }
+                        CreateNewReward(SelectedSaleOrder);
+                        SelectedSaleOrder.OrderStatus = (short)SaleOrderStatus.PaidInFull;
+                        SaveSalesOrder();
+                        this.IsSearchMode = true;
                     }
                 }
                 else
@@ -2989,6 +2981,45 @@ namespace CPC.POS.ViewModel
             }
 
             SetAllowChangeOrder(SelectedSaleOrder);
+        }
+
+        /// <summary>
+        /// Deposite for Quotation
+        /// </summary>
+        private void DepositProcess()
+        {
+            decimal balance = SelectedSaleOrder.Total - SelectedSaleOrder.Deposit.Value;
+            //Show Payment
+            SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance);
+            bool? dialogResult = _dialogService.ShowDialog<DepositPaymentView>(_ownerViewModel, paymentViewModel, "Deposit");
+            if (dialogResult == true)
+            {
+                if (IsQuotation)
+                {
+                    if (SelectedSaleOrder.PaymentModel == null)
+                        SelectedSaleOrder.PaymentModel = paymentViewModel.PaymentModel;
+                    else
+                    {
+                        if (SelectedSaleOrder.PaymentCollection != null && !SelectedSaleOrder.PaymentCollection.Any(x => x.IsDeposit.Value))
+                        {
+                            SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
+                        }
+                        else
+                        {
+                            //Update PaymentCard
+                            SelectedSaleOrder.PaymentModel = SelectedSaleOrder.PaymentCollection.SingleOrDefault(x => x.IsDeposit.Value);
+                            if (SelectedSaleOrder.PaymentModel != null)
+                            {
+                                foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentViewModel.PaymentModel.PaymentDetailCollection)
+                                    SelectedSaleOrder.PaymentModel.PaymentDetailCollection.Add(paymentDetailModel);
+                            }
+                        }
+                    }
+                    //Sum paid of payament method & Total paid in db
+                    SelectedSaleOrder.PaymentModel.TotalPaid = SelectedSaleOrder.PaymentModel.base_ResourcePayment.TotalPaid + SelectedSaleOrder.PaymentModel.PaymentDetailCollection.Where(x => !x.IsCard).Sum(x => x.Paid);
+                    SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentModel.TotalPaid;
+                }
+            }
         }
 
         /// <summary>
@@ -3936,10 +3967,10 @@ namespace CPC.POS.ViewModel
 
             if (saleOrderModel.OrderStatus.Equals((short)SaleOrderStatus.Quote))
                 this.IsAllowChangeOrder = true;
-            else if (saleOrderModel.OrderStatus < (short)SaleOrderStatus.FullyShipped)//Open or Shipping
-                this.IsAllowChangeOrder = true;
             else if (saleOrderModel.PaymentCollection != null && saleOrderModel.PaymentCollection.Any(x => !x.IsDeposit.Value))/*has paid*/
                 this.IsAllowChangeOrder = false;
+            else if (saleOrderModel.OrderStatus < (short)SaleOrderStatus.FullyShipped)//Open or Shipping
+                this.IsAllowChangeOrder = true;
             else if (saleOrderModel.OrderStatus.Equals((short)SaleOrderStatus.PaidInFull))
                 this.IsAllowChangeOrder = false;
             else
@@ -4228,7 +4259,7 @@ namespace CPC.POS.ViewModel
                         resourceReturnDetailModel.UnitName = resourceReturnDetailModel.SaleOrderDetailModel.UnitName;
                         resourceReturnDetailModel.Price = resourceReturnDetailModel.SaleOrderDetailModel.SalePrice;
                         CalculateRemainReturnQty(resourceReturnDetailModel);
-                        
+
                     }
                     else
                     {
