@@ -110,6 +110,53 @@
             </Setter>
 
         </Style>
+        <!--DataGridCell-->
+        <Style x:Key="DataGridCellEnableStyle"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.SelectedTransferStock.IsEnable, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Mode=OneWay}"></Setter>
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--End-->
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -117,8 +164,7 @@
         <control:BusyIndicator IsBusy="{Binding IsBusy}">
             <Grid x:Name="grdTransferStock">
                 <Grid x:Name="grdContentSearch"
-                      d:LayoutOverrides="GridBox"
-                      d:IsHidden="True">
+                      d:LayoutOverrides="GridBox" d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -737,6 +783,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Header="Quantity"
+                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
                                                                 Width="70">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -746,13 +793,11 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid IsEnabled="{Binding DataContext.SelectedTransferStock.IsEnable,Mode=OneWay,RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}">
+                                                    <Grid>
                                                         <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
                                                                                        TextAlignment="Right"
-                                                                                       Width="60"
-                                                                                       HorizontalAlignment="Center"
-                                                                                       HorizontalContentAlignment="Center"
-                                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                                       Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center">
                                                             <i:Interaction.Triggers>
                                                                 <i:EventTrigger EventName="LostFocus">
                                                                     <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
@@ -765,23 +810,25 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="80"
+                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
                                                                 Header="UOM">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextAlignment="Left"
+                                                    <TextBlock TextAlignment="Center"
                                                                Text="{Binding BaseUOM, Mode=OneWay}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
 
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid IsEnabled="{Binding DataContext.SelectedTransferStock.IsEnable,Mode=OneWay,RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}">
+                                                    <Grid>
                                                         <ComboBox x:Name="cmbUnit"
-                                                                  Width="70"
                                                                   DisplayMemberPath="Name"
+                                                                  Style="{DynamicResource ComboBoxInsideDataGridStyle}"
                                                                   ItemsSource="{Binding ProductUOMCollection, Mode=OneWay}"
                                                                   SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  SelectedValuePath="UOMId" />
+                                                                  SelectedValuePath="UOMId" 
+																  VerticalContentAlignment="Center" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>

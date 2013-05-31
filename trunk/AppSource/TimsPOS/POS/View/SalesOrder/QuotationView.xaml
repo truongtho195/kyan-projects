@@ -202,6 +202,8 @@
         <Style x:Key="DataGridDetailRowStyle"
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource SaleOrderDetailContextMenu}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRow}">
@@ -229,25 +231,72 @@
                                                                                                                          Converter={x:Static DataGrid.RowDetailsScrollingConverter},
                                                                                                                          RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                     <DataGridDetailsPresenter.Visibility>
-                                        <Binding Mode="OneWay" Path="IsVisibleRowDetail">
+                                        <Binding Mode="OneWay"
+                                                 Path="IsVisibleRowDetail">
                                             <Binding.Converter>
                                                 <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
                                             </Binding.Converter>
                                         </Binding>
                                     </DataGridDetailsPresenter.Visibility>
-
                                 </DataGridDetailsPresenter>
                                 <DataGridRowHeader Grid.RowSpan="2"
                                                    SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
                                                    Style="{DynamicResource DataGridRowHeaderStyle}" />
                             </SelectiveScrollingGrid>
                         </Border>
-
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style x:Key="DataGridPriceCellStyle"
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding ProductModel.IsOpenItem,Mode=OneWay}"></Setter>
+
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
+
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="Center"
+                                              Margin="2,0" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="ComboBoxTextStyle" TargetType="{x:Type ComboBox}">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="cpcBehavior:MoveFocusHelper.MoveFocus" Value="True" />
@@ -779,28 +828,9 @@
                                                                        UpdateSourceTrigger=PropertyChanged,
                                                                        ValidatesOnDataErrors=True,
                                                                        NotifyOnValidationError=True}">
-                                <!--
-                                    FieldSource="{Binding CustomerFieldCollection}"
-                                    AutoChangeSelectedItem="False"
-                                    IsTextCompletionEnabled="True"
-                                    FieldShow="LegalName"
-                                    FilterMode="Contains"
-                                    <cpcComboBox:ComboBoxControl.Columns>
-                                    <GridViewColumn Header="Customer Number"
-                                    DisplayMemberBinding="{Binding GuestNo}" />
-                                    <GridViewColumn Header="LegalName"
-                                    DisplayMemberBinding="{Binding LegalName}" />
-                                    </cpcComboBox:ComboBoxControl.Columns>
-                                -->
+                   
                             </cpcComboBox:ComboBoxControl>
-                            <!--
-                                <TextBox x:Name="txtSONo1"
-                                Grid.Column="1"
-                                Margin="0,2"
-                                Padding="2,0,2,0"
-                                TextWrapping="NoWrap" />
-                            -->
-
+                        
 
                             <TextBlock x:Name="txtblBookingChanal"
                                        Grid.Column="2"
@@ -1121,8 +1151,8 @@
                                                                                    Mode=TwoWay,
                                                                                    UpdateSourceTrigger=PropertyChanged}"
                                                              RowDetailsTemplate="{DynamicResource RowDetailDataTemplateOrderInvoice}"
+                                                             RowStyle="{StaticResource DataGridDetailRowStyle}"
                                                              RowDetailsVisibilityMode="Visible"
-                                                             RowStyle="{DynamicResource DataGridDetailRowStyle}"
                                                              SelectedItem="{Binding SelectedSaleOrderDetail,
                                                                                     Mode=TwoWay,
                                                                                     UpdateSourceTrigger=PropertyChanged}"
@@ -1151,22 +1181,16 @@
 
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Qty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock   HorizontalAlignment="Right" Text="{Binding Qty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid>
-                                                        <TextBlock x:Name="tbQuantity"
-                                                                   HorizontalAlignment="Center"
-                                                                   Text="{Binding Qty,
-                                                                                  Mode=OneWay,
-                                                                                  UpdateSourceTrigger=PropertyChanged}"
-                                                                   Visibility="Collapsed" />
                                                         <cpcTextBox:TextBoxNumeric x:Name="txtQuantity"
                                                                                    Width="60"
-                                                                                   HorizontalAlignment="Center"
-                                                                                   HorizontalContentAlignment="Center"
+                                                                               HorizontalAlignment="Right"
+                                                                               Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                                               HorizontalContentAlignment="Center"
                                                                                    Value="{Binding Qty,
                                                                                                    Mode=TwoWay,
                                                                                                    UpdateSourceTrigger=PropertyChanged}">
@@ -1176,12 +1200,13 @@
                                                                 </i:EventTrigger>
                                                             </i:Interaction.Triggers>
                                                         </cpcTextBox:TextBoxNumeric>
-                                                    </Grid>
 
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="120" Header="Price">
+                                        <DataGridTemplateColumn Width="120"
+                                                                Header="Price"
+                                                                CellStyle="{StaticResource DataGridPriceCellStyle}" >
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
@@ -1189,26 +1214,13 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid>
                                                         <cpcTextBox:TextBoxMoney x:Name="txtSalePrice"
                                                                                  HorizontalAlignment="Right"
-                                                                                 Visibility="Collapsed"
-                                                                                 Value="{Binding SalePrice,
+                                                                             Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                             Value="{Binding SalePrice,
                                                                                                  Mode=TwoWay,
                                                                                                  UpdateSourceTrigger=PropertyChanged}" />
-                                                        <TextBlock x:Name="tblSalePrice"
-                                                                   HorizontalAlignment="Right"
-                                                                   Text="{Binding SalePrice,
-                                                                                  Mode=OneWay,
-                                                                                  StringFormat={x:Static local:Define.CurrencyFormat}}" />
-                                                    </Grid>
-                                                    <DataTemplate.Triggers>
-                                                        <DataTrigger Binding="{Binding ProductModel.IsOpenItem}" Value="true">
-                                                            <Setter TargetName="txtSalePrice" Property="Visibility" Value="Visible" />
-                                                            <Setter TargetName="tblSalePrice" Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-
-                                                    </DataTemplate.Triggers>
+                                                  
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
@@ -1221,21 +1233,16 @@
 
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid>
-                                                        <TextBlock x:Name="tbUnit"
-                                                                   Text="{Binding UnitName,
-                                                                                  Mode=OneWay}"
-                                                                   Visibility="Collapsed" />
+                                                  
                                                         <ComboBox x:Name="cmbUnit"
                                                                   DisplayMemberPath="Name"
-                                                                  ItemsSource="{Binding ProductUOMCollection,
+                                                              Style="{DynamicResource ComboBoxInsideDataGridStyle}"
+                                                              ItemsSource="{Binding ProductUOMCollection,
                                                                                         Mode=OneWay}"
                                                                   SelectedValue="{Binding UOMId,
                                                                                           Mode=TwoWay,
                                                                                           UpdateSourceTrigger=PropertyChanged}"
                                                                   SelectedValuePath="UOMId" />
-                                                    </Grid>
-
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>

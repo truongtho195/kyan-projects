@@ -43,18 +43,20 @@ namespace CPC.POS.ViewModel
             InitialCommand();
         }
 
-        public SelectTrackingNumberViewModel(base_SaleOrderDetailModel saleOrderDetailModel, bool isShowQuantity = false)
+        public SelectTrackingNumberViewModel(base_SaleOrderDetailModel saleOrderDetailModel, bool isShowQuantity = false,bool isEditing=true)
             : this()
         {
+            IsReadOnly = !isEditing;
             IsSaleOrder = true;
             SaleOrderDetailModel = saleOrderDetailModel;
             IsShowQuantity = isShowQuantity;
             SaleOrderDetailModelChanged();
         }
 
-        public SelectTrackingNumberViewModel(base_PurchaseOrderDetailModel purchaseOrderDetailModel, bool isShowQuantity = false)
+        public SelectTrackingNumberViewModel(base_PurchaseOrderDetailModel purchaseOrderDetailModel, bool isShowQuantity = false, bool isEditing = true)
             : this()
         {
+            IsReadOnly = !isEditing;
             IsSaleOrder = false;
             PurchaseOrderDetailModel = purchaseOrderDetailModel;
             IsShowQuantity = isShowQuantity;
@@ -319,6 +321,25 @@ namespace CPC.POS.ViewModel
                 {
                     _serialTrackingCollection = value;
                     OnPropertyChanged(() => SerialTrackingCollection);
+                }
+            }
+        }
+        #endregion
+
+        #region IsReadOnly
+        private bool _isReadOnly;
+        /// <summary>
+        /// Gets or sets the IsReadOnly.
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set
+            {
+                if (_isReadOnly != value)
+                {
+                    _isReadOnly = value;
+                    OnPropertyChanged(() => IsReadOnly);
                 }
             }
         }

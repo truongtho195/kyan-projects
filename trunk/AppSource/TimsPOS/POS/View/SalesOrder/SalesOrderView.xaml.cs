@@ -22,6 +22,7 @@ namespace CPC.POS.View
 		{
 			this.InitializeComponent();
             TabItem t = new TabItem();
+            
 		}
 
 

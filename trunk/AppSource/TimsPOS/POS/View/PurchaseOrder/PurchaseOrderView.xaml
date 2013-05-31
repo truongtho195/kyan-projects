@@ -43,6 +43,7 @@
         <c:NullToDefaultValueConverter x:Key="NullToDefaultValueConverterWithRequired"
                                        RequiredGreaterOrEqualCurrentDate="True" />
         <c:ReserseBoolConverter x:Key="ReverseBoolConverter" />
+        <c:StringToGuidConverter x:Key="StringToGuidConverter" />
 
         <!--PurchaseOrderDetailRowDetailTemplate-->
         <DataTemplate x:Key="PurchaseOrderDetailRowDetailTemplate">
@@ -395,7 +396,7 @@
 
                             <DataGridTextColumn Header="PO Date"
                                                 Width="70"
-                                                ElementStyle="{StaticResource NumberTextBlock}"
+                                                ElementStyle="{StaticResource NumberTextBlock}"  
                                                 Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                             <DataGridTextColumn Header="Status"
@@ -406,22 +407,22 @@
                                                 Binding="{Binding VendorName}" />
 
                             <DataGridTextColumn Header="Qty Ordered"
-                                                Width="80"
+                                                Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyOrdered, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                             <DataGridTextColumn Header="Qty Due"
-                                                Width="80"
+                                                Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyDue, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                             <DataGridTextColumn Header="Qty Receive"
-                                                Width="80"
+                                                Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyReceived, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                            <DataGridTemplateColumn Header="Unfill %"
-                                                    Width="100"
+                            <DataGridTemplateColumn Header="Unfilled %"
+                                                    Width="70"
                                                     SortMemberPath="UnFilled">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -436,23 +437,23 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn Header="Total"
-                                                Width="80"
+                                                Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Total, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                             <DataGridTextColumn Header="Paid"
-                                                Width="80"
+                                                Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Paid, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                             <DataGridTextColumn Header="Balance"
-                                                Width="80"
+                                                Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Balance, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                             <DataGridTextColumn Header="Due Date"
                                                 Width="70"
-                                                ElementStyle="{StaticResource NumberTextBlock}"
+                                                ElementStyle="{StaticResource NumberTextBlock}" 
                                                 Binding="{Binding PaymentDueDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                             <DataGridTextColumn Header="Ship Date"
@@ -535,12 +536,6 @@
                                                Fill="{DynamicResource New}"
                                                Height="30"
                                                Width="30" />
-                                    <TextBlock VerticalAlignment="Center"
-                                               Text="New"
-                                               TextWrapping="NoWrap"
-                                               x:Name="txtblNew"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}" />
                                 </StackPanel>
                             </Button>
 
@@ -557,13 +552,6 @@
                                                Fill="{DynamicResource Save}"
                                                Height="30"
                                                Width="30" />
-                                    <TextBlock Margin="5,0,0,0"
-                                               VerticalAlignment="Center"
-                                               Text="Save"
-                                               TextWrapping="NoWrap"
-                                               x:Name="txtblSave"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}" />
                                 </StackPanel>
                             </Button>
 
@@ -579,36 +567,39 @@
                                                Fill="{DynamicResource Delete}"
                                                Height="30"
                                                Width="30" />
-                                    <TextBlock Margin="5,0,0,0"
-                                               x:Name="txtblDelete"
-                                               VerticalAlignment="Center"
-                                               Text="Close"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{DynamicResource ButtonSystem}"
-                                    x:Name="btnPOLock"
+
+                            <Button x:Name="btnPOLock"
+                                    Style="{DynamicResource ButtonSystem}"
                                     Width="40"
                                     VerticalAlignment="Center"
                                     Height="40"
-                                    Visibility="Visible">
+                                    Command="{Binding LockAndUnLockCommand}">
                                 <StackPanel HorizontalAlignment="Center"
                                             x:Name="stkpBtnPOLock"
                                             VerticalAlignment="Center"
                                             Orientation="Horizontal">
                                     <Rectangle x:Name="imgPOLock"
-                                               Fill="{DynamicResource POLock}"
                                                Height="30"
-                                               Width="30" />
-                                    <TextBlock Margin="5,0,0,0"
-                                               x:Name="txtblPOLock"
-                                               VerticalAlignment="Center"
-                                               Text="POLock"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}" />
+                                               Width="30">
+                                        <Rectangle.Style>
+                                            <Style TargetType="{x:Type Rectangle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedPurchaseOrder.IsLocked}"
+                                                                 Value="True">
+                                                        <Setter Property="Fill"
+                                                                Value="{DynamicResource POUnlock}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SelectedPurchaseOrder.IsLocked}"
+                                                                 Value="False">
+                                                        <Setter Property="Fill"
+                                                                Value="{DynamicResource POLock}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Rectangle.Style>
+                                    </Rectangle>
                                 </StackPanel>
                             </Button>
 
@@ -626,13 +617,6 @@
                                                Fill="{DynamicResource Receive}"
                                                Height="30"
                                                Width="30" />
-                                    <TextBlock Margin="5,0,0,0"
-                                               x:Name="txtblReceive"
-                                               VerticalAlignment="Center"
-                                               Text="Preview"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}" />
                                 </StackPanel>
                             </Button>
 
@@ -661,7 +645,7 @@
                               Height="80"
                               VerticalAlignment="Top"
                               Grid.Row="1"
-                              IsEnabled="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}">
+                              IsEnabled="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay}">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25" />
@@ -739,7 +723,7 @@
                                        Style="{DynamicResource TextBlockNormal}"
                                        Grid.Row="1" />
 
-                            <!--VendorId-->
+                            <!--VendorResource-->
                             <cpcComboBoxToolkit:ComboBoxControl x:Name="txtVendor"
                                                                 Grid.Row="1"
                                                                 Margin="0,2"
@@ -748,9 +732,9 @@
                                                                 Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}"
                                                                 ItemsSource="{Binding VendorCollection, Mode=OneWay}"
                                                                 DisplayMemberPath="Company"
-                                                                SelectedValuePath="Id"
+                                                                SelectedValuePath="Resource"
                                                                 AddItemCommand="{Binding AddVendorCommand}"
-                                                                SelectedValue="{Binding SelectedPurchaseOrder.VendorId, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+                                                                SelectedValue="{Binding SelectedPurchaseOrder.VendorResource, Mode=TwoWay, Converter={StaticResource StringToGuidConverter}, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
 
                             <!--ShipAddress-->
                             <textBoxToolkit:TextBox x:Name="txtShipAddress"
@@ -867,7 +851,7 @@
                                                                                    Foreground="Black"
                                                                                    AutoChangeSelectedItem="False"
                                                                                    IsTextCompletionEnabled="False"
-                                                                                   IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                                   IsReadOnly="{Binding SelectedPurchaseOrder.CanPurchase, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                                    FieldShow="ProductName"
                                                                                    FilterMode="Contains"
                                                                                    ItemsSource="{Binding ProductCollection}"
@@ -916,6 +900,7 @@
                                                                                 SelectionUnit="FullRow"
                                                                                 IsRollBackData="False"
                                                                                 VisibilityNavigationBar="Collapsed"
+                                                                                IsReadOnly="{Binding SelectedPurchaseOrder.CanEditItemCollection, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                                 ContextMenu="{StaticResource PurchaseOrderDetailContextMenu}"
                                                                                 Style="{DynamicResource DatagridWithRowHeader}"
                                                                                 RowStyle="{StaticResource PODDataGridRowStyle}"
@@ -1036,7 +1021,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxNumber x:Name="txtQuantity"
-                                                                                                  Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                                                  Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                                                         <i:Interaction.Triggers>
                                                                             <i:EventTrigger EventName="LostFocus">
                                                                                 <cmd:EventToCommand Command="{Binding DataContext.QuantityChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
@@ -1200,7 +1185,7 @@
                                                             Grid.Row="1"
                                                             Grid.Column="1"
                                                             Margin="0,2"
-                                                            IsEnabled="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                            IsEnabled="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay}"
                                                             SelectedDate="{Binding SelectedPurchaseOrder.PaymentDueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             VerticalAlignment="Top"
                                                             Height="21" />
@@ -1224,7 +1209,7 @@
                                                                         Grid.Column="2"
                                                                         Margin="60,2,0,2"
                                                                         Grid.RowSpan="2"
-                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                         MaxLength="{StaticResource RemarkMaxLength}"
                                                                         Text="{Binding SelectedPurchaseOrder.Remark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                                         Width="230"
@@ -1321,7 +1306,7 @@
                                                                                 SelectionMode="Single"
                                                                                 SelectionUnit="FullRow"
                                                                                 IsRollBackData="False"
-                                                                                IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                                IsReadOnly="{Binding SelectedPurchaseOrder.CanEditItemCollection, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                                 VisibilityNavigationBar="Collapsed"
                                                                                 Style="{DynamicResource DatagridWithRowHeader}"
                                                                                 ItemsSource="{Binding SelectedPurchaseOrder.PurchaseOrderReceiveCollection, Mode=OneWay}"
@@ -1560,7 +1545,7 @@
                                                                         Grid.ColumnSpan="10"
                                                                         Width="300"
                                                                         HorizontalAlignment="Left"
-                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                         Text="{Binding SelectedPurchaseOrder.RecRemark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                                 <TextBlock x:Name="txtblTotalOrder"
@@ -1723,7 +1708,7 @@
                                                 <DatePicker x:Name="dtpDatePaid"
                                                             Grid.Column="1"
                                                             Margin="0,2"
-                                                            IsEnabled="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                            IsEnabled="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay}"
                                                             SelectedDate="{Binding SelectedPurchaseOrder.ResourcePayment.DateCreated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultValueConverterWithRequired}}"
                                                             VerticalAlignment="Bottom"
                                                             Height="21" />
@@ -1743,7 +1728,7 @@
                                                           Padding="2,0,2,0"
                                                           Grid.Column="1"
                                                           Grid.Row="1"
-                                                          IsEnabled="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                          IsEnabled="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay}"
                                                           ItemsSource="{Binding PaymentMethodCollection, Mode=OneWay}"
                                                           DisplayMemberPath="Text"
                                                           SelectedValuePath="Value"
@@ -1773,15 +1758,9 @@
                                                                         Grid.RowSpan="4"
                                                                         Width="196"
                                                                         HorizontalAlignment="Left"
-                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                        IsReadOnly="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                         MaxLength="{StaticResource RemarkMaxLength}"
                                                                         Text="{Binding SelectedPurchaseOrder.ResourcePayment.Remark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                                                <!--SubTotal-->
-
-                                                <!--DiscountPercent-->
-
-                                                <!--DiscountAmount-->
 
                                                 <TextBlock x:Name="txtblPaymentTotal"
                                                            Text="Total:"
@@ -1828,7 +1807,7 @@
                                                                              VerticalContentAlignment="Center"
                                                                              Style="{DynamicResource TextBoxTotal}"
                                                                              Foreground="Red"
-                                                                             IsReadOnly="{Binding SelectedPurchaseOrder.IsFullWorkflow, Mode=OneWay}"
+                                                                             IsReadOnly="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                              MaxLength="{StaticResource TotalMaxLength}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourcePayment.TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -1913,6 +1892,7 @@
                                                                                 SelectionUnit="FullRow"
                                                                                 IsRollBackData="False"
                                                                                 VisibilityNavigationBar="Collapsed"
+                                                                                IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                                 Style="{DynamicResource DatagridWithRowHeader}"
                                                                                 ItemsSource="{Binding SelectedPurchaseOrder.ResourceReturnDetailCollection, Mode=OneWay}"
                                                                                 SelectedItem="{Binding SelectedResourceReturnDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2195,6 +2175,7 @@
                                                                              Grid.Row="1"
                                                                              Grid.RowSpan="1"
                                                                              HorizontalContentAlignment="Right"
+                                                                             IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                              TextLength="{StaticResource DiscountAmountMaxLength}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.ReturnFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -2217,6 +2198,7 @@
                                                                              Grid.Row="2"
                                                                              Grid.RowSpan="1"
                                                                              HorizontalContentAlignment="Right"
+                                                                             IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                              TextLength="{StaticResource FreightMaxLength}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.TotalRefund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

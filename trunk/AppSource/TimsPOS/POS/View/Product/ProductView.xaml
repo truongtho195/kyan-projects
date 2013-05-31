@@ -163,7 +163,6 @@
                                                      IsRollBackData="False"
                                                      ItemsSource="{Binding ProductCollection}"
                                                      NumberOfItems="{Binding TotalProducts}"
-                                                     RowStyle="{DynamicResource DataGridToggleRowStyle}"
                                                      SelectionMode="Extended"
                                                      Style="{DynamicResource DatagridWithRowHeader}">
                         <DataGrid.ContextMenu>
@@ -705,7 +704,7 @@
                                                                                     Margin="0,2"
                                                                                     HorizontalAlignment="Left"
                                                                                     HorizontalContentAlignment="Right"
-                                                                                    MaxLength="13"
+                                                                                    MaxLength="20"
                                                                                     Padding="2,0,2,0"
                                                                                     Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                     TextWrapping="NoWrap" />
@@ -1590,7 +1589,8 @@
                                                                 <DataTemplate>
                                                                     <textBoxControl:TextBoxMoney TextLength="10"
                                                                                                  TextWrapping="NoWrap"
-                                                                                                 Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                                                 Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}" />
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellEditingTemplate>
                                                         </DataGridTemplateColumn>

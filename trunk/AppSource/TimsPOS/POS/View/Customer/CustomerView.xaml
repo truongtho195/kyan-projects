@@ -813,6 +813,7 @@
                                                      AutoGenerateColumns="False"
                                                      CanUserAddRows="False"
                                                      CanUserDeleteRows="False"
+                                                     SelectionMode="Extended"
                                                      cpcBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
                                                      cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
                                                      cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding Path=SelectedItem, ElementName=dtgrdCustomerDirectory}"
@@ -826,22 +827,39 @@
                                                      RowStyle="{DynamicResource DataGridToggleRowStyle}"
                                                      ScrollViewer.CanContentScroll="True"
                                                      Style="{DynamicResource DatagridWithRowHeader}">
-                            <!--  Style="{DynamicResource DatagridWithoutRowHeader}"  -->
-                            <!--
-                                <cpcDataGrid:DataGridControl.Style>
-                                <Style BasedOn="{DynamicResource DatagridWithoutRowHeader}"
-                                TargetType="{x:Type DataGrid}">
-                                <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsNew}"
-                                Value="true">
-                                <Setter Property="RowToolTip"
-                                TargetName="dtgrdCustomerDirectory"
-                                Value="Double click to create new" />
-                                </DataTrigger>
-                                </Style.Triggers>
-                                </Style>
-                                </cpcDataGrid:DataGridControl.Style>
-                            -->
+                            <cpcDataGrid:DataGridControl.ContextMenu>
+                                <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                    <MenuItem Header="New Item"
+                                              Command="{Binding NewCommand}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource NewItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit Item"
+                                              Command="{Binding DoubleClickViewCommand}"
+                                              CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource EditItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Delete Item"
+                                              Command="{Binding DeletesCommand}"
+                                              CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource DeleteItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </cpcDataGrid:DataGridControl.ContextMenu>
                             <cpcDataGrid:DataGridControl.Columns>
                                 <DataGridTemplateColumn Header=""
                                                         Width="25"

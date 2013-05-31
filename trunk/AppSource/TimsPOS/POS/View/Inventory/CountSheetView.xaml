@@ -111,6 +111,52 @@
             </Setter>
 
         </Style>
+        <!--DataGridCell-->
+        <Style x:Key="DataGridCellEnableStyle"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.SelectedCountStock.IsEnable, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Mode=OneWay}"></Setter>
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--End-->
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -866,6 +912,7 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Header="Counted Quantity"
+                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
                                                                 Width="95">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -875,12 +922,10 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <Grid IsEnabled="{Binding DataContext.SelectedCountStock.IsEnable,Mode=OneWay,RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}">
+                                                    <Grid>
                                                         <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
                                                                                        TextAlignment="Right"
-                                                                                       Width="70"
-                                                                                       HorizontalAlignment="Center"
-                                                                                       HorizontalContentAlignment="Center"
+                                                                                       Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                                        Value="{Binding CountedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                             <!--<i:Interaction.Triggers>
                                                                 <i:EventTrigger EventName="LostFocus">

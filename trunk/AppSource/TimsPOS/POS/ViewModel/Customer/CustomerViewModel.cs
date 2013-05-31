@@ -34,7 +34,7 @@ namespace CPC.POS.ViewModel
         public RelayCommand<object> DeletePaymentCardCommand { get; private set; }
         public RelayCommand<object> LoadStepCommand { get; private set; }
         public RelayCommand NoteCommand { get; private set; }
-
+        public RelayCommand<object> DeletesCommand { get; private set; }
         //Repository
         private base_GuestRepository _guestRepository = new base_GuestRepository();
         private base_ResourceNoteRepository _resourceNoteRepository = new base_ResourceNoteRepository();
@@ -60,15 +60,15 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Constructors
-        public CustomerViewModel(bool isSearchMode = false)
+
+        public CustomerViewModel(bool isSearchMode = false, object param = null)
             : base()
         {
             _ownerViewModel = App.Current.MainWindow.DataContext;
             InitialCommand();
             InitialStaticData();
-            ChangeSearchMode(isSearchMode);
+            ChangeSearchMode(isSearchMode, param);
         }
-
 
         #endregion
 
@@ -943,6 +943,45 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region DeletesCommand
+        /// <summary>
+        /// Method to check whether the DeletesCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeletesCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeletesCommand command is executed.
+        /// </summary>
+        private void OnDeletesCommandExecute(object param)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
+            if (result.Is(MessageBoxResult.Yes))
+            {
+                for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
+                {
+                    base_GuestModel model = (param as ObservableCollection<object>)[i] as base_GuestModel;
+                    string resource = model.Resource.Value.ToString();
+                    if (!_saleOrderRepository.GetAll().Select(x => x.CustomerResource).Contains(resource))
+                    {
+                        model.IsPurged = true;
+                        model.ToEntity();
+                        _guestRepository.Commit();
+                        CustomerCollection.Remove(model);
+                        TotalCustomers = TotalCustomers - 1;
+                        this.DeleteNoteExt(model);
+                        i--;
+                    }
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -968,6 +1007,7 @@ namespace CPC.POS.ViewModel
             NewNoteCommand = new RelayCommand(OnNewNoteCommandExecute, OnNewNoteCommandCanExecute);
             ShowOrHiddenNoteCommand = new RelayCommand(OnShowOrHiddenNoteCommandExecute, OnShowOrHiddenNoteCommandCanExecute);
             AddTermCommand = new RelayCommand(OnAddTermCommandExecute, OnAddTermCommandCanExecute);
+            DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
         }
 
         /// <summary>
@@ -1943,9 +1983,21 @@ namespace CPC.POS.ViewModel
             return popupContainer;
         }
 
+        private void DeleteNoteExt(base_GuestModel model)
+        {
+            // Remove popup note
+            this.CloseAllPopupNote();
+            // Delete note
+            foreach (base_ResourceNoteModel noteModel in model.ResourceNoteCollection)
+                _resourceNoteRepository.Delete(noteModel.base_ResourceNote);
+            _resourceNoteRepository.Commit();
+            model.ResourceNoteCollection.Clear();
+        }
+
         #endregion
 
         #region Override Methods
+
         /// <summary>
         /// Loading data in Change view or Inititial
         /// </summary>
@@ -1981,17 +2033,20 @@ namespace CPC.POS.ViewModel
         /// Change view from Ribbon
         /// </summary>
         /// <param name="isList"></param>
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ChangeViewExecute(null))
+            if (param == null)
             {
-                if (!isList)
+                if (ChangeViewExecute(null))
                 {
-                    this.CreateNewCustomer();
-                    IsSearchMode = false;
+                    if (!isList)
+                    {
+                        this.CreateNewCustomer();
+                        IsSearchMode = false;
+                    }
+                    else
+                        IsSearchMode = true;
                 }
-                else
-                    IsSearchMode = true;
             }
         }
 

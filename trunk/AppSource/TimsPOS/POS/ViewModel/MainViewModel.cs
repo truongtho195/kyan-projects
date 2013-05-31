@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
@@ -8,18 +9,18 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CPC.Control;
 using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Repository;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPC.Toolkit.Layout;
-using System.ComponentModel;
-using CPC.POS.Repository;
 using SecurityLib;
-using CPC.POS.Database;
 
 namespace CPC.POS.ViewModel
 {
@@ -61,6 +62,7 @@ namespace CPC.POS.ViewModel
 
         private string _defaultUsernName = "admin";
         private string _defaultPassword = "iktfcGzCJQ13CBk3uR6n9A==";
+        private LockScreenView _lockScreenView;
 
         #endregion
 
@@ -432,7 +434,8 @@ namespace CPC.POS.ViewModel
                         UserPassword = string.Empty;
 
                         // Turn off lock screen
-                        IsLockScreen = false;
+                        //IsLockScreen = false;
+                        _lockScreenView.DialogResult = true;
 
                         // Star idle timer
                         _idleTimer.Start();
@@ -655,6 +658,10 @@ namespace CPC.POS.ViewModel
                 case "SalesOrder":
                     view = new SalesOrderView();
                     viewModel = new SalesOrderViewModel(host.IsOpenList, host.Tag);
+                    break;
+                case "SalesOrderLocked":
+                    view = new LockSalesOrderView();
+                    viewModel = new LockSalesOrderViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "SOReturn":
                     view = new SalesOrderReturnView();
@@ -1147,12 +1154,66 @@ namespace CPC.POS.ViewModel
                     UserName = LoginName;
 
                     // Turn on lock screen
-                    IsLockScreen = true;
+                    //IsLockScreen = true;
 
                     // Stop idle timer
                     _idleTimer.Stop();
+
+                    // Get main window
+                    Window ownerViewModel = FindOwnerWindow(this);
+
+                    // Create lock screen view
+                    _lockScreenView = new LockScreenView();
+                    _lockScreenView.ContextMenu = null;
+                    _lockScreenView.Closing += (senderLockScreen, eLockScreen) =>
+                    {
+                        if (!_lockScreenView.DialogResult.HasValue)
+                            eLockScreen.Cancel = true;
+                    };
+
+                    // Set default position over main window
+                    _lockScreenView.Width = ownerViewModel.ActualWidth;
+                    _lockScreenView.Height = ownerViewModel.ActualHeight;
+                    if (ownerViewModel.WindowState.Equals(WindowState.Maximized))
+                    {
+                        _lockScreenView.Top = 0;
+                        _lockScreenView.Left = 0;
+                    }
+                    else
+                    {
+                        _lockScreenView.Top = ownerViewModel.Top;
+                        _lockScreenView.Left = ownerViewModel.Left;
+                    }
+
+                    // Set datacontext
+                    _lockScreenView.DataContext = this;
+
+                    // Set login binding
+                    Binding loginBinding = new Binding("LoginCommand");
+                    BindingOperations.SetBinding(_lockScreenView.btnLogin, Button.CommandProperty, loginBinding);
+
+                    // Get active window if main show popup
+                    Window activeWindow = ownerViewModel.OwnedWindows.Cast<Window>().SingleOrDefault(x => x.IsActive);
+                    if (activeWindow != null)
+                        // Set active window is owner lock screen view
+                        _lockScreenView.Owner = activeWindow;
+                    else
+                        // Set main window is owner lock screen view
+                        _lockScreenView.Owner = ownerViewModel;
+
+                    // Show lock screen view
+                    if (_lockScreenView.ShowDialog().HasValue)
+                    {
+                        // Star idle timer
+                        _idleTimer.Start();
+
+                        // Active main window
+                        _lockScreenView.Owner.Activate();
+                    }
                 }
             };
+
+            // Star idle timer
             _idleTimer.Start();
         }
 

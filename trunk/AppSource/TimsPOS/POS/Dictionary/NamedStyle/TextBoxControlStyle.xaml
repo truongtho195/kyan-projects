@@ -3,7 +3,10 @@
                     xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
                     xmlns:s="clr-namespace:System;assembly=mscorlib"
                     xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
-                    xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+                    xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
     <!--TextBox Base Style -->
     <Style TargetType="{x:Type textBoxControl:TextBox}">
         <Setter Property="behavior:MoveFocusHelper.MoveFocus"
@@ -32,12 +35,10 @@
                 Value="true" />
         <Setter Property="ScrollViewer.PanningMode"
                 Value="VerticalFirst" />
-		<Setter Property="Validation.ErrorTemplate"
+        <Setter Property="Validation.ErrorTemplate"
                 Value="{x:Null}" />
         <Setter Property="Stylus.IsFlicksEnabled"
                 Value="False" />
-        <!--<Setter Property="FocusManager.FocusedElement"
-                Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridCell}}}" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
@@ -49,24 +50,52 @@
                         <ScrollViewer x:Name="PART_ContentHost"
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
-				  <ControlTemplate.Triggers>
-                		<MultiTrigger>
-                			<MultiTrigger.Conditions>
-                				<Condition Property="IsFocused" Value="True"/>
-                				<Condition Property="IsReadOnly" Value="False"/>
-                			</MultiTrigger.Conditions>
-                			<Setter
-                        Property="Background" TargetName="Bd" Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}"/>
-                			<Setter
-                        Property="BorderThickness" TargetName="Bd" Value="1"/>
-                		</MultiTrigger>
-                		<Trigger Property="Validation.HasError"
-                			Value="True">
-                			<Setter Property="BorderBrush"
-                				TargetName="Bd"
-                				Value="#FFFF0000" />
-                		</Trigger>
-						<Trigger Property="IsEnabled"
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsInsideControl"
+                                 Value="True">
+                            <Setter Property="FocusManager.FocusedElement"
+                                    Value="{Binding RelativeSource={RelativeSource Self}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}" />
+                            <Setter Property="BorderThickness"
+                                    TargetName="Bd"
+                                    Value="1" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                                <Condition Property="IsInsideControl"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Height"
+                                    Value="25"></Setter>
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="Transparent" />
+                            <Setter Property="BorderThickness"
+                                    TargetName="Bd"
+                                    Value="0" />
+
+                        </MultiTrigger>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter Property="BorderBrush"
+                                    TargetName="Bd"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
                                  Value="false">
                             <Setter Property="Background"
                                     TargetName="Bd"
@@ -74,42 +103,194 @@
                             <Setter Property="Foreground"
                                     Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
-                	</ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxName}"/>
+           TargetType="{x:Type textBoxControl:TextBoxName}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxEmail}"/>
+           TargetType="{x:Type textBoxControl:TextBoxEmail}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxDecimal}"/>
+           TargetType="{x:Type textBoxControl:TextBoxDecimal}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxNumber}"/>
+           TargetType="{x:Type textBoxControl:TextBoxNumber}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxNumeric}"/>
+           TargetType="{x:Type textBoxControl:TextBoxNumeric}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxMoney}"/>
+           TargetType="{x:Type textBoxControl:TextBoxMoney}" />
 
     <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:DelayTextBox}"/>
+           TargetType="{x:Type textBoxControl:DelayTextBox}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxAlphaNumeric}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxWithResetValue}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxPercent}" />
+
+    <Style TargetType="{x:Type textBoxControl:TextBox}"
+           x:Key="TextBoxInAnotherControlStyle">
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusingBrush"
+                Value="#FFFFF500" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="BorderBrush"
+                Value="#FF6B6B6B" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
+                    <Border x:Name="Bd"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}" />
+                        </MultiTrigger>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter Property="BorderBrush"
+                                    TargetName="Bd"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--Edit-->
+    <Style TargetType="{x:Type textBoxControl:TextBox}"
+           x:Key="TextBoxInsideDataGridStyle">
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusingBrush"
+                Value="{x:Null}" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
+         <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Height"
+                Value="25"/>
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="FocusManager.FocusedElement"
+                Value="{Binding RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
+                    <Border x:Name="Bd"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter Property="BorderBrush"
+                                    TargetName="Bd"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
-    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxAlphaNumeric}"/>
-    
-    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxWithResetValue}"/>
-    
-    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
-           TargetType="{x:Type textBoxControl:TextBoxPercent}"/>
-    
+    <Style BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxNumber}"
+           x:Key="TextBoxNumberInsideDataGridStyle" />
+
+    <Style BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxNumeric}"
+           x:Key="TextBoxNumericInsideDataGridStyle" />
+
+    <Style BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}"
+           x:Key="TextBoxMoneyInsideDataGridStyle" />
+
     <!--Mark TextBox Base Style -->
     <Style TargetType="{x:Type control:MaskedTextBox}">
         <Setter Property="VerticalContentAlignment"
@@ -117,7 +298,7 @@
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="BorderBrush"
-                Value="#FF6B6B6B"/>
+                Value="#FF6B6B6B" />
         <Setter Property="Validation.ErrorTemplate"
                 Value="{x:Null}" />
         <Setter Property="Template">
@@ -372,5 +553,5 @@
         <Setter Property="ValueDataType"
                 Value="{x:Type s:String}" />
     </Style>
-   
+
 </ResourceDictionary>

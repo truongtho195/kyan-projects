@@ -232,6 +232,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<bool> _isQuantityChanged;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsQuantityChanged</para>
+        /// </summary>
+        public Nullable<bool> IsQuantityChanged
+        {
+            get { return this._isQuantityChanged; }
+            set
+            {
+                if (this._isQuantityChanged != value)
+                {
+                    this.IsDirty = true;
+                    this._isQuantityChanged = value;
+                    OnPropertyChanged(() => IsQuantityChanged);
+                    PropertyChangedCompleted(() => IsQuantityChanged);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -262,6 +282,7 @@ namespace CPC.POS.Model
             this.base_CostAdjustmentItem.AdjustmentOldCost = this.AdjustmentOldCost;
             this.base_CostAdjustmentItem.LoggedTime = this.LoggedTime;
             this.base_CostAdjustmentItem.ParentResource = this.ParentResource;
+            this.base_CostAdjustmentItem.IsQuantityChanged = this.IsQuantityChanged;
         }
 
         /// <summary>
@@ -279,6 +300,7 @@ namespace CPC.POS.Model
             this._adjustmentOldCost = this.base_CostAdjustmentItem.AdjustmentOldCost;
             this._loggedTime = this.base_CostAdjustmentItem.LoggedTime;
             this._parentResource = this.base_CostAdjustmentItem.ParentResource;
+            this._isQuantityChanged = this.base_CostAdjustmentItem.IsQuantityChanged;
         }
 
         /// <summary>
@@ -296,6 +318,7 @@ namespace CPC.POS.Model
             this.AdjustmentOldCost = this.base_CostAdjustmentItem.AdjustmentOldCost;
             this.LoggedTime = this.base_CostAdjustmentItem.LoggedTime;
             this.ParentResource = this.base_CostAdjustmentItem.ParentResource;
+            this.IsQuantityChanged = this.base_CostAdjustmentItem.IsQuantityChanged;
         }
 
         #endregion

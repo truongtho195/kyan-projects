@@ -53,10 +53,10 @@ namespace CPC.POS.ViewModel
             InitialCommand();
         }
 
-        public VendorViewModel(bool isList)
+        public VendorViewModel(bool isList, object param = null)
             : this()
         {
-            ChangeSearchMode(isList);
+            ChangeSearchMode(isList, param);
         }
 
         #endregion
@@ -945,6 +945,54 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region DeletesCommand
+
+        /// <summary>
+        /// Gets the DeleteCommand command.
+        /// </summary>
+        public ICommand DeletesCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the DeleteCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeletesCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeleteCommand command is executed.
+        /// </summary>
+        private void OnDeletesCommandExecute(object param)
+        {
+            MessageBoxResult msgResult = MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo);
+            if (msgResult.Is(MessageBoxResult.Yes))
+            {
+                for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
+                {
+                    base_GuestModel model = (param as ObservableCollection<object>)[i] as base_GuestModel;
+                    string resource = model.Resource.Value.ToString();
+                    if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                    {
+                        model.IsPurged = true;
+                        model.ToEntity();
+                        foreach (base_GuestModel contactModel in model.ContactCollection.Where(x => !x.IsAcceptedRow))
+                            contactModel.base_Guest.IsPurged = true;
+                        _guestRepository.Commit();
+                        model.EndUpdate();
+                        VendorCollection.Remove(model);
+                        this.DeleteNoteExt(model);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -1016,6 +1064,7 @@ namespace CPC.POS.ViewModel
             LoadStepCommand = new RelayCommand<object>(OnLoadStepCommandExecute, OnLoadStepCommandCanExecute);
             AddTermCommand = new RelayCommand(OnAddTermCommandExecute, OnAddTermCommandCanExecute);
             LoadStepProductCommand = new RelayCommand(OnLoadStepProductCommandExecute, OnLoadStepProductCommandCanExecute);
+            DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
         }
 
         /// <summary>
@@ -1115,6 +1164,7 @@ namespace CPC.POS.ViewModel
                 GuestNo = DateTimeExt.Now.ToString(Define.GuestNoFormat),
                 Mark = MarkType.Contact.ToDescription(),
                 PositionId = 0,
+                Resource = Guid.NewGuid(),
                 IsAcceptedRow = true
             };
         }
@@ -1664,9 +1714,12 @@ namespace CPC.POS.ViewModel
         {
             if (vendorModel.PurchaseOrderCollection == null)
             {
+                // Get vendor resource
+                string vendorResource = vendorModel.Resource.ToString();
+
                 // Initial purchase order collection
                 vendorModel.PurchaseOrderCollection = new ObservableCollection<base_PurchaseOrderModel>(_purchaseOrderRepository.
-                    GetAll(x => x.VendorId.Equals(vendorModel.Id)).Select(x => new base_PurchaseOrderModel(x)));
+                    GetAll(x => x.VendorResource.Equals(vendorResource)).Select(x => new base_PurchaseOrderModel(x)));
 
                 TotalPurchaseOrder = new base_PurchaseOrderModel
                 {
@@ -1941,6 +1994,17 @@ namespace CPC.POS.ViewModel
             return popupContainer;
         }
 
+        private void DeleteNoteExt(base_GuestModel model)
+        {
+            // Remove popup note
+            CloseAllPopupNote();
+
+            // Delete note
+            foreach (base_ResourceNoteModel noteModel in model.ResourceNoteCollection)
+                _noteRepository.Delete(noteModel.base_ResourceNote);
+            _noteRepository.Commit();
+            model.ResourceNoteCollection.Clear();
+        }
         #endregion
 
         #region Override Methods

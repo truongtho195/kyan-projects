@@ -428,14 +428,7 @@ namespace CPC.POS.ViewModel
             DataGridControl dataGridControl = param as DataGridControl;
 
             // Edit selected item
-            //OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
-
-            PopupEditProductViewModel viewModel = new PopupEditProductViewModel();
-            bool? result = _dialogService.ShowDialog<PopupEditProductView>(_ownerViewModel, viewModel, "Edit product");
-            if (result.HasValue && result.Value)
-            {
-
-            }
+            OnDoubleClickViewCommandExecute(dataGridControl.SelectedItem);
         }
 
         #endregion
@@ -1251,7 +1244,7 @@ namespace CPC.POS.ViewModel
             NotePopupCollection = new ObservableCollection<PopupContainer>();
             NotePopupCollection.CollectionChanged += (sender, e) => { OnPropertyChanged(() => ShowOrHiddenNote); };
         }
-         
+
         /// <summary>
         /// Initial commands for binding on form
         /// </summary>
@@ -1780,7 +1773,7 @@ namespace CPC.POS.ViewModel
                     for (int i = 0; i < deltaProductUOM; i++)
                     {
                         // Create new a product UOM model
-                        base_ProductUOMModel productUOMModel = new base_ProductUOMModel { ProductId = productModel.Id };
+                        base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
 
                         // Get default markdown
                         GetDefaultMarkdown(productUOMModel);
@@ -1863,6 +1856,7 @@ namespace CPC.POS.ViewModel
 
             SelectedProduct.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>();
             SelectedProduct.ProductStoreDefault = new base_ProductStoreModel { StoreCode = Define.StoreCode };
+            SelectedProduct.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
             SelectedProduct.VendorProductCollection = new CollectionBase<base_VendorProductModel>();
             SelectedProduct.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>();
             if (AllowMutilUOM)
@@ -1905,6 +1899,9 @@ namespace CPC.POS.ViewModel
             // Update quantity on hand
             productModel.UpdateQuantityOnHand(_numberOfStore);
 
+            // Update adjustment
+            UpdateAdjustment(productModel);
+
             if (productModel.IsNew)
             {
                 // Save product when created new
@@ -1915,6 +1912,9 @@ namespace CPC.POS.ViewModel
                 // Save product when edited
                 SaveUpdate(productModel);
             }
+
+            // Save adjustment
+            SaveAdjustment(productModel);
 
             // Update default photo
             productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
@@ -2260,105 +2260,6 @@ namespace CPC.POS.ViewModel
             }
         }
 
-        private void SaveAdjustment()
-        {
-            decimal newCostBase = SelectedProduct.RegularPrice;
-            decimal oldCostBase = SelectedProduct.base_Product.RegularPrice;
-            int newQuantityBase = SelectedProduct.OnHandStore1;
-            int oldQuantityBase = SelectedProduct.base_Product.OnHandStore1;
-            DateTime loggedTime = DateTimeExt.Now;
-            bool isCostChangedBase = newCostBase != oldCostBase;
-            bool isQuantityChangedBase = newQuantityBase != oldQuantityBase;
-            bool isHaveItem = SelectedProduct.ProductCollection != null && SelectedProduct.ProductCollection.Count > 1;
-
-            // Check change of cost
-            if (isCostChangedBase || isQuantityChangedBase)
-            {
-                // Save base cost adjustment
-                base_CostAdjustmentModel baseCostAdjustmentModel = SaveCostAdjustment(newCostBase, oldCostBase, 1, loggedTime);
-
-                // Save base quantity adjustment
-                if (isQuantityChangedBase)
-                    SaveQuantityAdjustment(newQuantityBase, oldQuantityBase, 1, loggedTime);
-
-                if (isHaveItem)
-                {
-                    decimal newCostItem = SelectedProduct.ProductCollection.Sum(x => x.RegularPrice);
-                    decimal oldCostItem = SelectedProduct.ProductCollection.Sum(x => x.base_Product.RegularPrice);
-                    int newQuantityItem = SelectedProduct.ProductCollection.Sum(x => x.OnHandStore1);
-                    int oldQuantityItem = SelectedProduct.ProductCollection.Sum(x => x.base_Product.OnHandStore1);
-                    int itemCount = SelectedProduct.ProductCollection.Count - 1;
-
-                    // Save other cost adjustment
-                    if (newCostItem != oldCostItem)
-                        SaveCostAdjustment(newCostItem, oldCostItem, itemCount, loggedTime);
-
-                    // Save other quantity adjustment
-                    if (newQuantityItem != oldQuantityItem)
-                        SaveQuantityAdjustment(newQuantityItem, oldQuantityItem, itemCount, loggedTime);
-
-                    //foreach (base_ProductModel productModel in SelectedProduct.ProductCollection)
-                    //{
-                    //    decimal newCost = productModel.RegularPrice;
-                    //    decimal oldCost = productModel.base_Product.RegularPrice;
-
-                    //    if (newCost != oldCost)
-                    //    {
-                    //        base_CostAdjustmentItemModel costAdjustmentItemModel = new base_CostAdjustmentItemModel();
-                    //        costAdjustmentItemModel.Resource = Guid.NewGuid();
-                    //        costAdjustmentItemModel.ProductId = SelectedProduct.Id;
-                    //        costAdjustmentItemModel.ProductCode = SelectedProduct.Code;
-                    //        costAdjustmentItemModel.CostDifference = newCost - oldCost;
-                    //        costAdjustmentItemModel.AdjustmentNewCost = newCost;
-                    //        costAdjustmentItemModel.AdjustmentOldCost = oldCost;
-                    //        costAdjustmentItemModel.LoggedTime = loggedTime;
-                    //        costAdjustmentItemModel.ParentResource = baseCostAdjustmentModel.Resource.ToString();
-                    //    }
-                    //}
-                }
-            }
-        }
-
-        private base_QuantityAdjustmentModel SaveQuantityAdjustment(int newQuantity, int oldQuantity, int itemCount, DateTime loggedTime)
-        {
-            base_QuantityAdjustmentModel quantityAdjustmentModel = new base_QuantityAdjustmentModel();
-            quantityAdjustmentModel.Resource = Guid.NewGuid();
-            quantityAdjustmentModel.CostDifference = SelectedProduct.AverageUnitCost * (newQuantity - oldQuantity);
-            quantityAdjustmentModel.NewQuantity = newQuantity;
-            quantityAdjustmentModel.OldQuantity = oldQuantity;
-            quantityAdjustmentModel.ItemCount = itemCount;
-            quantityAdjustmentModel.StoreNumber = Define.StoreCode;
-            quantityAdjustmentModel.LoggedTime = loggedTime;
-
-            // Map data from model to entity
-            quantityAdjustmentModel.ToEntity();
-
-            // Add new cost adjustment to repository
-            _quantityAdjustmentRepository.Add(quantityAdjustmentModel.base_QuantityAdjustment);
-
-            return quantityAdjustmentModel;
-        }
-
-        private base_CostAdjustmentModel SaveCostAdjustment(decimal newCost, decimal oldCost, int itemCount, DateTime loggedTime)
-        {
-            base_CostAdjustmentModel costAdjustmentModel = new base_CostAdjustmentModel();
-            costAdjustmentModel.Resource = Guid.NewGuid();
-            costAdjustmentModel.CostDifference = newCost - oldCost;
-            costAdjustmentModel.NewCost = newCost;
-            costAdjustmentModel.OldCost = oldCost;
-            costAdjustmentModel.ItemCount = itemCount;
-            costAdjustmentModel.StoreNumber = Define.StoreCode;
-            costAdjustmentModel.LoggedTime = loggedTime;
-
-            // Map data from model to entity
-            costAdjustmentModel.ToEntity();
-
-            // Add new cost adjustment to repository
-            _costAdjustmentRepository.Add(costAdjustmentModel.base_CostAdjustment);
-
-            return costAdjustmentModel;
-        }
-
         /// <summary>
         /// Update product store id
         /// </summary>
@@ -2389,7 +2290,7 @@ namespace CPC.POS.ViewModel
                     if (productUOMModel.UOMId > 0 && productUOMModel.Id == 0)
                     {
                         productUOMModel.Id = productUOMModel.base_ProductUOM.Id;
-                        productUOMModel.ProductId = productUOMModel.base_ProductUOM.ProductId;
+                        //productUOMModel.ProductId = productUOMModel.base_ProductUOM.ProductId;
                         productUOMModel.ProductStoreId = productUOMModel.base_ProductUOM.ProductStoreId;
                     }
 
@@ -2872,6 +2773,128 @@ namespace CPC.POS.ViewModel
                 // Push new vendor product to collection
                 productModel.VendorProductCollection.Add(vendorProductModel);
             }
+        }
+
+        #endregion
+
+        #region Save Adjustment
+
+        private string _costAdjustmentReason = "Cost adjustment";
+        private string _quantityAdjustmentReason = "Quantity adjustment";
+        private DateTime _loggedTime;
+
+        private void UpdateAdjustment(base_ProductModel productModel)
+        {
+            productModel.OldQuantity = productModel.GetOnHandFromStore(Define.StoreCode);
+            productModel.OldCost = productModel.base_Product.RegularPrice;
+        }
+
+        private void SaveAdjustment(base_ProductModel productModel)
+        {
+            // Get logged time
+            _loggedTime = DateTimeExt.Now;
+
+            // Get new and old quantity
+            int newQuantity = productModel.GetOnHandFromStore(Define.StoreCode);
+            int oldQuantity = productModel.OldQuantity;
+
+            // Get new and old cost
+            decimal newCost = productModel.RegularPrice;
+            decimal oldCost = productModel.OldCost;
+
+            // Check quatity changed
+            if (newQuantity != oldQuantity)
+            {
+                // Save quantity adjustment
+                Guid quantityAdjustmentGuid = Guid.NewGuid();
+                SaveQuantityAdjustment(newQuantity, oldQuantity, productModel.AverageUnitCost, quantityAdjustmentGuid);
+                SaveQuantityAdjustmentItem(productModel.Id, productModel.Code, newQuantity, oldQuantity, productModel.AverageUnitCost, quantityAdjustmentGuid.ToString());
+
+                // Save cost adjustment
+                Guid costAdjustmentGuid = Guid.NewGuid();
+                SaveCostAdjustment(costAdjustmentGuid, newCost, oldCost, newQuantity, oldQuantity);
+                SaveCostAdjustmentItem(productModel.Id, productModel.Code, newCost, oldCost, costAdjustmentGuid.ToString(), true);
+            }
+            else if (newCost != oldCost)    // Check cost changed
+            {
+                // Save cost adjustment
+                Guid costAdjustmentGuid = Guid.NewGuid();
+                SaveCostAdjustment(costAdjustmentGuid, newCost, oldCost, newQuantity, oldQuantity);
+                SaveCostAdjustmentItem(productModel.Id, productModel.Code, newCost, oldCost, costAdjustmentGuid.ToString());
+            }
+        }
+
+        private void SaveQuantityAdjustment(int newQuantity, int oldQuantity, decimal averageUnitCost, Guid quantityAdjustmentGuid, int itemCount = 1)
+        {
+            // Create new quantity adjustment
+            base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
+            quantityAdjustment.Resource = quantityAdjustmentGuid;
+            quantityAdjustment.NewQuantity = newQuantity;
+            quantityAdjustment.OldQuantity = oldQuantity;
+            quantityAdjustment.CostDifference = averageUnitCost * (newQuantity - oldQuantity);
+            quantityAdjustment.ItemCount = itemCount;
+            quantityAdjustment.LoggedTime = _loggedTime;
+            quantityAdjustment.Reason = _quantityAdjustmentReason;
+            quantityAdjustment.StoreNumber = Define.StoreCode;
+
+            // Add new quantity adjustment to database
+            _quantityAdjustmentRepository.Add(quantityAdjustment);
+        }
+
+        private void SaveQuantityAdjustmentItem(long productID, string productCode, int newQuantity, int oldQuantity,
+            decimal averageUnitCost, string quantityAdjustmentResource)
+        {
+            // Create new quantity adjustment item
+            base_QuantityAdjustmentItem quantityAdjustmentItem = new base_QuantityAdjustmentItem();
+            quantityAdjustmentItem.Resource = Guid.NewGuid();
+            quantityAdjustmentItem.ProductId = productID;
+            quantityAdjustmentItem.ProductCode = productCode;
+            quantityAdjustmentItem.AdjustmentNewQty = newQuantity;
+            quantityAdjustmentItem.AdjustmentOldQty = oldQuantity;
+            quantityAdjustmentItem.AdjustmentQtyDiff = newQuantity - oldQuantity;
+            quantityAdjustmentItem.CostDifference = averageUnitCost * quantityAdjustmentItem.AdjustmentQtyDiff;
+            quantityAdjustmentItem.LoggedTime = _loggedTime;
+            quantityAdjustmentItem.ParentResource = quantityAdjustmentResource;
+
+            // Add new quantity adjustment item to database
+            _quantityAdjustmentItemRepository.Add(quantityAdjustmentItem);
+        }
+
+        private void SaveCostAdjustment(Guid costAdjustmentGuid, decimal newCost, decimal oldCost,
+            int newQuantity, int oldQuantity, int itemCount = 1)
+        {
+            // Create new cost adjustment
+            base_CostAdjustment costAdjustment = new base_CostAdjustment();
+            costAdjustment.Resource = costAdjustmentGuid;
+            costAdjustment.NewCost = newCost * newQuantity;
+            costAdjustment.OldCost = oldCost * oldQuantity;
+            costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
+            costAdjustment.ItemCount = itemCount;
+            costAdjustment.LoggedTime = _loggedTime;
+            costAdjustment.Reason = _costAdjustmentReason;
+            costAdjustment.StoreNumber = Define.StoreCode;
+
+            // Add new cost adjustment to database
+            _costAdjustmentRepository.Add(costAdjustment);
+        }
+
+        private void SaveCostAdjustmentItem(long productID, string productCode, decimal newCost, decimal oldCost,
+            string costAdjustmentResource, bool isQuantityChanged = false)
+        {
+            // Create new cost adjustment item
+            base_CostAdjustmentItem costAdjustmentItem = new base_CostAdjustmentItem();
+            costAdjustmentItem.Resource = Guid.NewGuid();
+            costAdjustmentItem.ProductId = productID;
+            costAdjustmentItem.ProductCode = productCode;
+            costAdjustmentItem.AdjustmentNewCost = newCost;
+            costAdjustmentItem.AdjustmentOldCost = oldCost;
+            costAdjustmentItem.CostDifference = newCost - oldCost;
+            costAdjustmentItem.LoggedTime = _loggedTime;
+            costAdjustmentItem.ParentResource = costAdjustmentResource;
+            costAdjustmentItem.IsQuantityChanged = isQuantityChanged;
+
+            // Add new cost adjustment item to database
+            _costAdjustmentItemRepository.Add(costAdjustmentItem);
         }
 
         #endregion

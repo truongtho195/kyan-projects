@@ -308,7 +308,7 @@
                                                               VerticalAlignment="Stretch"
                                                               Padding="2,0,2,0"
                                                               Width="58"
-                                                              IntegerLength="3"
+                                                              IntegerLength="19"
                                                               DecimalPlaces="2"
                                                               Value="{Binding RewardManagerModel.RewardAmount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                               HorizontalAlignment="Left"

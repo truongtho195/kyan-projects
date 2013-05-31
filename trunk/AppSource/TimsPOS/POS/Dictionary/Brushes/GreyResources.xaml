@@ -860,8 +860,7 @@
     	<GradientStop Color="#FF5C5C5C" Offset="0"/>
     	<GradientStop Color="#FF232323" Offset="1"/>
     </LinearGradientBrush>
-	<ImageBrush x:Key="UserControl_Background_Image"
-                Opacity="0.3" />
+	<ImageBrush x:Key="UserControl_Background_Image" ImageSource="\Image/bg6.jpg" Opacity="0.3"/>
 	<Visibility x:Key="TIMECLOCK">Visible</Visibility>
 	<Visibility x:Key="TimeClockDisplay">Visible</Visibility>
 	<SolidColorBrush x:Key="TimeClockDisplayBorder"
@@ -973,13 +972,10 @@
     <SolidColorBrush x:Key="Ribbon_Tab_Border"
                      Color="White" />
     <Visibility x:Key="Bottom_TitleBarVisibility">Visible</Visibility>
-    <LinearGradientBrush x:Key="Bottom_TitleBar_Background"
-                         EndPoint="0.5,1"
-                         StartPoint="0.5,0">
-    	<GradientStop Color="#FFDADADA" />
-    	<GradientStop Color="White"
-    		Offset="1" />
-    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Bottom_TitleBar_Background"
+                         Color="#FFB2B2B2"/>
+    <SolidColorBrush x:Key="Bottom_TitleBar_Border"
+    	Color="#FF646464"/>
     <Visibility x:Key="Bottom_TitleBar_ComboboxVisibility">Visible</Visibility>
     <SolidColorBrush x:Key="Bottom_TitleBar_Combobox_Border"
                      Color="White" />

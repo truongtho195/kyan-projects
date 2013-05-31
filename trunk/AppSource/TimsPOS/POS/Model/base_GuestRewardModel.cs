@@ -386,13 +386,89 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region IsAccepted
+        private bool _isAccepted=false;
+        /// <summary>
+        /// Gets or sets the IsAccepted.
+        /// </summary>
+        public bool IsAccepted
+        {
+            get { return _isAccepted; }
+            set
+            {
+                if (_isAccepted != value)
+                {
+                    _isAccepted = value;
+                    OnPropertyChanged(() => IsAccepted);
+                }
+            }
+        }
+        #endregion
+
+        #region IsVisibleRowDetail
+        private bool _isVisibleRowDetail;
+        /// <summary>
+        /// Gets or sets the IsVisibleRowDetail.
+        /// </summary>
+        public bool IsVisibleRowDetail
+        {
+            get { return _isVisibleRowDetail; }
+            set
+            {
+                if (_isVisibleRowDetail != value)
+                {
+                    _isVisibleRowDetail = value;
+                    OnPropertyChanged(() => IsVisibleRowDetail);
+                }
+            }
+        }
+        #endregion
+
+
+
+        #region RequireReward
+        private string _requireReward = string.Empty;
+        /// <summary>
+        /// Gets or sets the RequireReward.
+        /// </summary>
+        public string RequireReward
+        {
+            get { return _requireReward; }
+            set
+            {
+                if (_requireReward != value)
+                {
+                    _requireReward = value;
+                    OnPropertyChanged(() => RequireReward);
+                }
+            }
+        }
+        #endregion
+
+
+
+
+
         #endregion
 
         #region IDataErrorInfo Members
 
         public string Error
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                List<string> errors = new List<string>();
+                PropertyDescriptorCollection props = TypeDescriptor.GetProperties(this);
+                foreach (PropertyDescriptor prop in props)
+                {
+                    string msg = this[prop.Name];
+                    if (!string.IsNullOrWhiteSpace(msg))
+                    {
+                        errors.Add(msg);
+                    }
+                }
+                return string.Join(Environment.NewLine, errors);
+            }
         }
 
         public string this[string columnName]

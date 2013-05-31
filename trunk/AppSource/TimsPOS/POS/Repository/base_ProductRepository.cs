@@ -376,14 +376,14 @@ namespace CPC.POS.Repository
         /// <param name="quantity">Quantity</param>
         /// <param name="isDecreased">Quantity increase or decrease. Default is increase</param>
         /// <returns>The new on hand quantity</returns>
-        public int UpdateOnHandQuantity(string productResource, int storeNumber, int quantity, bool isDecreased = false)
+        public int UpdateOnHandQuantity(string productResource, int storeNumber, int quantity, bool isDecreased = false, int baseUnitNumber = 1)
         {
             int onHandStore = 0;
 
             // Get product
             base_Product product = Get(productResource);
 
-            onHandStore = UpdateOnHandStore(product, storeNumber, quantity, isDecreased);
+            onHandStore = UpdateOnHandStore(product, storeNumber, quantity * baseUnitNumber, isDecreased);
 
             // Accept changes
             this.Commit();
@@ -400,16 +400,16 @@ namespace CPC.POS.Repository
         /// <param name="quantity">Quantity</param>
         /// <param name="isReversed">Default is false</param>
         public void TransferStock(string productResource, int sourceStoreNumber, int targetStoreNumber,
-            int quantity, bool isReversed = false)
+            int quantity, bool isReversed = false, int baseUnitNumber = 1)
         {
             // Get product
             base_Product product = Get(productResource);
 
             // Decrease quantity at source store
-            UpdateOnHandStore(product, sourceStoreNumber, quantity, !isReversed);
+            UpdateOnHandStore(product, sourceStoreNumber, quantity * baseUnitNumber, !isReversed);
 
             // Increase quantity at target store
-            UpdateOnHandStore(product, targetStoreNumber, quantity, isReversed);
+            UpdateOnHandStore(product, targetStoreNumber, quantity * baseUnitNumber, isReversed);
 
             // Accept changes
             this.Commit();

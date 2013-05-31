@@ -221,6 +221,7 @@
     <Compile Include="Converter\PaymentButtonIconConverter.cs" />
     <Compile Include="Converter\StringFormatConverter.cs" />
     <Compile Include="Converter\StringPriceLevelConverter.cs" />
+    <Compile Include="Converter\StringToGuidConverter.cs" />
     <Compile Include="Converter\StringToImageSourceConverter.cs" />
     <Compile Include="Database\POS.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -473,6 +474,7 @@
     <Compile Include="Model\tims_WorkWeekModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Toolkit\Behavior\DataGridCellFocusHelper.cs" />
     <Compile Include="Ultility\Helper\IdleTimeHelper.cs" />
     <Compile Include="Ultility\Singleton\Program.cs">
       <SubType>Code</SubType>
@@ -818,11 +820,13 @@
     <Compile Include="ViewModel\Product\ProductViewModel.cs" />
     <Compile Include="ViewModel\Product\PopupAttributeAndSizeViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\AddSerialNumberViewModel.cs" />
+    <Compile Include="ViewModel\PurchaseOrder\LockPOListViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\POAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderReturnViewModel.cs" />
     <Compile Include="ViewModel\PurchaseOrder\PurchaseOrderViewModel.cs" />
     <Compile Include="ViewModel\Reward\RewardSetupViewModel.cs" />
     <Compile Include="ViewModel\SalesOrder\LayawayOrderHistoryViewModel.cs" />
+    <Compile Include="ViewModel\SalesOrder\LockSalesOrderViewModel.cs" />
     <Compile Include="ViewModel\SalesOrder\MultiTrackingNumberViewModel.cs" />
     <Compile Include="ViewModel\SalesOrder\PaymentCardViewModel.cs" />
     <Compile Include="ViewModel\SalesOrder\PickPackViewModel.cs" />
@@ -963,6 +967,9 @@
     <Compile Include="View\Inventory\WorkOrderView.xaml.cs">
       <DependentUpon>WorkOrderView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LockScreenView.xaml.cs">
+      <DependentUpon>LockScreenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -999,6 +1006,9 @@
     <Compile Include="View\PurchaseOrder\AddSerialNumberView.xaml.cs">
       <DependentUpon>AddSerialNumberView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PurchaseOrder\LockPOListView.xaml.cs">
+      <DependentUpon>LockPOListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PurchaseOrder\POAdvanceSearchView.xaml.cs">
       <DependentUpon>POAdvanceSearchView.xaml</DependentUpon>
     </Compile>
@@ -1014,8 +1024,14 @@
     <Compile Include="View\Reward\RewardSetupView.xaml.cs">
       <DependentUpon>RewardSetupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SalesOrder\DepositPaymentView.xaml.cs">
+      <DependentUpon>DepositPaymentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SalesOrder\LayawayOrderHistoryView.xaml.cs">
       <DependentUpon>LayawayOrderHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SalesOrder\LockSalesOrderView.xaml.cs">
+      <DependentUpon>LockSalesOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SalesOrder\MultiTrackingNumberView.xaml.cs">
       <DependentUpon>MultiTrackingNumberView.xaml</DependentUpon>
@@ -1474,6 +1490,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\LockScreenView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1522,6 +1542,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\PurchaseOrder\LockPOListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\PurchaseOrder\POAdvanceSearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1542,7 +1566,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\SalesOrder\DepositPaymentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\SalesOrder\LayawayOrderHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\SalesOrder\LockSalesOrderView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1966,6 +1998,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="POS.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\RibbonPOListLock.png" />
+    <Resource Include="Image\RibbonImages\RibbonSOListLock.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
