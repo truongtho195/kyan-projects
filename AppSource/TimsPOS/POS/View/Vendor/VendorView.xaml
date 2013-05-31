@@ -697,6 +697,39 @@
                                                          RowDetailsTemplate="{DynamicResource RowDetailsTemplateVendorSearch}"
                                                          RowStyle="{DynamicResource DataGridToggleRowStyle}"
                                                          Style="{DynamicResource DatagridWithRowHeader}">
+                            <dataGridControl:DataGridControl.ContextMenu>
+                                <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                    <MenuItem Header="New Item"
+                                              Command="{Binding NewCommand}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource NewItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Edit Item"
+                                              Command="{Binding DoubleClickViewCommand}"
+                                              CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource EditItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Delete Item"
+                                              Command="{Binding DeletesCommand}"
+                                              CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource DeleteItem}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </dataGridControl:DataGridControl.ContextMenu>
                             <dataGridControl:DataGridControl.Columns>
                                 <DataGridTemplateColumn Width="25">
                                     <DataGridTemplateColumn.CellTemplate>

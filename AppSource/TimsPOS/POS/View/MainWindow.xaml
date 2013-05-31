@@ -1,19 +1,4 @@
-﻿<r:RibbonWindow x:Class="CPC.POS.MainWindow"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:c="clr-namespace:CPC.Toolkit.Command"
-                xmlns:close="clr-namespace:CPC.Toolkit.Behavior"
-                xmlns:converter="clr-namespace:CPC.Converter"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:helper="clr-namespace:CPC.Helper"
-                xmlns:local="clr-namespace:CPC.POS"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-                xmlns:Service="clr-namespace:CPC.Service"
-                xmlns:System="clr-namespace:System;assembly=mscorlib"
-                xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
-                xmlns:themeClassic="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
-                xmlns:themeLuna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+﻿<r:RibbonWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:CPC.Toolkit.Command" xmlns:close="clr-namespace:CPC.Toolkit.Behavior" xmlns:converter="clr-namespace:CPC.Converter" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:helper="clr-namespace:CPC.Helper" xmlns:local="clr-namespace:CPC.POS" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" xmlns:Service="clr-namespace:CPC.Service" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt" xmlns:themeClassic="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic" xmlns:themeLuna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna" xmlns:Microsoft_Windows_Controls_Ribbon_Primitives="clr-namespace:Microsoft.Windows.Controls.Ribbon.Primitives;assembly=RibbonControlsLibrary" xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell" x:Class="CPC.POS.MainWindow"
                 x:Name="Window"
                 Title="Truong Giang - Smart POS"
                 Width="1024"
@@ -359,19 +344,18 @@
                                         Height="1"
                                         Margin="5,1,5,-1" />
                                 <Border Grid.Row="2"
-                                        Margin="2,0,2,2"
-                                        Background="#FFC8C8C8"
-                                        CornerRadius="0,0,3,3">
-                                    <ContentPresenter x:Name="PART_Header"
-                                                      MaxHeight="16"
-                                                      Margin="2,0"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"
-                                                      Content="{TemplateBinding Header}"
-                                                      ContentSource="Header"
-                                                      ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                                      ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                      TextElement.Foreground="#FF9E9E9E" />
+                                        Background="#FFB2B2B2"
+                                        CornerRadius="0,0,3,3" Margin="1,0,1,1">
+                                	<ContentPresenter x:Name="PART_Header"
+                                		MaxHeight="16"
+                                		Margin="2,0"
+                                		HorizontalAlignment="Center"
+                                		VerticalAlignment="Center"
+                                		Content="{TemplateBinding Header}"
+                                		ContentSource="Header"
+                                		ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                		ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                		TextElement.Foreground="#FF000000" />
                                 </Border>
                             </Grid>
                         </Border>
@@ -1161,8 +1145,10 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+    	
+    	
     </r:RibbonWindow.Resources>
-    <Grid x:Name="grdLayout">
+    <Grid x:Name="grdLayout" Background="{DynamicResource UserControl_Background_Image}">
         <Grid x:Name="grdMain">
             <Grid.IsEnabled>
                 <Binding Path="IsLockScreen"
@@ -1174,15 +1160,14 @@
                 </Binding>
             </Grid.IsEnabled>
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="RibbonRow"
-                               Height="Auto" />
-                <RowDefinition x:Name="ClientRow"
-                               Height="*" />
-                <RowDefinition x:Name="StatusRow"
-                               Height="Auto" />
+            	<RowDefinition x:Name="RibbonRow"
+            		Height="Auto" />
+            	<RowDefinition x:Name="ClientRow"
+            		Height="*" />
+            	<RowDefinition x:Name="StatusRow"
+            		Height="Auto" />
             </Grid.RowDefinitions>
-            <r:Ribbon x:Name="ribbon"
-                      Background="#FFD4D4D4">
+            <r:Ribbon x:Name="ribbon" Background="#FFA7A7A7" >
                 <!--
                     <r:Ribbon.QuickAccessToolBar>
                     <r:RibbonQuickAccessToolBar>
@@ -1244,7 +1229,7 @@
                     </r:RibbonApplicationMenu>
                 </r:Ribbon.ApplicationMenu>
                 <r:RibbonTab Header="Employee">
-                    <r:RibbonGroup Header="Employee">
+                    <r:RibbonGroup Header="Employee" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Employee"
                                         Label="Create New"
@@ -1257,7 +1242,7 @@
                     <!--  End TimeClock  -->
                     <!--  Begin TimeClock  -->
                     <r:RibbonGroup Header="Holiday and Schedule"
-                                   SmallImageSource="/Image/RibbonImages/RibbonCreateSchedule.png">
+                                   SmallImageSource="/Image/RibbonImages/RibbonCreateSchedule.png" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="WorkSchedule"
                                         Label="Schedule"
@@ -1268,7 +1253,7 @@
                                         LargeImageSource="/Image/RibbonImages/RibbonCreateHoliday.png" />
                     </r:RibbonGroup>
                     <r:RibbonGroup Header="Timelog &amp; work permission"
-                                   SmallImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png">
+                                   SmallImageSource="/Image/RibbonImages/RibbonTimeClockManualEventEditing.png" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="ManualEventEditing"
                                         Label="Manual editing timelog"
@@ -1283,8 +1268,8 @@
                                         LargeImageSource="/Image/RibbonImages/RibbonWorkPermissionList.png" />
                     </r:RibbonGroup>
                 </r:RibbonTab>
-                <r:RibbonTab Header="Sales">
-                    <r:RibbonGroup Header="Customer">
+                <r:RibbonTab Header="Sales" BorderThickness="1" BorderBrush="Black">
+                    <r:RibbonGroup Header="Customer" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Customer"
                                         Label="Create New"
@@ -1294,7 +1279,7 @@
                                         Label="Customer List"
                                         LargeImageSource="/Image/RibbonImages/RibbonCustomerList.png" />
                     </r:RibbonGroup>
-                    <r:RibbonGroup Header="Reward">
+                    <r:RibbonGroup Header="Reward" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="RewardSetup"
                                         Label="Reward Setup"
@@ -1326,7 +1311,7 @@
                         LargeImageSource="/Image/RibbonImages/RibbonGiftCard.png" />
                         </r:RibbonGroup>
                     -->
-                    <r:RibbonGroup Header="Sales Quote">
+                    <r:RibbonGroup Header="Sales Quote" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Quotation"
                                         Label="Quotation"
@@ -1336,7 +1321,7 @@
                                         Label="Quotation List"
                                         LargeImageSource="/Image/RibbonImages/RibbonQuotationList.png" />
                     </r:RibbonGroup>
-                    <r:RibbonGroup Header="Sales Order">
+                    <r:RibbonGroup Header="Sales Order" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="SalesOrder"
                                         Label="Sales Order"
@@ -1346,9 +1331,17 @@
                                         Label="SO List"
                                         LargeImageSource="/Image/RibbonImages/RibbonSalesOrderList.png" />
                     </r:RibbonGroup>
+                    <r:RibbonGroup Header="Sales Order Locked"
+                                   BorderBrush="Gray"
+                                   BorderThickness="1">
+                        <r:RibbonButton Command="{Binding OpenViewCommand}"
+                                        CommandParameter="SalesOrderLockedList"
+                                        Label="SO Locked List"
+                                        LargeImageSource="/Image/RibbonImages/RibbonSOListLock.png" />
+                    </r:RibbonGroup>
                 </r:RibbonTab>
-                <r:RibbonTab Header="Purchase">
-                    <r:RibbonGroup Header="Vendor">
+                <r:RibbonTab Header="Purchase" BorderThickness="1" BorderBrush="Black">
+                    <r:RibbonGroup Header="Vendor" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Vendor"
                                         Label="Create New"
@@ -1358,7 +1351,7 @@
                                         Label="Vendor List"
                                         LargeImageSource="/Image/RibbonImages/RibbonVendorList.png" />
                     </r:RibbonGroup>
-                    <r:RibbonGroup Header="Purchase Order">
+                    <r:RibbonGroup Header="Purchase Order" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="PurchaseOrder"
                                         Label="Purchase Order"
@@ -1381,8 +1374,8 @@
                         </r:RibbonGroup>
                     -->
                 </r:RibbonTab>
-                <r:RibbonTab Header="Inventory">
-                    <r:RibbonGroup Header="Product">
+                <r:RibbonTab Header="Inventory" BorderThickness="1" BorderBrush="Black">
+                    <r:RibbonGroup Header="Product" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Product"
                                         Label="Create New"
@@ -1398,7 +1391,7 @@
                             LargeImageSource="/Image/RibbonImages/RibbonPromotionHistory.png" />
                         -->
                     </r:RibbonGroup>
-                    <r:RibbonGroup Header="Pricing">
+                    <r:RibbonGroup Header="Pricing" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Pricing"
                                         Label="Pricing"
@@ -1416,7 +1409,7 @@
                                         Label="Discount List"
                                         LargeImageSource="/Image/RibbonImages/RibbonDiscountList.png" />
                     </r:RibbonGroup>
-                    <r:RibbonGroup Header="Stock">
+                    <r:RibbonGroup Header="Stock" BorderThickness="1" BorderBrush="Gray">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="CurrentStock"
                                         Label="Current Stock"
@@ -1481,8 +1474,8 @@
                     </r:RibbonGroup>
                     </r:RibbonTab>
                 -->
-                <r:RibbonTab Header="Configuration">
-                    <r:RibbonGroup Header="Settings">
+                <r:RibbonTab Header="Configuration" BorderThickness="1" BorderBrush="Black">
+                    <r:RibbonGroup Header="Settings" BorderBrush="Gray" BorderThickness="1">
                         <r:RibbonButton Command="{Binding OpenViewCommand}"
                                         CommandParameter="Attachment"
                                         Label="Attachment"
@@ -1511,18 +1504,44 @@
             </r:Ribbon>
             <StatusBar x:Name="statusBar"
                        Grid.Row="2"
-                       Background="{DynamicResource Bottom_TitleBar_Background}">
+                       Background="{DynamicResource Bottom_TitleBar_Background}" BorderBrush="{DynamicResource Bottom_TitleBar_Border}" BorderThickness="0,1,0,0">
+                <StatusBarItem Padding="3">
+            		<StackPanel x:Name="stkpStore" Orientation="Horizontal">
+                		<TextBlock x:Name="txtblStore"
+                			TextWrapping="Wrap" Text="Store:" d:LayoutOverrides="Width" />
+                		<TextBlock x:Name="txtblBindingStore"
+                			TextWrapping="Wrap" Text="1 District" d:LayoutOverrides="Width" Margin="5,0,0,0" />
+                	</StackPanel>
+            	</StatusBarItem>
+                <StatusBarItem Width="1" Padding="0" Background="#FF4B4B4B" Margin="5,0"/>
+                <StatusBarItem Padding="3">
+                	<StackPanel x:Name="stkpTaxLocation" Orientation="Horizontal">
+                		<TextBlock x:Name="txtblTaxLocation"
+                			TextWrapping="Wrap" Text="Tax Location:" d:LayoutOverrides="Width" />
+                		<TextBlock x:Name="txtblBindingTaxLocation"
+                			TextWrapping="Wrap" Text="Ho Chi Minh City" d:LayoutOverrides="Width" Margin="5,0,0,0" />
+                	</StackPanel>
+                </StatusBarItem>
+                <StatusBarItem Width="1" Padding="0" Background="#FF4B4B4B" Margin="5,0"/>
+                <StatusBarItem Padding="3">
+                	<StackPanel x:Name="stkpTaxCode" Orientation="Horizontal">
+                		<TextBlock x:Name="txtblTaxCode"
+                			TextWrapping="Wrap" Text="Tax Code:" d:LayoutOverrides="Width" />
+                		<TextBlock x:Name="txtblBindingTaxCode"
+                			TextWrapping="Wrap" Text="0123456789" d:LayoutOverrides="Width" Margin="5,0,0,0" />
+                	</StackPanel>
+                </StatusBarItem>
+                <StatusBarItem Width="1" Padding="0" Background="#FF4B4B4B" Margin="5,0"/>
                 <StatusBarItem DockPanel.Dock="Right">
                     <ComboBox x:Name="cboOpenedOverControlList"
                               MinWidth="32"
-                              VerticalAlignment="Center"
                               FontWeight="Bold"
                               IsReadOnly="True"
                               ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
                               ItemsSource="{Binding HiddenHostList}"
                               SelectedItem="{Binding SelectedHiddenHost}"
                               Style="{DynamicResource ComboBoxStyle}"
-                              Visibility="{Binding HiddenHostVisibility}" />
+                              Visibility="{Binding HiddenHostVisibility}" VerticalAlignment="Center" />
                 </StatusBarItem>
                 <StatusBarItem>
                     <TextBlock x:Name="tbUserLogin"
@@ -1550,13 +1569,13 @@
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>
+            <Border x:Name="brdstatusBar" BorderBrush="White" BorderThickness="1" Height="1" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment" Grid.Row="2" Margin="0,1,0,0"/>
             <Grid x:Name="grdMainView"
                   Grid.Row="1"
-                  Margin="5"
-                  Background="{DynamicResource UserControl_Background_Image}" />
+                  Margin="5" />
         </Grid>
         <Grid x:Name="grdLogin"
-              Background="#F2000000">
+              Background="#F2000000" d:IsHidden="True">
             <Grid.Visibility>
                 <Binding Path="IsLockScreen"
                          Mode="OneWay"
@@ -1566,151 +1585,6 @@
                     </Binding.Converter>
                 </Binding>
             </Grid.Visibility>
-            <Border x:Name="brdLogin"
-                    Width="377"
-                    Height="328"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="{DynamicResource UserControlBackground}"
-                    BorderBrush="{DynamicResource TitleBarBorder}"
-                    BorderThickness="5,5,5,5"
-                    CornerRadius="5,5,5,5">
-                <Grid x:Name="grdContentLogin1">
-                    <Rectangle x:Name="UserControl_Background_Image"
-                               Fill="{DynamicResource UserControl_Background_Image}" />
-                    <Border x:Name="brdContentLogin"
-                            Margin="10,10,10,10"
-                            Background="{DynamicResource TimeClockDisplayBackground}"
-                            BorderBrush="{DynamicResource TimeClockDisplayBorder}"
-                            BorderThickness="1,1,1,1"
-                            CornerRadius="5,5,5,5">
-                        <Grid x:Name="grdContentLogin"
-                              Margin="5,5,5,5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="124" />
-                                <RowDefinition Height="40" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid x:Name="grdLogoCompany"
-                                  HorizontalAlignment="Stretch">
-                                <Rectangle x:Name="bgInOut"
-                                           Grid.RowSpan="2"
-                                           Grid.ColumnSpan="2"
-                                           Fill="#FFFFFFFF"
-                                           RadiusX="5"
-                                           RadiusY="5"
-                                           Stroke="White" />
-                                <Image x:Name="imgLogo"
-                                       Grid.RowSpan="2"
-                                       Margin="3"
-                                       Source="/POS;component/Image/3D Logo Flat.jpg"
-                                       Stretch="Uniform" />
-                            </Grid>
-                            <Border Grid.Row="1"
-                                    BorderBrush="White"
-                                    BorderThickness="0,0,0,1">
-                                <TextBlock x:Name="txtblPhoneNumber1"
-                                           Margin="10,0,0,0"
-                                           VerticalAlignment="Center"
-                                           FontWeight="Bold"
-                                           Style="{DynamicResource TextBlockNormal}"
-                                           TextWrapping="Wrap">
-                                    <Run Text="This transaction is in use and has been locked. Only &quot;" />
-                                    <Run Text="{Binding LoginName, Mode=OneWay}" />
-                                    <Run Text="&quot; or an administrator can unlock." />
-                                </TextBlock>
-                            </Border>
-                            <Grid x:Name="grdLoginPassword"
-                                  Grid.Row="2"
-                                  Margin="0,10,0,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25" />
-                                    <RowDefinition Height="25" />
-                                    <RowDefinition Height="18" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="txtblUsername"
-                                           Margin="30,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource TextBlockNormal}"
-                                           Text="User Name:"
-                                           TextWrapping="NoWrap" />
-                                <textBoxControl:TextBox x:Name="txtUsername"
-                                                        Width="200"
-                                                        Margin="95,2,10,2"
-                                                        HorizontalAlignment="Left"
-                                                        MaxLength="50"
-                                                        Padding="20,0,2,0"
-                                                        Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                        TextWrapping="NoWrap" />
-                                <Rectangle x:Name="imgUser"
-                                           Width="16"
-                                           Height="16"
-                                           Margin="96,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           Fill="{DynamicResource User}" />
-                                <TextBlock x:Name="txtblPassword"
-                                           Grid.Row="1"
-                                           Margin="30,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource TextBlockNormal}"
-                                           Text="Password:"
-                                           TextWrapping="NoWrap" />
-                                <PasswordBox x:Name="txtPassword"
-                                             Grid.Row="1"
-                                             Width="200"
-                                             Margin="95,2,0,2"
-                                             HorizontalAlignment="Left"
-                                             VerticalContentAlignment="Center"
-                                             helper:PasswordHelper.BindPassword="true"
-                                             helper:PasswordHelper.BoundPassword="{Binding UserPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                             Padding="20,0,2,0"
-                                             PasswordChar="*" />
-                                <Rectangle x:Name="imgPassword"
-                                           Grid.Row="1"
-                                           Width="16"
-                                           Height="16"
-                                           Margin="96,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           Fill="{DynamicResource Password}" />
-                                <Rectangle x:Name="Line"
-                                           Grid.Row="2"
-                                           Height="1"
-                                           Margin="0,10,0,0"
-                                           HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Top"
-                                           Fill="{DynamicResource Spilter_Line_Background}" />
-                                <Button x:Name="btnLogin"
-                                        Command="{Binding LoginCommand}"
-                                        Grid.Row="5"
-                                        Width="80"
-                                        Height="28"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        IsDefault="True">
-                                    <StackPanel x:Name="stkpBtnLogin"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                        <Rectangle x:Name="imgLogin"
-                                                   Width="20"
-                                                   Height="20"
-                                                   Fill="{DynamicResource Login}" />
-                                        <TextBlock x:Name="txtblLogin"
-                                                   Margin="5,0,0,0"
-                                                   VerticalAlignment="Center"
-                                                   Style="{DynamicResource ButtonTextBlock}"
-                                                   Text="Login"
-                                                   TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
         </Grid>
     </Grid>
 </r:RibbonWindow>

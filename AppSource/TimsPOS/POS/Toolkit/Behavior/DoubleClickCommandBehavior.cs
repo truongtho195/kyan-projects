@@ -133,7 +133,7 @@ namespace CPC.Toolkit.Behavior
             catch (System.Exception ex)
             {
                 System.Console.WriteLine(ex.ToString());
-                throw;
+                //throw;
             }
         }
 

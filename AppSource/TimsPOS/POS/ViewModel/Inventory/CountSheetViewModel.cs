@@ -664,7 +664,10 @@ namespace CPC.POS.ViewModel
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-                MessageBox.Show("When you adjust product in stores, It will affect product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                MessageBox.Show("When you adjust product in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             string content = string.Format("Do you want to adjust numbers of products in stocks?");
             MessageBoxResult msgResult = MessageBox.Show(content, "POS", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (msgResult.Is(MessageBoxResult.Yes))
@@ -1537,15 +1540,18 @@ namespace CPC.POS.ViewModel
                 foreach (var productStore in this.SelectedCountStock.base_CountStock.base_CountStockDetail)
                 {
                     base_Product product = _productRepository.GetIQueryable(x => x.Id == productStore.ProductId).SingleOrDefault();
-                    base_CountStockDetailModel model = new base_CountStockDetailModel(productStore);
-                    model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
-                    model.Attribute = product.Attribute;
-                    model.Size = product.Size;
-                    model.Description = product.Description;
-                    model.ProductName = product.ProductName;
-                    model.ProductCode = product.Code;
-                    model.EndUpdate();
-                    this.SelectedCountStock.CountStockDetailCollection.Add(model);
+                    if (product != null)
+                    {
+                        base_CountStockDetailModel model = new base_CountStockDetailModel(productStore);
+                        model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+                        model.Attribute = product.Attribute;
+                        model.Size = product.Size;
+                        model.Description = product.Description;
+                        model.ProductName = product.ProductName;
+                        model.ProductCode = product.Code;
+                        model.EndUpdate();
+                        this.SelectedCountStock.CountStockDetailCollection.Add(model);
+                    }
                 }
                 this.TotalProducts = this.SelectedCountStock.CountStockDetailCollection.Count;
                 this.SelectedCountStock.IsChangeProductCollection = false;

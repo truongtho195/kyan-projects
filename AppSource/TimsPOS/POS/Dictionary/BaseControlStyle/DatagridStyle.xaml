@@ -833,7 +833,6 @@
                 <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
                                                 Grid.Column="1"
                                                 d:LayoutOverrides="GridBox"
-                                                Background="Black"
                                                 Grid.RowSpan="2" Margin="0,-0.25,0,0">
                     <DataGridColumnHeadersPresenter.Visibility>
                         <Binding Path="HeadersVisibility"
@@ -903,19 +902,19 @@
                                Grid.Row="1"
                                BorderBrush="{DynamicResource DatagridColumnHeaderBorder}"
                                BorderThickness="0,1,1,0"
-                               Margin="0,0,0,4">
+                               Margin="0,-1,0,4">
                         <Rectangle Fill="{DynamicResource Filter}"
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Stretch"
-                                   Height="10"
-                                   Width="10"
+                                   Height="8"
+                                   Width="8"
                                    Margin="0,0,0,3" />
                     </Border>
                     <Border Grid.Row="1"
                             VerticalAlignment="Bottom"
-                            Height="4"
+                            Height="5"
                             BorderBrush="{DynamicResource DatagridColumnHeaderBorder}"
-                            BorderThickness="0,1,0,0" />
+                            BorderThickness="0,1,0,0" Background="{DynamicResource DatagridColumnHeaderBackground}" Margin="0,0,0.2,0" />
                 </Grid>
             </Grid>
             <Grid Background="{TemplateBinding Background}"
@@ -1162,14 +1161,17 @@
                               MinHeight="22"
                               Background="{DynamicResource DatagridCell_IsSelected_Background}"
                               Visibility="Visible">
+                        	<Grid.RowDefinitions>
+                        		<RowDefinition/>
+                        		<RowDefinition Height="5"/>
+                        	</Grid.RowDefinitions>
                             <textBoxControl:TextBoxWithResetValue x:Name="TXT_Filter"
                                                                   HorizontalAlignment="Stretch"
                                                                   TextWrapping="NoWrap"
-                                                                  Grid.Row="0"
-                                                                  Visibility="Collapsed"
+																  Grid.Row="0"
+                                                                  Visibility="Visible"
                                                                   MinHeight="20"
-                                                                  VerticalAlignment="Stretch"
-                                                                  Margin="0,0,0,3.5">
+                                                                  VerticalAlignment="Stretch" VerticalContentAlignment="Center">
                                 <textBoxControl:TextBoxWithResetValue.Style>
                                     <Style TargetType="{x:Type textBoxControl:TextBoxWithResetValue}">
                                         <Style.Triggers>
@@ -1273,29 +1275,25 @@
                                         IsEnabled="{Binding EnableFilteringData, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         VerticalAlignment="Stretch"
-                                        Margin="0,0,0,3.5"
                                         BorderThickness="0.5"
                                         Background="#0CFFFFFF"
-                                        BorderBrush="{DynamicResource DatagridColumnHeaderBorder}">
-                            </DatePicker>
+                                        BorderBrush="{DynamicResource DatagridColumnHeaderBorder}"/>
                             <ComboBox x:Name="ComboBox_Filter"
                                       Visibility="Collapsed"
                                       IsEnabled="{Binding EnableFilteringData, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      Margin="0,0,0,3.5"
                                       BorderThickness="0.5" />
                             <Border    Background="{DynamicResource DatagridHorizontal_VerticalGridLinesBrush}"
-                                       Height="4"
+                                       Height="5"
                                        BorderBrush="{DynamicResource DatagridColumnHeaderBorder}"
                                        VerticalAlignment="Bottom"
-                                       BorderThickness="0,1,0,0" />
+                                       BorderThickness="0,1,0,0" Grid.Row="1" />
                             <Rectangle x:Name="RCT_NoFilter"
                                        Visibility="Collapsed"
                                        Fill="{DynamicResource DatagridCell_IsSelected_Background}"
                                        Stroke="{DynamicResource DatagridCell_IsSelected_Background}"
-                                       StrokeThickness="0.5"
-                                       Margin="0,0,0,3.5" />
-                            <Rectangle x:Name="RCT_FilterBorder" Fill="{DynamicResource DatagridHorizontal_VerticalGridLinesBrush}" HorizontalAlignment="Right" Width="1" Margin="0,0,0,4"/>
+                                       StrokeThickness="0.5" />
+                            <Rectangle x:Name="RCT_FilterBorder" Fill="{DynamicResource DatagridHorizontal_VerticalGridLinesBrush}" HorizontalAlignment="Right" Width="1"/>
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>

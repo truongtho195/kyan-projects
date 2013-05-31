@@ -678,6 +678,28 @@ namespace CPC.POS.Model
                         }
 
                         break;
+
+                    case "RecQty":
+
+                        if (_recQty <= 0)
+                        {
+                            message = "Received quantity > 0";
+                        }
+                        else if (_purchaseOrder != null &&
+                            _purchaseOrderDetail != null &&
+                            _purchaseOrder.PurchaseOrderReceiveCollection != null &&
+                            !string.IsNullOrWhiteSpace(_PODResource) &&
+                            Define.CONFIGURATION.IsAllowRGO != true)
+                        {
+                            int sumReceivedQty = _purchaseOrder.PurchaseOrderReceiveCollection.Where(x => x.PODResource == _PODResource).Sum(x => x.RecQty);
+                            int orderQty = _purchaseOrderDetail.Quantity;
+                            if (orderQty < sumReceivedQty)
+                            {
+                                message = "Quantity >= ReceivedQty";
+                            }
+                        }
+
+                        break;
                 }
 
                 return message;

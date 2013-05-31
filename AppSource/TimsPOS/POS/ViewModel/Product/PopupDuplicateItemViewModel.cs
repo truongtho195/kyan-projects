@@ -625,7 +625,7 @@ namespace CPC.POS.ViewModel
                     if (productUOMItem.Id == 0)
                     {
                         productUOMItem.Id = productUOMItem.base_ProductUOM.Id;
-                        productUOMItem.ProductId = productUOMItem.base_ProductUOM.ProductId;
+                        //productUOMItem.ProductId = productUOMItem.base_ProductUOM.ProductId;
                     }
 
                     // Turn off IsDirty & IsNew

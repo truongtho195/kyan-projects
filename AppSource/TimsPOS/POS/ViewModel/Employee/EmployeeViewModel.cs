@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using CPC.Helper;
-using System.Threading.Tasks;
-using CPCToolkitExtLibraries;
-using CPC.POS.Model;
-using System.Collections.ObjectModel;
-using System.Windows;
-using CPC.POS.Repository;
 using System.Collections;
-using CPC.POS.Database;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Windows;
 using CPC.Control;
-using Microsoft.Win32;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Model;
+using CPC.POS.Repository;
 using CPC.POS.View;
-using System.Threading;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
+using CPCToolkitExtLibraries;
+using Microsoft.Win32;
 
 namespace CPC.POS.ViewModel
 {
@@ -45,6 +42,7 @@ namespace CPC.POS.ViewModel
         #endregion
 
         #region Constructors
+
         public EmployeeViewModel()
         {
             _ownerViewModel = App.Current.MainWindow.DataContext;
@@ -54,11 +52,12 @@ namespace CPC.POS.ViewModel
 
         }
 
-        public EmployeeViewModel(bool isList)
+        public EmployeeViewModel(bool isList, object param = null)
             : this()
         {
-            this.ChangeSearchMode(isList);
+            this.ChangeSearchMode(isList, param);
         }
+
         #endregion
 
         #region Properties
@@ -1543,17 +1542,20 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        public override void ChangeSearchMode(bool isList)
+        public override void ChangeSearchMode(bool isList, object param = null)
         {
-            if (ChangeViewExecute(null))
+            if (param == null)
             {
-                if (!isList)
+                if (ChangeViewExecute(null))
                 {
-                    this.CreateEmployee();
-                    IsSearchMode = false;
+                    if (!isList)
+                    {
+                        this.CreateEmployee();
+                        IsSearchMode = false;
+                    }
+                    else
+                        IsSearchMode = true;
                 }
-                else
-                    IsSearchMode = true;
             }
         }
 
@@ -1561,11 +1563,7 @@ namespace CPC.POS.ViewModel
         {
             return ChangeViewExecute(isClosing);
         }
+
         #endregion
     }
-
-
-  
-    
-
 }

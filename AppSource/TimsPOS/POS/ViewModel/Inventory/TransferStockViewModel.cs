@@ -587,7 +587,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnQtyChangedCommandExecute(object param)
         {
-            if (param != null)
+            if (param != null && this.SelectedTransferStock != null)
             {
                 base_TransferStockDetailModel model = param as base_TransferStockDetailModel;
                 if (model.Quantity == 0)
@@ -659,8 +659,10 @@ namespace CPC.POS.ViewModel
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-                MessageBox.Show("When you transfer products in stores, It will affect product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //To apply that restore pricing.
+            {
+                MessageBox.Show("When you transfer products in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }//To apply that restore pricing.
             string quantity = string.Empty;
             if (this.SelectedTransferStock.TotalQuantity <= 1)
                 quantity = string.Format("{0} product", this.SelectedTransferStock.TotalQuantity);
@@ -671,7 +673,6 @@ namespace CPC.POS.ViewModel
             if (msgResult.Is(MessageBoxResult.Yes))
             {
                 //To close product view
-                (this._ownerViewModel as MainViewModel).CloseItem("Product");
                 this.SelectedTransferStock.IsEnable = false;
                 this.TransferStock();
             }
@@ -695,7 +696,10 @@ namespace CPC.POS.ViewModel
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-                MessageBox.Show("When you revert products in stores, It will affect product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                MessageBox.Show("When you revert products in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             //To apply that restore pricing.
             string quantity = string.Empty;
             if (this.SelectedTransferStock.TotalQuantity <= 1)
@@ -707,7 +711,6 @@ namespace CPC.POS.ViewModel
             if (msgResult.Is(MessageBoxResult.Yes))
             {
                 //To close product view
-                (this._ownerViewModel as MainViewModel).CloseItem("Product");
                 this.SelectedTransferStock.IsEnable = false;
                 this.RevertStock();
             }
@@ -922,8 +925,18 @@ namespace CPC.POS.ViewModel
                 this.SelectedTransferStock.VisibilityApplied = Visibility.Collapsed;
                 //To revert data of product.
                 foreach (var item in this.SelectedTransferStock.base_TransferStock.base_TransferStockDetail)
-                    this._productRepository.TransferStock(item.ProductResource, this.SelectedTransferStock.FromStore, this.SelectedTransferStock.ToStore, item.Quantity, false);
-                //this._productRepository.Commit();
+                {
+                    base_TransferStockDetailModel model = new base_TransferStockDetailModel(item);
+                    model.ProductModel = ProductCollection.SingleOrDefault(x => x.Resource.ToString().Equals(model.ProductResource));
+                    if (model.ProductModel != null)
+                        this.GetProductUOMforTransferStockDetail(model);
+                    if (model.ProductUOMCollection.SingleOrDefault(x => x.UOMId == model.UOMId) != null)
+                    {
+                        int baseUnitNumber = model.ProductUOMCollection.SingleOrDefault(x => x.UOMId == model.UOMId).BaseUnitNumber;
+                        this._productRepository.TransferStock(item.ProductResource, this.SelectedTransferStock.FromStore, this.SelectedTransferStock.ToStore, item.Quantity, false, baseUnitNumber);
+                    }
+
+                }
                 this._transferStockRepository.Commit();
                 this.SelectedTransferStock.EndUpdate();
                 this.SelectedTransferStock.IsChangeProductCollection = false;
@@ -948,8 +961,18 @@ namespace CPC.POS.ViewModel
                 this.SelectedTransferStock.ToEntity();
                 //To revert data of product.
                 foreach (var item in this.SelectedTransferStock.base_TransferStock.base_TransferStockDetail)
-                    this._productRepository.TransferStock(item.ProductResource, this.SelectedTransferStock.FromStore, this.SelectedTransferStock.ToStore, item.Quantity, true);
-                //this._productRepository.Commit();
+                {
+                    base_TransferStockDetailModel model = new base_TransferStockDetailModel(item);
+                    model.ProductModel = ProductCollection.SingleOrDefault(x => x.Resource.ToString().Equals(model.ProductResource));
+                    if (model.ProductModel != null)
+                        this.GetProductUOMforTransferStockDetail(model);
+                    if (model.ProductUOMCollection.SingleOrDefault(x => x.UOMId == model.UOMId) != null)
+                    {
+                        int baseUnitNumber = model.ProductUOMCollection.SingleOrDefault(x => x.UOMId == model.UOMId).BaseUnitNumber;
+                        this._productRepository.TransferStock(item.ProductResource, this.SelectedTransferStock.FromStore, this.SelectedTransferStock.ToStore, item.Quantity, true, baseUnitNumber);
+                    }
+
+                }
                 this._transferStockRepository.Commit();
                 this.SelectedTransferStock.EndUpdate();
                 this.SelectedTransferStock.IsChangeProductCollection = false;
@@ -1102,7 +1125,8 @@ namespace CPC.POS.ViewModel
                         transferStockDetailModel.Quantity = 1;
                         transferStockDetailModel.PropertyChanged += new PropertyChangedEventHandler(TransferStockDetailModel_PropertyChanged);
                         //Get Product UOMCollection
-                        this.GetProductUOMforTransferStockDetail(transferStockDetailModel);
+                        if (transferStockDetailModel.ProductModel != null)
+                            this.GetProductUOMforTransferStockDetail(transferStockDetailModel);
                         this.SelectedTransferStock.TransferStockDetailCollection.Add(transferStockDetailModel);
                     }
                     else
@@ -1159,10 +1183,11 @@ namespace CPC.POS.ViewModel
                 transferStockDetailModel.Price = transferStockDetailModel.ProductModel.RegularPrice;
                 transferStockDetailModel.ProductUOMCollection.Add(new base_ProductUOMModel
                 {
-                    ProductId = transferStockDetailModel.ProductModel.Id,
+                    //ProductId = transferStockDetailModel.ProductModel.Id,
                     UOMId = UOM.Id,
                     Code = UOM.Code,
                     Name = UOM.Name,
+                    BaseUnitNumber = 1,
                     RegularPrice = transferStockDetailModel.ProductModel.RegularPrice,
                     Price1 = transferStockDetailModel.ProductModel.Price1,
                     Price2 = transferStockDetailModel.ProductModel.Price2,
@@ -1173,15 +1198,22 @@ namespace CPC.POS.ViewModel
                 });
             }
 
-            // Gets the remaining units.
-            foreach (base_ProductUOM item in transferStockDetailModel.ProductModel.base_Product.base_ProductUOM)
+            // Get product store by default store code
+            base_ProductStore productStore = transferStockDetailModel.ProductModel.base_Product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
+
+            if (productStore != null)
             {
-                transferStockDetailModel.ProductUOMCollection.Add(new base_ProductUOMModel(item)
+                // Gets the remaining units.
+                foreach (base_ProductUOM item in productStore.base_ProductUOM)
                 {
-                    Code = item.base_UOM.Code,
-                    Name = item.base_UOM.Name,
-                    IsDirty = false
-                });
+                    transferStockDetailModel.ProductUOMCollection.Add(new base_ProductUOMModel(item)
+                    {
+                        BaseUnitNumber = item.BaseUnitNumber,
+                        Code = item.base_UOM.Code,
+                        Name = item.base_UOM.Name,
+                        IsDirty = false
+                    });
+                }
             }
             //if (SetPrice)
             //{
@@ -1235,14 +1267,17 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CalSubTotalProduct()
         {
-            if (this.SelectedTransferStock.TransferStockDetailCollection == null
-                || this.SelectedTransferStock.TransferStockDetailCollection.Count == 0)
+            if (this.SelectedTransferStock != null)
             {
-                this.SelectedTransferStock.SubTotal = 0;
+                if (this.SelectedTransferStock.TransferStockDetailCollection == null
+                    || this.SelectedTransferStock.TransferStockDetailCollection.Count == 0)
+                {
+                    this.SelectedTransferStock.SubTotal = 0;
+                }
+                else
+                    this.SelectedTransferStock.SubTotal = this.SelectedTransferStock.TransferStockDetailCollection.Sum(x => x.Amount);
+                this.CalTotalProduct();
             }
-            else
-                this.SelectedTransferStock.SubTotal = this.SelectedTransferStock.TransferStockDetailCollection.Sum(x => x.Amount);
-            this.CalTotalProduct();
         }
 
         /// <summary>
@@ -1250,8 +1285,11 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CalTotalProduct()
         {
-            this.SelectedTransferStock.TotalQuantity = this.SelectedTransferStock.TransferStockDetailCollection.Sum(x => x.Quantity);
-            this.SelectedTransferStock.Total = this.SelectedTransferStock.SubTotal + this.SelectedTransferStock.ShippingFee;
+            if (this.SelectedTransferStock != null)
+            {
+                this.SelectedTransferStock.TotalQuantity = this.SelectedTransferStock.TransferStockDetailCollection.Sum(x => x.Quantity);
+                this.SelectedTransferStock.Total = this.SelectedTransferStock.SubTotal + this.SelectedTransferStock.ShippingFee;
+            }
         }
         #endregion
 
@@ -1363,10 +1401,12 @@ namespace CPC.POS.ViewModel
                     {
                         base_TransferStockDetailModel detailModel = new base_TransferStockDetailModel(item, true);
                         detailModel.ProductModel = ProductCollection.SingleOrDefault(x => x.Resource.ToString().Equals(detailModel.ProductResource));
-                        this.GetProductUOMforTransferStockDetail(detailModel);
+                        if (detailModel.ProductModel != null)
+                            this.GetProductUOMforTransferStockDetail(detailModel);
                         detailModel.PropertyChanged += new PropertyChangedEventHandler(TransferStockDetailModel_PropertyChanged);
                         this.SelectedTransferStock.IsChangeProductCollection = false;
                         this.SelectedTransferStock.TransferStockDetailCollection.Add(detailModel);
+
                     }
                 }
                 this.ChangeDataFromStore(this.SelectedTransferStock.ToStore);

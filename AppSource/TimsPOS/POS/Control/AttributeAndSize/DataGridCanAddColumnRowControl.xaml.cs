@@ -250,6 +250,7 @@ namespace CPC.Control
             txtValue.SetBinding(TextBoxNumeric.ValueDependencyProperty, bindingCellEditingTemplate);
             txtValue.AddHandler(TextBoxNumeric.PreviewKeyDownEvent, new KeyEventHandler(txtValue_PreviewKeyDown));
             txtValue.AddHandler(TextBoxNumeric.LostFocusEvent, new RoutedEventHandler(txtValue_LostFocus));
+            txtValue.SetValue(TextBoxNumeric.StyleProperty, this.FindResource("TextBoxNumericInsideDataGridStyle"));
 
             // Create grid to contain CPC TextBoxNumeric and TextBlock
             FrameworkElementFactory gridCellEditing = new FrameworkElementFactory(typeof(Grid));

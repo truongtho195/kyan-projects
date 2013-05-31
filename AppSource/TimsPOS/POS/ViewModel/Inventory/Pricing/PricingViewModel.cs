@@ -761,7 +761,10 @@ namespace CPC.POS.ViewModel
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-                MessageBox.Show("When you apply that change pricing , It will affect product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                MessageBox.Show("When you apply that change pricing , You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             //To apply that change pricing.
             this.SelectedItemPricing.IsEnable = false;
             this.Apply();
@@ -785,7 +788,10 @@ namespace CPC.POS.ViewModel
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-                MessageBox.Show("When you apply that restore pricing , It will affect product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                MessageBox.Show("When you apply that restore pricing , You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             //To apply that restore pricing.
             PromotionReasonViewModel viewModel = new PromotionReasonViewModel();
             viewModel.ReasonReActive = this.SelectedItemPricing.Reason;

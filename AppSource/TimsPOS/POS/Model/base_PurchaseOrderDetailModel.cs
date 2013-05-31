@@ -47,7 +47,11 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_PurchaseOrderDetail base_PurchaseOrderDetail { get; private set; }
+        public base_PurchaseOrderDetail base_PurchaseOrderDetail
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -60,7 +64,10 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get { return this._id; }
+            get
+            {
+                return this._id;
+            }
             set
             {
                 if (this._id != value)
@@ -80,7 +87,10 @@ namespace CPC.POS.Model
         /// </summary>
         public long PurchaseOrderId
         {
-            get { return this._purchaseOrderId; }
+            get
+            {
+                return this._purchaseOrderId;
+            }
             set
             {
                 if (this._purchaseOrderId != value)
@@ -100,7 +110,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ProductResource
         {
-            get { return this._productResource; }
+            get
+            {
+                return this._productResource;
+            }
             set
             {
                 if (this._productResource != value)
@@ -120,7 +133,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemCode
         {
-            get { return this._itemCode; }
+            get
+            {
+                return this._itemCode;
+            }
             set
             {
                 if (this._itemCode != value)
@@ -140,7 +156,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemName
         {
-            get { return this._itemName; }
+            get
+            {
+                return this._itemName;
+            }
             set
             {
                 if (this._itemName != value)
@@ -160,7 +179,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemAtribute
         {
-            get { return this._itemAtribute; }
+            get
+            {
+                return this._itemAtribute;
+            }
             set
             {
                 if (this._itemAtribute != value)
@@ -180,7 +202,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ItemSize
         {
-            get { return this._itemSize; }
+            get
+            {
+                return this._itemSize;
+            }
             set
             {
                 if (this._itemSize != value)
@@ -200,7 +225,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string BaseUOM
         {
-            get { return this._baseUOM; }
+            get
+            {
+                return this._baseUOM;
+            }
             set
             {
                 if (this._baseUOM != value)
@@ -220,7 +248,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int UOMId
         {
-            get { return this._uOMId; }
+            get
+            {
+                return this._uOMId;
+            }
             set
             {
                 if (this._uOMId != value)
@@ -240,7 +271,10 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Price
         {
-            get { return this._price; }
+            get
+            {
+                return this._price;
+            }
             set
             {
                 if (this._price != value)
@@ -260,7 +294,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int Quantity
         {
-            get { return this._quantity; }
+            get
+            {
+                return this._quantity;
+            }
             set
             {
                 if (this._quantity != value)
@@ -280,7 +317,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int ReceivedQty
         {
-            get { return this._receivedQty; }
+            get
+            {
+                return this._receivedQty;
+            }
             set
             {
                 if (this._receivedQty != value)
@@ -300,7 +340,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int DueQty
         {
-            get { return this._dueQty; }
+            get
+            {
+                return this._dueQty;
+            }
             set
             {
                 if (this._dueQty != value)
@@ -320,7 +363,10 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal UnFilledQty
         {
-            get { return this._unFilledQty; }
+            get
+            {
+                return this._unFilledQty;
+            }
             set
             {
                 if (this._unFilledQty != value)
@@ -340,7 +386,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<decimal> Amount
         {
-            get { return this._amount; }
+            get
+            {
+                return this._amount;
+            }
             set
             {
                 if (this._amount != value)
@@ -360,7 +409,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Serial
         {
-            get { return this._serial; }
+            get
+            {
+                return this._serial;
+            }
             set
             {
                 if (this._serial != value)
@@ -380,7 +432,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> LastReceived
         {
-            get { return this._lastReceived; }
+            get
+            {
+                return this._lastReceived;
+            }
             set
             {
                 if (this._lastReceived != value)
@@ -400,7 +455,10 @@ namespace CPC.POS.Model
         /// </summary>
         public System.Guid Resource
         {
-            get { return this._resource; }
+            get
+            {
+                return this._resource;
+            }
             set
             {
                 if (this._resource != value)
@@ -420,7 +478,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsFullReceived
         {
-            get { return this._isFullReceived; }
+            get
+            {
+                return this._isFullReceived;
+            }
             set
             {
                 if (this._isFullReceived != value)
@@ -440,7 +501,10 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Discount
         {
-            get { return this._discount; }
+            get
+            {
+                return this._discount;
+            }
             set
             {
                 if (this._discount != value)
@@ -591,7 +655,7 @@ namespace CPC.POS.Model
             }
         }
 
-        #endregion 
+        #endregion
 
         #endregion
 
@@ -869,7 +933,13 @@ namespace CPC.POS.Model
 
                 switch (columnName)
                 {
-                    default:
+                    case "Quantity":
+
+                        if (Define.CONFIGURATION.IsAllowRGO != true && _quantity < _receivedQty)
+                        {
+                            message = "Quantity >= ReceivedQty";
+                        }
+
                         break;
                 }
 

@@ -1980,6 +1980,33 @@ namespace CPC.POS.Model
             }
         }
 
+        private decimal _amount;
+        /// <summary>
+        /// Gets or sets the Amount.
+        /// </summary>
+        public decimal Amount
+        {
+            get { return _amount; }
+            set
+            {
+                if (_amount != value)
+                {
+                    _amount = value;
+                    OnPropertyChanged(() => Amount);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the OldQuantity
+        /// </summary>
+        public int OldQuantity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the OldCost
+        /// </summary>
+        public decimal OldCost { get; set; }
+
         protected decimal _newPrice;
         /// <summary>
         /// Property Model

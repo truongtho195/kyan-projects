@@ -983,6 +983,26 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region LockAndUnLockCommand
+
+        private ICommand _lockAndUnLockCommand;
+        /// <summary>
+        /// When 'Lock' button clicked, LockAndUnLockCommand will executes. 
+        /// </summary>
+        public ICommand LockAndUnLockCommand
+        {
+            get
+            {
+                if (_lockAndUnLockCommand == null)
+                {
+                    _lockAndUnLockCommand = new RelayCommand(LockAndUnLockExecute, CanLockAndUnLockExecute);
+                }
+                return _lockAndUnLockCommand;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Command Methods
@@ -1089,7 +1109,7 @@ namespace CPC.POS.ViewModel
         /// <returns>True will call. Otherwise False.</returns>
         private bool CanAddTermExecute()
         {
-            if (_selectedPurchaseOrder == null || _selectedPurchaseOrder.IsFullWorkflow)
+            if (_selectedPurchaseOrder == null || _selectedPurchaseOrder.IsFullWorkflow || _selectedPurchaseOrder.IsLocked)
             {
                 return false;
             }
@@ -1196,7 +1216,36 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void QuantityChangedExecute()
         {
-            if (_selectedPurchaseOrderDetail.Quantity != _selectedPurchaseOrderDetail.BackupQuantity)
+            if (_selectedPurchaseOrderDetail == null)
+            {
+                return;
+            }
+
+            bool mustCancelEdit = false;
+
+            if (_selectedPurchaseOrderDetail.HasError)
+            {
+                mustCancelEdit = true;
+            }
+
+            if (!mustCancelEdit && _selectedPurchaseOrder.PurchaseOrderReceiveCollection != null && Define.CONFIGURATION.IsAllowRGO != true)
+            {
+                int sumReceivedQty = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
+                    x.PODResource == _selectedPurchaseOrderDetail.Resource.ToString()).Sum(x => x.RecQty);
+                int orderQty = _selectedPurchaseOrderDetail.Quantity;
+                if (orderQty < sumReceivedQty)
+                {
+                    mustCancelEdit = true;
+                }
+            }
+
+            if (mustCancelEdit)
+            {
+                (_selectedPurchaseOrderDetail as IEditableObject).CancelEdit();
+                (_selectedPurchaseOrderDetail as IEditableObject).BeginEdit();
+                MessageBox.Show("Order quantity >= Receive quantity.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            }
+            else if (_selectedPurchaseOrderDetail.Quantity != _selectedPurchaseOrderDetail.BackupQuantity)
             {
                 _selectedPurchaseOrderDetail.BackupQuantity = _selectedPurchaseOrderDetail.Quantity;
                 AddSerials(_selectedPurchaseOrderDetail, false);
@@ -1287,6 +1336,7 @@ namespace CPC.POS.ViewModel
         {
             if (_selectedPurchaseOrder == null ||
                 _selectedPurchaseOrder.HasError ||
+                _selectedPurchaseOrder.IsLocked ||
                 _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Any(x => x.HasError) ||
                 _selectedPurchaseOrder.ResourceReturnDetailCollection.Any(x => x.HasError) || (
                 !_selectedPurchaseOrder.IsDirty &&
@@ -1324,6 +1374,7 @@ namespace CPC.POS.ViewModel
         {
             if (_selectedPurchaseOrder == null ||
                 _selectedPurchaseOrder.IsNew ||
+                _selectedPurchaseOrder.IsLocked ||
                 _selectedPurchaseOrder.Status != (short)PurchaseStatus.Open)
             {
                 return false;
@@ -1418,6 +1469,8 @@ namespace CPC.POS.ViewModel
         {
             if (_selectedPurchaseOrder == null ||
                 _selectedPurchaseOrder.IsFullWorkflow ||
+                _selectedPurchaseOrder.IsLocked ||
+                !_selectedPurchaseOrder.CanPurchase ||
                 _selectedPurchaseOrder.PurchaseOrderDetailCollection == null)
             {
                 return false;
@@ -1472,7 +1525,9 @@ namespace CPC.POS.ViewModel
         /// <returns>True will call. Otherwise False.</returns>
         private bool CanShowReceiveItemExecute()
         {
-            if (_selectedPurchaseOrder == null || _selectedPurchaseOrder.IsNew)
+            if (_selectedPurchaseOrder == null ||
+                _selectedPurchaseOrder.IsNew ||
+                _selectedPurchaseOrder.IsLocked)
             {
                 return false;
             }
@@ -1504,6 +1559,7 @@ namespace CPC.POS.ViewModel
         {
             if (_selectedPurchaseOrder == null ||
                 _selectedPurchaseOrder.IsFullWorkflow ||
+                _selectedPurchaseOrder.IsLocked ||
                 _selectedPurchaseOrder.PurchaseOrderDetailCollection == null ||
                 _selectedPurchaseOrder.PurchaseOrderReceiveCollection == null ||
                 _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Any(x => x.HasError))
@@ -1537,6 +1593,7 @@ namespace CPC.POS.ViewModel
         private bool CanReturnAllExecute()
         {
             if (_selectedPurchaseOrder == null ||
+                _selectedPurchaseOrder.IsLocked ||
                 _selectedPurchaseOrder.PurchaseOrderDetailCollection == null ||
                 _selectedPurchaseOrder.ResourceReturnDetailCollection == null ||
                 _selectedPurchaseOrder.ResourceReturnDetailCollection.Any(x => x.HasError))
@@ -1570,6 +1627,39 @@ namespace CPC.POS.ViewModel
         private bool CanEditProductExecute()
         {
             if (_selectedPurchaseOrderDetail == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region LockAndUnLockExecute
+
+        /// <summary>
+        /// Lock or UnLock PurchaseOrder.
+        /// </summary>
+        private void LockAndUnLockExecute()
+        {
+            LockAndUnLock();
+        }
+
+        #endregion
+
+        #region CanLockAndUnLockExecute
+
+        /// <summary>
+        /// Determine whether can call LockAndUnLockExecute method.
+        /// </summary>
+        /// <returns>True will call. Otherwise False.</returns>
+        private bool CanLockAndUnLockExecute()
+        {
+            if (_selectedPurchaseOrder == null ||
+                _selectedPurchaseOrder.HasError ||
+                _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Any(x => x.HasError) ||
+                _selectedPurchaseOrder.ResourceReturnDetailCollection.Any(x => x.HasError))
             {
                 return false;
             }
@@ -1727,7 +1817,7 @@ namespace CPC.POS.ViewModel
             if (newVendor != null)
             {
                 _vendorCollection.Add(newVendor);
-                _selectedPurchaseOrder.VendorId = newVendor.Id;
+                _selectedPurchaseOrder.VendorResource = newVendor.Resource.ToString();
             }
         }
 
@@ -1798,11 +1888,11 @@ namespace CPC.POS.ViewModel
 
                             if (_hasSearchVendor && !string.IsNullOrWhiteSpace(_keyword))
                             {
-                                IEnumerable<long> vendorIDList = _vendorCollection.Where(x =>
+                                IEnumerable<string> vendorIDList = _vendorCollection.Where(x =>
                                     x.Mark == MarkType.Vendor.ToDescription() &&
                                     x.Company != null &&
-                                    x.Company.ToLower().Contains(_keyword.ToLower())).Select(x => x.Id);
-                                _predicate = _predicate.And(x => vendorIDList.Contains(x.VendorId));
+                                    x.Company.ToLower().Contains(_keyword.ToLower())).Select(x => x.Resource.ToString());
+                                _predicate = _predicate.And(x => vendorIDList.Contains(x.VendorResource));
                             }
                         }
 
@@ -1850,7 +1940,7 @@ namespace CPC.POS.ViewModel
                 if (_vendorCollection != null)
                 {
                     // Gets selected vendor.
-                    base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Id == purchaseOrderModel.VendorId);
+                    base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Resource.ToString() == purchaseOrderModel.VendorResource);
                     if (vendor != null)
                     {
                         // Gets VendorName..
@@ -2028,7 +2118,7 @@ namespace CPC.POS.ViewModel
                 _selectedPurchaseOrder.PaymentTermDescription = paymentTermViewModel.Description;
 
                 // Gets selected vendor.
-                base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Id == _selectedPurchaseOrder.VendorId);
+                base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Resource.ToString() == _selectedPurchaseOrder.VendorResource);
                 if (vendor != null)
                 {
                     // Update TermNetDue, TermDiscountPercent, TermPaidWithinDay, PaymentTermDescription.
@@ -2252,7 +2342,7 @@ namespace CPC.POS.ViewModel
                     {
                         UOMCollection.Add(new base_ProductUOMModel
                         {
-                            ProductId = product.Id,
+                            //ProductId = product.Id,
                             UOMId = UOM.Id,
                             Code = UOM.Code,
                             Name = UOM.Name,
@@ -2262,15 +2352,21 @@ namespace CPC.POS.ViewModel
                         });
                     }
 
-                    // Gets the remaining units.
-                    foreach (base_ProductUOM item in product.base_ProductUOM)
+                    // Get product store by store code
+                    base_ProductStore productStore= product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
+
+                    if (productStore!=null)
                     {
-                        UOMCollection.Add(new base_ProductUOMModel(item)
+                        // Gets the remaining units.
+                        foreach (base_ProductUOM item in productStore.base_ProductUOM)
                         {
-                            Code = item.base_UOM.Code,
-                            Name = item.base_UOM.Name,
-                            IsDirty = false
-                        });
+                            UOMCollection.Add(new base_ProductUOMModel(item)
+                            {
+                                Code = item.base_UOM.Code,
+                                Name = item.base_UOM.Name,
+                                IsDirty = false
+                            });
+                        } 
                     }
 
 
@@ -2413,7 +2509,7 @@ namespace CPC.POS.ViewModel
                     CalculateOrderQtyOfPurchaseOrder();
 
                     // Determine status.
-                    if (_selectedPurchaseOrder.Status < (short)PurchaseStatus.FullyReceived)
+                    if (_selectedPurchaseOrder.Status < (short)PurchaseStatus.PaidInFull)
                     {
                         if (_selectedPurchaseOrder.PurchaseOrderDetailCollection.Count > 0 &&
                             !_selectedPurchaseOrder.PurchaseOrderDetailCollection.Any(x => !x.IsFullReceived))
@@ -2467,6 +2563,14 @@ namespace CPC.POS.ViewModel
                     if (purchaseOrderReceiveView.CurrentEditItem != null)
                     {
                         isContainsErrorItem = object.ReferenceEquals(purchaseOrderReceiveView.CurrentEditItem, selectedPurchaseOrderReceive);
+                    }
+                    else if (purchaseOrderReceiveView.CurrentAddItem != null)
+                    {
+                        isContainsErrorItem = object.ReferenceEquals(purchaseOrderReceiveView.CurrentAddItem, selectedPurchaseOrderReceive);
+                    }
+                    else
+                    {
+                        isContainsErrorItem = true;
                     }
                 }
             }
@@ -2600,8 +2704,10 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Save purchase order.
         /// </summary>
-        private void Save()
+        private bool Save()
         {
+            bool isSuccess = false;
+
             try
             {
                 UnitOfWork.BeginTransaction();
@@ -2619,7 +2725,7 @@ namespace CPC.POS.ViewModel
 
                 // Update vendor.
                 // Gets selected vendor.
-                base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Id == _selectedPurchaseOrder.VendorId);
+                base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Resource.ToString() == _selectedPurchaseOrder.VendorResource);
                 if (vendor != null && vendor.IsDirty)
                 {
                     vendor.DateUpdated = now;
@@ -2631,6 +2737,7 @@ namespace CPC.POS.ViewModel
                 if (_selectedPurchaseOrder.IsNew)
                 {
                     // Insert PurchaseOrder.
+                    _selectedPurchaseOrder.Balance = _selectedPurchaseOrder.Total - _selectedPurchaseOrder.Paid;
                     _selectedPurchaseOrder.DateCreated = now;
                     _selectedPurchaseOrder.ToEntity();
                     purchaseOrderRepository.Add(_selectedPurchaseOrder.base_PurchaseOrder);
@@ -2657,7 +2764,8 @@ namespace CPC.POS.ViewModel
                     _selectedPurchaseOrder.DateUpdate = now;
                     _selectedPurchaseOrder.ToEntity();
                     purchaseOrderRepository.Commit();
-                    _selectedPurchaseOrder.IsDirty = false;
+
+                    string purchaseOrderID = _selectedPurchaseOrder.Resource.ToString();
 
                     // Insert new items on PurchaseOrderDetail. 
                     ObservableCollection<base_PurchaseOrderDetailModel> newItems = _selectedPurchaseOrder.PurchaseOrderDetailCollection.NewItems;
@@ -2797,6 +2905,16 @@ namespace CPC.POS.ViewModel
                         }
                     }
 
+                    // Calculate Balance if not payment.
+                    _selectedPurchaseOrder.HasPayment = resourcePaymentRepository.GetIQueryable(x =>
+                       x.DocumentResource == purchaseOrderID && x.TotalPaid > 0).Count() > 0;
+                    if (!_selectedPurchaseOrder.HasPayment)
+                    {
+                        _selectedPurchaseOrder.Balance = _selectedPurchaseOrder.Total - _selectedPurchaseOrder.Paid;
+                        _selectedPurchaseOrder.ToEntity();
+                        purchaseOrderRepository.Commit();
+                    }
+
                     // Insert new ResourceReturn.
                     if (_selectedPurchaseOrder.ResourceReturn.IsNew)
                     {
@@ -2899,10 +3017,14 @@ namespace CPC.POS.ViewModel
 
                 UnitOfWork.CommitTransaction();
 
+                _selectedPurchaseOrder.IsDirty = false;
+
                 if (_selectedPurchaseOrder.IsFullWorkflow)
                 {
                     IsSearchMode = true;
                 }
+
+                isSuccess = true;
             }
             catch (Exception exception)
             {
@@ -2910,6 +3032,12 @@ namespace CPC.POS.ViewModel
                 WriteLog(exception);
                 MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
+            finally
+            {
+                _selectedPurchaseOrder.RaiseCanPurchasePropertyChanged();
+            }
+
+            return isSuccess;
         }
 
         #endregion
@@ -2992,6 +3120,48 @@ namespace CPC.POS.ViewModel
             }
 
             return isUnactive;
+        }
+
+        #endregion
+
+        #region Lock
+
+        /// <summary>
+        /// Lock PurchaseOrder.
+        /// </summary>
+        private void Lock()
+        {
+            bool isSuccess = Save();
+            if (isSuccess)
+            {
+                _purchaseOrderCollection.Remove(_selectedPurchaseOrder);
+                IsSearchMode = true;
+            }
+        }
+
+        #endregion
+
+        #region UnLock
+
+        /// <summary>
+        /// Unlock PurchaseOrder.
+        /// </summary>
+        private void UnLock()
+        {
+            try
+            {
+                base_PurchaseOrderRepository purchaseOrderRepository = new base_PurchaseOrderRepository();
+                // Update PurchaseOrder.
+                _selectedPurchaseOrder.DateUpdate = DateTime.Now;
+                _selectedPurchaseOrder.ToEntity();
+                purchaseOrderRepository.Commit();
+                _selectedPurchaseOrder.IsDirty = false;
+            }
+            catch (Exception exception)
+            {
+                WriteLog(exception);
+                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
         }
 
         #endregion
@@ -3081,7 +3251,7 @@ namespace CPC.POS.ViewModel
                 CreatePurchaseOrder();
 
                 // Copy some information for new PurchaseOrder.
-                _selectedPurchaseOrder.VendorId = selectedItem.VendorId;
+                _selectedPurchaseOrder.VendorResource = selectedItem.VendorResource;
                 _selectedPurchaseOrder.StoreCode = selectedItem.StoreCode;
 
                 // Close search component.
@@ -3302,6 +3472,8 @@ namespace CPC.POS.ViewModel
                     base_ResourcePayment resourcePayment = null;
                     if (resourcePaymentRepository.GetIQueryable(x => x.DocumentResource == purchaseOrderID).Count() > 0)
                     {
+                        _selectedPurchaseOrder.HasPayment = resourcePaymentRepository.GetIQueryable(x =>
+                            x.DocumentResource == purchaseOrderID && x.TotalPaid > 0).Count() > 0;
                         long newResourcePaymentId = resourcePaymentRepository.GetIQueryable(x => x.DocumentResource == purchaseOrderID).Max(x => x.Id);
                         resourcePayment = resourcePaymentRepository.Get(x => x.DocumentResource == purchaseOrderID && x.Id == newResourcePaymentId);
                     }
@@ -3364,6 +3536,8 @@ namespace CPC.POS.ViewModel
                     CalculateTotalReceiveOfPurchaseOrder();
 
                     _selectedPurchaseOrder.RaiseCanChangeStorePropertyChanged();
+                    _selectedPurchaseOrder.RaiseCanPurchasePropertyChanged();
+
                     _selectedPurchaseOrder.IsDirty = false;
                 }
             }
@@ -4089,7 +4263,55 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void EditProduct()
         {
-            MessageBox.Show("Edit Product.");
+            base_ProductModel product = _productCollection.FirstOrDefault(x => x.Resource.ToString() == _selectedPurchaseOrderDetail.ProductResource);
+
+            base_ProductModel productModel = new base_ProductModel();
+            productModel.Resource = new Guid(_selectedPurchaseOrderDetail.ProductResource);
+            productModel.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(_selectedPurchaseOrderDetail.UOMCollection);
+            productModel.BaseUOMId = _selectedPurchaseOrderDetail.UOMId;
+            productModel.RegularPrice = _selectedPurchaseOrderDetail.Price;
+            productModel.CurrentPrice = _selectedPurchaseOrderDetail.Price;
+            productModel.OnHandStore = _selectedPurchaseOrderDetail.Quantity;
+            productModel.ProductName = _selectedPurchaseOrderDetail.ItemName;
+            productModel.Attribute = _selectedPurchaseOrderDetail.ItemAtribute;
+            productModel.Size = _selectedPurchaseOrderDetail.ItemSize;
+            if (product != null)
+            {
+                productModel.Description = product.Description;
+            }
+
+            PopupEditProductViewModel viewModel = new PopupEditProductViewModel(productModel, true);
+            bool? result = _dialogService.ShowDialog<PopupEditProductView>(_ownerViewModel, viewModel, "Edit product");
+            if (result.HasValue && result.Value)
+            {
+                _selectedPurchaseOrderDetail.UOMId = viewModel.SelectedProductUOM.UOMId;
+                _selectedPurchaseOrderDetail.Price = productModel.CurrentPrice;
+                _selectedPurchaseOrderDetail.Quantity = productModel.OnHandStore;
+                _selectedPurchaseOrderDetail.ItemName = productModel.ProductName;
+                _selectedPurchaseOrderDetail.ItemAtribute = productModel.Attribute;
+                _selectedPurchaseOrderDetail.ItemSize = productModel.Size;
+            }
+        }
+
+        #endregion
+
+        #region LockAndUnLock
+
+        /// <summary>
+        /// Lock or UnLock PurchaseOrder.
+        /// </summary>
+        private void LockAndUnLock()
+        {
+            CommitOrCancelChange();
+            _selectedPurchaseOrder.IsLocked = !_selectedPurchaseOrder.IsLocked;
+            if (_selectedPurchaseOrder.IsLocked)
+            {
+                Lock();
+            }
+            else
+            {
+                UnLock();
+            }
         }
 
         #endregion
@@ -4199,12 +4421,12 @@ namespace CPC.POS.ViewModel
 
                     break;
 
-                case "VendorId":
+                case "VendorResource":
 
                     if (_vendorCollection != null)
                     {
                         // Gets selected vendor.
-                        base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Id == purchaseOrder.VendorId);
+                        base_GuestModel vendor = _vendorCollection.FirstOrDefault(x => x.Resource.ToString() == purchaseOrder.VendorResource);
                         if (vendor != null)
                         {
                             // Update VendorCode, VendorName.
@@ -4303,6 +4525,14 @@ namespace CPC.POS.ViewModel
 
                     purchaseOrderDetail.Amount = purchaseOrderDetail.Quantity * (purchaseOrderDetail.Price - purchaseOrderDetail.Discount);
 
+                    // Update Discount in PurchaseOrderReceive.
+                    IEnumerable<base_PurchaseOrderReceiveModel> receiveDiscountItems = purchaseOrderDetail.PurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
+                        x.PODResource == purchaseOrderDetail.Resource.ToString());
+                    foreach (var item in receiveDiscountItems)
+                    {
+                        item.Discount = purchaseOrderDetail.Discount;
+                    }
+
                     break;
 
                 case "Price":
@@ -4386,7 +4616,7 @@ namespace CPC.POS.ViewModel
 
                 case "IsFullReceived":
 
-                    if (purchaseOrderDetail.PurchaseOrder.Status < (short)PurchaseStatus.FullyReceived)
+                    if (purchaseOrderDetail.PurchaseOrder.Status < (short)PurchaseStatus.PaidInFull)
                     {
                         if (purchaseOrderDetail.PurchaseOrder.PurchaseOrderDetailCollection.Count > 0 &&
                             !purchaseOrderDetail.PurchaseOrder.PurchaseOrderDetailCollection.Any(x => !x.IsFullReceived))
@@ -4491,6 +4721,11 @@ namespace CPC.POS.ViewModel
                             }
                             else
                             {
+                                if (purchaseOrderReceive.PurchaseOrder.Status < (short)PurchaseStatus.InProgress)
+                                {
+                                    purchaseOrderReceive.PurchaseOrder.Status = (short)PurchaseStatus.InProgress;
+                                }
+
                                 AddRemovePayment(purchaseOrderReceive);
                                 CalculateSumReceivedQty(purchaseOrderReceive.PODResource);
                                 _selectedPurchaseOrder.RaiseCanChangeStorePropertyChanged();

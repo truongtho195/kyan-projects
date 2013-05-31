@@ -104,29 +104,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected long _vendorId;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the VendorId</para>
-        /// </summary>
-        public long VendorId
-        {
-            get
-            {
-                return this._vendorId;
-            }
-            set
-            {
-                if (this._vendorId != value)
-                {
-                    this.IsDirty = true;
-                    this._vendorId = value;
-                    OnPropertyChanged(() => VendorId);
-                    PropertyChangedCompleted(() => VendorId);
-                }
-            }
-        }
-
         protected string _vendorCode;
         /// <summary>
         /// Property Model
@@ -541,12 +518,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<decimal> _paid;
+        protected decimal _paid;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the Paid</para>
         /// </summary>
-        public Nullable<decimal> Paid
+        public decimal Paid
         {
             get
             {
@@ -564,12 +541,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<decimal> _balance;
+        protected decimal _balance;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the Balance</para>
         /// </summary>
-        public Nullable<decimal> Balance
+        public decimal Balance
         {
             get
             {
@@ -978,6 +955,29 @@ namespace CPC.POS.Model
             }
         }
 
+        protected string _vendorResource;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the VendorResource</para>
+        /// </summary>
+        public string VendorResource
+        {
+            get
+            {
+                return this._vendorResource;
+            }
+            set
+            {
+                if (this._vendorResource != value)
+                {
+                    this.IsDirty = true;
+                    this._vendorResource = value;
+                    OnPropertyChanged(() => VendorResource);
+                    PropertyChangedCompleted(() => VendorResource);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1001,7 +1001,6 @@ namespace CPC.POS.Model
             if (IsNew)
                 this.base_PurchaseOrder.Id = this.Id;
             this.base_PurchaseOrder.PurchaseOrderNo = this.PurchaseOrderNo;
-            this.base_PurchaseOrder.VendorId = this.VendorId;
             this.base_PurchaseOrder.VendorCode = this.VendorCode;
             this.base_PurchaseOrder.Status = this.Status;
             this.base_PurchaseOrder.ShipAddress = this.ShipAddress;
@@ -1039,6 +1038,7 @@ namespace CPC.POS.Model
             this.base_PurchaseOrder.PaymentName = this.PaymentName;
             this.base_PurchaseOrder.IsPurge = this.IsPurge;
             this.base_PurchaseOrder.IsLocked = this.IsLocked;
+            this.base_PurchaseOrder.VendorResource = this.VendorResource;
         }
 
         /// <summary>
@@ -1049,7 +1049,6 @@ namespace CPC.POS.Model
         {
             this._id = this.base_PurchaseOrder.Id;
             this._purchaseOrderNo = this.base_PurchaseOrder.PurchaseOrderNo;
-            this._vendorId = this.base_PurchaseOrder.VendorId;
             this._vendorCode = this.base_PurchaseOrder.VendorCode;
             this._status = this.base_PurchaseOrder.Status;
             this._shipAddress = this.base_PurchaseOrder.ShipAddress;
@@ -1087,6 +1086,7 @@ namespace CPC.POS.Model
             this._paymentName = this.base_PurchaseOrder.PaymentName;
             this._isPurge = this.base_PurchaseOrder.IsPurge;
             this._isLocked = this.base_PurchaseOrder.IsLocked;
+            this._vendorResource = this.base_PurchaseOrder.VendorResource;
         }
 
         /// <summary>
@@ -1097,7 +1097,6 @@ namespace CPC.POS.Model
         {
             this.Id = this.base_PurchaseOrder.Id;
             this.PurchaseOrderNo = this.base_PurchaseOrder.PurchaseOrderNo;
-            this.VendorId = this.base_PurchaseOrder.VendorId;
             this.VendorCode = this.base_PurchaseOrder.VendorCode;
             this.Status = this.base_PurchaseOrder.Status;
             this.ShipAddress = this.base_PurchaseOrder.ShipAddress;
@@ -1135,6 +1134,7 @@ namespace CPC.POS.Model
             this.PaymentName = this.base_PurchaseOrder.PaymentName;
             this.IsPurge = this.base_PurchaseOrder.IsPurge;
             this.IsLocked = this.base_PurchaseOrder.IsLocked;
+            this.VendorResource = this.base_PurchaseOrder.VendorResource;
         }
 
         #endregion
@@ -1362,6 +1362,77 @@ namespace CPC.POS.Model
 
         #endregion
 
+        #region HasPayment
+
+        private bool _hasPayment;
+        /// <summary>
+        /// Gets or sets HasPayment.
+        /// </summary>
+        public bool HasPayment
+        {
+            get
+            {
+                return _hasPayment;
+            }
+            set
+            {
+                if (_hasPayment != value)
+                {
+                    _hasPayment = value;
+                    OnPropertyChanged(() => HasPayment);
+                }
+            }
+        }
+
+        #endregion
+
+        #region CanPurchase
+
+        /// <summary>
+        /// Gets a value indicates whether can purchase new item.
+        /// </summary>
+        public bool CanPurchase
+        {
+            get
+            {
+                return !(_purchaseOrderDetailCollection == null ||
+                    (_purchaseOrderDetailCollection.Count > 0 && !_purchaseOrderDetailCollection.Any(x => !x.IsFullReceived)) ||
+                    _hasPayment || _isLocked);
+            }
+        }
+
+        #endregion
+
+        #region CanEditBaseInformation
+
+        /// <summary>
+        /// Gets a value indicates whether can edit base information of PurchaseOrder.
+        /// </summary>
+        public bool CanEditBaseInformation
+        {
+            get
+            {
+                return !_isFullWorkflow && !_isLocked;
+            }
+        }
+
+        #endregion
+
+        #region CanEditItemCollection
+
+        /// <summary>
+        /// Gets a value indicates whether can edit item collection.
+        /// </summary>
+        public bool CanEditItemCollection
+        {
+            get
+            {
+                return !_isFullWorkflow && !_isLocked;
+            }
+        }
+
+        #endregion
+
         #region VendorName
 
         private string _vendorName;
@@ -1499,6 +1570,18 @@ namespace CPC.POS.Model
 
         #endregion
 
+        #region RaiseCanPurchasePropertyChanged
+
+        /// <summary>
+        /// Raise CanPurchase property changed.
+        /// </summary>
+        public void RaiseCanPurchasePropertyChanged()
+        {
+            OnPropertyChanged(() => CanPurchase);
+        }
+
+        #endregion
+
         #endregion
 
         #region Override Methods
@@ -1522,6 +1605,16 @@ namespace CPC.POS.Model
 
                     OnPropertyChanged(() => StatusName);
                     OnPropertyChanged(() => HasReceive);
+                    OnPropertyChanged(() => CanPurchase);
+
+                    break;
+
+                case "IsFullWorkflow":
+                case "IsLocked":
+
+                    OnPropertyChanged(() => CanEditBaseInformation);
+                    OnPropertyChanged(() => CanPurchase);
+                    OnPropertyChanged(() => CanEditItemCollection);
 
                     break;
             }
@@ -1560,9 +1653,9 @@ namespace CPC.POS.Model
 
                 switch (columnName)
                 {
-                    case "VendorId":
+                    case "VendorResource":
 
-                        if (_vendorId <= 0)
+                        if (_vendorResource == null)
                         {
                             message = "Required select an item.";
                         }

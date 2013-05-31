@@ -209,6 +209,7 @@
                                                                AutoGenerateColumns="False"
                                                                CanUserAddRows="False"
                                                                CanUserDeleteRows="False"
+                                                               IsReadOnly="{Binding IsReadOnly,Mode=OneWay}"
 															   IsRollBackData="False"
                                                                ItemsSource="{Binding SerialTrackingCollection,
                                                                                      Mode=TwoWay,
@@ -227,7 +228,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <CPCToolkitExt_TextBoxControl:TextBox MaxLength="30" Text="{Binding Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                    <CPCToolkitExt_TextBoxControl:TextBox MaxLength="30" Style="{DynamicResource TextBoxInsideDataGridStyle}" Text="{Binding Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>

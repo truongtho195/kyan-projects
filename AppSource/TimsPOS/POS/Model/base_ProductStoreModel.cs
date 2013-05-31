@@ -216,7 +216,7 @@ namespace CPC.POS.Model
         public void ToModel(base_ProductStoreModel productStoreModel)
         {
             //this._id = productStoreModel.Id;
-            this._productId = productStoreModel.ProductId;
+            //this._productId = productStoreModel.ProductId;
             this._quantityOnHand = productStoreModel.QuantityOnHand;
             this._storeCode = productStoreModel.StoreCode;
         }

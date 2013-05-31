@@ -799,7 +799,7 @@
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
 
         <Grid x:Name="grdEmployee">
-            <Grid x:Name="grdSearch" d:IsHidden="True">
+            <Grid x:Name="grdSearch">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -825,7 +825,8 @@
                                        Text="Search"
                                        TextWrapping="NoWrap" />
                         </GroupBox.Header>
-                        <Grid x:Name="grdgbSearch" Margin="0,4,0,0">
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
                             <Grid x:Name="grdgbContentSearch">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
@@ -957,9 +958,41 @@
                                                      NumberOfItems="{Binding NumberOfItems}"
                                                      RowDetailsTemplate="{DynamicResource DataTemplateRowDetailTemplateEmployeeSearch}"
                                                      RowStyle="{StaticResource DataGridToggleRowStyle}"
-                                                     
                                                      SelectionMode="Single"
                                                      Style="{DynamicResource DatagridWithRowHeader}">
+                        <dataGridControl:DataGridControl.ContextMenu>
+                            <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                <MenuItem Header="New Item"
+                                          Command="{Binding NewCommand}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource NewItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Edit Item"
+                                          Command="{Binding DoubleClickViewCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource EditItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Delete Item"
+                                          Command="{Binding DeletesCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource DeleteItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </dataGridControl:DataGridControl.ContextMenu>
                         <dataGridControl:DataGridControl.Columns>
                             <DataGridTemplateColumn Width="25"
                                                     MinWidth="25"
@@ -1034,14 +1067,14 @@
                                                 Binding="{Binding LastName}"
                                                 Header="Last Name"
                                                 IsReadOnly="True" />
-                          
+
 
                             <DataGridTextColumn Width="150"
                                                 MinWidth="150"
                                                 Binding="{Binding Company}"
                                                 Header="Company"
                                                 IsReadOnly="True" />
-                            
+
                             <DataGridTextColumn Width="150"
                                                 MinWidth="150"
                                                 Binding="{Binding PositionId,
@@ -1150,7 +1183,8 @@
                     </Button>
                 </Grid>
             </Grid>
-            <Grid x:Name="grdContentEmployee1">
+            <Grid x:Name="grdContentEmployee1"
+                  d:IsHidden="True">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -1190,10 +1224,12 @@
                     </TextBlock>
                 </Button>
                 <Rectangle x:Name="grdSpliter"
-                	Width="1"
-                	Margin="0"
-                	HorizontalAlignment="Left"
-                	Fill="{DynamicResource Spilter_Line_Background}" d:LayoutOverrides="GridBox" Grid.Column="2" />
+                           Width="1"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           Fill="{DynamicResource Spilter_Line_Background}"
+                           d:LayoutOverrides="GridBox"
+                           Grid.Column="2" />
                 <Grid x:Name="grdSubEmployee"
                       Grid.Column="1"
                       d:LayoutOverrides="GridBox">
@@ -1323,7 +1359,6 @@
                             </Grid>
                             <ComboBox x:Name="cmbStick"
                                       Grid.ColumnSpan="2"
-                                      
                                       SelectedIndex="0"
                                       Style="{DynamicResource RemarkComboboxStyle}">
                                 <Button Width="75"
@@ -1554,19 +1589,19 @@
                                                            Text="First Name:"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtFirstName"
-                                                                            Grid.Column="1"
-                                                                            Width="120"
-                                                                            Margin="0,2"
-                                                                            HorizontalAlignment="Left"
-                                                                            MaxLength="20"
-                                                                            Padding="2,0,2,0"
-                                                                            Text="{Binding SelectedItemEmployee.FirstName,
+                                                                        Grid.Column="1"
+                                                                        Width="120"
+                                                                        Margin="0,2"
+                                                                        HorizontalAlignment="Left"
+                                                                        MaxLength="20"
+                                                                        Padding="2,0,2,0"
+                                                                        Text="{Binding SelectedItemEmployee.FirstName,
                                                                                            Mode=TwoWay,
                                                                                            NotifyOnValidationError=True,
                                                                                            UpdateSourceTrigger=PropertyChanged,
                                                                                            ValidatesOnDataErrors=True,
                                                                                            ValidatesOnExceptions=True}"
-                                                                            TextWrapping="NoWrap" />
+                                                                        TextWrapping="NoWrap" />
                                                 <TextBlock x:Name="txtblInitial"
                                                            Grid.Column="3"
                                                            Margin="132,0,0,0"
@@ -1736,23 +1771,29 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Commission:"
                                                            TextWrapping="NoWrap" />
-													<cpcControl:TextBoxNumeric 
-												x:Name="txtCommission"
-												 
-												Margin="0,2" 
-												TextWrapping="NoWrap" 
-												Grid.Column="1" 
-												Padding="2,0,2,0"
+                                                <cpcControl:TextBoxNumeric x:Name="txtCommission"
+                                                                           Margin="0,2"
+                                                                           TextWrapping="NoWrap"
+                                                                           Grid.Column="1"
+                                                                           Padding="2,0,2,0"
                                                                            Value="{Binding SelectedItemEmployee.CommissionPercent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-												HorizontalAlignment="Left" 
-												Width="120" d:LayoutOverrides="HorizontalAlignment" Grid.Row="4" HorizontalContentAlignment="Right" IntegerLength="2" IsUsingSeparator="True" DecimalPlaces="2" />
-											<TextBlock 
-												x:Name="txtblPercent1"
-												Text="%"
-												TextWrapping="NoWrap"
-											 
-												HorizontalAlignment="Left" 
-												Grid.Row="4" Style="{DynamicResource TextBlockNormal}" VerticalAlignment="Center" Margin="125,0,0,0" Grid.Column="1"/>		  
+                                                                           HorizontalAlignment="Left"
+                                                                           Width="120"
+                                                                           d:LayoutOverrides="HorizontalAlignment"
+                                                                           Grid.Row="4"
+                                                                           HorizontalContentAlignment="Right"
+                                                                           IntegerLength="2"
+                                                                           IsUsingSeparator="True"
+                                                                           DecimalPlaces="2" />
+                                                <TextBlock x:Name="txtblPercent1"
+                                                           Text="%"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Grid.Row="4"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="125,0,0,0"
+                                                           Grid.Column="1" />
                                                 <TextBlock x:Name="txtblWebsite"
                                                            Grid.Row="4"
                                                            Grid.Column="1"
@@ -3144,7 +3185,6 @@
                                 </AdornerDecorator>
                             </TabItem>
                             <CPCOtherControl:CPCTabItemControl x:Name="tabitemTimeClock"
-                                                               
                                                                Header="TimeClock">
                                 <CPCOtherControl:CPCTabItemControl.VisibilityTabItem>
                                     <Binding Mode="OneWay"
@@ -3922,7 +3962,7 @@
                                                 </AdornerDecorator>
                                                 </TabItem>
                                             -->
-                                          
+
                                         </CPCOtherControl:CPCTabControl>
                                     </Grid>
                                 </AdornerDecorator>

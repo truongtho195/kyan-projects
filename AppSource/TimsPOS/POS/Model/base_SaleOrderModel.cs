@@ -14,6 +14,7 @@ using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace CPC.POS.Model
 {
@@ -553,22 +554,22 @@ namespace CPC.POS.Model
             }
         }
 
-        protected decimal _refundFee;
+        protected decimal _refundedAmount;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the RefundFee</para>
+        /// <para>Gets or sets the RefundedAmount</para>
         /// </summary>
-        public decimal RefundFee
+        public decimal RefundedAmount
         {
-            get { return this._refundFee; }
+            get { return this._refundedAmount; }
             set
             {
-                if (this._refundFee != value)
+                if (this._refundedAmount != value)
                 {
                     this.IsDirty = true;
-                    this._refundFee = value;
-                    OnPropertyChanged(() => RefundFee);
-                    PropertyChangedCompleted(() => RefundFee);
+                    this._refundedAmount = value;
+                    OnPropertyChanged(() => RefundedAmount);
+                    PropertyChangedCompleted(() => RefundedAmount);
                 }
             }
         }
@@ -1153,22 +1154,42 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<bool> _isHold;
+        protected bool _isLocked;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the IsHold</para>
+        /// <para>Gets or sets the IsLocked</para>
         /// </summary>
-        public Nullable<bool> IsHold
+        public bool IsLocked
         {
-            get { return this._isHold; }
+            get { return this._isLocked; }
             set
             {
-                if (this._isHold != value)
+                if (this._isLocked != value)
                 {
                     this.IsDirty = true;
-                    this._isHold = value;
-                    OnPropertyChanged(() => IsHold);
-                    PropertyChangedCompleted(() => IsHold);
+                    this._isLocked = value;
+                    OnPropertyChanged(() => IsLocked);
+                    PropertyChangedCompleted(() => IsLocked);
+                }
+            }
+        }
+
+        protected decimal _rewardAmount;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the RewardAmount</para>
+        /// </summary>
+        public decimal RewardAmount
+        {
+            get { return this._rewardAmount; }
+            set
+            {
+                if (this._rewardAmount != value)
+                {
+                    this.IsDirty = true;
+                    this._rewardAmount = value;
+                    OnPropertyChanged(() => RewardAmount);
+                    PropertyChangedCompleted(() => RewardAmount);
                 }
             }
         }
@@ -1219,7 +1240,7 @@ namespace CPC.POS.Model
             this.base_SaleOrder.Total = this.Total;
             this.base_SaleOrder.Paid = this.Paid;
             this.base_SaleOrder.Balance = this.Balance;
-            this.base_SaleOrder.RefundFee = this.RefundFee;
+            this.base_SaleOrder.RefundedAmount = this.RefundedAmount;
             this.base_SaleOrder.IsMultiPayment = this.IsMultiPayment;
             this.base_SaleOrder.Remark = this.Remark;
             this.base_SaleOrder.IsFullWorkflow = this.IsFullWorkflow;
@@ -1249,7 +1270,8 @@ namespace CPC.POS.Model
             this.base_SaleOrder.StoreCode = this.StoreCode;
             this.base_SaleOrder.IsRedeeem = this.IsRedeeem;
             this.base_SaleOrder.IsPurge = this.IsPurge;
-            this.base_SaleOrder.IsHold = this.IsHold;
+            this.base_SaleOrder.IsLocked = this.IsLocked;
+            this.base_SaleOrder.RewardAmount = this.RewardAmount;
         }
 
         /// <summary>
@@ -1283,7 +1305,7 @@ namespace CPC.POS.Model
             this._total = this.base_SaleOrder.Total;
             this._paid = this.base_SaleOrder.Paid;
             this._balance = this.base_SaleOrder.Balance;
-            this._refundFee = this.base_SaleOrder.RefundFee;
+            this._refundedAmount = this.base_SaleOrder.RefundedAmount;
             this._isMultiPayment = this.base_SaleOrder.IsMultiPayment;
             this._remark = this.base_SaleOrder.Remark;
             this._isFullWorkflow = this.base_SaleOrder.IsFullWorkflow;
@@ -1313,7 +1335,8 @@ namespace CPC.POS.Model
             this._storeCode = this.base_SaleOrder.StoreCode;
             this._isRedeeem = this.base_SaleOrder.IsRedeeem;
             this._isPurge = this.base_SaleOrder.IsPurge;
-            this._isHold = this.base_SaleOrder.IsHold;
+            this._isLocked = this.base_SaleOrder.IsLocked;
+            this._rewardAmount = this.base_SaleOrder.RewardAmount;
         }
 
         /// <summary>
@@ -1347,7 +1370,7 @@ namespace CPC.POS.Model
             this.Total = this.base_SaleOrder.Total;
             this.Paid = this.base_SaleOrder.Paid;
             this.Balance = this.base_SaleOrder.Balance;
-            this.RefundFee = this.base_SaleOrder.RefundFee;
+            this.RefundedAmount = this.base_SaleOrder.RefundedAmount;
             this.IsMultiPayment = this.base_SaleOrder.IsMultiPayment;
             this.Remark = this.base_SaleOrder.Remark;
             this.IsFullWorkflow = this.base_SaleOrder.IsFullWorkflow;
@@ -1377,7 +1400,8 @@ namespace CPC.POS.Model
             this.StoreCode = this.base_SaleOrder.StoreCode;
             this.IsRedeeem = this.base_SaleOrder.IsRedeeem;
             this.IsPurge = this.base_SaleOrder.IsPurge;
-            this.IsHold = this.base_SaleOrder.IsHold;
+            this.IsLocked = this.base_SaleOrder.IsLocked;
+            this.RewardAmount = this.base_SaleOrder.RewardAmount;
         }
 
         #endregion
@@ -1733,6 +1757,24 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region CommissionCollection
+        private CollectionBase<base_SaleCommissionModel> _commissionCollection;
+        /// <summary>
+        /// Gets or sets the CommissionCollection.
+        /// </summary>
+        public CollectionBase<base_SaleCommissionModel> CommissionCollection
+        {
+            get { return _commissionCollection; }
+            set
+            {
+                if (_commissionCollection != value)
+                {
+                    _commissionCollection = value;
+                    OnPropertyChanged(() => CommissionCollection);
+                }
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -1764,8 +1806,11 @@ namespace CPC.POS.Model
         /// </summary>
         public void CalcDiscountPercent()
         {
-            _discountAmount = SubTotal * DiscountPercent / 100;
-            OnPropertyChanged(() => DiscountAmount);
+            if (DiscountPercent > 0)
+            {
+                _discountAmount = SubTotal * DiscountPercent / 100;
+                OnPropertyChanged(() => DiscountAmount);
+            }
         }
 
         /// <summary>
@@ -1773,7 +1818,10 @@ namespace CPC.POS.Model
         /// </summary>
         public void CalcBalance()
         {
-            this.Balance = this.Total - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
+            //if (IsDeposit)
+                this.Balance = this.RewardAmount - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
+            //else
+            //    this.Balance = this.Total - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
         }
 
         /// <summary>
@@ -1816,6 +1864,13 @@ namespace CPC.POS.Model
         {
             OnPropertyChanged(() => AnyShipped);
         }
+
+        public void RaisePropertyChanged(string propertyChanged)
+        {
+            OnPropertyChanged(propertyChanged);
+        }
+
+
 
         /// <summary>
         /// Public Method
@@ -1886,10 +1941,10 @@ namespace CPC.POS.Model
             if (saleOrderModel.GuestModel != null)
             {
                 this.GuestModel = saleOrderModel.GuestModel;
-                if(saleOrderModel.GuestModel.GuestRewardCollection!=null)
+                if (saleOrderModel.GuestModel.GuestRewardCollection != null)
                     this.GuestModel.GuestRewardCollection = saleOrderModel.GuestModel.GuestRewardCollection;
             }
-            if (saleOrderModel.TaxCode!=null)
+            if (saleOrderModel.TaxCode != null)
             {
                 //Get TaxCode
                 this.TaxCodeModel = saleOrderModel.TaxCodeModel;
@@ -1900,11 +1955,11 @@ namespace CPC.POS.Model
                 //Get TaxLocation
                 this.TaxLocationModel = saleOrderModel.TaxLocationModel;
             }
-            if(saleOrderModel.BillAddressModel!=null)
-               this.BillAddressModel=saleOrderModel.BillAddressModel;
+            if (saleOrderModel.BillAddressModel != null)
+                this.BillAddressModel = saleOrderModel.BillAddressModel;
             if (saleOrderModel.ShipAddressModel != null)
                 this.ShipAddressModel = saleOrderModel.ShipAddressModel;
-            
+
 
             //Check Deposit is accepted?
             this.IsDeposit = saleOrderModel.IsDeposit;
@@ -2008,125 +2063,6 @@ namespace CPC.POS.Model
             }
         }
 
-        private decimal _paymentSubTotal;
-        /// <summary>
-        /// Gets or sets the PaymentSubTotal.
-        /// </summary>
-        public decimal PaymentSubTotal
-        {
-            get { return _paymentSubTotal; }
-            set
-            {
-                if (_paymentSubTotal != value)
-                {
-                    _paymentSubTotal = value;
-                    OnPropertyChanged(() => PaymentSubTotal);
-                }
-            }
-        }
-
-        private decimal _paymentDiscount;
-        /// <summary>
-        /// Gets or sets the PaymentDiscount.
-        /// </summary>
-        public decimal PaymentDiscount
-        {
-            get { return _paymentDiscount; }
-            set
-            {
-                if (_paymentDiscount != value)
-                {
-                    _paymentDiscount = value;
-                    OnPropertyChanged(() => PaymentDiscount);
-                }
-            }
-        }
-
-        private decimal _paymentDiscountPercent;
-        /// <summary>
-        /// Gets or sets the PaymentDiscountPercent.
-        /// </summary>
-        public decimal PaymentDiscountPercent
-        {
-            get { return _paymentDiscountPercent; }
-            set
-            {
-                if (_paymentDiscountPercent != value)
-                {
-                    _paymentDiscountPercent = value;
-                    OnPropertyChanged(() => PaymentDiscountPercent);
-                }
-            }
-        }
-
-        private decimal _paymentTax;
-        /// <summary>
-        /// Gets or sets the PaymentTax.
-        /// </summary>
-        public decimal PaymentTax
-        {
-            get { return _paymentTax; }
-            set
-            {
-                if (_paymentTax != value)
-                {
-                    _paymentTax = value;
-                    OnPropertyChanged(() => PaymentTax);
-                }
-            }
-        }
-
-        private decimal _paymentTaxPercent;
-        /// <summary>
-        /// Gets or sets the PaymentTaxPercent.
-        /// </summary>
-        public decimal PaymentTaxPercent
-        {
-            get { return _paymentTaxPercent; }
-            set
-            {
-                if (_paymentTaxPercent != value)
-                {
-                    _paymentTaxPercent = value;
-                    OnPropertyChanged(() => PaymentTaxPercent);
-                }
-            }
-        }
-
-        private decimal _paymentShipping;
-        /// <summary>
-        /// Gets or sets the PaymentShipping.
-        /// </summary>
-        public decimal PaymentShipping
-        {
-            get { return _paymentShipping; }
-            set
-            {
-                if (_paymentShipping != value)
-                {
-                    _paymentShipping = value;
-                    OnPropertyChanged(() => PaymentShipping);
-                }
-            }
-        }
-
-        private decimal _paymentTotal;
-        /// <summary>
-        /// Gets or sets the PaymentTotal.
-        /// </summary>
-        public decimal PaymentTotal
-        {
-            get { return _paymentTotal; }
-            set
-            {
-                if (_paymentTotal != value)
-                {
-                    _paymentTotal = value;
-                    OnPropertyChanged(() => PaymentTotal);
-                }
-            }
-        }
-
         private ObservableCollection<base_ResourcePaymentModel> _paymentCollection;
         /// <summary>
         /// Gets or sets the PaymentCollection.
@@ -2140,23 +2076,6 @@ namespace CPC.POS.Model
                 {
                     _paymentCollection = value;
                     OnPropertyChanged(() => PaymentCollection);
-                }
-            }
-        }
-
-        private ObservableCollection<base_ResourcePaymentProductModel> _paymentProductCollection;
-        /// <summary>
-        /// Gets or sets the PaymentProductCollection.
-        /// </summary>
-        public ObservableCollection<base_ResourcePaymentProductModel> PaymentProductCollection
-        {
-            get { return _paymentProductCollection; }
-            set
-            {
-                if (_paymentProductCollection != value)
-                {
-                    _paymentProductCollection = value;
-                    OnPropertyChanged(() => PaymentProductCollection);
                 }
             }
         }

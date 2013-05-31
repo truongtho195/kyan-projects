@@ -674,7 +674,7 @@ namespace CPC.POS.Model
                             {
                                 int totalItemShipped = SaleOrderModel.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(OrderDetailResource)).Sum(x => x.PickQty);
                                 int totalItemReturn = SaleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && !string.IsNullOrWhiteSpace(x.OrderDetailResource) && x.OrderDetailResource.Equals(OrderDetailResource)).Sum(x => x.ReturnQty);
-                                if (totalItemReturn > totalItemShipped)
+                                if (totalItemShipped>0 &&  totalItemReturn > totalItemShipped)
                                     message = "Return quantity <= received quantity.....";
                             }
                             break;

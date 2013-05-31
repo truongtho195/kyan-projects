@@ -92,26 +92,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected long _productId;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the ProductId</para>
-        /// </summary>
-        public long ProductId
-        {
-            get { return this._productId; }
-            set
-            {
-                if (this._productId != value)
-                {
-                    this.IsDirty = true;
-                    this._productId = value;
-                    OnPropertyChanged(() => ProductId);
-                    PropertyChangedCompleted(() => ProductId);
-                }
-            }
-        }
-
         protected int _uOMId;
         /// <summary>
         /// Property Model
@@ -435,7 +415,6 @@ namespace CPC.POS.Model
             if (IsNew)
                 this.base_ProductUOM.Id = this.Id;
             this.base_ProductUOM.ProductStoreId = this.ProductStoreId;
-            this.base_ProductUOM.ProductId = this.ProductId;
             this.base_ProductUOM.UOMId = this.UOMId;
             this.base_ProductUOM.BaseUnitNumber = this.BaseUnitNumber;
             this.base_ProductUOM.RegularPrice = this.RegularPrice;
@@ -461,7 +440,6 @@ namespace CPC.POS.Model
         {
             this._id = this.base_ProductUOM.Id;
             this._productStoreId = this.base_ProductUOM.ProductStoreId;
-            this._productId = this.base_ProductUOM.ProductId;
             this._uOMId = this.base_ProductUOM.UOMId;
             this._baseUnitNumber = this.base_ProductUOM.BaseUnitNumber;
             this._regularPrice = this.base_ProductUOM.RegularPrice;
@@ -487,7 +465,6 @@ namespace CPC.POS.Model
         {
             this.Id = this.base_ProductUOM.Id;
             this.ProductStoreId = this.base_ProductUOM.ProductStoreId;
-            this.ProductId = this.base_ProductUOM.ProductId;
             this.UOMId = this.base_ProductUOM.UOMId;
             this.BaseUnitNumber = this.base_ProductUOM.BaseUnitNumber;
             this.RegularPrice = this.base_ProductUOM.RegularPrice;

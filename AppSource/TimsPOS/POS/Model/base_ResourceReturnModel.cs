@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
+using System.Linq;
 
 namespace CPC.POS.Model
 {
@@ -46,11 +47,7 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_ResourceReturn base_ResourceReturn
-        {
-            get;
-            private set;
-        }
+        public base_ResourceReturn base_ResourceReturn { get; private set; }
 
         #endregion
 
@@ -63,10 +60,7 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get
-            {
-                return this._id;
-            }
+            get { return this._id; }
             set
             {
                 if (this._id != value)
@@ -86,10 +80,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string DocumentResource
         {
-            get
-            {
-                return this._documentResource;
-            }
+            get { return this._documentResource; }
             set
             {
                 if (this._documentResource != value)
@@ -109,10 +100,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string DocumentNo
         {
-            get
-            {
-                return this._documentNo;
-            }
+            get { return this._documentNo; }
             set
             {
                 if (this._documentNo != value)
@@ -132,10 +120,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TotalAmount
         {
-            get
-            {
-                return this._totalAmount;
-            }
+            get { return this._totalAmount; }
             set
             {
                 if (this._totalAmount != value)
@@ -155,10 +140,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TotalRefund
         {
-            get
-            {
-                return this._totalRefund;
-            }
+            get { return this._totalRefund; }
             set
             {
                 if (this._totalRefund != value)
@@ -178,10 +160,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Balance
         {
-            get
-            {
-                return this._balance;
-            }
+            get { return this._balance; }
             set
             {
                 if (this._balance != value)
@@ -201,10 +180,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.DateTime DateCreated
         {
-            get
-            {
-                return this._dateCreated;
-            }
+            get { return this._dateCreated; }
             set
             {
                 if (this._dateCreated != value)
@@ -224,10 +200,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get
-            {
-                return this._userCreated;
-            }
+            get { return this._userCreated; }
             set
             {
                 if (this._userCreated != value)
@@ -247,10 +220,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.Guid Resource
         {
-            get
-            {
-                return this._resource;
-            }
+            get { return this._resource; }
             set
             {
                 if (this._resource != value)
@@ -270,10 +240,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Mark
         {
-            get
-            {
-                return this._mark;
-            }
+            get { return this._mark; }
             set
             {
                 if (this._mark != value)
@@ -293,10 +260,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountPercent
         {
-            get
-            {
-                return this._discountPercent;
-            }
+            get { return this._discountPercent; }
             set
             {
                 if (this._discountPercent != value)
@@ -316,10 +280,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountAmount
         {
-            get
-            {
-                return this._discountAmount;
-            }
+            get { return this._discountAmount; }
             set
             {
                 if (this._discountAmount != value)
@@ -339,10 +300,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Freight
         {
-            get
-            {
-                return this._freight;
-            }
+            get { return this._freight; }
             set
             {
                 if (this._freight != value)
@@ -362,10 +320,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal SubTotal
         {
-            get
-            {
-                return this._subTotal;
-            }
+            get { return this._subTotal; }
             set
             {
                 if (this._subTotal != value)
@@ -385,10 +340,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal ReturnFee
         {
-            get
-            {
-                return this._returnFee;
-            }
+            get { return this._returnFee; }
             set
             {
                 if (this._returnFee != value)
@@ -397,6 +349,26 @@ namespace CPC.POS.Model
                     this._returnFee = value;
                     OnPropertyChanged(() => ReturnFee);
                     PropertyChangedCompleted(() => ReturnFee);
+                }
+            }
+        }
+
+        protected decimal _returnFeePercent;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ReturnFeePercent</para>
+        /// </summary>
+        public decimal ReturnFeePercent
+        {
+            get { return this._returnFeePercent; }
+            set
+            {
+                if (this._returnFeePercent != value)
+                {
+                    this.IsDirty = true;
+                    this._returnFeePercent = value;
+                    OnPropertyChanged(() => ReturnFeePercent);
+                    PropertyChangedCompleted(() => ReturnFeePercent);
                 }
             }
         }
@@ -437,6 +409,7 @@ namespace CPC.POS.Model
             this.base_ResourceReturn.Freight = this.Freight;
             this.base_ResourceReturn.SubTotal = this.SubTotal;
             this.base_ResourceReturn.ReturnFee = this.ReturnFee;
+            this.base_ResourceReturn.ReturnFeePercent = this.ReturnFeePercent;
         }
 
         /// <summary>
@@ -460,6 +433,7 @@ namespace CPC.POS.Model
             this._freight = this.base_ResourceReturn.Freight;
             this._subTotal = this.base_ResourceReturn.SubTotal;
             this._returnFee = this.base_ResourceReturn.ReturnFee;
+            this._returnFeePercent = this.base_ResourceReturn.ReturnFeePercent;
         }
 
         /// <summary>
@@ -483,6 +457,7 @@ namespace CPC.POS.Model
             this.Freight = this.base_ResourceReturn.Freight;
             this.SubTotal = this.base_ResourceReturn.SubTotal;
             this.ReturnFee = this.base_ResourceReturn.ReturnFee;
+            this.ReturnFeePercent = this.base_ResourceReturn.ReturnFeePercent;
         }
 
         #endregion
@@ -492,7 +467,7 @@ namespace CPC.POS.Model
         #region Navigation Properties
 
         #region ReturnDetailCollection
-        private CollectionBase<base_ResourceReturnDetailModel> _returnDetailCollection = new CollectionBase<base_ResourceReturnDetailModel>();
+        private CollectionBase<base_ResourceReturnDetailModel> _returnDetailCollection;
         /// <summary>
         /// Gets or sets the ReturnDetailCollection.
         /// </summary>
@@ -517,9 +492,60 @@ namespace CPC.POS.Model
 
         #region Properties
 
+        #region RefundAccepted
+        //private bool _refundAccepted;
+        /// <summary>
+        /// Gets the RefundAccepted.
+        /// </summary>
+        public bool RefundAccepted
+        {
+            get
+            {
+                if (this.ReturnDetailCollection != null && this.ReturnDetailCollection.Any(x => x.IsReturned))
+                    return true;
+                return false;
+            }
+            //set
+            //{
+            //    if (_refundAccepted != value)
+            //    {
+            //        _refundAccepted = value;
+            //        OnPropertyChanged(() => RefundAccepted);
+            //    }
+            //}
+        }
+        #endregion
+
         #endregion
 
         #region Methods
+        private void CalcReturnFee()
+        {
+            if (_returnFeePercent > 0)
+            {
+                _returnFee = _subTotal * _returnFeePercent / 100;
+                OnPropertyChanged(() => ReturnFee);
+            }
+        }
+
+        private void CalcBalance()
+        {
+            if (this.Mark.Equals(MarkType.PurchaseOrder.ToDescription()))
+            {
+                _balance = _subTotal - _returnFee - _totalRefund;
+            }
+            else
+            {
+                _balance = _subTotal + _returnFee - _totalRefund;
+            }
+            OnPropertyChanged(() => Balance);
+        }
+
+
+        public void RaiseRefundAccepted()
+        {
+            OnPropertyChanged(() => RefundAccepted);
+        }
 
         #endregion
 
@@ -531,18 +557,25 @@ namespace CPC.POS.Model
         {
             switch (propertyName)
             {
-                case "SubTotal":
                 case "ReturnFee":
-                case "TotalRefund":
-
-                    _balance = _subTotal - _returnFee - _totalRefund;
-                    OnPropertyChanged(() => Balance);
-
+                    CalcBalance();
+                    _returnFeePercent = 0;
+                    OnPropertyChanged(() => ReturnFeePercent);
                     break;
-
-
+                case "ReturnFeePercent":
+                    CalcReturnFee();
+                    CalcBalance();
+                    break;
+                case "SubTotal":
+                    CalcReturnFee();
+                    CalcBalance();
+                    break;
+                case "TotalRefund":
+                    CalcBalance();
+                    break;
             }
         }
+
 
         #endregion
 

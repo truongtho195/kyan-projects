@@ -347,7 +347,7 @@ namespace CPC.POS
 
     #region Mark Type
     /// <summary>
-    /// Mark Type Using for GuestModel/Purchase/SO
+    /// Mark Type Using for GuestModel/Purchase/SO/SaleOrderReturn
     /// </summary>
     public enum MarkType
     {
@@ -362,7 +362,9 @@ namespace CPC.POS
         [Description("SO")]
         SaleOrder,
         [Description("PO")]
-        PurchaseOrder
+        PurchaseOrder,
+        [Description("SR")]
+        SaleOrderReturn
     }
     #endregion
 

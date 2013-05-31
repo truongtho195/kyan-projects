@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using CPC.POS.Database;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
@@ -12,8 +15,14 @@ namespace CPC.POS.ViewModel
     {
         #region Defines
 
-        private BackgroundWorker _bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+        private BackgroundWorker _bgWorkerSplashScreen = new BackgroundWorker();
+        private DispatcherTimer _timerSplashScreen = new DispatcherTimer();
         private SplashScreenView _splashScreenView;
+
+        private string _messageCheckingConnection = "Checking connection";
+        private string _messageConnectionFailed = "Connection failed!";
+        private int _numberOfContinueChar = 3;
+        private char _continueChar = '.';
 
         #endregion
 
@@ -59,25 +68,55 @@ namespace CPC.POS.ViewModel
 
         public SplashScreenViewModel(SplashScreenView splashScreenView)
         {
-            _bgWorker.DoWork += (sender, e) =>
+            // Set default status message
+            StatusMessage = _messageCheckingConnection;
+
+            _timerSplashScreen.Tick += (sender, e) =>
+            {
+                // Display splash screen specified period time
+                if (StatusMessage.Count(x => x.Equals(_continueChar)).Equals(_numberOfContinueChar))
+                {
+                    if (!_bgWorkerSplashScreen.IsBusy)
+                        _bgWorkerSplashScreen.RunWorkerAsync();
+
+                    // Reset status message
+                    StatusMessage = _messageCheckingConnection;
+                }
+                else
+                {
+                    // Animate status message
+                    StatusMessage += _continueChar;
+                }
+            };
+
+            // Set interval for timer
+            _timerSplashScreen.Interval = TimeSpan.FromSeconds(1);
+
+            // Star timer
+            _timerSplashScreen.Start();
+
+            _bgWorkerSplashScreen.DoWork += (sender, e) =>
             {
                 _splashScreenView = splashScreenView;
 
-                StatusMessage = "Checking connection...";
-
+                // Check connection to database
                 CanConnectDB = CheckConnectionDB();
-                _bgWorker.ReportProgress(100);
             };
-            _bgWorker.ProgressChanged += (sender, e) =>
+            _bgWorkerSplashScreen.RunWorkerCompleted += (sender, e) =>
             {
+                // Show alert message if connection failed
                 if (!CanConnectDB)
                 {
-                    StatusMessage = "Connection failed!";
+                    StatusMessage = _messageConnectionFailed;
                     MessageBoxResult msgResult = MessageBox.Show(_splashScreenView, StatusMessage, "POS", MessageBoxButton.OK);
                 }
+
+                // Stop timer
+                _timerSplashScreen.Stop();
+
+                // Close splash screen view
                 _splashScreenView.DialogResult = CanConnectDB;
             };
-            _bgWorker.RunWorkerAsync();
         }
 
         #endregion

@@ -552,67 +552,66 @@ namespace CPC.POS.Model
         }
         #endregion
 
-        #region CurrentTotalPaid
-        private decimal _currentTotalPaid;
-        /// <summary>
-        /// Gets or sets the CurrentTotalPaid.
-        /// </summary>
-        public decimal CurrentTotalPaid
-        {
-            get { return _currentTotalPaid; }
-            set
-            {
-                if (_currentTotalPaid != value)
-                {
-                    this.IsDirty = true;
-                    _currentTotalPaid = value;
-                    OnPropertyChanged(() => CurrentTotalPaid);
-                    PropertyChangedCompleted(() => CurrentTotalPaid);
-                }
-            }
-        }
-        #endregion
+        //#region CurrentTotalPaid
+        //private decimal _currentTotalPaid;
+        ///// <summary>
+        ///// Gets or sets the CurrentTotalPaid.
+        ///// </summary>
+        //public decimal CurrentTotalPaid
+        //{
+        //    get { return _currentTotalPaid; }
+        //    set
+        //    {
+        //        if (_currentTotalPaid != value)
+        //        {
+        //            this.IsDirty = true;
+        //            _currentTotalPaid = value;
+        //            OnPropertyChanged(() => CurrentTotalPaid);
+        //            PropertyChangedCompleted(() => CurrentTotalPaid);
+        //        }
+        //    }
+        //}
+        //#endregion
 
-        #region CurrentTotalAmount
-        private decimal _currentTotalAmount;
-        /// <summary>
-        /// Gets or sets the CurrentTotalAmount.
-        /// </summary>
-        public decimal CurrentTotalAmount
-        {
-            get { return _currentTotalAmount; }
-            set
-            {
-                if (_currentTotalAmount != value)
-                {
-                    this.IsDirty = true;
-                    _currentTotalAmount = value;
-                    OnPropertyChanged(() => CurrentTotalAmount);
-                    PropertyChangedCompleted(() => CurrentTotalAmount);
-                }
-            }
-        }
-        #endregion
+        //#region CurrentTotalAmount
+        //private decimal _currentTotalAmount;
+        ///// <summary>
+        ///// Gets or sets the CurrentTotalAmount.
+        ///// </summary>
+        //public decimal CurrentTotalAmount
+        //{
+        //    get { return _currentTotalAmount; }
+        //    set
+        //    {
+        //        if (_currentTotalAmount != value)
+        //        {
+        //            this.IsDirty = true;
+        //            _currentTotalAmount = value;
+        //            OnPropertyChanged(() => CurrentTotalAmount);
+        //            PropertyChangedCompleted(() => CurrentTotalAmount);
+        //        }
+        //    }
+        //}
+        //#endregion
 
-
-        #region CurrentChange
-        private decimal _currentChange;
-        /// <summary>
-        /// Gets or sets the CurrentChange.
-        /// </summary>
-        public decimal CurrentChange
-        {
-            get { return _currentChange; }
-            set
-            {
-                if (_currentChange != value)
-                {
-                    _currentChange = value;
-                    OnPropertyChanged(() => CurrentChange);
-                }
-            }
-        }
-        #endregion
+        //#region CurrentChange
+        //private decimal _currentChange;
+        ///// <summary>
+        ///// Gets or sets the CurrentChange.
+        ///// </summary>
+        //public decimal CurrentChange
+        //{
+        //    get { return _currentChange; }
+        //    set
+        //    {
+        //        if (_currentChange != value)
+        //        {
+        //            _currentChange = value;
+        //            OnPropertyChanged(() => CurrentChange);
+        //        }
+        //    }
+        //}
+        //#endregion
 
         private ObservableCollection<base_ResourcePaymentProductModel> _paymentProductCollection;
         /// <summary>
@@ -636,20 +635,18 @@ namespace CPC.POS.Model
         #region Methods
         public void CalcChange()
         {
-            if (CurrentTotalAmount < CurrentTotalPaid)
-                CurrentChange = CurrentTotalPaid- CurrentTotalAmount;
+            if (TotalAmount < TotalPaid)
+                Change = TotalPaid - TotalAmount;
             else
-                CurrentChange = 0;
+                Change = 0;
 
         }
-        public void CalcBalance()
+        public void CalcBalance(bool isDeposit)
         {
-            Balance = CurrentTotalAmount - CurrentTotalPaid + CurrentChange;
-        }
-
-        public void CalcTotalPaid()
-        {
-            TotalPaid += CurrentTotalPaid - CurrentChange;
+            if (isDeposit)
+                Balance = TotalAmount - TotalPaid;
+            else
+                Balance = TotalAmount - TotalPaid + Change;
         }
 
         public void NewResourcePaymentEntity()

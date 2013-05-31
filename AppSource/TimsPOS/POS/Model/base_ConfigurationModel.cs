@@ -1234,12 +1234,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected bool _returnFeePercent;
+        protected decimal _returnFeePercent;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the ReturnFeePercent</para>
         /// </summary>
-        public bool ReturnFeePercent
+        public decimal ReturnFeePercent
         {
             get { return this._returnFeePercent; }
             set

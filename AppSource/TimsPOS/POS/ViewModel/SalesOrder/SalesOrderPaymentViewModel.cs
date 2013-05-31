@@ -45,10 +45,12 @@ namespace CPC.POS.ViewModel
         }
 
 
-        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel, decimal balance)
+        public SalesOrderPaymenViewModel(base_SaleOrderModel saleOrderModel, decimal balance,decimal depositTaken)
             : this()
         {
             IsQuotation = true;
+            DepositTaken = depositTaken;
+            Total = saleOrderModel.Total;
             InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance, 0);
         }
         #endregion
@@ -111,6 +113,46 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+
+        #region DepositTaken
+        private decimal _depositTaken;
+        /// <summary>
+        /// Gets or sets the DepositTaken.
+        /// </summary>
+        public decimal DepositTaken
+        {
+            get { return _depositTaken; }
+            set
+            {
+                if (_depositTaken != value)
+                {
+                    _depositTaken = value;
+                    OnPropertyChanged(() => DepositTaken);
+                }
+            }
+        }
+        #endregion
+
+        #region Total
+        private decimal _total;
+        /// <summary>
+        /// Gets or sets the Total.
+        /// </summary>
+        public decimal  Total
+        {
+            get { return _total; }
+            set
+            {
+                if (_total != value)
+                {
+                    _total = value;
+                    OnPropertyChanged(() => Total);
+                }
+            }
+        }
+        #endregion
+
+
 
         #region PaymentModel
         private base_ResourcePaymentModel _paymentModel;
@@ -186,8 +228,8 @@ namespace CPC.POS.ViewModel
             if (PaymentModel == null)
                 return false;
             return PaymentModel.IsDirty
-                && (!IsQuotation && PaymentModel.CurrentTotalAmount > 0 && PaymentModel.CurrentTotalPaid > 0 && ((IsPaidFull && PaymentModel.Balance == 0) || !IsPaidFull))
-                   || (IsQuotation && PaymentModel.CurrentTotalPaid > 0);
+                && (!IsQuotation && PaymentModel.TotalAmount > 0 && PaymentModel.TotalPaid > 0 && ((IsPaidFull && PaymentModel.Balance == 0) || !IsPaidFull))
+                   || (IsQuotation && PaymentModel.TotalPaid > 0);
         }
 
         /// <summary>
@@ -195,8 +237,6 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnAcceptedPaymentCommandExecute()
         {
-
-            PaymentModel.CalcTotalPaid();
             List<base_ResourcePaymentDetailModel> paymentMethodsList = new List<base_ResourcePaymentDetailModel>();
 
             //AddPayment Methods
@@ -326,8 +366,7 @@ namespace CPC.POS.ViewModel
             PaymentModel.LastRewardAmount = rewardValue;
             PaymentModel.Mark = remark;
             PaymentModel.TotalAmount = balance;
-            PaymentModel.CurrentTotalAmount = balance;
-            PaymentModel.CalcBalance();
+            PaymentModel.CalcBalance(IsQuotation);
             PaymentModel.PaymentDetailCollection = new CollectionBase<base_ResourcePaymentDetailModel>();
 
             if (Define.CONFIGURATION.AcceptedPaymentMethod.HasValue)
@@ -420,9 +459,9 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "Paid":
-                    PaymentModel.CurrentTotalPaid = PaymentModel.PaymentDetailCollection.Sum(x => x.Paid);
+                    PaymentModel.TotalPaid = PaymentModel.PaymentDetailCollection.Sum(x => x.Paid);
                     PaymentModel.CalcChange();
-                    PaymentModel.CalcBalance();
+                    PaymentModel.CalcBalance(IsQuotation);
                     break;
             }
         }

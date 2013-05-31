@@ -20,14 +20,18 @@
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
-        <Setter Property="ColunmHeaderBackground"
-                Value="{DynamicResource DatagridColumnHeaderBackground}" />
+        <Setter Property="ColunmHeaderHeight"
+                Value="28" />
         <Setter Property="MoveOverItemBrush"
                 Value="{DynamicResource ComboboxRemark_IsMouseOver_Background}" />
-        <!--<Setter Property="FocusManager.FocusedElement"
-                Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridCell}}}" />-->
         <Setter Property="Validation.ErrorTemplate"
                 Value="{x:Null}" />
+        <Setter Property="ColunmHeaderBorderBrush"
+                Value="{DynamicResource DatagridColumnHeaderBorder}" />
+        <Setter Property="SelectedItemBackground"
+                Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+        <Setter Property="ColunmHeaderBackground"
+                Value="{DynamicResource DatagridColumnHeaderBackground}" />
         <Style.Triggers>
             <Trigger Property="Validation.HasError"
                      Value="True">
@@ -46,16 +50,59 @@
                 <Setter Property="BorderBrush"
                         Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
             </Trigger>
+            <Trigger Property="IsInsideControl"
+                     Value="True">
+                <Setter Property="FocusManager.FocusedElement"
+                        Value="{Binding RelativeSource={RelativeSource Self}}"></Setter>
+                <Setter Property="Height"
+                        Value="25"></Setter>
+                <Setter Property="Background"
+                        Value="Transparent" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type cpcAutoCompleteControl:AutoCompleteBase}}"
            TargetType="{x:Type cpcAutoCompleteControl:AutoCompleteDropDownList}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="RegularPolygonBackground"
+                Value="{DynamicResource ComboboxToggleButtonArrowBackground}" />
+        <Setter Property="ButtonBackground"
+                Value="{DynamicResource ComboboxToggleButtonBackground}" />
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type cpcAutoCompleteControl:AutoCompleteBase}}"
            TargetType="{x:Type cpcAutoCompleteControl:AutoCompleteTextBox}">
         <Setter Property="BorderBrush"
                 Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+    </Style>
+    
+    <Style BasedOn="{StaticResource {x:Type  cpcAutoCompleteControl:AutoCompleteTextBox}}"
+           x:Key="AutoCompleteInsideDataGridStyle"
+           TargetType="{x:Type cpcAutoCompleteControl:AutoCompleteTextBox}">
+        <Setter Property="IsInsideControl"
+                Value="True" />
+        <Setter Property="FocusManager.FocusedElement"
+                Value="{Binding RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="Background"
+                Value="Transparent" />
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type  cpcAutoCompleteControl:AutoCompleteDropDownList}}"
+           x:Key="DropDownListInsideDataGridStyle"
+           TargetType="{x:Type cpcAutoCompleteControl:AutoCompleteDropDownList}">
+        <Setter Property="IsInsideControl"
+                Value="True" />
+        <Setter Property="FocusManager.FocusedElement"
+                Value="{Binding RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="Background"
+                Value="Transparent" />
     </Style>
 </ResourceDictionary>

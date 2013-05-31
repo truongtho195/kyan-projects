@@ -3,13 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d"
 	xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-             xmlns:local="clr-namespace:CPC.POS"
+             
 	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
-             x:Class="CPC.POS.View.RedeemRewardView"
 			 xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
-	x:Name="UserControl" Width="350" Height="340">
+	xmlns:CPC_Converter="clr-namespace:CPC.Converter" xmlns:System="clr-namespace:System;assembly=mscorlib"
+	xmlns:local="clr-namespace:CPC.POS"
+	mc:Ignorable="d"
+             x:Class="CPC.POS.View.RedeemRewardView"
+	x:Name="UserControl" Width="420" Height="370">
 	<UserControl.Resources>
 
 
@@ -17,6 +19,123 @@
 
 
 		<!--ListviewStart-->
+		
+		
+		
+		
+		
+		
+		
+	<!--  #Region Style  -->
+		<Style x:Key="ButtonRowDetailDataTemplateOrder"
+			TargetType="{x:Type Button}">
+			<Setter Property="Foreground"
+				Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid x:Name="grid"
+							Width="Auto"
+							Height="Auto"
+							Background="#02FFFFFF">
+							<ContentPresenter HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								RecognizesAccessKey="True"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused"
+								Value="true" />
+							<Trigger Property="IsMouseOver"
+								Value="True" />
+							<Trigger Property="IsPressed"
+								Value="True" />
+							<Trigger Property="IsEnabled"
+								Value="false">
+								<Setter Property="Foreground"
+									Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+								<Setter TargetName="grid"
+									Property="Opacity"
+									Value="0.4" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+        <!--  #Region DataTemplate  -->
+		<DataTemplate x:Key="RowDetailRedeemRewardDataTemplate">
+						<Grid x:Name="grdTemplateCustomer"
+				Height="Auto"
+				MinHeight="21"
+				Margin="0"
+				Background="#FFFFF2F2">
+				<TextBlock x:Name="txtRequire" Foreground="Red" Text="{Binding RequireReward,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+				</Grid>
+		</DataTemplate>
+		<Style TargetType="{x:Type DataGridRow}"
+		 BasedOn="{StaticResource {x:Type DataGridRow}}"
+			x:Key="DataGridControlRowDetailStyle">
+     
+			
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type DataGridRow}">
+						<Border x:Name="DGR_Border"
+							SnapsToDevicePixels="True"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}">
+							<SelectiveScrollingGrid>
+								<SelectiveScrollingGrid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+								</SelectiveScrollingGrid.ColumnDefinitions>
+								<SelectiveScrollingGrid.RowDefinitions>
+									<RowDefinition Height="*" />
+									<RowDefinition Height="Auto" />
+								</SelectiveScrollingGrid.RowDefinitions>
+								<DataGridCellsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									ItemsPanel="{TemplateBinding ItemsPanel}"
+									Grid.Column="1" />
+								<DataGridDetailsPresenter Grid.Column="1"
+									Grid.Row="1"
+									SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+									 >
+									<DataGridDetailsPresenter.Visibility>
+                                        <Binding Mode="OneWay"
+                                                 Path="IsAccepted">
+                                            <Binding.Converter>
+                                                <CPC_Converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </DataGridDetailsPresenter.Visibility>
+                                </DataGridDetailsPresenter>
+									
+								<DataGridRowHeader Grid.RowSpan="2"
+									SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+									Style="{DynamicResource DataGridRowHeaderStyle}" />
+							</SelectiveScrollingGrid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver"
+								Value="True"
+								SourceName="DGR_Border">
+								<Setter Property="Background"
+									TargetName="DGR_Border"
+									Value="{DynamicResource DatagridRow_IsMouseOver_Background}" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			
+		</Style>
 		
 		
 		
@@ -38,7 +157,10 @@
                                               AutoGenerateColumns="False"
                                               CanUserAddRows="False"
                                               CanUserDeleteRows="False"
-                                              SelectedItem="{Binding SelectedReward,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                              RowStyle="{StaticResource DataGridControlRowDetailStyle}"
+											   RowDetailsTemplate="{DynamicResource RowDetailRedeemRewardDataTemplate}"
+                                                                     RowDetailsVisibilityMode="Visible"
+                                              SelectedItem="{Binding SelectedReward, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Style="{DynamicResource DatagridWithoutRowHeader}"
                                               VisibilityNavigationBar="Collapsed"
                                               ItemsSource="{Binding GuestRewardCollection}">
@@ -46,7 +168,7 @@
                         <DataGridTemplateColumn Header="#" MinWidth="20">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <RadioButton x:Name="rdChoice" Width="16" IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" GroupName="Reward"/>
+                                    <RadioButton x:Name="rdChoice" Width="16" IsEnabled="{Binding IsAccepted, Mode=OneWay}" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" GroupName="Reward"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -58,7 +180,7 @@
                         <DataGridTextColumn Header="New Total"
                                             Width="120"
                                             IsReadOnly="True"
-                                            Binding="{Binding TotalAfterReward,StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                            Binding="{Binding TotalAfterReward, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                     </cpcDataGrid:DataGridControl.Columns>
 				</cpcDataGrid:DataGridControl>
 			</Grid>

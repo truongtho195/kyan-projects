@@ -8,6 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
              xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Name="UserControl"
              Width="476"
@@ -15,10 +16,16 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
         <Style x:Key="DataGridCellColorStyle"
                BasedOn="{StaticResource {x:Type DataGridCell}}"
                TargetType="{x:Type DataGridCell}">
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.IsView,RelativeSource={RelativeSource AncestorType=UserControl,
+                                                                                                       Mode=FindAncestor},Mode=OneWay,Converter={StaticResource reserseBoolConverter}}"></Setter>
 
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
 
             <Setter Property="Background"
                     Value="#FFFEFF00" />
@@ -27,6 +34,8 @@
 
 
         </Style>
+
+        
         <!--  ListviewStart  -->
 
     </UserControl.Resources>
@@ -76,14 +85,6 @@
                                             MinWidth="50"
                                             Header="Size"
                                             IsReadOnly="True" />
-                        <!--
-                            <DataGridTextColumn Width="50"
-                            Binding="{Binding PickQty}"
-                            Header="PickQty" />
-                            <DataGridTextColumn Width="50"
-                            Binding="{Binding DueQty}"
-                            Header="DueQty" />
-                        -->
                         <DataGridTemplateColumn Width="70"
                                                 CellStyle="{StaticResource DataGridCellColorStyle}"
                                                 Header="Quantity">
@@ -98,32 +99,14 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <Grid>
-                                        <TextBlock x:Name="tbPickQty"
-                                                   HorizontalAlignment="Right"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding QtyOfPick}"
-                                                   Visibility="Collapsed"
-                                                   FontWeight="Bold" />
                                         <cpcTextBox:TextBoxNumeric x:Name="txtPickQty"
                                                                    DecimalPlaces="0"
+                                                                   Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                    Value="{Binding QtyOfPick,
                                                                                Mode=TwoWay,
                                                                                UpdateSourceTrigger=PropertyChanged}"
                                                                    FontWeight="Bold" />
-                                    </Grid>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding DataContext.IsView,RelativeSource={RelativeSource AncestorType=UserControl,
-                                                                                                       Mode=FindAncestor},Mode=OneWay}"
-                                                     Value="True">
-                                            <Setter Property="Visibility"
-                                                    TargetName="txtPickQty"
-                                                    Value="Collapsed" />
-                                            <Setter Property="Visibility"
-                                                    TargetName="tbPickQty"
-                                                    Value="Visible" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
+                                  
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>

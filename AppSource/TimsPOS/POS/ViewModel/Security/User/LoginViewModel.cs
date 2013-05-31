@@ -528,16 +528,6 @@ namespace CPC.POS.ViewModel
                 //To verify account of user.
                 if (resourceAccount != null)
                 {
-                    var allUserLog = _userLogRepository.GetAll(x => x.ResourceAccessed.Equals(resourceAccount.UserResource));
-                    if (allUserLog != null)
-                    {
-                        foreach (var item in allUserLog)
-                        {
-                            _userLogRepository.Delete(item);
-                            _userLogRepository.Commit();
-                        }
-                    }
-
                     if (resourceAccount.IsLocked.HasValue && resourceAccount.IsLocked.Value)
                     {
                         this._message = "This account is locked . Please contact to admin to unlock this account.";

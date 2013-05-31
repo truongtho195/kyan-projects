@@ -41,7 +41,6 @@
 											
                                              CanUserDeleteRows="False"
                                              IsSynchronizedWithCurrentItem="False"
-                                             
                                              ItemsSource="{Binding SelectedPaymentModel.PaymentCardCollection}"
                                              RowHeight="30"
                                              Style="{DynamicResource DatagridWithRowHeader}"
@@ -97,6 +96,7 @@
                                 <DataTemplate>
                                     <cpcTextBox:TextBoxMoney x:Name="txtPaid"
                                                              HorizontalAlignment="Right"
+                                                             Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                              MinWidth="50"
                                                              Value="{Binding Paid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
@@ -118,8 +118,8 @@
                                     <cpcTextBox:TextBoxNumeric x:Name="txtTip"
                                                              HorizontalAlignment="Right"
                                                              MinWidth="50"
-                                                        
-                                                             Text="{Binding Tip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                               Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                               Text="{Binding Tip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <!--PercentFormat-->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
@@ -133,7 +133,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <TextBox Text="{Binding Reference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <cpcTextBox:TextBox  Style="{DynamicResource TextBoxInsideDataGridStyle}" Text="{Binding Reference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>

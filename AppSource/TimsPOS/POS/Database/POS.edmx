@@ -158,10 +158,6 @@
       <End Role="base_Product" EntitySet="base_Product" />
       <End Role="base_PricingChange" EntitySet="base_PricingChange" />
     </AssociationSet>
-    <AssociationSet Name="FK_base_ProductUOM_ProductId_base_Product_Id" Association="POSModel.Store.FK_base_ProductUOM_ProductId_base_Product_Id">
-      <End Role="base_Product" EntitySet="base_Product" />
-      <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
-    </AssociationSet>
     <AssociationSet Name="FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" Association="POSModel.Store.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id">
       <End Role="base_ProductStore" EntitySet="base_ProductStore" />
       <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
@@ -486,7 +482,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="IsRewardOnTax" Type="bool" Nullable="false" />
     <Property Name="IsRewardOnMultiPayment" Type="bool" Nullable="false" />
     <Property Name="IsIncludeReturnFee" Type="bool" Nullable="false" />
-    <Property Name="ReturnFeePercent" Type="bool" Nullable="false" />
+    <Property Name="ReturnFeePercent" Type="numeric" Nullable="false" Precision="5" Scale="2" />
   </EntityType>
   <EntityType Name="base_CostAdjustment">
     <Key>
@@ -515,6 +511,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="AdjustmentOldCost" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LoggedTime" Type="timestamp" Nullable="false" />
     <Property Name="ParentResource" Type="varchar" Nullable="false" MaxLength="36" />
+    <Property Name="IsQuantityChanged" Type="bool" />
   </EntityType>
   <EntityType Name="base_CountStock">
     <Key>
@@ -972,7 +969,6 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     </Key>
     <Property Name="Id" Type="int8" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="ProductStoreId" Type="int8" />
-    <Property Name="ProductId" Type="int8" Nullable="false" />
     <Property Name="UOMId" Type="int4" Nullable="false" />
     <Property Name="BaseUnitNumber" Type="int4" Nullable="false" />
     <Property Name="RegularPrice" Type="numeric" Nullable="false" Precision="12" Scale="2" />
@@ -1054,7 +1050,6 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     </Key>
     <Property Name="Id" Type="int8" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="PurchaseOrderNo" Type="varchar" Nullable="false" MaxLength="15" />
-    <Property Name="VendorId" Type="int8" Nullable="false" />
     <Property Name="VendorCode" Type="varchar" Nullable="false" MaxLength="20" />
     <Property Name="Status" Type="int2" Nullable="false" />
     <Property Name="ShipAddress" Type="varchar" MaxLength="200" />
@@ -1073,8 +1068,8 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="Freight" Type="numeric" Nullable="false" Precision="10" Scale="2" />
     <Property Name="Fee" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="Total" Type="numeric" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Paid" Type="numeric" Precision="12" Scale="2" />
-    <Property Name="Balance" Type="numeric" Precision="12" Scale="2" />
+    <Property Name="Paid" Type="numeric" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Balance" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="ItemCount" Type="int4" Nullable="false" />
     <Property Name="QtyOrdered" Type="int4" Nullable="false" />
     <Property Name="QtyDue" Type="int4" Nullable="false" />
@@ -1092,6 +1087,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="PaymentName" Type="varchar" MaxLength="30" />
     <Property Name="IsPurge" Type="bool" Nullable="false" />
     <Property Name="IsLocked" Type="bool" Nullable="false" />
+    <Property Name="VendorResource" Type="varchar" Nullable="false" MaxLength="36" />
   </EntityType>
   <EntityType Name="base_PurchaseOrderDetail">
     <Key>
@@ -1278,6 +1274,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="Freight" Type="numeric" Nullable="false" Precision="10" Scale="2" />
     <Property Name="SubTotal" Type="numeric" Nullable="false" Precision="12" Scale="2" />
     <Property Name="ReturnFee" Type="numeric" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnFeePercent" Type="numeric" Nullable="false" Precision="5" Scale="2" />
   </EntityType>
   <EntityType Name="base_ResourceReturnDetail">
     <Key>
@@ -1369,7 +1366,7 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="Total" Type="numeric" Nullable="false" Precision="14" Scale="2" />
     <Property Name="Paid" Type="numeric" Nullable="false" Precision="14" Scale="2" />
     <Property Name="Balance" Type="numeric" Nullable="false" Precision="14" Scale="2" />
-    <Property Name="RefundFee" Type="numeric" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="RefundedAmount" Type="numeric" Nullable="false" Precision="14" Scale="2" />
     <Property Name="IsMultiPayment" Type="bool" Nullable="false" />
     <Property Name="Remark" Type="varchar" MaxLength="200" />
     <Property Name="IsFullWorkflow" Type="bool" Nullable="false" />
@@ -1399,7 +1396,8 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
     <Property Name="StoreCode" Type="int4" Nullable="false" />
     <Property Name="IsRedeeem" Type="bool" Nullable="false" />
     <Property Name="IsPurge" Type="bool" Nullable="false" />
-    <Property Name="IsHold" Type="bool" />
+    <Property Name="IsLocked" Type="bool" Nullable="false" />
+    <Property Name="RewardAmount" Type="numeric" Nullable="false" Precision="12" Scale="2" />
   </EntityType>
   <EntityType Name="base_SaleOrderDetail">
     <Key>
@@ -2011,18 +2009,6 @@ warning 6005: The data type '_bool' is not supported; the column 'jscmonths' in 
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="base_PricingChange">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_base_ProductUOM_ProductId_base_Product_Id">
-    <End Role="base_Product" Type="POSModel.Store.base_Product" Multiplicity="1" />
-    <End Role="base_ProductUOM" Type="POSModel.Store.base_ProductUOM" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Product">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_ProductUOM">
         <PropertyRef Name="ProductId" />
       </Dependent>
     </ReferentialConstraint>
@@ -2707,10 +2693,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
       <End Role="base_Product" EntitySet="base_Product" />
       <End Role="base_PricingChange" EntitySet="base_PricingChange" />
     </AssociationSet>
-    <AssociationSet Name="FK_base_ProductUOM_ProductId_base_Product_Id" Association="POSModel.FK_base_ProductUOM_ProductId_base_Product_Id">
-      <End Role="base_Product" EntitySet="base_Product" />
-      <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
-    </AssociationSet>
     <AssociationSet Name="FK_base_VendorProduct_ProductId_base_Product_Id" Association="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id">
       <End Role="base_Product" EntitySet="base_Product" />
       <End Role="base_VendorProduct" EntitySet="base_VendorProduct" />
@@ -2992,7 +2974,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="IsRewardOnTax" Type="Boolean" Nullable="false" />
     <Property Name="IsRewardOnMultiPayment" Type="Boolean" Nullable="false" />
     <Property Name="IsIncludeReturnFee" Type="Boolean" Nullable="false" />
-    <Property Name="ReturnFeePercent" Type="Boolean" Nullable="false" />
+    <Property Name="ReturnFeePercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
   </EntityType>
   <EntityType Name="base_CostAdjustment">
     <Key>
@@ -3021,6 +3003,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="AdjustmentOldCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="LoggedTime" Type="DateTime" Nullable="false" Precision="6" />
     <Property Name="ParentResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IsQuantityChanged" Type="Boolean" />
   </EntityType>
   <EntityType Name="base_CountStock">
     <Key>
@@ -3499,7 +3482,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="IsOpenItem" Type="Boolean" Nullable="false" />
     <Property Name="Location" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
     <NavigationProperty Name="base_PricingChange" Relationship="POSModel.FK_base_PricingChange_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_PricingChange" />
-    <NavigationProperty Name="base_ProductUOM" Relationship="POSModel.FK_base_ProductUOM_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_ProductUOM" />
     <NavigationProperty Name="base_VendorProduct" Relationship="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_VendorProduct" />
     <NavigationProperty Name="base_ProductStore" Relationship="POSModel.FK_baseProductStore_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_ProductStore" />
   </EntityType>
@@ -3520,7 +3502,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     </Key>
     <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductStoreId" Type="Int64" />
-    <Property Name="ProductId" Type="Int64" Nullable="false" />
     <Property Name="UOMId" Type="Int32" Nullable="false" />
     <Property Name="BaseUnitNumber" Type="Int32" Nullable="false" />
     <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
@@ -3536,7 +3517,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="MarkDownPercent4" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="MarginPercent" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="MarkupPercent" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_ProductUOM_ProductId_base_Product_Id" FromRole="base_ProductUOM" ToRole="base_Product" />
     <NavigationProperty Name="base_ProductStore" Relationship="POSModel.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" FromRole="base_ProductUOM" ToRole="base_ProductStore" />
     <NavigationProperty Name="base_UOM" Relationship="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id" FromRole="base_ProductUOM" ToRole="base_UOM" />
   </EntityType>
@@ -3609,7 +3589,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     </Key>
     <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
-    <Property Name="VendorId" Type="Int64" Nullable="false" />
     <Property Name="VendorCode" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="Status" Type="Int16" Nullable="false" />
     <Property Name="ShipAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
@@ -3628,8 +3607,8 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="Freight" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="Fee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="Total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-    <Property Name="Paid" Type="Decimal" Precision="12" Scale="2" />
-    <Property Name="Balance" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Paid" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="ItemCount" Type="Int32" Nullable="false" />
     <Property Name="QtyOrdered" Type="Int32" Nullable="false" />
     <Property Name="QtyDue" Type="Int32" Nullable="false" />
@@ -3647,6 +3626,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="PaymentName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="IsPurge" Type="Boolean" Nullable="false" />
     <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+    <Property Name="VendorResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
     <NavigationProperty Name="base_PurchaseOrderDetail" Relationship="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" FromRole="base_PurchaseOrder" ToRole="base_PurchaseOrderDetail" />
   </EntityType>
   <EntityType Name="base_PurchaseOrderDetail">
@@ -3841,6 +3821,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="Freight" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
     <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <Property Name="ReturnFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnFeePercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
     <NavigationProperty Name="base_ResourceReturnDetail" Relationship="POSModel.FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu" FromRole="base_ResourceReturn" ToRole="base_ResourceReturnDetail" />
   </EntityType>
   <EntityType Name="base_ResourceReturnDetail">
@@ -3935,7 +3916,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="Paid" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="Balance" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
-    <Property Name="RefundFee" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="RefundedAmount" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
     <Property Name="IsMultiPayment" Type="Boolean" Nullable="false" />
     <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
     <Property Name="IsFullWorkflow" Type="Boolean" Nullable="false" />
@@ -3965,7 +3946,8 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
     <Property Name="StoreCode" Type="Int32" Nullable="false" />
     <Property Name="IsRedeeem" Type="Boolean" Nullable="false" />
     <Property Name="IsPurge" Type="Boolean" Nullable="false" />
-    <Property Name="IsHold" Type="Boolean" />
+    <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+    <Property Name="RewardAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
     <NavigationProperty Name="base_SaleOrderDetail" Relationship="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderDetail" />
     <NavigationProperty Name="base_SaleOrderInvoice" Relationship="POSModel.FK_base_SaleOrderInvoice_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderInvoice" />
     <NavigationProperty Name="base_SaleOrderShip" Relationship="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderShip" />
@@ -4736,18 +4718,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_base_ProductUOM_ProductId_base_Product_Id">
-    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1" />
-    <End Role="base_ProductUOM" Type="POSModel.base_ProductUOM" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="base_Product">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="base_ProductUOM">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_base_VendorProduct_ProductId_base_Product_Id">
     <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1" />
     <End Role="base_VendorProduct" Type="POSModel.base_VendorProduct" Multiplicity="*" />
@@ -5244,6 +5214,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ScalarProperty Name="AdjustmentOldCost" ColumnName="AdjustmentOldCost" />
           <ScalarProperty Name="LoggedTime" ColumnName="LoggedTime" />
           <ScalarProperty Name="ParentResource" ColumnName="ParentResource" />
+          <ScalarProperty Name="IsQuantityChanged" ColumnName="IsQuantityChanged" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5720,7 +5691,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <MappingFragment StoreEntitySet="base_ProductUOM">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ProductStoreId" ColumnName="ProductStoreId" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="UOMId" ColumnName="UOMId" />
           <ScalarProperty Name="BaseUnitNumber" ColumnName="BaseUnitNumber" />
           <ScalarProperty Name="RegularPrice" ColumnName="RegularPrice" />
@@ -5806,7 +5776,6 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <MappingFragment StoreEntitySet="base_PurchaseOrder">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PurchaseOrderNo" ColumnName="PurchaseOrderNo" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="ShipAddress" ColumnName="ShipAddress" />
@@ -5844,6 +5813,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ScalarProperty Name="PaymentName" ColumnName="PaymentName" />
           <ScalarProperty Name="IsPurge" ColumnName="IsPurge" />
           <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="VendorResource" ColumnName="VendorResource" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -6040,6 +6010,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ScalarProperty Name="Freight" ColumnName="Freight" />
           <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
           <ScalarProperty Name="ReturnFee" ColumnName="ReturnFee" />
+          <ScalarProperty Name="ReturnFeePercent" ColumnName="ReturnFeePercent" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -6135,7 +6106,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ScalarProperty Name="Total" ColumnName="Total" />
           <ScalarProperty Name="Paid" ColumnName="Paid" />
           <ScalarProperty Name="Balance" ColumnName="Balance" />
-          <ScalarProperty Name="RefundFee" ColumnName="RefundFee" />
+          <ScalarProperty Name="RefundedAmount" ColumnName="RefundedAmount" />
           <ScalarProperty Name="IsMultiPayment" ColumnName="IsMultiPayment" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="IsFullWorkflow" ColumnName="IsFullWorkflow" />
@@ -6165,7 +6136,8 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ScalarProperty Name="StoreCode" ColumnName="StoreCode" />
           <ScalarProperty Name="IsRedeeem" ColumnName="IsRedeeem" />
           <ScalarProperty Name="IsPurge" ColumnName="IsPurge" />
-          <ScalarProperty Name="IsHold" ColumnName="IsHold" />
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="RewardAmount" ColumnName="RewardAmount" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -6561,7 +6533,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <EntityTypeShape EntityType="POSModel.base_Authorize" Width="1.5" PointX="2.75" PointY="0.75" Height="1.4279589843749996" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_Configuration" Width="1.5" PointX="10.75" PointY="11.75" Height="10.795756835937503" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_CostAdjustment" Width="1.5" PointX="0.75" PointY="4.75" Height="2.4140429687500031" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_CostAdjustmentItem" Width="1.5" PointX="5.75" PointY="8.75" Height="2.4140429687500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_CostAdjustmentItem" Width="1.5" PointX="13.75" PointY="25.75" Height="2.5783902994791674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_CountStock" Width="1.5" PointX="25.75" PointY="14" Height="2.4140429687500031" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_CountStockDetail" Width="1.5" PointX="28" PointY="14" Height="2.2496956380208388" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_Department" Width="1.5" PointX="0.75" PointY="0.75" Height="3.2357796223958388" IsExpanded="true" />
@@ -6580,16 +6552,16 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <EntityTypeShape EntityType="POSModel.base_MemberShip" Width="1.5" PointX="3" PointY="47.25" Height="3.0714322916666674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PricingChange" Width="1.5" PointX="6" PointY="56.875" Height="2.9070849609375102" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PricingManager" Width="1.5" PointX="3.75" PointY="66.25" Height="4.2218636067708246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_Product" Width="1.5" PointX="3.75" PointY="51.5" Height="13.589661458333325" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_Product" Width="1.5" PointX="3.75" PointY="51.625" Height="13.425314127604167" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ProductStore" Width="1.5" PointX="6" PointY="61" Height="1.9210009765625102" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ProductUOM" Width="1.5" PointX="8.25" PointY="56.125" Height="4.38621093750001" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ProductUOM" Width="1.5" PointX="8.25" PointY="60" Height="4.0575162760416674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_Promotion" Width="1.5" PointX="19.75" PointY="1.125" Height="5.7009895833333388" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PromotionAffect" Width="1.5" PointX="22" PointY="1.125" Height="3.2357796223958246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PromotionSchedule" Width="1.5" PointX="22" PointY="5.125" Height="1.7566536458333246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PurchaseOrder" Width="1.5" PointX="18.75" PointY="10.25" Height="7.6731575520833246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PurchaseOrderDetail" Width="1.5" PointX="21" PointY="11.75" Height="4.5505582682291674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_PurchaseOrderReceive" Width="1.5" PointX="23.25" PointY="12.375" Height="3.2357796223958246" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_QuantityAdjustment" Width="1.5" PointX="13.75" PointY="25.75" Height="2.4140429687500102" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_QuantityAdjustment" Width="1.5" PointX="5.75" PointY="8.75" Height="2.4140429687500102" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_QuantityAdjustmentItem" Width="1.5" PointX="15.75" PointY="25.75" Height="2.5783902994791674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ResourceAccount" Width="1.5" PointX="2.75" PointY="3.75" Height="2.2496956380208246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ResourceNote" Width="1.5" PointX="5.75" PointY="19.75" Height="1.7566536458333246" IsExpanded="true" />
@@ -6597,11 +6569,11 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <EntityTypeShape EntityType="POSModel.base_ResourcePaymentDetail" Width="1.5" PointX="17" PointY="1.125" Height="3.0714322916666674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ResourcePaymentProduct" Width="1.5" PointX="17" PointY="5" Height="3.0714322916666674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ResourcePhoto" Width="1.5" PointX="25.75" PointY="17.75" Height="2.0853483072916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_ResourceReturn" Width="1.5" PointX="24.75" PointY="1" Height="3.5644742838541674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_ResourceReturn" Width="1.5" PointX="24.75" PointY="1" Height="3.728821614583353" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_ResourceReturnDetail" Width="1.5" PointX="27" PointY="1.125" Height="3.4001269531249818" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_RewardManager" Width="1.5" PointX="3.75" PointY="41" Height="4.714905598958353" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_SaleCommission" Width="1.5" PointX="17.75" PointY="25.75" Height="2.5783902994791674" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_SaleOrder" Width="1.5" PointX="13.75" PointY="12.75" Height="10.631409505208325" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_SaleOrder" Width="1.5" PointX="13.75" PointY="12.625" Height="10.795756835937482" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_SaleOrderDetail" Width="1.5" PointX="16" PointY="11.5" Height="5.207947591145853" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_SaleOrderInvoice" Width="1.5" PointX="16" PointY="17.5" Height="3.235779622395853" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_SaleOrderShip" Width="1.5" PointX="16" PointY="21.5" Height="3.0714322916666674" IsExpanded="true" />
@@ -6611,7 +6583,7 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         <EntityTypeShape EntityType="POSModel.base_Store" Width="1.5" PointX="7.75" PointY="19.75" Height="1.7566536458333246" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_TransferStock" Width="1.5" PointX="20.75" PointY="18" Height="4.221863606770853" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_TransferStockDetail" Width="1.5" PointX="23" PointY="18.5" Height="3.4001269531249818" IsExpanded="true" />
-        <EntityTypeShape EntityType="POSModel.base_UOM" Width="1.5" PointX="6" PointY="53" Height="2.5783902994791674" IsExpanded="true" />
+        <EntityTypeShape EntityType="POSModel.base_UOM" Width="1.5" PointX="6" PointY="63.75" Height="2.5783902994791674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_UserLog" Width="1.5" PointX="20.75" PointY="7.875" Height="2.0853483072916674" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_UserLogDetail" Width="1.5" PointX="23" PointY="8" Height="1.9210009765624818" IsExpanded="true" />
         <EntityTypeShape EntityType="POSModel.base_UserRight" Width="1.5" PointX="0.75" PointY="8.75" Height="1.4279589843749818" IsExpanded="true" />
@@ -6783,13 +6755,9 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ConnectorPoint PointX="5.25" PointY="57.539271240234378" />
           <ConnectorPoint PointX="6" PointY="57.539271240234378" />
         </AssociationConnector>
-        <AssociationConnector Association="POSModel.FK_base_ProductUOM_ProductId_base_Product_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="56.46875" />
-          <ConnectorPoint PointX="8.25" PointY="56.46875" />
-        </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.2500000000000018" PointY="51.5" />
-          <ConnectorPoint PointX="5.625" PointY="51.125" />
+          <ConnectorPoint PointX="5.2500000000000018" PointY="51.625" />
+          <ConnectorPoint PointX="5.625" PointY="51.25" />
           <ConnectorPoint PointX="5.625" PointY="31.515474819010407" />
           <ConnectorPoint PointX="6" PointY="31.515474819010407" />
         </AssociationConnector>
@@ -6801,13 +6769,11 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="7.5" PointY="61.960500488281255" />
-          <ConnectorPoint PointX="9" PointY="61.960500488281255" />
-          <ConnectorPoint PointX="9" PointY="60.51121093750001" />
+          <ConnectorPoint PointX="8.25" PointY="61.960500488281255" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="54.289195149739584" />
-          <ConnectorPoint PointX="9" PointY="54.289195149739584" />
-          <ConnectorPoint PointX="9" PointY="56.125" />
+          <ConnectorPoint PointX="7.5" PointY="63.903758138020834" />
+          <ConnectorPoint PointX="8.25" PointY="63.903758138020834" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="21.25" PointY="2.7428898111979123" />
@@ -6838,16 +6804,16 @@ warning 6005: The function 'pga_schedule_trigger' has a return data type 'trigge
           <ConnectorPoint PointX="27" PointY="2.8250634765624909" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="15.25" PointY="14.728973795572927" />
-          <ConnectorPoint PointX="16" PointY="14.728973795572927" />
+          <ConnectorPoint PointX="15.25" PointY="14.666473795572927" />
+          <ConnectorPoint PointX="16" PointY="14.666473795572927" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderInvoice_SaleOrderId_base_SaleOrder_Id" ManuallyRouted="false">
           <ConnectorPoint PointX="15.25" PointY="19.117889811197927" />
           <ConnectorPoint PointX="16" PointY="19.117889811197927" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" ManuallyRouted="false">
-          <ConnectorPoint PointX="15.25" PointY="22.440704752604162" />
-          <ConnectorPoint PointX="16" PointY="22.440704752604162" />
+          <ConnectorPoint PointX="15.25" PointY="22.460378417968741" />
+          <ConnectorPoint PointX="16" PointY="22.460378417968741" />
         </AssociationConnector>
         <AssociationConnector Association="POSModel.FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_" ManuallyRouted="false">
           <ConnectorPoint PointX="17.5" PointY="23.035716145833334" />
