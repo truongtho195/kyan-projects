@@ -639,15 +639,6 @@
 	</Anno:AnnotationManager.Annotations>
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
         <Grid x:Name="GridLayout">
-            <Grid.Style>
-                <Style>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsBusy}" Value="False">
-                            <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=txtKeyword}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
             <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
             <Grid x:Name="grdCustomer">
                 <!--  Search Gird  -->
