@@ -2,10 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using CPC.POS.Database;
 using CPC.POS.Model;
 using CPC.POS.Repository;
 using CPC.Toolkit.Base;
@@ -23,6 +23,8 @@ namespace CPC.POS.ViewModel
         private base_PurchaseOrderDetailRepository _purchaseOrderDetailRepository = new base_PurchaseOrderDetailRepository();
 
         private ICollectionView _orderDetailCollectionView;
+
+        private IList<base_PurchaseOrderDetail> _purchaseOrderDetails;
 
         #endregion
 
@@ -58,23 +60,26 @@ namespace CPC.POS.ViewModel
                 {
                     _stockStatus = value;
                     OnPropertyChanged(() => StockStatus);
+
+                    // Update company quantities
+                    OnPropertyChanged(() => CompanyQuantities);
                 }
             }
         }
 
-        private ObservableCollection<CheckBoxItemModel> _onHandStoreList = new ObservableCollection<CheckBoxItemModel>();
+        private ObservableCollection<base_ProductStoreModel> _productStoreCollection;
         /// <summary>
-        /// Gets or sets the OnHandStoreList.
+        /// Gets or sets the ProductStoreCollection.
         /// </summary>
-        public ObservableCollection<CheckBoxItemModel> OnHandStoreList
+        public ObservableCollection<base_ProductStoreModel> ProductStoreCollection
         {
-            get { return _onHandStoreList; }
+            get { return _productStoreCollection; }
             set
             {
-                if (_onHandStoreList != value)
+                if (_productStoreCollection != value)
                 {
-                    _onHandStoreList = value;
-                    OnPropertyChanged(() => OnHandStoreList);
+                    _productStoreCollection = value;
+                    OnPropertyChanged(() => ProductStoreCollection);
                 }
             }
         }
@@ -82,12 +87,22 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the CompanyQuantities
         /// </summary>
-        public decimal CompanyQuantities
+        public int CompanyQuantities
         {
             get
             {
-                return OnHandStoreList.Sum(x => x.Value);
+                if (StockStatus.Equals(3))
+                    return ProductStoreCollection.Sum(x => x.OnReservedQuantity);
+                return ProductStoreCollection.Sum(x => x.QuantityOnHand);
             }
+        }
+
+        /// <summary>
+        /// Gets the QuantityOnHand.
+        /// </summary>
+        public int QuantityOnHand
+        {
+            get { return ProductStoreCollection.Where(x => x.StoreCode.Equals(Define.StoreCode)).Sum(x => x.QuantityOnHand); }
         }
 
         private short _selectedAvailableQuantity = 1;
@@ -103,8 +118,7 @@ namespace CPC.POS.ViewModel
                 {
                     _selectedAvailableQuantity = value;
                     OnPropertyChanged(() => SelectedAvailableQuantity);
-                    if (SelectedAvailableQuantity != null)
-                        OnSelectedAvailableQuantityChanged();
+                    OnSelectedAvailableQuantityChanged();
                 }
             }
         }
@@ -141,12 +155,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public int QuantityAvailable
         {
-            get
-            {
-                if (SelectedProduct == null)
-                    return 0;
-                return SelectedProduct.QuantityOnHand - QuantityOnSO;
-            }
+            get { return QuantityOnHand - QuantityOnSO; }
         }
 
         #endregion
@@ -166,8 +175,8 @@ namespace CPC.POS.ViewModel
         {
             SelectedProduct = productModel;
 
-            LoadOnHandStoreList(SelectedProduct);
             LoadOrderDetailCollection(SelectedProduct);
+            LoadOnHandStoreList(SelectedProduct);
         }
 
         #endregion
@@ -247,21 +256,29 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadOnHandStoreList(base_ProductModel productModel)
         {
-            for (short i = 1; i <= _storeRepository.GetIQueryable().Count(); i++)
+            // Initial product store collection
+            ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
+
+            for (short i = 0; i < _storeRepository.GetIQueryable().Count(); i++)
             {
-                // Get on hand store value
-                PropertyInfo onHandStoreProperty = productModel.GetType().GetProperty(i.ToString("OnHandStore#"));
-                object onHandStoreValue = onHandStoreProperty.GetValue(productModel, null);
+                // Create new product store model
+                base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = i };
 
-                // Convert on hand store value to int datatype
-                int onHandStore = 0;
-                if (int.TryParse(onHandStoreValue.ToString(), out onHandStore))
-                    onHandStore = int.Parse(onHandStoreValue.ToString());
+                // Get product store by store code
+                base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(i));
 
-                // Create combo item to add list
-                CheckBoxItemModel checkBoxItemModel = new CheckBoxItemModel { Text = i.ToString(), Value = onHandStore };
-                checkBoxItemModel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(CheckBoxItemModel_PropertyChanged);
-                OnHandStoreList.Add(checkBoxItemModel);
+                if (productStoreItem != null)
+                {
+                    productStoreModel.OldQuantity = productStoreItem.OldQuantity;
+                    productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
+                    productStoreModel.OnReservedQuantity = _purchaseOrderDetails.Where(x => x.base_PurchaseOrder.StoreCode.Equals(i)).Sum(x => x.Quantity);
+                }
+
+                // Register property changed event
+                productStoreModel.PropertyChanged += new PropertyChangedEventHandler(productStoreItem_PropertyChanged);
+
+                // Add product store to list
+                ProductStoreCollection.Add(productStoreModel);
             }
         }
 
@@ -276,16 +293,22 @@ namespace CPC.POS.ViewModel
 
             // Get sale order detail collection
             IEnumerable<base_SaleOrderDetailModel> _saleOrderDetailCollection = _saleOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) && x.base_SaleOrder.OrderStatus == (short)SaleOrderStatus.Open).
+                GetAll(x => x.ProductResource.Equals(productResource) &&
+                    x.base_SaleOrder.OrderStatus == (short)SaleOrderStatus.Open &&
+                    x.base_SaleOrder.StoreCode.Equals(Define.StoreCode)).
                 Select(x => new base_SaleOrderDetailModel(x)
                 {
                     DocType = "Sale Order",
                     SaleOrderModel = new base_SaleOrderModel(x.base_SaleOrder)
                 });
 
+            // Get purchase order detail
+            _purchaseOrderDetails = _purchaseOrderDetailRepository.
+                GetAll(x => x.ProductResource.Equals(productResource) && x.base_PurchaseOrder.Status == (short)PurchaseStatus.Open);
+
             // Get purchase order detail collection
-            IEnumerable<base_SaleOrderDetailModel> _purchaseOrderDetailCollection = _purchaseOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) && x.base_PurchaseOrder.Status == (short)PurchaseStatus.Open).
+            IEnumerable<base_SaleOrderDetailModel> _purchaseOrderDetailCollection = _purchaseOrderDetails.
+                Where(x => x.base_PurchaseOrder.StoreCode.Equals(Define.StoreCode)).
                 Select(x => new base_SaleOrderDetailModel
                 {
                     DocType = "Purchase Order",
@@ -343,14 +366,25 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region Override Methods
+        #region Event Methods
 
-        private void CheckBoxItemModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void productStoreItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("Value"))
+            base_ProductStoreModel productStoreModel = sender as base_ProductStoreModel;
+
+            if (e.PropertyName.Equals("QuantityOnHand"))
             {
                 // Update company quantities
                 OnPropertyChanged(() => CompanyQuantities);
+
+                if (productStoreModel.StoreCode.Equals(Define.StoreCode))
+                {
+                    // Update quantity on hand
+                    OnPropertyChanged(() => QuantityOnHand);
+
+                    // Update quantity available
+                    OnPropertyChanged(() => QuantityAvailable);
+                }
             }
         }
 

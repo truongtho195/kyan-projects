@@ -522,10 +522,11 @@ namespace CPC.POS.Model
         private void CalcReturnFee()
         {
             if (_returnFeePercent > 0)
-            {
                 _returnFee = _subTotal * _returnFeePercent / 100;
-                OnPropertyChanged(() => ReturnFee);
-            }
+            else
+                _returnFee = 0;
+            OnPropertyChanged(() => ReturnFee);
+
         }
 
         private void CalcBalance()

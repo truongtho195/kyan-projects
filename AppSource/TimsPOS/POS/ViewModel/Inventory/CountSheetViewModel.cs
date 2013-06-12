@@ -568,7 +568,16 @@ namespace CPC.POS.ViewModel
         }
         private bool IsDateTime()
         {
-            return (!this.Keyword.Equals("1/1/0001") && this.Keyword.Length > 8);
+            try
+            {
+                DateTime dateTime = DateTime.Parse(this.Keyword);
+                return (!dateTime.ToString().Equals("1/1/0001") && this.Keyword.Contains("/") && this.Keyword.Length >= 8);
+            }
+            catch
+            {
+                return false;
+            }
+
         }
         #endregion
 
@@ -1093,6 +1102,7 @@ namespace CPC.POS.ViewModel
                 model.Size = productStore.base_Product.Size;
                 model.Description = productStore.base_Product.Description;
                 model.ProductName = productStore.base_Product.ProductName;
+                model.Difference = 0;
                 model.EndUpdate();
                 model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
                 this.SelectedCountStock.CountStockDetailCollection.Add(model);
@@ -1112,6 +1122,8 @@ namespace CPC.POS.ViewModel
                 switch (e.PropertyName)
                 {
                     case "CountedQuantity":
+                        base_CountStockDetailModel model = sender as base_CountStockDetailModel;
+                        model.Difference = model.CountedQuantity - model.Quantity;
                         this.SelectedCountStock.IsDirty = true;
                         this.SelectedCountStock.IsChangeProductCollection = true;
                         break;

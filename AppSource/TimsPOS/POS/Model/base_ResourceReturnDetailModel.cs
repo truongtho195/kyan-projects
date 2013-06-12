@@ -652,7 +652,7 @@ namespace CPC.POS.Model
                         case "ReturnQty":
                             if (_purchaseOrderDetail != null && _purchaseOrder != null && _purchaseOrder.ResourceReturnDetailCollection != null)
                             {
-                                int returnQtyTotal = _purchaseOrder.ResourceReturnDetailCollection.Where(x => x.OrderDetailResource == _orderDetailResource).Sum(x => x.ReturnQty);
+                                decimal returnQtyTotal = _purchaseOrder.ResourceReturnDetailCollection.Where(x => x.OrderDetailResource == _orderDetailResource).Sum(x => x.ReturnQty);
                                 if (returnQtyTotal > _purchaseOrderDetail.ReceivedQty)
                                 {
                                     message = "Return quantity <= received quantity.";
@@ -672,8 +672,8 @@ namespace CPC.POS.Model
                         case "ReturnQty":
                             if (SaleOrderModel != null && SaleOrderModel.SaleOrderShippedCollection != null && SaleOrderModel.ReturnModel != null && SaleOrderModel.ReturnModel.ReturnDetailCollection != null)
                             {
-                                int totalItemShipped = SaleOrderModel.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(OrderDetailResource)).Sum(x => x.PickQty);
-                                int totalItemReturn = SaleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && !string.IsNullOrWhiteSpace(x.OrderDetailResource) && x.OrderDetailResource.Equals(OrderDetailResource)).Sum(x => x.ReturnQty);
+                                decimal totalItemShipped = SaleOrderModel.SaleOrderShippedCollection.Where(x => x.Resource.ToString().Equals(OrderDetailResource)).Sum(x => x.PickQty);
+                                decimal totalItemReturn = SaleOrderModel.ReturnModel.ReturnDetailCollection.Where(x => !x.IsTemporary && !string.IsNullOrWhiteSpace(x.OrderDetailResource) && x.OrderDetailResource.Equals(OrderDetailResource)).Sum(x => x.ReturnQty);
                                 if (totalItemShipped>0 &&  totalItemReturn > totalItemShipped)
                                     message = "Return quantity <= received quantity.....";
                             }

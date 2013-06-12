@@ -13,6 +13,7 @@ using CPC.Service.FrameworkDialogs.OpenFile;
 using CPC.Utility;
 using log4net;
 using log4net.Config;
+using System.Globalization;
 
 namespace CPC.POS
 {
@@ -69,7 +70,13 @@ namespace CPC.POS
                 base_ConfigurationRepository configurationRepository = new base_ConfigurationRepository();
                 IQueryable<base_Configuration> configQuery = configurationRepository.GetIQueryable();
                 if (configQuery.Count() > 0)
+                {
                     Define.CONFIGURATION = new Model.base_ConfigurationModel(configurationRepository.GetIQueryable().FirstOrDefault());
+                    //To define currency format
+                    Define.NumericFormat = "{0:N" + Define.CONFIGURATION.DecimalPlaces + "}";
+                    Define.CurrencyFormat = Define.CONFIGURATION.CurrencySymbol + Define.NumericFormat;
+                    Define.ConverterCulture = new CultureInfo(Define.CONFIGURATION.FomartCurrency);
+                }
             }
             catch (Exception ex)
             {
@@ -114,32 +121,50 @@ namespace CPC.POS
         {
             try
             {
-                // Register Deactivated event to auto lock screen
-                this.Deactivated += (sender, e) =>
-                {
-                    IdleTimeHelper.LostFocusTime = DateTimeExt.Now;
-                };
+                // Initial main window
+                MainWindow mainWindow = new MainWindow();
 
-                // Register Activated event to auto lock screen
-                this.Activated += (sender, e) =>
-                {
-                    IdleTimeHelper.LostFocusTime = null;
-                };
-
-                MainWindow window = new MainWindow();
+                // Initial main view model
                 MainViewModel mainViewModel = new MainViewModel();
-                window.Closing += (sender, e) =>
+                mainWindow.DataContext = mainViewModel;
+
+                // Register Activated, Deactivated and StateChanged event to auto lock screen
+                this.Activated += (sender, e) => { IdleTimeHelper.LostFocusTime = null; };
+                this.Deactivated += (sender, e) => { IdleTimeHelper.LostFocusTime = DateTimeExt.Now; };
+                mainWindow.StateChanged += (sender, e) =>
                 {
+                    if (mainViewModel.IsLockScreen)
+                    {
+                        mainViewModel.IsLockScreen = false;
+
+                        // Restore window when window state is minimized
+                        if (mainWindow.WindowState.Equals(WindowState.Minimized))
+                            IdleTimeHelper.RestoreWindow();
+
+                        // Display lock screen view
+                        mainViewModel.OnLockScreenCommandExecute();
+                    }
+
+                    if (mainWindow.WindowState.Equals(WindowState.Minimized))
+                        IdleTimeHelper.LostFocusTime = DateTimeExt.Now;
+                };
+
+                // Register Closing event to process close main window
+                mainWindow.Closing += (sender, e) =>
+                {
+                    // Get can close main window
                     bool result = mainViewModel.CloseCommand.CanExecute(null);
                     if (!result)
                         mainViewModel.CloseCommand.Execute(null);
                     e.Cancel = result;
-                    //To shutdown the application.
+
+                    // Shutdown the application
                     if (!this._isLogout && !result)
                         this.Shutdown();
                 };
-                window.DataContext = mainViewModel;
-                window.Show();
+
+                // Show main window
+                mainWindow.Show();
             }
             catch (Exception ex)
             {

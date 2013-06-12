@@ -314,6 +314,7 @@ namespace CPC.POS.ViewModel
         {
             if (ShowNotification(null))
                 NewPromotion();
+            this.IsSearchMode = false;
         }
 
         #endregion
@@ -373,26 +374,20 @@ namespace CPC.POS.ViewModel
                 if (SelectedPromotion.IsNew)
                 {
                     //DeleteNote();
-
                     SelectedPromotion = null;
                 }
                 else if (IsValid)
                 {
                     //DeleteNote();
-
                     // Delete all promotion affect
                     SelectedPromotion.AffectDiscount = 0;
                     OnSavePromotionAffect();
-
                     // Delete promotion schedule
                     _promotionScheduleRepository.Delete(SelectedPromotion.PromotionScheduleModel.base_PromotionSchedule);
-
                     // Delete promotion
                     _promotionRepository.Delete(SelectedPromotion.base_Promotion);
-
                     // Accept changes
                     _promotionRepository.Commit();
-
                     SelectedPromotion.EndUpdate();
                     SelectedPromotion.PromotionScheduleModel.EndUpdate();
                     //SelectedPromotion.PromotionAffectModel.EndUpdate();
@@ -400,7 +395,6 @@ namespace CPC.POS.ViewModel
                 }
                 else
                     return;
-
                 IsSearchMode = true;
             }
         }
@@ -630,6 +624,79 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region DeletesCommand
+
+        /// <summary>
+        /// Gets the DeleteCommand command.
+        /// </summary>
+        public ICommand DeletesCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the DeleteCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeletesCommandCanExecute(object param)
+        {
+            return (param != null);
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeleteCommand command is executed.
+        /// </summary>
+        private void OnDeletesCommandExecute(object param)
+        {
+            MessageBoxResult msgResult = MessageBox.Show("Do you want to delete this promotion?", "POS", MessageBoxButton.YesNo);
+            if (msgResult.Is(MessageBoxResult.Yes))
+            {
+                for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
+                {
+                    base_PromotionModel model = (param as ObservableCollection<object>)[i] as base_PromotionModel;
+                    //DeleteNote();
+                    // Delete all promotion affect
+                    model.AffectDiscount = 0;
+                    this.OnSavePromotionAffect(model);
+                    // Delete promotion schedule
+                    _promotionScheduleRepository.Delete(model.PromotionScheduleModel.base_PromotionSchedule);
+                    // Delete promotion
+                    _promotionRepository.Delete(model.base_Promotion);
+                    // Accept changes
+                    _promotionRepository.Commit();
+                    model.EndUpdate();
+                    model.PromotionScheduleModel.EndUpdate();
+                    this.PromotionCollection.Remove(model);
+                    i--;
+                }
+            }
+        }
+
+        #endregion
+
+        #region ChangeStatusCommand
+
+        /// <summary>
+        /// Gets the ChangeStatusCommand command.
+        /// </summary>
+        public ICommand ChangeStatusCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the ChangeStatusCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnChangeStatusCommandCanExecute(object param)
+        {
+            return (param != null);
+        }
+
+        /// <summary>
+        /// Method to invoke when the ChangeStatusCommand command is executed.
+        /// </summary>
+        private void OnChangeStatusCommandExecute(object param)
+        {
+            this.OnStatusChanged(param as base_PromotionModel);
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -649,6 +716,8 @@ namespace CPC.POS.ViewModel
             LoadStepCommand = new RelayCommand(OnLoadStepCommandExecute, OnLoadStepCommandCanExecute);
             PopupCustomCommand = new RelayCommand<object>(OnPopupCustomCommandExecute, OnPopupCustomCommandCanExecute);
             PopupAdvanceSearchCommand = new RelayCommand<object>(OnPopupAdvanceSearchCommandExecute, OnPopupAdvanceSearchCommandCanExecute);
+            DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
+            ChangeStatusCommand = new RelayCommand<object>(OnChangeStatusCommandExecute, OnChangeStatusCommandCanExecute);
         }
 
         /// <summary>
@@ -1191,6 +1260,99 @@ namespace CPC.POS.ViewModel
                 }
             }
             SelectedPromotion.IsDirty = true;
+        }
+
+        /// <summary>
+        /// Process promotion affect when save data
+        /// </summary>
+        private void OnSavePromotionAffect(base_PromotionModel model)
+        {
+            switch (model.AffectDiscount)
+            {
+                case 0: // All items
+                    // Delete all promotion affect in database
+                    foreach (base_PromotionAffect promotionAffect in model.base_Promotion.base_PromotionAffect.ToList())
+                        _promotionAffectRepository.Delete(promotionAffect);
+
+                    // Clear promotion affect in entity
+                    model.base_Promotion.base_PromotionAffect.Clear();
+
+                    // Clear promotion affect list
+                    model.PromotionAffectList = new CollectionBase<base_PromotionAffectModel>();
+                    break;
+                case 1: // All items in department
+                case 2: // All items in vendor
+                    break;
+                case 3: // Custom
+                    // Remove promotion affect were deleted
+                    if (model.PromotionAffectList.DeletedItems != null)
+                    {
+                        foreach (base_PromotionAffectModel promotionAffectModel in model.PromotionAffectList.DeletedItems)
+                        {
+                            // Remove promotion affect in entity
+                            model.base_Promotion.base_PromotionAffect.Remove(promotionAffectModel.base_PromotionAffect);
+
+                            // Delete promotion affect in database
+                            _promotionAffectRepository.Delete(promotionAffectModel.base_PromotionAffect);
+                        }
+                        model.PromotionAffectList.DeletedItems.Clear();
+                    }
+
+                    // Create new promotion affect
+                    foreach (base_PromotionAffectModel promotionAffectModel in model.PromotionAffectList)
+                    {
+                        if (promotionAffectModel.IsNew)
+                            promotionAffectModel.PromotionId = model.Id;
+
+                        // Map data from model to entity
+                        promotionAffectModel.ToEntity();
+
+                        // Add new to repository
+                        if (promotionAffectModel.IsNew)
+                            model.base_Promotion.base_PromotionAffect.Add(promotionAffectModel.base_PromotionAffect);
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Show popup reason to reactive when change status
+        /// </summary>
+        private void OnStatusChanged(base_PromotionModel model)
+        {
+            if (model.Status == 1)
+                _status = 2;
+            else
+                _status = 1;
+            OnPropertyChanged(() => Status);
+            if (Status == (short)StatusBasic.Active && !model.IsNew &&
+                Define.CONFIGURATION.IsRequireDiscountReason.HasValue && Define.CONFIGURATION.IsRequireDiscountReason.Value)
+            {
+                PromotionReasonViewModel viewModel = new PromotionReasonViewModel();
+                viewModel.ReasonReActive = model.ReasonReActive;
+                bool? msgResult = _dialogService.ShowDialog<CPC.POS.View.PromotionReasonView>(_ownerViewModel, viewModel, "Entry for reason");
+                if (msgResult.HasValue)
+                {
+                    if (msgResult.Value)
+                        model.ReasonReActive = viewModel.ReasonReActiveBinding;
+                    else
+                    {
+                        App.Current.MainWindow.Dispatcher.BeginInvoke((Action)delegate
+                        {
+                            Status = (short)StatusBasic.Deactive;
+                        });
+                    }
+                }
+            }
+            model.Status = Status;
+            model.DateUpdated = DateTimeExt.Now;
+            if (Define.USER != null)
+                model.UserUpdated = Define.USER.LoginName;
+            // Map data from model to entity
+            model.ToEntity();
+            // Accept changes
+            _promotionRepository.Commit();
+            model.EndUpdate();
         }
 
         #endregion

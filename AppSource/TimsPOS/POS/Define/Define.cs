@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
+using System.Globalization;
 
 namespace CPC.POS
 {
@@ -92,18 +93,25 @@ namespace CPC.POS
         public static CPC.POS.Model.base_ResourceAccountModel USER;
 
         //To get authorization of user.
-        public static ObservableCollection<CPC.POS.Model.base_AuthorizeModel> USER_AUTHORIZATION;
+        public static ObservableCollection<CPC.POS.Model.base_AuthorizeModel> USER_AUTHORIZATION { get; set; }
 
         // Define ProductCode format
         public static string ProductCodeFormat = ConfigurationManager.AppSettings["ProductCodeFormat"];
-        
+
         //Default StoreCode 
         public static int StoreCode = 0;
-
+   
         // Format.
         public static string DateFormat = ConfigurationManager.AppSettings["DateFormat"];
         public static string IntegerFormat = ConfigurationManager.AppSettings["IntegerFormat"];
-        public static string CurrencyFormat = ConfigurationManager.AppSettings["CurrencyFormat"];
+        public static string CurrencyFormat;
+        public static string NumericFormat;
+        public static CultureInfo ConverterCulture;
         public static string PercentFormat = ConfigurationManager.AppSettings["PercentFormat"];
+        
+        //Max lenght display
+        public static int MaxSerialLenght = int.Parse(ConfigurationManager.AppSettings["MaxSerialLenght"]);
+
+        public const byte NumberOfSerialDisplay = 5;
     }
 }

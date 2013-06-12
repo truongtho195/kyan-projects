@@ -202,8 +202,8 @@
         <Style x:Key="DataGridDetailRowStyle"
                BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
-            <Setter Property="ContextMenu"
-                    Value="{StaticResource SaleOrderDetailContextMenu}" />
+            <!--<Setter Property="ContextMenu"
+                    Value="{StaticResource SaleOrderDetailContextMenu}" />-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridRow}">
@@ -383,8 +383,7 @@
             <Grid x:Name="grdInvoice">
                 <!--  Search Grid  -->
                 <Grid x:Name="grdContentSearch"
-                      d:IsHidden="True"
-                      d:LayoutOverrides="GridBox">
+                      d:LayoutOverrides="GridBox" d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Mode="OneWay"
                                  Path="IsSearchMode"
@@ -571,7 +570,7 @@
                                                                   StringFormat={x:Static local:Define.DateFormat}}"
                                                 Header="Order Date"
                                                 IsReadOnly="True" />
-                            <DataGridTextColumn Width="80"
+                            <DataGridTextColumn Width="100"
                                                 MinWidth="80"
                                                 Binding="{Binding OrderStatus,
                                                                   ConverterParameter=StatusSO,
@@ -584,7 +583,7 @@
                                                                   Mode=OneWay}"
                                                 Header="Customer"
                                                 IsReadOnly="True" />
-                            <DataGridTemplateColumn Width="100"
+                            <DataGridTemplateColumn Width="80"
                                                     MinWidth="100"
                                                     Header="Total"
                                                     IsReadOnly="True">
@@ -597,7 +596,7 @@
 
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100"
+                            <DataGridTemplateColumn Width="80"
                                                     MinWidth="100"
                                                     Header="Paid"
                                                     IsReadOnly="True">
@@ -608,7 +607,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
 
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Width="100"
+                            <DataGridTemplateColumn Width="80"
                                                     MinWidth="100"
                                                     Header="Balance"
                                                     IsReadOnly="True">
@@ -620,7 +619,7 @@
 
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Width="100"
+                            <DataGridTextColumn Width="80"
                                                 MinWidth="100"
                                                 Binding="{Binding PriceSchemaId,
                                                                   Mode=OneWay,
@@ -632,7 +631,7 @@
                                                 MinWidth="100"
                                                 Binding="{Binding TaxLocationModel.Name}"
                                                 Header="Tax Location" />
-                            <DataGridTextColumn Width="75"
+                            <DataGridTextColumn Width="80"
                                                 MinWidth="75"
                                                 Binding="{Binding TaxCode}"
                                                 Header="Tax Code" />
@@ -952,7 +951,7 @@
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Row="1"
                                         Grid.Column="7"
-                                        Width="110"
+                                        Width="90"
                                         Margin="0,2"
                                         HorizontalAlignment="Left"
                                         Background="White"
@@ -971,7 +970,7 @@
                             <ComboBox x:Name="cmbStatus"
                                       Grid.Row="2"
                                       Grid.Column="5"
-                                      Width="110"
+                                      Width="90"
                                       Margin="0,2"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Stretch"
@@ -1143,8 +1142,8 @@
                                                              CanUserAddRows="False"
                                                              CanUserDeleteRows="False"
                                                              DeleteCommandParameter="{Binding SelectedItem,
-                                                                                              ElementName=dtgrdQuotationDetail}"
-                                                             DeleteItemCommand="{Binding DeleteSaleOrderDetailCommand}"
+                                                                                                      ElementName=dtgrdQuotationDetail}"
+                                                             DeleteItemCommand="{Binding DeleteSaleOrderDetailWithKeyCommand}"
                                                              HorizontalScrollBarVisibility="Hidden"
                                                              IsRollBackData="False"
                                                              ItemsSource="{Binding SelectedSaleOrder.SaleOrderDetailCollection,
@@ -1159,7 +1158,7 @@
                                                              Style="{DynamicResource DatagridWithRowHeader}"
                                                              VisibilityNavigationBar="Collapsed">
                                     <cpcDataGrid:DataGridControl.Columns>
-                                        <DataGridTextColumn Width="100"
+                                        <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemCode}"
                                                             Header="Item Code"
                                                             IsReadOnly="True" />
@@ -1167,17 +1166,17 @@
                                                             Binding="{Binding ItemName}"
                                                             Header="Item Name"
                                                             IsReadOnly="True" />
-                                        <DataGridTextColumn Width="100"
+                                        <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemAtribute,
                                                                               Mode=OneWay}"
                                                             Header="Attribute"
                                                             IsReadOnly="True" />
-                                        <DataGridTextColumn Width="100"
+                                        <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemSize,
                                                                               Mode=OneWay}"
                                                             Header="Size"
                                                             IsReadOnly="True" />
-                                        <DataGridTemplateColumn Width="70" Header="Quantity">
+                                        <DataGridTemplateColumn Width="75" Header="Quantity">
 
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -1204,7 +1203,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="120"
+                                        <DataGridTemplateColumn Width="80"
                                                                 Header="Price"
                                                                 CellStyle="{StaticResource DataGridPriceCellStyle}" >
                                             <DataGridTemplateColumn.CellTemplate>
@@ -1224,7 +1223,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="80" Header="UOM">
+                                        <DataGridTemplateColumn Width="75" Header="UOM">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding UnitName, Mode=OneWay}" />
@@ -1247,7 +1246,7 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
 
-                                        <DataGridTemplateColumn Width="100"
+                                        <DataGridTemplateColumn Width="75"
                                                                 Header="Amount"
                                                                 IsReadOnly="True">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -1260,7 +1259,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="80" Header="On-Hand Qty">
+                                        <DataGridTemplateColumn Width="75" Header="On-Hand Qty">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock HorizontalAlignment="Right" Text="{Binding OnHandQty, Mode=OneWay}" />
@@ -1672,7 +1671,7 @@
                                                              HorizontalContentAlignment="Right"
                                                              Padding="2,0,2,0"
                                                              SymbolAlignment="Left"
-                                                             SymbolCurrency="$"
+                                                             
                                                              TextWrapping="NoWrap"
                                                              Value="{Binding SelectedSaleOrder.DiscountAmount,
                                                                              Mode=TwoWay,
@@ -1810,7 +1809,7 @@
                                                              HorizontalContentAlignment="Right"
                                                              Padding="2,0,2,0"
                                                              SymbolAlignment="Left"
-                                                             SymbolCurrency="$"
+                                                             
                                                              TextWrapping="NoWrap"
                                                              Value="{Binding SelectedSaleOrder.Shipping,
                                                                              Mode=TwoWay,

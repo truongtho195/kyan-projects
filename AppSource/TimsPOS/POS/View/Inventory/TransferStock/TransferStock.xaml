@@ -110,8 +110,9 @@
             </Setter>
 
         </Style>
-        <!--DataGridCell-->
+        <!--DataGridCell Edit Style-->
         <Style x:Key="DataGridCellEnableStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
                TargetType="{x:Type DataGridCell}">
             <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
                     Value="{Binding DataContext.SelectedTransferStock.IsEnable, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Mode=OneWay}"></Setter>
@@ -143,7 +144,8 @@
                     Value="#03FFFFFF" />
             <Setter Property="BorderBrush"
                     Value="{x:Null}" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
             <Style.Triggers>
                 <Trigger Property="IsSelected"
                          Value="True">
@@ -164,7 +166,8 @@
         <control:BusyIndicator IsBusy="{Binding IsBusy}">
             <Grid x:Name="grdTransferStock">
                 <Grid x:Name="grdContentSearch"
-                      d:LayoutOverrides="GridBox" d:IsHidden="True">
+                      d:LayoutOverrides="GridBox"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -797,7 +800,9 @@
                                                         <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
                                                                                        TextAlignment="Right"
                                                                                        Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
-                                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center">
+                                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                                       HorizontalContentAlignment="Stretch"
+                                                                                       VerticalContentAlignment="Center">
                                                             <i:Interaction.Triggers>
                                                                 <i:EventTrigger EventName="LostFocus">
                                                                     <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
@@ -827,8 +832,8 @@
                                                                   Style="{DynamicResource ComboBoxInsideDataGridStyle}"
                                                                   ItemsSource="{Binding ProductUOMCollection, Mode=OneWay}"
                                                                   SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  SelectedValuePath="UOMId" 
-																  VerticalContentAlignment="Center" />
+                                                                  SelectedValuePath="UOMId"
+                                                                  VerticalContentAlignment="Center" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>

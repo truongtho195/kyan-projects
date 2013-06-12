@@ -1000,6 +1000,8 @@ namespace CPC.POS.ViewModel
 
                 //Update for define
                 Define.CONFIGURATION = new base_ConfigurationModel(config);
+                (_ownerViewModel as MainViewModel).LoadTaxLocationAndCode();
+                
             }
 
             if (this.PrimaryTaxLocation.PrimarySaleTaxEdited)

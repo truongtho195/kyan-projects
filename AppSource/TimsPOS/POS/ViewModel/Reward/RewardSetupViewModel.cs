@@ -13,6 +13,7 @@ using System.Diagnostics;
 using SecurityLib;
 using System.Windows;
 using System.Linq.Expressions;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -25,9 +26,11 @@ namespace CPC.POS.ViewModel
         public RelayCommand MemberListCommand { get; private set; }
         public RelayCommand RedemptionHistoryCommand { get; private set; }
         public RelayCommand TurnTrackingCommand { get; private set; }
-
+        protected bool IsChangePurCharseThreshold = false;
+        protected decimal NumbersOfRewardRelation = 0;
         //Repository
         private base_RewardManagerRepository _rewardManagerRepository = new base_RewardManagerRepository();
+        private base_GuestRewardRepository _guestRewardRepository = new base_GuestRewardRepository();
         #endregion
 
         #region Constructors
@@ -142,7 +145,7 @@ namespace CPC.POS.ViewModel
         private void OnDeleteCommandExecute()
         {
             // TODO: Handle command logic here
-            this.Delete();
+
         }
         #endregion
 
@@ -181,7 +184,7 @@ namespace CPC.POS.ViewModel
         private void OnRedemptionHistoryCommandExecute()
         {
             // TODO: Handle command logic here
-            this.Delete();
+
         }
         #endregion
 
@@ -206,6 +209,34 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region PurchaseThresholdChanged Command
+        /// <summary>
+        /// Gets the QtyChanged Command.
+        /// <summary>
+
+        public RelayCommand<object> PurchaseThresholdChanged { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the QtyChanged command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnPurchaseThresholdChangedCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the QtyChanged command is executed.
+        /// </summary>
+        private void OnPurchaseThresholdChangedExecute(object param)
+        {
+            if (param != null && this.RewardManagerModel != null)
+            {
+
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -213,7 +244,6 @@ namespace CPC.POS.ViewModel
         private void InitialData()
         {
             //To load data from base_RewardManager.
-
         }
 
         #region InitialCommand
@@ -229,6 +259,7 @@ namespace CPC.POS.ViewModel
             this.MemberListCommand = new RelayCommand(this.OnMemberListCommandExecute, this.OnMemberListCommandCanExecute);
             this.RedemptionHistoryCommand = new RelayCommand(this.OnRedemptionHistoryCommandExecute, this.OnRedemptionHistoryCommandCanExecute);
             this.TurnTrackingCommand = new RelayCommand(this.OnTurnTrackingCommandExecute, this.OnTurnTrackingCommandCanExecute);
+            this.PurchaseThresholdChanged = new RelayCommand<object>(OnPurchaseThresholdChangedExecute, OnPurchaseThresholdChangedCanExecute);
         }
         #endregion
 
@@ -317,35 +348,167 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                this.NumbersOfRewardRelation = 0;
+                //To update data into base_GuestReward table.
+                if (this.RewardManagerModel.PurchaseThreshold != this.RewardManagerModel.base_RewardManager.PurchaseThreshold
+                    || this.RewardManagerModel.RewardExpiration != this.RewardManagerModel.base_RewardManager.RewardExpiration
+                || this.RewardManagerModel.RedemptionAfterDays != this.RewardManagerModel.base_RewardManager.RedemptionAfterDays)
+                {
+                    string message = String.Format("{0}\n {1}\n {2}\n {3}", "Do you want to keep existing customer's rewards available ?", "[Yes] = Keep existing customer's rewards available.", "[No]  = Discard and recalculate existing rewards.The redemption will not be allowed.", "[Cancel] = Leave this message.");
+                    MessageBoxResult result = MessageBox.Show(message, "Notification", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Cancel)
+                        return;
+                    else if (result == MessageBoxResult.No)
+                    {
+                        this.UpdatePurchaseThreshold();
+                        if (!this.IsChangePurCharseThreshold)
+                        {
+                            int date = int.Parse(Common.RewardExpirationTypes.SingleOrDefault(x => x.ObjValue.Equals(this.RewardManagerModel.RewardExpiration.ToString())).Detail.ToString());
+                            short Availablestatus = (short)GuestRewardStatus.Available;
+                            short RedeemedStatus = (short)GuestRewardStatus.Redeemed;
+                            //To group guest on sale order.
+                            var queryGuest = this._guestRewardRepository.GetAll().Where(x => (x.Status == Availablestatus || x.Status == RedeemedStatus) && (x.Reason != "Manual" || x.SaleOrderNo.Length > 0)).GroupBy(x => x.GuestId);
+                            if (queryGuest != null)
+                            {
+                                foreach (var itemRewardGroup in queryGuest)
+                                    if (itemRewardGroup.Count(x => x.Status == Availablestatus) > 0)
+                                    {
+                                        //To update RewardExpiration of item on base_GuestReward table.
+                                        var RewardAvailable = itemRewardGroup.Where(x => x != null && x.Status == Availablestatus);
+                                        foreach (var item in RewardAvailable)
+                                            this.UpdateRewardExpiration(item, date);
+                                        this._guestRewardRepository.Commit();
+                                        this.NumbersOfRewardRelation = this.NumbersOfRewardRelation + RewardAvailable.Count();
+                                    }
+                            }
+                        }
+                        this.IsChangePurCharseThreshold = false;
+                    }
+                }
                 //To update data into base_RewardManager table.
                 this.RewardManagerModel.ToEntity();
                 this._rewardManagerRepository.Commit();
                 this.RewardManagerModel.EndUpdate();
+                //Notification numbers of reward changed.
+                if (this.NumbersOfRewardRelation > 0)
+                    MessageBox.Show(String.Format("{0} reward(s) issued.", this.NumbersOfRewardRelation), "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("Update" + ex.ToString());
             }
         }
-        /// <summary>
-        /// To update IsLock on base_ResoureceAccount table.
-        /// </summary>
-        private void Delete()
-        {
-            try
-            {
-                MessageBoxResult result = MessageBox.Show("Do you want to lock this account?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
 
-                }
-            }
-            catch (Exception ex)
+        private void UpdatePurchaseThreshold()
+        {
+            //To get all of saleOrder on base_guestReward table.
+            if (this.RewardManagerModel.PurchaseThreshold != this.RewardManagerModel.base_RewardManager.PurchaseThreshold)
             {
-                Debug.WriteLine("Delete" + ex.ToString());
+                short Availablestatus = (short)GuestRewardStatus.Available;
+                short RedeemedStatus = (short)GuestRewardStatus.Redeemed;
+                //To group guest on sale order.
+                var queryGuest = this._guestRewardRepository.GetAll().Where(x => (x.Status == Availablestatus || x.Status == RedeemedStatus) && (x.Reason != "Manual" || x.SaleOrderNo.Length > 0)).GroupBy(x => x.GuestId);
+                if (queryGuest != null)
+                {
+                    foreach (var itemGuest in queryGuest)
+                    {
+                        //To check status of saleOrder on base_GuestReward table.
+                        if (itemGuest.Count(x => x.Status == Availablestatus) > 0)
+                        {
+                            //To get PurchaseDuringTrackingPeriod from base_Guest table.
+                            decimal PurchaseDuringTrackingPeriod = itemGuest.First().base_Guest.PurchaseDuringTrackingPeriod;
+                            //To group reward on sale order.
+                            var queryReward = itemGuest.GroupBy(x => x.SaleOrderNo);
+                            //To sum amount of sale order.
+                            var RedeemedReward = queryReward.Select(x => x.Where(y => y.Status == RedeemedStatus)).Where(x => x.Count() > 0);
+                            //To sum AmountRedeemed from base_GuestReward table if status of item is 2.
+                            decimal AmountRedeemedSum = 0;
+                            if (RedeemedReward != null && RedeemedReward.Count() > 0)
+                                AmountRedeemedSum = RedeemedReward.Sum(x => x.Select(y => y.Amount).First());
+                            //decimal AmountRedeemedSum = queryReward.Sum(x => x.Where(y => y.Status == RedeemedStatus).Select(y => y.Amount).First());
+                            decimal TotalAmount = PurchaseDuringTrackingPeriod - AmountRedeemedSum;
+                            //To count NumbersofReward to insert them into base_GuestReward table.
+                            decimal NumbersofReward = Decimal.Truncate(TotalAmount / this.RewardManagerModel.PurchaseThreshold);
+                            if (NumbersofReward > 0)
+                            {
+                                //To insert item into base_GuestReward table.
+                                this.InsertGuestReward(NumbersofReward, itemGuest.First());
+                                //To update status of item on base_GuestReward table.
+                                this.UpdateGuestReward(itemGuest);
+                            }
+                            else
+                                //To update status of item on base_GuestReward table.
+                                this.UpdateGuestReward(itemGuest);
+                            this.NumbersOfRewardRelation = this.NumbersOfRewardRelation + NumbersofReward;
+                        }
+                    }
+                }
             }
         }
 
+        //To insert item into base_GuestReward table.
+        private void InsertGuestReward(decimal number, base_GuestReward reward)
+        {
+            bool flagChange = (this.RewardManagerModel.RewardExpiration != this.RewardManagerModel.base_RewardManager.RewardExpiration
+                || (this.RewardManagerModel.IsBlockRedemption && this.RewardManagerModel.RedemptionAfterDays != this.RewardManagerModel.base_RewardManager.RedemptionAfterDays));
+            for (int i = 0; i < number; i++)
+            {
+                //To update RewardExpiration,TotalRewardRedeemed if user changes them.
+                if (flagChange)
+                {
+                    int date = int.Parse(Common.RewardExpirationTypes.SingleOrDefault(x => x.ObjValue.Equals(this.RewardManagerModel.RewardExpiration.ToString())).Detail.ToString());
+                    reward.ActivedDate = DateTimeExt.Today;
+                    reward.EarnedDate = DateTimeExt.Today;
+                    if (this.RewardManagerModel.IsBlockRedemption && this.RewardManagerModel.RedemptionAfterDays > 0)
+                        reward.ActivedDate = DateTimeExt.Today.AddDays(this.RewardManagerModel.RedemptionAfterDays);
+                    this.UpdateRewardExpiration(reward, date);
+                }
+                reward.AppliedDate = DateTimeExt.Today;
+                //To insert item into base_GuestReward table.
+                this._guestRewardRepository.Add(this.ToEntity(reward));
+            }
+            this.IsChangePurCharseThreshold = true;
+            //To Commit that user insert item.
+            this._guestRewardRepository.Commit();
+        }
+        //To update status of item on base_GuestReward table.
+        private void UpdateGuestReward(IGrouping<long, base_GuestReward> Items)
+        {
+            foreach (var guestReward in Items)
+                if (guestReward.Status == (short)GuestRewardStatus.Available)
+                    guestReward.Status = (short)GuestRewardStatus.Removed;
+            this._guestRewardRepository.Commit();
+        }
+        //To update RewardExpiration of item on base_GuestReward table.
+        private void UpdateRewardExpiration(base_GuestReward reward, int date)
+        {
+            if (this.RewardManagerModel.RewardExpiration == 0)
+                reward.ExpireDate = null;
+            else
+                reward.ExpireDate = DateTimeExt.Today.AddDays(date + this.RewardManagerModel.RedemptionAfterDays);
+        }
+        public base_GuestReward ToEntity(base_GuestReward reward)
+        {
+            base_GuestReward base_GuestReward = new base_GuestReward();
+            base_GuestReward.GuestId = reward.GuestId;
+            base_GuestReward.RewardId = reward.RewardId;
+            base_GuestReward.Amount = 0;
+            base_GuestReward.IsApply = false;
+            base_GuestReward.EarnedDate = reward.EarnedDate;
+            base_GuestReward.AppliedDate = null;
+            base_GuestReward.RewardValue = 0;
+            base_GuestReward.SaleOrderResource = reward.SaleOrderResource;
+            base_GuestReward.SaleOrderNo = reward.SaleOrderNo;
+            base_GuestReward.Remark = reward.Remark;
+            base_GuestReward.ActivedDate = reward.ActivedDate;
+            base_GuestReward.ExpireDate = reward.ExpireDate;
+            base_GuestReward.Reason = reward.Reason;
+            base_GuestReward.Status = (short)GuestRewardStatus.Available;
+            return base_GuestReward;
+        }
+        /// <summary>
+        /// To update IsLock on base_ResoureceAccount table.
+        /// </summary>
         private bool IsEditData()
         {
             bool isUnactive = true;

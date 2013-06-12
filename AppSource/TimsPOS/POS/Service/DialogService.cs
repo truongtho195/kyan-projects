@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using CPC.Service.FrameworkDialogs;
 using CPC.Service.FrameworkDialogs.FolderBrowse;
 using CPC.Service.FrameworkDialogs.OpenFile;
@@ -16,11 +18,10 @@ namespace CPC.Service
     /// </summary>
     class DialogService : IDialogService
     {
+        #region Define
 
-        #region define
         private readonly HashSet<FrameworkElement> views;
         //private readonly IWindowViewModelMappings windowViewModelMappings;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DialogService"/> class.
@@ -34,13 +35,16 @@ namespace CPC.Service
 
         //    views = new HashSet<FrameworkElement>();
         //} 
+
         #endregion
 
         #region Constructors
+
         public DialogService()
         {
             views = new HashSet<FrameworkElement>();
         }
+
         #endregion
 
         #region IDialogService Members
@@ -55,7 +59,6 @@ namespace CPC.Service
                 return new ReadOnlyCollection<FrameworkElement>(views.ToList());
             }
         }
-
 
         /// <summary>
         /// Registers a View.
@@ -80,7 +83,6 @@ namespace CPC.Service
             views.Add(view);
         }
 
-
         /// <summary>
         /// Unregisters a View.
         /// </summary>
@@ -89,7 +91,6 @@ namespace CPC.Service
         {
             views.Remove(view);
         }
-
 
         /// <summary>
         /// Shows a dialog.
@@ -109,7 +110,6 @@ namespace CPC.Service
         //    Type dialogType = windowViewModelMappings.GetWindowTypeFromViewModelType(viewModel.GetType());
         //    return ShowDialog(ownerViewModel, viewModel, dialogType);
         //}
-
 
         /// <summary>
         /// Shows a dialog.
@@ -191,7 +191,6 @@ namespace CPC.Service
             return dialog.ShowDialog(new WindowWrapper(FindOwnerWindow(ownerViewModel)));
         }
 
-
         /// <summary>
         /// Shows the FolderBrowserDialog.
         /// </summary>
@@ -223,7 +222,6 @@ namespace CPC.Service
             typeof(DialogService),
             new UIPropertyMetadata(IsRegisteredViewPropertyChanged));
 
-
         /// <summary>
         /// Gets value describing whether FrameworkElement is acting as View in MVVM.
         /// </summary>
@@ -232,7 +230,6 @@ namespace CPC.Service
             return (bool)target.GetValue(IsRegisteredViewProperty);
         }
 
-
         /// <summary>
         /// Sets value describing whether FrameworkElement is acting as View in MVVM.
         /// </summary>
@@ -240,7 +237,6 @@ namespace CPC.Service
         {
             target.SetValue(IsRegisteredViewProperty, value);
         }
-
 
         /// <summary>
         /// Is responsible for handling IsRegisteredViewProperty changes, i.e. whether
@@ -276,6 +272,7 @@ namespace CPC.Service
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Shows a dialog.
         /// </summary>
@@ -301,13 +298,16 @@ namespace CPC.Service
             else if (dialogType.BaseType.Equals(typeof(System.Windows.Controls.UserControl)))
             {
                 // Create dialog and set properties
-                System.Windows.Controls.UserControl control = (System.Windows.Controls.UserControl)Activator.CreateInstance(dialogType);
+                UserControl control = (UserControl)Activator.CreateInstance(dialogType);
                 CPC.Control.PopupContainer popup = new CPC.Control.PopupContainer(control);
                 popup.ShowClose = false;
                 dialog = popup;
                 dialog.Owner = FindOwnerWindow(ownerViewModel);
                 dialog.DataContext = viewModel;
                 dialog.Title = title ?? ((string)control.Tag ?? String.Empty);
+
+                // Set key binding
+                SetKeyBinding(dialog.Owner, dialog);
             }
             else
             {
@@ -438,7 +438,46 @@ namespace CPC.Service
         {
             return view as Window ?? Window.GetWindow(view);
         }
-        #endregion
 
+        /// <summary>
+        /// Set shortcut key from source to target window
+        /// </summary>
+        /// <param name="host"></param>
+        private void SetKeyBinding(Window source, Window target)
+        {
+            // Get input binding collection from source window
+            InputBindingCollection sourceInputBindingCollection = source.InputBindings;
+
+            if (sourceInputBindingCollection != null)
+            {
+                foreach (InputBinding sourceInputBindingItem in sourceInputBindingCollection)
+                {
+                    // Get key gesture of input binding
+                    KeyGesture sourceKeyGesture = sourceInputBindingItem.Gesture as KeyGesture;
+
+                    // Create key binding for main
+                    KeyBinding targetKeyBinding = new KeyBinding(sourceInputBindingItem.Command, sourceKeyGesture);
+                    //targetKeyBinding.CommandTarget = host;
+                    targetKeyBinding.CommandParameter = sourceInputBindingItem.CommandParameter + "Main";
+
+                    // Get key binding from main
+                    InputBinding keyBinding = target.InputBindings.Cast<InputBinding>().FirstOrDefault(
+                        x => ((KeyGesture)x.Gesture).Key.Equals(sourceKeyGesture.Key) &&
+                            ((KeyGesture)x.Gesture).Modifiers.Equals(sourceKeyGesture.Modifiers));
+
+                    // Check exist key binding
+                    if (keyBinding != null)
+                    {
+                        // Remove key binding is existed from main
+                        target.InputBindings.Remove(keyBinding);
+                    }
+
+                    // Add new key binding to main
+                    target.InputBindings.Add(targetKeyBinding);
+                }
+            }
+        }
+
+        #endregion
     }
 }

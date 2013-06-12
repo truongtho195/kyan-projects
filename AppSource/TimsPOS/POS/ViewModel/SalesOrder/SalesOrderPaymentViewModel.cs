@@ -24,6 +24,7 @@ namespace CPC.POS.ViewModel
         public bool SavePayment { get; set; }
 
         private bool _isInitialData = false;
+        private decimal _remainTotal = 0;
         #endregion
 
         #region Constructors
@@ -152,8 +153,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-
-
         #region PaymentModel
         private base_ResourcePaymentModel _paymentModel;
         /// <summary>
@@ -213,7 +212,6 @@ namespace CPC.POS.ViewModel
 
         public bool IsPaidFull { get; set; }
 
-
         #endregion
 
         #region Commands Methods
@@ -227,9 +225,18 @@ namespace CPC.POS.ViewModel
         {
             if (PaymentModel == null)
                 return false;
-            return PaymentModel.IsDirty
-                && (!IsQuotation && PaymentModel.TotalAmount > 0 && PaymentModel.TotalPaid > 0 && ((IsPaidFull && PaymentModel.Balance == 0) || !IsPaidFull))
-                   || (IsQuotation && PaymentModel.TotalPaid > 0);
+            if (IsQuotation)
+            {
+                return PaymentModel.IsDirty && PaymentModel.TotalAmount > 0 && PaymentModel.TotalPaid > 0 && PaymentModel.TotalPaid <= PaymentModel.TotalAmount;
+            }
+            else
+            {
+                return PaymentModel.IsDirty;
+            }
+
+            //return PaymentModel.IsDirty
+            //    && (!IsQuotation && PaymentModel.TotalAmount > 0 && PaymentModel.TotalPaid > 0 && ((IsPaidFull && PaymentModel.Balance == 0) || !IsPaidFull))
+            //       || (IsQuotation && PaymentModel.TotalPaid > 0);
         }
 
         /// <summary>
@@ -298,7 +305,7 @@ namespace CPC.POS.ViewModel
             {
                 string title = SelectedPaymentDetail.PaymentMethodId == 4 ? "Credit Card" : "Gift Card";
 
-                PaymentCardViewModel paymentCardViewModel = new PaymentCardViewModel(SelectedPaymentDetail);
+                PaymentCardViewModel paymentCardViewModel = new PaymentCardViewModel(SelectedPaymentDetail, PaymentModel.Balance);
 
                 bool? result = _dialogService.ShowDialog<PaymentCardView>(_ownerViewModel, paymentCardViewModel, title);
                 if (result == true)
@@ -315,6 +322,43 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region FillMoneyCommand
+        /// <summary>
+        /// Gets the FillMoney Command.
+        /// <summary>
+
+        public RelayCommand<object> FillMoneyCommand { get; private set; }
+
+
+
+        /// <summary>
+        /// Method to check whether the FillMoney command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnFillMoneyCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the FillMoney command is executed.
+        /// </summary>
+        private void OnFillMoneyCommandExecute(object param)
+        {
+            if (PaymentModel != null && PaymentModel.PaymentDetailCollection!=null)
+                _remainTotal = PaymentModel.TotalAmount - PaymentModel.PaymentDetailCollection.Where(x => x != SelectedPaymentDetail).Sum(x => x.Paid);
+
+            if (SelectedPaymentDetail != null && SelectedPaymentDetail.Paid==0 && !SelectedPaymentDetail.IsCard)
+            {
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    SelectedPaymentDetail.Paid = _remainTotal > 0 ? _remainTotal : 0;
+                }), System.Windows.Threading.DispatcherPriority.DataBind);
+            }
+        } 
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -324,6 +368,7 @@ namespace CPC.POS.ViewModel
             AcceptedPaymentCommand = new RelayCommand(OnAcceptedPaymentCommandExecute, OnAcceptedPaymentCommandCanExecute);
             CancelCommand = new RelayCommand(OnCancelCommandExecute, OnCancelCommandCanExecute);
             OpenPaymentCardViewCommand = new RelayCommand<object>(OnOpenPaymentCardViewCommandExecute, OnOpenPaymentCardViewCommandCanExecute);
+            FillMoneyCommand = new RelayCommand<object>(OnFillMoneyCommandExecute, OnFillMoneyCommandCanExecute);
         }
 
         private void InitialPaymentMethod(string remark, string docResource, string docNumber, decimal totalAmount, decimal balance, decimal rewardValue)
@@ -387,7 +432,8 @@ namespace CPC.POS.ViewModel
                         paymentDetailModel.Tip = 0;
 
                         paymentDetailModel.GiftCardNo = string.Empty;
-                        paymentDetailModel.IsCreditCard = paymentMethod.Value == 4 ? true : false;//Show Tip when creditcard
+                        paymentDetailModel.IsCreditCard = paymentMethod.Value == 4 ? true : false;//Show coloumn Tip when creditcard
+                        paymentDetailModel.IsPaymentCardMethod = (paymentMethod.Value == 4 || paymentMethod.Value == 64) ? true : false;
                         paymentDetailModel.IsCard = false;
                         paymentDetailModel.IsDirty = false;
                         paymentDetailModel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(paymentDetailModel_PropertyChanged);
@@ -447,6 +493,11 @@ namespace CPC.POS.ViewModel
                         //Add Payment Method is accepted in config
                         PaymentModel.PaymentDetailCollection.Add(paymentDetailModel);
                     }
+                }
+                if (balance < 0)
+                {
+                    PaymentModel.CalcChange();
+                    PaymentModel.CalcBalance();
                 }
             }
             _isInitialData = false;

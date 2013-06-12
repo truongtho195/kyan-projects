@@ -59,23 +59,62 @@ namespace CPC.POS.Model
             }
         }
 
+        private int _storeCode;
+        /// <summary>
+        /// Gets or sets the StoreCode.
+        /// </summary>
+        public int StoreCode
+        {
+            get { return _storeCode; }
+            set
+            {
+                if (_storeCode != value)
+                {
+                    _storeCode = value;
+                    OnPropertyChanged(() => StoreCode);
+                }
+            }
+        }
+
+        private int _onReservedQuantity;
+        /// <summary>
+        /// Gets or sets the OnReservedQuantity.
+        /// </summary>
+        public int OnReservedQuantity
+        {
+            get { return _onReservedQuantity; }
+            set
+            {
+                if (_onReservedQuantity != value)
+                {
+                    _onReservedQuantity = value;
+                    OnPropertyChanged(() => OnReservedQuantity);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
 
-        // Default constructor
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public CheckBoxItemModel()
         {
 
         }
 
-        // Default constructor that set value to field
+        /// <summary>
+        /// Default constructor that set value to field
+        /// </summary>
+        /// <param name="comboItem"></param>
         public CheckBoxItemModel(ComboItem comboItem)
         {
             this.Value = comboItem.Value;
             this.Text = comboItem.Text;
         }
-        
+
         #endregion
     }
 }

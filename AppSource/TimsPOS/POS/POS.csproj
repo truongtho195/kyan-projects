@@ -241,9 +241,6 @@
     <Compile Include="Model\base_ConfigurationModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\base_CostAdjustmentItemModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\base_CostAdjustmentModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
@@ -292,6 +289,9 @@
     <Compile Include="Model\base_GuestScheduleModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\base_LanguageModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\base_MemberShipModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
@@ -326,9 +326,6 @@
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\base_PurchaseOrderReceiveModel.cs">
-      <DependentUpon>ModelTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\base_QuantityAdjustmentItemModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\base_QuantityAdjustmentModel.cs">
@@ -418,6 +415,7 @@
     <Compile Include="Model\Custom\ItemModel.cs" />
     <Compile Include="Model\Custom\ItemSettingModel.cs" />
     <Compile Include="Model\Custom\PriceModel.cs" />
+    <Compile Include="Model\Custom\ProblemDetectionModel.cs" />
     <Compile Include="Model\Custom\ProductBrandModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -456,6 +454,12 @@
     <Compile Include="Model\pga_scheduleModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\rpt_GroupModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\rpt_ReportModel.cs">
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\tims_HolidayHistoryModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
@@ -474,8 +478,24 @@
     <Compile Include="Model\tims_WorkWeekModel.cs">
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repository\base_CostAdjustmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_LanguageRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\base_QuantityAdjustmentRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\rpt_GroupRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\rpt_ReportRepository.cs">
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Toolkit\Behavior\DataGridCellFocusHelper.cs" />
     <Compile Include="Ultility\Helper\IdleTimeHelper.cs" />
+    <Compile Include="Ultility\Helper\Language.cs" />
     <Compile Include="Ultility\Singleton\Program.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -486,12 +506,6 @@
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_ConfigurationRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_CostAdjustmentItemRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_CostAdjustmentRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_CountStockDetailRepository.cs">
@@ -573,12 +587,6 @@
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_PurchaseOrderRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_QuantityAdjustmentItemRepository.cs">
-      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\base_QuantityAdjustmentRepository.cs">
       <DependentUpon>RepositoryTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\base_ResourceAccountRepository.cs">
@@ -781,15 +789,18 @@
     <Compile Include="ViewModel\Common\CreditCardViewModel.cs" />
     <Compile Include="ViewModel\Common\PaymentTermViewModel.cs" />
     <Compile Include="ViewModel\Common\PopupAddressViewModel.cs" />
+    <Compile Include="ViewModel\Common\ProblemDetectionViewModel.cs" />
     <Compile Include="ViewModel\Common\ProductSearchViewModel.cs" />
     <Compile Include="ViewModel\Common\ViewProfileViewModel.cs" />
     <Compile Include="ViewModel\CompanySetting\CompanySettingViewModel.cs" />
     <Compile Include="ViewModel\Customer\CustomerViewModel.cs" />
+    <Compile Include="ViewModel\Customer\RewardEarnViewModel.cs" />
     <Compile Include="ViewModel\Customer\Reward\RewardListandHistoryViewModel.cs" />
     <Compile Include="ViewModel\Employee\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\Employee\RecordFingerprintViewModel.cs" />
     <Compile Include="ViewModel\GiftCard\GiftCardViewModel.cs" />
     <Compile Include="ViewModel\Inventory\AdjustmentInformationViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\QuantityAdjustmentHistoryViewModel.cs" />
     <Compile Include="ViewModel\Inventory\CountSheetViewModel.cs" />
     <Compile Include="ViewModel\Inventory\CurrentStockViewModel.cs" />
     <Compile Include="ViewModel\Inventory\DepartmentViewModel.cs" />
@@ -800,6 +811,7 @@
     <Compile Include="ViewModel\Inventory\Pricing\PricingVendorViewModel.cs" />
     <Compile Include="ViewModel\Inventory\Pricing\PricingViewModel.cs" />
     <Compile Include="ViewModel\Inventory\ProductMovementHistoryViewModel.cs" />
+    <Compile Include="ViewModel\Inventory\CostAdjustmentHistoryViewModel.cs" />
     <Compile Include="ViewModel\Inventory\Promotion\PromotionCustomViewModel.cs" />
     <Compile Include="ViewModel\Inventory\Promotion\PromotionAdvanceSearchViewModel.cs" />
     <Compile Include="ViewModel\Inventory\Promotion\PromotionReasonViewModel.cs" />
@@ -845,6 +857,7 @@
     <Compile Include="ViewModel\SalesTax\TaxOptionViewModel.cs" />
     <Compile Include="ViewModel\Security\User\LoginViewModel.cs" />
     <Compile Include="ViewModel\Security\User\ManagementUserLogViewModel.cs" />
+    <Compile Include="ViewModel\Security\User\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModel\Security\User\UserListViewModel.cs" />
     <Compile Include="ViewModel\SplashScreenViewModel.cs" />
     <Compile Include="ViewModel\TimeClock\AssignWorkScheduleViewModel.cs" />
@@ -879,6 +892,9 @@
     <Compile Include="View\Common\PopupAddressView.xaml.cs">
       <DependentUpon>PopupAddressView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Common\ProblemDetection\ProblemDetectionView.xaml.cs">
+      <DependentUpon>ProblemDetectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Common\ProductSearchView.xaml.cs">
       <DependentUpon>ProductSearchView.xaml</DependentUpon>
     </Compile>
@@ -890,6 +906,9 @@
     </Compile>
     <Compile Include="View\Customer\CustomerView.xaml.cs">
       <DependentUpon>CustomerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Customer\RewardEarnView.xaml.cs">
+      <DependentUpon>RewardEarnView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Customer\Reward\IssueRewardView.xaml.cs">
       <DependentUpon>IssueRewardView.xaml</DependentUpon>
@@ -917,6 +936,9 @@
     </Compile>
     <Compile Include="View\Inventory\AdjustmentInformationView.xaml.cs">
       <DependentUpon>AdjustmentInformationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\CostAdjustmentHistoryView.xaml.cs">
+      <DependentUpon>CostAdjustmentHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Inventory\CountSheetView.xaml.cs">
       <DependentUpon>CountSheetView.xaml</DependentUpon>
@@ -957,6 +979,9 @@
     </Compile>
     <Compile Include="View\Inventory\Promotion\PromotionReasonView.xaml.cs">
       <DependentUpon>PromotionReasonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Inventory\QuantityAdjustmentHistoryView.xaml.cs">
+      <DependentUpon>QuantityAdjustmentHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Inventory\ReorderStockView.xaml.cs">
       <DependentUpon>ReorderStockView.xaml</DependentUpon>
@@ -1078,6 +1103,9 @@
     <Compile Include="View\SalesTax\SingleRateTaxView.xaml.cs">
       <DependentUpon>SingleRateTaxView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Security\User\ChangePasswordView.xaml.cs">
+      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Security\User\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -1137,16 +1165,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Image\RibbonImages\RibbonDepartment.png" />
+    <None Include="app.config" />
     <EntityDeploy Include="Database\POS.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>POS.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="XML\en-US.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Resource Include="Image\RibbonImages\RibbonDepartment.png" />
-    <None Include="app.config" />
     <None Include="Model\ModelTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ModelTemplate.cs</LastGenOutput>
@@ -1278,10 +1302,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dictionary\en-US.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Dictionary\BaseControlStyle\ExpanderStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1342,6 +1362,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Language\en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Language\vi-VN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Language\zh-CN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Common\AttachmentView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1374,6 +1406,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Common\ProblemDetection\ProblemDetectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Common\ProductSearchView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1387,6 +1423,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Customer\CustomerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Customer\RewardEarnView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1423,6 +1463,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Inventory\AdjustmentInformationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\CostAdjustmentHistoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1475,6 +1519,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Inventory\Promotion\PromotionReasonView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Inventory\QuantityAdjustmentHistoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1635,6 +1683,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\SalesTax\SingleRateTaxView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Security\User\ChangePasswordView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2002,6 +2054,24 @@
   <ItemGroup>
     <Resource Include="Image\RibbonImages\RibbonPOListLock.png" />
     <Resource Include="Image\RibbonImages\RibbonSOListLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RibbonImages\RibbonBackupData.png" />
+    <Resource Include="Image\RibbonImages\RibbonCostAdjustmentHistory.png" />
+    <Resource Include="Image\RibbonImages\RibbonQuantityAdjustmentHistory.png" />
+    <Resource Include="Image\RibbonImages\RibbonRestoreData.png" />
+    <Resource Include="Image\RibbonImages\RibbonUserPermission.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Language\en-US.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Language\vi-VN.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Language\zh-CN.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

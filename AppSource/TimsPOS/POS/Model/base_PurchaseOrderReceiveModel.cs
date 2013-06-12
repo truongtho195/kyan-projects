@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
 using System.Linq;
+using CPC.Helper;
 
 namespace CPC.POS.Model
 {
@@ -674,7 +674,7 @@ namespace CPC.POS.Model
 
                         if (_purchaseOrderDetail == null)
                         {
-                            message = "Please select an item.";
+                            message = Language.Error1;
                         }
 
                         break;
@@ -683,7 +683,7 @@ namespace CPC.POS.Model
 
                         if (_recQty <= 0)
                         {
-                            message = "Received quantity > 0";
+                            message = Language.Error2;
                         }
                         else if (_purchaseOrder != null &&
                             _purchaseOrderDetail != null &&
@@ -691,11 +691,11 @@ namespace CPC.POS.Model
                             !string.IsNullOrWhiteSpace(_PODResource) &&
                             Define.CONFIGURATION.IsAllowRGO != true)
                         {
-                            int sumReceivedQty = _purchaseOrder.PurchaseOrderReceiveCollection.Where(x => x.PODResource == _PODResource).Sum(x => x.RecQty);
-                            int orderQty = _purchaseOrderDetail.Quantity;
+                            decimal sumReceivedQty = _purchaseOrder.PurchaseOrderReceiveCollection.Where(x => x.PODResource == _PODResource).Sum(x => x.RecQty);
+                            decimal orderQty = _purchaseOrderDetail.Quantity;
                             if (orderQty < sumReceivedQty)
                             {
-                                message = "Quantity >= ReceivedQty";
+                                message = Language.Error3;
                             }
                         }
 

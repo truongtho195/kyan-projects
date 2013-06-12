@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
+using System.Linq;
 
 namespace CPC.POS.Model
 {
@@ -20,7 +21,7 @@ namespace CPC.POS.Model
     /// Model for table base_SaleOrderDetail
     /// </summary>
     [Serializable]
-    public partial class base_SaleOrderDetailModel : ModelBase, IDataErrorInfo,IEditableObject
+    public partial class base_SaleOrderDetailModel : ModelBase, IDataErrorInfo, IEditableObject
     {
         #region Constructor
 
@@ -432,12 +433,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _onHandQty;
+        protected decimal _onHandQty;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the OnHandQty</para>
         /// </summary>
-        public int OnHandQty
+        public decimal OnHandQty
         {
             get { return this._onHandQty; }
             set
@@ -552,6 +553,46 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<int> _promotionId;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the PromotionId</para>
+        /// </summary>
+        public Nullable<int> PromotionId
+        {
+            get { return this._promotionId; }
+            set
+            {
+                if (this._promotionId != value)
+                {
+                    this.IsDirty = true;
+                    this._promotionId = value;
+                    OnPropertyChanged(() => PromotionId);
+                    PropertyChangedCompleted(() => PromotionId);
+                }
+            }
+        }
+
+        protected bool _isManual;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsManual</para>
+        /// </summary>
+        public bool IsManual
+        {
+            get { return this._isManual; }
+            set
+            {
+                if (this._isManual != value)
+                {
+                    this.IsDirty = true;
+                    this._isManual = value;
+                    OnPropertyChanged(() => IsManual);
+                    PropertyChangedCompleted(() => IsManual);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -598,6 +639,8 @@ namespace CPC.POS.Model
             this.base_SaleOrderDetail.BalanceShipped = this.BalanceShipped;
             this.base_SaleOrderDetail.Comment = this.Comment;
             this.base_SaleOrderDetail.TotalDiscount = this.TotalDiscount;
+            this.base_SaleOrderDetail.PromotionId = this.PromotionId;
+            this.base_SaleOrderDetail.IsManual = this.IsManual;
         }
 
         /// <summary>
@@ -631,6 +674,8 @@ namespace CPC.POS.Model
             this._balanceShipped = this.base_SaleOrderDetail.BalanceShipped;
             this._comment = this.base_SaleOrderDetail.Comment;
             this._totalDiscount = this.base_SaleOrderDetail.TotalDiscount;
+            this._promotionId = this.base_SaleOrderDetail.PromotionId;
+            this._isManual = this.base_SaleOrderDetail.IsManual;
         }
 
         /// <summary>
@@ -664,6 +709,8 @@ namespace CPC.POS.Model
             this.BalanceShipped = this.base_SaleOrderDetail.BalanceShipped;
             this.Comment = this.base_SaleOrderDetail.Comment;
             this.TotalDiscount = this.base_SaleOrderDetail.TotalDiscount;
+            this.PromotionId = this.base_SaleOrderDetail.PromotionId;
+            this.IsManual = this.base_SaleOrderDetail.IsManual;
         }
 
         #endregion
@@ -740,12 +787,12 @@ namespace CPC.POS.Model
         #endregion
 
         #region Qty
-        private int _qty;
+        private decimal _qty;
         /// <summary>
         /// Gets or sets the Qty.
         /// <para>Using for compare quanty when user lost focus</para>
         /// </summary>
-        public int Qty
+        public decimal Qty
         {
             get { return _qty; }
             set
@@ -873,12 +920,12 @@ namespace CPC.POS.Model
 
 
         #region QtyAfterRerturn
-        private int _qtyAfterRetrun;
+        private decimal _qtyAfterRetrun;
         /// <summary>
         /// Gets or sets the QtyAfterRerturn.
         /// //Using for return = PickQty- QtyReturned
         /// </summary>
-        public int QtyAfterRerturn
+        public decimal QtyAfterRerturn
         {
             get { return _qtyAfterRetrun; }
             set
@@ -892,6 +939,90 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region IsReadOnlyUOM
+        private bool _isReadOnlyUOM = false;
+        /// <summary>
+        /// Gets or sets the IsReadOnlyUOM.
+        /// </summary>
+        public bool IsReadOnlyUOM
+        {
+            get { return _isReadOnlyUOM; }
+            set
+            {
+                if (_isReadOnlyUOM != value)
+                {
+                    _isReadOnlyUOM = value;
+                    OnPropertyChanged(() => IsReadOnlyUOM);
+                }
+            }
+        }
+        #endregion
+
+        #region IsQuantityAccepted
+        private bool _isQuantityAccepted;
+        /// <summary>
+        /// Gets or sets the IsQuantityAccepted.
+        /// </summary>
+        public bool IsQuantityAccepted
+        {
+            get { return _isQuantityAccepted; }
+            set
+            {
+                if (_isQuantityAccepted != value)
+                {
+                    _isQuantityAccepted = value;
+                    OnPropertyChanged(() => IsQuantityAccepted);
+                }
+            }
+        }
+        #endregion
+
+
+        #region SerialTrackingDisplay
+        /// <summary>
+        /// Gets  the SerialTrackingDisplay.
+        /// </summary>
+        public string SerialTrackingDisplay
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(SerialTracking))
+                {
+                    string[] serialList = SerialTracking.Split(',');
+                    if (serialList.Count() > Define.MaxSerialLenght)
+                        return string.Join(", ", SerialTracking.Split(',').Select(x => x.Trim()).Take(Define.MaxSerialLenght)) + ", ...";
+                    else
+                        return SerialTracking;
+                }
+                return string.Empty;
+            }
+        }
+        #endregion
+
+
+        #region SalePriceChange
+        private decimal _salePriceChange;
+        /// <summary>
+        /// Gets or sets the SalePriceChange.
+        /// <para>using for determine Sale price is change with manual or discount</para>
+        /// </summary>
+        public decimal SalePriceChange
+        {
+            get { return _salePriceChange; }
+            set
+            {
+                if (_salePriceChange != value)
+                {
+                    _salePriceChange = value;
+                    OnPropertyChanged(() => SalePriceChange);
+                }
+            }
+        }
+        #endregion
+
+    
+
+
         #endregion
 
         #region Private Methods
@@ -900,7 +1031,8 @@ namespace CPC.POS.Model
         /// </summary>
         public void CalcSubTotal()
         {
-            SubTotal = SalePrice * Quantity;
+            _subTotal = SalePrice * Quantity;
+            OnPropertyChanged(() => SubTotal);
         }
 
         /// <summary>
@@ -927,7 +1059,7 @@ namespace CPC.POS.Model
         /// <summary>
         /// Calculate Discount amount/Unit Discount / TotalDiscount when Sale Price Changed
         /// </summary>
-        private void SalePriceChanged()
+        public void SalePriceChanged()
         {
             if (_regularPrice > 0 && _regularPrice > _salePrice)
                 _discountPercent = Math.Round((_regularPrice - _salePrice) / _regularPrice * 100, 2);
@@ -946,13 +1078,13 @@ namespace CPC.POS.Model
                 _unitDiscount = 0;//Math.Round(_regularPrice * _discountPercent / 100,2);
                 _totalDiscount = 0;
             }
-            
 
             OnPropertyChanged(() => DiscountPercent);
             OnPropertyChanged(() => DiscountAmount);
             OnPropertyChanged(() => TotalDiscount);
             OnPropertyChanged(() => UnitDiscount);
         }
+
 
         public void CalcDueQty()
         {
@@ -998,6 +1130,11 @@ namespace CPC.POS.Model
             this.IsVisibleRowDetail = saleOrderDetailModel.IsVisibleRowDetail;
 
         }
+
+        public void RaiseIsQuantityAccepted()
+        {
+            OnPropertyChanged(() => IsQuantityAccepted);
+        }
         #endregion
 
         #region Override Methods
@@ -1019,8 +1156,13 @@ namespace CPC.POS.Model
                     CalUnfill();
                     break;
                 case "SalePrice":
-                    SalePriceChanged();
+                    SalePriceChange = SalePrice;
                     break;
+                case "SerialTracking":
+                    OnPropertyChanged(() => SerialTrackingDisplay);
+                    break;
+
+
                 default:
                     break;
             }
@@ -1081,7 +1223,16 @@ namespace CPC.POS.Model
                             message = "Pick Quatity not greather than Due quatity";
                         }
                         break;
+                    case "IsQuantityAccepted":
+                        if (!IsQuantityAccepted)
+                        {
+                            message = "Quantity is not more than quantity store";
+                        }
+                        break;
+
+
                 }
+
 
                 if (!string.IsNullOrWhiteSpace(message))
                     return message;
@@ -1107,7 +1258,7 @@ namespace CPC.POS.Model
         void IEditableObject.EndEdit()
         {
             if (ObjBackup != null)
-                ObjBackup= null;
+                ObjBackup = null;
         }
         public void Restore(base_SaleOrderDetailModel saleOrderDetailModel)
         {
@@ -1139,6 +1290,6 @@ namespace CPC.POS.Model
             saleOrderDetailModel = null;
         }
 
-     
+
     }
 }

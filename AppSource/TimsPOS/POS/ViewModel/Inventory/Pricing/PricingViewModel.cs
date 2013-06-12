@@ -762,7 +762,7 @@ namespace CPC.POS.ViewModel
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
             {
-                MessageBox.Show("When you apply that change pricing , You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Language.Text14, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             //To apply that change pricing.
@@ -789,7 +789,7 @@ namespace CPC.POS.ViewModel
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
             {
-                MessageBox.Show("When you apply that restore pricing , You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Language.Text15, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             //To apply that restore pricing.
@@ -1177,7 +1177,7 @@ namespace CPC.POS.ViewModel
             if (this.SelectedItemPricing != null && this.SelectedItemPricing.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (OnSaveCommandCanExecute())
@@ -1328,11 +1328,7 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to lock this account?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-
-                }
+               
             }
             catch (Exception ex)
             {
@@ -1668,7 +1664,7 @@ namespace CPC.POS.ViewModel
             if (this.IsEditData())
             {
                 // Show notification when data has changed
-                MessageBoxResult msgResult = MessageBox.Show("Data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (this.OnSaveCommandCanExecute())

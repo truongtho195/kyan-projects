@@ -15,6 +15,19 @@
              Height="340"
              Width="600">
     <UserControl.Resources>
+    	<!--DataGridColumn-->
+        <DataTemplate x:Key="CompanyHeaderTemplate">
+            <TextBlock Text="{DynamicResource PricingPopup_Header_Company}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AccountHeaderTemplate">
+            <TextBlock Text="{DynamicResource PricingPopup_Header_Account}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CountryHeaderTemplate">
+            <TextBlock Text="{DynamicResource PricingPopup_Header_Country}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="PhoneHeaderTemplate">
+            <TextBlock Text="{DynamicResource PricingPopup_Header_Phone}" />
+        </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="grdPricingVendor"
           Margin="0,0,2,28"
@@ -98,7 +111,7 @@
                                Width="20" />
                     <TextBlock Margin="5,0,0,0"
                                VerticalAlignment="Center"
-                               Text="OK"
+                               Text="{DynamicResource Button_Content_OK}"
                                TextWrapping="NoWrap"
                                x:Name="txtblOK"
                                Foreground="White"
@@ -121,7 +134,7 @@
                     <TextBlock Margin="5,0,0,0"
                                x:Name="txtblExit"
                                VerticalAlignment="Center"
-                               Text="Cancel"
+                               Text="{DynamicResource Button_Content_Cancel}"
                                TextWrapping="NoWrap"
                                Foreground="White"
                                Style="{DynamicResource ButtonTextBlock}" />

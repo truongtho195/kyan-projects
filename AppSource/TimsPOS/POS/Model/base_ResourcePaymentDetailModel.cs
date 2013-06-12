@@ -474,6 +474,27 @@ namespace CPC.POS.Model
         public bool IsCard { get; set; }
 
 
+        #region IsPaymentCardMethod
+        private bool _isPaymentCardMethod;
+        /// <summary>
+        /// Gets or sets the IsPaymentCardMethod.
+        /// <para>Flag to set amount pay is not show text.when payment card or Gift card</para>
+        /// </summary>
+        public bool IsPaymentCardMethod
+        {
+            get { return _isPaymentCardMethod; }
+            set
+            {
+                if (_isPaymentCardMethod != value)
+                {
+                    _isPaymentCardMethod = value;
+                    OnPropertyChanged(() => IsPaymentCardMethod);
+                }
+            }
+        }
+        #endregion
+
+
         
         #endregion
 

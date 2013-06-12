@@ -14,6 +14,7 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
+using System.Windows.Data;
 
 namespace CPC.POS.ViewModel
 {
@@ -46,6 +47,8 @@ namespace CPC.POS.ViewModel
         private base_GuestProfileRepository _guestProfileRepository = new base_GuestProfileRepository();
         private base_GuestPaymentCardRepository _guestPaymentCardRepository = new base_GuestPaymentCardRepository();
         private base_SaleOrderRepository _saleOrderRepository = new base_SaleOrderRepository();
+        private base_RewardManagerRepository _rewardManagerRepository = new base_RewardManagerRepository();
+        private base_GuestRewardRepository _guestRewardRepository = new base_GuestRewardRepository();
 
         private BackgroundWorker _bgWorker = new BackgroundWorker { WorkerReportsProgress = true, WorkerSupportsCancellation = true };
 
@@ -54,8 +57,9 @@ namespace CPC.POS.ViewModel
         private string _customerMarkType = MarkType.Customer.ToDescription();
         private string EMPLOYEE_MARK = MarkType.Employee.ToDescription();
 
-        private bool _doubleClickRaise = false;
         public List<base_SaleTaxLocation> AllSaleTax { get; set; }
+
+        private ICollectionView _rewardCollectionView;
 
         #endregion
 
@@ -269,7 +273,8 @@ namespace CPC.POS.ViewModel
                     || (this.SelectedCustomer.PhotoCollection != null && this.SelectedCustomer.PhotoCollection.IsDirty)
                     || SelectedCustomer.PersonalInfoModel.IsDirty
                     || SelectedCustomer.ContactCollection.Any(x => x.IsDirty || (x.PersonalInfoModel != null && x.PersonalInfoModel.IsDirty))
-                    || SelectedCustomer.ContactCollection.DeletedItems.Any());
+                    || SelectedCustomer.ContactCollection.DeletedItems.Any()
+                    || (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection!=null && SelectedCustomer.GuestRewardCollection.Any(x => x.IsDirty)));
             }
         }
         #endregion
@@ -410,6 +415,65 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        #region RewardProgram
+        private base_RewardManagerModel _rewardProgram;
+        /// <summary>
+        /// Gets or sets the RewardProgram.
+        /// </summary>
+        public base_RewardManagerModel RewardProgram
+        {
+            get { return _rewardProgram; }
+            set
+            {
+                if (_rewardProgram != value)
+                {
+                    _rewardProgram = value;
+                    OnPropertyChanged(() => RewardProgram);
+                }
+            }
+        }
+        #endregion
+
+        #region StartDateReward
+        private DateTime? _startDateReward;
+        /// <summary>
+        /// Gets or sets the StartDateReward.
+        /// </summary>
+        public DateTime? StartDateReward
+        {
+            get { return _startDateReward; }
+            set
+            {
+                if (_startDateReward != value)
+                {
+                    _startDateReward = value;
+                    OnPropertyChanged(() => StartDateReward);
+                    FilterGuestReward();
+                }
+            }
+        }
+        #endregion
+
+        #region EndDateReward
+        private DateTime? _endDateReward;
+        /// <summary>
+        /// Gets or sets the EndDateReward.
+        /// </summary>
+        public DateTime? EndDateReward
+        {
+            get { return _endDateReward; }
+            set
+            {
+                if (_endDateReward != value)
+                {
+                    _endDateReward = value;
+                    OnPropertyChanged(() => EndDateReward);
+                    FilterGuestReward();
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Commands Methods
@@ -476,16 +540,33 @@ namespace CPC.POS.ViewModel
             MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
             if (result.Is(MessageBoxResult.Yes))
             {
-                DeleteNote();
-                if (!SelectedCustomer.IsNew)
+                if (SelectedCustomer.IsNew)
                 {
-                    SelectedCustomer.IsPurged = true;
-                    SaveCustomer();
-                    CustomerCollection.Remove(SelectedCustomer);
-                    SelectedCustomer = CustomerCollection.First();
-                    TotalCustomers = TotalCustomers - 1;
+                    DeleteNote();
+                    SelectedCustomer = null;
+                    IsSearchMode = true;
                 }
-                IsSearchMode = true;
+                else
+                {
+                    List<ItemModel> ItemModel = new List<ItemModel>();
+                    string resource = SelectedCustomer.Resource.Value.ToString();
+                    if (!_saleOrderRepository.GetAll().Select(x => x.CustomerResource).Contains(resource))
+                    {
+                        SelectedCustomer.IsPurged = true;
+                        SaveCustomer();
+                        CustomerCollection.Remove(SelectedCustomer);
+                        SelectedCustomer = CustomerCollection.First();
+                        TotalCustomers = TotalCustomers - 1;
+                        DeleteNote();
+                        IsSearchMode = true;
+                    }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = SelectedCustomer.Id, Text = SelectedCustomer.GuestNo, Resource = resource });
+                        _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "SaleOrder"), "Problem Detection");
+                    }
+                }
+
             }
 
         }
@@ -574,14 +655,18 @@ namespace CPC.POS.ViewModel
         {
             if (param != null && IsSearchMode)
             {
-                _doubleClickRaise = true;
                 SelectedCustomer = param as base_GuestModel;
                 if (SelectedCustomer.AdditionalModel != null)
                 {
                     SelectedCustomer.AdditionalModel.PropertyChanged -= new PropertyChangedEventHandler(AdditionalModel_PropertyChanged);
                     SelectedCustomer.AdditionalModel.PropertyChanged += new PropertyChangedEventHandler(AdditionalModel_PropertyChanged);
                 }
-                //SetSaleTaxFromAdditional();
+                
+                //Reset filter
+                _rewardCollectionView = null;
+
+                //Filter
+                FilterGuestReward();
                 IsSearchMode = false;
                 OnPropertyChanged(() => ContactTotalItem);
                 OnPropertyChanged(() => CreditCardTotalItem);
@@ -963,6 +1048,8 @@ namespace CPC.POS.ViewModel
             MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
             if (result.Is(MessageBoxResult.Yes))
             {
+                bool flag = false;
+                List<ItemModel> ItemModel = new List<ItemModel>();
                 for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
                 {
                     base_GuestModel model = (param as ObservableCollection<object>)[i] as base_GuestModel;
@@ -977,7 +1064,51 @@ namespace CPC.POS.ViewModel
                         this.DeleteNoteExt(model);
                         i--;
                     }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = model.Id, Text = model.GuestNo, Resource = resource });
+                        flag = true;
+                    }
                 }
+                if (flag)
+                    _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "SaleOrder"), "Problem Detection");
+            }
+        }
+        #endregion
+
+        #region IssueRewardManagerCommand
+        /// <summary>
+        /// Gets the IssueRewardManager Command.
+        /// <summary>
+
+        public RelayCommand<object> IssueRewardManagerCommand { get; private set; }
+
+
+        /// <summary>
+        /// Method to check whether the IssueRewardManager command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnIssueRewardManagerCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the IssueRewardManager command is executed.
+        /// </summary>
+        /// 
+        private void OnIssueRewardManagerCommandExecute(object param)
+        {
+            RewardEarnViewModel rewardEarnViewModel = new RewardEarnViewModel(SelectedCustomer.Id, RewardProgram, SelectedCustomer.GuestRewardCollection);
+            bool? result = _dialogService.ShowDialog<RewardEarnView>(_ownerViewModel, rewardEarnViewModel, "Earn Reward");
+
+            if (result == true)
+            {
+                SelectedCustomer.GuestRewardCollection = rewardEarnViewModel.GuestRewardCollection;
+                //ResetCollection view
+                _rewardCollectionView = null;
+                FilterGuestReward();
             }
         }
         #endregion
@@ -1008,6 +1139,8 @@ namespace CPC.POS.ViewModel
             ShowOrHiddenNoteCommand = new RelayCommand(OnShowOrHiddenNoteCommandExecute, OnShowOrHiddenNoteCommandCanExecute);
             AddTermCommand = new RelayCommand(OnAddTermCommandExecute, OnAddTermCommandCanExecute);
             DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
+            IssueRewardManagerCommand = new RelayCommand<object>(OnIssueRewardManagerCommandExecute, OnIssueRewardManagerCommandCanExecute);
+
         }
 
         /// <summary>
@@ -1044,6 +1177,9 @@ namespace CPC.POS.ViewModel
             };
             SaleTaxCollection.Insert(0, saleTaxNone);
 
+            RewardProgram = new base_RewardManagerModel(_rewardManagerRepository.Get(x => true));
+            RewardProgram.RewardInfo = RewardProgram.ToString();
+            
         }
 
         /// <summary>
@@ -1082,7 +1218,6 @@ namespace CPC.POS.ViewModel
                         SelectedCustomer.AdditionalModel.SaleTaxLocation = 0;
                         SelectedCustomer.AdditionalModel.TaxRate = 0;
                     }
-
 
 
                     //For New Item
@@ -1179,7 +1314,17 @@ namespace CPC.POS.ViewModel
             {
                 paymentCardModel.ToEntity();
                 SelectedCustomer.base_Guest.base_GuestPaymentCard.Add(paymentCardModel.base_GuestPaymentCard);
-                paymentCardModel.EndUpdate();
+            }
+
+            //Guest Reward
+            if (SelectedCustomer.IsRewardMember)
+            {
+                foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
+                {
+                    guestRewardModel.ToEntity();
+                    if (guestRewardModel.IsNew)
+                        SelectedCustomer.base_Guest.base_GuestReward.Add(guestRewardModel.base_GuestReward);
+                }
             }
 
             this.SelectedCustomer.ToEntity();
@@ -1187,6 +1332,17 @@ namespace CPC.POS.ViewModel
             _guestRepository.Commit();
             SelectedCustomer.EndUpdate();
             CustomerCollection.Add(SelectedCustomer);
+
+            //Set ID
+            if (SelectedCustomer.IsRewardMember)
+            {
+                foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
+                {
+                    guestRewardModel.ToModel();
+                    guestRewardModel.EndUpdate();
+                }
+            }
+
             this.SetDataToModel(SelectedCustomer);
         }
 
@@ -1311,13 +1467,39 @@ namespace CPC.POS.ViewModel
                 guestPaymentCardModel.ToEntity();
                 if (guestPaymentCardModel.IsNew)//new item add to entity table
                     SelectedCustomer.base_Guest.base_GuestPaymentCard.Add(guestPaymentCardModel.base_GuestPaymentCard);
+
                 guestPaymentCardModel.EndUpdate();
+            }
+
+            if (SelectedCustomer.IsRewardMember)
+            {
+                //Add New Or Update GuestReward
+                foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
+                {
+                    guestRewardModel.ToEntity();
+                    if (guestRewardModel.IsNew)
+                        SelectedCustomer.base_Guest.base_GuestReward.Add(guestRewardModel.base_GuestReward);
+                    //else
+                    //    _guestRewardRepository.Update(guestRewardModel.base_GuestReward);
+                }
             }
             _guestRepository.Commit();
             SelectedCustomer.EndUpdate();
 
             //for mapping id for model
             SetDataToModel(SelectedCustomer);
+
+            //Set ID
+
+            if (SelectedCustomer.IsRewardMember)
+            {
+
+                foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
+                {
+                    guestRewardModel.ToModel();
+                    guestRewardModel.EndUpdate();
+                }
+            }
         }
 
         /// <summary>
@@ -1473,7 +1655,14 @@ namespace CPC.POS.ViewModel
             //Set Account Number
             SelectedCustomer.GuestNo = DateTime.Now.ToString(Define.GuestNoFormat);
             SelectedCustomer.IsActived = true;
-            SelectedCustomer.IsRewardMember = false;
+
+            base_RewardManager reward = _rewardManagerRepository.Get(x => true);
+
+            //Auto enroll customer to reward member
+            if (reward != null && reward.IsAutoEnroll)
+                SelectedCustomer.IsRewardMember = true;
+            else
+                SelectedCustomer.IsRewardMember = false;
 
             SelectedCustomer.CheckLimit = 0;
             SelectedCustomer.GuestTypeId = Common.CustomerTypes.First().Value;
@@ -1520,6 +1709,12 @@ namespace CPC.POS.ViewModel
             //Payment collection
             SelectedCustomer.PaymentCardCollection = new CollectionBase<base_GuestPaymentCardModel>();
             SelectedCustomer.PaymentCardCollection.Add(CreateNewPaymentCard());
+
+            if (SelectedCustomer.IsRewardMember)
+            {
+                SelectedCustomer.GuestRewardCollection = new CollectionBase<base_GuestRewardModel>();
+                FilterGuestReward();
+            }
             SelectedCustomer.IsDirty = false;
         }
 
@@ -1678,19 +1873,6 @@ namespace CPC.POS.ViewModel
             bgWorker.RunWorkerAsync();
         }
 
-        ///// <summary>
-        ///// Refresh Customer & relation
-        ///// </summary>
-        //private void Refresh()
-        //{
-        //    //Refresh Table relation
-        //    _guestRepository.Refresh();
-        //    _resourceNoteRepository.Refresh();
-        //    _guestAddressRepository.Refresh();
-        //    _guestAdditionalRepository.Refresh();
-        //    _paymentCardRepository.Refresh();
-        //}
-
         /// <summary>
         /// Set data & relation of customer to model
         /// <para>Using for rollback data or Set data on first load</para>
@@ -1753,8 +1935,6 @@ namespace CPC.POS.ViewModel
             //Load PhotoCollection
             LoadResourcePhoto(customerModel);
 
-
-
             //==== Load DefaultAdress Address ====
             _guestAddressRepository.Refresh(customerModel.base_Guest.base_GuestAddress);
             if (customerModel.base_Guest.base_GuestAddress.Count > 0)
@@ -1793,6 +1973,15 @@ namespace CPC.POS.ViewModel
                 customerModel.PaymentCardCollection.Add(paymentCardModel);
             }
             customerModel.PaymentCardCollection.Add(CreateNewPaymentCard());
+
+            //Load Reward
+            if (customerModel.IsRewardMember)
+            {
+                _guestRewardRepository.Refresh(customerModel.base_Guest.base_GuestReward);
+                customerModel.GuestRewardCollection = new CollectionBase<base_GuestRewardModel>(customerModel.base_Guest.base_GuestReward.OrderBy(x => x.EarnedDate).Select(x => new base_GuestRewardModel(x)));
+                if (customerModel.GuestRewardCollection != null)
+                    customerModel.AvailableReward = customerModel.GuestRewardCollection.Count(x => x.Status == ((short)GuestRewardStatus.Available) || x.Status == ((short)GuestRewardStatus.Pending));
+            }
 
             LoadNote(customerModel);
             customerModel.IsDirty = false;
@@ -1887,6 +2076,37 @@ namespace CPC.POS.ViewModel
                     Paid = customerModel.SaleOrderCollection.Sum(x => x.Paid),
                     Balance = customerModel.SaleOrderCollection.Sum(x => x.Balance)
                 };
+            }
+        }
+
+        private void FilterGuestReward()
+        {
+            if (SelectedCustomer != null && SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection != null)
+            {
+                if (_rewardCollectionView == null)
+                    _rewardCollectionView = CollectionViewSource.GetDefaultView(SelectedCustomer.GuestRewardCollection);
+
+                _rewardCollectionView.Filter = obj =>
+                {
+                    bool result = true;
+                    base_GuestRewardModel guestRewardModel = obj as base_GuestRewardModel;
+                    if (!StartDateReward.HasValue && !EndDateReward.HasValue)
+                        result = true;
+                    else
+                    {
+                        if (StartDateReward.HasValue)
+                        {
+                            result &= (guestRewardModel.EarnedDate >= StartDateReward.Value);
+                        }
+                        if (EndDateReward.HasValue)
+                        {
+                            result &= (guestRewardModel.EarnedDate <= EndDateReward.Value);
+                        }
+                    }
+                    return result;
+                };
+
+                SelectedCustomer.TotalReward = _rewardCollectionView.OfType<object>().Count();
             }
         }
 
@@ -2003,8 +2223,6 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public override void LoadData()
         {
-
-            //InitialStaticData();
             Expression<Func<base_Guest, bool>> predicate = PredicateBuilder.True<base_Guest>();
             if (!string.IsNullOrWhiteSpace(Keyword) && SearchOption > 0)//Load with Search Condition
             {
@@ -2015,8 +2233,6 @@ namespace CPC.POS.ViewModel
                 predicate = predicate.And(x => !x.IsPurged && x.Mark.Equals(_customerMarkType));
             }
             LoadDataByPredicate(predicate, true);
-            //LoadSyncWithTask(predicate, true);
-
         }
 
         /// <summary>

@@ -69,6 +69,9 @@ namespace CPC.Converter
                     case "CountStockStatus":
                         result = Common.CountStockStatus.Single(x => x.Value == short.Parse(value.ToString())).Text;
                         break;
+                    case "GuestRewardStatus":
+                        result = Common.GuestRewardStatus.Single(x => x.Value == short.Parse(value.ToString())).Text;
+                        break;
                     default:
                         break;
                 }

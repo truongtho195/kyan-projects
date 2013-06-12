@@ -72,22 +72,42 @@ namespace CPC.POS.Model
             }
         }
 
-        protected System.Guid _resource;
+        protected long _productId;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the Resource</para>
+        /// <para>Gets or sets the ProductId</para>
         /// </summary>
-        public System.Guid Resource
+        public long ProductId
         {
-            get { return this._resource; }
+            get { return this._productId; }
             set
             {
-                if (this._resource != value)
+                if (this._productId != value)
                 {
                     this.IsDirty = true;
-                    this._resource = value;
-                    OnPropertyChanged(() => Resource);
-                    PropertyChangedCompleted(() => Resource);
+                    this._productId = value;
+                    OnPropertyChanged(() => ProductId);
+                    PropertyChangedCompleted(() => ProductId);
+                }
+            }
+        }
+
+        protected string _productResource;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ProductResource</para>
+        /// </summary>
+        public string ProductResource
+        {
+            get { return this._productResource; }
+            set
+            {
+                if (this._productResource != value)
+                {
+                    this.IsDirty = true;
+                    this._productResource = value;
+                    OnPropertyChanged(() => ProductResource);
+                    PropertyChangedCompleted(() => ProductResource);
                 }
             }
         }
@@ -112,62 +132,62 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _newQuantity;
+        protected int _oldQty;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the NewQuantity</para>
+        /// <para>Gets or sets the OldQty</para>
         /// </summary>
-        public int NewQuantity
+        public int OldQty
         {
-            get { return this._newQuantity; }
+            get { return this._oldQty; }
             set
             {
-                if (this._newQuantity != value)
+                if (this._oldQty != value)
                 {
                     this.IsDirty = true;
-                    this._newQuantity = value;
-                    OnPropertyChanged(() => NewQuantity);
-                    PropertyChangedCompleted(() => NewQuantity);
+                    this._oldQty = value;
+                    OnPropertyChanged(() => OldQty);
+                    PropertyChangedCompleted(() => OldQty);
                 }
             }
         }
 
-        protected int _oldQuantity;
+        protected int _newQty;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the OldQuantity</para>
+        /// <para>Gets or sets the NewQty</para>
         /// </summary>
-        public int OldQuantity
+        public int NewQty
         {
-            get { return this._oldQuantity; }
+            get { return this._newQty; }
             set
             {
-                if (this._oldQuantity != value)
+                if (this._newQty != value)
                 {
                     this.IsDirty = true;
-                    this._oldQuantity = value;
-                    OnPropertyChanged(() => OldQuantity);
-                    PropertyChangedCompleted(() => OldQuantity);
+                    this._newQty = value;
+                    OnPropertyChanged(() => NewQty);
+                    PropertyChangedCompleted(() => NewQty);
                 }
             }
         }
 
-        protected Nullable<int> _itemCount;
+        protected int _adjustmentQtyDiff;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the ItemCount</para>
+        /// <para>Gets or sets the AdjustmentQtyDiff</para>
         /// </summary>
-        public Nullable<int> ItemCount
+        public int AdjustmentQtyDiff
         {
-            get { return this._itemCount; }
+            get { return this._adjustmentQtyDiff; }
             set
             {
-                if (this._itemCount != value)
+                if (this._adjustmentQtyDiff != value)
                 {
                     this.IsDirty = true;
-                    this._itemCount = value;
-                    OnPropertyChanged(() => ItemCount);
-                    PropertyChangedCompleted(() => ItemCount);
+                    this._adjustmentQtyDiff = value;
+                    OnPropertyChanged(() => AdjustmentQtyDiff);
+                    PropertyChangedCompleted(() => AdjustmentQtyDiff);
                 }
             }
         }
@@ -212,22 +232,82 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _storeNumber;
+        protected string _status;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the StoreNumber</para>
+        /// <para>Gets or sets the Status</para>
         /// </summary>
-        public int StoreNumber
+        public string Status
         {
-            get { return this._storeNumber; }
+            get { return this._status; }
             set
             {
-                if (this._storeNumber != value)
+                if (this._status != value)
                 {
                     this.IsDirty = true;
-                    this._storeNumber = value;
-                    OnPropertyChanged(() => StoreNumber);
-                    PropertyChangedCompleted(() => StoreNumber);
+                    this._status = value;
+                    OnPropertyChanged(() => Status);
+                    PropertyChangedCompleted(() => Status);
+                }
+            }
+        }
+
+        protected string _userCreated;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the UserCreated</para>
+        /// </summary>
+        public string UserCreated
+        {
+            get { return this._userCreated; }
+            set
+            {
+                if (this._userCreated != value)
+                {
+                    this.IsDirty = true;
+                    this._userCreated = value;
+                    OnPropertyChanged(() => UserCreated);
+                    PropertyChangedCompleted(() => UserCreated);
+                }
+            }
+        }
+
+        protected Nullable<bool> _isReversed;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsReversed</para>
+        /// </summary>
+        public Nullable<bool> IsReversed
+        {
+            get { return this._isReversed; }
+            set
+            {
+                if (this._isReversed != value)
+                {
+                    this.IsDirty = true;
+                    this._isReversed = value;
+                    OnPropertyChanged(() => IsReversed);
+                    PropertyChangedCompleted(() => IsReversed);
+                }
+            }
+        }
+
+        protected Nullable<int> _storeCode;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the StoreCode</para>
+        /// </summary>
+        public Nullable<int> StoreCode
+        {
+            get { return this._storeCode; }
+            set
+            {
+                if (this._storeCode != value)
+                {
+                    this.IsDirty = true;
+                    this._storeCode = value;
+                    OnPropertyChanged(() => StoreCode);
+                    PropertyChangedCompleted(() => StoreCode);
                 }
             }
         }
@@ -254,14 +334,18 @@ namespace CPC.POS.Model
         {
             if (IsNew)
                 this.base_QuantityAdjustment.Id = this.Id;
-            this.base_QuantityAdjustment.Resource = this.Resource;
+            this.base_QuantityAdjustment.ProductId = this.ProductId;
+            this.base_QuantityAdjustment.ProductResource = this.ProductResource;
             this.base_QuantityAdjustment.CostDifference = this.CostDifference;
-            this.base_QuantityAdjustment.NewQuantity = this.NewQuantity;
-            this.base_QuantityAdjustment.OldQuantity = this.OldQuantity;
-            this.base_QuantityAdjustment.ItemCount = this.ItemCount;
+            this.base_QuantityAdjustment.OldQty = this.OldQty;
+            this.base_QuantityAdjustment.NewQty = this.NewQty;
+            this.base_QuantityAdjustment.AdjustmentQtyDiff = this.AdjustmentQtyDiff;
             this.base_QuantityAdjustment.LoggedTime = this.LoggedTime;
             this.base_QuantityAdjustment.Reason = this.Reason;
-            this.base_QuantityAdjustment.StoreNumber = this.StoreNumber;
+            this.base_QuantityAdjustment.Status = this.Status;
+            this.base_QuantityAdjustment.UserCreated = this.UserCreated;
+            this.base_QuantityAdjustment.IsReversed = this.IsReversed;
+            this.base_QuantityAdjustment.StoreCode = this.StoreCode;
         }
 
         /// <summary>
@@ -271,14 +355,18 @@ namespace CPC.POS.Model
         public void ToModel()
         {
             this._id = this.base_QuantityAdjustment.Id;
-            this._resource = this.base_QuantityAdjustment.Resource;
+            this._productId = this.base_QuantityAdjustment.ProductId;
+            this._productResource = this.base_QuantityAdjustment.ProductResource;
             this._costDifference = this.base_QuantityAdjustment.CostDifference;
-            this._newQuantity = this.base_QuantityAdjustment.NewQuantity;
-            this._oldQuantity = this.base_QuantityAdjustment.OldQuantity;
-            this._itemCount = this.base_QuantityAdjustment.ItemCount;
+            this._oldQty = this.base_QuantityAdjustment.OldQty;
+            this._newQty = this.base_QuantityAdjustment.NewQty;
+            this._adjustmentQtyDiff = this.base_QuantityAdjustment.AdjustmentQtyDiff;
             this._loggedTime = this.base_QuantityAdjustment.LoggedTime;
             this._reason = this.base_QuantityAdjustment.Reason;
-            this._storeNumber = this.base_QuantityAdjustment.StoreNumber;
+            this._status = this.base_QuantityAdjustment.Status;
+            this._userCreated = this.base_QuantityAdjustment.UserCreated;
+            this._isReversed = this.base_QuantityAdjustment.IsReversed;
+            this._storeCode = this.base_QuantityAdjustment.StoreCode;
         }
 
         /// <summary>
@@ -288,20 +376,61 @@ namespace CPC.POS.Model
         public void ToModelAndRaise()
         {
             this.Id = this.base_QuantityAdjustment.Id;
-            this.Resource = this.base_QuantityAdjustment.Resource;
+            this.ProductId = this.base_QuantityAdjustment.ProductId;
+            this.ProductResource = this.base_QuantityAdjustment.ProductResource;
             this.CostDifference = this.base_QuantityAdjustment.CostDifference;
-            this.NewQuantity = this.base_QuantityAdjustment.NewQuantity;
-            this.OldQuantity = this.base_QuantityAdjustment.OldQuantity;
-            this.ItemCount = this.base_QuantityAdjustment.ItemCount;
+            this.OldQty = this.base_QuantityAdjustment.OldQty;
+            this.NewQty = this.base_QuantityAdjustment.NewQty;
+            this.AdjustmentQtyDiff = this.base_QuantityAdjustment.AdjustmentQtyDiff;
             this.LoggedTime = this.base_QuantityAdjustment.LoggedTime;
             this.Reason = this.base_QuantityAdjustment.Reason;
-            this.StoreNumber = this.base_QuantityAdjustment.StoreNumber;
+            this.Status = this.base_QuantityAdjustment.Status;
+            this.UserCreated = this.base_QuantityAdjustment.UserCreated;
+            this.IsReversed = this.base_QuantityAdjustment.IsReversed;
+            this.StoreCode = this.base_QuantityAdjustment.StoreCode;
         }
 
         #endregion
 
         #region Custom Code
 
+        #region Properties
+
+        private base_ProductModel _productModel;
+        /// <summary>
+        /// Gets or sets the ProductModel.
+        /// </summary>
+        public base_ProductModel ProductModel
+        {
+            get { return _productModel; }
+            set
+            {
+                if (_productModel != value)
+                {
+                    _productModel = value;
+                    OnPropertyChanged(() => ProductModel);
+                }
+            }
+        }
+
+        private string _storeName;
+        /// <summary>
+        /// Gets or sets the StoreName.
+        /// </summary>
+        public string StoreName
+        {
+            get { return _storeName; }
+            set
+            {
+                if (_storeName != value)
+                {
+                    _storeName = value;
+                    OnPropertyChanged(() => StoreName);
+                }
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -322,21 +451,29 @@ namespace CPC.POS.Model
                 {
                     case "Id":
                         break;
-                    case "Resource":
+                    case "ProductId":
+                        break;
+                    case "ProductResource":
                         break;
                     case "CostDifference":
                         break;
-                    case "NewQuantity":
+                    case "OldQty":
                         break;
-                    case "OldQuantity":
+                    case "NewQty":
                         break;
-                    case "ItemCount":
-                        break;
-                    case "StoreNumber":
+                    case "AdjustmentQtyDiff":
                         break;
                     case "LoggedTime":
                         break;
                     case "Reason":
+                        break;
+                    case "Status":
+                        break;
+                    case "UserCreated":
+                        break;
+                    case "IsReversed":
+                        break;
+                    case "StoreCode":
                         break;
                 }
 

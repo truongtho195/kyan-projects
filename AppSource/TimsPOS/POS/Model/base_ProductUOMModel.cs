@@ -152,12 +152,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _quantityOnHand;
+        protected decimal _quantityOnHand;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the QuantityOnHand</para>
         /// </summary>
-        public int QuantityOnHand
+        public decimal QuantityOnHand
         {
             get { return this._quantityOnHand; }
             set
@@ -625,10 +625,10 @@ namespace CPC.POS.Model
         /// Update quantity on hand by base on hand store 
         /// </summary>
         /// <param name="onHandStore"></param>
-        public void UpdateQuantityOnHand(int onHandStore)
+        public void UpdateQuantityOnHand(decimal onHandStore)
         {
             if (BaseUnitNumber != 0)
-                QuantityOnHand = onHandStore / BaseUnitNumber;
+                QuantityOnHand = Math.Round(onHandStore / BaseUnitNumber, 2);
         }
 
         #endregion

@@ -76,6 +76,8 @@ namespace CPC.Control
 
         #region Dependency Properties
 
+        #region ItemSource
+
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as DataGridCanAddColumnRowControl).SetValueItemsSource();
@@ -91,6 +93,28 @@ namespace CPC.Control
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(CollectionBase<DataGridCellModel>),
             typeof(DataGridCanAddColumnRowControl), new UIPropertyMetadata(OnItemsSourceChanged));
+
+        #endregion
+
+        #region IsRaiseTotal
+
+        private static void OnIsRaiseTotalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as DataGridCanAddColumnRowControl).RaiseTotalItem();
+        }
+
+        public bool IsRaiseTotal
+        {
+            get { return (bool)GetValue(IsRaiseTotalProperty); }
+            set { SetValue(IsRaiseTotalProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsRaiseTotal.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsRaiseTotalProperty =
+            DependencyProperty.Register("IsRaiseTotal", typeof(bool),
+            typeof(DataGridCanAddColumnRowControl), new UIPropertyMetadata(OnIsRaiseTotalChanged));
+
+        #endregion
 
         #endregion
 
@@ -236,7 +260,7 @@ namespace CPC.Control
 
             // Create cell value binding
             Binding bindingCellEditingTemplate = new Binding(GetPropertyName(() => TotalRow.ValueList) + "[" + columnIndex + "].Value");
-            bindingCellEditingTemplate.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            bindingCellEditingTemplate.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             bindingCellEditingTemplate.Mode = BindingMode.TwoWay;
 
             // Creat TextBlock to show data when double click on total row
@@ -274,7 +298,8 @@ namespace CPC.Control
                 {
                     CellResource = Guid.NewGuid().ToString(),
                     Attribute = dataGridModel.RowHeaderName,
-                    Size = ColumnHeaderNameList[columnIndex]
+                    Size = ColumnHeaderNameList[columnIndex],
+                    ValueList = new List<ComboItem>()
                 };
 
                 // Add new cell to datagrid
@@ -338,7 +363,8 @@ namespace CPC.Control
                 {
                     CellResource = Guid.NewGuid().ToString(),
                     Attribute = dataGridModel.RowHeaderName,
-                    Size = ColumnHeaderNameList[i]
+                    Size = ColumnHeaderNameList[i],
+                    ValueList = new List<ComboItem>()
                 };
 
                 // Add new cell to datagrid
@@ -360,7 +386,7 @@ namespace CPC.Control
         /// </summary>
         private void OnCellValueChanged()
         {
-            // Commite datagrid row
+            // Commit datagrid row
             dataGrid.CommitEdit();
 
             // Get datagrid model object
@@ -518,6 +544,21 @@ namespace CPC.Control
             }
         }
 
+        private void RaiseTotalItem()
+        {
+            foreach (DataGridModel dataGridItem in DataRowList.Where(x => !x.IsAddNewRow))
+            {
+                // Sum columns
+                dataGridItem.RaiseTotalItems();
+            }
+
+            for (int i = 0; i < ColumnHeaderNameList.Count; i++)
+            {
+                // Sum rows
+                TotalRow.ValueList[i].Value = DataRowList.Where(x => !x.IsTotalRow && !x.IsAddNewRow).Sum(x => x.ValueList[i].Value);
+            }
+        }
+
         /// <summary>
         /// Get name of property to binding
         /// </summary>
@@ -655,7 +696,9 @@ namespace CPC.Control
         private void txtValue_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key.Equals(Key.Enter) || e.Key.Equals(Key.Tab))
+            {
                 OnCellValueChanged();
+            }
         }
 
         /// <summary>

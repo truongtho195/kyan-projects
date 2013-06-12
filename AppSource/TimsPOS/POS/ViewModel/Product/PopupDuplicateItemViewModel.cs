@@ -323,6 +323,12 @@ namespace CPC.POS.ViewModel
 
                 // Copy product store default
                 targetProductModel.ProductStoreDefault.ToModel(sourceProductModel.ProductStoreDefault);
+
+                // Initial product store collection
+                targetProductModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
+
+                // Add new product store to collection
+                targetProductModel.ProductStoreCollection.Add(targetProductModel.ProductStoreDefault);
             }
         }
 
@@ -397,7 +403,7 @@ namespace CPC.POS.ViewModel
             SavePhotoCollection(productModel);
 
             // Save product store default
-            SaveProductStoreDefault(productModel, Define.StoreCode);
+            SaveProductStoreCollection(productModel);
 
             // Save product UOM collection
             SaveProductUOMCollection(productModel, Define.StoreCode);
@@ -482,29 +488,33 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Save product store default
+        /// Save product store collection
         /// </summary>
         /// <param name="productModel"></param>
         /// <param name="storeCode"></param>
-        private void SaveProductStoreDefault(base_ProductModel productModel, int storeCode)
+        private void SaveProductStoreCollection(base_ProductModel productModel)
         {
-            if (productModel.ProductStoreDefault != null)
+            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
             {
-                // Update quantity on hand value
-                productModel.ProductStoreDefault.QuantityOnHand = productModel.GetOnHandFromStore(storeCode);
+                // Update quantity in product
+                productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
+
+                // Backup quantity value
+                if (!productStoreItem.IsNew)
+                    productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
 
                 // Map data from model to entity
-                productModel.ProductStoreDefault.ToEntity();
+                productStoreItem.ToEntity();
 
-                if (productModel.ProductStoreDefault.IsNew)
+                if (productStoreItem.IsNew)
                 {
                     // Add new product store to database
-                    productModel.base_Product.base_ProductStore.Add(productModel.ProductStoreDefault.base_ProductStore);
+                    productModel.base_Product.base_ProductStore.Add(productStoreItem.base_ProductStore);
                 }
                 else
                 {
                     // Turn off IsDirty & IsNew
-                    productModel.ProductStoreDefault.EndUpdate();
+                    productStoreItem.EndUpdate();
                 }
             }
         }

@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
+using System.Linq;
 
 namespace CPC.POS.Model
 {
@@ -1878,11 +1879,11 @@ namespace CPC.POS.Model
             }
         }
 
-        private ObservableCollection<base_ProductStoreModel> _productStoreCollection;
+        private CollectionBase<base_ProductStoreModel> _productStoreCollection;
         /// <summary>
         /// Gets or sets the ProductStoreCollection.
         /// </summary>
-        public ObservableCollection<base_ProductStoreModel> ProductStoreCollection
+        public CollectionBase<base_ProductStoreModel> ProductStoreCollection
         {
             get { return _productStoreCollection; }
             set
@@ -1996,11 +1997,6 @@ namespace CPC.POS.Model
                 }
             }
         }
-
-        /// <summary>
-        /// Gets or sets the OldQuantity
-        /// </summary>
-        public int OldQuantity { get; set; }
 
         /// <summary>
         /// Gets or sets the OldCost
@@ -2235,18 +2231,10 @@ namespace CPC.POS.Model
         /// Update quantity on hand
         /// </summary>
         /// <param name="productModel"></param>
-        public void UpdateQuantityOnHand(int numberOfStores)
+        public void UpdateQuantityOnHand()
         {
-            int quantityOnHand = 0;
-
-            for (int i = 0; i < numberOfStores; i++)
-            {
-                // Get OnHandStore value
-                quantityOnHand += this.GetOnHandFromStore(i);
-            }
-
             // Update QuantityOnHand
-            this.QuantityOnHand = quantityOnHand;
+            this.QuantityOnHand = this.ProductStoreCollection.Sum(x => x.QuantityOnHand);
         }
 
         #endregion

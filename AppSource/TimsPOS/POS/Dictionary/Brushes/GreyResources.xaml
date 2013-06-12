@@ -680,6 +680,7 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="ComboboxRemarkArrow"
                      Color="White" />
+    <SolidColorBrush x:Key="ButtonComboboxItemRemarkTextBlockForeground" Color="Black"/>
     
     
     <Visibility x:Key="ButtonBarSearchVisibility">Visible</Visibility>
@@ -860,7 +861,7 @@
     	<GradientStop Color="#FF5C5C5C" Offset="0"/>
     	<GradientStop Color="#FF232323" Offset="1"/>
     </LinearGradientBrush>
-	<ImageBrush x:Key="UserControl_Background_Image" ImageSource="\Image/bg6.jpg" Opacity="0.3"/>
+<ImageBrush x:Key="UserControl_Background_Image" ImageSource="\Image/bg6.jpg" Opacity="0.3"/>
 	<Visibility x:Key="TIMECLOCK">Visible</Visibility>
 	<Visibility x:Key="TimeClockDisplay">Visible</Visibility>
 	<SolidColorBrush x:Key="TimeClockDisplayBorder"
@@ -947,27 +948,18 @@
     <SolidColorBrush x:Key="MainForm_Border"
                      Color="White" />
     <Visibility x:Key="Ribbon_TitleBarVisibility">Visible</Visibility>
-    <LinearGradientBrush x:Key="Ribbon_TitleBarBackground"
-                         EndPoint="0.5,1"
-                         StartPoint="0.5,0">
-    	<GradientStop Color="#FF8E1717"
-    		Offset="0.125" />
-    	<GradientStop Color="#FFFFBEBE" />
-    	<GradientStop Color="#FF801414"
-    		Offset="1" />
-    	<GradientStop Color="#FFDE1B1B"
-    		Offset="0.723" />
-    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Ribbon_TitleBarBackground"
+                         Color="#FF343434"/>
    <SolidColorBrush x:Key="Ribbon_TitleBarBorder"
-                     Color="White" />
+                     Color="Black" />
    <Visibility x:Key="Ribbon_TitleBar_ButtonMinimize_Maximize_CloseVisibility2">Visible</Visibility>
    
     <SolidColorBrush x:Key="Ribbon_TitleBar_Button_Minimize_Background"
-                     Color="White" />
+                     Color="#FFAFAFAF" />
     <SolidColorBrush x:Key="Ribbon_TitleBar_Button_Maximize_Background"
-                     Color="White" />
+                     Color="#FFAFAFAF" />
     <SolidColorBrush x:Key="Ribbon_TitleBar_Button_Close_Background"
-                     Color="White" />
+                     Color="#FFAFAFAF" />
     <Visibility x:Key="Ribbon_TabVisibility">Visible</Visibility>
     <SolidColorBrush x:Key="Ribbon_Tab_Border"
                      Color="White" />
@@ -1138,6 +1130,7 @@
                      Color="White" />
     <SolidColorBrush x:Key="Part_Popup_Middle_Right_Background"
                      Color="#7F424242" />
+    
    
     
    

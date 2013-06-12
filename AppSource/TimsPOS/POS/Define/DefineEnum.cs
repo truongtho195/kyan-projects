@@ -516,7 +516,7 @@ namespace CPC.POS
     /// Using for Reward
     /// Money($)/Pecent(%)/Point
     /// </summary>
-    public enum RewardAmtType
+    public enum RewardType
     {
         Money = 1,
         Pecent = 2,
@@ -584,7 +584,7 @@ namespace CPC.POS
     }
     #endregion
 
-     /// <summary>
+    /// <summary>
     /// Using for searching pricing.
     /// </summary>
     public enum SearchCountSheetOptions
@@ -595,5 +595,14 @@ namespace CPC.POS
         StartedDate = 4,
         CompletedDate = 8,
     }
+
+    public enum GuestRewardStatus
+    {
+        Available = 1,
+        Redeemed = 2,
+        Pending = 3,
+        Removed = 4
+    }
+
 
 }

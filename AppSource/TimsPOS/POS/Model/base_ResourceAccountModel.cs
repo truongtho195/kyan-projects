@@ -14,6 +14,7 @@ using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
 using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace CPC.POS.Model
 {
@@ -282,6 +283,14 @@ namespace CPC.POS.Model
 
         #region Custom Code
 
+        #region Defines
+
+        private Regex _passwordRegex = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
+
+        #endregion
+
+        #region Properties
+
         protected Nullable<long> _userLogId;
         /// <summary>
         /// Property Model
@@ -400,6 +409,57 @@ namespace CPC.POS.Model
             }
         }
 
+        private string _oldPassword;
+        /// <summary>
+        /// Gets or sets the OldPassword.
+        /// </summary>
+        public string OldPassword
+        {
+            get { return _oldPassword; }
+            set
+            {
+                if (_oldPassword != value)
+                {
+                    _oldPassword = value;
+                    OnPropertyChanged(() => OldPassword);
+                }
+            }
+        }
+
+        private string _newPassword;
+        /// <summary>
+        /// Gets or sets the NewPassword.
+        /// </summary>
+        public string NewPassword
+        {
+            get { return _newPassword; }
+            set
+            {
+                if (_newPassword != value)
+                {
+                    _newPassword = value;
+                    OnPropertyChanged(() => NewPassword);
+                }
+            }
+        }
+
+        private string _newConfirmPassword;
+        /// <summary>
+        /// Gets or sets the NewConfirmPassword.
+        /// </summary>
+        public string NewConfirmPassword
+        {
+            get { return _newConfirmPassword; }
+            set
+            {
+                if (_newConfirmPassword != value)
+                {
+                    _newConfirmPassword = value;
+                    OnPropertyChanged(() => NewConfirmPassword);
+                }
+            }
+        }
+
         #region AuthorizeCollection
         /// <summary>
         /// Gets or sets the AuthorizeCollection.
@@ -422,21 +482,6 @@ namespace CPC.POS.Model
         }
 
         #endregion
-
-        protected override void PropertyChangedCompleted(string propertyName)
-        {
-            switch (propertyName)
-            {
-                #region Password
-
-                case "ClonePassword":
-                    // Validates again.
-                    OnPropertyChanged(() => ConfirmPassword);
-                    break;
-
-                #endregion
-            }
-        }
 
         #region Visibility
 
@@ -537,7 +582,28 @@ namespace CPC.POS.Model
                     PropertyChangedCompleted(() => IpAddress);
                 }
             }
-        } 
+        }
+        #endregion
+
+        #endregion
+
+        #region Override Methods
+
+        protected override void PropertyChangedCompleted(string propertyName)
+        {
+            switch (propertyName)
+            {
+                #region Password
+
+                case "ClonePassword":
+                    // Validates again.
+                    OnPropertyChanged(() => ConfirmPassword);
+                    break;
+
+                #endregion
+            }
+        }
+
         #endregion
 
         #endregion
@@ -587,6 +653,24 @@ namespace CPC.POS.Model
                     case "ConfirmPassword":
                         if (string.Compare(this.ClonePassword, this.ConfirmPassword, false) != 0)
                             message = "Inexact password.";
+                        break;
+                    case "OldPassword":
+                        if (string.IsNullOrWhiteSpace(this.OldPassword))
+                            message = "Password is required.";
+                        else if (!_passwordRegex.IsMatch(this.OldPassword))
+                            message = "Password must a-z and length of 3-50 characters";
+                        break;
+                    case "NewPassword":
+                        if (string.IsNullOrWhiteSpace(this.NewPassword))
+                            message = "Password is required.";
+                        else if (!_passwordRegex.IsMatch(this.NewPassword))
+                            message = "Password must a-z and length of 3-50 characters";
+                        break;
+                    case "NewConfirmPassword":
+                        if (string.IsNullOrWhiteSpace(this.NewConfirmPassword))
+                            message = "Password is required.";
+                        else if (!_passwordRegex.IsMatch(this.NewConfirmPassword))
+                            message = "Password must a-z and length of 3-50 characters";
                         break;
                 }
 

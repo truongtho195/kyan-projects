@@ -152,42 +152,42 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<System.DateTime> _eearnedDate;
+        protected Nullable<System.DateTime> _earnedDate;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the EearnedDate</para>
+        /// <para>Gets or sets the EarnedDate</para>
         /// </summary>
-        public Nullable<System.DateTime> EearnedDate
+        public Nullable<System.DateTime> EarnedDate
         {
-            get { return this._eearnedDate; }
+            get { return this._earnedDate; }
             set
             {
-                if (this._eearnedDate != value)
+                if (this._earnedDate != value)
                 {
                     this.IsDirty = true;
-                    this._eearnedDate = value;
-                    OnPropertyChanged(() => EearnedDate);
-                    PropertyChangedCompleted(() => EearnedDate);
+                    this._earnedDate = value;
+                    OnPropertyChanged(() => EarnedDate);
+                    PropertyChangedCompleted(() => EarnedDate);
                 }
             }
         }
 
-        protected Nullable<System.DateTime> _redeemedDate;
+        protected Nullable<System.DateTime> _appliedDate;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the RedeemedDate</para>
+        /// <para>Gets or sets the AppliedDate</para>
         /// </summary>
-        public Nullable<System.DateTime> RedeemedDate
+        public Nullable<System.DateTime> AppliedDate
         {
-            get { return this._redeemedDate; }
+            get { return this._appliedDate; }
             set
             {
-                if (this._redeemedDate != value)
+                if (this._appliedDate != value)
                 {
                     this.IsDirty = true;
-                    this._redeemedDate = value;
-                    OnPropertyChanged(() => RedeemedDate);
-                    PropertyChangedCompleted(() => RedeemedDate);
+                    this._appliedDate = value;
+                    OnPropertyChanged(() => AppliedDate);
+                    PropertyChangedCompleted(() => AppliedDate);
                 }
             }
         }
@@ -272,6 +272,86 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<System.DateTime> _activedDate;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ActivedDate</para>
+        /// </summary>
+        public Nullable<System.DateTime> ActivedDate
+        {
+            get { return this._activedDate; }
+            set
+            {
+                if (this._activedDate != value)
+                {
+                    this.IsDirty = true;
+                    this._activedDate = value;
+                    OnPropertyChanged(() => ActivedDate);
+                    PropertyChangedCompleted(() => ActivedDate);
+                }
+            }
+        }
+
+        protected Nullable<System.DateTime> _expireDate;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ExpireDate</para>
+        /// </summary>
+        public Nullable<System.DateTime> ExpireDate
+        {
+            get { return this._expireDate; }
+            set
+            {
+                if (this._expireDate != value)
+                {
+                    this.IsDirty = true;
+                    this._expireDate = value;
+                    OnPropertyChanged(() => ExpireDate);
+                    PropertyChangedCompleted(() => ExpireDate);
+                }
+            }
+        }
+
+        protected string _reason;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Reason</para>
+        /// </summary>
+        public string Reason
+        {
+            get { return this._reason; }
+            set
+            {
+                if (this._reason != value)
+                {
+                    this.IsDirty = true;
+                    this._reason = value;
+                    OnPropertyChanged(() => Reason);
+                    PropertyChangedCompleted(() => Reason);
+                }
+            }
+        }
+
+        protected Nullable<short> _status;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Status</para>
+        /// </summary>
+        public Nullable<short> Status
+        {
+            get { return this._status; }
+            set
+            {
+                if (this._status != value)
+                {
+                    this.IsDirty = true;
+                    this._status = value;
+                    OnPropertyChanged(() => Status);
+                    PropertyChangedCompleted(() => Status);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -298,12 +378,16 @@ namespace CPC.POS.Model
             this.base_GuestReward.RewardId = this.RewardId;
             this.base_GuestReward.Amount = this.Amount;
             this.base_GuestReward.IsApply = this.IsApply;
-            this.base_GuestReward.EearnedDate = this.EearnedDate;
-            this.base_GuestReward.RedeemedDate = this.RedeemedDate;
+            this.base_GuestReward.EarnedDate = this.EarnedDate;
+            this.base_GuestReward.AppliedDate = this.AppliedDate;
             this.base_GuestReward.RewardValue = this.RewardValue;
             this.base_GuestReward.SaleOrderResource = this.SaleOrderResource;
             this.base_GuestReward.SaleOrderNo = this.SaleOrderNo;
             this.base_GuestReward.Remark = this.Remark;
+            this.base_GuestReward.ActivedDate = this.ActivedDate;
+            this.base_GuestReward.ExpireDate = this.ExpireDate;
+            this.base_GuestReward.Reason = this.Reason;
+            this.base_GuestReward.Status = this.Status;
         }
 
         /// <summary>
@@ -317,12 +401,16 @@ namespace CPC.POS.Model
             this._rewardId = this.base_GuestReward.RewardId;
             this._amount = this.base_GuestReward.Amount;
             this._isApply = this.base_GuestReward.IsApply;
-            this._eearnedDate = this.base_GuestReward.EearnedDate;
-            this._redeemedDate = this.base_GuestReward.RedeemedDate;
+            this._earnedDate = this.base_GuestReward.EarnedDate;
+            this._appliedDate = this.base_GuestReward.AppliedDate;
             this._rewardValue = this.base_GuestReward.RewardValue;
             this._saleOrderResource = this.base_GuestReward.SaleOrderResource;
             this._saleOrderNo = this.base_GuestReward.SaleOrderNo;
             this._remark = this.base_GuestReward.Remark;
+            this._activedDate = this.base_GuestReward.ActivedDate;
+            this._expireDate = this.base_GuestReward.ExpireDate;
+            this._reason = this.base_GuestReward.Reason;
+            this._status = this.base_GuestReward.Status;
         }
 
         /// <summary>
@@ -336,18 +424,23 @@ namespace CPC.POS.Model
             this.RewardId = this.base_GuestReward.RewardId;
             this.Amount = this.base_GuestReward.Amount;
             this.IsApply = this.base_GuestReward.IsApply;
-            this.EearnedDate = this.base_GuestReward.EearnedDate;
-            this.RedeemedDate = this.base_GuestReward.RedeemedDate;
+            this.EarnedDate = this.base_GuestReward.EarnedDate;
+            this.AppliedDate = this.base_GuestReward.AppliedDate;
             this.RewardValue = this.base_GuestReward.RewardValue;
             this.SaleOrderResource = this.base_GuestReward.SaleOrderResource;
             this.SaleOrderNo = this.base_GuestReward.SaleOrderNo;
             this.Remark = this.base_GuestReward.Remark;
+            this.ActivedDate = this.base_GuestReward.ActivedDate;
+            this.ExpireDate = this.base_GuestReward.ExpireDate;
+            this.Reason = this.base_GuestReward.Reason;
+            this.Status = this.base_GuestReward.Status;
         }
 
         #endregion
 
         #region Custom Code
 
+        #region Properties
         #region RewardName
         private string _rewardName;
         /// <summary>
@@ -386,8 +479,27 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region TotalRewardDisplay
+        private string _totalRewardDisplay;
+        /// <summary>
+        /// Gets or sets the TotalRewardDisplay.
+        /// </summary>
+        public string TotalRewardDisplay
+        {
+            get { return _totalRewardDisplay; }
+            set
+            {
+                if (_totalRewardDisplay != value)
+                {
+                    _totalRewardDisplay = value;
+                    OnPropertyChanged(() => TotalRewardDisplay);
+                }
+            }
+        }
+        #endregion
+
         #region IsAccepted
-        private bool _isAccepted=false;
+        private bool _isAccepted = false;
         /// <summary>
         /// Gets or sets the IsAccepted.
         /// </summary>
@@ -424,8 +536,6 @@ namespace CPC.POS.Model
         }
         #endregion
 
-
-
         #region RequireReward
         private string _requireReward = string.Empty;
         /// <summary>
@@ -442,6 +552,57 @@ namespace CPC.POS.Model
                     OnPropertyChanged(() => RequireReward);
                 }
             }
+        }
+        #endregion
+
+        #region RewardAmount
+        private string _rewardAmount;
+        /// <summary>
+        /// Gets or sets the RewardAmount.
+        /// <para>Using for RewardEarnView get from reward amount type</para>
+        /// </summary>
+        public string RewardAmount
+        {
+            get { return _rewardAmount; }
+            set
+            {
+                if (_rewardAmount != value)
+                {
+                    _rewardAmount = value;
+                    OnPropertyChanged(() => RewardAmount);
+                }
+            }
+        }
+        #endregion 
+
+   
+
+        #endregion
+
+        #region Methods
+        public void UpdateModel(base_GuestRewardModel guestRewardModel)
+        {
+            //this._id = guestRewardModel.Id;
+            this._guestId = guestRewardModel.GuestId;
+            this._rewardId = guestRewardModel.RewardId;
+            this._amount = guestRewardModel.Amount;
+            this._isApply = guestRewardModel.IsApply;
+            this._earnedDate = guestRewardModel.EarnedDate;
+            this._appliedDate = guestRewardModel.AppliedDate;
+            this._rewardValue = guestRewardModel.RewardValue;
+            this._saleOrderResource = guestRewardModel.SaleOrderResource;
+            this._saleOrderNo = guestRewardModel.SaleOrderNo;
+            this._remark = guestRewardModel.Remark;
+            this._activedDate = guestRewardModel.ActivedDate;
+            this._expireDate = guestRewardModel.ExpireDate;
+            this._reason = guestRewardModel.Reason;
+            this._status = guestRewardModel.Status;
+
+        }
+
+        public base_GuestRewardModel CloneObj()
+        {
+            return this.MemberwiseClone() as base_GuestRewardModel;
         }
         #endregion
 

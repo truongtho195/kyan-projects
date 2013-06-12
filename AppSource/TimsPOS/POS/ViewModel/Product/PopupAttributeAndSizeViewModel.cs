@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using CPC.POS.Database;
 using CPC.POS.Model;
+using CPC.POS.Repository;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Windows.Controls;
-using System.Reflection;
-using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
     class PopupAttributeAndSizeViewModel : ViewModelBase
     {
         #region Defines
+
+        private base_StoreRepository _storeRepository = new base_StoreRepository();
 
         private int _numberOfStore = 10;
 
@@ -60,6 +63,59 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private ObservableCollection<base_Store> _storeCollection;
+        /// <summary>
+        /// Gets or sets the StoreCollection.
+        /// </summary>
+        public ObservableCollection<base_Store> StoreCollection
+        {
+            get { return _storeCollection; }
+            set
+            {
+                if (_storeCollection != value)
+                {
+                    _storeCollection = value;
+                    OnPropertyChanged(() => StoreCollection);
+                }
+            }
+        }
+
+        private int _selectedStoreIndex = Define.StoreCode;
+        /// <summary>
+        /// Gets or sets the SelectedStoreIndex.
+        /// </summary>
+        public int SelectedStoreIndex
+        {
+            get { return _selectedStoreIndex; }
+            set
+            {
+                if (_selectedStoreIndex != value)
+                {
+                    OnSelectedStoreIndexChanging();
+                    _selectedStoreIndex = value;
+                    OnPropertyChanged(() => SelectedStoreIndex);
+                    OnSelectedStoreIndexChanged();
+                }
+            }
+        }
+
+        private bool _isRaiseTotal;
+        /// <summary>
+        /// Gets or sets the IsRaiseTotal.
+        /// </summary>
+        public bool IsRaiseTotal
+        {
+            get { return _isRaiseTotal; }
+            set
+            {
+                if (_isRaiseTotal != value)
+                {
+                    _isRaiseTotal = value;
+                    OnPropertyChanged(() => IsRaiseTotal);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -70,6 +126,9 @@ namespace CPC.POS.ViewModel
         public PopupAttributeAndSizeViewModel()
         {
             InitialCommand();
+
+            // Load store collection
+            StoreCollection = new ObservableCollection<base_Store>(_storeRepository.GetAll().OrderBy(x => x.Id));
         }
 
         public PopupAttributeAndSizeViewModel(base_ProductModel selectedProduct)
@@ -81,18 +140,17 @@ namespace CPC.POS.ViewModel
             CellCollection = new CollectionBase<DataGridCellModel>();
             foreach (base_ProductModel productItem in SelectedProduct.ProductCollection)
             {
-                // Get OnHandStore from on hand quantity
-                productItem.OnHandStore = productItem.GetOnHandFromStore(Define.StoreCode);
-
                 // Create new DataGridCell model
                 DataGridCellModel dataGridCellModel = new DataGridCellModel();
                 dataGridCellModel.CellResource = productItem.Resource.ToString();
-                dataGridCellModel.Value = productItem.OnHandStore;
                 dataGridCellModel.Attribute = productItem.Attribute;
                 dataGridCellModel.Size = productItem.Size;
                 dataGridCellModel.IsNew = productItem.IsNew;
                 dataGridCellModel.Barcode = productItem.Barcode;
                 dataGridCellModel.PartNumber = productItem.PartNumber;
+
+                // Load value list
+                LoadValueList(productItem, dataGridCellModel);
 
                 // Add new DataGridCell model to collection
                 CellCollection.Add(dataGridCellModel);
@@ -173,18 +231,53 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
+        /// Load value list
+        /// </summary>
+        /// <param name="productItem"></param>
+        /// <param name="dataGridCellModel"></param>
+        private static void LoadValueList(base_ProductModel productItem, DataGridCellModel dataGridCellModel)
+        {
+            // Initial value list
+            dataGridCellModel.ValueList = new List<ComboItem>();
+
+            foreach (base_ProductStoreModel productStoreItem in productItem.ProductStoreCollection)
+            {
+                // Update quantity
+                if (productStoreItem.StoreCode.Equals(Define.StoreCode))
+                    dataGridCellModel.Value = (int)productStoreItem.QuantityOnHand;
+
+                // Create new combo item
+                ComboItem comboItem = new ComboItem
+                {
+                    ParentId = productStoreItem.StoreCode,
+                    IntValue = (int)productStoreItem.QuantityOnHand
+                };
+
+                // Add new combo item to list
+                dataGridCellModel.ValueList.Add(comboItem);
+            }
+        }
+
+        /// <summary>
         /// Update product collection from cell collection
         /// </summary>
         private void UpdateProductCollection()
         {
-            // Get deleted products and remove them
-            IEnumerable<base_ProductModel> deletedProducts = SelectedProduct.ProductCollection.Where(x => !CellCollection.Select(y => y.CellResource).Contains(x.Resource.ToString()));
+            // Get deleted products
+            IEnumerable<base_ProductModel> deletedProducts = SelectedProduct.ProductCollection.
+                Where(x => !CellCollection.Select(y => y.CellResource).Contains(x.Resource.ToString()));
+
+            // Remove all deleted products
             foreach (base_ProductModel productModel in deletedProducts.ToList())
                 SelectedProduct.ProductCollection.Remove(productModel);
 
             if (CellCollection.DeletedItems != null && CellCollection.DeletedItems.Count > 0)
             {
-                deletedProducts = SelectedProduct.ProductCollection.Where(x => CellCollection.DeletedItems.Select(y => y.CellResource).Contains(x.Resource.ToString()));
+                // Get deleted products
+                deletedProducts = SelectedProduct.ProductCollection.
+                    Where(x => CellCollection.DeletedItems.Select(y => y.CellResource).Contains(x.Resource.ToString()));
+
+                // Remove all deleted products
                 foreach (base_ProductModel productModel in deletedProducts.ToList())
                     SelectedProduct.ProductCollection.Remove(productModel);
             }
@@ -196,7 +289,8 @@ namespace CPC.POS.ViewModel
             foreach (DataGridCellModel dataGridCellItem in CellCollection)
             {
                 // Get edited product
-                base_ProductModel productModel = SelectedProduct.ProductCollection.SingleOrDefault(x => x.Resource.ToString().Equals(dataGridCellItem.CellResource));
+                base_ProductModel productModel = SelectedProduct.ProductCollection.
+                    SingleOrDefault(x => x.Resource.ToString().Equals(dataGridCellItem.CellResource));
 
                 if (productModel == null)
                 {
@@ -204,22 +298,90 @@ namespace CPC.POS.ViewModel
                     productModel = new base_ProductModel();
                     productModel.Code = DateTimeExt.Now.AddMilliseconds(productCode++).ToString(Define.ProductCodeFormat);
                     productModel.Resource = Guid.NewGuid();
+                    productModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
 
                     // Add new product to collection
                     SelectedProduct.ProductCollection.Add(productModel);
                 }
 
-                productModel.OnHandStore = dataGridCellItem.Value;
+                if (SelectedStoreIndex.Equals(Define.StoreCode))
+                    productModel.OnHandStore = dataGridCellItem.Value;
                 productModel.Attribute = dataGridCellItem.Attribute;
                 productModel.Size = dataGridCellItem.Size;
                 productModel.Barcode = dataGridCellItem.Barcode;
                 productModel.PartNumber = dataGridCellItem.PartNumber;
 
-                // Set on hand quantity from OnHandStore
-                productModel.SetOnHandToStore(productModel.OnHandStore, Define.StoreCode);
+                OnSelectedStoreIndexChanging();
 
+                foreach (ComboItem comboItem in dataGridCellItem.ValueList)
+                {
+                    base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(comboItem.ParentId));
+                    if (productStoreItem == null)
+                    {
+                        // Create new product store
+                        productStoreItem = new base_ProductStoreModel();
 
+                        // Add new product store to collection
+                        productModel.ProductStoreCollection.Add(productStoreItem);
+                    }
+
+                    // Update product store
+                    productStoreItem.QuantityOnHand = comboItem.IntValue;
+                    productStoreItem.StoreCode = comboItem.ParentId;
+                }
+
+                // Update quantity on hand
+                productModel.UpdateQuantityOnHand();
             }
+        }
+
+        /// <summary>
+        /// Backup data grid cell value
+        /// </summary>
+        private void OnSelectedStoreIndexChanging()
+        {
+            foreach (DataGridCellModel dataGridCellItem in CellCollection)
+            {
+                // Get combo item by old store
+                ComboItem comboItem = dataGridCellItem.ValueList.SingleOrDefault(x => x.ParentId.Equals(SelectedStoreIndex));
+
+                if (comboItem == null)
+                {
+                    // Create new combo item
+                    comboItem = new ComboItem { ParentId = SelectedStoreIndex };
+
+                    // Add new combo item to list
+                    dataGridCellItem.ValueList.Add(comboItem);
+                }
+
+                // Backup data grid cell value
+                comboItem.IntValue = dataGridCellItem.Value;
+            }
+        }
+
+        /// <summary>
+        /// Restore data grid cell value
+        /// </summary>
+        private void OnSelectedStoreIndexChanged()
+        {
+            foreach (DataGridCellModel dataGridCellItem in CellCollection)
+            {
+                // Get combo item by new store
+                ComboItem comboItem = dataGridCellItem.ValueList.SingleOrDefault(x => x.ParentId.Equals(SelectedStoreIndex));
+                if (comboItem == null)
+                {
+                    // Create new combo item
+                    comboItem = new ComboItem { ParentId = SelectedStoreIndex };
+
+                    // Add new combo item to list
+                    dataGridCellItem.ValueList.Add(comboItem);
+                }
+
+                // Restore data grid cell value
+                dataGridCellItem.Value = comboItem.IntValue;
+            }
+
+            IsRaiseTotal = !IsRaiseTotal;
         }
 
         #endregion

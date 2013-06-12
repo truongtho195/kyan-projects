@@ -260,60 +260,33 @@
         <Setter Property="Foreground"
                 Value="White" />
     </Style>
-    <Style x:Key="TextBoxRemark"
-           TargetType="{x:Type TextBox}">
-        <Setter Property="KeyboardNavigation.TabNavigation"
-                Value="None" />
-        <Setter Property="FocusVisualStyle"
-                Value="{x:Null}" />
-        <Setter Property="AllowDrop"
-                Value="true" />
-        <Setter Property="ScrollViewer.PanningMode"
-                Value="VerticalFirst" />
-        <Setter Property="Stylus.IsFlicksEnabled"
-                Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Grid Width="23"
-                          Height="16"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom">
-                        <Ellipse Fill="Red"
-                                 Stroke="White"
-                                 StrokeThickness="0.5" />
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled"
-                                 Value="false">
-                            <Setter Property="Foreground"
-                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                        </Trigger>
-                        <Trigger Property="Text"
-                                 Value="0">
-                            <Setter Property="Visibility"
-                                    TargetName="PART_ContentHost"
-                                    Value="Collapsed" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Padding"
-                Value="0" />
-        <Setter Property="HorizontalContentAlignment"
-                Value="Right" />
-        <Setter Property="Foreground"
-                Value="White" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Center" />
-        <Setter Property="FontSize"
-                Value="8" />
-        <Setter Property="FontFamily"
-                Value="Arial" />
-        <Setter Property="FontWeight"
-                Value="Bold" />
-    </Style>
+    <Style x:Key="TextBoxRemark" TargetType="{x:Type TextBox}">
+		<Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+		<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Grid Width="Auto" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+						<Ellipse StrokeThickness="0.5"/>
+						<ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Padding" Value="0,0,10,0"/>
+		<Setter Property="HorizontalContentAlignment" Value="Right"/>
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="FontSize" Value="10"/>
+		<Setter Property="FontFamily" Value="Arial"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+	</Style>
 </ResourceDictionary>

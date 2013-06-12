@@ -1194,6 +1194,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected string _cashier;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Cashier</para>
+        /// </summary>
+        public string Cashier
+        {
+            get { return this._cashier; }
+            set
+            {
+                if (this._cashier != value)
+                {
+                    this.IsDirty = true;
+                    this._cashier = value;
+                    OnPropertyChanged(() => Cashier);
+                    PropertyChangedCompleted(() => Cashier);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1272,6 +1292,7 @@ namespace CPC.POS.Model
             this.base_SaleOrder.IsPurge = this.IsPurge;
             this.base_SaleOrder.IsLocked = this.IsLocked;
             this.base_SaleOrder.RewardAmount = this.RewardAmount;
+            this.base_SaleOrder.Cashier = this.Cashier;
         }
 
         /// <summary>
@@ -1337,6 +1358,7 @@ namespace CPC.POS.Model
             this._isPurge = this.base_SaleOrder.IsPurge;
             this._isLocked = this.base_SaleOrder.IsLocked;
             this._rewardAmount = this.base_SaleOrder.RewardAmount;
+            this._cashier = this.base_SaleOrder.Cashier;
         }
 
         /// <summary>
@@ -1402,6 +1424,7 @@ namespace CPC.POS.Model
             this.IsPurge = this.base_SaleOrder.IsPurge;
             this.IsLocked = this.base_SaleOrder.IsLocked;
             this.RewardAmount = this.base_SaleOrder.RewardAmount;
+            this.Cashier = this.base_SaleOrder.Cashier;
         }
 
         #endregion
@@ -1662,6 +1685,31 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region IsApplyReward
+        private bool _isApplyReward;
+        /// <summary>
+        /// Gets or sets the IsApplyReward.
+        /// <para>Reward program can using for if customer purchase</para>
+        /// <para>
+        /// True : Have Reward Program
+        /// False : have no reward program 
+        /// </para>
+        /// </summary>
+        public bool IsApplyReward
+        {
+            get { return _isApplyReward; }
+            set
+            {
+                if (_isApplyReward != value)
+                {
+                    _isApplyReward = value;
+                    OnPropertyChanged(() => IsApplyReward);
+                }
+            }
+        }
+        #endregion
+
+
         #region SaleOrderShipDetailCollection
         private CollectionBase<base_SaleOrderShipDetailModel> _saleOrderShipDetailCollection;
         /// <summary>
@@ -1776,6 +1824,8 @@ namespace CPC.POS.Model
         }
         #endregion
 
+
+
         #endregion
 
         #region Methods
@@ -1818,10 +1868,11 @@ namespace CPC.POS.Model
         /// </summary>
         public void CalcBalance()
         {
-            //if (IsDeposit)
-                this.Balance = this.RewardAmount - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
-            //else
-            //    this.Balance = this.Total - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
+            if (IsDeposit)
+                this.Balance = this.Total - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
+            else
+                
+            this.Balance = this.RewardAmount - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
         }
 
         /// <summary>

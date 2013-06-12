@@ -1433,6 +1433,18 @@ namespace CPC.POS.Model
 
         #endregion
 
+        #region CanLock
+
+        public bool CanLock
+        {
+            get
+            {
+                return _status < (short)PurchaseStatus.PaidInFull;
+            }
+        }
+
+        #endregion
+
         #region VendorName
 
         private string _vendorName;
@@ -1458,24 +1470,25 @@ namespace CPC.POS.Model
 
         #endregion
 
-        #region StatusName
+        #region StatusItem
 
+        private ComboItem _statusItem;
         /// <summary>
-        /// Gets StatusName.
+        /// Gets or sets StatusItem.
         /// </summary>
-        public string StatusName
+        public ComboItem StatusItem
         {
             get
             {
-                if (Common.PurchaseStatus != null)
+                return _statusItem;
+            }
+            set
+            {
+                if (_statusItem != value)
                 {
-                    var item = Common.PurchaseStatus.FirstOrDefault(x => x.Value == _status);
-                    if (item != null)
-                    {
-                        return item.Text;
-                    }
+                    _statusItem = value;
+                    OnPropertyChanged(() => StatusItem);
                 }
-                return null;
             }
         }
 
@@ -1603,9 +1616,18 @@ namespace CPC.POS.Model
 
                 case "Status":
 
-                    OnPropertyChanged(() => StatusName);
                     OnPropertyChanged(() => HasReceive);
                     OnPropertyChanged(() => CanPurchase);
+                    OnPropertyChanged(() => CanLock);
+
+                    if (Common.PurchaseStatus != null)
+                    {
+                        var item = Common.PurchaseStatus.FirstOrDefault(x => x.Value == _status);
+                        if (item != null)
+                        {
+                            StatusItem = item;
+                        }
+                    }
 
                     break;
 

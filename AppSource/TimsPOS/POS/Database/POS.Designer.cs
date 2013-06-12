@@ -27,6 +27,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("POSModel", "pga_jobsteplog_jsljlgid_fkey", "pga_joblog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.pga_joblog), "pga_jobsteplog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.pga_jobsteplog), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "pga_jobsteplog_jsljstid_fkey", "pga_jobstep", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.pga_jobstep), "pga_jobsteplog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.pga_jobsteplog), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id", "base_VirtualFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_VirtualFolder), "base_Attachment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_Attachment), true)]
+[assembly: EdmRelationshipAttribute("POSModel", "FK_base_CostAdjustment_base_Product", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_CostAdjustment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_CostAdjustment), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_CounStockDetail_CountStockId_base_CountStock_id", "base_CountStock", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_CountStock), "base_CountStockDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_CountStockDetail), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_Department_ParentId_base_Department_Id", "base_Department", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_Department), "base_Department1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_Department), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_EmailAttachment_EmailId_base_Email_Id", "base_Email", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_Email), "base_EmailAttachment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_EmailAttachment), true)]
@@ -48,6 +49,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id", "tims_WorkSchedule", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.tims_WorkSchedule), "base_GuestSchedule", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_GuestSchedule), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_PricingChange_PricingManagerId_base_PricingManager_Id", "base_PricingManager", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_PricingManager), "base_PricingChange", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PricingChange), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_PricingChange_ProductId_base_Product_Id", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_PricingChange", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PricingChange), true)]
+[assembly: EdmRelationshipAttribute("POSModel", "FK_base_QuantityAdjustment_base_Product", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_QuantityAdjustment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_QuantityAdjustment), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_VendorProduct_ProductId_base_Product_Id", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_VendorProduct", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_VendorProduct), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_baseProductStore_ProductId_base_Product_Id", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_ProductStore", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ProductStore), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id", "base_ProductStore", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_ProductStore), "base_ProductUOM", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ProductUOM), true)]
@@ -67,6 +69,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_TransferStockDetail_TransferStockId_base_TransferStock_", "base_TransferStock", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_TransferStock), "base_TransferStockDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_TransferStockDetail), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_UserLogDetail_UserLogId_base_UserLog_Id", "base_UserLog", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_UserLog), "base_UserLogDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_UserLogDetail), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId", "base_VirtualFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_VirtualFolder), "base_VirtualFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_VirtualFolder), true)]
+[assembly: EdmRelationshipAttribute("POSModel", "FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.rpt_Group), "rpt_Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.rpt_Report), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id", "tims_WorkSchedule", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.tims_WorkSchedule), "tims_TimeLog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.tims_TimeLog), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id", "tims_WorkSchedule", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.tims_WorkSchedule), "tims_WorkWeek", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.tims_WorkWeek), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "tims_TimeLogPermission", "tims_TimeLog", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.tims_TimeLog), "tims_WorkPermission", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.tims_WorkPermission))]
@@ -316,22 +319,6 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<base_CostAdjustmentItem> base_CostAdjustmentItem
-        {
-            get
-            {
-                if ((_base_CostAdjustmentItem == null))
-                {
-                    _base_CostAdjustmentItem = base.CreateObjectSet<base_CostAdjustmentItem>("base_CostAdjustmentItem");
-                }
-                return _base_CostAdjustmentItem;
-            }
-        }
-        private ObjectSet<base_CostAdjustmentItem> _base_CostAdjustmentItem;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<base_CountStock> base_CountStock
         {
             get
@@ -572,6 +559,22 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<base_Language> base_Language
+        {
+            get
+            {
+                if ((_base_Language == null))
+                {
+                    _base_Language = base.CreateObjectSet<base_Language>("base_Language");
+                }
+                return _base_Language;
+            }
+        }
+        private ObjectSet<base_Language> _base_Language;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<base_MemberShip> base_MemberShip
         {
             get
@@ -776,22 +779,6 @@ namespace CPC.POS.Database
             }
         }
         private ObjectSet<base_QuantityAdjustment> _base_QuantityAdjustment;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<base_QuantityAdjustmentItem> base_QuantityAdjustmentItem
-        {
-            get
-            {
-                if ((_base_QuantityAdjustmentItem == null))
-                {
-                    _base_QuantityAdjustmentItem = base.CreateObjectSet<base_QuantityAdjustmentItem>("base_QuantityAdjustmentItem");
-                }
-                return _base_QuantityAdjustmentItem;
-            }
-        }
-        private ObjectSet<base_QuantityAdjustmentItem> _base_QuantityAdjustmentItem;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1212,6 +1199,38 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<rpt_Group> rpt_Group
+        {
+            get
+            {
+                if ((_rpt_Group == null))
+                {
+                    _rpt_Group = base.CreateObjectSet<rpt_Group>("rpt_Group");
+                }
+                return _rpt_Group;
+            }
+        }
+        private ObjectSet<rpt_Group> _rpt_Group;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<rpt_Report> rpt_Report
+        {
+            get
+            {
+                if ((_rpt_Report == null))
+                {
+                    _rpt_Report = base.CreateObjectSet<rpt_Report>("rpt_Report");
+                }
+                return _rpt_Report;
+            }
+        }
+        private ObjectSet<rpt_Report> _rpt_Report;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<tims_Holiday> tims_Holiday
         {
             get
@@ -1405,14 +1424,6 @@ namespace CPC.POS.Database
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the base_CostAdjustmentItem EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTobase_CostAdjustmentItem(base_CostAdjustmentItem base_CostAdjustmentItem)
-        {
-            base.AddObject("base_CostAdjustmentItem", base_CostAdjustmentItem);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the base_CountStock EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddTobase_CountStock(base_CountStock base_CountStock)
@@ -1533,6 +1544,14 @@ namespace CPC.POS.Database
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the base_Language EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTobase_Language(base_Language base_Language)
+        {
+            base.AddObject("base_Language", base_Language);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the base_MemberShip EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddTobase_MemberShip(base_MemberShip base_MemberShip)
@@ -1634,14 +1653,6 @@ namespace CPC.POS.Database
         public void AddTobase_QuantityAdjustment(base_QuantityAdjustment base_QuantityAdjustment)
         {
             base.AddObject("base_QuantityAdjustment", base_QuantityAdjustment);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the base_QuantityAdjustmentItem EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTobase_QuantityAdjustmentItem(base_QuantityAdjustmentItem base_QuantityAdjustmentItem)
-        {
-            base.AddObject("base_QuantityAdjustmentItem", base_QuantityAdjustmentItem);
         }
     
         /// <summary>
@@ -1850,6 +1861,22 @@ namespace CPC.POS.Database
         public void AddTobase_VirtualFolder(base_VirtualFolder base_VirtualFolder)
         {
             base.AddObject("base_VirtualFolder", base_VirtualFolder);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the rpt_Group EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTorpt_Group(rpt_Group rpt_Group)
+        {
+            base.AddObject("rpt_Group", rpt_Group);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the rpt_Report EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTorpt_Report(rpt_Report rpt_Report)
+        {
+            base.AddObject("rpt_Report", rpt_Report);
         }
     
         /// <summary>
@@ -2386,7 +2413,8 @@ namespace CPC.POS.Database
         /// <param name="isRewardOnMultiPayment">Initial value of the IsRewardOnMultiPayment property.</param>
         /// <param name="isIncludeReturnFee">Initial value of the IsIncludeReturnFee property.</param>
         /// <param name="returnFeePercent">Initial value of the ReturnFeePercent property.</param>
-        public static base_Configuration Createbase_Configuration(global::System.Int32 defautlDiscountScheduleTime, global::System.Int16 defaultDiscountType, global::System.Int16 defaultDiscountStatus, global::System.Decimal tipPercent, global::System.Int16 workHour, global::System.Int32 id, global::System.Boolean isAllowShift, global::System.Int32 acceptedGiftCardMethod, global::System.Boolean isRewardOnTax, global::System.Boolean isRewardOnMultiPayment, global::System.Boolean isIncludeReturnFee, global::System.Decimal returnFeePercent)
+        /// <param name="isRewardLessThanDiscount">Initial value of the IsRewardLessThanDiscount property.</param>
+        public static base_Configuration Createbase_Configuration(global::System.Int32 defautlDiscountScheduleTime, global::System.Int16 defaultDiscountType, global::System.Int16 defaultDiscountStatus, global::System.Decimal tipPercent, global::System.Int16 workHour, global::System.Int32 id, global::System.Boolean isAllowShift, global::System.Int32 acceptedGiftCardMethod, global::System.Boolean isRewardOnTax, global::System.Boolean isRewardOnMultiPayment, global::System.Boolean isIncludeReturnFee, global::System.Decimal returnFeePercent, global::System.Boolean isRewardLessThanDiscount)
         {
             base_Configuration base_Configuration = new base_Configuration();
             base_Configuration.DefautlDiscountScheduleTime = defautlDiscountScheduleTime;
@@ -2401,6 +2429,7 @@ namespace CPC.POS.Database
             base_Configuration.IsRewardOnMultiPayment = isRewardOnMultiPayment;
             base_Configuration.IsIncludeReturnFee = isIncludeReturnFee;
             base_Configuration.ReturnFeePercent = returnFeePercent;
+            base_Configuration.IsRewardLessThanDiscount = isRewardLessThanDiscount;
             return base_Configuration;
         }
 
@@ -3663,30 +3692,6 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int16> PasswordLength
-        {
-            get
-            {
-                return _PasswordLength;
-            }
-            set
-            {
-                OnPasswordLengthChanging(value);
-                ReportPropertyChanging("PasswordLength");
-                _PasswordLength = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("PasswordLength");
-                OnPasswordLengthChanged();
-            }
-        }
-        private Nullable<global::System.Int16> _PasswordLength;
-        partial void OnPasswordLengthChanging(Nullable<global::System.Int16> value);
-        partial void OnPasswordLengthChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public Nullable<global::System.Boolean> IsAllowChangeOrder
         {
             get
@@ -3849,6 +3854,126 @@ namespace CPC.POS.Database
         private global::System.Decimal _ReturnFeePercent;
         partial void OnReturnFeePercentChanging(global::System.Decimal value);
         partial void OnReturnFeePercentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsRewardLessThanDiscount
+        {
+            get
+            {
+                return _IsRewardLessThanDiscount;
+            }
+            set
+            {
+                OnIsRewardLessThanDiscountChanging(value);
+                ReportPropertyChanging("IsRewardLessThanDiscount");
+                _IsRewardLessThanDiscount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsRewardLessThanDiscount");
+                OnIsRewardLessThanDiscountChanged();
+            }
+        }
+        private global::System.Boolean _IsRewardLessThanDiscount;
+        partial void OnIsRewardLessThanDiscountChanging(global::System.Boolean value);
+        partial void OnIsRewardLessThanDiscountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String CurrencySymbol
+        {
+            get
+            {
+                return _CurrencySymbol;
+            }
+            set
+            {
+                OnCurrencySymbolChanging(value);
+                ReportPropertyChanging("CurrencySymbol");
+                _CurrencySymbol = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("CurrencySymbol");
+                OnCurrencySymbolChanged();
+            }
+        }
+        private global::System.String _CurrencySymbol;
+        partial void OnCurrencySymbolChanging(global::System.String value);
+        partial void OnCurrencySymbolChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> DecimalPlaces
+        {
+            get
+            {
+                return _DecimalPlaces;
+            }
+            set
+            {
+                OnDecimalPlacesChanging(value);
+                ReportPropertyChanging("DecimalPlaces");
+                _DecimalPlaces = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DecimalPlaces");
+                OnDecimalPlacesChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _DecimalPlaces;
+        partial void OnDecimalPlacesChanging(Nullable<global::System.Int16> value);
+        partial void OnDecimalPlacesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FomartCurrency
+        {
+            get
+            {
+                return _FomartCurrency;
+            }
+            set
+            {
+                OnFomartCurrencyChanging(value);
+                ReportPropertyChanging("FomartCurrency");
+                _FomartCurrency = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FomartCurrency");
+                OnFomartCurrencyChanged();
+            }
+        }
+        private global::System.String _FomartCurrency;
+        partial void OnFomartCurrencyChanging(global::System.String value);
+        partial void OnFomartCurrencyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String PasswordLength
+        {
+            get
+            {
+                return _PasswordLength;
+            }
+            set
+            {
+                OnPasswordLengthChanging(value);
+                ReportPropertyChanging("PasswordLength");
+                _PasswordLength = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PasswordLength");
+                OnPasswordLengthChanged();
+            }
+        }
+        private global::System.String _PasswordLength;
+        partial void OnPasswordLengthChanging(global::System.String value);
+        partial void OnPasswordLengthChanged();
 
         #endregion
     
@@ -3868,24 +3993,24 @@ namespace CPC.POS.Database
         /// Create a new base_CostAdjustment object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="resource">Initial value of the Resource property.</param>
+        /// <param name="productId">Initial value of the ProductId property.</param>
+        /// <param name="productResource">Initial value of the ProductResource property.</param>
         /// <param name="costDifference">Initial value of the CostDifference property.</param>
         /// <param name="newCost">Initial value of the NewCost property.</param>
         /// <param name="oldCost">Initial value of the OldCost property.</param>
+        /// <param name="adjustCostDifference">Initial value of the AdjustCostDifference property.</param>
         /// <param name="loggedTime">Initial value of the LoggedTime property.</param>
-        /// <param name="reason">Initial value of the Reason property.</param>
-        /// <param name="storeNumber">Initial value of the StoreNumber property.</param>
-        public static base_CostAdjustment Createbase_CostAdjustment(global::System.Int64 id, global::System.Guid resource, global::System.Decimal costDifference, global::System.Decimal newCost, global::System.Decimal oldCost, global::System.DateTime loggedTime, global::System.String reason, global::System.Int32 storeNumber)
+        public static base_CostAdjustment Createbase_CostAdjustment(global::System.Int64 id, global::System.Int64 productId, global::System.String productResource, global::System.Decimal costDifference, global::System.Decimal newCost, global::System.Decimal oldCost, global::System.Decimal adjustCostDifference, global::System.DateTime loggedTime)
         {
             base_CostAdjustment base_CostAdjustment = new base_CostAdjustment();
             base_CostAdjustment.Id = id;
-            base_CostAdjustment.Resource = resource;
+            base_CostAdjustment.ProductId = productId;
+            base_CostAdjustment.ProductResource = productResource;
             base_CostAdjustment.CostDifference = costDifference;
             base_CostAdjustment.NewCost = newCost;
             base_CostAdjustment.OldCost = oldCost;
+            base_CostAdjustment.AdjustCostDifference = adjustCostDifference;
             base_CostAdjustment.LoggedTime = loggedTime;
-            base_CostAdjustment.Reason = reason;
-            base_CostAdjustment.StoreNumber = storeNumber;
             return base_CostAdjustment;
         }
 
@@ -3924,24 +4049,48 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Guid Resource
+        public global::System.Int64 ProductId
         {
             get
             {
-                return _Resource;
+                return _ProductId;
             }
             set
             {
-                OnResourceChanging(value);
-                ReportPropertyChanging("Resource");
-                _Resource = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Resource");
-                OnResourceChanged();
+                OnProductIdChanging(value);
+                ReportPropertyChanging("ProductId");
+                _ProductId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProductId");
+                OnProductIdChanged();
             }
         }
-        private global::System.Guid _Resource;
-        partial void OnResourceChanging(global::System.Guid value);
-        partial void OnResourceChanged();
+        private global::System.Int64 _ProductId;
+        partial void OnProductIdChanging(global::System.Int64 value);
+        partial void OnProductIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ProductResource
+        {
+            get
+            {
+                return _ProductResource;
+            }
+            set
+            {
+                OnProductResourceChanging(value);
+                ReportPropertyChanging("ProductResource");
+                _ProductResource = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ProductResource");
+                OnProductResourceChanged();
+            }
+        }
+        private global::System.String _ProductResource;
+        partial void OnProductResourceChanging(global::System.String value);
+        partial void OnProductResourceChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4020,270 +4169,7 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> ItemCount
-        {
-            get
-            {
-                return _ItemCount;
-            }
-            set
-            {
-                OnItemCountChanging(value);
-                ReportPropertyChanging("ItemCount");
-                _ItemCount = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ItemCount");
-                OnItemCountChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _ItemCount;
-        partial void OnItemCountChanging(Nullable<global::System.Int32> value);
-        partial void OnItemCountChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime LoggedTime
-        {
-            get
-            {
-                return _LoggedTime;
-            }
-            set
-            {
-                OnLoggedTimeChanging(value);
-                ReportPropertyChanging("LoggedTime");
-                _LoggedTime = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LoggedTime");
-                OnLoggedTimeChanged();
-            }
-        }
-        private global::System.DateTime _LoggedTime;
-        partial void OnLoggedTimeChanging(global::System.DateTime value);
-        partial void OnLoggedTimeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Reason
-        {
-            get
-            {
-                return _Reason;
-            }
-            set
-            {
-                OnReasonChanging(value);
-                ReportPropertyChanging("Reason");
-                _Reason = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Reason");
-                OnReasonChanged();
-            }
-        }
-        private global::System.String _Reason;
-        partial void OnReasonChanging(global::System.String value);
-        partial void OnReasonChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 StoreNumber
-        {
-            get
-            {
-                return _StoreNumber;
-            }
-            set
-            {
-                OnStoreNumberChanging(value);
-                ReportPropertyChanging("StoreNumber");
-                _StoreNumber = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("StoreNumber");
-                OnStoreNumberChanged();
-            }
-        }
-        private global::System.Int32 _StoreNumber;
-        partial void OnStoreNumberChanging(global::System.Int32 value);
-        partial void OnStoreNumberChanged();
-
-        #endregion
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="base_CostAdjustmentItem")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class base_CostAdjustmentItem : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new base_CostAdjustmentItem object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="resource">Initial value of the Resource property.</param>
-        /// <param name="productId">Initial value of the ProductId property.</param>
-        /// <param name="productCode">Initial value of the ProductCode property.</param>
-        /// <param name="costDifference">Initial value of the CostDifference property.</param>
-        /// <param name="adjustmentNewCost">Initial value of the AdjustmentNewCost property.</param>
-        /// <param name="adjustmentOldCost">Initial value of the AdjustmentOldCost property.</param>
-        /// <param name="loggedTime">Initial value of the LoggedTime property.</param>
-        /// <param name="parentResource">Initial value of the ParentResource property.</param>
-        public static base_CostAdjustmentItem Createbase_CostAdjustmentItem(global::System.Int64 id, global::System.Guid resource, global::System.Int64 productId, global::System.String productCode, global::System.Decimal costDifference, global::System.Decimal adjustmentNewCost, global::System.Decimal adjustmentOldCost, global::System.DateTime loggedTime, global::System.String parentResource)
-        {
-            base_CostAdjustmentItem base_CostAdjustmentItem = new base_CostAdjustmentItem();
-            base_CostAdjustmentItem.Id = id;
-            base_CostAdjustmentItem.Resource = resource;
-            base_CostAdjustmentItem.ProductId = productId;
-            base_CostAdjustmentItem.ProductCode = productCode;
-            base_CostAdjustmentItem.CostDifference = costDifference;
-            base_CostAdjustmentItem.AdjustmentNewCost = adjustmentNewCost;
-            base_CostAdjustmentItem.AdjustmentOldCost = adjustmentOldCost;
-            base_CostAdjustmentItem.LoggedTime = loggedTime;
-            base_CostAdjustmentItem.ParentResource = parentResource;
-            return base_CostAdjustmentItem;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int64 _Id;
-        partial void OnIdChanging(global::System.Int64 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Resource
-        {
-            get
-            {
-                return _Resource;
-            }
-            set
-            {
-                OnResourceChanging(value);
-                ReportPropertyChanging("Resource");
-                _Resource = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Resource");
-                OnResourceChanged();
-            }
-        }
-        private global::System.Guid _Resource;
-        partial void OnResourceChanging(global::System.Guid value);
-        partial void OnResourceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 ProductId
-        {
-            get
-            {
-                return _ProductId;
-            }
-            set
-            {
-                OnProductIdChanging(value);
-                ReportPropertyChanging("ProductId");
-                _ProductId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ProductId");
-                OnProductIdChanged();
-            }
-        }
-        private global::System.Int64 _ProductId;
-        partial void OnProductIdChanging(global::System.Int64 value);
-        partial void OnProductIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String ProductCode
-        {
-            get
-            {
-                return _ProductCode;
-            }
-            set
-            {
-                OnProductCodeChanging(value);
-                ReportPropertyChanging("ProductCode");
-                _ProductCode = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("ProductCode");
-                OnProductCodeChanged();
-            }
-        }
-        private global::System.String _ProductCode;
-        partial void OnProductCodeChanging(global::System.String value);
-        partial void OnProductCodeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal CostDifference
-        {
-            get
-            {
-                return _CostDifference;
-            }
-            set
-            {
-                OnCostDifferenceChanging(value);
-                ReportPropertyChanging("CostDifference");
-                _CostDifference = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CostDifference");
-                OnCostDifferenceChanged();
-            }
-        }
-        private global::System.Decimal _CostDifference;
-        partial void OnCostDifferenceChanging(global::System.Decimal value);
-        partial void OnCostDifferenceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal AdjustmentNewCost
+        public Nullable<global::System.Decimal> AdjustmentNewCost
         {
             get
             {
@@ -4298,16 +4184,16 @@ namespace CPC.POS.Database
                 OnAdjustmentNewCostChanged();
             }
         }
-        private global::System.Decimal _AdjustmentNewCost;
-        partial void OnAdjustmentNewCostChanging(global::System.Decimal value);
+        private Nullable<global::System.Decimal> _AdjustmentNewCost;
+        partial void OnAdjustmentNewCostChanging(Nullable<global::System.Decimal> value);
         partial void OnAdjustmentNewCostChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Decimal AdjustmentOldCost
+        public Nullable<global::System.Decimal> AdjustmentOldCost
         {
             get
             {
@@ -4322,9 +4208,33 @@ namespace CPC.POS.Database
                 OnAdjustmentOldCostChanged();
             }
         }
-        private global::System.Decimal _AdjustmentOldCost;
-        partial void OnAdjustmentOldCostChanging(global::System.Decimal value);
+        private Nullable<global::System.Decimal> _AdjustmentOldCost;
+        partial void OnAdjustmentOldCostChanging(Nullable<global::System.Decimal> value);
         partial void OnAdjustmentOldCostChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal AdjustCostDifference
+        {
+            get
+            {
+                return _AdjustCostDifference;
+            }
+            set
+            {
+                OnAdjustCostDifferenceChanging(value);
+                ReportPropertyChanging("AdjustCostDifference");
+                _AdjustCostDifference = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AdjustCostDifference");
+                OnAdjustCostDifferenceChanged();
+            }
+        }
+        private global::System.Decimal _AdjustCostDifference;
+        partial void OnAdjustCostDifferenceChanging(global::System.Decimal value);
+        partial void OnAdjustCostDifferenceChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4353,53 +4263,166 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String ParentResource
+        public global::System.String Reason
         {
             get
             {
-                return _ParentResource;
+                return _Reason;
             }
             set
             {
-                OnParentResourceChanging(value);
-                ReportPropertyChanging("ParentResource");
-                _ParentResource = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("ParentResource");
-                OnParentResourceChanged();
+                OnReasonChanging(value);
+                ReportPropertyChanging("Reason");
+                _Reason = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Reason");
+                OnReasonChanged();
             }
         }
-        private global::System.String _ParentResource;
-        partial void OnParentResourceChanging(global::System.String value);
-        partial void OnParentResourceChanged();
+        private global::System.String _Reason;
+        partial void OnReasonChanging(global::System.String value);
+        partial void OnReasonChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> IsQuantityChanged
+        public global::System.String Status
         {
             get
             {
-                return _IsQuantityChanged;
+                return _Status;
             }
             set
             {
-                OnIsQuantityChangedChanging(value);
-                ReportPropertyChanging("IsQuantityChanged");
-                _IsQuantityChanged = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsQuantityChanged");
-                OnIsQuantityChangedChanged();
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
             }
         }
-        private Nullable<global::System.Boolean> _IsQuantityChanged;
-        partial void OnIsQuantityChangedChanging(Nullable<global::System.Boolean> value);
-        partial void OnIsQuantityChangedChanged();
+        private global::System.String _Status;
+        partial void OnStatusChanging(global::System.String value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserCreated
+        {
+            get
+            {
+                return _UserCreated;
+            }
+            set
+            {
+                OnUserCreatedChanging(value);
+                ReportPropertyChanging("UserCreated");
+                _UserCreated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserCreated");
+                OnUserCreatedChanged();
+            }
+        }
+        private global::System.String _UserCreated;
+        partial void OnUserCreatedChanging(global::System.String value);
+        partial void OnUserCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsReversed
+        {
+            get
+            {
+                return _IsReversed;
+            }
+            set
+            {
+                OnIsReversedChanging(value);
+                ReportPropertyChanging("IsReversed");
+                _IsReversed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsReversed");
+                OnIsReversedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsReversed;
+        partial void OnIsReversedChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsReversedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> StoreCode
+        {
+            get
+            {
+                return _StoreCode;
+            }
+            set
+            {
+                OnStoreCodeChanging(value);
+                ReportPropertyChanging("StoreCode");
+                _StoreCode = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StoreCode");
+                OnStoreCodeChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _StoreCode;
+        partial void OnStoreCodeChanging(Nullable<global::System.Int32> value);
+        partial void OnStoreCodeChanged();
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_CostAdjustment_base_Product", "base_Product")]
+        public base_Product base_Product
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_CostAdjustment_base_Product", "base_Product").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_CostAdjustment_base_Product", "base_Product").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<base_Product> base_ProductReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_CostAdjustment_base_Product", "base_Product");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<base_Product>("POSModel.FK_base_CostAdjustment_base_Product", "base_Product", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -4866,6 +4889,30 @@ namespace CPC.POS.Database
         private global::System.Int32 _CountedQuantity;
         partial void OnCountedQuantityChanging(global::System.Int32 value);
         partial void OnCountedQuantityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Difference
+        {
+            get
+            {
+                return _Difference;
+            }
+            set
+            {
+                OnDifferenceChanging(value);
+                ReportPropertyChanging("Difference");
+                _Difference = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Difference");
+                OnDifferenceChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Difference;
+        partial void OnDifferenceChanging(Nullable<global::System.Int32> value);
+        partial void OnDifferenceChanged();
 
         #endregion
     
@@ -11060,48 +11107,48 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> EearnedDate
+        public Nullable<global::System.DateTime> EarnedDate
         {
             get
             {
-                return _EearnedDate;
+                return _EarnedDate;
             }
             set
             {
-                OnEearnedDateChanging(value);
-                ReportPropertyChanging("EearnedDate");
-                _EearnedDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("EearnedDate");
-                OnEearnedDateChanged();
+                OnEarnedDateChanging(value);
+                ReportPropertyChanging("EarnedDate");
+                _EarnedDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EarnedDate");
+                OnEarnedDateChanged();
             }
         }
-        private Nullable<global::System.DateTime> _EearnedDate;
-        partial void OnEearnedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnEearnedDateChanged();
+        private Nullable<global::System.DateTime> _EarnedDate;
+        partial void OnEarnedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnEarnedDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> RedeemedDate
+        public Nullable<global::System.DateTime> AppliedDate
         {
             get
             {
-                return _RedeemedDate;
+                return _AppliedDate;
             }
             set
             {
-                OnRedeemedDateChanging(value);
-                ReportPropertyChanging("RedeemedDate");
-                _RedeemedDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RedeemedDate");
-                OnRedeemedDateChanged();
+                OnAppliedDateChanging(value);
+                ReportPropertyChanging("AppliedDate");
+                _AppliedDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AppliedDate");
+                OnAppliedDateChanged();
             }
         }
-        private Nullable<global::System.DateTime> _RedeemedDate;
-        partial void OnRedeemedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnRedeemedDateChanged();
+        private Nullable<global::System.DateTime> _AppliedDate;
+        partial void OnAppliedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnAppliedDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11198,6 +11245,102 @@ namespace CPC.POS.Database
         private global::System.String _Remark;
         partial void OnRemarkChanging(global::System.String value);
         partial void OnRemarkChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> ActivedDate
+        {
+            get
+            {
+                return _ActivedDate;
+            }
+            set
+            {
+                OnActivedDateChanging(value);
+                ReportPropertyChanging("ActivedDate");
+                _ActivedDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ActivedDate");
+                OnActivedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _ActivedDate;
+        partial void OnActivedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnActivedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> ExpireDate
+        {
+            get
+            {
+                return _ExpireDate;
+            }
+            set
+            {
+                OnExpireDateChanging(value);
+                ReportPropertyChanging("ExpireDate");
+                _ExpireDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ExpireDate");
+                OnExpireDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _ExpireDate;
+        partial void OnExpireDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnExpireDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Reason
+        {
+            get
+            {
+                return _Reason;
+            }
+            set
+            {
+                OnReasonChanging(value);
+                ReportPropertyChanging("Reason");
+                _Reason = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Reason");
+                OnReasonChanged();
+            }
+        }
+        private global::System.String _Reason;
+        partial void OnReasonChanging(global::System.String value);
+        partial void OnReasonChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _Status;
+        partial void OnStatusChanging(Nullable<global::System.Int16> value);
+        partial void OnStatusChanged();
 
         #endregion
     
@@ -11524,6 +11667,187 @@ namespace CPC.POS.Database
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="base_Language")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class base_Language : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new base_Language object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="code">Initial value of the Code property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="isLocked">Initial value of the IsLocked property.</param>
+        public static base_Language Createbase_Language(global::System.Int32 id, global::System.String code, global::System.String name, global::System.Boolean isLocked)
+        {
+            base_Language base_Language = new base_Language();
+            base_Language.Id = id;
+            base_Language.Code = code;
+            base_Language.Name = name;
+            base_Language.IsLocked = isLocked;
+            return base_Language;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Code
+        {
+            get
+            {
+                return _Code;
+            }
+            set
+            {
+                OnCodeChanging(value);
+                ReportPropertyChanging("Code");
+                _Code = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Code");
+                OnCodeChanged();
+            }
+        }
+        private global::System.String _Code;
+        partial void OnCodeChanging(global::System.String value);
+        partial void OnCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] Flag
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_Flag);
+            }
+            set
+            {
+                OnFlagChanging(value);
+                ReportPropertyChanging("Flag");
+                _Flag = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Flag");
+                OnFlagChanged();
+            }
+        }
+        private global::System.Byte[] _Flag;
+        partial void OnFlagChanging(global::System.Byte[] value);
+        partial void OnFlagChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsLocked
+        {
+            get
+            {
+                return _IsLocked;
+            }
+            set
+            {
+                OnIsLockedChanging(value);
+                ReportPropertyChanging("IsLocked");
+                _IsLocked = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsLocked");
+                OnIsLockedChanged();
+            }
+        }
+        private global::System.Boolean _IsLocked;
+        partial void OnIsLockedChanging(global::System.Boolean value);
+        partial void OnIsLockedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Xml
+        {
+            get
+            {
+                return _Xml;
+            }
+            set
+            {
+                OnXmlChanging(value);
+                ReportPropertyChanging("Xml");
+                _Xml = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Xml");
+                OnXmlChanged();
+            }
+        }
+        private global::System.String _Xml;
+        partial void OnXmlChanging(global::System.String value);
+        partial void OnXmlChanged();
+
+        #endregion
+    
     }
     
     /// <summary>
@@ -14653,6 +14977,28 @@ namespace CPC.POS.Database
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_CostAdjustment_base_Product", "base_CostAdjustment")]
+        public EntityCollection<base_CostAdjustment> base_CostAdjustment
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<base_CostAdjustment>("POSModel.FK_base_CostAdjustment_base_Product", "base_CostAdjustment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<base_CostAdjustment>("POSModel.FK_base_CostAdjustment_base_Product", "base_CostAdjustment", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_PricingChange_ProductId_base_Product_Id", "base_PricingChange")]
         public EntityCollection<base_PricingChange> base_PricingChange
         {
@@ -14665,6 +15011,28 @@ namespace CPC.POS.Database
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<base_PricingChange>("POSModel.FK_base_PricingChange_ProductId_base_Product_Id", "base_PricingChange", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_QuantityAdjustment_base_Product", "base_QuantityAdjustment")]
+        public EntityCollection<base_QuantityAdjustment> base_QuantityAdjustment
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<base_QuantityAdjustment>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_QuantityAdjustment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<base_QuantityAdjustment>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_QuantityAdjustment", value);
                 }
             }
         }
@@ -14941,7 +15309,7 @@ namespace CPC.POS.Database
         /// <param name="markDownPercent4">Initial value of the MarkDownPercent4 property.</param>
         /// <param name="marginPercent">Initial value of the MarginPercent property.</param>
         /// <param name="markupPercent">Initial value of the MarkupPercent property.</param>
-        public static base_ProductUOM Createbase_ProductUOM(global::System.Int64 id, global::System.Int32 uOMId, global::System.Int32 baseUnitNumber, global::System.Decimal regularPrice, global::System.Int32 quantityOnHand, global::System.Decimal averageCost, global::System.Decimal price1, global::System.Decimal price2, global::System.Decimal price3, global::System.Decimal price4, global::System.Decimal markDownPercent1, global::System.Decimal markDownPercent2, global::System.Decimal markDownPercent3, global::System.Decimal markDownPercent4, global::System.Decimal marginPercent, global::System.Decimal markupPercent)
+        public static base_ProductUOM Createbase_ProductUOM(global::System.Int64 id, global::System.Int32 uOMId, global::System.Int32 baseUnitNumber, global::System.Decimal regularPrice, global::System.Decimal quantityOnHand, global::System.Decimal averageCost, global::System.Decimal price1, global::System.Decimal price2, global::System.Decimal price3, global::System.Decimal price4, global::System.Decimal markDownPercent1, global::System.Decimal markDownPercent2, global::System.Decimal markDownPercent3, global::System.Decimal markDownPercent4, global::System.Decimal marginPercent, global::System.Decimal markupPercent)
         {
             base_ProductUOM base_ProductUOM = new base_ProductUOM();
             base_ProductUOM.Id = id;
@@ -15094,7 +15462,7 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 QuantityOnHand
+        public global::System.Decimal QuantityOnHand
         {
             get
             {
@@ -15109,8 +15477,8 @@ namespace CPC.POS.Database
                 OnQuantityOnHandChanged();
             }
         }
-        private global::System.Int32 _QuantityOnHand;
-        partial void OnQuantityOnHandChanging(global::System.Int32 value);
+        private global::System.Decimal _QuantityOnHand;
+        partial void OnQuantityOnHandChanging(global::System.Decimal value);
         partial void OnQuantityOnHandChanged();
     
         /// <summary>
@@ -18882,24 +19250,24 @@ namespace CPC.POS.Database
         /// Create a new base_QuantityAdjustment object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="resource">Initial value of the Resource property.</param>
+        /// <param name="productId">Initial value of the ProductId property.</param>
+        /// <param name="productResource">Initial value of the ProductResource property.</param>
         /// <param name="costDifference">Initial value of the CostDifference property.</param>
-        /// <param name="newQuantity">Initial value of the NewQuantity property.</param>
-        /// <param name="oldQuantity">Initial value of the OldQuantity property.</param>
+        /// <param name="oldQty">Initial value of the OldQty property.</param>
+        /// <param name="newQty">Initial value of the NewQty property.</param>
+        /// <param name="adjustmentQtyDiff">Initial value of the AdjustmentQtyDiff property.</param>
         /// <param name="loggedTime">Initial value of the LoggedTime property.</param>
-        /// <param name="reason">Initial value of the Reason property.</param>
-        /// <param name="storeNumber">Initial value of the StoreNumber property.</param>
-        public static base_QuantityAdjustment Createbase_QuantityAdjustment(global::System.Int64 id, global::System.Guid resource, global::System.Decimal costDifference, global::System.Int32 newQuantity, global::System.Int32 oldQuantity, global::System.DateTime loggedTime, global::System.String reason, global::System.Int32 storeNumber)
+        public static base_QuantityAdjustment Createbase_QuantityAdjustment(global::System.Int64 id, global::System.Int64 productId, global::System.String productResource, global::System.Decimal costDifference, global::System.Int32 oldQty, global::System.Int32 newQty, global::System.Int32 adjustmentQtyDiff, global::System.DateTime loggedTime)
         {
             base_QuantityAdjustment base_QuantityAdjustment = new base_QuantityAdjustment();
             base_QuantityAdjustment.Id = id;
-            base_QuantityAdjustment.Resource = resource;
+            base_QuantityAdjustment.ProductId = productId;
+            base_QuantityAdjustment.ProductResource = productResource;
             base_QuantityAdjustment.CostDifference = costDifference;
-            base_QuantityAdjustment.NewQuantity = newQuantity;
-            base_QuantityAdjustment.OldQuantity = oldQuantity;
+            base_QuantityAdjustment.OldQty = oldQty;
+            base_QuantityAdjustment.NewQty = newQty;
+            base_QuantityAdjustment.AdjustmentQtyDiff = adjustmentQtyDiff;
             base_QuantityAdjustment.LoggedTime = loggedTime;
-            base_QuantityAdjustment.Reason = reason;
-            base_QuantityAdjustment.StoreNumber = storeNumber;
             return base_QuantityAdjustment;
         }
 
@@ -18938,295 +19306,6 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Guid Resource
-        {
-            get
-            {
-                return _Resource;
-            }
-            set
-            {
-                OnResourceChanging(value);
-                ReportPropertyChanging("Resource");
-                _Resource = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Resource");
-                OnResourceChanged();
-            }
-        }
-        private global::System.Guid _Resource;
-        partial void OnResourceChanging(global::System.Guid value);
-        partial void OnResourceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal CostDifference
-        {
-            get
-            {
-                return _CostDifference;
-            }
-            set
-            {
-                OnCostDifferenceChanging(value);
-                ReportPropertyChanging("CostDifference");
-                _CostDifference = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CostDifference");
-                OnCostDifferenceChanged();
-            }
-        }
-        private global::System.Decimal _CostDifference;
-        partial void OnCostDifferenceChanging(global::System.Decimal value);
-        partial void OnCostDifferenceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 NewQuantity
-        {
-            get
-            {
-                return _NewQuantity;
-            }
-            set
-            {
-                OnNewQuantityChanging(value);
-                ReportPropertyChanging("NewQuantity");
-                _NewQuantity = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("NewQuantity");
-                OnNewQuantityChanged();
-            }
-        }
-        private global::System.Int32 _NewQuantity;
-        partial void OnNewQuantityChanging(global::System.Int32 value);
-        partial void OnNewQuantityChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 OldQuantity
-        {
-            get
-            {
-                return _OldQuantity;
-            }
-            set
-            {
-                OnOldQuantityChanging(value);
-                ReportPropertyChanging("OldQuantity");
-                _OldQuantity = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OldQuantity");
-                OnOldQuantityChanged();
-            }
-        }
-        private global::System.Int32 _OldQuantity;
-        partial void OnOldQuantityChanging(global::System.Int32 value);
-        partial void OnOldQuantityChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> ItemCount
-        {
-            get
-            {
-                return _ItemCount;
-            }
-            set
-            {
-                OnItemCountChanging(value);
-                ReportPropertyChanging("ItemCount");
-                _ItemCount = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ItemCount");
-                OnItemCountChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _ItemCount;
-        partial void OnItemCountChanging(Nullable<global::System.Int32> value);
-        partial void OnItemCountChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime LoggedTime
-        {
-            get
-            {
-                return _LoggedTime;
-            }
-            set
-            {
-                OnLoggedTimeChanging(value);
-                ReportPropertyChanging("LoggedTime");
-                _LoggedTime = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LoggedTime");
-                OnLoggedTimeChanged();
-            }
-        }
-        private global::System.DateTime _LoggedTime;
-        partial void OnLoggedTimeChanging(global::System.DateTime value);
-        partial void OnLoggedTimeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Reason
-        {
-            get
-            {
-                return _Reason;
-            }
-            set
-            {
-                OnReasonChanging(value);
-                ReportPropertyChanging("Reason");
-                _Reason = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Reason");
-                OnReasonChanged();
-            }
-        }
-        private global::System.String _Reason;
-        partial void OnReasonChanging(global::System.String value);
-        partial void OnReasonChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 StoreNumber
-        {
-            get
-            {
-                return _StoreNumber;
-            }
-            set
-            {
-                OnStoreNumberChanging(value);
-                ReportPropertyChanging("StoreNumber");
-                _StoreNumber = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("StoreNumber");
-                OnStoreNumberChanged();
-            }
-        }
-        private global::System.Int32 _StoreNumber;
-        partial void OnStoreNumberChanging(global::System.Int32 value);
-        partial void OnStoreNumberChanged();
-
-        #endregion
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="base_QuantityAdjustmentItem")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class base_QuantityAdjustmentItem : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new base_QuantityAdjustmentItem object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="resource">Initial value of the Resource property.</param>
-        /// <param name="productId">Initial value of the ProductId property.</param>
-        /// <param name="productCode">Initial value of the ProductCode property.</param>
-        /// <param name="costDifference">Initial value of the CostDifference property.</param>
-        /// <param name="adjustmentNewQty">Initial value of the AdjustmentNewQty property.</param>
-        /// <param name="adjustmentOldQty">Initial value of the AdjustmentOldQty property.</param>
-        /// <param name="adjustmentQtyDiff">Initial value of the AdjustmentQtyDiff property.</param>
-        /// <param name="loggedTime">Initial value of the LoggedTime property.</param>
-        /// <param name="parentResource">Initial value of the ParentResource property.</param>
-        public static base_QuantityAdjustmentItem Createbase_QuantityAdjustmentItem(global::System.Int64 id, global::System.Guid resource, global::System.Int64 productId, global::System.String productCode, global::System.Decimal costDifference, global::System.Int32 adjustmentNewQty, global::System.Int32 adjustmentOldQty, global::System.Int32 adjustmentQtyDiff, global::System.DateTime loggedTime, global::System.String parentResource)
-        {
-            base_QuantityAdjustmentItem base_QuantityAdjustmentItem = new base_QuantityAdjustmentItem();
-            base_QuantityAdjustmentItem.Id = id;
-            base_QuantityAdjustmentItem.Resource = resource;
-            base_QuantityAdjustmentItem.ProductId = productId;
-            base_QuantityAdjustmentItem.ProductCode = productCode;
-            base_QuantityAdjustmentItem.CostDifference = costDifference;
-            base_QuantityAdjustmentItem.AdjustmentNewQty = adjustmentNewQty;
-            base_QuantityAdjustmentItem.AdjustmentOldQty = adjustmentOldQty;
-            base_QuantityAdjustmentItem.AdjustmentQtyDiff = adjustmentQtyDiff;
-            base_QuantityAdjustmentItem.LoggedTime = loggedTime;
-            base_QuantityAdjustmentItem.ParentResource = parentResource;
-            return base_QuantityAdjustmentItem;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int64 _Id;
-        partial void OnIdChanging(global::System.Int64 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Resource
-        {
-            get
-            {
-                return _Resource;
-            }
-            set
-            {
-                OnResourceChanging(value);
-                ReportPropertyChanging("Resource");
-                _Resource = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Resource");
-                OnResourceChanged();
-            }
-        }
-        private global::System.Guid _Resource;
-        partial void OnResourceChanging(global::System.Guid value);
-        partial void OnResourceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.Int64 ProductId
         {
             get
@@ -19251,24 +19330,24 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String ProductCode
+        public global::System.String ProductResource
         {
             get
             {
-                return _ProductCode;
+                return _ProductResource;
             }
             set
             {
-                OnProductCodeChanging(value);
-                ReportPropertyChanging("ProductCode");
-                _ProductCode = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("ProductCode");
-                OnProductCodeChanged();
+                OnProductResourceChanging(value);
+                ReportPropertyChanging("ProductResource");
+                _ProductResource = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ProductResource");
+                OnProductResourceChanged();
             }
         }
-        private global::System.String _ProductCode;
-        partial void OnProductCodeChanging(global::System.String value);
-        partial void OnProductCodeChanged();
+        private global::System.String _ProductResource;
+        partial void OnProductResourceChanging(global::System.String value);
+        partial void OnProductResourceChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -19299,48 +19378,48 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 AdjustmentNewQty
+        public global::System.Int32 OldQty
         {
             get
             {
-                return _AdjustmentNewQty;
+                return _OldQty;
             }
             set
             {
-                OnAdjustmentNewQtyChanging(value);
-                ReportPropertyChanging("AdjustmentNewQty");
-                _AdjustmentNewQty = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AdjustmentNewQty");
-                OnAdjustmentNewQtyChanged();
+                OnOldQtyChanging(value);
+                ReportPropertyChanging("OldQty");
+                _OldQty = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OldQty");
+                OnOldQtyChanged();
             }
         }
-        private global::System.Int32 _AdjustmentNewQty;
-        partial void OnAdjustmentNewQtyChanging(global::System.Int32 value);
-        partial void OnAdjustmentNewQtyChanged();
+        private global::System.Int32 _OldQty;
+        partial void OnOldQtyChanging(global::System.Int32 value);
+        partial void OnOldQtyChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 AdjustmentOldQty
+        public global::System.Int32 NewQty
         {
             get
             {
-                return _AdjustmentOldQty;
+                return _NewQty;
             }
             set
             {
-                OnAdjustmentOldQtyChanging(value);
-                ReportPropertyChanging("AdjustmentOldQty");
-                _AdjustmentOldQty = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AdjustmentOldQty");
-                OnAdjustmentOldQtyChanged();
+                OnNewQtyChanging(value);
+                ReportPropertyChanging("NewQty");
+                _NewQty = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("NewQty");
+                OnNewQtyChanged();
             }
         }
-        private global::System.Int32 _AdjustmentOldQty;
-        partial void OnAdjustmentOldQtyChanging(global::System.Int32 value);
-        partial void OnAdjustmentOldQtyChanged();
+        private global::System.Int32 _NewQty;
+        partial void OnNewQtyChanging(global::System.Int32 value);
+        partial void OnNewQtyChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -19393,29 +19472,166 @@ namespace CPC.POS.Database
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String ParentResource
+        public global::System.String Reason
         {
             get
             {
-                return _ParentResource;
+                return _Reason;
             }
             set
             {
-                OnParentResourceChanging(value);
-                ReportPropertyChanging("ParentResource");
-                _ParentResource = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("ParentResource");
-                OnParentResourceChanged();
+                OnReasonChanging(value);
+                ReportPropertyChanging("Reason");
+                _Reason = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Reason");
+                OnReasonChanged();
             }
         }
-        private global::System.String _ParentResource;
-        partial void OnParentResourceChanging(global::System.String value);
-        partial void OnParentResourceChanged();
+        private global::System.String _Reason;
+        partial void OnReasonChanging(global::System.String value);
+        partial void OnReasonChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.String _Status;
+        partial void OnStatusChanging(global::System.String value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserCreated
+        {
+            get
+            {
+                return _UserCreated;
+            }
+            set
+            {
+                OnUserCreatedChanging(value);
+                ReportPropertyChanging("UserCreated");
+                _UserCreated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserCreated");
+                OnUserCreatedChanged();
+            }
+        }
+        private global::System.String _UserCreated;
+        partial void OnUserCreatedChanging(global::System.String value);
+        partial void OnUserCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsReversed
+        {
+            get
+            {
+                return _IsReversed;
+            }
+            set
+            {
+                OnIsReversedChanging(value);
+                ReportPropertyChanging("IsReversed");
+                _IsReversed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsReversed");
+                OnIsReversedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsReversed;
+        partial void OnIsReversedChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsReversedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> StoreCode
+        {
+            get
+            {
+                return _StoreCode;
+            }
+            set
+            {
+                OnStoreCodeChanging(value);
+                ReportPropertyChanging("StoreCode");
+                _StoreCode = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StoreCode");
+                OnStoreCodeChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _StoreCode;
+        partial void OnStoreCodeChanging(Nullable<global::System.Int32> value);
+        partial void OnStoreCodeChanged();
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_QuantityAdjustment_base_Product", "base_Product")]
+        public base_Product base_Product
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_Product").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_Product").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<base_Product> base_ProductReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Product>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_Product");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<base_Product>("POSModel.FK_base_QuantityAdjustment_base_Product", "base_Product", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -24569,6 +24785,30 @@ namespace CPC.POS.Database
         private global::System.Decimal _RewardAmount;
         partial void OnRewardAmountChanging(global::System.Decimal value);
         partial void OnRewardAmountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Cashier
+        {
+            get
+            {
+                return _Cashier;
+            }
+            set
+            {
+                OnCashierChanging(value);
+                ReportPropertyChanging("Cashier");
+                _Cashier = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Cashier");
+                OnCashierChanged();
+            }
+        }
+        private global::System.String _Cashier;
+        partial void OnCashierChanging(global::System.String value);
+        partial void OnCashierChanged();
 
         #endregion
     
@@ -24671,7 +24911,8 @@ namespace CPC.POS.Database
         /// <param name="resource">Initial value of the Resource property.</param>
         /// <param name="balanceShipped">Initial value of the BalanceShipped property.</param>
         /// <param name="totalDiscount">Initial value of the TotalDiscount property.</param>
-        public static base_SaleOrderDetail Createbase_SaleOrderDetail(global::System.Int64 id, global::System.Int64 saleOrderId, global::System.Int32 quantity, global::System.Int32 pickQty, global::System.Int32 dueQty, global::System.Decimal unFilled, global::System.Decimal regularPrice, global::System.Decimal salePrice, global::System.Decimal discountPercent, global::System.Decimal discountAmount, global::System.Decimal subTotal, global::System.Int32 onHandQty, global::System.Guid resource, global::System.Int32 balanceShipped, global::System.Decimal totalDiscount)
+        /// <param name="isManual">Initial value of the IsManual property.</param>
+        public static base_SaleOrderDetail Createbase_SaleOrderDetail(global::System.Int64 id, global::System.Int64 saleOrderId, global::System.Int32 quantity, global::System.Int32 pickQty, global::System.Int32 dueQty, global::System.Decimal unFilled, global::System.Decimal regularPrice, global::System.Decimal salePrice, global::System.Decimal discountPercent, global::System.Decimal discountAmount, global::System.Decimal subTotal, global::System.Decimal onHandQty, global::System.Guid resource, global::System.Int32 balanceShipped, global::System.Decimal totalDiscount, global::System.Boolean isManual)
         {
             base_SaleOrderDetail base_SaleOrderDetail = new base_SaleOrderDetail();
             base_SaleOrderDetail.Id = id;
@@ -24689,6 +24930,7 @@ namespace CPC.POS.Database
             base_SaleOrderDetail.Resource = resource;
             base_SaleOrderDetail.BalanceShipped = balanceShipped;
             base_SaleOrderDetail.TotalDiscount = totalDiscount;
+            base_SaleOrderDetail.IsManual = isManual;
             return base_SaleOrderDetail;
         }
 
@@ -25159,7 +25401,7 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 OnHandQty
+        public global::System.Decimal OnHandQty
         {
             get
             {
@@ -25174,8 +25416,8 @@ namespace CPC.POS.Database
                 OnOnHandQtyChanged();
             }
         }
-        private global::System.Int32 _OnHandQty;
-        partial void OnOnHandQtyChanging(global::System.Int32 value);
+        private global::System.Decimal _OnHandQty;
+        partial void OnOnHandQtyChanging(global::System.Decimal value);
         partial void OnOnHandQtyChanged();
     
         /// <summary>
@@ -25297,6 +25539,54 @@ namespace CPC.POS.Database
         private global::System.Decimal _TotalDiscount;
         partial void OnTotalDiscountChanging(global::System.Decimal value);
         partial void OnTotalDiscountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PromotionId
+        {
+            get
+            {
+                return _PromotionId;
+            }
+            set
+            {
+                OnPromotionIdChanging(value);
+                ReportPropertyChanging("PromotionId");
+                _PromotionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PromotionId");
+                OnPromotionIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PromotionId;
+        partial void OnPromotionIdChanging(Nullable<global::System.Int32> value);
+        partial void OnPromotionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsManual
+        {
+            get
+            {
+                return _IsManual;
+            }
+            set
+            {
+                OnIsManualChanging(value);
+                ReportPropertyChanging("IsManual");
+                _IsManual = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsManual");
+                OnIsManualChanged();
+            }
+        }
+        private global::System.Boolean _IsManual;
+        partial void OnIsManualChanging(global::System.Boolean value);
+        partial void OnIsManualChanged();
 
         #endregion
     
@@ -27465,7 +27755,7 @@ namespace CPC.POS.Database
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="subTotal">Initial value of the SubTotal property.</param>
         /// <param name="total">Initial value of the Total property.</param>
-        public static base_TransferStock Createbase_TransferStock(global::System.Int64 id, global::System.String transferNo, global::System.Int16 fromStore, global::System.Int16 toStore, global::System.Int32 totalQuantity, global::System.Decimal shippingFee, global::System.Guid resource, global::System.String userCreated, global::System.DateTime dateCreated, global::System.Int16 status, global::System.Decimal subTotal, global::System.Decimal total)
+        public static base_TransferStock Createbase_TransferStock(global::System.Int64 id, global::System.String transferNo, global::System.Int16 fromStore, global::System.Int16 toStore, global::System.Decimal totalQuantity, global::System.Decimal shippingFee, global::System.Guid resource, global::System.String userCreated, global::System.DateTime dateCreated, global::System.Int16 status, global::System.Decimal subTotal, global::System.Decimal total)
         {
             base_TransferStock base_TransferStock = new base_TransferStock();
             base_TransferStock.Id = id;
@@ -27590,7 +27880,7 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 TotalQuantity
+        public global::System.Decimal TotalQuantity
         {
             get
             {
@@ -27605,8 +27895,8 @@ namespace CPC.POS.Database
                 OnTotalQuantityChanged();
             }
         }
-        private global::System.Int32 _TotalQuantity;
-        partial void OnTotalQuantityChanging(global::System.Int32 value);
+        private global::System.Decimal _TotalQuantity;
+        partial void OnTotalQuantityChanging(global::System.Decimal value);
         partial void OnTotalQuantityChanged();
     
         /// <summary>
@@ -31736,6 +32026,766 @@ namespace CPC.POS.Database
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<pga_job>("POSModel.pga_schedule_jscjobid_fkey", "pga_job", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="rpt_Group")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class rpt_Group : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new rpt_Group object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static rpt_Group Createrpt_Group(global::System.Int32 id)
+        {
+            rpt_Group rpt_Group = new rpt_Group();
+            rpt_Group.Id = id;
+            return rpt_Group;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Code
+        {
+            get
+            {
+                return _Code;
+            }
+            set
+            {
+                OnCodeChanging(value);
+                ReportPropertyChanging("Code");
+                _Code = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Code");
+                OnCodeChanged();
+            }
+        }
+        private global::System.String _Code;
+        partial void OnCodeChanging(global::System.String value);
+        partial void OnCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateCreated
+        {
+            get
+            {
+                return _DateCreated;
+            }
+            set
+            {
+                OnDateCreatedChanging(value);
+                ReportPropertyChanging("DateCreated");
+                _DateCreated = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateCreated");
+                OnDateCreatedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateCreated;
+        partial void OnDateCreatedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserCreated
+        {
+            get
+            {
+                return _UserCreated;
+            }
+            set
+            {
+                OnUserCreatedChanging(value);
+                ReportPropertyChanging("UserCreated");
+                _UserCreated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserCreated");
+                OnUserCreatedChanged();
+            }
+        }
+        private global::System.String _UserCreated;
+        partial void OnUserCreatedChanging(global::System.String value);
+        partial void OnUserCreatedChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Report")]
+        public EntityCollection<rpt_Report> rpt_Report
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<rpt_Report>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Report");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<rpt_Report>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Report", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="rpt_Report")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class rpt_Report : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new rpt_Report object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="groupId">Initial value of the GroupId property.</param>
+        /// <param name="parentId">Initial value of the ParentId property.</param>
+        /// <param name="code">Initial value of the Code property.</param>
+        /// <param name="isShow">Initial value of the IsShow property.</param>
+        public static rpt_Report Createrpt_Report(global::System.Int32 id, global::System.Int32 groupId, global::System.Int32 parentId, global::System.String code, global::System.Boolean isShow)
+        {
+            rpt_Report rpt_Report = new rpt_Report();
+            rpt_Report.Id = id;
+            rpt_Report.GroupId = groupId;
+            rpt_Report.ParentId = parentId;
+            rpt_Report.Code = code;
+            rpt_Report.IsShow = isShow;
+            return rpt_Report;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 GroupId
+        {
+            get
+            {
+                return _GroupId;
+            }
+            set
+            {
+                OnGroupIdChanging(value);
+                ReportPropertyChanging("GroupId");
+                _GroupId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GroupId");
+                OnGroupIdChanged();
+            }
+        }
+        private global::System.Int32 _GroupId;
+        partial void OnGroupIdChanging(global::System.Int32 value);
+        partial void OnGroupIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ParentId
+        {
+            get
+            {
+                return _ParentId;
+            }
+            set
+            {
+                OnParentIdChanging(value);
+                ReportPropertyChanging("ParentId");
+                _ParentId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ParentId");
+                OnParentIdChanged();
+            }
+        }
+        private global::System.Int32 _ParentId;
+        partial void OnParentIdChanging(global::System.Int32 value);
+        partial void OnParentIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Code
+        {
+            get
+            {
+                return _Code;
+            }
+            set
+            {
+                OnCodeChanging(value);
+                ReportPropertyChanging("Code");
+                _Code = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Code");
+                OnCodeChanged();
+            }
+        }
+        private global::System.String _Code;
+        partial void OnCodeChanging(global::System.String value);
+        partial void OnCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FormatFile
+        {
+            get
+            {
+                return _FormatFile;
+            }
+            set
+            {
+                OnFormatFileChanging(value);
+                ReportPropertyChanging("FormatFile");
+                _FormatFile = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FormatFile");
+                OnFormatFileChanged();
+            }
+        }
+        private global::System.String _FormatFile;
+        partial void OnFormatFileChanging(global::System.String value);
+        partial void OnFormatFileChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsShow
+        {
+            get
+            {
+                return _IsShow;
+            }
+            set
+            {
+                OnIsShowChanging(value);
+                ReportPropertyChanging("IsShow");
+                _IsShow = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsShow");
+                OnIsShowChanged();
+            }
+        }
+        private global::System.Boolean _IsShow;
+        partial void OnIsShowChanging(global::System.Boolean value);
+        partial void OnIsShowChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ProcessName
+        {
+            get
+            {
+                return _ProcessName;
+            }
+            set
+            {
+                OnProcessNameChanging(value);
+                ReportPropertyChanging("ProcessName");
+                _ProcessName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ProcessName");
+                OnProcessNameChanged();
+            }
+        }
+        private global::System.String _ProcessName;
+        partial void OnProcessNameChanging(global::System.String value);
+        partial void OnProcessNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] SamplePicture
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_SamplePicture);
+            }
+            set
+            {
+                OnSamplePictureChanging(value);
+                ReportPropertyChanging("SamplePicture");
+                _SamplePicture = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SamplePicture");
+                OnSamplePictureChanged();
+            }
+        }
+        private global::System.Byte[] _SamplePicture;
+        partial void OnSamplePictureChanging(global::System.Byte[] value);
+        partial void OnSamplePictureChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> PrintTimes
+        {
+            get
+            {
+                return _PrintTimes;
+            }
+            set
+            {
+                OnPrintTimesChanging(value);
+                ReportPropertyChanging("PrintTimes");
+                _PrintTimes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PrintTimes");
+                OnPrintTimesChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _PrintTimes;
+        partial void OnPrintTimesChanging(Nullable<global::System.Int32> value);
+        partial void OnPrintTimesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastPrintDate
+        {
+            get
+            {
+                return _LastPrintDate;
+            }
+            set
+            {
+                OnLastPrintDateChanging(value);
+                ReportPropertyChanging("LastPrintDate");
+                _LastPrintDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastPrintDate");
+                OnLastPrintDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastPrintDate;
+        partial void OnLastPrintDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastPrintDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastPrintUser
+        {
+            get
+            {
+                return _LastPrintUser;
+            }
+            set
+            {
+                OnLastPrintUserChanging(value);
+                ReportPropertyChanging("LastPrintUser");
+                _LastPrintUser = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastPrintUser");
+                OnLastPrintUserChanged();
+            }
+        }
+        private global::System.String _LastPrintUser;
+        partial void OnLastPrintUserChanging(global::System.String value);
+        partial void OnLastPrintUserChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ExcelFile
+        {
+            get
+            {
+                return _ExcelFile;
+            }
+            set
+            {
+                OnExcelFileChanging(value);
+                ReportPropertyChanging("ExcelFile");
+                _ExcelFile = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ExcelFile");
+                OnExcelFileChanged();
+            }
+        }
+        private global::System.String _ExcelFile;
+        partial void OnExcelFileChanging(global::System.String value);
+        partial void OnExcelFileChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String PrinterName
+        {
+            get
+            {
+                return _PrinterName;
+            }
+            set
+            {
+                OnPrinterNameChanging(value);
+                ReportPropertyChanging("PrinterName");
+                _PrinterName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PrinterName");
+                OnPrinterNameChanged();
+            }
+        }
+        private global::System.String _PrinterName;
+        partial void OnPrinterNameChanging(global::System.String value);
+        partial void OnPrinterNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> PrintCopy
+        {
+            get
+            {
+                return _PrintCopy;
+            }
+            set
+            {
+                OnPrintCopyChanging(value);
+                ReportPropertyChanging("PrintCopy");
+                _PrintCopy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PrintCopy");
+                OnPrintCopyChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _PrintCopy;
+        partial void OnPrintCopyChanging(Nullable<global::System.Int16> value);
+        partial void OnPrintCopyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String PaperSize
+        {
+            get
+            {
+                return _PaperSize;
+            }
+            set
+            {
+                OnPaperSizeChanging(value);
+                ReportPropertyChanging("PaperSize");
+                _PaperSize = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PaperSize");
+                OnPaperSizeChanged();
+            }
+        }
+        private global::System.String _PaperSize;
+        partial void OnPaperSizeChanging(global::System.String value);
+        partial void OnPaperSizeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Remark
+        {
+            get
+            {
+                return _Remark;
+            }
+            set
+            {
+                OnRemarkChanging(value);
+                ReportPropertyChanging("Remark");
+                _Remark = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Remark");
+                OnRemarkChanged();
+            }
+        }
+        private global::System.String _Remark;
+        partial void OnRemarkChanging(global::System.String value);
+        partial void OnRemarkChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateCreated
+        {
+            get
+            {
+                return _DateCreated;
+            }
+            set
+            {
+                OnDateCreatedChanging(value);
+                ReportPropertyChanging("DateCreated");
+                _DateCreated = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateCreated");
+                OnDateCreatedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateCreated;
+        partial void OnDateCreatedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserCreated
+        {
+            get
+            {
+                return _UserCreated;
+            }
+            set
+            {
+                OnUserCreatedChanging(value);
+                ReportPropertyChanging("UserCreated");
+                _UserCreated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserCreated");
+                OnUserCreatedChanged();
+            }
+        }
+        private global::System.String _UserCreated;
+        partial void OnUserCreatedChanging(global::System.String value);
+        partial void OnUserCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateUpdated
+        {
+            get
+            {
+                return _DateUpdated;
+            }
+            set
+            {
+                OnDateUpdatedChanging(value);
+                ReportPropertyChanging("DateUpdated");
+                _DateUpdated = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateUpdated");
+                OnDateUpdatedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateUpdated;
+        partial void OnDateUpdatedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateUpdatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserUpdated
+        {
+            get
+            {
+                return _UserUpdated;
+            }
+            set
+            {
+                OnUserUpdatedChanging(value);
+                ReportPropertyChanging("UserUpdated");
+                _UserUpdated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserUpdated");
+                OnUserUpdatedChanged();
+            }
+        }
+        private global::System.String _UserUpdated;
+        partial void OnUserUpdatedChanging(global::System.String value);
+        partial void OnUserUpdatedChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group")]
+        public rpt_Group rpt_Group
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<rpt_Group>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<rpt_Group>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<rpt_Group> rpt_GroupReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<rpt_Group>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<rpt_Group>("POSModel.FK_rpt_Report_GroupId_rpt_Group_Id", "rpt_Group", value);
                 }
             }
         }

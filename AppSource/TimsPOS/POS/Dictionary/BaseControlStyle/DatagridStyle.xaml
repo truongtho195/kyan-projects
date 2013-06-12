@@ -7,6 +7,7 @@
                     xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
                     xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
                     xmlns:converter="clr-namespace:CPC.Converter"
+                    xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
                     mc:Ignorable="d">
     <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
     <!-- Resource dictionary entries should be defined here. -->
@@ -1529,4 +1530,15 @@
         </Style.Triggers>
     </Style>
     <!--  End  -->
+
+    <!--DataGridCell Edit Style-->
+    <Style x:Key="DataGridCellDisableStyle"
+           BasedOn="{StaticResource {x:Type DataGridCell}}"
+           TargetType="{x:Type DataGridCell}">
+        <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
+                Value="True"></Setter>
+        <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
+                Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
+    </Style>
+    <!--End-->
 </ResourceDictionary>

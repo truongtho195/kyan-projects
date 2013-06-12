@@ -270,6 +270,19 @@ namespace CPC.POS.Database
             _objectContext.Refresh(RefreshMode.StoreWins, _objectContext.CreateObjectSet<T>());
         }
 
+
+        //Update an existing entity
+        public static void Update<T>(T _entity) where T : class
+        {
+            //var table = _service.GetTable<T>();
+            //table.Attach(_entity, true);
+            object originalItem;
+            EntityKey key = _objectContext.CreateEntityKey(typeof(T).Name, _entity);
+            if (_objectContext.TryGetObjectByKey(key, out originalItem))
+            {
+                _objectContext.ApplyCurrentValues(typeof(T).Name, _entity);
+            }
+        }
         /// <summary>
         /// Persists all updates to the data source and resets change tracking in the object context.
         /// </summary>

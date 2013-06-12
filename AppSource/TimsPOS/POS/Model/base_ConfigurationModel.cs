@@ -1094,26 +1094,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<short> _passwordLength;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the PasswordLength</para>
-        /// </summary>
-        public Nullable<short> PasswordLength
-        {
-            get { return this._passwordLength; }
-            set
-            {
-                if (this._passwordLength != value)
-                {
-                    this.IsDirty = true;
-                    this._passwordLength = value;
-                    OnPropertyChanged(() => PasswordLength);
-                    PropertyChangedCompleted(() => PasswordLength);
-                }
-            }
-        }
-
         protected Nullable<bool> _isAllowChangeOrder;
         /// <summary>
         /// Property Model
@@ -1254,6 +1234,106 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isRewardLessThanDiscount;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsRewardLessThanDiscount</para>
+        /// </summary>
+        public bool IsRewardLessThanDiscount
+        {
+            get { return this._isRewardLessThanDiscount; }
+            set
+            {
+                if (this._isRewardLessThanDiscount != value)
+                {
+                    this.IsDirty = true;
+                    this._isRewardLessThanDiscount = value;
+                    OnPropertyChanged(() => IsRewardLessThanDiscount);
+                    PropertyChangedCompleted(() => IsRewardLessThanDiscount);
+                }
+            }
+        }
+
+        protected string _currencySymbol;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the CurrencySymbol</para>
+        /// </summary>
+        public string CurrencySymbol
+        {
+            get { return this._currencySymbol; }
+            set
+            {
+                if (this._currencySymbol != value)
+                {
+                    this.IsDirty = true;
+                    this._currencySymbol = value;
+                    OnPropertyChanged(() => CurrencySymbol);
+                    PropertyChangedCompleted(() => CurrencySymbol);
+                }
+            }
+        }
+
+        protected Nullable<short> _decimalPlaces;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the DecimalPlaces</para>
+        /// </summary>
+        public Nullable<short> DecimalPlaces
+        {
+            get { return this._decimalPlaces; }
+            set
+            {
+                if (this._decimalPlaces != value)
+                {
+                    this.IsDirty = true;
+                    this._decimalPlaces = value;
+                    OnPropertyChanged(() => DecimalPlaces);
+                    PropertyChangedCompleted(() => DecimalPlaces);
+                }
+            }
+        }
+
+        protected string _fomartCurrency;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the FomartCurrency</para>
+        /// </summary>
+        public string FomartCurrency
+        {
+            get { return this._fomartCurrency; }
+            set
+            {
+                if (this._fomartCurrency != value)
+                {
+                    this.IsDirty = true;
+                    this._fomartCurrency = value;
+                    OnPropertyChanged(() => FomartCurrency);
+                    PropertyChangedCompleted(() => FomartCurrency);
+                }
+            }
+        }
+
+        protected string _passwordLength;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the PasswordLength</para>
+        /// </summary>
+        public string PasswordLength
+        {
+            get { return this._passwordLength; }
+            set
+            {
+                if (this._passwordLength != value)
+                {
+                    this.IsDirty = true;
+                    this._passwordLength = value;
+                    OnPropertyChanged(() => PasswordLength);
+                    PropertyChangedCompleted(() => PasswordLength);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1327,7 +1407,6 @@ namespace CPC.POS.Model
             this.base_Configuration.BackupEvery = this.BackupEvery;
             this.base_Configuration.BackupPath = this.BackupPath;
             this.base_Configuration.IsAllowRGO = this.IsAllowRGO;
-            this.base_Configuration.PasswordLength = this.PasswordLength;
             this.base_Configuration.IsAllowChangeOrder = this.IsAllowChangeOrder;
             this.base_Configuration.IsAllowNegativeStore = this.IsAllowNegativeStore;
             this.base_Configuration.AcceptedGiftCardMethod = this.AcceptedGiftCardMethod;
@@ -1335,6 +1414,11 @@ namespace CPC.POS.Model
             this.base_Configuration.IsRewardOnMultiPayment = this.IsRewardOnMultiPayment;
             this.base_Configuration.IsIncludeReturnFee = this.IsIncludeReturnFee;
             this.base_Configuration.ReturnFeePercent = this.ReturnFeePercent;
+            this.base_Configuration.IsRewardLessThanDiscount = this.IsRewardLessThanDiscount;
+            this.base_Configuration.CurrencySymbol = this.CurrencySymbol;
+            this.base_Configuration.DecimalPlaces = this.DecimalPlaces;
+            this.base_Configuration.FomartCurrency = this.FomartCurrency;
+            this.base_Configuration.PasswordLength = this.PasswordLength;
         }
 
         /// <summary>
@@ -1395,7 +1479,6 @@ namespace CPC.POS.Model
             this._backupEvery = this.base_Configuration.BackupEvery;
             this._backupPath = this.base_Configuration.BackupPath;
             this._isAllowRGO = this.base_Configuration.IsAllowRGO;
-            this._passwordLength = this.base_Configuration.PasswordLength;
             this._isAllowChangeOrder = this.base_Configuration.IsAllowChangeOrder;
             this._isAllowNegativeStore = this.base_Configuration.IsAllowNegativeStore;
             this._acceptedGiftCardMethod = this.base_Configuration.AcceptedGiftCardMethod;
@@ -1403,6 +1486,11 @@ namespace CPC.POS.Model
             this._isRewardOnMultiPayment = this.base_Configuration.IsRewardOnMultiPayment;
             this._isIncludeReturnFee = this.base_Configuration.IsIncludeReturnFee;
             this._returnFeePercent = this.base_Configuration.ReturnFeePercent;
+            this._isRewardLessThanDiscount = this.base_Configuration.IsRewardLessThanDiscount;
+            this._currencySymbol = this.base_Configuration.CurrencySymbol;
+            this._decimalPlaces = this.base_Configuration.DecimalPlaces;
+            this._fomartCurrency = this.base_Configuration.FomartCurrency;
+            this._passwordLength = this.base_Configuration.PasswordLength;
         }
 
         /// <summary>
@@ -1463,7 +1551,6 @@ namespace CPC.POS.Model
             this.BackupEvery = this.base_Configuration.BackupEvery;
             this.BackupPath = this.base_Configuration.BackupPath;
             this.IsAllowRGO = this.base_Configuration.IsAllowRGO;
-            this.PasswordLength = this.base_Configuration.PasswordLength;
             this.IsAllowChangeOrder = this.base_Configuration.IsAllowChangeOrder;
             this.IsAllowNegativeStore = this.base_Configuration.IsAllowNegativeStore;
             this.AcceptedGiftCardMethod = this.base_Configuration.AcceptedGiftCardMethod;
@@ -1471,6 +1558,11 @@ namespace CPC.POS.Model
             this.IsRewardOnMultiPayment = this.base_Configuration.IsRewardOnMultiPayment;
             this.IsIncludeReturnFee = this.base_Configuration.IsIncludeReturnFee;
             this.ReturnFeePercent = this.base_Configuration.ReturnFeePercent;
+            this.IsRewardLessThanDiscount = this.base_Configuration.IsRewardLessThanDiscount;
+            this.CurrencySymbol = this.base_Configuration.CurrencySymbol;
+            this.DecimalPlaces = this.base_Configuration.DecimalPlaces;
+            this.FomartCurrency = this.base_Configuration.FomartCurrency;
+            this.PasswordLength = this.base_Configuration.PasswordLength;
         }
 
         #endregion
