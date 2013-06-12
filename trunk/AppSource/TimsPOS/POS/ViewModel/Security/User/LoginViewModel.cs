@@ -44,7 +44,7 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets or sets the Languages.
         /// </summary>
-        public IList<LanguageItem> Languages
+        public IList<ComboItem> Languages
         {
             get
             {
@@ -266,8 +266,8 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// To get, set value from Language ComboBox.
         /// </summary>
-        private LanguageItem _languageItem;
-        public LanguageItem LanguageItem
+        private ComboItem _languageItem;
+        public ComboItem LanguageItem
         {
             get { return _languageItem; }
             set
@@ -507,8 +507,29 @@ namespace CPC.POS.ViewModel
         private bool IsExistedUser(string resource)
         {
             if (_userLogRepository.GetIQueryable(x => x.ResourceAccessed.Equals(resource) && x.IsDisconected.HasValue && !x.IsDisconected.Value).Count() > 0)
+            {
+#if (DEBUG)
+                base_UserLog userlog = _userLogRepository.Get(x => x.ResourceAccessed.Equals(resource) && x.IsDisconected.HasValue && !x.IsDisconected.Value);
+                if (userlog != null)
+                {
+                    userlog.IsDisconected = true;
+                    userlog.DisConnectedOn = DateTimeExt.Now;
+                    _userLogRepository.Commit();
+                    return false;
+                }
+                else
+                    return true;
+
+#else 
                 return true;
+#endif
+
+                
+            }
+
             return false;
+
+
         }
         #endregion
 

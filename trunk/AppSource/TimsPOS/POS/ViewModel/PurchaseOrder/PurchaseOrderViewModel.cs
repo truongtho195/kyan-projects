@@ -16,8 +16,8 @@ using CPC.POS.Repository;
 using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using CPCToolkitExtLibraries;
 using CPCToolkitExt.DataGridControl;
+using CPCToolkitExtLibraries;
 
 namespace CPC.POS.ViewModel
 {
@@ -48,7 +48,7 @@ namespace CPC.POS.ViewModel
         private readonly string _purchaseOrderColumnSort = "It.Id";
 
         /// <summary>
-        /// Holds old slected PurchaseOrder.
+        /// Holds old selected PurchaseOrder.
         /// </summary>
         private base_PurchaseOrderModel _oldPurchaseOrder;
 
@@ -85,6 +85,10 @@ namespace CPC.POS.ViewModel
             else
             {
                 _productCollectionOutSide = param as IEnumerable<base_ProductModel>;
+                if (_productCollectionOutSide == null)
+                {
+                    _oldPurchaseOrder = param as base_PurchaseOrderModel;
+                }
 
                 IsSearchMode = false;
             }
@@ -903,26 +907,6 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region ShowReceiveItemCommand
-
-        private ICommand _showReceiveItemCommand;
-        /// <summary>
-        /// When 'Receive' button clicked, ShowReceiveItemCommand will executes. 
-        /// </summary>
-        public ICommand ShowReceiveItemCommand
-        {
-            get
-            {
-                if (_showReceiveItemCommand == null)
-                {
-                    _showReceiveItemCommand = new RelayCommand(ShowReceiveItemExecute, CanShowReceiveItemExecute);
-                }
-                return _showReceiveItemCommand;
-            }
-        }
-
-        #endregion
-
         #region ReceiveAllCommand
 
         private ICommand _receiveAllCommand;
@@ -998,6 +982,26 @@ namespace CPC.POS.ViewModel
                     _lockAndUnLockCommand = new RelayCommand(LockAndUnLockExecute, CanLockAndUnLockExecute);
                 }
                 return _lockAndUnLockCommand;
+            }
+        }
+
+        #endregion
+
+        #region OpenSelectTrackingNumberViewCommand
+
+        private ICommand _openSelectTrackingNumberViewCommand;
+        /// <summary>
+        /// When 'Serial Tracking Detail' MenuItem clicked, OpenSelectTrackingNumberViewCommand will executes. 
+        /// </summary>
+        public ICommand OpenSelectTrackingNumberViewCommand
+        {
+            get
+            {
+                if (_openSelectTrackingNumberViewCommand == null)
+                {
+                    _openSelectTrackingNumberViewCommand = new RelayCommand(OpenSelectTrackingNumberViewExecute, CanOpenSelectTrackingNumberViewExecute);
+                }
+                return _openSelectTrackingNumberViewCommand;
             }
         }
 
@@ -1230,9 +1234,9 @@ namespace CPC.POS.ViewModel
 
             if (!mustCancelEdit && _selectedPurchaseOrder.PurchaseOrderReceiveCollection != null && Define.CONFIGURATION.IsAllowRGO != true)
             {
-                int sumReceivedQty = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
+                decimal sumReceivedQty = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
                     x.PODResource == _selectedPurchaseOrderDetail.Resource.ToString()).Sum(x => x.RecQty);
-                int orderQty = _selectedPurchaseOrderDetail.Quantity;
+                decimal orderQty = _selectedPurchaseOrderDetail.Quantity;
                 if (orderQty < sumReceivedQty)
                 {
                     mustCancelEdit = true;
@@ -1243,12 +1247,12 @@ namespace CPC.POS.ViewModel
             {
                 (_selectedPurchaseOrderDetail as IEditableObject).CancelEdit();
                 (_selectedPurchaseOrderDetail as IEditableObject).BeginEdit();
-                MessageBox.Show("Order quantity >= Receive quantity.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                MessageBox.Show(Language.Text1, Language.Warning, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
             }
             else if (_selectedPurchaseOrderDetail.Quantity != _selectedPurchaseOrderDetail.BackupQuantity)
             {
                 _selectedPurchaseOrderDetail.BackupQuantity = _selectedPurchaseOrderDetail.Quantity;
-                AddSerials(_selectedPurchaseOrderDetail, false);
+                AddSerials(_selectedPurchaseOrderDetail, true);
             }
         }
 
@@ -1505,38 +1509,6 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region ShowReceiveItemExecute
-
-        /// <summary>
-        /// Show 'Receive' TabItem.
-        /// </summary>
-        private void ShowReceiveItemExecute()
-        {
-            ShowReceiveItem();
-        }
-
-        #endregion
-
-        #region CanShowReceiveItemExecute
-
-        /// <summary>
-        /// Determine whether can call ShowReceiveItemExecute method.
-        /// </summary>
-        /// <returns>True will call. Otherwise False.</returns>
-        private bool CanShowReceiveItemExecute()
-        {
-            if (_selectedPurchaseOrder == null ||
-                _selectedPurchaseOrder.IsNew ||
-                _selectedPurchaseOrder.IsLocked)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        #endregion
-
         #region ReceiveAllExecute
 
         /// <summary>
@@ -1626,7 +1598,7 @@ namespace CPC.POS.ViewModel
         /// <returns>True will call. Otherwise False.</returns>
         private bool CanEditProductExecute()
         {
-            if (_selectedPurchaseOrderDetail == null)
+            if (_selectedPurchaseOrderDetail == null || _selectedPurchaseOrderDetail.IsFullReceived)
             {
                 return false;
             }
@@ -1660,6 +1632,36 @@ namespace CPC.POS.ViewModel
                 _selectedPurchaseOrder.HasError ||
                 _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Any(x => x.HasError) ||
                 _selectedPurchaseOrder.ResourceReturnDetailCollection.Any(x => x.HasError))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region OpenSelectTrackingNumberViewExecute
+
+        /// <summary>
+        /// Open SelectTrackingNumberView.
+        /// </summary>
+        private void OpenSelectTrackingNumberViewExecute()
+        {
+            OpenSelectTrackingNumberView(_selectedPurchaseOrderDetail, false, !_selectedPurchaseOrderDetail.IsFullReceived);
+        }
+
+        #endregion
+
+        #region CanOpenSelectTrackingNumberViewExecute
+
+        /// <summary>
+        /// Determine whether can call OpenSelectTrackingNumberViewExecute method.
+        /// </summary>
+        /// <returns>True will call. Otherwise False.</returns>
+        private bool CanOpenSelectTrackingNumberViewExecute()
+        {
+            if (_selectedPurchaseOrderDetail == null || !_selectedPurchaseOrderDetail.IsSerialTracking)
             {
                 return false;
             }
@@ -1797,7 +1799,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1842,7 +1844,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1879,7 +1881,7 @@ namespace CPC.POS.ViewModel
                         if (!_hasUsedAdvanceSearch)
                         {
                             _predicate = PredicateBuilder.True<base_PurchaseOrder>();
-                            _predicate = _predicate.And(x => !x.IsPurge);
+                            _predicate = _predicate.And(x => !x.IsPurge && !x.IsLocked);
 
                             if (_hasSearchPurchaseOrderNo && !string.IsNullOrWhiteSpace(_keyword))
                             {
@@ -1914,7 +1916,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1930,6 +1932,7 @@ namespace CPC.POS.ViewModel
             if (_purchaseOrderCollection.FirstOrDefault(x => x.Id == purchaseOrder.Id) == null)
             {
                 base_PurchaseOrderModel purchaseOrderModel = new base_PurchaseOrderModel(purchaseOrder);
+                purchaseOrderModel.StatusItem = Common.PurchaseStatus.FirstOrDefault(x => x.Value == purchaseOrderModel.Status);
                 purchaseOrderModel.ResourceReturn = new base_ResourceReturnModel();
                 purchaseOrderModel.ResourcePayment = new base_ResourcePaymentModel();
                 purchaseOrderModel.ResourcePaymentDetail = new base_ResourcePaymentDetailModel();
@@ -2055,7 +2058,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2147,7 +2150,7 @@ namespace CPC.POS.ViewModel
             MessageBoxResult result = MessageBoxResult.Yes;
             if (_selectedProduct.IsUnOrderAble)
             {
-                result = MessageBox.Show(string.Format("Product name: {0} is marked  as 'Unorderable' in inventory. Are you sure you want to add this item ?", _selectedProduct.ProductName), "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                result = MessageBox.Show(string.Format(Language.Text2, _selectedProduct.ProductName), Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Information);
             }
 
             if (result == MessageBoxResult.No)
@@ -2245,7 +2248,7 @@ namespace CPC.POS.ViewModel
             MessageBoxResult result = MessageBoxResult.Yes;
             if (product.IsUnOrderAble)
             {
-                result = MessageBox.Show(string.Format("Product name: {0} is marked  as 'Unorderable' in inventory. Are you sure you want to add this item ?", product.ProductName), "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                result = MessageBox.Show(string.Format(Language.Text2, product.ProductName), Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Information);
             }
 
             if (result == MessageBoxResult.No)
@@ -2353,9 +2356,9 @@ namespace CPC.POS.ViewModel
                     }
 
                     // Get product store by store code
-                    base_ProductStore productStore= product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
+                    base_ProductStore productStore = product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
 
-                    if (productStore!=null)
+                    if (productStore != null)
                     {
                         // Gets the remaining units.
                         foreach (base_ProductUOM item in productStore.base_ProductUOM)
@@ -2366,7 +2369,7 @@ namespace CPC.POS.ViewModel
                                 Name = item.base_UOM.Name,
                                 IsDirty = false
                             });
-                        } 
+                        }
                     }
 
 
@@ -2375,7 +2378,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
 
             return UOMCollection;
@@ -2437,23 +2440,53 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region OpenSelectTrackingNumberView
+
+        /// <summary>
+        /// Open SelectTrackingNumberView.
+        /// </summary>
+        /// <param name="purchaseOrderDetail">PurchaseOrderDetail that contains serial list to edit.</param>
+        /// <param name="isShowQuantity">True will show quantity TextBox.</param>
+        /// <param name="canEdit">Determine whether can edit in this View.</param>
+        private void OpenSelectTrackingNumberView(base_PurchaseOrderDetailModel purchaseOrderDetail, bool isShowQuantity, bool canEdit)
+        {
+            SelectTrackingNumberViewModel selectTrackingNumberViewModel = new SelectTrackingNumberViewModel(purchaseOrderDetail, isShowQuantity, canEdit);
+            bool? result = _dialogService.ShowDialog<SelectTrackingNumberView>(_ownerViewModel, selectTrackingNumberViewModel, "Tracking Serial Number");
+            if (result == true && canEdit)
+            {
+                purchaseOrderDetail = selectTrackingNumberViewModel.PurchaseOrderDetailModel;
+            }
+        }
+
+        #endregion
+
+        #region OpenMultiTrackingNumberView
+
+        /// <summary>
+        /// Open MultiTrackingNumberView.
+        /// </summary>
+        /// <param name="purchaseOrderDetailList">PurchaseOrderDetail list to add serial.</param>
+        private void OpenMultiTrackingNumberView(IEnumerable<base_PurchaseOrderDetailModel> purchaseOrderDetailList)
+        {
+            MultiTrackingNumberViewModel multiTrackingNumberViewModel = new MultiTrackingNumberViewModel(purchaseOrderDetailList);
+            _dialogService.ShowDialog<MultiTrackingNumberView>(_ownerViewModel, multiTrackingNumberViewModel, "Multi Tracking Serial");
+        }
+
+        #endregion
+
         #region AddSerials
 
         /// <summary>
         ///  Add serials.
         /// </summary>
+        /// <param name="purchaseOrderDetail">PurchaseOrderDetail that contains serial list to edit.</param>
         /// <param name="isShowQuantity">True will show quantity TextBox.</param>
-        private void AddSerials(base_PurchaseOrderDetailModel purchaseOrderDetail, bool isShowQuantity)
+        /// <param name="canEdit">Determine whether can edit in this View.</param>
+        private void AddSerials(base_PurchaseOrderDetailModel purchaseOrderDetail, bool isShowQuantity, bool canEdit = true)
         {
             if (purchaseOrderDetail.IsSerialTracking && purchaseOrderDetail.Quantity > 0)
             {
-                //Show Tracking Serial
-                SelectTrackingNumberViewModel selectTrackingNumberViewModel = new SelectTrackingNumberViewModel(purchaseOrderDetail, isShowQuantity);
-                bool? result = _dialogService.ShowDialog<SelectTrackingNumberView>(_ownerViewModel, selectTrackingNumberViewModel, "Tracking Serial Number");
-                if (result == true)
-                {
-                    purchaseOrderDetail = selectTrackingNumberViewModel.PurchaseOrderDetailModel;
-                }
+                OpenSelectTrackingNumberView(purchaseOrderDetail, isShowQuantity, canEdit);
             }
         }
 
@@ -2463,8 +2496,7 @@ namespace CPC.POS.ViewModel
         /// <param name="purchaseOrderDetailList">PurchaseOrderDetail list to add serial.</param>
         private void AddSerials(IEnumerable<base_PurchaseOrderDetailModel> purchaseOrderDetailList)
         {
-            MultiTrackingNumberViewModel multiTrackingNumberViewModel = new MultiTrackingNumberViewModel(purchaseOrderDetailList);
-            bool? result = _dialogService.ShowDialog<MultiTrackingNumberView>(_ownerViewModel, multiTrackingNumberViewModel, "Multi Tracking Serial");
+            OpenMultiTrackingNumberView(purchaseOrderDetailList);
         }
 
         #endregion
@@ -2479,7 +2511,7 @@ namespace CPC.POS.ViewModel
             // Check item received.
             if (_selectedPurchaseOrderDetail.HasReceivedItem)
             {
-                MessageBox.Show("Exists an item has been received in this purchase order, can not delete purchase order.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Language.Text3, Language.Information, MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -2493,7 +2525,7 @@ namespace CPC.POS.ViewModel
 
             if (purchaseOrderDetailError == null || isContainsErrorItem)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Holds PurchaseOrderDetail's resource.
@@ -2548,7 +2580,7 @@ namespace CPC.POS.ViewModel
 
             if (selectedPurchaseOrderReceive.IsReceived)
             {
-                MessageBox.Show("Item has been received in this purchase order, can not delete this item.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Language.Text5, Language.Information, MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -2577,7 +2609,7 @@ namespace CPC.POS.ViewModel
 
             if (purchaseOrderReceiveError == null || isContainsErrorItem)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Remove(selectedPurchaseOrderReceive);
@@ -2608,7 +2640,7 @@ namespace CPC.POS.ViewModel
 
             if (selectedResourceReturnDetail.IsReturned)
             {
-                MessageBox.Show("Item has been returned in this purchase order, can not delete this item.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Language.Text6, Language.Information, MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -2629,7 +2661,7 @@ namespace CPC.POS.ViewModel
 
             if (resourceReturnDetailError == null || isContainsErrorItem)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     _selectedPurchaseOrder.ResourceReturnDetailCollection.Remove(selectedResourceReturnDetail);
@@ -2692,7 +2724,7 @@ namespace CPC.POS.ViewModel
                 OnPropertyChanged(() => HasSearchVendor);
 
                 _hasUsedAdvanceSearch = true;
-                _predicate = POAdvanceSearchViewModel.Predicate;
+                _predicate = POAdvanceSearchViewModel.Predicate.And(x => !x.IsLocked);
                 _backgroundWorker.RunWorkerAsync("Load");
             }
         }
@@ -2738,6 +2770,11 @@ namespace CPC.POS.ViewModel
                 {
                     // Insert PurchaseOrder.
                     _selectedPurchaseOrder.Balance = _selectedPurchaseOrder.Total - _selectedPurchaseOrder.Paid;
+                    if (_selectedPurchaseOrder.Status < (short)PurchaseStatus.Receiving &&
+                        _selectedPurchaseOrder.PurchaseOrderDetailCollection.Any())
+                    {
+                        _selectedPurchaseOrder.Status = (short)PurchaseStatus.Receiving;
+                    }
                     _selectedPurchaseOrder.DateCreated = now;
                     _selectedPurchaseOrder.ToEntity();
                     purchaseOrderRepository.Add(_selectedPurchaseOrder.base_PurchaseOrder);
@@ -2761,6 +2798,11 @@ namespace CPC.POS.ViewModel
                 else
                 {
                     // Update PurchaseOrder.
+                    if (_selectedPurchaseOrder.Status < (short)PurchaseStatus.Receiving &&
+                        _selectedPurchaseOrder.PurchaseOrderDetailCollection.Any())
+                    {
+                        _selectedPurchaseOrder.Status = (short)PurchaseStatus.Receiving;
+                    }
                     _selectedPurchaseOrder.DateUpdate = now;
                     _selectedPurchaseOrder.ToEntity();
                     purchaseOrderRepository.Commit();
@@ -3030,7 +3072,7 @@ namespace CPC.POS.ViewModel
             {
                 UnitOfWork.RollbackTransaction();
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
             finally
             {
@@ -3068,7 +3110,7 @@ namespace CPC.POS.ViewModel
                     _selectedPurchaseOrder.ResourceReturnDetailCollection.IsDirty)
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -3098,7 +3140,7 @@ namespace CPC.POS.ViewModel
                     _selectedPurchaseOrder.ResourceReturnDetailCollection.IsDirty)
                 {
                     // Quention continue.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Continue work.
@@ -3160,7 +3202,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -3173,7 +3215,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void Delete()
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item?", "Delete item", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 DeletePurchaseOrder(_selectedPurchaseOrder);
@@ -3190,7 +3232,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void Deletes(DataGridControl dataGrid)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 List<base_PurchaseOrderModel> selectedItems = dataGrid.SelectedItems.Cast<base_PurchaseOrderModel>().ToList();
@@ -3221,7 +3263,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -3281,7 +3323,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -3301,6 +3343,9 @@ namespace CPC.POS.ViewModel
                     if (_selectedPurchaseOrder.IsDirty)
                     {
                         _selectedPurchaseOrder.ToModelAndRaise();
+                        _selectedPurchaseOrder.PurchaseOrderDetailCollection.Clear();
+                        _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Clear();
+                        _selectedPurchaseOrder.ResourceReturnDetailCollection.Clear();
                         _selectedPurchaseOrder.IsDirty = false;
                     }
                 }
@@ -3544,7 +3589,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 WriteLog(exception);
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
             finally
             {
@@ -3576,22 +3621,6 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region ShowReceiveItem
-
-        /// <summary>
-        /// Show 'Receive' TabItem.
-        /// </summary>
-        private void ShowReceiveItem()
-        {
-            if (_selectedPurchaseOrder.Status < (short)PurchaseStatus.Receiving)
-            {
-                _selectedPurchaseOrder.Status = (short)PurchaseStatus.Receiving;
-            }
-            CurrentTabItem = (int)TabItems.Receive;
-        }
-
-        #endregion
-
         #region ReceiveAll
 
         /// <summary>
@@ -3601,7 +3630,7 @@ namespace CPC.POS.ViewModel
         {
             bool isCalculate = false;
             int sumReceivedQty = 0;
-            int additionReceivedQty = 0;
+            decimal additionReceivedQty = 0;
             base_PurchaseOrderReceiveModel purchaseOrderReceive = null;
 
             foreach (var purchaseOrderDetail in _selectedPurchaseOrder.PurchaseOrderDetailCollection)
@@ -3631,7 +3660,7 @@ namespace CPC.POS.ViewModel
                     purchaseOrderReceive.ItemSize = purchaseOrderDetail.ItemSize;
                     purchaseOrderReceive.UnitName = purchaseOrderDetail.UnitName;
                     purchaseOrderReceive.Price = purchaseOrderDetail.Price;
-                    purchaseOrderReceive.RecQty = additionReceivedQty;
+                    purchaseOrderReceive.RecQty = (int)additionReceivedQty;
                     purchaseOrderReceive.Discount = purchaseOrderDetail.Discount;
                     purchaseOrderReceive.Amount = purchaseOrderReceive.RecQty * (purchaseOrderReceive.Price - purchaseOrderReceive.Discount);
                     purchaseOrderReceive.PurchaseOrderDetail = purchaseOrderDetail;
@@ -3664,12 +3693,12 @@ namespace CPC.POS.ViewModel
                 x.PODResource == purchaseOrderReceive.PODResource).Sum(x => x.RecQty);
 
             // Additon received quantity.
-            int additionReceivedQty = purchaseOrderReceive.PurchaseOrderDetail.Quantity - sumReceivedQty;
+            decimal additionReceivedQty = purchaseOrderReceive.PurchaseOrderDetail.Quantity - sumReceivedQty;
             if (additionReceivedQty < 0)
             {
                 additionReceivedQty = 0;
             }
-            purchaseOrderReceive.RecQty = additionReceivedQty;
+            purchaseOrderReceive.RecQty = (int)additionReceivedQty;
         }
 
         #endregion
@@ -3750,7 +3779,7 @@ namespace CPC.POS.ViewModel
                 {
                     _currentTabItem = _oldCurrentTabItem;
                     OnPropertyChanged(() => CurrentTabItem);
-                    MessageBox.Show("Fix error in current TabItem before change TabItem.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(Language.Text8, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 }), System.Windows.Threading.DispatcherPriority.Background);
             }
 
@@ -3873,12 +3902,12 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CalculateOrderQtyOfPurchaseOrder()
         {
-            int sum = 0;
+            decimal sum = 0;
             foreach (base_PurchaseOrderDetailModel item in _selectedPurchaseOrder.PurchaseOrderDetailCollection)
             {
                 sum += item.Quantity;
             }
-            _selectedPurchaseOrder.QtyOrdered = sum;
+            _selectedPurchaseOrder.QtyOrdered = (int)sum;
 
             CalculateDueQtyOfPurchaseOrder();
         }
@@ -3892,12 +3921,12 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CalculateReceivedQtyOfPurchaseOrder()
         {
-            int sum = 0;
+            decimal sum = 0;
             foreach (base_PurchaseOrderDetailModel item in _selectedPurchaseOrder.PurchaseOrderDetailCollection)
             {
                 sum += item.ReceivedQty;
             }
-            _selectedPurchaseOrder.QtyReceived = sum;
+            _selectedPurchaseOrder.QtyReceived = (int)sum;
 
             CalculateDueQtyOfPurchaseOrder();
         }
@@ -4117,7 +4146,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CheckReturned()
         {
-            int returnQtyTotal = 0;
+            decimal returnQtyTotal = 0;
             IEnumerable<base_ResourceReturnDetailModel> oldResourceReturnDetails = _selectedPurchaseOrder.ResourceReturnDetailCollection.Where(x => x.PurchaseOrderDetail != null);
             foreach (base_ResourceReturnDetailModel item in oldResourceReturnDetails)
             {
@@ -4162,6 +4191,31 @@ namespace CPC.POS.ViewModel
                     AddSerials(serialPurchaseOrderDetails);
                 }
             }
+        }
+
+        #endregion
+
+        #region SelectDefaultPurchaseOrder
+
+        /// <summary>
+        /// Select default PurchaseOrder.
+        /// </summary>
+        /// <param name="purchaseOrder">PurchaseOrder to select.</param>
+        private void SelectDefaultPurchaseOrder(base_PurchaseOrderModel purchaseOrder)
+        {
+            if (purchaseOrder != null)
+            {
+                SelectedPurchaseOrder = _purchaseOrderCollection.FirstOrDefault(x => x.Id == purchaseOrder.Id);
+                if (_selectedPurchaseOrder == null)
+                {
+                    CreatePurchaseOrder();
+                }
+                else
+                {
+                    GetMoreInformation();
+                }
+            }
+
         }
 
         #endregion
@@ -4280,16 +4334,32 @@ namespace CPC.POS.ViewModel
                 productModel.Description = product.Description;
             }
 
-            PopupEditProductViewModel viewModel = new PopupEditProductViewModel(productModel, true);
+            PopupEditProductViewModel viewModel = new PopupEditProductViewModel(productModel, true, !_selectedPurchaseOrderDetail.HasReceivedItem);
             bool? result = _dialogService.ShowDialog<PopupEditProductView>(_ownerViewModel, viewModel, "Edit product");
             if (result.HasValue && result.Value)
             {
                 _selectedPurchaseOrderDetail.UOMId = viewModel.SelectedProductUOM.UOMId;
                 _selectedPurchaseOrderDetail.Price = productModel.CurrentPrice;
-                _selectedPurchaseOrderDetail.Quantity = productModel.OnHandStore;
+                _selectedPurchaseOrderDetail.Quantity = (int)productModel.OnHandStore;
                 _selectedPurchaseOrderDetail.ItemName = productModel.ProductName;
                 _selectedPurchaseOrderDetail.ItemAtribute = productModel.Attribute;
                 _selectedPurchaseOrderDetail.ItemSize = productModel.Size;
+
+                IEnumerable<base_PurchaseOrderReceiveModel> receiveFriend = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x => x.PODResource == _selectedPurchaseOrderDetail.Resource.ToString());
+                foreach (var item in receiveFriend)
+                {
+                    item.ItemName = _selectedPurchaseOrderDetail.ItemName;
+                    item.ItemAtribute = _selectedPurchaseOrderDetail.ItemAtribute;
+                    item.ItemSize = _selectedPurchaseOrderDetail.ItemSize;
+                }
+
+                IEnumerable<base_ResourceReturnDetailModel> returnFriends = _selectedPurchaseOrder.ResourceReturnDetailCollection.Where(x => x.OrderDetailResource == _selectedPurchaseOrderDetail.Resource.ToString());
+                foreach (var item in returnFriends)
+                {
+                    item.ItemName = _selectedPurchaseOrderDetail.ItemName;
+                    item.ItemAtribute = _selectedPurchaseOrderDetail.ItemAtribute;
+                    item.ItemSize = _selectedPurchaseOrderDetail.ItemSize;
+                }
             }
         }
 
@@ -4375,9 +4445,17 @@ namespace CPC.POS.ViewModel
             else
             {
                 _productCollectionOutSide = param as IEnumerable<base_ProductModel>;
+                if (_productCollectionOutSide == null)
+                {
+                    _oldPurchaseOrder = param as base_PurchaseOrderModel;
+                }
+                else
+                {
+                    // Forces null to create new purchase order with input product collection when WorkerRunWorkerCompleted.
+                    _oldPurchaseOrder = null;
+                }
+
                 IsSearchMode = false;
-                // Forces null to create new purchase order with input product collection when WorkerRunWorkerCompleted.
-                _oldPurchaseOrder = null;
             }
         }
 
@@ -4538,6 +4616,14 @@ namespace CPC.POS.ViewModel
                 case "Price":
 
                     purchaseOrderDetail.Amount = purchaseOrderDetail.Quantity * (purchaseOrderDetail.Price - purchaseOrderDetail.Discount);
+
+                    // Update Price in PurchaseOrderReceive.
+                    IEnumerable<base_PurchaseOrderReceiveModel> receivePriceItems = purchaseOrderDetail.PurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
+                        x.PODResource == purchaseOrderDetail.Resource.ToString());
+                    foreach (var item in receivePriceItems)
+                    {
+                        item.Price = purchaseOrderDetail.Price;
+                    }
 
                     break;
 
@@ -4711,7 +4797,7 @@ namespace CPC.POS.ViewModel
                     {
                         if (!purchaseOrderReceive.HasError)
                         {
-                            MessageBoxResult result = MessageBox.Show("Are you sure you received this item ?", "POS", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                            MessageBoxResult result = MessageBox.Show(Language.Text9, Language.POS, MessageBoxButton.OKCancel, MessageBoxImage.Question);
                             if (result == MessageBoxResult.Cancel)
                             {
                                 App.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -4736,7 +4822,7 @@ namespace CPC.POS.ViewModel
                             App.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 purchaseOrderReceive.IsReceived = false;
-                                MessageBox.Show("Fix error(s) before receive this item.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                MessageBox.Show(Language.Text10, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }), System.Windows.Threading.DispatcherPriority.Background);
                         }
                     }
@@ -4763,6 +4849,12 @@ namespace CPC.POS.ViewModel
                     purchaseOrderReceive.Amount = purchaseOrderReceive.RecQty * (purchaseOrderReceive.Price - purchaseOrderReceive.Discount);
 
                     break;
+
+                //case "Amount":
+
+                //    CalculateTotalAmountForResourcePayment();
+
+                //    break;
             }
         }
 
@@ -4831,6 +4923,7 @@ namespace CPC.POS.ViewModel
                         resourceReturnDetail.ItemName = null;
                         resourceReturnDetail.ItemAtribute = null;
                         resourceReturnDetail.ItemSize = null;
+                        resourceReturnDetail.UnitName = null;
                         resourceReturnDetail.Price = 0;
                         resourceReturnDetail.Discount = 0;
                         resourceReturnDetail.ReturnQty = 0;
@@ -4863,7 +4956,7 @@ namespace CPC.POS.ViewModel
                     {
                         if (!resourceReturnDetail.HasError)
                         {
-                            MessageBoxResult result = MessageBox.Show("Are you sure you return this item ?", "POS", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                            MessageBoxResult result = MessageBox.Show(Language.Text11, Language.POS, MessageBoxButton.OKCancel, MessageBoxImage.Question);
                             if (result == MessageBoxResult.Cancel)
                             {
                                 App.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -4887,7 +4980,7 @@ namespace CPC.POS.ViewModel
                             App.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 resourceReturnDetail.IsReturned = false;
-                                MessageBox.Show("Fix error(s) before return this item.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                MessageBox.Show(Language.Text12, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }), System.Windows.Threading.DispatcherPriority.Background);
                         }
 
@@ -5007,12 +5100,11 @@ namespace CPC.POS.ViewModel
             {
                 if (_oldPurchaseOrder != null)
                 {
-                    SelectedPurchaseOrder = _oldPurchaseOrder;
+                    SelectDefaultPurchaseOrder(_oldPurchaseOrder);
                 }
                 else
                 {
                     CreatePurchaseOrder();
-
                     AddProductsOutSide();
                 }
             }

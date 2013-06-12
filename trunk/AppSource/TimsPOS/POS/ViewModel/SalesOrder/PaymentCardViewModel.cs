@@ -13,6 +13,9 @@ namespace CPC.POS.ViewModel
         #region Define
         public RelayCommand OkCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
+
+        private decimal _balance = 0;
+        private decimal _remainTotal = 0;
         #endregion
 
         #region Constructors
@@ -23,13 +26,12 @@ namespace CPC.POS.ViewModel
             InitialCommand();
         }
 
-        public PaymentCardViewModel(base_ResourcePaymentDetailModel paymentMethod):this()
+        public PaymentCardViewModel(base_ResourcePaymentDetailModel paymentMethod,decimal balance):this()
         {
             PaymentMethodModel = paymentMethod;
             SelectedPaymentModel = PaymentMethodModel.Clone();
             SelectedPaymentModel.PaymentCardCollection.Clear();
-           
-
+            _balance = balance;
             foreach (base_ResourcePaymentDetailModel paymentCardModel in PaymentMethodModel.PaymentCardCollection)
             {
                 base_ResourcePaymentDetailModel paymentClone = paymentCardModel.Clone();
@@ -85,6 +87,26 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+        
+        #region SelectedCard
+        private base_ResourcePaymentDetailModel _selectedCard;
+        /// <summary>
+        /// Gets or sets the SelectedCard.
+        /// </summary>
+        public base_ResourcePaymentDetailModel SelectedCard
+        {
+            get { return _selectedCard; }
+            set
+            {
+                if (_selectedCard != value)
+                {
+                    _selectedCard = value;
+                    OnPropertyChanged(() => SelectedCard);
+                }
+            }
+        }
+        #endregion
+
 
 
 
@@ -134,6 +156,43 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region FillMoneyCommand
+        /// <summary>
+        /// Gets the FillMoney Command.
+        /// <summary>
+
+        public RelayCommand<object> FillMoneyCommand { get; private set; }
+
+
+
+        /// <summary>
+        /// Method to check whether the FillMoney command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnFillMoneyCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the FillMoney command is executed.
+        /// </summary>
+        private void OnFillMoneyCommandExecute(object param)
+        {
+            if (SelectedPaymentModel!=null && SelectedPaymentModel.PaymentCardCollection!=null)
+                _remainTotal = _balance - SelectedPaymentModel.PaymentCardCollection.Where(x => x != SelectedPaymentModel).Sum(x => x.Paid);
+
+            if (SelectedCard != null && SelectedCard.Paid == 0)
+            {
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    SelectedCard.Paid = _remainTotal > 0 ? _remainTotal : 0;
+                }), System.Windows.Threading.DispatcherPriority.DataBind);
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -142,6 +201,7 @@ namespace CPC.POS.ViewModel
             // Route the commands
             OkCommand = new RelayCommand(OnOkCommandExecute, OnOkCommandCanExecute);
             CancelCommand = new RelayCommand(OnCancelCommandExecute, OnCancelCommandCanExecute);
+            FillMoneyCommand = new RelayCommand<object>(OnFillMoneyCommandExecute, OnFillMoneyCommandCanExecute);
         }
         #endregion
 

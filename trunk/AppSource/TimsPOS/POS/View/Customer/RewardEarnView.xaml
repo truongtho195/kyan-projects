@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="CPC.POS.View.RewardEarnView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="440"
+             Height="340"
+             Background="{x:Null}"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid x:Name="grdRewardEarn"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentRewardEarn"
+                Margin="15,20,15,15"
+                Background="#19FFFFFF"
+                BorderBrush="White"
+                BorderThickness="1">
+            <Grid x:Name="grdContentRewardEarn"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="Auto"
+                                   MinHeight="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button x:Name="btnIssueNewReward"
+                        Width="105"
+                        Command="{Binding IssueNewRewardCommand}"
+                        Height="24"
+                        Margin="0"
+                        HorizontalAlignment="Left">
+                    <StackPanel x:Name="stkpBtnIssueNewReward"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock x:Name="txtblIssueNewReward"
+                                   Margin="0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonTextBlock}"
+                                   Text="Issue New Reward"
+                                   TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnDeleteReward"
+                        Width="105"
+                        Height="24"
+                        Command="{Binding DeleteRewardCommand}"
+                        Margin="90,0,0,0"
+                        HorizontalAlignment="Right">
+                    <StackPanel x:Name="stkpBtnDeleteReward"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock x:Name="txtblDeleteReward"
+                                   Margin="0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonTextBlock}"
+                                   Text="Delete Reward (s)"
+                                   TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Button>
+                <cpcDataGrid:DataGridControl x:Name="dtgrdRewardsEarned"
+                                             Grid.Row="2"
+                                             IsSynchronizedWithCurrentItem="false"
+                                             CanUserAddRows="False"
+                                             CanUserDeleteRows="False"
+                                             AutoGenerateColumns="False"
+                                             NumberOfItems="{Binding Total}"
+                                             ItemsSource="{Binding GuestRewardList}"
+                                             Style="{DynamicResource DatagridWithoutRowHeader}">
+                    <cpcDataGrid:DataGridControl.Columns>
+                        <DataGridTextColumn Width="*"
+                                            Header="Reward Amount"
+                                            Binding="{Binding RewardAmount,Mode=OneWay}" />
+                        <DataGridTextColumn Width="*"
+                                            Header="Earned Date"
+                                            Binding="{Binding EarnedDate,Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}" />
+                        <DataGridTextColumn Width="*"
+                                            Header="Active Date"
+                                            Binding="{Binding ActivedDate,Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}" />
+                        <DataGridTextColumn Width="*"
+                                            Header="Expired Date"
+                                            Binding="{Binding ExpireDate,Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}" />
+                        <DataGridTemplateColumn Width="25">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox Padding="0"
+                                              IsChecked="{Binding DataContext.CheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </cpcDataGrid:DataGridControl.Columns>
+                </cpcDataGrid:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Width="80"
+                    Command="{Binding OkCommand}"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding CancelCommand}"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

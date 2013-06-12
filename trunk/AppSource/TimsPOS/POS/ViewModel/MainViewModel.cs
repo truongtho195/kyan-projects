@@ -21,6 +21,7 @@ using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPC.Toolkit.Layout;
 using SecurityLib;
+using CPC.POS.Model;
 
 namespace CPC.POS.ViewModel
 {
@@ -56,6 +57,8 @@ namespace CPC.POS.ViewModel
 
         private base_UserLogRepository _userLogRepository = new base_UserLogRepository();
         private base_ResourceAccountRepository _accountRepository = new base_ResourceAccountRepository();
+        private base_StoreRepository _storeRepository = new base_StoreRepository();
+        private base_SaleTaxLocationRepository _saleTaxLocationRepository = new base_SaleTaxLocationRepository();
 
         private DispatcherTimer _idleTimer;
         private Regex _regexPassWord = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
@@ -140,16 +143,23 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private string _loginName;
         /// <summary>
-        /// Gets the LoginName
+        /// Gets or sets the LoginName.
         /// </summary>
         public string LoginName
         {
             get
             {
-                if (Define.USER != null)
-                    return Define.USER.LoginName;
-                return string.Empty;
+                return _loginName;
+            }
+            set
+            {
+                if (_loginName != value)
+                {
+                    _loginName = value;
+                    OnPropertyChanged(() => LoginName);
+                }
             }
         }
 
@@ -159,7 +169,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public string UserName
         {
-            get { return _userName; }
+            get
+            {
+                return _userName;
+            }
             set
             {
                 if (_userName != value)
@@ -176,7 +189,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public string UserPassword
         {
-            get { return _userPassword; }
+            get
+            {
+                return _userPassword;
+            }
             set
             {
                 if (_userPassword != value)
@@ -192,7 +208,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public string Status
         {
-            get { return "Connecting..."; }
+            get
+            {
+                return "Connecting...";
+            }
         }
 
         /// <summary>
@@ -223,7 +242,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public bool IsLockScreen
         {
-            get { return _isLockScreen; }
+            get
+            {
+                return _isLockScreen;
+            }
             set
             {
                 if (_isLockScreen != value)
@@ -233,6 +255,88 @@ namespace CPC.POS.ViewModel
                 }
             }
         }
+
+        private string _storeName;
+        /// <summary>
+        /// Gets or sets the StoreName.
+        /// </summary>
+        public string StoreName
+        {
+            get
+            {
+                return _storeName;
+            }
+            set
+            {
+                if (_storeName != value)
+                {
+                    _storeName = value;
+                    OnPropertyChanged(() => StoreName);
+                }
+            }
+        }
+
+        private string _taxLocation;
+        /// <summary>
+        /// Gets or sets the TaxLocation.
+        /// </summary>
+        public string TaxLocation
+        {
+            get
+            {
+                return _taxLocation;
+            }
+            set
+            {
+                if (_taxLocation != value)
+                {
+                    _taxLocation = value;
+                    OnPropertyChanged(() => TaxLocation);
+                }
+            }
+        }
+
+        private string _taxCode;
+        /// <summary>
+        /// Gets or sets the TaxCode.
+        /// </summary>
+        public string TaxCode
+        {
+            get
+            {
+                return _taxCode;
+            }
+            set
+            {
+                if (_taxCode != value)
+                {
+                    _taxCode = value;
+                    OnPropertyChanged(() => TaxCode);
+                }
+            }
+        }
+
+        #region SelectedLanguage
+
+        private ComboItem _selectedLanguage = Common.Languages.FirstOrDefault(x => x.Value == 2);
+        public ComboItem SelectedLanguage
+        {
+            get
+            {
+                return _selectedLanguage;
+            }
+            set
+            {
+                if (_selectedLanguage != value)
+                {
+                    _selectedLanguage = value;
+                    OnPropertyChanged(() => SelectedLanguage);
+                    Common.ChangeLanguage(_selectedLanguage.CultureInfo);
+                }
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -246,7 +350,7 @@ namespace CPC.POS.ViewModel
             InitialCommand();
             CheckIdleTime();
             LoadLayout();
-            GetConnectionStringInfo(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
+            LoadStatusInformation();
         }
 
         #endregion
@@ -258,7 +362,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the OpenViewCommand command.
         /// </summary>
-        public ICommand OpenViewCommand { get; private set; }
+        public ICommand OpenViewCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to invoke when the OpenViewCommand command is executed.
@@ -275,7 +383,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the ChangeViewCommand command.
         /// </summary>
-        public ICommand ChangeViewCommand { get; private set; }
+        public ICommand ChangeViewCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to invoke when the ChangeViewCommand command is executed.
@@ -299,7 +411,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the CloseViewCommand command.
         /// </summary>
-        public ICommand CloseViewCommand { get; private set; }
+        public ICommand CloseViewCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to invoke when the CloseViewCommand command is executed.
@@ -322,7 +438,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the ClearViewCommand command.
         /// </summary>
-        public ICommand ClearViewCommand { get; private set; }
+        public ICommand ClearViewCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to invoke when the ClearViewCommand command is executed.
@@ -344,7 +464,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the CloseCommand command.
         /// </summary>
-        public ICommand CloseCommand { get; private set; }
+        public ICommand CloseCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to check whether the CloseCommand command can be executed.
@@ -376,7 +500,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the ChangeStyleCommand command.
         /// </summary>
-        public ICommand ChangeStyleCommand { get; private set; }
+        public ICommand ChangeStyleCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to check whether the ChangeStyleCommand command can be executed.
@@ -402,7 +530,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the LoginCommand command.
         /// </summary>
-        public ICommand LoginCommand { get; private set; }
+        public ICommand LoginCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to check whether the LoginCommand command can be executed.
@@ -420,32 +552,34 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                bool result = false;
+
                 // Encrypt password
                 string encryptPassword = AESSecurity.Encrypt(UserPassword);
 
-                if (UserName.Equals(_defaultUsernName) || UserName.Equals(LoginName))
+                // Check default account
+                if (UserName.Equals(_defaultUsernName) && encryptPassword.Equals(_defaultPassword))
+                    result = true;
+                else if (UserName.Equals(LoginName)) // Check login account
                 {
-                    // Get login account
+                    // Get login account from database
                     base_ResourceAccount account = _accountRepository.Get(x => x.LoginName.Equals(UserName) && x.Password.Equals(encryptPassword));
+                    result = account != null;
+                }
 
-                    if (account != null || encryptPassword.Equals(_defaultPassword))
-                    {
-                        // Clear user password
-                        UserPassword = string.Empty;
+                if (result)
+                {
+                    // Clear user password
+                    UserPassword = string.Empty;
 
-                        // Turn off lock screen
-                        //IsLockScreen = false;
-                        _lockScreenView.DialogResult = true;
-
-                        // Star idle timer
-                        _idleTimer.Start();
-                    }
-                    else
-                        MessageBox.Show("Password is not valid, please try again!", "POS", MessageBoxButton.OK);
+                    // Turn off lock screen view
+                    _lockScreenView.DialogResult = true;
                 }
                 else
-                    MessageBox.Show("UserName is not valid, please try again!", "POS", MessageBoxButton.OK);
-
+                {
+                    // Show alert message
+                    MessageBox.Show("Username or Password is not valid, please try again!", "POS", MessageBoxButton.OK);
+                }
             }
             catch (Exception ex)
             {
@@ -460,7 +594,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the LogOutCommand command.
         /// </summary>
-        public ICommand LogOutCommand { get; private set; }
+        public ICommand LogOutCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Enable the Login button if all required field are validated IsValid = true
@@ -495,7 +633,11 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets the OpenManagementUserCommand command.
         /// </summary>
-        public ICommand OpenManagementUserCommand { get; private set; }
+        public ICommand OpenManagementUserCommand
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Method to invoke when the OpenViewCommand command is executed.
@@ -505,6 +647,134 @@ namespace CPC.POS.ViewModel
             ManagementUserLogView view = new ManagementUserLogView();
             view.DataContext = new ManagementUserLogViewModel();
             view.Show();
+        }
+
+        #endregion
+
+        #region ChangePasswordCommand
+
+        /// <summary>
+        /// Gets the ChangePasswordCommand command.
+        /// </summary>
+        public ICommand ChangePasswordCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Method to check whether the ChangePasswordCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnChangePasswordCommandCanExecute()
+        {
+            if (Define.USER == null)
+                return false;
+            return !Define.ADMIN_ACCOUNT.Equals(Define.USER.LoginName);
+        }
+
+        /// <summary>
+        /// Method to invoke when the ChangePasswordCommand command is executed.
+        /// </summary>
+        private void OnChangePasswordCommandExecute()
+        {
+            ChangePasswordViewModel viewModel = new ChangePasswordViewModel();
+            bool? result = _dialogService.ShowDialog<ChangePasswordView>(this, viewModel, "Change Password");
+            if (result.HasValue && result.Value)
+            {
+                LoginName = viewModel.ResourceAccountModel.LoginName;
+            }
+        }
+
+        #endregion
+
+        #region LockScreenCommand
+
+        /// <summary>
+        /// Gets the LockScreenCommand command.
+        /// </summary>
+        public ICommand LockScreenCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Method to check whether the LockScreenCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLockScreenCommandCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the LockScreenCommand command is executed.
+        /// </summary>
+        public void OnLockScreenCommandExecute()
+        {
+            // Stop idle timer
+            _idleTimer.Stop();
+
+            // Set user name default
+            UserName = LoginName;
+
+            // Get main window
+            Window mainWindow = App.Current.MainWindow;
+
+            // Initial lock screen view
+            _lockScreenView = new LockScreenView();
+            _lockScreenView.DataContext = this;
+
+            // Register closing event
+            _lockScreenView.Closing += (senderLockScreen, eLockScreen) =>
+            {
+                // Prevent closing lock screen view when login have not success
+                if (!_lockScreenView.DialogResult.HasValue)
+                    eLockScreen.Cancel = true;
+            };
+
+            // Set default position over main window
+            _lockScreenView.Width = mainWindow.ActualWidth;
+            _lockScreenView.Height = mainWindow.ActualHeight;
+            switch (mainWindow.WindowState)
+            {
+                case WindowState.Maximized:
+                    _lockScreenView.Top = 0;
+                    _lockScreenView.Left = 0;
+                    break;
+                case WindowState.Minimized:
+                case WindowState.Normal:
+                    _lockScreenView.Top = mainWindow.Top;
+                    _lockScreenView.Left = mainWindow.Left;
+                    break;
+            }
+
+            // Set login binding
+            Binding loginBinding = new Binding("LoginCommand");
+            BindingOperations.SetBinding(_lockScreenView.btnLogin, Button.CommandProperty, loginBinding);
+
+            // Get active window if main show popup
+            Window activeWindow = mainWindow.OwnedWindows.Cast<Window>().SingleOrDefault(x => x.IsActive);
+            if (activeWindow != null)
+            {
+                // Set active window is owner lock screen view
+                _lockScreenView.Owner = activeWindow;
+            }
+            else
+            {
+                // Set main window is owner lock screen view
+                _lockScreenView.Owner = mainWindow;
+            }
+
+            // Show lock screen view
+            if (_lockScreenView.ShowDialog().HasValue)
+            {
+                IdleTimeHelper.LostFocusTime = null;
+
+                // Star idle timer
+                _idleTimer.Start();
+            }
         }
 
         #endregion
@@ -684,6 +954,10 @@ namespace CPC.POS.ViewModel
                     view = new PurchaseOrderView();
                     viewModel = new PurchaseOrderViewModel(host.IsOpenList, host.Tag);
                     break;
+                case "PurchaseOrderLocked":
+                    view = new LockPOListView();
+                    viewModel = new LockPOListViewModel(host.IsOpenList, host.Tag);
+                    break;
                 case "POReturn":
                     view = new PurchaseOrderReturnView();
                     viewModel = new PurchaseOrderReturnViewModel();
@@ -748,6 +1022,14 @@ namespace CPC.POS.ViewModel
                 case "WorkOrderList":
                     view = new WorkOrderView();
                     viewModel = new WorkOrderViewModel(true);
+                    break;
+                case "CostAdjustment":
+                    view = new CostAdjustmentHistoryView();
+                    viewModel = new CostAdjustmentHistoryViewModel();
+                    break;
+                case "QuantityAdjustment":
+                    view = new QuantityAdjustmentHistoryView();
+                    viewModel = new QuantityAdjustmentHistoryViewModel();
                     break;
 
                 #endregion
@@ -848,23 +1130,46 @@ namespace CPC.POS.ViewModel
         /// Set shortcut key for usercontrol from main view
         /// </summary>
         /// <param name="host"></param>
-        private void SetKeyBinding(BorderLayoutHost host)
+        public void SetKeyBinding(InputBindingCollection inputBindingCollection)
         {
-            var viewInputBindings = host.View.InputBindings;
-            if (viewInputBindings != null)
-            {
-                foreach (InputBinding viewInputBinding in viewInputBindings)
-                {
-                    KeyGesture viewKeyGesture = viewInputBinding.Gesture as KeyGesture;
-                    KeyBinding mainKeyBinding = new KeyBinding(viewInputBinding.Command, viewKeyGesture);
-                    //mainKeyBinding.CommandTarget = host;
-                    mainKeyBinding.CommandParameter = viewInputBinding.CommandParameter + "Main";
+            SetKeyBinding(inputBindingCollection, App.Current.MainWindow);
+        }
 
-                    var keyBinding = App.Current.MainWindow.InputBindings.Cast<InputBinding>().FirstOrDefault(
-                        x => ((KeyGesture)x.Gesture).Key.Equals(viewKeyGesture.Key) && ((KeyGesture)x.Gesture).Modifiers.Equals(viewKeyGesture.Modifiers));
+        /// <summary>
+        /// Set shortcut key for usercontrol from main view
+        /// </summary>
+        /// <param name="host"></param>
+        public void SetKeyBinding(InputBindingCollection inputBindingCollection, Window target)
+        {
+            // Get input binding collection from source window
+            InputBindingCollection sourceInputBindingCollection = inputBindingCollection;
+
+            if (sourceInputBindingCollection != null)
+            {
+                foreach (InputBinding sourceInputBindingItem in sourceInputBindingCollection)
+                {
+                    // Get key gesture of input binding
+                    KeyGesture sourceKeyGesture = sourceInputBindingItem.Gesture as KeyGesture;
+
+                    // Create key binding for main
+                    KeyBinding targetKeyBinding = new KeyBinding(sourceInputBindingItem.Command, sourceKeyGesture);
+                    //targetKeyBinding.CommandTarget = host;
+                    targetKeyBinding.CommandParameter = sourceInputBindingItem.CommandParameter + "Main";
+
+                    // Get key binding from main
+                    InputBinding keyBinding = target.InputBindings.Cast<InputBinding>().FirstOrDefault(
+                        x => ((KeyGesture)x.Gesture).Key.Equals(sourceKeyGesture.Key) &&
+                            ((KeyGesture)x.Gesture).Modifiers.Equals(sourceKeyGesture.Modifiers));
+
+                    // Check exist key binding
                     if (keyBinding != null)
-                        App.Current.MainWindow.InputBindings.Remove(keyBinding);
-                    App.Current.MainWindow.InputBindings.Add(mainKeyBinding);
+                    {
+                        // Remove key binding is existed from main
+                        target.InputBindings.Remove(keyBinding);
+                    }
+
+                    // Add new key binding to main
+                    target.InputBindings.Add(targetKeyBinding);
                 }
             }
         }
@@ -973,7 +1278,7 @@ namespace CPC.POS.ViewModel
                     if (hostClickedPosition == 0)
                         host.IsRefreshData = true;
                     SetPositionTarget();
-                    SetKeyBinding(host);
+                    SetKeyBinding(host.View.InputBindings);
                 }
             }
         }
@@ -1034,7 +1339,7 @@ namespace CPC.POS.ViewModel
                     // Refresh data
                     hostClicked.IsRefreshData = true;
                     SetPositionTarget();
-                    SetKeyBinding(hostClicked);
+                    SetKeyBinding(hostClicked.View.InputBindings);
                 }
             }
         }
@@ -1072,7 +1377,10 @@ namespace CPC.POS.ViewModel
         {
             // Get all grid to layout
             Grid grdMainView = App.Current.MainWindow.FindName("grdMainView") as Grid;
-            _grdTarget = new Grid { Name = "grdTarget" };
+            _grdTarget = new Grid
+            {
+                Name = "grdTarget"
+            };
             _grdHost = new Grid
             {
                 Name = "grdHost",
@@ -1084,14 +1392,23 @@ namespace CPC.POS.ViewModel
 
             // Add column for target grid
             _grdTarget.ColumnDefinitions.Add(new ColumnDefinition());
-            _colSubItem = new ColumnDefinition { Width = new GridLength(215) };
-            _colSubItemExpanded = new ColumnDefinition { Width = new GridLength(36) };
+            _colSubItem = new ColumnDefinition
+            {
+                Width = new GridLength(215)
+            };
+            _colSubItemExpanded = new ColumnDefinition
+            {
+                Width = new GridLength(36)
+            };
             _grdTarget.ColumnDefinitions.Add(_colSubItem);
 
             // Add row for target grid
             for (int i = 0; i < _rowNumbers; i++)
                 _grdTarget.RowDefinitions.Add(new RowDefinition());
-            _grdTarget.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0) });
+            _grdTarget.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(0)
+            });
         }
 
         #endregion
@@ -1112,6 +1429,8 @@ namespace CPC.POS.ViewModel
             LoginCommand = new RelayCommand(OnLoginCommandExecute, OnLoginCommandCanExecute);
             LogOutCommand = new RelayCommand(OnLogOutExecuted, CanOnLogOutExecute);
             OpenManagementUserCommand = new RelayCommand<object>(OnOpenManagermentUserCommandExecute);
+            ChangePasswordCommand = new RelayCommand(OnChangePasswordCommandExecute, OnChangePasswordCommandCanExecute);
+            LockScreenCommand = new RelayCommand(OnLockScreenCommandExecute, OnLockScreenCommandCanExecute);
         }
 
         /// <summary>
@@ -1150,66 +1469,16 @@ namespace CPC.POS.ViewModel
             {
                 if (IsIdle())
                 {
-                    // Set user name default
-                    UserName = LoginName;
-
-                    // Turn on lock screen
-                    //IsLockScreen = true;
-
-                    // Stop idle timer
-                    _idleTimer.Stop();
-
-                    // Get main window
-                    Window ownerViewModel = FindOwnerWindow(this);
-
-                    // Create lock screen view
-                    _lockScreenView = new LockScreenView();
-                    _lockScreenView.ContextMenu = null;
-                    _lockScreenView.Closing += (senderLockScreen, eLockScreen) =>
+                    if (App.Current.MainWindow.WindowState.Equals(WindowState.Minimized))
                     {
-                        if (!_lockScreenView.DialogResult.HasValue)
-                            eLockScreen.Cancel = true;
-                    };
+                        // Stop idle timer
+                        _idleTimer.Stop();
 
-                    // Set default position over main window
-                    _lockScreenView.Width = ownerViewModel.ActualWidth;
-                    _lockScreenView.Height = ownerViewModel.ActualHeight;
-                    if (ownerViewModel.WindowState.Equals(WindowState.Maximized))
-                    {
-                        _lockScreenView.Top = 0;
-                        _lockScreenView.Left = 0;
+                        // Turn on lock screen when window active
+                        IsLockScreen = true;
                     }
                     else
-                    {
-                        _lockScreenView.Top = ownerViewModel.Top;
-                        _lockScreenView.Left = ownerViewModel.Left;
-                    }
-
-                    // Set datacontext
-                    _lockScreenView.DataContext = this;
-
-                    // Set login binding
-                    Binding loginBinding = new Binding("LoginCommand");
-                    BindingOperations.SetBinding(_lockScreenView.btnLogin, Button.CommandProperty, loginBinding);
-
-                    // Get active window if main show popup
-                    Window activeWindow = ownerViewModel.OwnedWindows.Cast<Window>().SingleOrDefault(x => x.IsActive);
-                    if (activeWindow != null)
-                        // Set active window is owner lock screen view
-                        _lockScreenView.Owner = activeWindow;
-                    else
-                        // Set main window is owner lock screen view
-                        _lockScreenView.Owner = ownerViewModel;
-
-                    // Show lock screen view
-                    if (_lockScreenView.ShowDialog().HasValue)
-                    {
-                        // Star idle timer
-                        _idleTimer.Start();
-
-                        // Active main window
-                        _lockScreenView.Owner.Activate();
-                    }
+                        OnLockScreenCommandExecute();
                 }
             };
 
@@ -1260,9 +1529,45 @@ namespace CPC.POS.ViewModel
             return _hostList.Count(x => x.KeyName.Equals(viewName)) > 0;
         }
 
+        /// <summary>
+        /// Load status information
+        /// </summary>
+        public void LoadStatusInformation()
+        {
+            LoadStoreName();
+            LoadTaxLocationAndCode();
+
+            // Get login name
+            LoginName = Define.USER.LoginName;
+
+            // Get database name
+            GetConnectionStringInfo(ConfigurationManager.ConnectionStrings["POSDBEntities"].ConnectionString);
+        }
+
+        /// <summary>
+        /// Load store name
+        /// </summary>
+        public void LoadStoreName()
+        {
+            // Get store name
+            StoreName = _storeRepository.GetAll().OrderBy(x => x.Id).ElementAt(Define.StoreCode).Name;
+        }
+
+        /// <summary>
+        /// Load tax location and tax code
+        /// </summary>
+        public void LoadTaxLocationAndCode()
+        {
+            // Get tax location
+            TaxLocation = _saleTaxLocationRepository.Get(x => x.Id.Equals(Define.CONFIGURATION.DefaultSaleTaxLocation.Value)).Name;
+
+            // Get tax code
+            TaxCode = Define.CONFIGURATION.DefaultTaxCodeNewDepartment;
+        }
+
         #endregion
 
-        #region Override Methods
+        #region Event Methods
 
         /// <summary>
         /// Set keybinding after form loaded
@@ -1271,8 +1576,8 @@ namespace CPC.POS.ViewModel
         /// <param name="e"></param>
         private void host_Loaded(object sender, RoutedEventArgs e)
         {
-            //BorderLayoutHost host = sender as BorderLayoutHost;
-            SetKeyBinding(sender as BorderLayoutHost);
+            BorderLayoutHost host = sender as BorderLayoutHost;
+            SetKeyBinding(host.View.InputBindings);
         }
 
         /// <summary>
@@ -1390,7 +1695,10 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public HashSet<string> ExtensionErrors
         {
-            get { return _extensionErrors; }
+            get
+            {
+                return _extensionErrors;
+            }
             set
             {
                 if (_extensionErrors != value)
@@ -1403,7 +1711,10 @@ namespace CPC.POS.ViewModel
 
         public string Error
         {
-            get { return null; }
+            get
+            {
+                return null;
+            }
         }
 
         public string this[string columnName]

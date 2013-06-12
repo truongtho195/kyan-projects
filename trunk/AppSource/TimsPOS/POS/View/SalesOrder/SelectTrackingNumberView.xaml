@@ -8,6 +8,7 @@
              xmlns:CPCToolkitExt_TextBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
@@ -23,7 +24,11 @@
 
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
-
+        <!--<Style TargetType="{x:Type cpcControl:NumericTextBox}"
+               BasedOn="{StaticResource {x:Type cpcControl:NumericTextBox}}">
+            <Setter Property="cpcBehavior:MoveFocusHelper.MoveFocus"
+                    Value="True" />
+        </Style>-->
     </UserControl.Resources>
     <Grid x:Name="grdSelectTrackingNumber" Margin="0,0,2,0">
         <Grid.RowDefinitions>
@@ -187,12 +192,11 @@
                                                    Visibility="{Binding Visibility,
                                                                         ElementName=txtblQuantity,
                                                                         Mode=OneWay}"
-                                                   d:LayoutOverrides="Height">
+                                                   d:LayoutOverrides="Height" MaxLength="4">
                             <cpcControl:NumericTextBox.InputBindings>
                                 <KeyBinding Key="Enter"
                                             Command="{Binding QuatityChangedCommand}"
                                             CommandParameter="Enter" />
-
 
                             </cpcControl:NumericTextBox.InputBindings>
                             <i:Interaction.Triggers>

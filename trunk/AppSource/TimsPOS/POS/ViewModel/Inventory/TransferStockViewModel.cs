@@ -1123,6 +1123,7 @@ namespace CPC.POS.ViewModel
                         transferStockDetailModel = this.ChangeProduct(this.SelectedProduct, this.SelectedTransferStock.IsNew);
                         transferStockDetailModel.TransferStockResource = Guid.NewGuid().ToString();
                         transferStockDetailModel.Quantity = 1;
+                        transferStockDetailModel.AvlQuantity = this.SelectedProduct.QuantityOnHand;
                         transferStockDetailModel.PropertyChanged += new PropertyChangedEventHandler(TransferStockDetailModel_PropertyChanged);
                         //Get Product UOMCollection
                         if (transferStockDetailModel.ProductModel != null)
@@ -1131,8 +1132,9 @@ namespace CPC.POS.ViewModel
                     }
                     else
                     {
-                        transferStockDetailModel = SelectedTransferStock.TransferStockDetailCollection.SingleOrDefault(x => x.ProductResource.Equals(productResource));
+                        transferStockDetailModel = this.SelectedTransferStock.TransferStockDetailCollection.SingleOrDefault(x => x.ProductResource.Equals(productResource));
                         transferStockDetailModel.Quantity = transferStockDetailModel.Quantity + 1;
+                        transferStockDetailModel.AvlQuantity = this.SelectedProduct.QuantityOnHand;
                     }
                     this.SetAmountProduct(transferStockDetailModel);
                     this.CalSubTotalProduct();

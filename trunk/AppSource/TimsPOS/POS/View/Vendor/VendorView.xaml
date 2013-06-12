@@ -17,7 +17,7 @@
              xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="vendorView"
              Background="{DynamicResource UserControlBackground}"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Width="Auto" Height="Auto">
     <!--
         helper:ValidationHelper.IsEnabled="True"
         helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
@@ -581,8 +581,7 @@
                     <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                 -->
-                <Grid x:Name="grdSearch"
-                      d:IsHidden="True">
+                <Grid x:Name="grdSearch">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -692,6 +691,7 @@
                                                          DisplayItems="{Binding NumberOfDisplayItems}"
                                                          IsPaging="True"
                                                          IsReadOnly="True"
+                                                         SelectionMode="Extended"
                                                          ItemsSource="{Binding VendorCollection}"
                                                          NumberOfItems="{Binding VendorCollection.Count}"
                                                          RowDetailsTemplate="{DynamicResource RowDetailsTemplateVendorSearch}"
@@ -718,7 +718,7 @@
                                                        Stretch="Fill" />
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Header="Delete Item"
+                                    <MenuItem Header="Delete Item(s)"
                                               Command="{Binding DeletesCommand}"
                                               CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                                         <MenuItem.Icon>
@@ -741,13 +741,13 @@
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Account #"
                                                     Binding="{Binding GuestNo, Mode=OneWay}"
-                                                    Width="80" />
+                                                    Width="85" />
                                 <DataGridTextColumn Header="Status"
                                                     Binding="{Binding IsActived, ConverterParameter=Status, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
-                                                    Width="50" />
+                                                    Width="100" />
                                 <DataGridTextColumn Header="Company"
                                                     Binding="{Binding Company, Mode=OneWay}"
-                                                    Width="200" />
+                                                    Width="150" />
                                 <DataGridTextColumn Header="First Name"
                                                     Binding="{Binding FirstName, Mode=OneWay}"
                                                     Width="150" />
@@ -780,7 +780,7 @@
                     </Grid>
                 </Grid>
                 <Grid x:Name="grdDetail"
-                      Grid.Column="1">
+                      Grid.Column="1" d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -938,12 +938,8 @@
                             </StackPanel>
                         </Button>
                         <Grid x:Name="grdRemark1"
-                              Width="50"
+                              Width="40"
                               Height="40">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
                             <Grid x:Name="grdRemark"
                                   Width="30"
                                   Height="30">
@@ -965,17 +961,20 @@
                                       Grid.ColumnSpan="2"
                                       SelectedIndex="0"
                                       Style="{DynamicResource RemarkComboboxStyle}">
-                                <Button Command="{Binding NewNoteCommand}"
-                                        Width="75"
-                                        Height="20"
-                                        Content="Add Sticky"
-                                        Style="{DynamicResource ButtonComboboxItemRemark}" />
-                                <Button Command="{Binding ShowOrHiddenNoteCommand}"
-                                        Width="75"
-                                        Height="20"
-                                        Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
-                                        Style="{DynamicResource ButtonComboboxItemRemark}"
-                                        Visibility="{Binding SelectedVendor.ResourceNoteCollection.Count, Converter={StaticResource enumToCollapsedConverter}, ConverterParameter=0}" />
+                                <ComboBoxItem>
+                                    <Button Command="{Binding NewNoteCommand}"
+                                            Width="75"
+                                            Height="20"
+                                            Content="Add Sticky"
+                                            Style="{DynamicResource ButtonComboboxItemRemark}" />
+                                </ComboBoxItem>
+                                <ComboBoxItem Visibility="{Binding SelectedVendor.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}">
+                                    <Button Command="{Binding ShowOrHiddenNoteCommand}"
+                                            Width="75"
+                                            Height="20"
+                                            Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
+                                            Style="{DynamicResource ButtonComboboxItemRemark}" />
+                                </ComboBoxItem>
                             </ComboBox>
                         </Grid>
                     </StackPanel>
@@ -995,11 +994,11 @@
                     <Grid x:Name="grdBasic"
                           Grid.Row="1"
                           Grid.Column="1"
-                          Margin="10,10,10,0">
+                          Margin="10,10,10,0" Width="728" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
                             <ColumnDefinition />
-                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="152" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -1019,14 +1018,13 @@
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblStartDate"
                                    Grid.Column="2"
-                                   Margin="8,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
                                    Text="Start Date:" />
                         <DatePicker x:Name="dtpStartDate"
                                     Grid.Column="2"
-                                    Width="110"
+                                    Width="90"
                                     Margin="2,2,0,2"
                                     HorizontalAlignment="Right"
                                     IsEnabled="False"
@@ -1047,7 +1045,6 @@
                         <TextBlock x:Name="txtblBasicStatus"
                                    Grid.Row="2"
                                    Grid.Column="2"
-                                   Margin="8,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
@@ -1055,7 +1052,7 @@
                         <ComboBox x:Name="cmbBasicStatus"
                                   Grid.Row="1"
                                   Grid.Column="2"
-                                  Width="110"
+                                  Width="90"
                                   Margin="2,2,0,2"
                                   HorizontalAlignment="Right"
                                   DisplayMemberPath="Text"
@@ -1852,7 +1849,7 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Code"
                                                                 Binding="{Binding Code, Mode=OneWay}"
-                                                                Width="80" />
+                                                                Width="100" />
                                             <DataGridTextColumn Header="Item Type"
                                                                 Binding="{Binding ItemTypeId, ConverterParameter=ItemTypes, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
                                                                 Width="100" />
@@ -1861,7 +1858,7 @@
                                                                 Width="130" />
                                             <DataGridTextColumn Header="Item Name"
                                                                 Binding="{Binding ProductName, Mode=OneWay}"
-                                                                Width="100" />
+                                                                Width="150" />
                                             <DataGridTextColumn Header="Description"
                                                                 Binding="{Binding Description, Mode=OneWay}"
                                                                 Width="250" />
@@ -1875,7 +1872,7 @@
                                                                 Binding="{Binding Barcode, Mode=OneWay}"
                                                                 Width="100" />
                                             <DataGridTemplateColumn Header="Regular Price"
-                                                                    Width="120">
+                                                                    Width="80">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
@@ -1910,15 +1907,15 @@
                                         <dataGridControl:DataGridControl.Columns>
                                             <DataGridTextColumn Header="Order #"
                                                                 Binding="{Binding PurchaseOrderNo, Mode=OneWay}"
-                                                                Width="100" />
+                                                                Width="85" />
                                             <DataGridTextColumn Header="Order Date"
                                                                 Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
                                                                 Width="70" />
                                             <DataGridTextColumn Header="Status"
                                                                 Binding="{Binding Status, ConverterParameter=PurchaseStatus, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
-                                                                Width="*" />
+                                                                Width="100" />
                                             <DataGridTemplateColumn Header="Total"
-                                                                    Width="120">
+                                                                    Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
@@ -1927,7 +1924,7 @@
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                             <DataGridTemplateColumn Header="Paid"
-                                                                    Width="120">
+                                                                    Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
@@ -1936,7 +1933,7 @@
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                             <DataGridTemplateColumn Header="Balance"
-                                                                    Width="120">
+                                                                    Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"

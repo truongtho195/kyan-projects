@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace CPC.Helper
@@ -37,6 +38,19 @@ namespace CPC.Helper
 
             // Return idle time
             return TimeSpan.FromMilliseconds(Environment.TickCount - lastInputInfo.dwTime);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+        private const int SW_RESTORE = 9;
+
+        public static void RestoreWindow()
+        {
+            // Get current process
+            Process currentProcess = Process.GetCurrentProcess();
+
+            ShowWindowAsync(currentProcess.MainWindowHandle, SW_RESTORE);
         }
     }
 }

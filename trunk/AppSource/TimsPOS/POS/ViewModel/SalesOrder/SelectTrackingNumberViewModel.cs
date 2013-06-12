@@ -11,6 +11,7 @@ using System.Reflection;
 using CPC.POS.Database;
 using System.Data.Objects.SqlClient;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace CPC.POS.ViewModel
 {
@@ -43,7 +44,7 @@ namespace CPC.POS.ViewModel
             InitialCommand();
         }
 
-        public SelectTrackingNumberViewModel(base_SaleOrderDetailModel saleOrderDetailModel, bool isShowQuantity = false,bool isEditing=true)
+        public SelectTrackingNumberViewModel(base_SaleOrderDetailModel saleOrderDetailModel, bool isShowQuantity = false, bool isEditing = true)
             : this()
         {
             IsReadOnly = !isEditing;
@@ -115,12 +116,12 @@ namespace CPC.POS.ViewModel
 
             if (string.IsNullOrWhiteSpace(SaleOrderDetailModel.SerialTracking))
             {
-                AddRowForSerialCollection(SaleOrderDetailModel.Quantity);
+                AddRowForSerialCollection((int)SaleOrderDetailModel.Quantity);
             }
             else
             {
                 var serialList = SaleOrderDetailModel.SerialTracking.Split(',');
-                foreach (string item in serialList.Take(Quantity))
+                foreach (string item in serialList.Take((int)Quantity))
                 {
                     ItemModel itemModel = new ItemModel();
                     itemModel.Text = item.Trim();
@@ -130,7 +131,7 @@ namespace CPC.POS.ViewModel
 
                 if (SerialTrackingCollection.Count() < SaleOrderDetailModel.Quantity)//Add more row follow quantity
                 {
-                    int remainRow = SaleOrderDetailModel.Quantity - SerialTrackingCollection.Count();
+                    int remainRow = (int)SaleOrderDetailModel.Quantity - SerialTrackingCollection.Count();
                     AddRowForSerialCollection(remainRow);
                 }
             }
@@ -160,12 +161,12 @@ namespace CPC.POS.ViewModel
 
             if (string.IsNullOrWhiteSpace(PurchaseOrderDetailModel.Serial))
             {
-                AddRowForSerialCollection(PurchaseOrderDetailModel.Quantity);
+                AddRowForSerialCollection((int)PurchaseOrderDetailModel.Quantity);
             }
             else
             {
                 var serialList = PurchaseOrderDetailModel.Serial.Split(',');
-                foreach (string item in serialList.Take(Quantity))
+                foreach (string item in serialList.Take((int)Quantity))
                 {
                     ItemModel itemModel = new ItemModel();
                     itemModel.Text = item.Trim();
@@ -175,7 +176,7 @@ namespace CPC.POS.ViewModel
 
                 if (SerialTrackingCollection.Count() < PurchaseOrderDetailModel.Quantity)//Add more row follow quantity
                 {
-                    int remainRow = PurchaseOrderDetailModel.Quantity - SerialTrackingCollection.Count();
+                    int remainRow = (int)PurchaseOrderDetailModel.Quantity - SerialTrackingCollection.Count();
                     AddRowForSerialCollection(remainRow);
                 }
             }
@@ -431,32 +432,39 @@ namespace CPC.POS.ViewModel
         {
             if (Quantity > 0)
             {
-                if (IsSaleOrder)
-                    (BackupObject as base_SaleOrderDetailModel).Quantity = Quantity;
-                else
-                    (BackupObject as base_PurchaseOrderDetailModel).Quantity = Quantity;
-                if (SerialTrackingCollection.Count < Quantity)
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int numberItemAdded = Quantity - SerialTrackingCollection.Count;
-                    for (int i = 0; i < numberItemAdded; i++)
-                        SerialTrackingCollection.Add(new ItemModel());
-                }
-                else if (SerialTrackingCollection.Count > Quantity)
-                {
-                    int numberItemRemove = SerialTrackingCollection.Count - Quantity;
-                    for (int i = 0; i < numberItemRemove; i++)
-                        SerialTrackingCollection.RemoveAt(SerialTrackingCollection.Count() - 1);
-                }
+                    if (IsSaleOrder)
+                        (BackupObject as base_SaleOrderDetailModel).Quantity = Quantity;
+                    else
+                        (BackupObject as base_PurchaseOrderDetailModel).Quantity = Quantity;
+                    if (SerialTrackingCollection.Count < Quantity)
+                    {
+                        int numberItemAdded = (int)Quantity - SerialTrackingCollection.Count;
+
+                        for (int i = 0; i < numberItemAdded; i++)
+                            SerialTrackingCollection.Add(new ItemModel());
+
+                    }
+                    else if (SerialTrackingCollection.Count > Quantity)
+                    {
+                        int numberItemRemove = SerialTrackingCollection.Count - (int)Quantity;
+                        for (int i = 0; i < numberItemRemove; i++)
+                            SerialTrackingCollection.RemoveAt(SerialTrackingCollection.Count() - 1);
+                    }
+                }), System.Windows.Threading.DispatcherPriority.Background);
+
+
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     if (IsSaleOrder)
                         Quantity = (BackupObject as base_SaleOrderDetailModel).Quantity;
                     else
                         Quantity = (BackupObject as base_PurchaseOrderDetailModel).Quantity;
-                }));
+                }), System.Windows.Threading.DispatcherPriority.Background);
             }
 
         }

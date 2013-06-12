@@ -171,6 +171,8 @@
                 Value="1,0" />
         <Setter Property="Background"
                 Value="Transparent" />
+        <Setter Property="Height"
+                Value="20" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBoxItem}">
@@ -189,9 +191,7 @@
                                  Value="true">
                             <Setter TargetName="Bd"
                                     Property="Background"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            <Setter Property="Foreground"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                                    Value="{DynamicResource Combobox_MouseOver_Background}" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
                                  Value="false">

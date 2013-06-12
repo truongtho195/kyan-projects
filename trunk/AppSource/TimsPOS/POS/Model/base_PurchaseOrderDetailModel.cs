@@ -762,11 +762,11 @@ namespace CPC.POS.Model
 
         #region BackupQuantity
 
-        private Nullable<int> _backupQuantity;
+        private Nullable<decimal> _backupQuantity;
         /// <summary>
         /// Gets or sets BackupQuantity that holds quantity.
         /// </summary>
-        public Nullable<int> BackupQuantity
+        public Nullable<decimal> BackupQuantity
         {
             get
             {
@@ -845,6 +845,29 @@ namespace CPC.POS.Model
 
         #endregion
 
+        #region SomeSerial
+
+        /// <summary>
+        /// Gets SomeSerial.
+        /// </summary>
+        public string SomeSerial
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_serial))
+                {
+                    string[] serials = _serial.Split(new string[] { "," }, StringSplitOptions.None);
+                    if (serials.Length > Define.NumberOfSerialDisplay)
+                    {
+                        return string.Join(",", serials.Where((s, i) => i < Define.NumberOfSerialDisplay)) + ", ...";
+                    }
+                }
+                return _serial;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Methods
@@ -901,6 +924,22 @@ namespace CPC.POS.Model
         #endregion
 
         #region Override Methods
+
+        #region PropertyChangedCompleted
+
+        protected override void PropertyChangedCompleted(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "Serial":
+
+                    OnPropertyChanged(() => SomeSerial);
+
+                    break;
+            }
+        }
+
+        #endregion
 
         #endregion
 

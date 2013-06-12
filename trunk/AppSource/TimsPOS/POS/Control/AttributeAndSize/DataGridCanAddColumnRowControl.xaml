@@ -839,7 +839,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock x:Name="txtblTotalColumn"
-                                       HorizontalAlignment="Center"
+                                       HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontWeight="Bold"
                                        Text="{Binding TotalItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />

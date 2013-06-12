@@ -34,27 +34,27 @@ namespace CPC.POS.ViewModel
             _ownerViewModel = this;
             InitialCommand();
             SaleOrderModel = saleOrderModel;
-            foreach (base_GuestRewardModel item in saleOrderModel.GuestModel.GuestRewardCollection)
+
+            decimal totalOfDiscount = saleOrderModel.SaleOrderDetailCollection.Sum(x => x.TotalDiscount);
+            foreach (base_GuestRewardModel item in saleOrderModel.GuestModel.GuestRewardCollection.Where(x => x.ActivedDate.Value <= saleOrderModel.OrderDate.Value && saleOrderModel.OrderDate.Value <= x.ExpireDate.Value))
             {
-                
                 base_GuestRewardModel guestReward = new base_GuestRewardModel(item.base_GuestReward);
 
                 if (guestReward.base_GuestReward.base_RewardManager != null)
                 {
-                    //Get Expire Date
-                    int expireDay = Convert.ToInt32(Common.RewardExpirationTypes.Single(x => Convert.ToInt32(x.ObjValue) == guestReward.base_GuestReward.base_RewardManager.RewardExpiration).Detail);
-                    DateTime expireDate = saleOrderModel.GuestModel.GuestRewardCollection.FirstOrDefault().EearnedDate.Value.AddDays(expireDay);
+                    ////Get Expire Date
+                    //int expireDay = Convert.ToInt32(Common.RewardExpirationTypes.Single(x => Convert.ToInt32(x.ObjValue) == guestReward.base_GuestReward.base_RewardManager.RewardExpiration).Detail);
+                    //DateTime expireDate = saleOrderModel.GuestModel.GuestRewardCollection.FirstOrDefault().EearnedDate.Value.AddDays(expireDay);
 
-                    if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Equals((int)RewardAmtType.Money))
+                    if (guestReward.base_GuestReward.base_RewardManager.RewardAmtType.Equals((int)RewardType.Money))
                     {
-                        guestReward.RewardName = string.Format("$ {0}; expires {1}", guestReward.base_GuestReward.base_RewardManager.RewardAmount, expireDate.Date.ToString(Define.DateFormat));
-
-
+                        guestReward.RewardName = string.Format("{0} off; expires {1}", string.Format(Define.ConverterCulture, Define.CurrencyFormat, guestReward.base_GuestReward.base_RewardManager.RewardAmount), guestReward.base_GuestReward.ExpireDate.Value.Date.ToString(Define.DateFormat));
+                        
                         if (guestReward.base_GuestReward.base_RewardManager.RewardAmount > saleOrderModel.Total)
                         {
                             decimal requiredAmount = guestReward.base_GuestReward.base_RewardManager.RewardAmount - saleOrderModel.Total;
                             guestReward.TotalAfterReward = 0;
-                            guestReward.RequireReward = string.Format("* Requires ${0} in addditional purchases to apply now", requiredAmount);
+                            guestReward.RequireReward = string.Format("* Requires {0} in addditional purchases to apply now", requiredAmount.ToString(Define.CurrencyFormat));
                             guestReward.IsAccepted = false;
                         }
                         else
@@ -62,22 +62,39 @@ namespace CPC.POS.ViewModel
                             guestReward.TotalAfterReward = saleOrderModel.Total - guestReward.base_GuestReward.base_RewardManager.RewardAmount;
                             guestReward.IsAccepted = true;
                         }
+                        guestReward.TotalRewardDisplay = guestReward.TotalAfterReward > 0 ? guestReward.TotalAfterReward.ToString() : string.Empty;
 
                     }
                     else
                     {
 
-                        guestReward.RewardName = string.Format("{0}% ; expires {1}", guestReward.base_GuestReward.base_RewardManager.RewardAmount, expireDate.Date.ToString(Define.DateFormat));
+                        guestReward.RewardName = string.Format("{0}% off; expires {1}", guestReward.base_GuestReward.base_RewardManager.RewardAmount, guestReward.base_GuestReward.ExpireDate.Value.Date.ToString(Define.DateFormat));
                         decimal subTotal = 0;
                         if (Define.CONFIGURATION.IsRewardOnTax)
                             subTotal = saleOrderModel.SubTotal - saleOrderModel.DiscountAmount + saleOrderModel.TaxAmount;
                         else
                             subTotal = saleOrderModel.SubTotal - saleOrderModel.DiscountAmount;
 
+
                         guestReward.TotalAfterReward = saleOrderModel.Total - (subTotal * guestReward.base_GuestReward.base_RewardManager.RewardAmount / 100);
+                        
+
+                        if (guestReward.TotalAfterReward < totalOfDiscount && !Define.CONFIGURATION.IsRewardLessThanDiscount)
+                        {
+                            guestReward.IsAccepted = false;
+                            guestReward.TotalRewardDisplay = string.Empty;
+                            guestReward.RequireReward = "* Greater discount already applied. Remove other discount to apply this reward now.";
+                        }
+                        else
+                        {
+                            guestReward.IsAccepted = true;
+                            guestReward.TotalRewardDisplay = guestReward.TotalAfterReward.ToString();
+                        }
+
+
                     }
                 }
-                
+
                 GuestRewardCollection.Add(guestReward);
 
             }
@@ -163,7 +180,7 @@ namespace CPC.POS.ViewModel
         {
             if (SelectedReward == null)
                 return false;
-            return SelectedReward.TotalAfterReward > 0 && GuestRewardCollection != null && GuestRewardCollection.Any(x=>x.IsChecked);
+            return SelectedReward.TotalAfterReward > 0 && GuestRewardCollection != null && GuestRewardCollection.Any(x => x.IsChecked);
         }
 
         /// <summary>
@@ -189,6 +206,8 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnRedeemCommandCanExecute()
         {
+            if (GuestRewardCollection != null && GuestRewardCollection.Any(x => !x.IsAccepted && x.base_GuestReward.base_RewardManager.RewardAmtType.Equals((int)RewardType.Pecent)))
+                return false;
             return true;
         }
         /// <summary>

@@ -449,7 +449,7 @@
                                 </StackPanel>
                             </Button>
                             <Grid x:Name="grdRemark1"
-                                  Width="50"
+                                  Width="40"
                                   Height="40">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="35" />
@@ -470,23 +470,27 @@
                                              IsReadOnly="True"
                                              Style="{DynamicResource TextBoxRemark}"
                                              Text="{Binding SelectedProduct.ResourceNoteCollection.Count, Mode=OneWay}"
-                                             TextWrapping="Wrap" />
+                                             TextWrapping="Wrap"
+                                             Visibility="{Binding SelectedProduct.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
                                 </Grid>
                                 <ComboBox x:Name="cmbStick"
                                           Grid.ColumnSpan="2"
                                           SelectedIndex="0"
                                           Style="{DynamicResource RemarkComboboxStyle}">
-                                    <Button Command="{Binding NewNoteCommand}"
-                                            Width="75"
-                                            Height="20"
-                                            Content="Add sticky"
-                                            Style="{DynamicResource ButtonComboboxItemRemark}" />
-                                    <Button Command="{Binding ShowOrHiddenNoteCommand}"
-                                            Width="75"
-                                            Height="20"
-                                            Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
-                                            Style="{DynamicResource ButtonComboboxItemRemark}"
-                                            Visibility="{Binding SelectedProduct.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
+                                    <ComboBoxItem>
+                                        <Button Command="{Binding NewNoteCommand}"
+                                                Width="75"
+                                                Height="20"
+                                                Content="Add sticky"
+                                                Style="{DynamicResource ButtonComboboxItemRemark}" />
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Visibility="{Binding SelectedProduct.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}">
+                                        <Button Command="{Binding ShowOrHiddenNoteCommand}"
+                                                Width="75"
+                                                Height="20"
+                                                Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
+                                                Style="{DynamicResource ButtonComboboxItemRemark}" />
+                                    </ComboBoxItem>
                                 </ComboBox>
                             </Grid>
                         </StackPanel>
@@ -697,17 +701,17 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Barcode:"
                                                            TextWrapping="NoWrap" />
-                                                <textBoxControl:TextBoxAlphaNumeric x:Name="txtBarcode"
-                                                                                    Grid.Row="1"
-                                                                                    Grid.Column="1"
-                                                                                    Width="140"
-                                                                                    Margin="0,2"
-                                                                                    HorizontalAlignment="Left"
-                                                                                    HorizontalContentAlignment="Right"
-                                                                                    MaxLength="20"
-                                                                                    Padding="2,0,2,0"
-                                                                                    Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                                    TextWrapping="NoWrap" />
+                                                <textBoxControl:TextBox x:Name="txtBarcode"
+                                                                        Grid.Row="1"
+                                                                        Grid.Column="1"
+                                                                        Width="140"
+                                                                        Margin="0,2"
+                                                                        HorizontalAlignment="Left"
+                                                                        HorizontalContentAlignment="Right"
+                                                                        MaxLength="50"
+                                                                        Padding="2,0,2,0"
+                                                                        Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        TextWrapping="NoWrap" />
                                                 <TextBlock x:Name="txtblPartNo"
                                                            Grid.Row="1"
                                                            Grid.Column="1"
@@ -921,7 +925,7 @@
                                                                                IsEnabled="False"
                                                                                Padding="2,0,2,0"
                                                                                TextWrapping="NoWrap"
-                                                                               Value="{Binding SelectedProduct.AvailableQuantity, Mode=OneWay}" />
+                                                                               Value="{Binding SelectedProduct.QuantityOnHand, Mode=OneWay}" />
                                                 <Button x:Name="btnAvailable"
                                                         Command="{Binding PopupAvailableCommand}"
                                                         Grid.Row="5"

@@ -52,26 +52,7 @@
                   Margin="0"
                   Background="#FFFFF2F2">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                </Grid.RowDefinitions>
-
-                <Button Grid.Column="1"
-                        Margin="5,0,0,0"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Left"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        FontStyle="Italic"
-                        Foreground="#FF0010FF"
+                <Button Margin="5,0,0,0"
                         Style="{DynamicResource ButtonRowDetailTemplate}">
 
                     <StackPanel Orientation="Horizontal">
@@ -90,7 +71,7 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="#FF0010FF"
-                                   Text="{Binding Serial}"
+                                   Text="{Binding SomeSerial}"
                                    TextDecorations="Underline"
                                    TextWrapping="NoWrap" />
                     </StackPanel>
@@ -105,10 +86,22 @@
                TargetType="{x:Type Button}">
             <Setter Property="Foreground"
                     Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
             <Setter Property="HorizontalContentAlignment"
-                    Value="Center" />
+                    Value="Left" />
             <Setter Property="VerticalContentAlignment"
                     Value="Center" />
+            <Setter Property="Height"
+                    Value="25" />
+            <Setter Property="Background"
+                    Value="{x:Null}" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Setter Property="BorderThickness"
+                    Value="0" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -119,16 +112,9 @@
                             <ContentPresenter HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              d:LayoutOverrides="Width, Height" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsKeyboardFocused"
-                                     Value="true" />
-                            <Trigger Property="IsMouseOver"
-                                     Value="True" />
-                            <Trigger Property="IsPressed"
-                                     Value="True" />
                             <Trigger Property="IsEnabled"
                                      Value="false">
                                 <Setter Property="Foreground"
@@ -213,7 +199,7 @@
         <!--PurchaseOrderContextMenu-->
         <ContextMenu x:Key="PurchaseOrderContextMenu"
                      Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-            <MenuItem Header="New Item"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_NewItem}"
                       Command="{Binding NewCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -222,7 +208,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Edit Item"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_EditItem}"
                       Command="{Binding EditCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -232,7 +218,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Delete Item (s)"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DeleteItems}"
                       Command="{Binding DeletesCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -242,7 +228,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Duplicate Item"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DuplicateItem}"
                       Command="{Binding DuplicateCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -256,7 +242,7 @@
 
         <!--PurchaseOrderDetailContextMenu-->
         <ContextMenu x:Key="PurchaseOrderDetailContextMenu">
-            <MenuItem Header="Edit Item"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_EditItem}"
                       Command="{Binding EditProductCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -265,7 +251,30 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Delete Item"
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_SerialTrackingDetail}"
+                      Command="{Binding OpenSelectTrackingNumberViewCommand}">
+                <MenuItem.Style>
+                    <Style BasedOn="{StaticResource {x:Type MenuItem}}"
+                           TargetType="{x:Type MenuItem}">
+                        <Setter Property="Icon">
+                            <Setter.Value>
+                                <Rectangle Width="16"
+                                           Height="16"
+                                           Fill="{DynamicResource EditItem}"
+                                           Stretch="Fill" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled"
+                                     Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DeleteItem}"
                       Command="{Binding DeletePurchaseOrderDetailCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -275,6 +284,101 @@
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
+
+        <!--DataGridColumn In Search-->
+        <DataTemplate x:Key="PODateHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_PODate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PONumberHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_PONumber2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="StatusHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Status2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="VendorHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Vendor2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QtyOrderedHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyOrdered}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QtyDueHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyDue}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QtyReceiveHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyReceive}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UnfilledHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Unfilled}" />
+        </DataTemplate>
+        <DataTemplate x:Key="TotalHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Total2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PaidHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Paid2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="BalanceHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Balance2}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DueDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_DueDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ShipDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ShipDate2}" />
+        </DataTemplate>
+
+        <!--DataGridColumn In Order TabItem-->
+        <DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Attribute}" />
+        </DataTemplate>
+        <DataTemplate x:Key="SizeHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Size}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UOMHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_UOM}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PriceHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Price}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QuantityHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Quantity}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DiscountHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Discount}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AmountHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Amount}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReceivedHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Received}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DueQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_DueQty}" />
+        </DataTemplate>
+
+        <!--DataGridColumn In Receive TabItem-->
+        <DataTemplate x:Key="ReceivedQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReceivedQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReceivedDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReceivedDate}" />
+        </DataTemplate>
+
+        <!--DataGridColumn In Return TabItem-->
+        <DataTemplate x:Key="ReturnDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReturnedQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnedQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReturnedHeaderTemplate">
+            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Returned}" />
+        </DataTemplate>
 
     </UserControl.Resources>
 
@@ -289,8 +393,7 @@
 
                 <!--Search-->
                 <Grid x:Name="grdContentSearch"
-                      Visibility="{Binding IsSearchMode, Converter={StaticResource CollapsedWhenFalseConverter}, Mode=OneWay}"
-                      d:IsHidden="True">
+                      Visibility="{Binding IsSearchMode, Converter={StaticResource CollapsedWhenFalseConverter}, Mode=OneWay}">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="113" />
@@ -301,7 +404,7 @@
                               Margin="10,10,10,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch"
-                                       Text="Search"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Search}"
                                        TextWrapping="NoWrap"
                                        Style="{DynamicResource GroupboxTextBlock}" />
                         </GroupBox.Header>
@@ -321,7 +424,7 @@
                                                               VerticalContentAlignment="Center"
                                                               Padding="24,0,5,0"
                                                               TextWrapping="NoWrap"
-                                                              Watermark="Keyword"
+                                                              Watermark="{DynamicResource PurchaseOrderView_WatermarkTextBox_Keyword}"
                                                               Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                 <xceedWpfToolkit:WatermarkTextBox.InputBindings>
@@ -342,7 +445,7 @@
                                     HorizontalAlignment="Left"
                                     Width="100"
                                     VerticalAlignment="Center"
-                                    Content="Advance Search"
+                                    Content="{DynamicResource PurchaseOrderView_Button_AdvanceSearch}"
                                     Margin="10,0,0,0"
                                     Style="{DynamicResource ButtonAdvanceSearch}"
                                     Command="{Binding SearchPOAdvanceCommand}" />
@@ -357,12 +460,12 @@
                                 <CheckBox x:Name="cbPONo"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="PO No."
+                                          Content="{DynamicResource PurchaseOrderView_CheckBox_PONo}"
                                           IsChecked="{Binding HasSearchPurchaseOrderNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox x:Name="cbVendor"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="Vendor"
+                                          Content="{DynamicResource PurchaseOrderView_CheckBox_Vendor}"
                                           Margin="10,0,0,0"
                                           IsChecked="{Binding HasSearchVendor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
@@ -390,38 +493,38 @@
 
                         <cpcDataGridToolkit:DataGridControl.Columns>
 
-                            <DataGridTextColumn Header="PO #"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource PONumberHeaderTemplate}"
                                                 Width="80"
                                                 Binding="{Binding PurchaseOrderNo}" />
 
-                            <DataGridTextColumn Header="PO Date"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource PODateHeaderTemplate}"
                                                 Width="70"
-                                                ElementStyle="{StaticResource NumberTextBlock}"  
+                                                ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
-                            <DataGridTextColumn Header="Status"
-                                                Binding="{Binding StatusName}" />
+                            <DataGridTextColumn HeaderTemplate="{StaticResource StatusHeaderTemplate}"
+                                                Binding="{Binding StatusItem.Text}" />
 
-                            <DataGridTextColumn Header="Vendor"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource VendorHeaderTemplate}"
                                                 Width="*"
                                                 Binding="{Binding VendorName}" />
 
-                            <DataGridTextColumn Header="Qty Ordered"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource QtyOrderedHeaderTemplate}"
                                                 Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyOrdered, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                            <DataGridTextColumn Header="Qty Due"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource QtyDueHeaderTemplate}"
                                                 Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyDue, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                            <DataGridTextColumn Header="Qty Receive"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource QtyReceiveHeaderTemplate}"
                                                 Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding QtyReceived, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                            <DataGridTemplateColumn Header="Unfilled %"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource UnfilledHeaderTemplate}"
                                                     Width="70"
                                                     SortMemberPath="UnFilled">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -436,27 +539,27 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="Total"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource TotalHeaderTemplate}"
                                                 Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Total, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                            <DataGridTextColumn Header="Paid"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource PaidHeaderTemplate}"
                                                 Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Paid, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                            <DataGridTextColumn Header="Balance"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource BalanceHeaderTemplate}"
                                                 Width="90"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Balance, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                            <DataGridTextColumn Header="Due Date"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource DueDateHeaderTemplate}"
                                                 Width="70"
-                                                ElementStyle="{StaticResource NumberTextBlock}" 
+                                                ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding PaymentDueDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
-                            <DataGridTextColumn Header="Ship Date"
+                            <DataGridTextColumn HeaderTemplate="{StaticResource ShipDateHeaderTemplate}"
                                                 Width="70"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding ShipDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
@@ -470,7 +573,8 @@
                 <!--Detail-->
                 <Grid x:Name="grdContentPO1"
                       Visibility="{Binding IsSearchMode, Converter={StaticResource VisibleWhenFalseConverter}, Mode=OneWay}"
-                      Grid.Column="1">
+                      Grid.Column="1"
+                      d:IsHidden="True">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="22" />
@@ -484,7 +588,7 @@
                             Style="{DynamicResource ButtonBarSearch}"
                             Command="{Binding OpenSearchComponentCommand}">
                         <TextBlock VerticalAlignment="Center"
-                                   Text="Search"
+                                   Text="{DynamicResource PurchaseOrderView_TextBlock_Search}"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Center"
                                    x:Name="txtblShowSearch1"
@@ -575,6 +679,7 @@
                                     Width="40"
                                     VerticalAlignment="Center"
                                     Height="40"
+                                    Visibility="{Binding SelectedPurchaseOrder.CanLock, Mode=OneWay, Converter={StaticResource CollapsedWhenFalseConverter}}"
                                     Command="{Binding LockAndUnLockCommand}">
                                 <StackPanel HorizontalAlignment="Center"
                                             x:Name="stkpBtnPOLock"
@@ -603,23 +708,6 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button x:Name="btnReceive"
-                                    Width="40"
-                                    VerticalAlignment="Center"
-                                    Height="40"
-                                    Style="{DynamicResource ButtonSystem}"
-                                    Command="{Binding ShowReceiveItemCommand}">
-                                <StackPanel HorizontalAlignment="Center"
-                                            x:Name="stkpBtnReceive"
-                                            VerticalAlignment="Center"
-                                            Orientation="Horizontal">
-                                    <Rectangle x:Name="imgReceive"
-                                               Fill="{DynamicResource Receive}"
-                                               Height="30"
-                                               Width="30" />
-                                </StackPanel>
-                            </Button>
-
                         </StackPanel>
 
                         <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
@@ -631,7 +719,7 @@
                                    Margin="2,0" />
 
                         <TextBlock x:Name="txtblBindingPO"
-                                   Text="Purchase Order"
+                                   Text="{DynamicResource PurchaseOrderView_TextBlock_PurchaseOrder}"
                                    TextWrapping="NoWrap"
                                    Margin="0,0,20,7"
                                    HorizontalAlignment="Right"
@@ -662,7 +750,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock x:Name="txtblPONo"
-                                       Text="PO #:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_PONumber}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
@@ -679,7 +767,7 @@
                                        Text="{Binding SelectedPurchaseOrder.PurchaseOrderNo, Mode=OneWay}" />
 
                             <TextBlock x:Name="txtblShipAddress"
-                                       Text="Ship Address:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_ShipAddress}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
@@ -698,7 +786,7 @@
                                       SelectedIndex="{Binding SelectedPurchaseOrder.StoreCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblOrderDate"
-                                       Text="Order Date:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_OrderDate}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        Margin="25,0,0,0"
@@ -715,7 +803,7 @@
                                         SelectedDate="{Binding SelectedPurchaseOrder.PurchasedDate, Converter={StaticResource NullToDefaultValueConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblVendor"
-                                       Text="Vendor:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Vendor}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        Margin="10,0,0,0"
@@ -750,7 +838,7 @@
 
 
                             <TextBlock x:Name="txtblShipDate"
-                                       Text="Ship Date:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_ShipDate}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        Margin="25,0,0,0"
@@ -769,7 +857,7 @@
                                         SelectedDate="{Binding SelectedPurchaseOrder.ShipDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblStatus"
-                                       Text="Status:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Status}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
@@ -790,7 +878,7 @@
                                       SelectedValue="{Binding SelectedPurchaseOrder.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblOrderCancelDate"
-                                       Text="Cancel Date:"
+                                       Text="{DynamicResource PurchaseOrderView_TextBlock_CancelDate}"
                                        TextWrapping="NoWrap"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"
@@ -821,7 +909,7 @@
 
                                 <!--Order Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemOrder"
-                                                                Header="Order">
+                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Order}">
                                     <AdornerDecorator>
 
                                         <Grid x:Name="grdContentOrder">
@@ -839,7 +927,7 @@
                                                        VerticalAlignment="Center"
                                                        Margin="10,0,0,0"
                                                        TextWrapping="NoWrap"
-                                                       Text="Select Item:"
+                                                       Text="{DynamicResource PurchaseOrderView_TextBlock_SelectItem}"
                                                        Style="{DynamicResource TextBlockNormal}" />
 
                                             <!--Search Products-->
@@ -884,7 +972,7 @@
                                                     Width="90"
                                                     Command="{Binding SearchProductAdvanceCommand}">
                                                 <TextBlock VerticalAlignment="Center"
-                                                           Text="Advance Search"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_AdvanceSearch}"
                                                            TextWrapping="NoWrap"
                                                            x:Name="txtblAdvanceSearch"
                                                            Style="{DynamicResource ButtonTextBlock}" />
@@ -911,27 +999,27 @@
 
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                                    <DataGridTextColumn Header="Item Code"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemCode}" />
 
-                                                    <DataGridTextColumn Header="Item Name"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName}" />
 
-                                                    <DataGridTextColumn Header="Attribute"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute}" />
 
-                                                    <DataGridTextColumn Header="Size"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                         Width="50"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize}" />
 
-                                                    <DataGridTemplateColumn Header="UOM"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
                                                                             Width="100"
                                                                             SortMemberPath="UnitName">
 
@@ -969,7 +1057,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Price"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
                                                                             Width="70"
                                                                             SortMemberPath="Price">
 
@@ -984,6 +1072,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxMoney x:Name="txtPrice"
+                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                                                                  Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock x:Name="txtbPrice"
                                                                                HorizontalAlignment="Right"
@@ -1006,7 +1095,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Quantity"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource QuantityHeaderTemplate}"
                                                                             Width="50"
                                                                             SortMemberPath="Quantity">
 
@@ -1021,6 +1110,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxNumber x:Name="txtQuantity"
+                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
                                                                                                   Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                                                         <i:Interaction.Triggers>
                                                                             <i:EventTrigger EventName="LostFocus">
@@ -1049,7 +1139,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Discount"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
                                                                             Width="70"
                                                                             SortMemberPath="Discount">
 
@@ -1064,6 +1154,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxMoney x:Name="txtDiscount"
+                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                                                                  Value="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock x:Name="txtbDiscount"
                                                                                HorizontalAlignment="Right"
@@ -1086,17 +1177,17 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTextColumn Header="Amount"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
                                                                         Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTextColumn Header="Received"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ReceivedHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding ReceivedQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                                                    <DataGridTextColumn Header="Due Qty"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource DueQtyHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding DueQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
@@ -1128,7 +1219,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblTerm"
-                                                           Text="Term:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Term}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1172,7 +1263,7 @@
                                                 </Button>
 
                                                 <TextBlock x:Name="txtblPaymentDueDate"
-                                                           Text="Payment Due Date:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_PaymentDueDate}"
                                                            TextWrapping="NoWrap"
                                                            Grid.Row="1"
                                                            HorizontalAlignment="Left"
@@ -1191,7 +1282,7 @@
                                                             Height="21" />
 
                                                 <TextBlock x:Name="txtblRemark1"
-                                                           Text="Remark:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1224,7 +1315,7 @@
                                                 <!--Freight-->
 
                                                 <TextBlock x:Name="txtblOrderTotal"
-                                                           Text="Total:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Total}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1260,7 +1351,7 @@
 
                                 <!--Receive Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemReceive"
-                                                                Header="Receive"
+                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Receive}"
                                                                 Visibility="{Binding SelectedPurchaseOrder.HasReceive, Mode=OneWay, Converter={StaticResource CollapsedWhenFalseConverter}}">
                                     <AdornerDecorator>
 
@@ -1291,7 +1382,7 @@
                                                                Width="20" />
                                                     <TextBlock Margin="5,0,0,0"
                                                                VerticalAlignment="Center"
-                                                               Text="Receive All"
+                                                               Text="{DynamicResource PurchaseOrderView_TextBlock_ReceiveAll}"
                                                                TextWrapping="NoWrap"
                                                                x:Name="txtblReceiveAll"
                                                                Style="{DynamicResource ButtonTextBlock}" />
@@ -1319,7 +1410,7 @@
 
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                                    <DataGridTemplateColumn Header="Received Date"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedDateHeaderTemplate}"
                                                                             Width="100"
                                                                             SortMemberPath="ReceiveDate">
 
@@ -1356,7 +1447,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Item Code"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                                             Width="110"
                                                                             SortMemberPath="ItemCode">
 
@@ -1376,6 +1467,7 @@
                                                                                                            IsTextCompletionEnabled="True"
                                                                                                            FieldShow="ItemName"
                                                                                                            FilterMode="Contains"
+                                                                                                           Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
                                                                                                            ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReceiveCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                                                                                            FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                                                                                            SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -1415,22 +1507,22 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTextColumn Header="Item Name"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName}" />
 
-                                                    <DataGridTextColumn Header="Attribute"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute}" />
 
-                                                    <DataGridTextColumn Header="Size"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize}" />
 
-                                                    <DataGridTemplateColumn Header="Received Qty"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedQtyHeaderTemplate}"
                                                                             Width="70"
                                                                             SortMemberPath="RecQty">
 
@@ -1445,6 +1537,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxNumber x:Name="txtRecQty"
+                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
                                                                                                   Value="{Binding RecQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock x:Name="txtbRecQty"
                                                                                HorizontalAlignment="Right"
@@ -1467,7 +1560,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Received"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedHeaderTemplate}"
                                                                             Width="50"
                                                                             SortMemberPath="IsReceived">
 
@@ -1526,7 +1619,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblRemark2"
-                                                           Text="Remark:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1549,7 +1642,7 @@
                                                                         Text="{Binding SelectedPurchaseOrder.RecRemark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                                 <TextBlock x:Name="txtblTotalOrder"
-                                                           Text="Total Ordered:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_TotalOrdered}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1569,7 +1662,7 @@
                                                            Text="{Binding SelectedPurchaseOrder.QtyOrdered, Mode=OneWay}" />
 
                                                 <TextBlock x:Name="txtblTotalReceive"
-                                                           Text="Total Received:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_TotalReceived}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1600,7 +1693,7 @@
 
                                 <!--Payment Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemPayment"
-                                                                Header="Payment"
+                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Payment}"
                                                                 Visibility="{Binding Visibility, ElementName=tabitemReceive, Mode=OneWay}">
                                     <AdornerDecorator>
 
@@ -1628,47 +1721,47 @@
 
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                                    <DataGridTextColumn Header="Item Code"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                                         Width="110"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Item Name"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Attribute"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Size"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="UOM"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Price"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTextColumn Header="Received Qty"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ReceivedQtyHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
-                                                    <DataGridTextColumn Header="Discount"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTextColumn Header="Amount"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
@@ -1697,7 +1790,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblDatePaid"
-                                                           Text="Date Paid:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_DatePaid}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Bottom"
@@ -1714,7 +1807,7 @@
                                                             Height="21" />
 
                                                 <TextBlock x:Name="txtblPaymentMethod"
-                                                           Text="Payment Method:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_PaymentMethod}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
@@ -1737,7 +1830,7 @@
                                                           VerticalAlignment="Top" />
 
                                                 <TextBlock x:Name="txtblPaymentRemark"
-                                                           Text="Remark:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="20,0,0,5"
@@ -1763,12 +1856,12 @@
                                                                         Text="{Binding SelectedPurchaseOrder.ResourcePayment.Remark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                                 <TextBlock x:Name="txtblPaymentTotal"
-                                                           Text="Total:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Total}"
                                                            TextWrapping="NoWrap"
-                                                           VerticalAlignment="Center"
+                                                           VerticalAlignment="Bottom"
                                                            HorizontalAlignment="Left"
                                                            Grid.Column="3"
-                                                           Margin="8,0,0,0"
+                                                           Margin="7.999,0,0,10.861"
                                                            Style="{DynamicResource TextBlockNormal}" />
 
                                                 <!--TotalAmount-->
@@ -1786,7 +1879,7 @@
                                                          Text="{Binding SelectedPurchaseOrder.ResourcePayment.TotalAmount, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblPaymentPaid"
-                                                           Text="Paid:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Paid}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1812,7 +1905,7 @@
                                                                              Value="{Binding SelectedPurchaseOrder.ResourcePayment.TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblPaymentBalance"
-                                                           Text="Balance:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Balance}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1845,7 +1938,7 @@
 
                                 <!--Return Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemReturn"
-                                                                Header="Return"
+                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Return}"
                                                                 Visibility="{Binding Visibility, ElementName=tabitemReceive, Mode=OneWay}">
                                     <AdornerDecorator>
 
@@ -1876,7 +1969,7 @@
                                                                Width="20" />
                                                     <TextBlock Margin="5,0,0,0"
                                                                VerticalAlignment="Center"
-                                                               Text="Return All"
+                                                               Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnAll}"
                                                                TextWrapping="NoWrap"
                                                                x:Name="txtblReturnAll"
                                                                Style="{DynamicResource ButtonTextBlock}" />
@@ -1904,7 +1997,7 @@
 
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                                    <DataGridTemplateColumn Header="Return Date"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnDateHeaderTemplate}"
                                                                             Width="100"
                                                                             SortMemberPath="ReturnedDate">
 
@@ -1941,7 +2034,7 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTemplateColumn Header="Item Code"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                                             Width="110"
                                                                             SortMemberPath="ItemCode">
 
@@ -1961,6 +2054,7 @@
                                                                                                            IsTextCompletionEnabled="True"
                                                                                                            FieldShow="ItemName"
                                                                                                            FilterMode="Contains"
+                                                                                                           Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
                                                                                                            ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReturnCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                                                                                            FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
                                                                                                            SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -2000,32 +2094,32 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTextColumn Header="Item Name"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Attribute"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Size"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="UOM"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
                                                                         Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
-                                                    <DataGridTextColumn Header="Price"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTemplateColumn Header="Returned Qty"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnedQtyHeaderTemplate}"
                                                                             Width="70"
                                                                             SortMemberPath="ReturnQty">
 
@@ -2040,6 +2134,7 @@
                                                             <DataTemplate>
                                                                 <Grid>
                                                                     <textBoxToolkit:TextBoxNumber x:Name="txtReturnQty"
+                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
                                                                                                   Value="{Binding ReturnQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock x:Name="txtbReturnQty"
                                                                                HorizontalAlignment="Right"
@@ -2062,18 +2157,18 @@
 
                                                     </DataGridTemplateColumn>
 
-                                                    <DataGridTextColumn Header="Discount"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
                                                                         Width="70"
                                                                         IsReadOnly="True"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTextColumn Header="Amount"
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
                                                                         Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
-                                                    <DataGridTemplateColumn Header="Returned"
+                                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnedHeaderTemplate}"
                                                                             Width="50"
                                                                             SortMemberPath="IsReturned">
 
@@ -2136,7 +2231,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblReturnSubTotal1"
-                                                           Text="Sub-Total:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_SubTotal}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2157,7 +2252,7 @@
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.SubTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblReturnReturnFee"
-                                                           Text="Return Fee:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnFee}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2180,7 +2275,7 @@
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.ReturnFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblReturnRefund"
-                                                           Text="Refund:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Refund}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2203,7 +2298,7 @@
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.TotalRefund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblBalance"
-                                                           Text="Balance:"
+                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Balance}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"

@@ -192,6 +192,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<int> _difference;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Difference</para>
+        /// </summary>
+        public Nullable<int> Difference
+        {
+            get { return this._difference; }
+            set
+            {
+                if (this._difference != value)
+                {
+                    this.IsDirty = true;
+                    this._difference = value;
+                    OnPropertyChanged(() => Difference);
+                    PropertyChangedCompleted(() => Difference);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -220,6 +240,7 @@ namespace CPC.POS.Model
             this.base_CountStockDetail.StoreId = this.StoreId;
             this.base_CountStockDetail.Quantity = this.Quantity;
             this.base_CountStockDetail.CountedQuantity = this.CountedQuantity;
+            this.base_CountStockDetail.Difference = this.Difference;
         }
 
         /// <summary>
@@ -235,6 +256,7 @@ namespace CPC.POS.Model
             this._storeId = this.base_CountStockDetail.StoreId;
             this._quantity = this.base_CountStockDetail.Quantity;
             this._countedQuantity = this.base_CountStockDetail.CountedQuantity;
+            this._difference = this.base_CountStockDetail.Difference;
         }
 
         /// <summary>
@@ -250,6 +272,7 @@ namespace CPC.POS.Model
             this.StoreId = this.base_CountStockDetail.StoreId;
             this.Quantity = this.base_CountStockDetail.Quantity;
             this.CountedQuantity = this.base_CountStockDetail.CountedQuantity;
+            this.Difference = this.base_CountStockDetail.Difference;
         }
 
         #endregion

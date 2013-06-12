@@ -641,7 +641,7 @@ namespace CPC.POS.Model
                 Change = 0;
 
         }
-        public void CalcBalance(bool isDeposit)
+        public void CalcBalance(bool isDeposit=false)
         {
             if (isDeposit)
                 Balance = TotalAmount - TotalPaid;
@@ -665,12 +665,6 @@ namespace CPC.POS.Model
                 switch (propertyName)
                 {
                     case "TotalAmount":
-
-                        _balance = _totalAmount - _totalPaid;
-                        OnPropertyChanged(() => Balance);
-
-                        break;
-
                     case "TotalPaid":
 
                         _balance = _totalAmount - _totalPaid;

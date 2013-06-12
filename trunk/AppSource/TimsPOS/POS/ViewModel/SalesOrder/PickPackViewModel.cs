@@ -229,7 +229,7 @@ namespace CPC.POS.ViewModel
 
                         saleOrderShipDetailModel.ItemAtribute = saleOrderDetailModel.ItemAtribute;
                         saleOrderShipDetailModel.ItemSize = saleOrderDetailModel.ItemSize;
-                        saleOrderShipDetailModel.PackedQty = saleOrderDetailModel.QtyOfPick;
+                        saleOrderShipDetailModel.PackedQty = (int)saleOrderDetailModel.QtyOfPick;
                         SaleOrderShipModel.SaleOrderShipDetailCollection.Add(saleOrderShipDetailModel);
                     }
                     SaleOrderShipModel.Remark = SaleOrderShipModel.SaleOrderShipDetailCollection.Count().ToString();

@@ -1,18 +1,19 @@
 ﻿<Application x:Class="CPC.POS.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  >
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/CPCToolkitExt;Component/Theme/Dictionary.xaml" />
                 <ResourceDictionary Source="Dictionary/ResourceLibrary.xaml" />
-                <!--Other Resource-->
                 <ResourceDictionary x:Name="language"
-                                    Source="Dictionary/en-US.xaml" />
+                                    Source="Language/en-US.xaml" />
                 <ResourceDictionary Source="Control\ImageViewer\Themes\Generic.xaml" />
                 <ResourceDictionary Source="Control\ImageList\Themes\Generic.xaml" />
+                <!--<ResourceDictionary Source="Dictionary/zh-CN.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
-        	<SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
+            <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}"
+                             Color="#FF000000" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

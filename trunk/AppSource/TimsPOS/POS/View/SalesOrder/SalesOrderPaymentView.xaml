@@ -2,66 +2,64 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
              xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
              xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-			  xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              x:Name="UserControl"
-             Width="700"
-             Height="400"
+             Width="668"
+             Height="399"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
         
 
-        
-    	<converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
+        <Style x:Key="DataGridRowStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus" Value="{Binding EnableRow, Mode=OneWay}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    	<Style x:Key="DataGridRowStyle"
-    		BasedOn="{StaticResource {x:Type DataGridRow}}"
-    		TargetType="{x:Type DataGridRow}">
-    		<Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus"
-    			Value="{Binding EnableRow,Mode=OneWay}" />
-    		<Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource"
-    			Value="{Binding ., RelativeSource={RelativeSource Self}}"/>
-    		<Setter Property="Template">
-    			<Setter.Value>
-    				<ControlTemplate TargetType="{x:Type DataGridRow}">
-    					<Border x:Name="DGR_Border"
-    						Background="{TemplateBinding Background}"
-    						BorderBrush="{TemplateBinding BorderBrush}"
-    						BorderThickness="{TemplateBinding BorderThickness}"
-    						SnapsToDevicePixels="True">
-    						<SelectiveScrollingGrid>
-    							<SelectiveScrollingGrid.ColumnDefinitions>
-    								<ColumnDefinition Width="Auto" />
-    								<ColumnDefinition Width="*" />
-    							</SelectiveScrollingGrid.ColumnDefinitions>
-    							<SelectiveScrollingGrid.RowDefinitions>
-    								<RowDefinition Height="*" />
-    								<RowDefinition Height="Auto" />
-    							</SelectiveScrollingGrid.RowDefinitions>
-    							<DataGridCellsPresenter Grid.Column="1"
-    								ItemsPanel="{TemplateBinding ItemsPanel}"
-    								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-    							<DataGridDetailsPresenter Grid.Row="1"
-    								Grid.Column="1"
-    								Visibility="{TemplateBinding DetailsVisibility}" />
-    							<DataGridRowHeader Grid.RowSpan="2"
-    								SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
-    								Style="{DynamicResource DataGridRowHeaderStyle}" />
-    						</SelectiveScrollingGrid>
-    					</Border>
-    				</ControlTemplate>
-    			</Setter.Value>
-    		</Setter>
-    	</Style>
-        
 
-        
+
     </UserControl.Resources>
     <Grid x:Name="grdSalesOrderPayment" d:LayoutOverrides="Height">
         <Grid.RowDefinitions>
@@ -79,136 +77,194 @@
                     <ColumnDefinition Width="240" />
                 </Grid.ColumnDefinitions>
                 <Grid x:Name="grdDatagridTotalPayment">
-                	<Grid.RowDefinitions>
-                		<RowDefinition Height="80"/>
-								<RowDefinition/>
-                	</Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="52"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
                     <cpcDataGrid:DataGridControl x:Name="dtgrdPayment"
+                                                 Grid.Row="1"
+                                                 Margin="0,0.1,0,0"
                                                  AutoGenerateColumns="False"
                                                  CanUserAddRows="False"
                                                  CanUserDeleteRows="False"
+                                                 cpcBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
+                                                 cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding OpenPaymentCardViewCommand}"
                                                  IsSynchronizedWithCurrentItem="True"
-												 cpcBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
-                                             cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding OpenPaymentCardViewCommand}"
-                                                 SelectedItem="{Binding SelectedPaymentDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  ItemsSource="{Binding PaymentModel.PaymentDetailCollection}"
-                                                 RowStyle="{DynamicResource DataGridRowStyle}"
                                                  RowHeight="30"
-                                                 
+                                                 RowStyle="{DynamicResource DataGridRowStyle}"
+                                                 SelectedItem="{Binding SelectedPaymentDetail,
+                                                                        Mode=TwoWay,
+                                                                        UpdateSourceTrigger=PropertyChanged}"
                                                  Style="{DynamicResource DatagridWithoutRowHeader}"
-                                                 VisibilityNavigationBar="Collapsed" Margin="0,0.1,0,0" Grid.Row="1">
+                                                 VisibilityNavigationBar="Collapsed">
                         <cpcDataGrid:DataGridControl.Columns>
-                        	<DataGridTemplateColumn Width="120"
-                        		Header="Methods"
-                        		IsReadOnly="true">
-                        		<DataGridTemplateColumn.CellTemplate>
-                        			<DataTemplate>
-                        				<Button x:Name="btnCash"
-                        					Grid.Column="1"
-                        					Margin="5"
-                        					FontSize="12"
-                        					Style="{DynamicResource ButtonDatagridPayment}">
-                        					<StackPanel x:Name="stkpCash" Orientation="Horizontal">
-                        						<Rectangle x:Name="imgCash"
-                        							Width="20"
-                        							Height="20">
-                        							<Rectangle.Fill>
-                        								<Binding ConverterParameter="PaymentMethod"
-                        									Mode="OneWay"
-                        									Path=".">
-                        									<!--  Payment methods  -->
-                        									<Binding.Converter>
-                        										<converter:PaymentButtonIconConverter />
-                        									</Binding.Converter>
-                        								</Binding>
-                        							</Rectangle.Fill>
-                        						</Rectangle>
-                        						<TextBlock x:Name="txtblCash"
-                        							Margin="5,0,0,0"
-                        							HorizontalAlignment="Left"
-                        							VerticalAlignment="Center"
-                        							Style="{DynamicResource ButtonDatagridTextBlockPayment}"
-                        							Text="{Binding PaymentMethod}"
-                        							TextWrapping="NoWrap" />
-                        					</StackPanel>
-                        				</Button>
-                        			</DataTemplate>
-                        		</DataGridTemplateColumn.CellTemplate>
-                        	</DataGridTemplateColumn>
-                        	<DataGridTemplateColumn Width="*"
-                        		MinWidth="100"
-                        		Header="Paid">
-                        		<DataGridTemplateColumn.CellTemplate>
-                        			<DataTemplate>
-                        				<TextBlock Text="{Binding Paid,StringFormat={x:Static local:Define.CurrencyFormat}}"
-                        					HorizontalAlignment="Right" />
-                        			</DataTemplate>
-                        		</DataGridTemplateColumn.CellTemplate>
-                        		<DataGridTemplateColumn.CellEditingTemplate>
-                        			<DataTemplate>
-                        				<cpcTextBox:TextBoxMoney x:Name="txtPaid"
-                        						MinWidth="50"
-                        						HorizontalAlignment="Right"
-												Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
-                        						Value="{Binding Paid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        				
-                        			</DataTemplate>
-                        		</DataGridTemplateColumn.CellEditingTemplate>
-                        	</DataGridTemplateColumn>
-                        	<DataGridTemplateColumn Width="200"
-                        		Header="Ref #">
-                        		<DataGridTemplateColumn.CellTemplate>
-                        			<DataTemplate>
-                        				<TextBlock Text="{Binding Reference, Mode=OneWay}" />
-                        			</DataTemplate>
-                        		</DataGridTemplateColumn.CellTemplate>
-                        		<DataGridTemplateColumn.CellEditingTemplate>
-                        			<DataTemplate>
-                        				
-                        					
-                        				<cpcTextBox:TextBox  x:Name="txtRef" Style="{DynamicResource TextBoxInsideDataGridStyle}" Text="{Binding Reference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-										
-                        			</DataTemplate>
-                        		</DataGridTemplateColumn.CellEditingTemplate>
-                        	</DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*"
+                                                    Header="Methods"
+                                                    IsReadOnly="true">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button x:Name="btnCash"
+                                                Grid.Column="1"
+                                                Margin="5"
+                                                FontSize="12"
+                                                Style="{DynamicResource ButtonDatagridPayment}">
+                                            <StackPanel x:Name="stkpCash" Orientation="Horizontal">
+                                                <Rectangle x:Name="imgCash"
+                                                           Width="28"
+                                                           Height="28">
+                                                    <Rectangle.Fill>
+                                                        <Binding ConverterParameter="PaymentMethod"
+                                                                 Mode="OneWay"
+                                                                 Path=".">
+                                                            <!--  Payment methods  -->
+                                                            <Binding.Converter>
+                                                                <converter:PaymentButtonIconConverter />
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <TextBlock x:Name="txtblCash"
+                                                           Margin="5,0,0,0"
+                                                           HorizontalAlignment="Left"
+                                                           VerticalAlignment="Center"
+                                                           Style="{DynamicResource ButtonDatagridTextBlockPayment}"
+                                                           Text="{Binding PaymentMethod}"
+                                                           TextWrapping="NoWrap" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*"
+                                                    MinWidth="100"
+                                                    Header="Paid"
+                                                    CellStyle="{DynamicResource DataGridCellDisableStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   
+                                                   Text="{Binding Paid, StringFormat={x:Static local:Define.CurrencyFormat}}">
+                                             <TextBlock.Visibility>
+                                                <Binding Mode="OneWay"
+                                                         Path="IsPaymentCardMethod"
+                                                         UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.Converter>
+                                                        <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <cpcTextBox:TextBoxMoney x:Name="txtPaid" 
+                                                                 MinWidth="50"
+                                                                 cpcBehavior:DataGridCellFocusHelper.Command="{Binding DataContext.FillMoneyCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
+                                                                 HorizontalAlignment="Right"
+                                                                 
+                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                 Value="{Binding Paid,
+                                                                                 Mode=TwoWay,
+                                                                                 UpdateSourceTrigger=PropertyChanged}">
+                                           
+                                        </cpcTextBox:TextBoxMoney>
+                                       
+
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="100" Header="Ref #">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Reference, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+
+
+                                        <cpcTextBox:TextBox x:Name="txtRef"
+                                                            Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                            Text="{Binding Reference,
+                                                                           Mode=TwoWay,
+                                                                           UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
                         </cpcDataGrid:DataGridControl.Columns>
                     </cpcDataGrid:DataGridControl>
                     <Grid x:Name="grdTotal1" VerticalAlignment="Top">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="95"/>
-									<ColumnDefinition/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="25"/>
-									<RowDefinition Height="25"/>
-									<RowDefinition Height="25"/>
-								</Grid.RowDefinitions>
-								<TextBlock x:Name="txtblTotalDeposit"
-									Text="Total Deposit:"
-									TextWrapping="NoWrap"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
-								<TextBlock x:Name="txtblBindingTotalDeposit"
-									Text="{Binding TotalDeposit,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
-									TextWrapping="NoWrap"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
-								<TextBlock x:Name="txtblTotalDiscount"
-									Text="Total Discount:"
-									TextWrapping="NoWrap"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
-								<TextBlock x:Name="txtblBindingTotalDiscount"
-									Text="{Binding TotalDiscount,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
-									TextWrapping="NoWrap"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
-								<TextBlock x:Name="txtblLastPaid"
-									Text="Last Paid:"
-									TextWrapping="NoWrap"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" FontWeight="Bold" />
-								<TextBlock x:Name="txtblBindingLastPaid"
-									TextWrapping="NoWrap"
-                                           Text="{Binding LastPayment,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}"
-									VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="2" Margin="0" Style="{DynamicResource TextBlockNormal}" Grid.Column="1" FontWeight="Bold" />
-							</Grid>
-               
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="95" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="0" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblTotalDeposit"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Total Deposit:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingTotalDeposit"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding TotalDeposit,
+                                                  Mode=OneWay,
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblTotalDiscount"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Total Discount:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingTotalDiscount"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding TotalDiscount,
+                                                  Mode=OneWay,
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblLastPaid"
+                                   Margin="120,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Last Paid:"
+                                   TextWrapping="NoWrap" Grid.Column="1" />
+                        <TextBlock x:Name="txtblBindingLastPaid"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Margin="180,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding LastPayment,
+                                                  Mode=OneWay,
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                    </Grid>
+
                 </Grid>
                 <Rectangle x:Name="grdSliptter"
                            Grid.Column="1"
@@ -237,7 +293,9 @@
                                  Foreground="#FF00FF10"
                                  IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
-                                 Text="{Binding PaymentModel.TotalAmount,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                 Text="{Binding PaymentModel.TotalAmount,
+                                                Mode=OneWay,
+                                                StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblTotal"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Left"
@@ -256,9 +314,11 @@
                                  Margin="0"
                                  BorderThickness="5"
                                  Foreground="#FF00FF10"
-                                 Style="{DynamicResource TextBoxPayment}"
                                  IsReadOnly="True"
-                                 Text="{Binding PaymentModel.TotalPaid,StringFormat={x:Static local:Define.CurrencyFormat},Mode=OneWay}" />
+                                 Style="{DynamicResource TextBoxPayment}"
+                                 Text="{Binding PaymentModel.TotalPaid,
+                                                StringFormat={x:Static local:Define.CurrencyFormat},
+                                                Mode=OneWay}" />
                         <TextBlock x:Name="txtblPaid"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Left"
@@ -283,10 +343,12 @@
                                  Margin="0"
                                  Background="Black"
                                  BorderBrush="White"
-                                 IsReadOnly="True"
                                  BorderThickness="5"
+                                 IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
-                                 Text="{Binding PaymentModel.Change,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                 Text="{Binding PaymentModel.Change,
+                                                Mode=OneWay,
+                                                StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblChange"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Left"
@@ -312,10 +374,12 @@
                                  Background="Black"
                                  BorderBrush="White"
                                  BorderThickness="5"
-								 IsReadOnly="True"
                                  Foreground="Red"
+                                 IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
-                                 Text="{Binding PaymentModel.Balance,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                 Text="{Binding PaymentModel.Balance,
+                                                Mode=OneWay,
+                                                StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblBalance"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Left"

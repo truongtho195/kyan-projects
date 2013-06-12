@@ -115,7 +115,40 @@ namespace CPC.POS.ViewModel
             }
         }
 
-        public bool IsEditFromPO { get; set; }
+        /// <summary>
+        /// Gets or sets the IsEditFromPO
+        /// </summary>
+        public bool IsEditFromPO { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the IsEditUOM
+        /// </summary>
+        public bool IsEditUOM { get; private set; }
+
+        private bool _isDiscountManual;
+        /// <summary>
+        /// Gets or sets the IsDiscountManual.
+        /// </summary>
+        public bool IsDiscountManual
+        {
+            get { return _isDiscountManual; }
+            set
+            {
+                if (_isDiscountManual != value)
+                {
+                    _isDiscountManual = value;
+                    OnPropertyChanged(() => IsDiscountManual);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the IsEditPromotion.
+        /// </summary>
+        public bool IsEditPromotion
+        {
+            get { return SelectedProductUOM.UOMId.Equals(SelectedProduct.BaseUOMId); }
+        }
 
         #endregion
 
@@ -125,9 +158,11 @@ namespace CPC.POS.ViewModel
         /// Default constructor
         /// </summary>
         /// <param name="productModel"></param>
-        public PopupEditProductViewModel(base_ProductModel productModel)
+        public PopupEditProductViewModel(base_ProductModel productModel, bool isEditUOM)
         {
             InitialCommand();
+
+            IsEditUOM = isEditUOM;
 
             // Update selected product
             SelectedProduct = productModel;
@@ -139,24 +174,21 @@ namespace CPC.POS.ViewModel
             SelectedProduct.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
         }
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public PopupEditProductViewModel(base_ProductModel productModel, PriceTypes priceSchemaId)
-            : this(productModel)
+        public PopupEditProductViewModel(base_ProductModel productModel, PriceTypes priceSchemaId, bool isEditUOM, int promotionID)
+            : this(productModel, isEditUOM)
         {
             _priceSchemaID = priceSchemaId;
 
             // Load promotion collection
-            LoadPromotionCollection(SelectedProduct);
+            LoadPromotionCollection(SelectedProduct, promotionID);
 
             // Update Amount
             if (SelectedPromotion == null)
-                SelectedProduct.Amount = SelectedProduct.CurrentPrice * SelectedProduct.OnHandStore;
+                SelectedPromotion = PromotionCollection.FirstOrDefault();
         }
 
-        public PopupEditProductViewModel(base_ProductModel productModel, bool isEditFromPO)
-            : this(productModel)
+        public PopupEditProductViewModel(base_ProductModel productModel, bool isEditFromPO, bool isEditUOM)
+            : this(productModel, isEditUOM)
         {
             IsEditFromPO = isEditFromPO;
 
@@ -238,7 +270,7 @@ namespace CPC.POS.ViewModel
         /// Load promotion collection
         /// </summary>
         /// <param name="productModel"></param>
-        private void LoadPromotionCollection(base_ProductModel productModel)
+        private void LoadPromotionCollection(base_ProductModel productModel, int promotionID)
         {
             if (PromotionCollection == null)
             {
@@ -285,9 +317,9 @@ namespace CPC.POS.ViewModel
                 }
 
                 // Set promotion default
-                SelectedPromotion = PromotionCollection.FirstOrDefault();
+                SelectedPromotion = PromotionCollection.FirstOrDefault(x => x.Id.Equals(promotionID));
 
-                PromotionCollection.Insert(0, new base_PromotionModel());
+                PromotionCollection.Insert(0, new base_PromotionModel { Name = "Discount Manual" });
             }
         }
 
@@ -323,21 +355,11 @@ namespace CPC.POS.ViewModel
                     break;
             }
 
-            // Update discount percent when selected product UOM difference with base UOM
-            if (!SelectedProductUOM.UOMId.Equals(SelectedProduct.BaseUOMId))
+            if (!IsEditPromotion)
             {
-                _discountPercent = 0;
-                OnPropertyChanged(() => DiscountPercent);
+                // Switch promotion to manual when selected product UOM difference with base UOM
+                SelectedPromotion = PromotionCollection.FirstOrDefault();
             }
-
-            // Turn off update discount percent
-            _raiseCurrentPrice = false;
-
-            // Update current price by discount percent
-            SelectedProduct.CurrentPrice = Math.Round(SelectedProduct.RegularPrice * (1 - DiscountPercent / 100), 2);
-
-            // Turn on update discount percent
-            _raiseCurrentPrice = true;
         }
 
         /// <summary>
@@ -345,7 +367,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnSelectedPromotionChanged()
         {
-            if (SelectedProductUOM.UOMId.Equals(SelectedProduct.BaseUOMId))
+            if (IsEditPromotion)
             {
                 if (SelectedPromotion.TakeOffOption == 1)
                 {
@@ -363,6 +385,9 @@ namespace CPC.POS.ViewModel
                 // Get discount percent when have no discount
                 DiscountPercent = 0;
             }
+
+            // Turn on/off discount manual
+            IsDiscountManual = SelectedPromotion.Id == 0;
         }
 
         /// <summary>
@@ -373,8 +398,8 @@ namespace CPC.POS.ViewModel
             // Turn off update discount percent
             _raiseCurrentPrice = false;
 
-            // Update current price from discount percent
-            SelectedProduct.CurrentPrice = SelectedProduct.RegularPrice * (1 - DiscountPercent / 100);
+            // Update current price by discount percent
+            SelectedProduct.CurrentPrice = Math.Round(SelectedProduct.RegularPrice * (1 - DiscountPercent / 100), 2);
 
             // Turn on update discount percent
             _raiseCurrentPrice = true;
@@ -397,7 +422,7 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "CurrentPrice":
-                    if (_raiseCurrentPrice && !IsEditFromPO)
+                    if (!IsEditFromPO && _raiseCurrentPrice)
                     {
                         // Update discount percent
                         if (productModel.RegularPrice != 0)

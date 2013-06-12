@@ -352,7 +352,7 @@ namespace CPC.POS.ViewModel
             {
                 //To add item of TransferStock.
                 base_ProductModel model = new base_ProductModel(e.UserState as base_Product);
-                model.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
+                model.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
                 foreach (var item in model.base_Product.base_ProductStore.OrderBy(x => x.StoreCode))
                     model.ProductStoreCollection.Add(new base_ProductStoreModel(item));
                 this.ProductCollection.Add(model);

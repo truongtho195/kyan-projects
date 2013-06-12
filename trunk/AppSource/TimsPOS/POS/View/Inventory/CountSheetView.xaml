@@ -7,8 +7,6 @@
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Class="CPC.POS.View.CountSheetView"
              x:Name="UserControl"
-             Height="Auto"
-             Width="Auto"
              xmlns:command="clr-namespace:CPC.Toolkit.Command"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
@@ -610,7 +608,7 @@
                           d:LayoutOverrides="GridBox">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60" />
-                            <RowDefinition Height="62" />
+                            <RowDefinition Height="35" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel VerticalAlignment="Bottom"
@@ -732,59 +730,57 @@
                               VerticalAlignment="Top"
                               Grid.Row="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="0.5*" />
-                                <ColumnDefinition Width="80" />
-                                <ColumnDefinition Width="0.5*" />
-                                <ColumnDefinition Width="130" />
-                                <ColumnDefinition Width="120" />
-                            </Grid.ColumnDefinitions>
+							<RowDefinition Height="25"/>
+							<RowDefinition Height="0"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="70"/>
+							<ColumnDefinition Width="0.5*"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="0.5*"/>
+							<ColumnDefinition Width="85"/>
+							<ColumnDefinition Width="90"/>
+							
+							<ColumnDefinition Width="110"/>
+							<ColumnDefinition Width="100"/>
+						</Grid.ColumnDefinitions>
                             <TextBlock x:Name="txtblSheetNo"
                                        Text="Sheet #:"
                                        TextWrapping="NoWrap"
-                                       HorizontalAlignment="Left"
+                                       HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        Grid.Row="0"
-                                       Margin="10,0,0,0"
+                                       Margin="0,0,10,0"
                                        Style="{DynamicResource TextBlockNormal}" />
-                            <TextBox x:Name="txtSheetNo"
-                                     Margin="0,2"
-                                     TextWrapping="NoWrap"
-                                     Grid.Column="1"
-                                     Padding="2,0,2,0"
-                                     HorizontalContentAlignment="Right"
-                                     IsReadOnly="True"
-                                     Text="{Binding SelectedCountStock.DocumentNo,Mode=OneWay}" />
+                            <TextBlock x:Name="txtSheetNo"
+                                       TextWrapping="NoWrap"
+                                       Grid.Column="1"
+                                       Style="{DynamicResource TextBlockBasic}"
+                                       Text="{Binding SelectedCountStock.DocumentNo,Mode=OneWay}" VerticalAlignment="Center" />
                             <TextBlock x:Name="txtblStatus"
                                        Text="Status:"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Right"
-                                       Margin="0,0,5,0"
+                                       Margin="0,0,10,0"
                                        VerticalAlignment="Center"
                                        Grid.Column="2"
                                        Style="{DynamicResource TextBlockNormal}" />
                             <ComboBox x:Name="cmbStatus"
                                       IsEditable="True"
                                       Grid.Column="3"
-                                      Margin="0,2"
                                       IsEnabled="False"
                                       DisplayMemberPath="Text"
                                       SelectedValuePath="Value"
                                       ItemsSource="{x:Static helper:Common.CountStockStatus}"
-                                      SelectedValue="{Binding SelectedCountStock.Status,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
-                            </ComboBox>
+                                      SelectedValue="{Binding SelectedCountStock.Status,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             <TextBlock x:Name="txtblStartedDate"
                                        Text="Started Date:"
                                        TextWrapping="NoWrap"
-                                       HorizontalAlignment="Left"
+                                       HorizontalAlignment="Right"
                                        Grid.Column="4"
                                        d:LayoutOverrides="Height"
                                        VerticalAlignment="Center"
-                                       Margin="35,0,0,0"
+                                       Margin="0,0,10,0"
                                        Style="{DynamicResource TextBlockNormal}" />
                             <DatePicker TabIndex="{Binding TabIndexControl}"
                                         SelectedDate="{Binding SelectedCountStock.DateCreated, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
@@ -792,38 +788,18 @@
                                         Grid.Column="5"
                                         IsEnabled="False"
                                         Margin="0,2,10,2" />
-                            <TextBlock x:Name="txtblLocation"
-                                       Text="Location:"
-                                       TextWrapping="NoWrap"
-                                       HorizontalAlignment="Left"
-                                       Grid.Row="1"
-                                       d:LayoutOverrides="Height"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0"
-                                       Style="{DynamicResource TextBlockNormal}" />
-                            <ComboBox x:Name="cmbLocation"
-                                      IsEditable="True"
-                                      Grid.Column="1"
-                                      Margin="0,2"
-                                      DisplayMemberPath="Name"
-                                      ItemsSource="{Binding StoreCollection}"
-                                      SelectedItem="{Binding SelectedStore}"
-                                      Grid.Row="1"
-                                      Grid.ColumnSpan="3" />
                             <TextBlock x:Name="txtblCompletedDate"
                                        Text="Completed Date:"
                                        TextWrapping="NoWrap"
-                                       Grid.Column="4"
-                                       HorizontalAlignment="Left"
-                                       Grid.Row="1"
+                                       Grid.Column="6"
+                                       HorizontalAlignment="Right"
                                        d:LayoutOverrides="Height"
                                        VerticalAlignment="Center"
-                                       Margin="35,0,0,0"
+                                       Margin="0,0,10,0"
                                        Style="{DynamicResource TextBlockNormal}" />
                             <DatePicker SelectedDate="{Binding SelectedCountStock.CompletedDate, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                                         x:Name="dtpCompletedDate"
-                                        Grid.Column="5"
-                                        Grid.Row="1"
+                                        Grid.Column="7"
                                         IsEnabled="False"
                                         Margin="0,2,10,2" />
                         </Grid>
@@ -834,317 +810,136 @@
                                 BorderThickness="1"
                                 BorderBrush="{DynamicResource TabControlBorder}">
                             <Grid x:Name="grdContentCountSheet">
-                                <dataGridControl:DataGridControl x:Name="dtgrdCountSheetVendor"
-                                                                 Margin="10"
-                                                                 IsRollBackData="False"
-                                                                 AutoGenerateColumns="False"
-                                                                 CanUserAddRows="False"
-                                                                 CanUserDeleteRows="False"
-                                                                 IsPaging="False"
-                                                                 NumberOfItems="{Binding TotalProducts}"
-                                                                 ItemsSource="{Binding SelectedCountStock.CountStockDetailCollection}"
-                                                                 Style="{DynamicResource DatagridWithRowHeader}">
-                                    <dataGridControl:DataGridControl.Columns>
-                                        <DataGridTextColumn Header="Code"
-                                                            IsReadOnly="True"
-                                                            Binding="{Binding ProductCode}"
-                                                            Width="80" />
-                                        <DataGridTemplateColumn Header="Name"
-                                                                IsReadOnly="True"
-                                                                Width="100">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Left"
-                                                               Text="{Binding ProductName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="Description"
-                                                            IsReadOnly="True"
-                                                            Binding="{Binding Description}"
-                                                            Width="*" />
-                                        <DataGridTemplateColumn Header="Attribute"
-                                                                IsReadOnly="True"
-                                                                Width="80">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Left"
-                                                               Text="{Binding Attribute, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Size"
-                                                                IsReadOnly="True"
-                                                                Width="80">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Left"
-                                                               Text="{Binding Size, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Location"
-                                                                IsReadOnly="True"
-                                                                Width="100">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Left">
-                                                    <TextBlock.Text>
-                                                         <MultiBinding ConverterParameter="CountStock"
-                                                                       Converter="{StaticResource intToProductStoreConverter}">
-                                                    <Binding Path="StoreId" />
-                                                    <Binding Path="DataContext.StoreCollection"
-                                                                RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl}}" />
-                                                </MultiBinding>
-                                                    </TextBlock.Text>
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="On-Hand Qty"
-                                                                IsReadOnly="True"
-                                                                Width="80">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Right"
-                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Counted Quantity"
-                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
-                                                                Width="95">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Right"
-                                                               Text="{Binding CountedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                            <DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
-                                                                                       TextAlignment="Right"
-                                                                                       Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
-                                                                                       Value="{Binding CountedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                            <!--<i:Interaction.Triggers>
-                                                                <i:EventTrigger EventName="LostFocus">
-                                                                    <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
-                                                                                            CommandParameter="{Binding .}" />
-                                                                </i:EventTrigger>
-                                                            </i:Interaction.Triggers>-->
-                                                        </textBoxControl:TextBoxNumeric>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellEditingTemplate>
-                                        </DataGridTemplateColumn>
-                                    </dataGridControl:DataGridControl.Columns>
-                                </dataGridControl:DataGridControl>
+                            	<Grid.RowDefinitions>
+                            		<RowDefinition Height="35"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+                            	</Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblStore"
+                            		Text="Store:"
+                            		TextWrapping="NoWrap"
+                            		HorizontalAlignment="Left"
+                            		d:LayoutOverrides="HorizontalAlignment, Height"
+                            		Style="{DynamicResource TextBlockNormal}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                            	<ComboBox x:Name="cmbLocation"
+                            		Margin="50,0,0,0"
+                            		DisplayMemberPath="Name"
+                            		ItemsSource="{Binding StoreCollection}"
+                            		SelectedItem="{Binding SelectedStore}" VerticalAlignment="Center" Height="21" HorizontalAlignment="Left" Width="205"
+                                      />
+                            	<dataGridControl:DataGridControl x:Name="dtgrdCountSheetVendor"
+                            		Margin="10,0,10,10"
+                            		IsRollBackData="False"
+                            		AutoGenerateColumns="False"
+                            		CanUserAddRows="False"
+                            		CanUserDeleteRows="False"
+                            		IsPaging="False"
+                            		NumberOfItems="{Binding TotalProducts}"
+                            		ItemsSource="{Binding SelectedCountStock.CountStockDetailCollection}"
+                            		Style="{DynamicResource DatagridWithRowHeader}" Grid.Row="2">
+                            		<dataGridControl:DataGridControl.Columns>
+                            			<DataGridTextColumn Header="Code"
+                            				IsReadOnly="True"
+                            				Binding="{Binding ProductCode}"
+                            				Width="80" />
+                            			<DataGridTemplateColumn Header="Name"
+                            				IsReadOnly="True"
+                            				Width="100">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Left"
+                            							Text="{Binding ProductName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTextColumn Header="Description"
+                            				IsReadOnly="True"
+                            				Binding="{Binding Description}"
+                            				Width="*" />
+                            			<DataGridTemplateColumn Header="Attribute"
+                            				IsReadOnly="True"
+                            				Width="80">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Left"
+                            							Text="{Binding Attribute, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTemplateColumn Header="Size"
+                            				IsReadOnly="True"
+                            				Width="80">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Left"
+                            							Text="{Binding Size, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTemplateColumn Header="Location"
+                            				IsReadOnly="True"
+                            				Width="100">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Left">
+                            							<TextBlock.Text>
+                            								<MultiBinding ConverterParameter="CountStock"
+                            									Converter="{StaticResource intToProductStoreConverter}">
+                            									<Binding Path="StoreId" />
+                            									<Binding Path="DataContext.StoreCollection"
+                            										RelativeSource="{RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}" />
+                            								</MultiBinding>
+                            							</TextBlock.Text>
+                            						</TextBlock>
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTemplateColumn Header="On-Hand Qty"
+                            				IsReadOnly="True"
+                            				Width="80">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Right"
+                            							Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTemplateColumn Header="Counted Quantity"
+                            				CellStyle="{StaticResource DataGridCellEnableStyle}"
+                            				Width="95">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Right"
+													    Margin="0,0,2,0"
+                            							Text="{Binding CountedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            				<DataGridTemplateColumn.CellEditingTemplate>
+                            					<DataTemplate>
+                            						<Grid>
+                            							<textBoxControl:TextBoxNumeric x:Name="txtQuantity"
+                            								TextAlignment="Right"
+                            								Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                            								Value="{Binding CountedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            						</Grid>
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellEditingTemplate>
+                            			</DataGridTemplateColumn>
+                            			<DataGridTemplateColumn Header="Difference"
+                            				IsReadOnly="True"
+                            				Width="80">
+                            				<DataGridTemplateColumn.CellTemplate>
+                            					<DataTemplate>
+                            						<TextBlock HorizontalAlignment="Right"
+													    Margin="0,0,2,0"
+                            							Text="{Binding Difference, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            					</DataTemplate>
+                            				</DataGridTemplateColumn.CellTemplate>
+                            			</DataGridTemplateColumn>
+                            		</dataGridControl:DataGridControl.Columns>
+                            	</dataGridControl:DataGridControl>
                             </Grid>
                         </Border>
-                        <Grid x:Name="grdCountSheet1"
-                              Margin="0,0,0,10"
-                              Grid.Row="1"
-                              Grid.RowSpan="2"
-                              Visibility="Collapsed">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="62" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <GroupBox x:Name="gbCountSheetInformation"
-                                      BorderBrush="#FFEA4016"
-                                      Margin="10,10,10,0"
-                                      VerticalAlignment="Top"
-                                      Height="52"
-                                      Width="727"
-                                      HorizontalAlignment="Left"
-                                      Visibility="Collapsed"
-                                      d:IsHidden="True">
-                                <GroupBox.Header>
-                                    <TextBlock x:Name="txtblCountSheetInformation"
-                                               Text="Count Sheet Information"
-                                               Foreground="White"
-                                               TextWrapping="NoWrap"
-                                               FontSize="14"
-                                               FontWeight="Bold"
-                                               Style="{DynamicResource GroupboxTextBlock}" />
-                                </GroupBox.Header>
-                            </GroupBox>
-                            <Grid x:Name="grdCountedBy"
-                                  Grid.Row="2"
-                                  Margin="10,10,10,0"
-                                  Width="430"
-                                  HorizontalAlignment="Left"
-                                  Visibility="Collapsed"
-                                  d:IsHidden="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="75" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25" />
-                                    <RowDefinition Height="52" />
-                                    <RowDefinition Height="25" />
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="txtblRemarks"
-                                           Text="Remarks:"
-                                           Foreground="White"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Margin="0"
-                                           VerticalAlignment="Center" />
-                                <TextBox x:Name="txtRemarks"
-                                         BorderBrush="Black"
-                                         Margin="0,2"
-                                         TextWrapping="Wrap"
-                                         Grid.Column="1"
-                                         Padding="2,0,2,0"
-                                         Grid.RowSpan="2" />
-                                <TextBlock x:Name="txtblCountedBy"
-                                           Text="Counted By:"
-                                           Foreground="White"
-                                           TextWrapping="NoWrap"
-                                           Margin="0"
-                                           VerticalAlignment="Center"
-                                           Grid.Row="3"
-                                           HorizontalAlignment="Left" />
-                                <TextBox x:Name="txtCountedBy"
-                                         BorderBrush="Black"
-                                         Margin="0,2"
-                                         TextWrapping="NoWrap"
-                                         Grid.Column="1"
-                                         Padding="2,0,2,0"
-                                         Grid.Row="2" />
-                            </Grid>
-                            <Grid VerticalAlignment="Top"
-                                  Height="144"
-                                  Margin="11,121,11,0"
-                                  Grid.Row="1"
-                                  Visibility="Collapsed"
-                                  d:IsHidden="True">
-                                <Rectangle Stroke="#FF000000"
-                                           HorizontalAlignment="Stretch"
-                                           Grid.ColumnSpan="3"
-                                           Grid.RowSpan="8">
-                                    <Rectangle.Fill>
-                                        <LinearGradientBrush EndPoint="0.5,1"
-                                                             StartPoint="0.5,0">
-                                            <GradientStop Color="#FFC5DDFE"
-                                                          Offset="0" />
-                                            <GradientStop Color="#FF71A7EE"
-                                                          Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                                <Rectangle Stroke="#FF000000"
-                                           HorizontalAlignment="Stretch"
-                                           Grid.ColumnSpan="3"
-                                           Grid.RowSpan="1"
-                                           Grid.Row="7" />
-                                <Image Source="..\..\Images\Shoes.png"
-                                       Stretch="Uniform"
-                                       VerticalAlignment="Center"
-                                       Grid.Row="1"
-                                       Margin="29,0,0,0"
-                                       Width="120"
-                                       HorizontalAlignment="Left" />
-                            </Grid>
-                            <Grid x:Name="grdTemplateCountSheet"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  Height="Auto"
-                                  Margin="186,136,0,0"
-                                  Grid.Row="1"
-                                  Visibility="Collapsed"
-                                  d:IsHidden="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="85" />
-                                    <ColumnDefinition Width="443.841" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="24" />
-                                    <RowDefinition Height="24" />
-                                    <RowDefinition Height="24" />
-                                    <RowDefinition Height="24" />
-                                    <RowDefinition Height="24" />
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="txtblTemplateItem"
-                                           Text="Item:"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left" />
-                                <TextBlock x:Name="txtblBindingTemplateItem"
-                                           Text="090821A"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Grid.Column="1"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,0,0" />
-                                <TextBlock x:Name="txtblTemplateDescription"
-                                           Text="Description:"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           Grid.Row="1"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="txtblBindingTemplateDescription"
-                                           Text="3.75&quot; Military Classics Warship"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Grid.Column="1"
-                                           Grid.Row="1"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="txtblTemplateLocation"
-                                           Text="Location:"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           Grid.Row="2"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="txtblBindingTemplateLocation"
-                                           Text="NY Warehouse"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Grid.Column="1"
-                                           Grid.Row="2"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="txtblTemplateSystemQty"
-                                           Text="System Qty:"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           VerticalAlignment="Center"
-                                           Grid.Row="3"
-                                           HorizontalAlignment="Left" />
-                                <TextBlock x:Name="txtblBindingTemplateSystemQty"
-                                           Text="10"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Grid.Column="1"
-                                           Grid.Row="3"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,0,0" />
-                                <TextBlock x:Name="txtblTemplateCountedQty"
-                                           Text="Counted Qty:"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           Grid.Row="4"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" />
-                                <TextBlock x:Name="txtblBindingTemplateCountedQty"
-                                           Text="5"
-                                           Foreground="Black"
-                                           TextWrapping="NoWrap"
-                                           HorizontalAlignment="Left"
-                                           Grid.Column="1"
-                                           Grid.Row="4"
-                                           VerticalAlignment="Center" />
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

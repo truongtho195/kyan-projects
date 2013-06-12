@@ -2535,321 +2535,327 @@
         </Setter>
     </Style>
     <Visibility x:Key="ComboboxRemark">Visible</Visibility>
-    <Style x:Key="RemarkComboBoxFocusVisual">
-        <Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle Stroke="Black"
-                               StrokeDashArray="1 2"
-                               StrokeThickness="1"
-                               Margin="4,4,21,4"
-                               SnapsToDevicePixels="true" />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="RemarkComboBoxToggleButtonStyle"
-           TargetType="{x:Type ToggleButton}">
-        <Setter Property="MinWidth"
-                Value="0" />
-        <Setter Property="MinHeight"
-                Value="0" />
-        <Setter Property="Focusable"
-                Value="false" />
-        <Setter Property="ClickMode"
-                Value="Press" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Grid SnapsToDevicePixels="true"
-                          Background="#02FFFFFF">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="35" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Rectangle Stroke="{DynamicResource ComboboxRemarkBorder}"
-                                   RadiusY="3"
-                                   RadiusX="3"
-                                   StrokeThickness="1"
-                                   x:Name="bg"
-                                   Opacity="0"
-                                   Fill="{DynamicResource ComboboxRemarkBackground}"
-                                   Grid.ColumnSpan="2" />
-                        <Rectangle Stroke="{DynamicResource ComboboxRemark_IsKeyboardFocused_Border}"
-                                   RadiusY="3"
-                                   RadiusX="3"
-                                   StrokeThickness="1"
-                                   x:Name="Focused"
-                                   Opacity="0"
-                                   Margin="2"
-                                   StrokeDashArray="2"
-                                   Grid.ColumnSpan="2" />
-                        <ed:RegularPolygon Grid.ColumnSpan="1"
-                                           Fill="White"
-                                           Height="6"
-                                           InnerRadius="1"
-                                           PointCount="3"
-                                           Stretch="Fill"
-                                           Width="6"
-                                           Grid.Column="1"
-                                           RenderTransformOrigin="0.5,0.5">
-                            <ed:RegularPolygon.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform />
-                                    <SkewTransform />
-                                    <RotateTransform Angle="180" />
-                                    <TranslateTransform />
-                                </TransformGroup>
-                            </ed:RegularPolygon.RenderTransform>
-                        </ed:RegularPolygon>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver"
-                                 Value="True">
-                            <Setter Property="Fill"
-                                    TargetName="bg"
-                                    Value="{DynamicResource ComboboxRemark_IsMouseOver_Background}" />
-                            <Setter Property="Opacity"
-                                    TargetName="bg"
-                                    Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsPressed"
-                                 Value="True">
-                            <Setter Property="Fill"
-                                    TargetName="bg"
-                                    Value="{DynamicResource ComboboxRemark_IsPress_Background}" />
-                            <Setter Property="Opacity"
-                                    TargetName="bg"
-                                    Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused"
-                                 Value="True">
-                            <Setter Property="Fill"
-                                    TargetName="bg"
-                                    Value="{DynamicResource ComboboxRemark_IsKeyboardFocused_Background}" />
-                            <Setter Property="Opacity"
-                                    TargetName="Focused"
-                                    Value="1" />
-                            <Setter Property="Opacity"
-                                    TargetName="bg"
-                                    Value="1" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="RemarkComboBoxEditableTextBoxStyle"
-           TargetType="{x:Type TextBox}">
-        <Setter Property="OverridesDefaultStyle"
-                Value="true" />
-        <Setter Property="AllowDrop"
-                Value="true" />
-        <Setter Property="MinWidth"
-                Value="0" />
-        <Setter Property="MinHeight"
-                Value="0" />
-        <Setter Property="FocusVisualStyle"
-                Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <ScrollViewer x:Name="PART_ContentHost"
-                                  Background="Transparent"
-                                  Focusable="false"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollBarVisibility="Hidden" />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <ControlTemplate x:Key="RemarkComboBoxEditableTemplate"
-                     TargetType="{x:Type ComboBox}">
-        <Grid SnapsToDevicePixels="true"
-              x:Name="Placement">
-            <Popup x:Name="PART_Popup"
-                   AllowsTransparency="true"
-                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                   Placement="Bottom"
-                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
-                   Focusable="false"
-                   Grid.ColumnSpan="2">
-                <Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                                                 MinWidth="{TemplateBinding ActualWidth}"
-                                                                 x:Name="Shdw"
-                                                                 Color="Transparent">
-                    <Border x:Name="DropDownBorder"
-                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-                            BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
-                            BorderThickness="1">
-                        <ScrollViewer>
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                            KeyboardNavigation.DirectionalNavigation="Contained" />
-                        </ScrollViewer>
-                    </Border>
-                </Microsoft_Windows_Themes:SystemDropShadowChrome>
-            </Popup>
-            <TextBox Margin="{TemplateBinding Padding}"
-                     x:Name="PART_EditableTextBox"
-                     Style="{DynamicResource PriorityComboBoxEditableTextBoxStyle}"
-                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                     IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" />
-            <ToggleButton Background="{x:Null}"
-                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                          Grid.Column="1"
-                          x:Name="toggleButton"
-                          Style="{DynamicResource PriorityComboBoxToggleButtonStyle}" />
-        </Grid>
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsKeyboardFocusWithin"
-                     Value="true">
-                <Setter Property="Foreground"
-                        Value="Black" />
-            </Trigger>
-            <Trigger Property="IsDropDownOpen"
-                     Value="True" />
-            <Trigger Property="HasItems"
-                     Value="false">
-                <Setter Property="Height"
-                        TargetName="DropDownBorder"
-                        Value="95" />
-            </Trigger>
-            <Trigger Property="IsEnabled"
-                     Value="false">
-                <Setter Property="Foreground"
-                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                <Setter Property="Background"
-                        Value="#FFF4F4F4" />
-            </Trigger>
-            <Trigger Property="IsGrouping"
-                     Value="true">
-                <Setter Property="ScrollViewer.CanContentScroll"
-                        Value="false" />
-            </Trigger>
-            <Trigger Property="HasDropShadow"
-                     SourceName="PART_Popup"
-                     Value="true">
-                <Setter Property="Margin"
-                        TargetName="Shdw"
-                        Value="0,0,5,5" />
-                <Setter Property="Color"
-                        TargetName="Shdw"
-                        Value="#71000000" />
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-    <Style x:Key="RemarkComboboxStyle"
-           TargetType="{x:Type ComboBox}">
-        <Setter Property="FocusVisualStyle"
-                Value="{StaticResource RemarkComboBoxFocusVisual}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-        <Setter Property="Padding"
-                Value="4,3,4,3" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-                Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-                Value="Auto" />
-        <Setter Property="ScrollViewer.CanContentScroll"
-                Value="true" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Center" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ComboBox}">
-                    <Grid x:Name="MainGrid"
-                          SnapsToDevicePixels="true">
-                        <Popup x:Name="PART_Popup"
-                               AllowsTransparency="true"
-                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                               Placement="Bottom"
-                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
-                               Focusable="false"
-                               Grid.ColumnSpan="2">
-                            <Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                                                             MinWidth="{TemplateBinding ActualWidth}"
-                                                                             x:Name="Shdw"
-                                                                             Color="Transparent">
-                                <Border x:Name="DropDownBorder"
-                                        BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
-                                        BorderThickness="1"
-                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-                                    <ScrollViewer>
-                                        <Grid>
-                                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                            KeyboardNavigation.DirectionalNavigation="Contained"
-                                                            Margin="0,0,-0.001,0"
-                                                            d:LayoutOverrides="Width, Height" />
-                                        </Grid>
-                                    </ScrollViewer>
-                                </Border>
-                            </Microsoft_Windows_Themes:SystemDropShadowChrome>
-                        </Popup>
-                        <ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                      Style="{DynamicResource RemarkComboBoxToggleButtonStyle}" />
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          IsHitTestVisible="False"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Content="{TemplateBinding SelectionBoxItem}"
-                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                          d:LayoutOverrides="Height"
-                                          Opacity="0" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="HasDropShadow"
-                                 SourceName="PART_Popup"
-                                 Value="true">
-                            <Setter Property="Margin"
-                                    TargetName="Shdw"
-                                    Value="0,0,5,5" />
-                            <Setter Property="Color"
-                                    TargetName="Shdw"
-                                    Value="#71000000" />
-                        </Trigger>
-                        <Trigger Property="HasItems"
-                                 Value="false">
-                            <Setter Property="Height"
-                                    TargetName="DropDownBorder"
-                                    Value="95" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled"
-                                 Value="false">
-                            <Setter Property="Foreground"
-                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                            <Setter Property="Background"
-                                    Value="#FFF4F4F4" />
-                        </Trigger>
-                        <Trigger Property="IsGrouping"
-                                 Value="true">
-                            <Setter Property="ScrollViewer.CanContentScroll"
-                                    Value="false" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Background"
-                Value="{x:Null}" />
-        <Style.Triggers>
-            <Trigger Property="IsEditable"
-                     Value="true">
-                <Setter Property="IsTabStop"
-                        Value="false" />
-                <Setter Property="Padding"
-                        Value="3,3,3,3" />
-                <Setter Property="Background"
-                        Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-                <Setter Property="BorderBrush"
-                        Value="#FF3D6394" />
-                <Setter Property="Template"
-                        Value="{DynamicResource PriorityComboBoxEditableTemplate}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    
+	<Style x:Key="RemarkComboBoxFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1" Margin="4,4,21,4" SnapsToDevicePixels="true"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="RemarkComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="ClickMode" Value="Press"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Grid SnapsToDevicePixels="true"
+							Background="#02FFFFFF">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<Rectangle Stroke="{DynamicResource ComboboxRemarkBorder}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg"
+								Opacity="0"
+								Fill="{DynamicResource ComboboxRemarkBackground}"
+								Grid.ColumnSpan="2" />
+							<Rectangle Stroke="{DynamicResource ComboboxRemark_IsKeyboardFocused_Border}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused"
+								Opacity="0"
+								Margin="2"
+								StrokeDashArray="2"
+								Grid.ColumnSpan="2" />
+							<ed:RegularPolygon Grid.ColumnSpan="1"
+								Fill="White"
+								Height="6"
+								InnerRadius="1"
+								PointCount="3"
+								Stretch="Fill"
+								Width="6"
+								Grid.Column="1"
+								RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+								<ed:RegularPolygon.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform />
+										<SkewTransform />
+										<RotateTransform Angle="180" />
+										<TranslateTransform />
+									</TransformGroup>
+								</ed:RegularPolygon.RenderTransform>
+							</ed:RegularPolygon>
+						</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ComboboxRemark_IsMouseOver_Background}"/>
+							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ComboboxRemark_IsPress_Background}"/>
+							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+						</Trigger>
+						<Trigger Property="IsKeyboardFocused" Value="True">
+							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ComboboxRemark_IsKeyboardFocused_Background}"/>
+							<Setter Property="Opacity" TargetName="Focused" Value="1"/>
+							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="RemarkComboBoxEditableTextBoxStyle" TargetType="{x:Type TextBox}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<ControlTemplate x:Key="RemarkComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
+		<Grid SnapsToDevicePixels="true" x:Name="Placement">
+			<Popup x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Focusable="false" Grid.ColumnSpan="2">
+				<Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="Shdw" Color="Transparent">
+					<Border x:Name="DropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
+						<ScrollViewer>
+							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained"/>
+						</ScrollViewer>
+					</Border>
+				</Microsoft_Windows_Themes:SystemDropShadowChrome>
+			</Popup>
+			<TextBox Margin="{TemplateBinding Padding}" x:Name="PART_EditableTextBox" Style="{DynamicResource RemarkComboBoxEditableTextBoxStyle}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"/>
+			<ToggleButton Background="{x:Null}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="1" x:Name="toggleButton" />
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsKeyboardFocusWithin" Value="true">
+				<Setter Property="Foreground" Value="Black"/>
+			</Trigger>
+			<Trigger Property="IsDropDownOpen" Value="True"/>
+			<Trigger Property="HasItems" Value="false">
+				<Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+				<Setter Property="Background" Value="#FFF4F4F4"/>
+			</Trigger>
+			<Trigger Property="IsGrouping" Value="true">
+				<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+			</Trigger>
+			<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+				<Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+				<Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<Style x:Key="RemarkComboboxStyle" TargetType="{x:Type ComboBox}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource RemarkComboBoxFocusVisual}"/>
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+		<Setter Property="Padding" Value="4,3,4,3"/>
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+					<Grid x:Name="MainGrid" SnapsToDevicePixels="true">
+						<Popup x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Focusable="false" Grid.ColumnSpan="2">
+							<Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="Shdw" Color="Transparent">
+								<Border x:Name="DropDownBorder" BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+									<ScrollViewer>
+										<Grid>
+											<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained" Margin="0,0,-0.001,0" d:LayoutOverrides="Width, Height"/>
+										</Grid>
+									</ScrollViewer>
+								</Border>
+							</Microsoft_Windows_Themes:SystemDropShadowChrome>
+						</Popup>
+						<ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource RemarkComboBoxToggleButtonStyle}"/>
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" d:LayoutOverrides="Height" Opacity="0"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+							<Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+							<Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+						</Trigger>
+						<Trigger Property="HasItems" Value="false">
+							<Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							<Setter Property="Background" Value="#FFF4F4F4"/>
+						</Trigger>
+						<Trigger Property="IsGrouping" Value="true">
+							<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Background" Value="{x:Null}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEditable" Value="true">
+				<Setter Property="IsTabStop" Value="false"/>
+				<Setter Property="Padding" Value="3,3,3,3"/>
+				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="BorderBrush" Value="#FF3D6394"/>
+				<Setter Property="Template" Value="{DynamicResource RemarkComboBoxEditableTemplate}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	<Visibility x:Key="Combobox Language">Visible</Visibility>
+	<Style x:Key="LanguageComboBoxFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1" Margin="4,4,21,4" SnapsToDevicePixels="true"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="LanguageComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="ClickMode" Value="Press"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Grid x:Name="grid" SnapsToDevicePixels="true"
+						Background="#02FFFFFF"/>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Cursor" Value="Hand"/>
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True"/>
+						<Trigger Property="IsKeyboardFocused" Value="True"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="LanguageComboBoxEditableTextBoxStyle" TargetType="{x:Type TextBox}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="AllowDrop" Value="true"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<ControlTemplate x:Key="LanguageComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
+		<Grid SnapsToDevicePixels="true" x:Name="Placement">
+			<Popup x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Focusable="false" Grid.ColumnSpan="2">
+				<Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="Shdw" Color="Transparent">
+					<Border x:Name="DropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1">
+						<ScrollViewer>
+							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained"/>
+						</ScrollViewer>
+					</Border>
+				</Microsoft_Windows_Themes:SystemDropShadowChrome>
+			</Popup>
+			<TextBox Margin="{TemplateBinding Padding}" x:Name="PART_EditableTextBox" Style="{DynamicResource LanguageComboBoxEditableTextBoxStyle}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"/>
+			<ToggleButton Background="{x:Null}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="1" x:Name="toggleButton" />
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsKeyboardFocusWithin" Value="true">
+				<Setter Property="Foreground" Value="Black"/>
+			</Trigger>
+			<Trigger Property="IsDropDownOpen" Value="True"/>
+			<Trigger Property="HasItems" Value="false">
+				<Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+				<Setter Property="Background" Value="#FFF4F4F4"/>
+			</Trigger>
+			<Trigger Property="IsGrouping" Value="true">
+				<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+			</Trigger>
+			<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+				<Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+				<Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<Style x:Key="LanguageComboboxStyle" TargetType="{x:Type ComboBox}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource LanguageComboBoxFocusVisual}"/>
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+		<Setter Property="Padding" Value="4,3,4,3"/>
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+		<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+					<Grid x:Name="MainGrid" SnapsToDevicePixels="true">
+						<Popup x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Focusable="false" Grid.ColumnSpan="2">
+							<Microsoft_Windows_Themes:SystemDropShadowChrome MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="Shdw" Color="Transparent">
+								<Border x:Name="DropDownBorder" BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+									<ScrollViewer>
+										<Grid>
+											<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained" Margin="0,0,-0.001,0" d:LayoutOverrides="Width, Height"/>
+										</Grid>
+									</ScrollViewer>
+								</Border>
+							</Microsoft_Windows_Themes:SystemDropShadowChrome>
+						</Popup>
+						<ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource LanguageComboBoxToggleButtonStyle}"/>
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" d:LayoutOverrides="Height" Opacity="0"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+							<Setter Property="Margin" TargetName="Shdw" Value="0,0,5,5"/>
+							<Setter Property="Color" TargetName="Shdw" Value="#71000000"/>
+						</Trigger>
+						<Trigger Property="HasItems" Value="false">
+							<Setter Property="Height" TargetName="DropDownBorder" Value="95"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+							<Setter Property="Background" Value="#FFF4F4F4"/>
+						</Trigger>
+						<Trigger Property="IsGrouping" Value="true">
+							<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Background" Value="{x:Null}"/>
+		<Style.Triggers>
+			<Trigger Property="IsEditable" Value="true">
+				<Setter Property="IsTabStop" Value="false"/>
+				<Setter Property="Padding" Value="3,3,3,3"/>
+				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="BorderBrush" Value="#FF3D6394"/>
+				<Setter Property="Template" Value="{DynamicResource LanguageComboBoxEditableTemplate}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
 
     <!--Edit-->
 	<Style x:Key="ToggleButtonInsideComboBoxStyle"
@@ -3099,7 +3105,9 @@
                 Value="25" />
         <Setter Property="Background"
                 Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
     </Style>
 </ResourceDictionary>

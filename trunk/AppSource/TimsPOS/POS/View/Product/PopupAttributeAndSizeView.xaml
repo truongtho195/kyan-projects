@@ -99,7 +99,10 @@
                           Width="123"
                           Height="21"
                           Margin="45,2,0,2"
-                          HorizontalAlignment="Left" />
+                          HorizontalAlignment="Left"
+                          DisplayMemberPath="Code"
+                          ItemsSource="{Binding StoreCollection, Mode=OneWay}"
+                          SelectedIndex="{Binding SelectedStoreIndex}" />
                 <TabControl x:Name="TabAttributeSizeBarcode"
                             Grid.Row="2"
                             Grid.RowSpan="1"
@@ -108,7 +111,8 @@
                             SelectedItem="{Binding SelectedTab, Mode=OneWayToSource}">
                     <TabItem x:Name="tabitemAttributeAndSize"
                              Header="Attribute &amp; Size">
-                        <cpcControl:DataGridCanAddColumnRowControl ItemsSource="{Binding CellCollection}" />
+                        <cpcControl:DataGridCanAddColumnRowControl ItemsSource="{Binding CellCollection}"
+                                                                   IsRaiseTotal="{Binding IsRaiseTotal}"/>
                     </TabItem>
                     <TabItem x:Name="tabitemBarcode"
                              Header="Barcode">
@@ -140,8 +144,9 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <textBoxControl:TextBoxAlphaNumeric MaxLength="13"
-                                                                                    Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <textBoxControl:TextBox MaxLength="13"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
@@ -155,6 +160,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <textBoxControl:TextBox MaxLength="20"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
                                                                         Text="{Binding PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>

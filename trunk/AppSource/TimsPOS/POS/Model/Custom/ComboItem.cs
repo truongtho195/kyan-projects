@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 using CPC.Toolkit.Base;
 using System.Linq.Expressions;
+using System.Globalization;
+using System.Windows.Media;
 
 namespace CPC.POS.Model
 {
@@ -14,79 +15,196 @@ namespace CPC.POS.Model
         private short _value;
         public short Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
         }
 
         private object _objValue;
         public object ObjValue
         {
-            get { return _objValue; }
-            set { _objValue = value; }
+            get
+            {
+                return _objValue;
+            }
+            set
+            {
+                _objValue = value;
+            }
         }
 
         private int _intValue;
         public int IntValue
         {
-            get { return _intValue; }
-            set { _intValue = value; }
+            get
+            {
+                return _intValue;
+            }
+            set
+            {
+                _intValue = value;
+            }
         }
 
         private long _longValue;
         public long LongValue
         {
-            get { return _longValue; }
-            set { _longValue = value; }
+            get
+            {
+                return _longValue;
+            }
+            set
+            {
+                _longValue = value;
+            }
         }
 
         private string _text;
         public string Text
         {
-            get { return _text; }
-            set { _text = value; }
+            get
+            {
+                return _text;
+            }
+            set
+            {
+                if (_text != value)
+                {
+                    _text = value;
+                    OnPropertyChanged(() => Text);
+                }
+            }
         }
 
         private bool _flag;
         public bool Flag
         {
-            get { return _flag; }
-            set { _flag = value; }
+            get
+            {
+                return _flag;
+            }
+            set
+            {
+                _flag = value;
+            }
         }
-
 
         private string _group;
         public string Group
         {
-            get { return _group; }
-            set { _group = value; }
+            get
+            {
+                return _group;
+            }
+            set
+            {
+                _group = value;
+            }
         }
 
         private string _symbol;
         public string Symbol
         {
-            get { return _symbol; }
-            set { _symbol = value; }
+            get
+            {
+                return _symbol;
+            }
+            set
+            {
+                _symbol = value;
+            }
         }
 
         private int _parentId;
         public int ParentId
         {
-            get { return _parentId; }
-            set { _parentId = value; }
+            get
+            {
+                return _parentId;
+            }
+            set
+            {
+                _parentId = value;
+            }
         }
 
         private object _detail;
         public object Detail
         {
-            get { return _detail; }
-            set { _detail = value; }
+            get
+            {
+                return _detail;
+            }
+            set
+            {
+                _detail = value;
+            }
         }
 
         private bool _islocked;
         public bool Islocked
         {
-            get { return _islocked; }
-            set { _islocked = value; }
+            get
+            {
+                return _islocked;
+            }
+            set
+            {
+                _islocked = value;
+            }
+        }
+
+        private CultureInfo _cultureInfo;
+        /// <summary>
+        /// Gets or sets CultureInfo used for language.
+        /// </summary>
+        public CultureInfo CultureInfo
+        {
+            get
+            {
+                return _cultureInfo;
+            }
+            set
+            {
+                _cultureInfo = value;
+            }
+        }
+
+        private string _code;
+        /// <summary>
+        /// Gets or sets Code used for language.
+        /// </summary>
+        public string Code
+        {
+            get
+            {
+                return _code;
+            }
+            set
+            {
+                _code = value;
+            }
+        }
+
+        private Brush _image;
+        /// <summary>
+        /// Gets or sets Image used for icon of language.
+        /// </summary>
+        public Brush Image
+        {
+            get
+            {
+                return _image;
+            }
+            set
+            {
+                _image = value;
+            }
         }
     }
 
@@ -97,15 +215,27 @@ namespace CPC.POS.Model
         private string _foreColor;
         public string ForeColor
         {
-            get { return _foreColor; }
-            set { _foreColor = value; }
+            get
+            {
+                return _foreColor;
+            }
+            set
+            {
+                _foreColor = value;
+            }
         }
 
         private string _backColor;
         public string BackColor
         {
-            get { return _backColor; }
-            set { _backColor = value; }
+            get
+            {
+                return _backColor;
+            }
+            set
+            {
+                _backColor = value;
+            }
         }
     }
 
@@ -115,8 +245,14 @@ namespace CPC.POS.Model
         private int _tab;
         public int Tab
         {
-            get { return _tab; }
-            set { _tab = value; }
+            get
+            {
+                return _tab;
+            }
+            set
+            {
+                _tab = value;
+            }
         }
     }
 
@@ -126,8 +262,14 @@ namespace CPC.POS.Model
         private string _group;
         public string Group
         {
-            get { return _group; }
-            set { _group = value; }
+            get
+            {
+                return _group;
+            }
+            set
+            {
+                _group = value;
+            }
         }
     }
 
@@ -137,8 +279,14 @@ namespace CPC.POS.Model
         private string _symbol;
         public string Symbol
         {
-            get { return _symbol; }
-            set { _symbol = value; }
+            get
+            {
+                return _symbol;
+            }
+            set
+            {
+                _symbol = value;
+            }
         }
     }
 
@@ -148,8 +296,14 @@ namespace CPC.POS.Model
         private bool _hasState;
         public bool HasState
         {
-            get { return _hasState; }
-            set { _hasState = value; }
+            get
+            {
+                return _hasState;
+            }
+            set
+            {
+                _hasState = value;
+            }
         }
     }
 
@@ -159,14 +313,26 @@ namespace CPC.POS.Model
         private string _culture;
         public string Culture
         {
-            get { return _culture; }
-            set { _culture = value; }
+            get
+            {
+                return _culture;
+            }
+            set
+            {
+                _culture = value;
+            }
         }
         private string _code;
         public string Code
         {
-            get { return _code; }
-            set { _code = value; }
+            get
+            {
+                return _code;
+            }
+            set
+            {
+                _code = value;
+            }
         }
     }
 
@@ -176,8 +342,14 @@ namespace CPC.POS.Model
         private int _parentID;
         public int ParentID
         {
-            get { return _parentID; }
-            set { _parentID = value; }
+            get
+            {
+                return _parentID;
+            }
+            set
+            {
+                _parentID = value;
+            }
         }
     }
 

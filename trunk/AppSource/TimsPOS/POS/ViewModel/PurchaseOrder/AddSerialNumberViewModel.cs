@@ -319,13 +319,13 @@ namespace CPC.POS.ViewModel
                 SelectedPurchaseOrderDetail.Quantity = Quantity;
                 if (PurchaseOrderDetailCollection.Count < Quantity)
                 {
-                    int numberItemAdded = Quantity - PurchaseOrderDetailCollection.Count;
+                    decimal numberItemAdded = Quantity - PurchaseOrderDetailCollection.Count;
                     for (int i = 0; i < numberItemAdded; i++)
                         PurchaseOrderDetailCollection.Add(NewPurchaseOrderDetail());
                 }
                 else if (PurchaseOrderDetailCollection.Count > Quantity)
                 {
-                    int numberItemRemove = PurchaseOrderDetailCollection.Count - Quantity;
+                    int numberItemRemove = PurchaseOrderDetailCollection.Count - (int)Quantity;
                     for (int i = 0; i < numberItemRemove; i++)
                         PurchaseOrderDetailCollection.RemoveAt(PurchaseOrderDetailCollection.Count() - 1);
                 }

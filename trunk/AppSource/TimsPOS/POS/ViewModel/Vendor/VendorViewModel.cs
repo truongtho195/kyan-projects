@@ -496,26 +496,35 @@ namespace CPC.POS.ViewModel
                 if (SelectedVendor.IsNew)
                 {
                     DeleteNote();
-
                     SelectedVendor = null;
+                    IsSearchMode = true;
                 }
                 else if (IsValid)
                 {
-                    DeleteNote();
-
-                    SelectedVendor.IsPurged = true;
-                    SelectedVendor.ToEntity();
-                    foreach (base_GuestModel contactModel in SelectedVendor.ContactCollection.Where(x => !x.IsAcceptedRow))
-                        contactModel.base_Guest.IsPurged = true;
-                    _guestRepository.Commit();
-
-                    SelectedVendor.EndUpdate();
-                    VendorCollection.Remove(SelectedVendor);
+                    List<ItemModel> ItemModel = new List<ItemModel>();
+                    string resource = SelectedVendor.Resource.Value.ToString();
+                    if (!_purchaseOrderRepository.GetAll().Select(x => x.VendorResource).Contains(resource))
+                    {
+                        DeleteNote();
+                        SelectedVendor.IsPurged = true;
+                        SelectedVendor.ToEntity();
+                        foreach (base_GuestModel contactModel in SelectedVendor.ContactCollection.Where(x => !x.IsAcceptedRow))
+                            contactModel.base_Guest.IsPurged = true;
+                        _guestRepository.Commit();
+                        SelectedVendor.EndUpdate();
+                        VendorCollection.Remove(SelectedVendor);
+                        IsSearchMode = true;
+                    }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = SelectedVendor.Id, Text = SelectedVendor.GuestNo, Resource = SelectedVendor.Resource.ToString() });
+                        _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
+                    }
                 }
                 else
                     return;
 
-                IsSearchMode = true;
+                
             }
         }
 
@@ -971,6 +980,8 @@ namespace CPC.POS.ViewModel
             MessageBoxResult msgResult = MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo);
             if (msgResult.Is(MessageBoxResult.Yes))
             {
+                bool flag = false;
+                List<ItemModel> ItemModel = new List<ItemModel>();
                 for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
                 {
                     base_GuestModel model = (param as ObservableCollection<object>)[i] as base_GuestModel;
@@ -987,7 +998,14 @@ namespace CPC.POS.ViewModel
                         this.DeleteNoteExt(model);
                         i--;
                     }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = model.Id, Text = model.GuestNo, Resource = resource });
+                        flag = true;
+                    }
                 }
+                if (flag)
+                    _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "PurchaseOrder"), "Problem Detection");
             }
         }
 

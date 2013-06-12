@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
+using System.Text;
 
 namespace CPC.POS.Model
 {
@@ -601,6 +602,76 @@ namespace CPC.POS.Model
 
         #region Custom Code
 
+        #region Properties
+        #region RewardProgramText
+        //private string _rewardProgramText;
+        /// <summary>
+        /// Gets or sets the RewardProgramText.
+        /// </summary>
+        public string RewardProgramText
+        {
+            get
+            {
+                if (this.RewardAmtType.Equals((int)RewardType.Money))
+                    return this.RewardAmount.ToString(Define.CurrencyFormat);
+                return string.Format("{0} %", this.RewardAmount);
+            }
+        }
+        #endregion
+
+        #region RewardInfo
+        private string _rewardInfo;
+        /// <summary>
+        /// Gets or sets the PropertyName.
+        /// </summary>
+        public string RewardInfo
+        {
+            get { return _rewardInfo; }
+            set
+            {
+                if (_rewardInfo != value)
+                {
+                    _rewardInfo = value;
+                    OnPropertyChanged(() => RewardInfo);
+                }
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Methods
+
+        public string SetRewardInfo()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (this.RewardAmtType.Equals((int)RewardType.Money))
+                sb.Append(this.RewardAmount.ToString(Define.CurrencyFormat));
+            else
+                sb.AppendFormat("{0} %", this.RewardAmount);
+
+            sb.AppendFormat(" Off reward are earned for every {0} ", PurchaseThreshold.ToString(Define.CurrencyFormat));
+
+            if (IsTrackingPeriod)
+            {
+                sb.Append("from ");
+                sb.Append(this.StartDate.Value.ToString(Define.DateFormat));
+                if (!IsNoEndDay)
+                {
+                    sb.Append(" to ");
+                    sb.Append(this.EndDate.Value.ToString(Define.DateFormat));
+                }
+            }
+            return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            return SetRewardInfo();
+        }
+        #endregion
+
+        #region PropertyChanged
         protected override void PropertyChangedCompleted(string propertyName)
         {
             switch (propertyName)
@@ -623,9 +694,15 @@ namespace CPC.POS.Model
                     OnPropertyChanged(() => StartDate);
                     OnPropertyChanged(() => EndDate);
                     break;
+                case "RewardAmount":
+                case "RewardAmtType":
+                    OnPropertyChanged(() => RewardProgramText);
+                    break;
+
                 #endregion
             }
-        }
+        } 
+        #endregion
         #endregion
 
         #region IDataErrorInfo Members

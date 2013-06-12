@@ -251,7 +251,10 @@ namespace CPC.POS.Repository
 
         #region Custom Code
 
-
+        public void Update(base_GuestReward base_GuestReward)
+        {
+            UnitOfWork.Update(base_GuestReward);
+        }
         #endregion
     }
 }

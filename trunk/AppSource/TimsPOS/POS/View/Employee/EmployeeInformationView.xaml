@@ -799,7 +799,7 @@
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
 
         <Grid x:Name="grdEmployee">
-            <Grid x:Name="grdSearch">
+            <Grid x:Name="grdSearch" d:IsHidden="True">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -981,7 +981,7 @@
                                                    Stretch="Fill" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="Delete Item"
+                                <MenuItem Header="Delete Item(s)"
                                           Command="{Binding DeletesCommand}"
                                           CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                                     <MenuItem.Icon>
@@ -1013,7 +1013,7 @@
                                                 Binding="{Binding GuestNo}"
                                                 Header="Employee #"
                                                 IsReadOnly="True" />
-                            <DataGridTextColumn Width="80"
+                            <DataGridTextColumn Width="100"
                                                 MinWidth="80"
                                                 Binding="{Binding IsActived,
                                                                   Converter={StaticResource comboxItemToTextConverter},
@@ -1096,7 +1096,7 @@
                                                 Header="Phone"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn MinWidth="150"
-                                                Width="150"
+                                                Width="*"
                                                 Binding="{Binding Email}"
                                                 Header="Email"
                                                 IsReadOnly="True" />
@@ -1183,8 +1183,7 @@
                     </Button>
                 </Grid>
             </Grid>
-            <Grid x:Name="grdContentEmployee1"
-                  d:IsHidden="True">
+            <Grid x:Name="grdContentEmployee1">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -1333,12 +1332,8 @@
                             </StackPanel>
                         </Button>
                         <Grid x:Name="grdRemark1"
-                              Width="50"
+                              Width="40"
                               Height="40">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
                             <Grid x:Name="grdRemark"
                                   Width="30"
                                   Height="30">
@@ -1353,8 +1348,7 @@
                                 <TextBox x:Name="txtbBindingRemark1"
                                          IsReadOnly="True"
                                          Style="{DynamicResource TextBoxRemark}"
-                                         Text="{Binding SelectedItemEmployee.ResourceNoteCollection.Count,
-                                                        Mode=OneWay}"
+                                         Text="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, Mode=OneWay}"
                                          TextWrapping="Wrap" />
                             </Grid>
                             <ComboBox x:Name="cmbStick"
@@ -1369,12 +1363,9 @@
                                 <Button Width="75"
                                         Height="20"
                                         Command="{Binding ShowOrHiddenNoteCommand}"
-                                        Content="{Binding ShowOrHiddenNote,
-                                                          Mode=OneWay}"
+                                        Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
                                         Style="{DynamicResource ButtonComboboxItemRemark}"
-                                        Visibility="{Binding SelectedItemEmployee.ResourceNoteCollection.Count,
-                                                             Converter={StaticResource enumToCollapsedConverter},
-                                                             ConverterParameter=0}" />
+                                        Visibility="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
                             </ComboBox>
                         </Grid>
                     </StackPanel>
@@ -1451,7 +1442,7 @@
                                    d:LayoutOverrides="Width" />
                         <DatePicker x:Name="dtpHireDate"
                                     Grid.Column="1"
-                                    Width="110"
+                                    Width="90"
                                     Margin="507,2,0,2"
                                     HorizontalAlignment="Left"
                                     SelectedDate="{Binding SelectedItemEmployee.HireDate,
@@ -1508,7 +1499,7 @@
                         <ComboBox x:Name="cmbBasicStatus"
                                   Grid.Row="1"
                                   Grid.Column="1"
-                                  Width="110"
+                                  Width="90"
                                   Margin="507,2,0,2"
                                   HorizontalAlignment="Left"
                                   DisplayMemberPath="Text"

@@ -133,12 +133,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _totalQuantity;
+        protected decimal _totalQuantity;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the TotalQuantity</para>
         /// </summary>
-        public int TotalQuantity
+        public decimal TotalQuantity
         {
             get { return this._totalQuantity; }
             set

@@ -36,15 +36,12 @@ namespace CPC.POS.ViewModel
         private base_VendorProductRepository _vendorProductRepository = new base_VendorProductRepository();
 
         private base_CostAdjustmentRepository _costAdjustmentRepository = new base_CostAdjustmentRepository();
-        private base_CostAdjustmentItemRepository _costAdjustmentItemRepository = new base_CostAdjustmentItemRepository();
         private base_QuantityAdjustmentRepository _quantityAdjustmentRepository = new base_QuantityAdjustmentRepository();
-        private base_QuantityAdjustmentItemRepository _quantityAdjustmentItemRepository = new base_QuantityAdjustmentItemRepository();
 
         private ICollectionView _categoryCollectionView;
         private ICollectionView _brandCollectionView;
 
         private short _oldItemTypeID;
-        private int _numberOfStore = 10;
 
         #endregion
 
@@ -339,7 +336,7 @@ namespace CPC.POS.ViewModel
                 if ((param == null || string.IsNullOrWhiteSpace(param.ToString())) && SearchOption == 0)
                 {
                     // Load data by predicate
-                    LoadDataByPredicate(false, 0);
+                    LoadDataByPredicate(false);
                 }
                 else if (param != null)
                 {
@@ -352,7 +349,7 @@ namespace CPC.POS.ViewModel
                     else
                     {
                         // Load data by predicate
-                        LoadDataByPredicate(false, 0);
+                        LoadDataByPredicate(false);
                     }
                 }
             }
@@ -611,10 +608,7 @@ namespace CPC.POS.ViewModel
                 LoadPhotoCollection(SelectedProduct);
 
                 // Load product store collection
-                LoadProductStoreCollection(SelectedProduct);
-
-                // Load product store default
-                LoadProductStoreDefault(SelectedProduct, Define.StoreCode);
+                LoadProductStoreCollection(SelectedProduct, Define.StoreCode);
 
                 // Load product UOM collection
                 LoadProductUOMCollection(SelectedProduct, Define.StoreCode);
@@ -904,40 +898,35 @@ namespace CPC.POS.ViewModel
             bool? result = _dialogService.ShowDialog<PopupAvailableQuantitiesView>(_ownerViewModel, viewModel, "Available Quantities");
             if (result.HasValue && result.Value)
             {
-                if (SelectedProduct.ProductStoreCollection == null)
-                    SelectedProduct.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
-
-                for (int i = 0; i < viewModel.OnHandStoreList.Count; i++)
+                foreach (base_ProductStoreModel productStoreItem in viewModel.ProductStoreCollection)
                 {
-                    // Update on hand store quantity
-                    if (i.Equals(Define.StoreCode))
-                        SelectedProduct.OnHandStore = viewModel.OnHandStoreList[i].Value;
-                    else
+                    // Check change
+                    if (productStoreItem.QuantityOnHand != productStoreItem.OldQuantity)
                     {
-                        // Get new OnHandStore value
-                        int newOnHandStoreValue = viewModel.OnHandStoreList[i].Value;
+                        // Get product store by store code
+                        base_ProductStoreModel productStoreModel = SelectedProduct.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(productStoreItem.StoreCode));
 
-                        // Get old OnHandStore value
-                        int oldOnHandStoreValue = SelectedProduct.GetOnHandFromStore(i);
-
-                        // Check change
-                        if (newOnHandStoreValue != oldOnHandStoreValue)
+                        if (productStoreModel == null)
                         {
-                            // Get product store by store code
-                            base_ProductStoreModel productStoreItem = SelectedProduct.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(i));
-                            if (productStoreItem == null)
-                            {
-                                productStoreItem = new base_ProductStoreModel { StoreCode = i };
-                                CopyUOM(SelectedProduct, productStoreItem);
-                                SelectedProduct.ProductStoreCollection.Add(productStoreItem);
-                            }
+                            // Add new product store to collection
+                            SelectedProduct.ProductStoreCollection.Add(productStoreItem);
+                        }
+                        else
+                        {
+                            // Update quantity in product store
+                            productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
+                        }
 
-                            // Update on hand store
-                            SelectedProduct.SetOnHandToStore(newOnHandStoreValue, i);
-                            productStoreItem.QuantityOnHand = newOnHandStoreValue;
+                        if (productStoreItem.StoreCode.Equals(Define.StoreCode))
+                        {
+                            // Update quantity store in product
+                            SelectedProduct.OnHandStore = productStoreItem.QuantityOnHand;
                         }
                     }
                 }
+
+                // Update all quantity in product
+                SelectedProduct.QuantityOnHand = viewModel.QuantityOnHand;
             }
         }
 
@@ -1094,8 +1083,8 @@ namespace CPC.POS.ViewModel
             // Load photo collection
             LoadPhotoCollection(SelectedProduct);
 
-            // Load product store default
-            LoadProductStoreDefault(SelectedProduct, Define.StoreCode);
+            // Load product store collection
+            LoadProductStoreCollection(SelectedProduct, Define.StoreCode);
 
             // Load product UOM collection
             LoadProductUOMCollection(SelectedProduct, Define.StoreCode);
@@ -1286,6 +1275,7 @@ namespace CPC.POS.ViewModel
             return SelectedProduct.IsDirty ||
                 (SelectedProduct.PhotoCollection != null && SelectedProduct.PhotoCollection.IsDirty) ||
                 (SelectedProduct.ProductCollection != null && SelectedProduct.ProductCollection.IsDirty) ||
+                (SelectedProduct.ProductStoreCollection != null && SelectedProduct.ProductStoreCollection.IsDirty) ||
                 (SelectedProduct.ProductUOMCollection != null && SelectedProduct.ProductUOMCollection.IsDirty) ||
                 (SelectedProduct.VendorProductCollection != null && SelectedProduct.VendorProductCollection.IsDirty);
         }
@@ -1352,8 +1342,8 @@ namespace CPC.POS.ViewModel
                             // Load photo collection
                             LoadPhotoCollection(SelectedProduct);
 
-                            // Load product store default
-                            LoadProductStoreDefault(SelectedProduct, Define.StoreCode);
+                            // Load product store collection
+                            LoadProductStoreCollection(SelectedProduct, Define.StoreCode);
 
                             // Load product UOM collection
                             LoadProductUOMCollection(SelectedProduct, Define.StoreCode);
@@ -1573,8 +1563,8 @@ namespace CPC.POS.ViewModel
                     productModel.UOMName = uomItem.Text;
             }
 
-            // Get OnHandStore from on hand quantity
-            productModel.OnHandStore = productModel.GetOnHandFromStore(Define.StoreCode);
+            // Keep old cost
+            productModel.OldCost = productModel.AverageUnitCost;
 
             // Load note
             LoadNote(productModel);
@@ -1698,8 +1688,8 @@ namespace CPC.POS.ViewModel
                     // Create new product model
                     base_ProductModel productItem = new base_ProductModel(product);
 
-                    // Load product store default
-                    LoadProductStoreDefault(productItem, Define.StoreCode);
+                    // Load product store collection
+                    LoadProductStoreCollection(productItem, Define.StoreCode);
 
                     // Load product UOM collection
                     LoadProductUOMCollection(productItem, Define.StoreCode);
@@ -1716,29 +1706,33 @@ namespace CPC.POS.ViewModel
         /// Load product store collection
         /// </summary>
         /// <param name="productModel"></param>
-        private void LoadProductStoreDefault(base_ProductModel productModel, int storeCode)
-        {
-            if (productModel.ProductStoreDefault == null)
-            {
-                // Get product store by store code
-                base_ProductStore productStore = productModel.base_Product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
-                if (productStore != null)
-                    productModel.ProductStoreDefault = new base_ProductStoreModel(productStore);
-                else
-                    productModel.ProductStoreDefault = new base_ProductStoreModel { StoreCode = storeCode };
-            }
-        }
-
-        /// <summary>
-        /// Load product store collection
-        /// </summary>
-        /// <param name="productModel"></param>
-        private void LoadProductStoreCollection(base_ProductModel productModel)
+        private void LoadProductStoreCollection(base_ProductModel productModel, int storeCode)
         {
             if (productModel.ProductStoreCollection == null)
             {
-                productModel.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>(
-                    productModel.base_Product.base_ProductStore.Select(x => new base_ProductStoreModel(x)));
+                productModel.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>(
+                    productModel.base_Product.base_ProductStore.Select(x => new base_ProductStoreModel(x) { OldQuantity = x.QuantityOnHand }));
+
+                // Get product store default by store code
+                base_ProductStoreModel productStoreDefault = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                if (productStoreDefault == null)
+                {
+                    // Create new product store default
+                    productStoreDefault = new base_ProductStoreModel { StoreCode = storeCode };
+
+                    // Add new product store to collection
+                    productModel.ProductStoreCollection.Add(productStoreDefault);
+                }
+
+                if (productModel.ProductStoreDefault == null)
+                {
+                    // Update product store default
+                    productModel.ProductStoreDefault = productStoreDefault;
+                }
+
+                // Get quantity for product
+                productModel.OnHandStore = productModel.ProductStoreDefault.QuantityOnHand;
             }
         }
 
@@ -1855,27 +1849,42 @@ namespace CPC.POS.ViewModel
             SelectedProduct.Custom7 = string.Empty;
 
             SelectedProduct.PhotoCollection = new CollectionBase<base_ResourcePhotoModel>();
-            SelectedProduct.ProductStoreDefault = new base_ProductStoreModel { StoreCode = Define.StoreCode };
-            SelectedProduct.ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
             SelectedProduct.VendorProductCollection = new CollectionBase<base_VendorProductModel>();
             SelectedProduct.ResourceNoteCollection = new CollectionBase<base_ResourceNoteModel>();
+
+            // Initial product store collection
+            SelectedProduct.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
+
+            // Create new product store default
+            SelectedProduct.ProductStoreDefault = new base_ProductStoreModel { StoreCode = Define.StoreCode };
+
+            // Add new product store default to collection
+            SelectedProduct.ProductStoreCollection.Add(SelectedProduct.ProductStoreDefault);
+
             if (AllowMutilUOM)
             {
+                // Initital product uom list
                 List<base_ProductUOMModel> productUOMList = new List<base_ProductUOMModel>();
+
                 for (int i = 0; i < 3; i++)
                 {
+                    // Create new product uom model
                     base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
 
+                    // Register property changed event
                     productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
 
                     // Get default markdown and update price
                     GetDefaultMarkdown(productUOMModel);
 
+                    // Add new product uom to list
                     productUOMList.Add(productUOMModel);
 
                     // Turn off IsDirty & IsNew
                     productUOMModel.EndUpdate();
                 }
+
+                // Initial product uom collection from list
                 SelectedProduct.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(productUOMList);
             }
 
@@ -1889,18 +1898,12 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool SaveProduct(base_ProductModel productModel)
         {
-            // Check duplicate
+            // Check duplicate product
             if (IsDuplicateProduct(productModel))
             {
                 MessageBox.Show("This product is duplicated");
                 return false;
             }
-
-            // Update quantity on hand
-            productModel.UpdateQuantityOnHand(_numberOfStore);
-
-            // Update adjustment
-            UpdateAdjustment(productModel);
 
             if (productModel.IsNew)
             {
@@ -1913,7 +1916,6 @@ namespace CPC.POS.ViewModel
                 SaveUpdate(productModel);
             }
 
-            // Save adjustment
             SaveAdjustment(productModel);
 
             // Update default photo
@@ -1937,14 +1939,11 @@ namespace CPC.POS.ViewModel
             // Save photo collection
             SavePhotoCollection(productModel);
 
-            // Save product store default
-            SaveProductStoreDefault(productModel, Define.StoreCode);
+            // Save product store collection
+            SaveProductStoreCollection(productModel);
 
             // Save product UOM collection
             SaveProductUOMCollection(productModel, Define.StoreCode);
-
-            // Save product store and relation product UOM collection
-            SaveProductStoreCollection(productModel, Define.StoreCode);
 
             // Save vendor product collection
             SaveVendorProductCollection(productModel);
@@ -1959,13 +1958,10 @@ namespace CPC.POS.ViewModel
             productModel.Id = productModel.base_Product.Id;
 
             // Update product store id
-            UpdateProductStoreID(productModel, Define.StoreCode);
+            UpdateProductStoreID(productModel);
 
             // Update product UOM id
             UpdateProductUOMID(productModel);
-
-            // Update product store id and product UOM id
-            UpdateProductStoreCollection(productModel, Define.StoreCode);
 
             // Update vendor product id
             UpdateVendorProductID(productModel);
@@ -1986,6 +1982,9 @@ namespace CPC.POS.ViewModel
             if (Define.USER != null)
                 productModel.UserUpdated = Define.USER.LoginName;
 
+            // Save product store collection
+            SaveProductStoreCollection(productModel);
+
             // Map data from model to entity
             productModel.ToEntity();
 
@@ -1995,14 +1994,8 @@ namespace CPC.POS.ViewModel
             // Save product collection have same group attribute
             SaveAttributeAndSize(productModel);
 
-            // Save product store default
-            SaveProductStoreDefault(productModel, Define.StoreCode);
-
             // Save product UOM collection
             SaveProductUOMCollection(productModel, Define.StoreCode);
-
-            // Save product store and relation product UOM collection
-            SaveProductStoreCollection(productModel, Define.StoreCode);
 
             // Save vendor product collection
             SaveVendorProductCollection(productModel);
@@ -2011,13 +2004,10 @@ namespace CPC.POS.ViewModel
             _productRepository.Commit();
 
             // Update product store id
-            UpdateProductStoreID(productModel, Define.StoreCode);
+            UpdateProductStoreID(productModel);
 
             // Update product UOM id
             UpdateProductUOMID(productModel);
-
-            // Update product store id and product UOM id
-            UpdateProductStoreCollection(productModel, Define.StoreCode);
 
             // Update product id have same group attribute
             UpdateAttributeAndSize(productModel);
@@ -2094,19 +2084,18 @@ namespace CPC.POS.ViewModel
                         // Copy product and relation data
                         CopyProduct(productItem);
                         CopyProductStoreDefault(productModel, productItem);
-                        CopyUOM(productModel, productItem);
                     }
                     else
                         productItem.DateUpdated = productModel.DateUpdated;
 
                     // Update quantity on hand
-                    productItem.UpdateQuantityOnHand(_numberOfStore);
+                    productItem.UpdateQuantityOnHand();
+
+                    // Save product store collection
+                    SaveProductStoreCollection(productItem);
 
                     // Map data from model to entity
                     productItem.ToEntity();
-
-                    // Save product store default
-                    SaveProductStoreDefault(productItem, Define.StoreCode);
 
                     // Save product UOM collection
                     SaveProductUOMCollection(productItem, Define.StoreCode);
@@ -2126,42 +2115,21 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Save product store default
-        /// </summary>
-        /// <param name="productModel"></param>
-        /// <param name="storeCode"></param>
-        private void SaveProductStoreDefault(base_ProductModel productModel, int storeCode)
-        {
-            if (productModel.ProductStoreDefault != null)
-            {
-                // Update quantity on hand value
-                productModel.ProductStoreDefault.QuantityOnHand = productModel.GetOnHandFromStore(storeCode);
-
-                // Map data from model to entity
-                productModel.ProductStoreDefault.ToEntity();
-
-                if (productModel.ProductStoreDefault.IsNew)
-                {
-                    // Add new product store to database
-                    productModel.base_Product.base_ProductStore.Add(productModel.ProductStoreDefault.base_ProductStore);
-                }
-                else
-                {
-                    // Turn off IsDirty & IsNew
-                    productModel.ProductStoreDefault.EndUpdate();
-                }
-            }
-        }
-
-        /// <summary>
         /// Save product store collection
         /// </summary>
         /// <param name="productModel"></param>
         /// <param name="storeCode"></param>
-        private void SaveProductStoreCollection(base_ProductModel productModel, int storeCode)
+        private void SaveProductStoreCollection(base_ProductModel productModel)
         {
-            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection.Where(x => !x.StoreCode.Equals(storeCode)))
+            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
             {
+                // Update quantity in product
+                productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
+
+                // Backup quantity value
+                if (!productStoreItem.IsNew)
+                    productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
+
                 // Map data from model to entity
                 productStoreItem.ToEntity();
 
@@ -2261,23 +2229,6 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Update product store id
-        /// </summary>
-        /// <param name="productModel"></param>
-        /// <param name="storeCode"></param>
-        private void UpdateProductStoreID(base_ProductModel productModel, int storeCode)
-        {
-            if (productModel.ProductStoreDefault != null && productModel.ProductStoreDefault.IsNew)
-            {
-                productModel.ProductStoreDefault.Id = productModel.ProductStoreDefault.base_ProductStore.Id;
-                productModel.ProductStoreDefault.ProductId = productModel.ProductStoreDefault.base_ProductStore.ProductId;
-
-                // Turn off IsDirty & IsNew
-                productModel.ProductStoreDefault.EndUpdate();
-            }
-        }
-
-        /// <summary>
         /// Update product UOM id after add new to database
         /// </summary>
         /// <param name="productModel"></param>
@@ -2290,7 +2241,6 @@ namespace CPC.POS.ViewModel
                     if (productUOMModel.UOMId > 0 && productUOMModel.Id == 0)
                     {
                         productUOMModel.Id = productUOMModel.base_ProductUOM.Id;
-                        //productUOMModel.ProductId = productUOMModel.base_ProductUOM.ProductId;
                         productUOMModel.ProductStoreId = productUOMModel.base_ProductUOM.ProductStoreId;
                     }
 
@@ -2305,9 +2255,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         /// <param name="productModel"></param>
         /// <param name="storeCode"></param>
-        private void UpdateProductStoreCollection(base_ProductModel productModel, int storeCode)
+        private void UpdateProductStoreID(base_ProductModel productModel)
         {
-            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection.Where(x => !x.StoreCode.Equals(storeCode)))
+            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
             {
                 if (productStoreItem.IsNew)
                 {
@@ -2351,7 +2301,7 @@ namespace CPC.POS.ViewModel
                         productItem.Id = productItem.base_Product.Id;
 
                         // Update product store id
-                        UpdateProductStoreID(productItem, Define.StoreCode);
+                        UpdateProductStoreID(productItem);
 
                         // Update product UOM id
                         UpdateProductUOMID(productItem);
@@ -2783,118 +2733,87 @@ namespace CPC.POS.ViewModel
         private string _quantityAdjustmentReason = "Quantity adjustment";
         private DateTime _loggedTime;
 
-        private void UpdateAdjustment(base_ProductModel productModel)
+        private void SaveAdjustment(base_ProductModel productModel)
         {
-            productModel.OldQuantity = productModel.GetOnHandFromStore(Define.StoreCode);
-            productModel.OldCost = productModel.base_Product.RegularPrice;
+            if (productModel.ProductCollection == null)
+            {
+                foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
+                {
+                    SaveAdjustment(productModel, productStoreItem);
+                }
+            }
+            else
+            {
+                foreach (base_ProductModel productItem in productModel.ProductCollection)
+                {
+                    foreach (base_ProductStoreModel productStoreItem in productItem.ProductStoreCollection)
+                    {
+                        SaveAdjustment(productItem, productStoreItem);
+                    }
+                }
+            }
         }
 
-        private void SaveAdjustment(base_ProductModel productModel)
+        private void SaveAdjustment(base_ProductModel productModel, base_ProductStoreModel productStoreModel)
         {
             // Get logged time
             _loggedTime = DateTimeExt.Now;
 
             // Get new and old quantity
-            int newQuantity = productModel.GetOnHandFromStore(Define.StoreCode);
-            int oldQuantity = productModel.OldQuantity;
+            int newQuantity = productStoreModel.QuantityOnHand;
+            int oldQuantity = productStoreModel.OldQuantity;
 
             // Get new and old cost
-            decimal newCost = productModel.RegularPrice;
+            decimal newCost = productModel.AverageUnitCost;
             decimal oldCost = productModel.OldCost;
 
-            // Check quatity changed
-            if (newQuantity != oldQuantity)
+            // Check quatity or cost changed
+            if (newQuantity != oldQuantity || newCost != oldCost)
             {
                 // Save quantity adjustment
-                Guid quantityAdjustmentGuid = Guid.NewGuid();
-                SaveQuantityAdjustment(newQuantity, oldQuantity, productModel.AverageUnitCost, quantityAdjustmentGuid);
-                SaveQuantityAdjustmentItem(productModel.Id, productModel.Code, newQuantity, oldQuantity, productModel.AverageUnitCost, quantityAdjustmentGuid.ToString());
+                // Create new quantity adjustment item
+                base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
+                quantityAdjustment.ProductId = productModel.Id;
+                quantityAdjustment.ProductResource = productModel.Resource.ToString();
+                quantityAdjustment.NewQty = newQuantity;
+                quantityAdjustment.OldQty = oldQuantity;
+                quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
+                quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
+                quantityAdjustment.LoggedTime = _loggedTime;
+                quantityAdjustment.Reason = _quantityAdjustmentReason;
+                quantityAdjustment.Status = _quantityAdjustmentReason;
+                quantityAdjustment.UserCreated = Define.USER.LoginName;
+                quantityAdjustment.StoreCode = productStoreModel.StoreCode;
+
+                // Add new quantity adjustment item to database
+                _quantityAdjustmentRepository.Add(quantityAdjustment);
 
                 // Save cost adjustment
-                Guid costAdjustmentGuid = Guid.NewGuid();
-                SaveCostAdjustment(costAdjustmentGuid, newCost, oldCost, newQuantity, oldQuantity);
-                SaveCostAdjustmentItem(productModel.Id, productModel.Code, newCost, oldCost, costAdjustmentGuid.ToString(), true);
+                // Create new cost adjustment item
+                base_CostAdjustment costAdjustment = new base_CostAdjustment();
+                costAdjustment.ProductId = productModel.Id;
+                costAdjustment.ProductResource = productModel.Resource.ToString();
+                costAdjustment.AdjustmentNewCost = newCost;
+                costAdjustment.AdjustmentOldCost = oldCost;
+                costAdjustment.AdjustCostDifference = newCost - oldCost;
+                costAdjustment.NewCost = newCost * newQuantity;
+                costAdjustment.OldCost = oldCost * newQuantity;
+                costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
+                costAdjustment.LoggedTime = _loggedTime;
+                costAdjustment.Reason = _costAdjustmentReason;
+                costAdjustment.Status = _costAdjustmentReason;
+                costAdjustment.UserCreated = Define.USER.LoginName;
+                costAdjustment.StoreCode = productStoreModel.StoreCode;
+
+                // Add new cost adjustment item to database
+                _costAdjustmentRepository.Add(costAdjustment);
             }
-            else if (newCost != oldCost)    // Check cost changed
-            {
-                // Save cost adjustment
-                Guid costAdjustmentGuid = Guid.NewGuid();
-                SaveCostAdjustment(costAdjustmentGuid, newCost, oldCost, newQuantity, oldQuantity);
-                SaveCostAdjustmentItem(productModel.Id, productModel.Code, newCost, oldCost, costAdjustmentGuid.ToString());
-            }
-        }
 
-        private void SaveQuantityAdjustment(int newQuantity, int oldQuantity, decimal averageUnitCost, Guid quantityAdjustmentGuid, int itemCount = 1)
-        {
-            // Create new quantity adjustment
-            base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
-            quantityAdjustment.Resource = quantityAdjustmentGuid;
-            quantityAdjustment.NewQuantity = newQuantity;
-            quantityAdjustment.OldQuantity = oldQuantity;
-            quantityAdjustment.CostDifference = averageUnitCost * (newQuantity - oldQuantity);
-            quantityAdjustment.ItemCount = itemCount;
-            quantityAdjustment.LoggedTime = _loggedTime;
-            quantityAdjustment.Reason = _quantityAdjustmentReason;
-            quantityAdjustment.StoreNumber = Define.StoreCode;
+            // Accept all changes
+            _productRepository.Commit();
 
-            // Add new quantity adjustment to database
-            _quantityAdjustmentRepository.Add(quantityAdjustment);
-        }
-
-        private void SaveQuantityAdjustmentItem(long productID, string productCode, int newQuantity, int oldQuantity,
-            decimal averageUnitCost, string quantityAdjustmentResource)
-        {
-            // Create new quantity adjustment item
-            base_QuantityAdjustmentItem quantityAdjustmentItem = new base_QuantityAdjustmentItem();
-            quantityAdjustmentItem.Resource = Guid.NewGuid();
-            quantityAdjustmentItem.ProductId = productID;
-            quantityAdjustmentItem.ProductCode = productCode;
-            quantityAdjustmentItem.AdjustmentNewQty = newQuantity;
-            quantityAdjustmentItem.AdjustmentOldQty = oldQuantity;
-            quantityAdjustmentItem.AdjustmentQtyDiff = newQuantity - oldQuantity;
-            quantityAdjustmentItem.CostDifference = averageUnitCost * quantityAdjustmentItem.AdjustmentQtyDiff;
-            quantityAdjustmentItem.LoggedTime = _loggedTime;
-            quantityAdjustmentItem.ParentResource = quantityAdjustmentResource;
-
-            // Add new quantity adjustment item to database
-            _quantityAdjustmentItemRepository.Add(quantityAdjustmentItem);
-        }
-
-        private void SaveCostAdjustment(Guid costAdjustmentGuid, decimal newCost, decimal oldCost,
-            int newQuantity, int oldQuantity, int itemCount = 1)
-        {
-            // Create new cost adjustment
-            base_CostAdjustment costAdjustment = new base_CostAdjustment();
-            costAdjustment.Resource = costAdjustmentGuid;
-            costAdjustment.NewCost = newCost * newQuantity;
-            costAdjustment.OldCost = oldCost * oldQuantity;
-            costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
-            costAdjustment.ItemCount = itemCount;
-            costAdjustment.LoggedTime = _loggedTime;
-            costAdjustment.Reason = _costAdjustmentReason;
-            costAdjustment.StoreNumber = Define.StoreCode;
-
-            // Add new cost adjustment to database
-            _costAdjustmentRepository.Add(costAdjustment);
-        }
-
-        private void SaveCostAdjustmentItem(long productID, string productCode, decimal newCost, decimal oldCost,
-            string costAdjustmentResource, bool isQuantityChanged = false)
-        {
-            // Create new cost adjustment item
-            base_CostAdjustmentItem costAdjustmentItem = new base_CostAdjustmentItem();
-            costAdjustmentItem.Resource = Guid.NewGuid();
-            costAdjustmentItem.ProductId = productID;
-            costAdjustmentItem.ProductCode = productCode;
-            costAdjustmentItem.AdjustmentNewCost = newCost;
-            costAdjustmentItem.AdjustmentOldCost = oldCost;
-            costAdjustmentItem.CostDifference = newCost - oldCost;
-            costAdjustmentItem.LoggedTime = _loggedTime;
-            costAdjustmentItem.ParentResource = costAdjustmentResource;
-            costAdjustmentItem.IsQuantityChanged = isQuantityChanged;
-
-            // Add new cost adjustment item to database
-            _costAdjustmentItemRepository.Add(costAdjustmentItem);
+            // Update old cost
+            productModel.OldCost = newCost;
         }
 
         #endregion
@@ -2974,6 +2893,10 @@ namespace CPC.POS.ViewModel
         {
             return ShowNotification(isClosing);
         }
+
+        #endregion
+
+        #region Event Methods
 
         /// <summary>
         /// Process when property changed
@@ -3093,8 +3016,14 @@ namespace CPC.POS.ViewModel
                             productUOMItem.UpdateAverageCost(productModel.AverageUnitCost);
                     break;
                 case "OnHandStore":
-                    // Set on hand quantity from OnHandStore
+                    // Update quantity in product store
+                    productModel.ProductStoreDefault.QuantityOnHand = productModel.OnHandStore;
+
+                    // Update quantity in product
                     productModel.SetOnHandToStore(productModel.OnHandStore, Define.StoreCode);
+
+                    // Update total quantity in product
+                    productModel.UpdateQuantityOnHand();
                     break;
             }
         }
@@ -3198,6 +3127,23 @@ namespace CPC.POS.ViewModel
         /// Gets or sets the NotePopupCollection.
         /// </summary>
         public ObservableCollection<PopupContainer> NotePopupCollection { get; set; }
+
+        private string _addNoteText = "Add sticky";
+        /// <summary>
+        /// Gets or sets the AddNoteText.
+        /// </summary>
+        public string AddNoteText
+        {
+            get { return _addNoteText; }
+            set
+            {
+                if (_addNoteText != value)
+                {
+                    _addNoteText = value;
+                    OnPropertyChanged(() => AddNoteText);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the ShowOrHiddenNote
@@ -3417,6 +3363,10 @@ namespace CPC.POS.ViewModel
                 popupContainer.Left = noteModel.Position.X;
                 popupContainer.Top = noteModel.Position.Y;
             };
+
+            // Set key binding
+            (_ownerViewModel as MainViewModel).SetKeyBinding(App.Current.MainWindow.InputBindings, popupContainer);
+
             return popupContainer;
         }
 

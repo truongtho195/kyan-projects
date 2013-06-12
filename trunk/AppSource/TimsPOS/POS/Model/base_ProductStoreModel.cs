@@ -206,6 +206,36 @@ namespace CPC.POS.Model
             }
         }
 
+        /// <summary>
+        /// Gets or sets the OldQuantity
+        /// </summary>
+        public int OldQuantity { get; set; }
+
+        private int _onReservedQuantity;
+        /// <summary>
+        /// Gets or sets the OnReservedQuantity.
+        /// </summary>
+        public int OnReservedQuantity
+        {
+            get { return _onReservedQuantity; }
+            set
+            {
+                if (_onReservedQuantity != value)
+                {
+                    _onReservedQuantity = value;
+                    OnPropertyChanged(() => OnReservedQuantity);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the StorePosition.
+        /// </summary>
+        public string StorePosition
+        {
+            get { return (StoreCode + 1).ToString(); }
+        }
+
         #endregion
 
         #region Public Methods

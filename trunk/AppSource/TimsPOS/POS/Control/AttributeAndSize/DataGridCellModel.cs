@@ -1,4 +1,5 @@
 ﻿using CPC.Toolkit.Base;
+using System.Collections.Generic;
 
 namespace CPC.POS.Model
 {
@@ -110,6 +111,8 @@ namespace CPC.POS.Model
                 }
             }
         }
+
+        public List<ComboItem> ValueList { get; set; }
 
         #endregion
 

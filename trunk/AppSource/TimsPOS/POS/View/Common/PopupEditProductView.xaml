@@ -9,7 +9,9 @@
              Width="459"
              Height="432"
              mc:Ignorable="d">
-    <UserControl.Resources />
+    <UserControl.Resources>
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+    </UserControl.Resources>
     <Grid x:Name="grdEditProduct">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -66,6 +68,7 @@
                           HorizontalAlignment="Left"
                           DisplayMemberPath="Name"
                           ItemsSource="{Binding SelectedProduct.ProductUOMCollection, Mode=OneWay}"
+                          IsEnabled="{Binding IsEditUOM, Mode=OneWay}"
                           SelectedItem="{Binding SelectedProductUOM, Mode=TwoWay}" />
                 <TextBlock x:Name="txtblPrice"
                            Grid.Row="1"
@@ -183,6 +186,7 @@
                                                    Margin="8,2,0,2"
                                                    HorizontalAlignment="Left"
                                                    HorizontalContentAlignment="Right"
+                                                   IsEnabled="{Binding SelectedPromotion.Id, Mode=OneWay, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}"
                                                    Padding="2,0,2,0"
                                                    TextLength="4"
                                                    TextWrapping="NoWrap"
@@ -200,6 +204,7 @@
                               Width="210"
                               Margin="65,2,0,2"
                               HorizontalAlignment="Left"
+                              IsEnabled="{Binding IsEditPromotion, Mode=OneWay}"
                               DisplayMemberPath="Name"
                               ItemsSource="{Binding PromotionCollection, Mode=OneWay}"
                               SelectedItem="{Binding SelectedPromotion, Mode=TwoWay}" />

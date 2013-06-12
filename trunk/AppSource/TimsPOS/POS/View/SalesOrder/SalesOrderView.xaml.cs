@@ -21,7 +21,13 @@ namespace CPC.POS.View
         public SalesOrderView()
 		{
 			this.InitializeComponent();
-            TabItem t = new TabItem();
+            TextBox t = new TextBox();
+            //t.IsKeyboardFocusWithinChanged
+            //t.IsKeyboardFocusedChanged
+            //t.PreviewGotKeyboardFocus
+            //t.PreviewMouseLeftButtonDown
+             //t.IsVisibleChanged
+            //t.GotMouseCapture
             
 		}
 

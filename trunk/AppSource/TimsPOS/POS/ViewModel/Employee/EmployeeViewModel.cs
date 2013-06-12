@@ -17,6 +17,7 @@ using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
 using Microsoft.Win32;
+using System.Windows.Input;
 
 namespace CPC.POS.ViewModel
 {
@@ -35,6 +36,7 @@ namespace CPC.POS.ViewModel
         private base_GuestAdditionalRepository _guestAdditionalRepository = new base_GuestAdditionalRepository();
         private base_GuestAddressRepository _guestAddressRepository = new base_GuestAddressRepository();
         private base_ResourcePhotoRepository _photoRepository = new base_ResourcePhotoRepository();
+        private base_SaleCommissionRepository _saleCommissionRepository = new base_SaleCommissionRepository();
 
         private BackgroundWorker _bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
 
@@ -435,14 +437,31 @@ namespace CPC.POS.ViewModel
             MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
             if (result.Is(MessageBoxResult.Yes))
             {
-                DeleteNote();
-                if (!SelectedItemEmployee.IsNew)
+                if (SelectedItemEmployee.IsNew)
                 {
-                    SelectedItemEmployee.IsPurged = true;
-                    SaveEmployee();
-                    EmployeeCollection.Remove(SelectedItemEmployee);
-                    SelectedItemEmployee = EmployeeCollection.First();
-                    NumberOfItems = NumberOfItems - 1;
+                    DeleteNote();
+                    SelectedItemEmployee = null;
+                    IsSearchMode = true;
+                }
+                else
+                {
+                    List<ItemModel> ItemModel = new List<ItemModel>();
+                    string resource = SelectedItemEmployee.Resource.Value.ToString();
+                    if (!_saleCommissionRepository.GetAll().Select(x => x.GuestResource).Contains(resource))
+                    {
+                        SelectedItemEmployee.IsPurged = true;
+                        SaveEmployee();
+                        EmployeeCollection.Remove(SelectedItemEmployee);
+                        SelectedItemEmployee = EmployeeCollection.First();
+                        NumberOfItems = NumberOfItems - 1;
+                        DeleteNote();
+                        IsSearchMode = true;
+                    }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = SelectedItemEmployee.Id, Text = SelectedItemEmployee.GuestNo, Resource = resource });
+                        _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "Employee"), "Problem Detection");
+                    }
                 }
                 IsSearchMode = true;
             }
@@ -719,6 +738,61 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+
+        #region DeletesCommand
+
+        /// <summary>
+        /// Gets the DeleteCommand command.
+        /// </summary>
+        public ICommand DeletesCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the DeleteCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnDeletesCommandCanExecute(object param)
+        {
+            if (param == null)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the DeleteCommand command is executed.
+        /// </summary>
+        private void OnDeletesCommandExecute(object param)
+        {
+            MessageBoxResult msgResult = MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo);
+            if (msgResult.Is(MessageBoxResult.Yes))
+            {
+                bool flag = false;
+                List<ItemModel> ItemModel = new List<ItemModel>();
+                for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
+                {
+                    base_GuestModel model = (param as ObservableCollection<object>)[i] as base_GuestModel;
+                    string resource = model.Resource.Value.ToString();
+                    if (!_saleCommissionRepository.GetAll().Select(x => x.GuestResource).Contains(resource))
+                    {
+                        model.IsPurged = true;
+                        model.ToEntity();
+                        _guestRepository.Commit();
+                        model.EndUpdate();
+                        this.EmployeeCollection.Remove(model);
+                        NumberOfItems = NumberOfItems - 1;
+                        this.DeleteNoteExt(model);
+                        i--;
+                    }
+                    else
+                    {
+                        ItemModel.Add(new ItemModel { Id = model.Id, Text = model.GuestNo, Resource = resource });
+                        flag = true;
+                    }
+                }
+                if (flag)
+                    _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "Employee"), "Problem Detection");
+            }
+        }
+        #endregion
         #endregion
 
         #region Private Methods
@@ -739,7 +813,7 @@ namespace CPC.POS.ViewModel
             this.ShowOrHiddenNoteCommand = new RelayCommand(OnShowOrHiddenNoteCommandExecute, OnShowOrHiddenNoteCommandCanExecute);
             this.LoadStepCommand = new RelayCommand<object>(OnLoadStepCommandExecute, OnLoadStepCommandCanExecute);
             this.RecordFingerprintCommand = new RelayCommand<object>(OnRecordFingerprintCommandExecute, OnRecordFingerprintCommandCanExecute);
-
+            this.DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
             ///To load AddressTypeCollection
             this.AddressTypeCollection = new CPCToolkitExtLibraries.AddressTypeCollection();
             AddressTypeCollection.Add(new AddressTypeModel { ID = 0, Name = "Home" });
@@ -1500,6 +1574,18 @@ namespace CPC.POS.ViewModel
                 popupContainer.Top = noteModel.Position.Y;
             };
             return popupContainer;
+        }
+
+        private void DeleteNoteExt(base_GuestModel model)
+        {
+            // Remove popup note
+            CloseAllPopupNote();
+
+            // Delete note
+            foreach (base_ResourceNoteModel noteModel in model.ResourceNoteCollection)
+                _resourceNoteRepository.Delete(noteModel.base_ResourceNote);
+            _resourceNoteRepository.Commit();
+            model.ResourceNoteCollection.Clear();
         }
 
         #endregion

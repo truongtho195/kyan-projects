@@ -1689,6 +1689,24 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region AvailableReward
+        private int _availableReward;
+        /// <summary>
+        /// Gets or sets the AvailableReward.
+        /// </summary>
+        public int AvailableReward
+        {
+            get { return _availableReward; }
+            set
+            {
+                if (_availableReward != value)
+                {
+                    _availableReward = value;
+                    OnPropertyChanged(() => AvailableReward);
+                }
+            }
+        }
+        #endregion
 
         //Time Clock
         #region Property EmployeeScheduleModel
@@ -1954,7 +1972,6 @@ namespace CPC.POS.Model
 
         #endregion
 
-
         #region ResourceString
 
         /// <summary>
@@ -1972,6 +1989,26 @@ namespace CPC.POS.Model
 
         }
         #endregion
+
+        #region TotalReward
+        private int _totalReward;
+        /// <summary>
+        /// Gets or sets the TotalReward.
+        /// </summary>
+        public int TotalReward
+        {
+            get { return _totalReward; }
+            set
+            {
+                if (_totalReward != value)
+                {
+                    _totalReward = value;
+                    OnPropertyChanged(() => TotalReward);
+                }
+            }
+        }
+        #endregion
+
 
 
         #endregion

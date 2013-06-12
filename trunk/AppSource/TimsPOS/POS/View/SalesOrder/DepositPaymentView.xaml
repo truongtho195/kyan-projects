@@ -11,8 +11,8 @@
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Name="UserControl"
-             Width="700"
-             Height="400"
+             Width="668"
+             Height="401"
              mc:Ignorable="d">
     <UserControl.Resources>
 
@@ -92,7 +92,7 @@
                                                  Style="{DynamicResource DatagridWithoutRowHeader}"
                                                  VisibilityNavigationBar="Collapsed">
                         <cpcDataGrid:DataGridControl.Columns>
-                            <DataGridTemplateColumn Width="120"
+                            <DataGridTemplateColumn Width="*"
                                                     Header="Methods"
                                                     IsReadOnly="true">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -104,8 +104,8 @@
                                                 Style="{DynamicResource ButtonDatagridPayment}">
                                             <StackPanel x:Name="stkpCash" Orientation="Horizontal">
                                                 <Rectangle x:Name="imgCash"
-                                                           Width="20"
-                                                           Height="20">
+                                                           Width="28"
+                                                           Height="28">
                                                     <Rectangle.Fill>
                                                         <Binding ConverterParameter="PaymentMethod"
                                                                  Mode="OneWay"
@@ -149,7 +149,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Width="200" Header="Ref #">
+                            <DataGridTemplateColumn Width="100" Header="Ref #">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Reference, Mode=OneWay}" />

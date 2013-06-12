@@ -12,8 +12,8 @@
              xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
              
              x:Name="UserControl"
-             Width="670"
-             Height="400"
+             Width="498"
+             Height="377"
              mc:Ignorable="d">
     <UserControl.Resources>
 
@@ -38,7 +38,7 @@
                                              Margin="10,10.1,10,10"
                                              AutoGenerateColumns="False"
                                              CanUserAddRows="False"
-											
+											SelectedItem="{Binding SelectedCard}"
                                              CanUserDeleteRows="False"
                                              IsSynchronizedWithCurrentItem="False"
                                              ItemsSource="{Binding SelectedPaymentModel.PaymentCardCollection}"
@@ -48,7 +48,7 @@
                     <cpcDataGrid:DataGridControl.Columns>
                         <DataGridTemplateColumn Header="Methods"
 						
-                                                IsReadOnly="true">
+                                                IsReadOnly="true" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button x:Name="btnCash"
@@ -58,8 +58,8 @@
                                         <StackPanel x:Name="stkpCash"
                                                     Orientation="Horizontal">
                                             <Rectangle x:Name="imgCash"
-                                                       Width="24"
-                                                       Height="24">
+                                                       Width="28"
+                                                       Height="28">
                                                 <Rectangle.Fill>
                                                     <Binding ConverterParameter="PaymentCard"
                                                              Mode="OneWay"
@@ -85,6 +85,7 @@
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*"
                                                 MinWidth="100"
+                                                CellStyle="{DynamicResource DataGridCellDisableStyle}"
                                                 Header="Amount">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -96,13 +97,15 @@
                                 <DataTemplate>
                                     <cpcTextBox:TextBoxMoney x:Name="txtPaid"
                                                              HorizontalAlignment="Right"
+                                                             cpcBehavior:DataGridCellFocusHelper.Command="{Binding DataContext.FillMoneyCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl},
+                                                                       Mode=FindAncestor}}"
                                                              Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                              MinWidth="50"
                                                              Value="{Binding Paid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                         <DataGridTemplateColumn Width="100"
+                         <DataGridTemplateColumn Width="*"
                                                 MinWidth="100"
                                                 Visibility="{Binding Path=Data.SelectedPaymentModel.IsCreditCard,Source={StaticResource bindingHelper} , Mode=OneWay,Converter={StaticResource boolToVisibilityConverter}}"
                                                 Header="Tip">
@@ -124,7 +127,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Width="*"
+                        <DataGridTemplateColumn Width="100"
                                                 Header="Ref #">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

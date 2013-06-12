@@ -77,6 +77,8 @@ namespace CPC.POS.ViewModel
 
         public NoteViewModel()
         {
+            _ownerViewModel = App.Current.MainWindow.DataContext;
+
             InitialCommands();
         }
 
@@ -202,7 +204,7 @@ namespace CPC.POS.ViewModel
 
             noteViewModel.SaveNote();
 
-            PopupContainer popupContainer = new PopupContainer(noteView,true);
+            PopupContainer popupContainer = new PopupContainer(noteView, true);
             popupContainer.WindowStartupLocation = WindowStartupLocation.Manual;
             popupContainer.DataContext = noteViewModel;
             NotePopupCollection.Add(popupContainer);
@@ -216,7 +218,11 @@ namespace CPC.POS.ViewModel
             {
                 popupContainer.Left = noteModel.Position.X;
                 popupContainer.Top = noteModel.Position.Y;
+
+                // Set key binding
+                (_ownerViewModel as MainViewModel).SetKeyBinding(App.Current.MainWindow.InputBindings, popupContainer);
             };
+
             return popupContainer;
         }
 
