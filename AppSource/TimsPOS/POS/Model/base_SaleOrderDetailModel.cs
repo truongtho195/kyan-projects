@@ -14,6 +14,7 @@ using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace CPC.POS.Model
 {
@@ -1135,6 +1136,14 @@ namespace CPC.POS.Model
         {
             OnPropertyChanged(() => IsQuantityAccepted);
         }
+
+
+        public void RaisePropertyChanged(string propertyChanged)
+        {
+            OnPropertyChanged(propertyChanged);
+        }
+
+
         #endregion
 
         #region Override Methods
