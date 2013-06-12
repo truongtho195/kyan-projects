@@ -1394,23 +1394,28 @@
                                                            Margin="10,10,10,0"
                                                            SelectedIndex="{Binding SelectedTabIndex,
                                                                                    Mode=TwoWay,
-                                                                                   UpdateSourceTrigger=PropertyChanged}">
-                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemOrder" Header="Order">
-                                    <Grid x:Name="grdOrder">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="30" />
-                                            <RowDefinition Height="Auto" MinHeight="5" />
-                                            <RowDefinition />
-                                            <RowDefinition Height="150.003" />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock x:Name="txtblSelectItem"
+                                                                                   UpdateSourceTrigger=PropertyChanged}"
+                                                            DataChanged="{Binding SelectedSaleOrder}"
+                                                            IsValid="{Binding IsValidTab,
+                                                                         Mode=OneWayToSource}"
+                                                           >
+                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemOrder" Header="Order" IsCheckError="True">
+                                    <AdornerDecorator>
+                                        <Grid x:Name="grdOrder">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="Auto" MinHeight="5" />
+                                                <RowDefinition />
+                                                <RowDefinition Height="150.003" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblSelectItem"
                                                    Margin="10,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
                                                    Text="Select Item:"
                                                    TextWrapping="NoWrap" />
-                                        <cpcAutoComplete:AutoCompleteTextBox Grid.Column="1"
+                                            <cpcAutoComplete:AutoCompleteTextBox Grid.Column="1"
                                                                              Width="350"
                                                                              Height="21"
                                                                              Margin="75,0,0,0"
@@ -1427,38 +1432,38 @@
                                                                              SelectedItemResult="{Binding SelectedProduct,
                                                                                                           Mode=TwoWay,
                                                                                                           UpdateSourceTrigger=PropertyChanged}">
-                                            <cpcAutoComplete:AutoCompleteTextBox.Columns>
-                                                <GridViewColumn Width="120"
+                                                <cpcAutoComplete:AutoCompleteTextBox.Columns>
+                                                    <GridViewColumn Width="120"
                                                                 DisplayMemberBinding="{Binding Code}"
                                                                 Header="Code" />
-                                                <GridViewColumn Width="150"
+                                                    <GridViewColumn Width="150"
                                                                 DisplayMemberBinding="{Binding ProductName}"
                                                                 Header="ProductName" />
-                                                <GridViewColumn Width="80"
+                                                    <GridViewColumn Width="80"
                                                                 DisplayMemberBinding="{Binding Attribute}"
                                                                 Header="Attribute" />
-                                                <GridViewColumn Width="80"
+                                                    <GridViewColumn Width="80"
                                                                 DisplayMemberBinding="{Binding Size}"
                                                                 Header="Size" />
-                                            </cpcAutoComplete:AutoCompleteTextBox.Columns>
-                                        </cpcAutoComplete:AutoCompleteTextBox>
-                                        <Rectangle x:Name="imgIssueNewReward"
+                                                </cpcAutoComplete:AutoCompleteTextBox.Columns>
+                                            </cpcAutoComplete:AutoCompleteTextBox>
+                                            <Rectangle x:Name="imgIssueNewReward"
                                                    Grid.Column="1"
                                                    Width="30"
                                                    Height="30"
                                                    Margin="550,0,0,0"
                                                    HorizontalAlignment="Left">
-                                        	<Rectangle.Visibility>
-                                                                    <Binding Mode="OneWay"
+                                                <Rectangle.Visibility>
+                                                    <Binding Mode="OneWay"
                                                                              Path="SelectedSaleOrder.IsApplyReward">
-                                                                        <Binding.Converter>
-                                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
-                                                                        </Binding.Converter>
-                                                                    </Binding>
-                                                                </Rectangle.Visibility>
-                                            <Rectangle.ToolTip>
-                                                <ToolTip Background="Transparent" BorderBrush="Transparent">
-                                                    <Border x:Name="brdRewardTooltip"
+                                                        <Binding.Converter>
+                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                                        </Binding.Converter>
+                                                    </Binding>
+                                                </Rectangle.Visibility>
+                                                <Rectangle.ToolTip>
+                                                    <ToolTip Background="Transparent" BorderBrush="Transparent">
+                                                        <Border x:Name="brdRewardTooltip"
                                                             Grid.Row="2"
                                                             Width="250"
                                                             HorizontalAlignment="Stretch"
@@ -1466,74 +1471,70 @@
                                                             BorderBrush="{DynamicResource TitleBarBorder}"
                                                             BorderThickness="1,1,1,1"
                                                             CornerRadius="5,5,5,5">
-                                                        <Grid x:Name="grdReward" Margin="5">
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="25" />
-                                                                <RowDefinition Height="25" />
-                                                                <RowDefinition Height="30">
-                                                                </RowDefinition>
-                                                            </Grid.RowDefinitions>
-                                                            <TextBlock x:Name="txtblRewardMember"
+                                                            <Grid x:Name="grdReward" Margin="5">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="25" />
+                                                                    <RowDefinition Height="25" />
+                                                                    <RowDefinition Height="30">
+                                                                    </RowDefinition>
+                                                                </Grid.RowDefinitions>
+                                                                <TextBlock x:Name="txtblRewardMember"
                                                                        HorizontalAlignment="Left"
                                                                        VerticalAlignment="Center"
                                                                        Style="{DynamicResource TextBlockNormal}"
                                                                        Text="Reward Member"
                                                                        TextWrapping="NoWrap" />
-                                                            <TextBlock x:Name="txtblRewardHas"
+                                                                <TextBlock x:Name="txtblRewardHas"
                                                                        Grid.Row="1"
                                                                        HorizontalAlignment="Left"
                                                                        VerticalAlignment="Center"
                                                                        Style="{DynamicResource TextBlockNormal}"
                                                                        TextWrapping="Wrap">
-                                                                <TextBlock.Text>
-                                                                    <Binding Mode="OneWay"
+                                                                    <TextBlock.Text>
+                                                                        <Binding Mode="OneWay"
                                                                              Path="SelectedCustomer.GuestRewardCollection.Count"
                                                                              StringFormat="Reward has {0} rewards available for redemption" />
-                                                                </TextBlock.Text>
-                                                            </TextBlock>
-                                                            <StackPanel Orientation="Horizontal"
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                                <StackPanel Orientation="Horizontal"
                                                                         Margin="3"
                                                                         Grid.Row="2">
-                                                                <Rectangle x:Name="imgReward"
+                                                                    <Rectangle x:Name="imgReward"
                                                                            Width="15"
                                                                            Height="15"
                                                                            Margin="0,7.5,0,0"
                                                                            HorizontalAlignment="Left"
                                                                            VerticalAlignment="Top"
                                                                            Fill="{DynamicResource RewardGold}" />
-                                                                <TextBlock x:Name="txtblRewardHas1"
+                                                                    <TextBlock x:Name="txtblRewardHas1"
                                                                            Margin="5,0,0,0"
                                                                            HorizontalAlignment="Left"
                                                                            VerticalAlignment="Center"
                                                                            Style="{DynamicResource TextBlockNormal}"
                                                                            TextWrapping="Wrap">
-                                                                <TextBlock.Text>
-                                                                    <Binding Mode="OneWay"
+                                                                        <TextBlock.Text>
+                                                                            <Binding Mode="OneWay"
                                                                              Path="SelectedCustomer.RequirePurchaseNextReward"
                                                                              StringFormat=" {0:C} until the next reward is earned" />
-                                                                </TextBlock.Text>
-                                                                </TextBlock>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </Border>
-                                                </ToolTip>
-                                            </Rectangle.ToolTip>
-                                            <Rectangle.Style>
-                                                <Style TargetType="{x:Type Rectangle}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding SelectedCustomer.IsRewardMember, Mode=OneWay}" Value="True">
-                                                            <Setter Property="Fill" Value="{DynamicResource IssueReward}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-                                        <!--
-                                            Visibility="{Binding SelectedCustomer.IsRewardMember,
-                                            Converter={StaticResource boolToVisibilityConverter},
-                                            ConverterParameter=True}"
-                                        -->
-                                        <Button x:Name="btnAdvanceSearch1"
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </Border>
+                                                    </ToolTip>
+                                                </Rectangle.ToolTip>
+                                                <Rectangle.Style>
+                                                    <Style TargetType="{x:Type Rectangle}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding SelectedCustomer.IsRewardMember, Mode=OneWay}" Value="True">
+                                                                <Setter Property="Fill" Value="{DynamicResource IssueReward}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Rectangle.Style>
+                                            </Rectangle>
+
+                                            <Button x:Name="btnAdvanceSearch1"
                                                 Width="90"
                                                 Height="21"
                                                 Margin="429,0,0,0"
@@ -1542,13 +1543,13 @@
                                                 Command="{Binding SearchProductAdvanceCommand}"
                                                 IsEnabled="{Binding IsAllowChangeOrder,
                                                                     Mode=OneWay}">
-                                            <TextBlock x:Name="txtblAdvanceSearch"
+                                                <TextBlock x:Name="txtblAdvanceSearch"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource ButtonTextBlock}"
                                                        Text="Advance Search"
                                                        TextWrapping="NoWrap" />
-                                        </Button>
-                                        <cpcDataGrid:DataGridControl x:Name="dtgrdOrderDetail"
+                                            </Button>
+                                            <cpcDataGrid:DataGridControl x:Name="dtgrdOrderDetail"
                                                                      Grid.Row="2"
                                                                      Margin="5,0,5,5"
                                                                      AutoGenerateColumns="False"
@@ -1570,97 +1571,98 @@
                                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                                      Style="{DynamicResource DatagridWithRowHeader}"
                                                                      VisibilityNavigationBar="Collapsed">
-                                            <cpcDataGrid:DataGridControl.Columns>
-                                                <DataGridTextColumn Width="100"
+                                                <cpcDataGrid:DataGridControl.Columns>
+                                                    <DataGridTextColumn Width="100"
                                                                     Binding="{Binding ItemCode}"
                                                                     Header="Item Code"
                                                                     IsReadOnly="True" />
-                                                <DataGridTextColumn Width="*"
+                                                    <DataGridTextColumn Width="*"
                                                                     Binding="{Binding ItemName}"
                                                                     Header="Item Name"
                                                                     IsReadOnly="True" />
-                                                <DataGridTextColumn Width="80"
+                                                    <DataGridTextColumn Width="80"
                                                                     Binding="{Binding ItemAtribute,
                                                                                       Mode=OneWay}"
                                                                     Header="Attribute"
                                                                     IsReadOnly="True" />
-                                                <DataGridTextColumn Width="80"
+                                                    <DataGridTextColumn Width="80"
                                                                     Binding="{Binding ItemSize,
                                                                                       Mode=OneWay}"
                                                                     Header="Size"
                                                                     IsReadOnly="True" />
-                                                <DataGridTemplateColumn Width="75"
+                                                    <DataGridTemplateColumn Width="75"
                                                                         Header="Quantity"
                                                                         CellStyle="{DynamicResource DataGridCellDisableStyle}">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Qty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
-                                                                <cpcTextBox:TextBoxNumeric x:Name="txtQuantity"
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock HorizontalAlignment="Right" Text="{Binding Qty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <cpcTextBox:TextBoxNumeric x:Name="txtQuantity"
+                                                                                           Tag="{Binding IsQuantityAccepted,Mode=OneWay}"
                                                                                            HorizontalAlignment="Right"
                                                                                            Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                                            Value="{Binding Qty,
                                                                                                            Mode=TwoWay,
                                                                                                            UpdateSourceTrigger=PropertyChanged}">
-                                                                    <i:Interaction.Triggers>
-                                                                        <i:EventTrigger EventName="LostFocus">
-                                                                            <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding Qty}" />
-                                                                        </i:EventTrigger>
-                                                                    </i:Interaction.Triggers>
-                                                                </cpcTextBox:TextBoxNumeric>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="80"
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="LostFocus">
+                                                                                <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding Qty}" />
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </cpcTextBox:TextBoxNumeric>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="80"
                                                                         CellStyle="{StaticResource DataGridPriceCellStyle}"
                                                                         Header="Price">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
 
-                                                            <cpcTextBox:TextBoxMoney x:Name="txtSalePrice"
+                                                                <cpcTextBox:TextBoxMoney x:Name="txtSalePrice"
                                                                                      HorizontalAlignment="Right"
                                                                                      Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                                                      Value="{Binding SalePriceChange,
                                                                                                          Mode=TwoWay,
                                                                                                          UpdateSourceTrigger=PropertyChanged}">
-                                                                <i:Interaction.Triggers>
-                                                                    <i:EventTrigger EventName="LostFocus">
-                                                                        <command:EventToCommand Command="{Binding DataContext.ManualChangePriceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                                    <i:Interaction.Triggers>
+                                                                        <i:EventTrigger EventName="LostFocus">
+                                                                            <command:EventToCommand Command="{Binding DataContext.ManualChangePriceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
                                                                                                 CommandParameter="{Binding SalePriceChange}" />
-                                                                    </i:EventTrigger>
-                                                                </i:Interaction.Triggers>
-                                                            </cpcTextBox:TextBoxMoney>
+                                                                        </i:EventTrigger>
+                                                                    </i:Interaction.Triggers>
+                                                                </cpcTextBox:TextBoxMoney>
 
-                                                                
 
-                                                            
 
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="75"
+
+
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="75"
                                                                         CellStyle="{StaticResource DataGridUOMCellStyle}"
                                                                         Header="UOM">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Text="{Binding UnitName, Mode=OneWay}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding UnitName, Mode=OneWay}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
 
-                                                                <ComboBox x:Name="cmbUnit"
+                                                                    <ComboBox x:Name="cmbUnit"
                                                                           DisplayMemberPath="Name"
                                                                           ItemsSource="{Binding ProductUOMCollection,
                                                                                                 Mode=OneWay}"
@@ -1669,62 +1671,62 @@
                                                                                                   UpdateSourceTrigger=PropertyChanged}"
                                                                           SelectedValuePath="UOMId"
                                                                           Style="{DynamicResource ComboBoxInsideDataGridStyle}" />
-                                                            </Grid>
+                                                                </Grid>
 
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="80"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="80"
                                                                         Header="Amount"
                                                                         IsReadOnly="True">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock x:Name="tblSubTotal"
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock x:Name="tblSubTotal"
                                                                        HorizontalAlignment="Right"
                                                                        Text="{Binding SubTotal,
                                                                                       Mode=OneWay,
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="75" Header="On-Hand Qty">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding OnHandQty, Mode=OneWay}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
-                                            </cpcDataGrid:DataGridControl.Columns>
-                                        </cpcDataGrid:DataGridControl>
-                                        <Grid x:Name="grdOrderSubTotal"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="75" Header="On-Hand Qty">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock HorizontalAlignment="Right" Text="{Binding OnHandQty, Mode=OneWay}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </cpcDataGrid:DataGridControl.Columns>
+                                            </cpcDataGrid:DataGridControl>
+                                            <Grid x:Name="grdOrderSubTotal"
                                               Grid.Row="3"
                                               Margin="5,0"
                                               VerticalAlignment="Top"
                                               IsEnabled="{Binding IsAllowChangeOrder,
                                                                   Mode=OneWay}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="220" />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="61" />
-                                                <ColumnDefinition Width="115" />
-                                                <ColumnDefinition Width="70" />
-                                                <ColumnDefinition Width="80" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="9" />
-                                                <RowDefinition Height="40" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock x:Name="txtblOrderTabPaymentTerms"
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="220" />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="61" />
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="80" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="9" />
+                                                    <RowDefinition Height="40" />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock x:Name="txtblOrderTabPaymentTerms"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Payment Terms:"
                                                        TextWrapping="NoWrap" />
-                                            <cpcTextBox:TextBox x:Name="txtTerm"
+                                                <cpcTextBox:TextBox x:Name="txtTerm"
                                                                 Margin="100,2,23,2"
                                                                 HorizontalContentAlignment="Right"
                                                                 IsReadOnly="True"
@@ -1733,49 +1735,49 @@
                                                                                Mode=OneWay,
                                                                                UpdateSourceTrigger=PropertyChanged}"
                                                                 TextWrapping="NoWrap" />
-                                            <Button x:Name="btnAdd"
+                                                <Button x:Name="btnAdd"
                                                     Width="21"
                                                     Margin="24,2,0,2"
                                                     HorizontalAlignment="Right"
                                                     Command="{Binding AddTermCommand}">
-                                                <StackPanel x:Name="stkpBtnAdd"
+                                                    <StackPanel x:Name="stkpBtnAdd"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
                                                             Orientation="Horizontal">
-                                                    <Rectangle x:Name="imgAdd"
+                                                        <Rectangle x:Name="imgAdd"
                                                                Width="13"
                                                                Height="13"
                                                                Fill="{DynamicResource EditTerm}" />
-                                                    <TextBlock x:Name="txtblOK"
+                                                        <TextBlock x:Name="txtblOK"
                                                                Margin="5,0,0,0"
                                                                VerticalAlignment="Center"
                                                                Style="{DynamicResource ButtonTextBlock}"
                                                                Text="Add"
                                                                TextWrapping="NoWrap"
                                                                Visibility="Collapsed" />
-                                                </StackPanel>
-                                            </Button>
-                                            <TextBlock x:Name="txtblOrderTabRequestShipDate"
+                                                    </StackPanel>
+                                                </Button>
+                                                <TextBlock x:Name="txtblOrderTabRequestShipDate"
                                                        Grid.Row="1"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Request Ship Date:"
                                                        TextWrapping="NoWrap" />
-                                            <DatePicker x:Name="dtpOrderTabRequestShipDate"
+                                                <DatePicker x:Name="dtpOrderTabRequestShipDate"
                                                         Grid.Row="1"
                                                         Margin="100,2,0,2"
                                                         SelectedDate="{Binding SelectedSaleOrder.RequestShipDate,
                                                                                Mode=TwoWay,
                                                                                UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock x:Name="txtblStoreCode"
+                                                <TextBlock x:Name="txtblStoreCode"
                                                        Grid.Row="2"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Store Code:"
                                                        TextWrapping="NoWrap" />
-                                            <ComboBox x:Name="cmbStoreCode"
+                                                <ComboBox x:Name="cmbStoreCode"
                                                       Grid.Row="2"
                                                       Margin="100,2,0,2"
                                                       DisplayMemberPath="Code"
@@ -1786,7 +1788,7 @@
                                                       SelectedIndex="{Binding SelectedSaleOrder.StoreCode,
                                                                               Mode=TwoWay,
                                                                               UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock x:Name="txtblOrderTabSaleRep"
+                                                <TextBlock x:Name="txtblOrderTabSaleRep"
                                                        Grid.Row="3"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
@@ -1794,18 +1796,18 @@
                                                        Text="Sales Rep:"
                                                        TextWrapping="NoWrap">
                                                 <!--  when user choise booking channel is website, Sales rep will be collapsed  -->
-                                                <TextBlock.Visibility>
-                                                    <Binding ElementName="cmbTransType"
+                                                    <TextBlock.Visibility>
+                                                        <Binding ElementName="cmbTransType"
                                                              Mode="OneWay"
                                                              Path="SelectedItem.Flag"
                                                              UpdateSourceTrigger="PropertyChanged">
-                                                        <Binding.Converter>
-                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
-                                                        </Binding.Converter>
-                                                    </Binding>
-                                                </TextBlock.Visibility>
-                                            </TextBlock>
-                                            <TextBox x:Name="txtblSaleRep"
+                                                            <Binding.Converter>
+                                                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                                <TextBox x:Name="txtblSaleRep"
                                                      Grid.Row="3"
                                                      Width="120"
                                                      Height="21"
@@ -1818,7 +1820,7 @@
                                                      TextWrapping="NoWrap"
                                                      Visibility="{Binding Visibility,
                                                                           ElementName=txtblOrderTabSaleRep}" />
-                                            <TextBlock x:Name="txtblRemark1"
+                                                <TextBlock x:Name="txtblRemark1"
                                                        Grid.Column="1"
                                                        Margin="20,0,0,0"
                                                        HorizontalAlignment="Left"
@@ -1826,7 +1828,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Remark:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBox x:Name="txtRemark1"
+                                                <TextBox x:Name="txtRemark1"
                                                      Grid.Row="1"
                                                      Grid.RowSpan="3"
                                                      Grid.Column="1"
@@ -1840,30 +1842,30 @@
                                                                     UpdateSourceTrigger=PropertyChanged}"
                                                      TextWrapping="Wrap"
                                                      VerticalScrollBarVisibility="Auto" />
-                                            <StackPanel x:Name="stkpTaxLocationCode"
+                                                <StackPanel x:Name="stkpTaxLocationCode"
                                                         Grid.Row="5"
                                                         Grid.ColumnSpan="2"
                                                         Margin="0,0,0,7"
                                                         HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom"
                                                         Orientation="Horizontal">
-                                                <StackPanel.Visibility>
-                                                    <Binding Mode="OneWay"
+                                                    <StackPanel.Visibility>
+                                                        <Binding Mode="OneWay"
                                                              Path="SelectedSaleOrder.IsTaxExemption"
                                                              UpdateSourceTrigger="PropertyChanged">
-                                                        <Binding.Converter>
-                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
-                                                        </Binding.Converter>
-                                                    </Binding>
-                                                </StackPanel.Visibility>
-                                                <TextBlock x:Name="txtblTaxLocation2"
+                                                            <Binding.Converter>
+                                                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </StackPanel.Visibility>
+                                                    <TextBlock x:Name="txtblTaxLocation2"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
                                                            Foreground="#FFFEFF00"
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Tax Location:"
                                                            TextWrapping="NoWrap" />
-                                                <TextBlock x:Name="txtblBindingTaxLocation"
+                                                    <TextBlock x:Name="txtblBindingTaxLocation"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
@@ -1872,7 +1874,7 @@
                                                            Text="{Binding SelectedSaleOrder.TaxLocationModel.Name,
                                                                           Mode=OneWay}"
                                                            TextWrapping="NoWrap" />
-                                                <TextBlock x:Name="txtblTaxCode"
+                                                    <TextBlock x:Name="txtblTaxCode"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
@@ -1880,7 +1882,7 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Tax Code:"
                                                            TextWrapping="NoWrap" />
-                                                <TextBlock x:Name="txtblBindingTaxCode"
+                                                    <TextBlock x:Name="txtblBindingTaxCode"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
@@ -1889,29 +1891,29 @@
                                                            Text="{Binding SelectedSaleOrder.TaxCode,
                                                                           Mode=OneWay}"
                                                            TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                            <StackPanel x:Name="stkpTaxExcemption"
+                                                </StackPanel>
+                                                <StackPanel x:Name="stkpTaxExcemption"
                                                         Grid.Row="5"
                                                         Grid.ColumnSpan="2"
                                                         Margin="0,0,0,7"
                                                         HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom"
                                                         Orientation="Horizontal">
-                                                <StackPanel.Visibility>
-                                                    <Binding Mode="OneWay" Path="SelectedSaleOrder.IsTaxExemption">
-                                                        <Binding.Converter>
-                                                            <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
-                                                        </Binding.Converter>
-                                                    </Binding>
-                                                </StackPanel.Visibility>
-                                                <TextBlock x:Name="txtblTaxExcemption"
+                                                    <StackPanel.Visibility>
+                                                        <Binding Mode="OneWay" Path="SelectedSaleOrder.IsTaxExemption">
+                                                            <Binding.Converter>
+                                                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </StackPanel.Visibility>
+                                                    <TextBlock x:Name="txtblTaxExcemption"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
                                                            Foreground="#FFFEFF00"
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Tax Excemption"
                                                            TextWrapping="NoWrap" />
-                                                <TextBlock x:Name="txtblTaxExcemptionNo"
+                                                    <TextBlock x:Name="txtblTaxExcemptionNo"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
@@ -1919,7 +1921,7 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="Tax Code:"
                                                            TextWrapping="NoWrap" />
-                                                <TextBlock x:Name="txtblBindingTaxExcemptionNo"
+                                                    <TextBlock x:Name="txtblBindingTaxExcemptionNo"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            FontWeight="Bold"
@@ -1928,15 +1930,15 @@
                                                            Text="{Binding SelectedSaleOrder.TaxExemption,
                                                                           Mode=OneWay}"
                                                            TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                            <TextBlock x:Name="txtblPriceLevel2"
+                                                </StackPanel>
+                                                <TextBlock x:Name="txtblPriceLevel2"
                                                        Grid.Column="2"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Price Level:"
                                                        TextWrapping="NoWrap" />
-                                            <ComboBox x:Name="cmbPriceLevel2"
+                                                <ComboBox x:Name="cmbPriceLevel2"
                                                       Grid.Column="3"
                                                       Margin="0,2"
                                                       VerticalAlignment="Stretch"
@@ -1946,7 +1948,7 @@
                                                                               Mode=TwoWay,
                                                                               UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="ObjValue" />
-                                            <TextBlock x:Name="txtblOrderTabSubTotal"
+                                                <TextBlock x:Name="txtblOrderTabSubTotal"
                                                        Grid.Column="4"
                                                        Margin="10,0,0,0"
                                                        HorizontalAlignment="Left"
@@ -1954,7 +1956,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Sub-Total:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBox x:Name="txtOrderTabSubTotal"
+                                                <TextBox x:Name="txtOrderTabSubTotal"
                                                      Grid.RowSpan="1"
                                                      Grid.Column="5"
                                                      Height="21"
@@ -1968,27 +1970,27 @@
                                                                     Mode=OneWay,
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblOrderTabDiscountleft"
+                                                <TextBlock x:Name="txtblOrderTabDiscountleft"
                                                        Grid.Column="2"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Text="Discount:"
                                                        TextWrapping="NoWrap">
-                                                <TextBlock.Style>
-                                                    <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
-                                                        <Setter Property="Grid.Row" Value="1" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <cpcTextBox:TextBoxNumeric x:Name="txtOrderDiscount"
+                                                    <TextBlock.Style>
+                                                        <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Grid.Row" Value="1" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <cpcTextBox:TextBoxNumeric x:Name="txtOrderDiscount"
                                                                        Grid.RowSpan="1"
                                                                        Grid.Column="3"
                                                                        Width="35"
@@ -2003,21 +2005,21 @@
                                                                        Value="{Binding SelectedSaleOrder.DiscountPercent,
                                                                                        Mode=TwoWay,
                                                                                        UpdateSourceTrigger=PropertyChanged}">
-                                                <cpcTextBox:TextBoxNumeric.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxNumeric}}" TargetType="{x:Type cpcTextBox:TextBoxNumeric}">
-                                                        <Setter Property="Grid.Row" Value="1" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </cpcTextBox:TextBoxNumeric.Style>
-                                            </cpcTextBox:TextBoxNumeric>
-                                            <TextBlock x:Name="txtblOrderDiscountPercent"
+                                                    <cpcTextBox:TextBoxNumeric.Style>
+                                                        <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxNumeric}}" TargetType="{x:Type cpcTextBox:TextBoxNumeric}">
+                                                            <Setter Property="Grid.Row" Value="1" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </cpcTextBox:TextBoxNumeric.Style>
+                                                </cpcTextBox:TextBoxNumeric>
+                                                <TextBlock x:Name="txtblOrderDiscountPercent"
                                                        Grid.Row="1"
                                                        Grid.Column="3"
                                                        Margin="40,0,0,0"
@@ -2026,26 +2028,26 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="%"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblOrderTabDiscountAmount"
+                                                <TextBlock x:Name="txtblOrderTabDiscountAmount"
                                                        Grid.Column="4"
                                                        Margin="10,0,0,0"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Text="Discount:"
                                                        TextWrapping="NoWrap">
-                                                <TextBlock.Style>
-                                                    <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
-                                                        <Setter Property="Grid.Row" Value="1" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <!--  Style="{DynamicResource TextBlockNormal}"  -->
-                                            <cpcTextBox:TextBoxMoney x:Name="txtShowDiscount"
+                                                    <TextBlock.Style>
+                                                        <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Grid.Row" Value="1" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <!--  Style="{DynamicResource TextBlockNormal}"  -->
+                                                <cpcTextBox:TextBoxMoney x:Name="txtShowDiscount"
                                                                      Grid.RowSpan="1"
                                                                      Grid.Column="5"
                                                                      Margin="0,2"
@@ -2056,42 +2058,42 @@
                                                                      Value="{Binding SelectedSaleOrder.DiscountAmount,
                                                                                      Mode=TwoWay,
                                                                                      UpdateSourceTrigger=PropertyChanged}">
-                                                <cpcTextBox:TextBoxMoney.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxMoney}}" TargetType="{x:Type cpcTextBox:TextBoxMoney}">
-                                                        <Setter Property="Grid.Row" Value="1" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </cpcTextBox:TextBoxMoney.Style>
-                                            </cpcTextBox:TextBoxMoney>
-                                            <TextBlock x:Name="txtblOrderTabTaxleft"
+                                                    <cpcTextBox:TextBoxMoney.Style>
+                                                        <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxMoney}}" TargetType="{x:Type cpcTextBox:TextBoxMoney}">
+                                                            <Setter Property="Grid.Row" Value="1" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </cpcTextBox:TextBoxMoney.Style>
+                                                </cpcTextBox:TextBoxMoney>
+                                                <TextBlock x:Name="txtblOrderTabTaxleft"
                                                        Grid.Column="2"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Text="Tax:"
                                                        TextWrapping="NoWrap">
-                                                <TextBlock.Style>
-                                                    <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
-                                                        <Setter Property="Grid.Row" Value="2" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <!--  Style="{DynamicResource TextBlockNormal}"  -->
-                                            <cpcTextBox:TextBoxNumeric x:Name="txtOrderTabTaxPercent"
+                                                    <TextBlock.Style>
+                                                        <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Grid.Row" Value="2" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <!--  Style="{DynamicResource TextBlockNormal}"  -->
+                                                <cpcTextBox:TextBoxNumeric x:Name="txtOrderTabTaxPercent"
                                                                        Grid.RowSpan="1"
                                                                        Grid.Column="3"
                                                                        Width="35"
@@ -2105,21 +2107,21 @@
                                                                        TextWrapping="NoWrap"
                                                                        Value="{Binding SelectedSaleOrder.TaxPercent,
                                                                                        Mode=OneWay}">
-                                                <cpcTextBox:TextBoxNumeric.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxNumeric}}" TargetType="{x:Type cpcTextBox:TextBoxNumeric}">
-                                                        <Setter Property="Grid.Row" Value="2" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </cpcTextBox:TextBoxNumeric.Style>
-                                            </cpcTextBox:TextBoxNumeric>
-                                            <TextBlock x:Name="txtblOrderTabTaxPercent"
+                                                    <cpcTextBox:TextBoxNumeric.Style>
+                                                        <Style BasedOn="{StaticResource {x:Type cpcTextBox:TextBoxNumeric}}" TargetType="{x:Type cpcTextBox:TextBoxNumeric}">
+                                                            <Setter Property="Grid.Row" Value="2" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </cpcTextBox:TextBoxNumeric.Style>
+                                                </cpcTextBox:TextBoxNumeric>
+                                                <TextBlock x:Name="txtblOrderTabTaxPercent"
                                                        Grid.Row="2"
                                                        Grid.Column="3"
                                                        Margin="40,0,0,0"
@@ -2128,25 +2130,25 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="%"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblOrderTabTaxAmount"
+                                                <TextBlock x:Name="txtblOrderTabTaxAmount"
                                                        Grid.Column="4"
                                                        Margin="10,0,0,0"
                                                        HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"
                                                        Text="Tax:"
                                                        TextWrapping="NoWrap">
-                                                <TextBlock.Style>
-                                                    <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
-                                                        <Setter Property="Grid.Row" Value="2" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <TextBox x:Name="txtOrderTabTax"
+                                                    <TextBlock.Style>
+                                                        <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Grid.Row" Value="2" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBox x:Name="txtOrderTabTax"
                                                      Grid.RowSpan="1"
                                                      Grid.Column="5"
                                                      Margin="0,2"
@@ -2157,21 +2159,21 @@
                                                                     Mode=OneWay,
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap">
-                                                <TextBox.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
-                                                        <Setter Property="Grid.Row" Value="2" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
-                                                                <Setter Property="Grid.Row" Value="1" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
-                                                                <Setter Property="Grid.Row" Value="2" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBox.Style>
-                                            </TextBox>
-                                            <TextBlock x:Name="txtblOrderTabShippingHandling"
+                                                    <TextBox.Style>
+                                                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                                                            <Setter Property="Grid.Row" Value="2" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="False">
+                                                                    <Setter Property="Grid.Row" Value="1" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedSaleOrder.TaxCodeModel.IsTaxAfterDiscount}" Value="True">
+                                                                    <Setter Property="Grid.Row" Value="2" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBox.Style>
+                                                </TextBox>
+                                                <TextBlock x:Name="txtblOrderTabShippingHandling"
                                                        Grid.Row="3"
                                                        Grid.Column="4"
                                                        Margin="10,0,0,0"
@@ -2180,7 +2182,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Shipping:"
                                                        TextWrapping="NoWrap" />
-                                            <cpcTextBox:TextBoxMoney x:Name="txtOrderTabShippingHandling"
+                                                <cpcTextBox:TextBoxMoney x:Name="txtOrderTabShippingHandling"
                                                                      Grid.Row="3"
                                                                      Grid.RowSpan="1"
                                                                      Grid.Column="5"
@@ -2193,7 +2195,7 @@
                                                                      Value="{Binding SelectedSaleOrder.Shipping,
                                                                                      Mode=TwoWay,
                                                                                      UpdateSourceTrigger=PropertyChanged}" />
-                                            <Rectangle x:Name="LineOrderTotal"
+                                                <Rectangle x:Name="LineOrderTotal"
                                                        Grid.Row="4"
                                                        Grid.Column="2"
                                                        Grid.ColumnSpan="4"
@@ -2202,7 +2204,7 @@
                                                        HorizontalAlignment="Stretch"
                                                        VerticalAlignment="Center"
                                                        Fill="White" />
-                                            <TextBlock x:Name="txtblOrderTotal"
+                                                <TextBlock x:Name="txtblOrderTotal"
                                                        Grid.Row="5"
                                                        Grid.Column="3"
                                                        HorizontalAlignment="Right"
@@ -2210,7 +2212,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Total:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBox x:Name="txtOrderTotal"
+                                                <TextBox x:Name="txtOrderTotal"
                                                      Grid.Row="6"
                                                      Grid.Column="4"
                                                      Grid.ColumnSpan="2"
@@ -2224,10 +2226,11 @@
                                                                     Mode=OneWay,
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </AdornerDecorator>
                                 </cpcOtherControl:CPCTabItemControl>
-                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemShip" Header="Ship">
+                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemShip" Header="Ship" IsCheckError="True">
                                     <cpcOtherControl:CPCTabItemControl.Visibility>
                                         <Binding Mode="OneWay" Path="SelectedSaleOrder.ShipProcess">
                                             <Binding.Converter>
@@ -2235,37 +2238,38 @@
                                             </Binding.Converter>
                                         </Binding>
                                     </cpcOtherControl:CPCTabItemControl.Visibility>
-                                    <Grid x:Name="grdShip">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="30" />
-                                            <RowDefinition Height="Auto" MinHeight="5" />
-                                            <RowDefinition />
-                                            <RowDefinition Height="80" />
-                                        </Grid.RowDefinitions>
-                                        <Button x:Name="btnPickandPack"
+                                    <AdornerDecorator>
+                                        <Grid x:Name="grdShip">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="Auto" MinHeight="5" />
+                                                <RowDefinition />
+                                                <RowDefinition Height="80" />
+                                            </Grid.RowDefinitions>
+                                            <Button x:Name="btnPickandPack"
                                                 Width="100"
                                                 Height="21"
                                                 Margin="5,0,0,0"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Command="{Binding PickPackCommand}">
-                                            <StackPanel x:Name="stkpBtnPickandPack"
+                                                <StackPanel x:Name="stkpBtnPickandPack"
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
                                                         Orientation="Horizontal">
-                                                <Rectangle x:Name="imgPickandPack"
+                                                    <Rectangle x:Name="imgPickandPack"
                                                            Width="20"
                                                            Height="20"
                                                            Fill="{DynamicResource PickPack}" />
-                                                <TextBlock x:Name="txtblPickandPack"
+                                                    <TextBlock x:Name="txtblPickandPack"
                                                            Margin="5,0,0,0"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource ButtonTextBlock}"
                                                            Text="Pick &amp; Pack"
                                                            TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                        </Button>
-                                        <cpcDataGrid:DataGridControl x:Name="dtgrdShip"
+                                                </StackPanel>
+                                            </Button>
+                                            <cpcDataGrid:DataGridControl x:Name="dtgrdShip"
                                                                      Grid.Row="2"
                                                                      Margin="5,0,5,9.633"
                                                                      AutoGenerateColumns="False"
@@ -2284,49 +2288,49 @@
                                                                      SelectedItem="{Binding SelectedSaleOrderShip}"
                                                                      Style="{DynamicResource DatagridWithRowHeader}"
                                                                      VisibilityNavigationBar="Collapsed">
-                                            <cpcDataGrid:DataGridControl.Columns>
-                                                <DataGridTextColumn Width="70"
+                                                <cpcDataGrid:DataGridControl.Columns>
+                                                    <DataGridTextColumn Width="70"
                                                                     Binding="{Binding ShipDate,
                                                                                       StringFormat={x:Static local:Define.DateFormat}}"
                                                                     Header="Ship Date"
                                                                     IsReadOnly="True" />
-                                                <DataGridTextColumn Width="*"
+                                                    <DataGridTextColumn Width="*"
                                                                     Binding="{Binding SaleOrderShipDetailCollection.Count}"
                                                                     Header="Packed Quantity"
                                                                     IsReadOnly="True" />
-                                                <DataGridTemplateColumn Width="*" Header="Box #">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock x:Name="tbBox"
+                                                    <DataGridTemplateColumn Width="*" Header="Box #">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock x:Name="tbBox"
                                                                        HorizontalAlignment="Center"
                                                                        Text="{Binding BoxNo}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <cpcTextBox:TextBoxNumeric x:Name="txtBox"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <cpcTextBox:TextBoxNumeric x:Name="txtBox"
                                                                                        HorizontalAlignment="Center"
                                                                                        HorizontalContentAlignment="Center"
                                                                                        Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                                        Value="{Binding BoxNo,
                                                                                                        Mode=TwoWay,
                                                                                                        UpdateSourceTrigger=PropertyChanged}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="*" Header="Weights">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock x:Name="tbWeights"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="*" Header="Weights">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock x:Name="tbWeights"
                                                                        HorizontalAlignment="Right"
                                                                        Text="{Binding Weight,
                                                                                       Mode=OneWay,
                                                                                       StringFormat=\{0:00.00\}}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <cpcTextBox:TextBoxNumeric x:Name="txtWeights"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <cpcTextBox:TextBoxNumeric x:Name="txtWeights"
                                                                                        HorizontalContentAlignment="Right"
                                                                                        DecimalPlaces="2"
                                                                                        IntegerLength="26"
@@ -2336,40 +2340,40 @@
                                                                                                        Mode=TwoWay,
                                                                                                        UpdateSourceTrigger=PropertyChanged}" />
 
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="*" Header="Carrier">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock x:Name="tbCarrier"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="*" Header="Carrier">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock x:Name="tbCarrier"
                                                                        HorizontalAlignment="Center"
                                                                        Text="{Binding Carrier}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <cpcTextBox:TextBox x:Name="txtCarrier"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <cpcTextBox:TextBox x:Name="txtCarrier"
                                                                                 HorizontalAlignment="Stretch"
                                                                                 MaxLength="100"
                                                                                 Style="{DynamicResource TextBoxInsideDataGridStyle}"
                                                                                 Text="{Binding Carrier,
                                                                                                Mode=TwoWay,
                                                                                                UpdateSourceTrigger=PropertyChanged}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="*" Header="Tracking #">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock x:Name="tbTracking"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="*" Header="Tracking #">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock x:Name="tbTracking"
                                                                        HorizontalAlignment="Center"
                                                                        Text="{Binding TrackingNo}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <cpcTextBox:TextBox x:Name="txtTracking"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <cpcTextBox:TextBox x:Name="txtTracking"
                                                                                 HorizontalAlignment="Stretch"
                                                                                 MaxLength="30"
                                                                                 Style="{DynamicResource TextBoxInsideDataGridStyle}"
@@ -2377,29 +2381,29 @@
                                                                                                Mode=TwoWay,
                                                                                                UpdateSourceTrigger=PropertyChanged}" />
 
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn Width="20" MinWidth="20">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <CheckBox HorizontalAlignment="Center"
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn Width="20" MinWidth="20">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox HorizontalAlignment="Center"
                                                                       VerticalAlignment="Center"
                                                                       IsChecked="{Binding IsChecked,
                                                                                           Mode=OneWay,
                                                                                           UpdateSourceTrigger=PropertyChanged}"
                                                                       IsEnabled="False">
-                                                                <i:Interaction.Triggers>
-                                                                    <i:EventTrigger EventName="Click">
-                                                                        <command:EventToCommand Command="{Binding DataContext.ShippedCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding .}" />
-                                                                    </i:EventTrigger>
-                                                                </i:Interaction.Triggers>
-                                                            </CheckBox>
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                                        <DataTemplate>
-                                                            <CheckBox HorizontalAlignment="Center"
+                                                                    <i:Interaction.Triggers>
+                                                                        <i:EventTrigger EventName="Click">
+                                                                            <command:EventToCommand Command="{Binding DataContext.ShippedCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding .}" />
+                                                                        </i:EventTrigger>
+                                                                    </i:Interaction.Triggers>
+                                                                </CheckBox>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox HorizontalAlignment="Center"
                                                                       VerticalAlignment="Center"
                                                                       IsChecked="{Binding IsChecked,
                                                                                           Mode=TwoWay,
@@ -2408,32 +2412,32 @@
                                                                                           Mode=OneWay,
                                                                                           UpdateSourceTrigger=PropertyChanged,
                                                                                           Converter={StaticResource reserseBoolConverter}}">
-                                                                <i:Interaction.Triggers>
-                                                                    <i:EventTrigger EventName="Click">
-                                                                        <command:EventToCommand Command="{Binding DataContext.ShippedCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding .}" />
-                                                                    </i:EventTrigger>
-                                                                </i:Interaction.Triggers>
-                                                            </CheckBox>
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                                </DataGridTemplateColumn>
-                                            </cpcDataGrid:DataGridControl.Columns>
-                                        </cpcDataGrid:DataGridControl>
-                                        <Grid x:Name="grdShipRemark"
+                                                                    <i:Interaction.Triggers>
+                                                                        <i:EventTrigger EventName="Click">
+                                                                            <command:EventToCommand Command="{Binding DataContext.ShippedCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding .}" />
+                                                                        </i:EventTrigger>
+                                                                    </i:Interaction.Triggers>
+                                                                </CheckBox>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </cpcDataGrid:DataGridControl.Columns>
+                                            </cpcDataGrid:DataGridControl>
+                                            <Grid x:Name="grdShipRemark"
                                               Grid.Row="3"
                                               Margin="5,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="110" />
-                                                <ColumnDefinition Width="132" />
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="200" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="25" />
-                                                <RowDefinition Height="25" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock x:Name="txtblShipPackedBoxes"
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="132" />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="200" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="25" />
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock x:Name="txtblShipPackedBoxes"
                                                        Grid.Column="3"
                                                        Margin="0"
                                                        HorizontalAlignment="Left"
@@ -2441,7 +2445,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Packed Boxes:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblBindingShipPackedBoxes"
+                                                <TextBlock x:Name="txtblBindingShipPackedBoxes"
                                                        Grid.Column="3"
                                                        Margin="0,0,65,0"
                                                        HorizontalAlignment="Right"
@@ -2450,7 +2454,7 @@
                                                        Text="{Binding SelectedSaleOrder.PackedQty,
                                                                       Mode=OneWay}"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblShippedBoxes"
+                                                <TextBlock x:Name="txtblShippedBoxes"
                                                        Grid.Row="1"
                                                        Grid.Column="3"
                                                        Margin="0"
@@ -2459,7 +2463,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Shipped Boxes:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblBindingShippedBoxes"
+                                                <TextBlock x:Name="txtblBindingShippedBoxes"
                                                        Grid.Row="1"
                                                        Grid.Column="3"
                                                        Margin="0,0,65,0"
@@ -2469,7 +2473,7 @@
                                                        Text="{Binding SelectedSaleOrder.ShippedBox,
                                                                       Mode=OneWay}"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblTotalWeight"
+                                                <TextBlock x:Name="txtblTotalWeight"
                                                        Grid.Row="2"
                                                        Grid.Column="3"
                                                        Margin="0"
@@ -2478,7 +2482,7 @@
                                                        Style="{DynamicResource TextBlockNormal}"
                                                        Text="Total Weight:"
                                                        TextWrapping="NoWrap" />
-                                            <TextBlock x:Name="txtblBindingTotalWeight"
+                                                <TextBlock x:Name="txtblBindingTotalWeight"
                                                        Grid.Row="2"
                                                        Grid.Column="3"
                                                        Margin="0,0,65,0"
@@ -2489,7 +2493,7 @@
                                                                       Mode=OneWay,
                                                                       StringFormat=\{0:00.00\}}"
                                                        TextWrapping="NoWrap" />
-                                            <ComboBox x:Name="cmbTotalWeight"
+                                                <ComboBox x:Name="cmbTotalWeight"
                                                       Grid.Row="2"
                                                       Grid.Column="3"
                                                       Width="50"
@@ -2504,10 +2508,11 @@
                                                                               Mode=TwoWay,
                                                                               UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="ObjValue" />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </AdornerDecorator>
                                 </cpcOtherControl:CPCTabItemControl>
-                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemPaymentHistory" Header="Payment History">
+                                <cpcOtherControl:CPCTabItemControl x:Name="tabitemPaymentHistory" Header="Payment History" IsCheckError="True">
                                     <cpcOtherControl:CPCTabItemControl.Visibility>
                                         <Binding Mode="OneWay" Path="SelectedSaleOrder.PaymentProcess">
                                             <Binding.Converter>
@@ -2673,7 +2678,8 @@
                                 <cpcOtherControl:CPCTabItemControl x:Name="tabitemReturn"
                                                                    Width="Auto"
                                                                    HorizontalAlignment="Stretch"
-                                                                   Header="Return">
+                                                                   Header="Return"
+                                                                   IsCheckError="True">
                                     <cpcOtherControl:CPCTabItemControl.Visibility>
                                         <Binding Mode="OneWay" Path="SelectedSaleOrder.ShipProcess">
                                             <Binding.Converter>
