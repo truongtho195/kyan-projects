@@ -281,12 +281,12 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-		<Setter Property="Padding" Value="0,0,10,0"/>
-		<Setter Property="HorizontalContentAlignment" Value="Right"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="Foreground" Value="Black"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="FontSize" Value="10"/>
 		<Setter Property="FontFamily" Value="Arial"/>
 		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Padding" Value="0"/>
 	</Style>
 </ResourceDictionary>

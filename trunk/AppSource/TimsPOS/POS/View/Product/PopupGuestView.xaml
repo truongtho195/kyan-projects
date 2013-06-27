@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:addressToolkit="clr-namespace:CPCToolkitExt.AddressControl;assembly=CPCToolkitExt"
              xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helper="clr-namespace:CPC.Helper"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
-             xmlns:xceedWpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="UserControl"
              Width="565"
              Height="332">
@@ -55,7 +55,7 @@
                                Text="First Name: "
                                TextWrapping="NoWrap" />
                     <!--  FirstName  -->
-                    <textBoxToolkit:TextBox x:Name="txtFirstName"
+                    <textBoxControl:TextBox x:Name="txtFirstName"
                                             Grid.Column="1"
                                             Width="120"
                                             Margin="0,2"
@@ -72,7 +72,7 @@
                                Text="M.I.:"
                                TextWrapping="NoWrap" />
                     <!--  MiddleName  -->
-                    <textBoxToolkit:TextBox x:Name="txtIntial"
+                    <textBoxControl:TextBox x:Name="txtIntial"
                                             Grid.Column="1"
                                             Width="30"
                                             Margin="163,2,0,2"
@@ -90,7 +90,7 @@
                                Text="Last Name:"
                                TextWrapping="NoWrap" />
                     <!--  LastName  -->
-                    <textBoxToolkit:TextBox x:Name="txtLastName"
+                    <textBoxControl:TextBox x:Name="txtLastName"
                                             Grid.Column="1"
                                             Width="120"
                                             Margin="0,2,10,2"
@@ -108,7 +108,7 @@
                                Text="Company:"
                                TextWrapping="NoWrap" />
                     <!--  Company  -->
-                    <textBoxToolkit:TextBox x:Name="txtCompany"
+                    <textBoxControl:TextBox x:Name="txtCompany"
                                             Grid.Row="1"
                                             Grid.Column="1"
                                             Width="193"
@@ -143,13 +143,13 @@
                                             Grid.ColumnSpan="2"
                                             Width="294"
                                             Margin="10,0,0,0"
-                                            Foreground="White"
                                             HorizontalAlignment="Left"
                                             AddressTypeWidth="102"
                                             ContentAddressWidth="*"
                                             DisplayDatabyAddressTypeID="0"
                                             DisplayMemderPathComboBoxCountry="Text"
                                             DisplayMemderPathComboBoxState="Symbol"
+                                            Foreground="White"
                                             IsValidationError="True"
                                             ItemSourceAddressType="{Binding AddressTypeCollection}"
                                             ItemsSource="{Binding NewItem.AddressControlCollection}"
@@ -169,7 +169,7 @@
                                Text="Email:"
                                TextWrapping="NoWrap" />
                     <!--  Email  -->
-                    <textBoxToolkit:TextBoxEmail x:Name="txtEmail"
+                    <textBoxControl:TextBoxEmail x:Name="txtEmail"
                                                  Grid.Row="2"
                                                  Grid.Column="1"
                                                  Width="120"
@@ -190,7 +190,7 @@
                                Text="Website:"
                                TextWrapping="NoWrap" />
                     <!--  Website  -->
-                    <textBoxToolkit:TextBox x:Name="txtWebsite"
+                    <textBoxControl:TextBox x:Name="txtWebsite"
                                             Grid.Row="3"
                                             Grid.Column="1"
                                             Width="120"
@@ -226,19 +226,19 @@
                                Text="Phone 1:"
                                TextWrapping="NoWrap" />
                     <!--  Phone1  -->
-                    <xceedWpfToolkit:MaskedTextBox x:Name="txtPhone1"
-                                                   Grid.Row="5"
-                                                   Grid.Column="1"
-                                                   Width="135"
-                                                   Height="21"
-                                                   Margin="0,2"
-                                                   HorizontalAlignment="Left"
-                                                   HorizontalContentAlignment="Right"
-                                                   behavior:MoveFocusHelper.MoveFocus="True"
-                                                   Padding="2,0,2,0"
-                                                   Style="{DynamicResource TextBoxPhoneStyle}"
-                                                   TextWrapping="NoWrap"
-                                                   Value="{Binding NewItem.Phone1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+                    <control:MaskedTextBox x:Name="txtPhone1"
+                                           Grid.Row="5"
+                                           Grid.Column="1"
+                                           Width="135"
+                                           Height="21"
+                                           Margin="0,2"
+                                           HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Right"
+                                           behavior:MoveFocusHelper.MoveFocus="True"
+                                           Padding="2,0,2,0"
+                                           Style="{DynamicResource TextBoxPhoneStyle}"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding NewItem.Phone1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                     <TextBlock x:Name="txtblPhone2"
                                Grid.Row="5"
                                Grid.Column="1"
@@ -249,19 +249,19 @@
                                Text="Phone 2:"
                                TextWrapping="NoWrap" />
                     <!--  Phone2  -->
-                    <xceedWpfToolkit:MaskedTextBox x:Name="txtPhone3"
-                                                   Grid.Row="5"
-                                                   Grid.Column="1"
-                                                   Width="135"
-                                                   Height="21"
-                                                   Margin="0,2,10,2"
-                                                   HorizontalAlignment="Right"
-                                                   HorizontalContentAlignment="Right"
-                                                   behavior:MoveFocusHelper.MoveFocus="True"
-                                                   Padding="2,0,2,0"
-                                                   Style="{DynamicResource TextBoxPhoneStyle}"
-                                                   TextWrapping="NoWrap"
-                                                   Value="{Binding NewItem.Phone2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <control:MaskedTextBox x:Name="txtPhone3"
+                                           Grid.Row="5"
+                                           Grid.Column="1"
+                                           Width="135"
+                                           Height="21"
+                                           Margin="0,2,10,2"
+                                           HorizontalAlignment="Right"
+                                           HorizontalContentAlignment="Right"
+                                           behavior:MoveFocusHelper.MoveFocus="True"
+                                           Padding="2,0,2,0"
+                                           Style="{DynamicResource TextBoxPhoneStyle}"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding NewItem.Phone2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock x:Name="txtblCellphone"
                                Grid.Row="6"
                                Margin="10,0,0,0"
@@ -272,18 +272,18 @@
                                Text="Cellphone:"
                                TextWrapping="NoWrap" />
                     <!--  CellPhone  -->
-                    <xceedWpfToolkit:MaskedTextBox x:Name="txtCellphone"
-                                                   Grid.Row="6"
-                                                   Grid.Column="1"
-                                                   Width="135"
-                                                   Margin="0,2"
-                                                   HorizontalAlignment="Left"
-                                                   HorizontalContentAlignment="Right"
-                                                   behavior:MoveFocusHelper.MoveFocus="True"
-                                                   Padding="2,0,2,0"
-                                                   Style="{DynamicResource TextBoxCellphoneStyle}"
-                                                   TextWrapping="NoWrap"
-                                                   Value="{Binding NewItem.CellPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <control:MaskedTextBox x:Name="txtCellphone"
+                                           Grid.Row="6"
+                                           Grid.Column="1"
+                                           Width="135"
+                                           Margin="0,2"
+                                           HorizontalAlignment="Left"
+                                           HorizontalContentAlignment="Right"
+                                           behavior:MoveFocusHelper.MoveFocus="True"
+                                           Padding="2,0,2,0"
+                                           Style="{DynamicResource TextBoxCellphoneStyle}"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding NewItem.CellPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock x:Name="txtblFax"
                                Grid.Row="6"
                                Grid.Column="1"
@@ -294,18 +294,18 @@
                                Text="Fax:"
                                TextWrapping="NoWrap" />
                     <!--  Fax  -->
-                    <xceedWpfToolkit:MaskedTextBox x:Name="txtFax"
-                                                   Grid.Row="6"
-                                                   Grid.Column="1"
-                                                   Width="135"
-                                                   Margin="0,2,10,2"
-                                                   HorizontalAlignment="Right"
-                                                   HorizontalContentAlignment="Right"
-                                                   behavior:MoveFocusHelper.MoveFocus="True"
-                                                   Padding="2,0,2,0"
-                                                   Style="{DynamicResource TextBoxFaxStyle}"
-                                                   TextWrapping="NoWrap"
-                                                   Value="{Binding NewItem.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <control:MaskedTextBox x:Name="txtFax"
+                                           Grid.Row="6"
+                                           Grid.Column="1"
+                                           Width="135"
+                                           Margin="0,2,10,2"
+                                           HorizontalAlignment="Right"
+                                           HorizontalContentAlignment="Right"
+                                           behavior:MoveFocusHelper.MoveFocus="True"
+                                           Padding="2,0,2,0"
+                                           Style="{DynamicResource TextBoxFaxStyle}"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding NewItem.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock x:Name="txtblCommission"
                                Grid.Row="7"
                                Margin="0,0,0,3.723"
@@ -341,11 +341,11 @@
                               Width="135"
                               Margin="0,2"
                               HorizontalAlignment="Left"
-                              Visibility="{Binding CommissionVisibility, Mode=OneWay}"
-                              ItemsSource="{Binding EmployeeCollection, Mode=OneWay}"
                               DisplayMemberPath="LegalName"
+                              ItemsSource="{Binding EmployeeCollection, Mode=OneWay}"
+                              SelectedValue="{Binding NewItem.SaleRepId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="Id"
-                              SelectedValue="{Binding NewItem.SaleRepId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              Visibility="{Binding CommissionVisibility, Mode=OneWay}" />
                 </Grid>
             </Grid>
         </Border>

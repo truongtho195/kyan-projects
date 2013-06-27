@@ -102,7 +102,9 @@
                                         <cpcTextBox:TextBoxNumeric x:Name="txtPickQty"
                                                                    DecimalPlaces="0"
                                                                    Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
-                                                                   Value="{Binding QtyOfPick,
+                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                               NumericStringFormat="{}{0:N0}"
+                                                               Value="{Binding QtyOfPick,
                                                                                Mode=TwoWay,
                                                                                UpdateSourceTrigger=PropertyChanged}"
                                                                    FontWeight="Bold" />

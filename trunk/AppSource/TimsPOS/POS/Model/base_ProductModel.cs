@@ -1513,6 +1513,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected int _quantityOnCustomer;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the QuantityOnCustomer</para>
+        /// </summary>
+        public int QuantityOnCustomer
+        {
+            get { return this._quantityOnCustomer; }
+            set
+            {
+                if (this._quantityOnCustomer != value)
+                {
+                    this.IsDirty = true;
+                    this._quantityOnCustomer = value;
+                    OnPropertyChanged(() => QuantityOnCustomer);
+                    PropertyChangedCompleted(() => QuantityOnCustomer);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1607,6 +1627,7 @@ namespace CPC.POS.Model
             this.base_Product.MarkdownPercent4 = this.MarkdownPercent4;
             this.base_Product.IsOpenItem = this.IsOpenItem;
             this.base_Product.Location = this.Location;
+            this.base_Product.QuantityOnCustomer = this.QuantityOnCustomer;
         }
 
         /// <summary>
@@ -1688,6 +1709,7 @@ namespace CPC.POS.Model
             this._markdownPercent4 = this.base_Product.MarkdownPercent4;
             this._isOpenItem = this.base_Product.IsOpenItem;
             this._location = this.base_Product.Location;
+            this._quantityOnCustomer = this.base_Product.QuantityOnCustomer;
         }
 
         /// <summary>
@@ -1769,6 +1791,7 @@ namespace CPC.POS.Model
             this.MarkdownPercent4 = this.base_Product.MarkdownPercent4;
             this.IsOpenItem = this.base_Product.IsOpenItem;
             this.Location = this.base_Product.Location;
+            this.QuantityOnCustomer = this.base_Product.QuantityOnCustomer;
         }
 
         #endregion
@@ -2059,6 +2082,77 @@ namespace CPC.POS.Model
             }
         }
 
+        private int _reOrderQuatity = 1;
+        /// <summary>
+        /// Gets or sets the ReOrderQuatity.
+        /// </summary>
+        public int ReOrderQuatity
+        {
+            get { return _reOrderQuatity; }
+            set
+            {
+                if (_reOrderQuatity != value)
+                {
+                    _reOrderQuatity = value;
+                    OnPropertyChanged(() => ReOrderQuatity);
+                }
+            }
+        }
+        private int _quantityOnPO;
+        /// <summary>
+        /// Gets or sets the QuantityOnPO.
+        /// </summary>
+        public int QuantityOnPO
+        {
+            get { return _quantityOnPO; }
+            set
+            {
+                if (_quantityOnPO != value)
+                {
+                    _quantityOnPO = value;
+                    OnPropertyChanged(() => QuantityOnPO);
+                }
+            }
+        }
+        private int _quantityOnSO;
+        /// <summary>
+        /// Gets or sets the QuantityOnSO.
+        /// </summary>
+        public int QuantityOnSO
+        {
+            get { return _quantityOnSO; }
+            set
+            {
+                if (_quantityOnSO != value)
+                {
+                    _quantityOnSO = value;
+                    OnPropertyChanged(() => QuantityOnSO);
+                }
+            }
+        }
+
+
+
+        #region IsCoupon
+        private bool _isCoupon;
+        /// <summary>
+        /// Gets or sets the IsCoupon.
+        /// <para>Using for saleOrder Product is Coupon</para>
+        /// </summary>
+        public bool IsCoupon
+        {
+            get { return _isCoupon; }
+            set
+            {
+                if (_isCoupon != value)
+                {
+                    _isCoupon = value;
+                    OnPropertyChanged(() => IsCoupon);
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Methods
@@ -2228,12 +2322,11 @@ namespace CPC.POS.Model
         }
 
         /// <summary>
-        /// Update quantity on hand
+        /// Update total quantity on product
         /// </summary>
         /// <param name="productModel"></param>
         public void UpdateQuantityOnHand()
         {
-            // Update QuantityOnHand
             this.QuantityOnHand = this.ProductStoreCollection.Sum(x => x.QuantityOnHand);
         }
 

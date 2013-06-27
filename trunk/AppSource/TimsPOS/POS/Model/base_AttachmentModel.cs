@@ -47,7 +47,11 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_Attachment base_Attachment { get; private set; }
+        public base_Attachment base_Attachment
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -60,7 +64,10 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get { return this._id; }
+            get
+            {
+                return this._id;
+            }
             set
             {
                 if (this._id != value)
@@ -80,7 +87,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string FileOriginalName
         {
-            get { return this._fileOriginalName; }
+            get
+            {
+                return this._fileOriginalName;
+            }
             set
             {
                 if (this._fileOriginalName != value)
@@ -100,7 +110,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string FileName
         {
-            get { return this._fileName; }
+            get
+            {
+                return this._fileName;
+            }
             set
             {
                 if (this._fileName != value)
@@ -120,7 +133,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string FileExtension
         {
-            get { return this._fileExtension; }
+            get
+            {
+                return this._fileExtension;
+            }
             set
             {
                 if (this._fileExtension != value)
@@ -140,7 +156,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int VirtualFolderId
         {
-            get { return this._virtualFolderId; }
+            get
+            {
+                return this._virtualFolderId;
+            }
             set
             {
                 if (this._virtualFolderId != value)
@@ -160,7 +179,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsActived
         {
-            get { return this._isActived; }
+            get
+            {
+                return this._isActived;
+            }
             set
             {
                 if (this._isActived != value)
@@ -180,7 +202,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateCreated
         {
-            get { return this._dateCreated; }
+            get
+            {
+                return this._dateCreated;
+            }
             set
             {
                 if (this._dateCreated != value)
@@ -200,7 +225,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get { return this._userCreated; }
+            get
+            {
+                return this._userCreated;
+            }
             set
             {
                 if (this._userCreated != value)
@@ -220,7 +248,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateUpdated
         {
-            get { return this._dateUpdated; }
+            get
+            {
+                return this._dateUpdated;
+            }
             set
             {
                 if (this._dateUpdated != value)
@@ -240,7 +271,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserUpdated
         {
-            get { return this._userUpdated; }
+            get
+            {
+                return this._userUpdated;
+            }
             set
             {
                 if (this._userUpdated != value)
@@ -260,7 +294,10 @@ namespace CPC.POS.Model
         /// </summary>
         public short Counter
         {
-            get { return this._counter; }
+            get
+            {
+                return this._counter;
+            }
             set
             {
                 if (this._counter != value)
@@ -472,15 +509,7 @@ namespace CPC.POS.Model
         {
             get
             {
-                string message = null;
-
-                switch (columnName)
-                {
-                    case "FileName":
-                        break;
-                }
-
-                return message;
+                return null;
             }
         }
 

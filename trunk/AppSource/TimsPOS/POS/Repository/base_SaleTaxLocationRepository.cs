@@ -250,8 +250,64 @@ namespace CPC.POS.Repository
         #endregion
 
         #region Custom Code
+        /// <summary>
+        /// Create Tax Location & Tax Code & save to config
+        /// </summary>
+        public base_SaleTaxLocation CreateDefaulSaleTaxLocation()
+        {
+            try
+            {
+                if (Get(x => true) == null)
+                {
+                    //Insert SaleTax
+                    base_SaleTaxLocation saleTaxDefault = new base_SaleTaxLocation();
+                    saleTaxDefault.IsPrimary = true;
+                    saleTaxDefault.Name = "Sale Tax Location";
+                    saleTaxDefault.IsShipingTaxable = false;
+                    saleTaxDefault.IsActived = true;
+                    saleTaxDefault.TaxOption = 0;
+                    saleTaxDefault.ShippingTaxCodeId = 0;
+                    saleTaxDefault.ParentId = 0;
+                    saleTaxDefault.IsTaxAfterDiscount = false;
+                    saleTaxDefault.SortIndex = "1-0";
+                    this.Add(saleTaxDefault);
+                    this.Commit();
 
+                    //Insert TaxCode
+                    base_SaleTaxLocation taxCodeDefault = new base_SaleTaxLocation();
+                    taxCodeDefault.IsPrimary = false;
+                    taxCodeDefault.Name = "TAX";
+                    taxCodeDefault.TaxCode = "TAX";
+                    taxCodeDefault.TaxCodeName = "TAX";
+                    taxCodeDefault.IsShipingTaxable = false;
+                    taxCodeDefault.IsActived = true;
+                    taxCodeDefault.TaxOption = 0;
+                    taxCodeDefault.ShippingTaxCodeId = 0;
+                    taxCodeDefault.ParentId = saleTaxDefault.Id;
+                    taxCodeDefault.IsTaxAfterDiscount = false;
+                    taxCodeDefault.SortIndex = "1-1";
+                    taxCodeDefault.TaxPrintMark = "T";
+                    this.Add(taxCodeDefault);
+                    this.Commit();
 
+                    //Save to config
+                    base_Configuration config = UnitOfWork.Get<base_Configuration>(x => true);
+                    if (config != null)
+                    {
+                        config.DefaultSaleTaxLocation = (short)saleTaxDefault.Id;
+                        config.DefaultTaxCodeNewDepartment = taxCodeDefault.TaxCode;
+                        UnitOfWork.Commit();
+                    }
+                    return saleTaxDefault;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw new Exception("Initial Sale Tax Error");
+            }
+            return null;
+        }
         #endregion
     }
 }

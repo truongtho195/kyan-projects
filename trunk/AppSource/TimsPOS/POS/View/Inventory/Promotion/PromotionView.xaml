@@ -17,6 +17,7 @@
              helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <!--  region Converter  -->
         <converter:IntergerToVisibilityConverter x:Key="intergerToVisibilityConverter" />
         <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
         <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
@@ -25,6 +26,17 @@
                                              FalseToVisibility="Visible" />
         <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
         <converter:ByteArrayToBitmapImageConverter x:Key="byteArrayToBitmapImageConverter" />
+        <!--  endregion Converter  -->
+        <Rectangle x:Key="ActiveTemplete"
+                   Width="16"
+                   Height="16"
+                   Fill="{DynamicResource ActiveItem}"
+                   Stretch="Fill" />
+        <Rectangle x:Key="DeActiveTemplete"
+                   Width="16"
+                   Height="16"
+                   Fill="{DynamicResource DeactiveItem}"
+                   Stretch="Fill" />
         <Style x:Key="ListBoxItemStyle"
                TargetType="{x:Type ListBoxItem}">
             <Setter Property="Background"
@@ -61,16 +73,29 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Rectangle Width="16"
-                   x:Key="ActiveTemplete"
-                   Height="16"
-                   Fill="{DynamicResource ActiveItem}"
-                   Stretch="Fill" />
-        <Rectangle Width="16"
-                   x:Key="DeActiveTemplete"
-                   Height="16"
-                   Fill="{DynamicResource DeactiveItem}"
-                   Stretch="Fill" />
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PM_Header_DiscountName">
+            <TextBlock Text="{DynamicResource PM_Header_DiscountName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_DiscountType">
+            <TextBlock Text="{DynamicResource PM_Header_DiscountType}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_Status">
+            <TextBlock Text="{DynamicResource PM_Header_Status}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_StartDate">
+            <TextBlock Text="{DynamicResource PM_Header_StartDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_EndDate">
+            <TextBlock Text="{DynamicResource PM_Header_EndDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_CouponCode">
+            <TextBlock Text="{DynamicResource PM_Header_CouponCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PM_Header_DateCreated">
+            <TextBlock Text="{DynamicResource PM_Header_DateCreated}" />
+        </DataTemplate>
+        <!--  endregion HeaderTemplate  -->
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -83,7 +108,8 @@
                     <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                 -->
-                <Grid x:Name="grdSearch">
+                <Grid x:Name="grdSearch"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -138,8 +164,7 @@
                                             Margin="10,0,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            Orientation="Horizontal"
-                                            d:LayoutOverrides="HorizontalAlignment">
+                                            Orientation="Horizontal">
                                     <CheckBox x:Name="cbAccountNo"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
@@ -180,16 +205,17 @@
                                                          Grid.Row="1"
                                                          Margin="10,10,0,10"
                                                          AutoGenerateColumns="False"
+                                                         behavior:DataGridHiddenColunmHelper.ColunmIndex="0"
+                                                         behavior:DataGridHiddenColunmHelper.IsHiddenColunm="{Binding HiddenWarningConflict, Mode=OneWay}"
                                                          behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
                                                          behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdDiscountCoupon}"
                                                          CanUserAddRows="False"
                                                          DisplayItems="{Binding NumberOfDisplayItems}"
-                                                         IsPaging="True"
+                                                         IsPaging="False"
                                                          IsReadOnly="True"
                                                          IsRollBackData="False"
                                                          ItemsSource="{Binding PromotionCollection}"
                                                          NumberOfItems="{Binding PromotionCollection.Count}"
-                                                         RowStyle="{DynamicResource DataGridToggleRowStyle}"
                                                          Style="{DynamicResource DatagridWithRowHeader}">
                             <dataGridControl:DataGridControl.ContextMenu>
                                 <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
@@ -213,26 +239,25 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Command="{Binding ChangeStatusCommand}"
-                                              Tag="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
-                                              CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                              CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                              Tag="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                                         <MenuItem.Style>
-                                            <Style TargetType="MenuItem"
-                                                   BasedOn="{StaticResource {x:Type MenuItem}}">
+                                            <Style BasedOn="{StaticResource {x:Type MenuItem}}"
+                                                   TargetType="MenuItem">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
                                                                  Value="2">
                                                         <Setter Property="Header"
-                                                                Value="Active"></Setter>
+                                                                Value="Active" />
                                                         <Setter Property="Icon"
-                                                                Value="{StaticResource ActiveTemplete}"></Setter>
-
+                                                                Value="{StaticResource ActiveTemplete}" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Tag.SelectedItem.Status, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
                                                                  Value="1">
                                                         <Setter Property="Header"
-                                                                Value="Deactive"></Setter>
+                                                                Value="Deactive" />
                                                         <Setter Property="Icon"
-                                                                Value="{StaticResource DeActiveTemplete}"></Setter>
+                                                                Value="{StaticResource DeActiveTemplete}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -251,34 +276,75 @@
                                 </ContextMenu>
                             </dataGridControl:DataGridControl.ContextMenu>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Discount Name"
-                                                    Binding="{Binding Name, Mode=OneWay}"
-                                                    Width="*" />
-                                <DataGridTextColumn Header="Discount Type"
-                                                    Binding="{Binding PromotionTypeId, ConverterParameter=PromotionTypes, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
-                                                    Width="110" />
-                                <DataGridTextColumn Header="Status"
-                                                    Binding="{Binding Status, ConverterParameter=StatusBasic, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
-                                                    Width="80" />
-                                <DataGridTextColumn Header="Start Date"
-                                                    Binding="{Binding PromotionScheduleModel.StartDate, StringFormat=d, Mode=OneWay}"
-                                                    Width="70" />
-                                <DataGridTextColumn Header="End Date"
-                                                    Binding="{Binding PromotionScheduleModel.EndDate, StringFormat=d, Mode=OneWay}"
-                                                    Width="70" />
-                                <DataGridTextColumn Header="Coupon Code"
-                                                    Binding="{Binding CouponBarCode}"
-                                                    Width="100" />
-                                <DataGridTextColumn Header="Date Created"
-                                                    Binding="{Binding DateCreated, StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay}"
-                                                    Width="70" />
+                                <DataGridTemplateColumn SortMemberPath="IsConflict">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Rectangle x:Name="recActiveTemplete"
+                                                       Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource Warning}"
+                                                       Stretch="Fill"
+                                                       ToolTip="One or more items on the discount are listed or other active discount. The discount defined may not be applied."
+                                                       Visibility="Collapsed" />
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsConflict}"
+                                                             Value="True">
+                                                    <Setter TargetName="recActiveTemplete"
+                                                            Property="Visibility"
+                                                            Value="Visible" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}"
+                                                    Width="*"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PM_Header_DiscountName}" />
+                                <DataGridTextColumn Binding="{Binding PromotionTypeId, ConverterParameter=PromotionTypes, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                                    Width="150"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PM_Header_DiscountType}" />
+                                <DataGridTextColumn Binding="{Binding Status, ConverterParameter=StatusBasic, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                                    Width="100"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PM_Header_Status}" />
+                                <DataGridTemplateColumn Width="70"
+                                                        HeaderTemplate="{StaticResource DataTemplate_PM_Header_StartDate}"
+                                                        SortMemberPath="PromotionScheduleModel.StartDate">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Text="{Binding PromotionScheduleModel.StartDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="70"
+                                                        HeaderTemplate="{StaticResource DataTemplate_PM_Header_EndDate}"
+                                                        SortMemberPath="PromotionScheduleModel.EndDate">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Text="{Binding PromotionScheduleModel.EndDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Binding="{Binding CouponBarCode}"
+                                                    Width="100"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PM_Header_CouponCode}" />
+                                <DataGridTemplateColumn Width="70"
+                                                        HeaderTemplate="{StaticResource DataTemplate_PM_Header_DateCreated}"
+                                                        SortMemberPath="DateCreated">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </dataGridControl:DataGridControl>
                     </Grid>
                 </Grid>
                 <Grid x:Name="grdSubDiscountPriceCoupon"
-                      Grid.Column="1"
-                      d:IsHidden="True">
+                      Grid.Column="1">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -534,7 +600,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="Discount Name:"
+                                   Text="{DynamicResource PM_TextBlock_DiscountName}"
                                    TextWrapping="NoWrap" />
                         <textBoxControl:TextBox x:Name="txtDiscountName"
                                                 Width="360"
@@ -550,7 +616,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="Status:"
+                                   Text="{DynamicResource PM_TextBlock_Status}"
                                    TextWrapping="NoWrap" />
                         <ComboBox x:Name="cmbStatus"
                                   Width="110"
@@ -588,7 +654,7 @@
                                            VerticalAlignment="Center"
                                            FontWeight="Bold"
                                            Style="{DynamicResource TextBlockNormal}"
-                                           Text="Discount Type"
+                                           Text="{DynamicResource PM_TextBlock_DiscountType}"
                                            TextWrapping="NoWrap" />
                                 <ComboBox x:Name="cmbDiscountType"
                                           Width="241"
@@ -615,16 +681,19 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Take:"
+                                                   Text="{DynamicResource PM_TextBlock_Take}"
                                                    TextWrapping="NoWrap" />
-                                        <textBoxControl:TextBoxDecimal x:Name="txtTake"
+                                        <textBoxControl:TextBoxNumeric x:Name="txtTake"
                                                                        Width="50"
                                                                        Height="21"
                                                                        Margin="36,0,0,0"
                                                                        HorizontalAlignment="Left"
                                                                        HorizontalContentAlignment="Right"
+                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       DecimalPlaces="2"
+                                                                       IntegerLength="3"
+                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                        Padding="2,0,2,0"
-                                                                       TextLength="4"
                                                                        TextWrapping="NoWrap"
                                                                        Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblPercentOff"
@@ -633,7 +702,7 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="% off"
+                                                   Text="{DynamicResource PM_TextBlock_PercentOff}"
                                                    TextWrapping="NoWrap" />
                                     </Grid>
                                     <Grid x:Name="grdDolar"
@@ -648,23 +717,25 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Take:"
+                                                   Text="{DynamicResource PM_TextBlock_Take}"
                                                    TextWrapping="NoWrap" />
-                                        <textBoxControl:TextBoxDecimal x:Name="txtDolarTake"
-                                                                       Height="21"
-                                                                       Margin="36,0,62.737,0"
-                                                                       HorizontalContentAlignment="Right"
-                                                                       Padding="2,0,2,0"
-                                                                       TextLength="4"
-                                                                       TextWrapping="NoWrap"
-                                                                       Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <textBoxControl:TextBoxMoney x:Name="txtDolarTake"
+                                                                     Height="21"
+                                                                     Margin="36,0,62.737,0"
+                                                                     HorizontalContentAlignment="Right"
+                                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                     Padding="2,0,2,0"
+                                                                     TextLength="12"
+                                                                     TextWrapping="NoWrap"
+                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblDolarOff"
                                                    Grid.Row="6"
                                                    Margin="90,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="$ off"
+                                                   Text="{DynamicResource PM_TextBlock_Off}"
                                                    TextWrapping="NoWrap" />
                                     </Grid>
                                     <Grid x:Name="grdBuyXforDolarY"
@@ -683,21 +754,21 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Quantity (X)"
+                                                   Text="{DynamicResource PM_TextBlock_QuantityX}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblTotalPriceY"
                                                    Margin="125,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Total Price ($Y)"
+                                                   Text="{DynamicResource PM_TextBlock_TotalPriceY}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblDiscountPrice"
                                                    Margin="237,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Discount Price"
+                                                   Text="{DynamicResource PM_TextBlock_DiscountPrice}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblBuyXYBuy"
                                                    Grid.Row="1"
@@ -705,25 +776,27 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Buy"
+                                                   Text="{DynamicResource PM_TextBlock_Buy}"
                                                    TextWrapping="NoWrap" />
-                                        <textBoxControl:TextBoxNumber x:Name="txtBuyXYBuy"
-                                                                      Grid.Row="1"
-                                                                      Width="64.82"
-                                                                      Height="21"
-                                                                      Margin="30,2,0,2"
-                                                                      HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Right"
-                                                                      Padding="2,0,2,0"
-                                                                      TextWrapping="NoWrap"
-                                                                      Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <textBoxControl:TextBoxNumeric x:Name="txtBuyXYBuy"
+                                                                       Grid.Row="1"
+                                                                       Width="64.82"
+                                                                       Height="21"
+                                                                       Margin="30,2,0,2"
+                                                                       HorizontalAlignment="Left"
+                                                                       HorizontalContentAlignment="Right"
+                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                       Padding="2,0,2,0"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYfor"
                                                    Grid.Row="1"
                                                    Margin="103,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="for"
+                                                   Text="{DynamicResource PM_TextBlock_For}"
                                                    TextWrapping="NoWrap" />
                                         <textBoxControl:TextBoxMoney x:Name="txtBuyXYFor"
                                                                      Grid.Row="1"
@@ -732,9 +805,12 @@
                                                                      Margin="125,2,0,2"
                                                                      HorizontalAlignment="Left"
                                                                      HorizontalContentAlignment="Right"
+                                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                      Padding="2,0,2,0"
-                                                                     Value="{Binding SelectedPromotion.GetingValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                                     TextWrapping="NoWrap" />
+                                                                     TextLength="12"
+                                                                     TextWrapping="NoWrap"
+                                                                     Value="{Binding SelectedPromotion.GetingValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYEqual"
                                                    Grid.Row="1"
                                                    Margin="215,0,0,0"
@@ -750,25 +826,26 @@
                                                                      Margin="235,2,0,2"
                                                                      HorizontalAlignment="Left"
                                                                      HorizontalContentAlignment="Right"
-                                                                     IsReadOnly="True"
+                                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                     IsEnabled="False"
                                                                      Padding="2,0,2,0"
-                                                                     TextLength="4"
-                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                                                     TextWrapping="NoWrap" />
+                                                                     TextWrapping="NoWrap"
+                                                                     Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblBuyXYEach"
                                                    Grid.Row="1"
                                                    Margin="320,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="each"
+                                                   Text="{DynamicResource PM_TextBlock_Each}"
                                                    TextWrapping="NoWrap" />
                                         <CheckBox x:Name="cbBuyXYApply"
                                                   Grid.Row="2"
                                                   Margin="0"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
-                                                  Content="Apply the discount price to quantities above the specified amount"
+                                                  Content="{DynamicResource PM_TextBlock_ApplyToAboveQuantities}"
                                                   IsChecked="{Binding SelectedPromotion.IsApplyToAboveQuantities}" />
                                     </Grid>
                                     <Grid x:Name="grdBuyXandGetYPercentOff"
@@ -786,47 +863,52 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Qty (X)"
+                                                   Text="{DynamicResource PM_TextBlock_QtyX}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblPercentage"
                                                    Margin="115,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Percentage ( % )"
+                                                   Text="{DynamicResource PM_TextBlock_Percentage}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblPercentBuy"
                                                    Grid.Row="1"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Buy"
+                                                   Text="{DynamicResource PM_TextBlock_Buy}"
                                                    TextWrapping="NoWrap" />
-                                        <textBoxControl:TextBoxNumber x:Name="txtPercentBuy"
-                                                                      Grid.Row="1"
-                                                                      Width="35"
-                                                                      Margin="30,2,0,2"
-                                                                      HorizontalAlignment="Left"
-                                                                      HorizontalContentAlignment="Right"
-                                                                      Padding="2,0,2,0"
-                                                                      TextWrapping="NoWrap"
-                                                                      Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <textBoxControl:TextBoxNumeric x:Name="txtPercentBuy"
+                                                                       Grid.Row="1"
+                                                                       Width="35"
+                                                                       Margin="30,2,0,2"
+                                                                       HorizontalAlignment="Left"
+                                                                       HorizontalContentAlignment="Right"
+                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                       Padding="2,0,2,0"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding SelectedPromotion.BuyingQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblAndGet"
                                                    Grid.Row="1"
                                                    Margin="82,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="and get"
+                                                   Text="{DynamicResource PM_TextBlock_AndGet}"
                                                    TextWrapping="NoWrap" />
-                                        <textBoxControl:TextBoxDecimal x:Name="txtAndGet"
+                                        <textBoxControl:TextBoxNumeric x:Name="txtAndGet"
                                                                        Grid.Row="1"
                                                                        Width="40"
                                                                        Margin="134,2,0,2"
                                                                        HorizontalAlignment="Left"
                                                                        HorizontalContentAlignment="Right"
+                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       DecimalPlaces="2"
+                                                                       IntegerLength="3"
+                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                        Padding="2,0,2,0"
-                                                                       TextLength="4"
                                                                        TextWrapping="NoWrap"
                                                                        Value="{Binding SelectedPromotion.TakeOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                         <TextBlock x:Name="txtblItems"
@@ -835,14 +917,14 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="% off These Item"
+                                                   Text="{DynamicResource PM_TextBlock_PercentOffTheseItem}"
                                                    TextWrapping="NoWrap" />
                                         <CheckBox x:Name="cbBuyXandGetYPercentOffApply"
                                                   Grid.Row="2"
                                                   Margin="0"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
-                                                  Content="Apply the discount price to quantities above the specified amount"
+                                                  Content="{DynamicResource PM_TextBlock_ApplyToAboveQuantities}"
                                                   IsChecked="{Binding SelectedPromotion.IsApplyToAboveQuantities}" />
                                     </Grid>
                                     <Grid x:Name="grdDiscountCoupon"
@@ -860,7 +942,7 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Discount:"
+                                                   Text="{DynamicResource PM_TextBlock_Discount}"
                                                    TextWrapping="NoWrap" />
                                         <textBoxControl:TextBoxDecimal x:Name="txtDiscount"
                                                                        Width="50"
@@ -884,7 +966,7 @@
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Barcode:"
+                                                   Text="{DynamicResource PM_TextBlock_Barcode}"
                                                    TextWrapping="NoWrap" />
                                         <textBoxControl:TextBoxAlphaNumeric x:Name="txtBarcode"
                                                                             Grid.Row="1"
@@ -899,7 +981,7 @@
                                                   Grid.Row="2"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Center"
-                                                  Content="Coupon Expires on"
+                                                  Content="{DynamicResource PM_TextBlock_CouponExpiresOn}"
                                                   IsChecked="{Binding SelectedPromotion.IsCouponExpired}" />
                                         <DatePicker x:Name="dtpCouponExpires"
                                                     Grid.Row="2"
@@ -919,7 +1001,7 @@
                                                            FontSize="14"
                                                            FontWeight="Bold"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Barcode Image"
+                                                           Text="{DynamicResource PM_GroupHeader_BarcodeImage}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdBarCodeImage"
@@ -948,7 +1030,7 @@
                                            FontWeight="Bold"
                                            Style="{DynamicResource TextBlockValidationStyle}"
                                            Tag="{Binding SelectedPromotion.PromotionScheduleModel.ExpirationNoEndDate, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
-                                           Text="Schedule"
+                                           Text="{DynamicResource PM_TextBlock_Schedule}"
                                            TextWrapping="NoWrap" />
                                 <Rectangle x:Name="LineSchedule"
                                            Height="1"
@@ -970,7 +1052,7 @@
                                               Grid.Column="1"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Discount is only available during the specified time period"
+                                              Content="{DynamicResource PM_TextBlock_ExpirationNoEndDate}"
                                               IsChecked="{Binding SelectedPromotion.PromotionScheduleModel.ExpirationNoEndDate}" />
                                     <TextBlock x:Name="txtblStartDate"
                                                Grid.Row="2"
@@ -978,7 +1060,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Start Date:"
+                                               Text="{DynamicResource PM_TextBlock_StartDate}"
                                                TextWrapping="NoWrap" />
                                     <DatePicker x:Name="dtpStartDate"
                                                 Grid.Row="2"
@@ -1006,7 +1088,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="End Date:"
+                                               Text="{DynamicResource PM_TextBlock_EndDate}"
                                                TextWrapping="NoWrap"
                                                Visibility="{Binding IsChecked, Converter={StaticResource reverseBoolToVisibilityConverter}, ElementName=cbExpirationNoEndDate}" />
                                     <DatePicker x:Name="dtpEndDate"
@@ -1041,9 +1123,9 @@
                                                   VerticalAlignment="Center">
                                     <TextBlock x:Name="txtblPriceChange"
                                                FontWeight="Bold"
-                                               Tag="{Binding IsCheckedPriceSchemaCollection, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
                                                Style="{DynamicResource TextBlockValidationStyle}"
-                                               Text="Price Change"
+                                               Tag="{Binding IsCheckedPriceSchemaCollection, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                               Text="{DynamicResource PM_TextBlock_PriceChange}"
                                                TextWrapping="NoWrap" />
                                 </AdornerDecorator>
                                 <Rectangle x:Name="LinePriceChange"
@@ -1126,7 +1208,7 @@
                                            VerticalAlignment="Center"
                                            FontWeight="Bold"
                                            Style="{DynamicResource TextBlockNormal}"
-                                           Text="Product Affect"
+                                           Text="{DynamicResource PM_TextBlock_ProductAffect}"
                                            TextWrapping="NoWrap" />
                                 <Rectangle x:Name="LineProductAffect"
                                            Height="1"
@@ -1146,7 +1228,7 @@
                                                  Margin="10,0,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
-                                                 Content="All Item"
+                                                 Content="{DynamicResource PM_TextBlock_AllItem}"
                                                  GroupName="rbAllItem"
                                                  IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}" />
                                     <RadioButton x:Name="rbAllItemsinDepartment"
@@ -1154,7 +1236,7 @@
                                                  Margin="10,0,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
-                                                 Content="All Items in Department"
+                                                 Content="{DynamicResource PM_TextBlock_AllItemsInDepartment}"
                                                  GroupName="rbAllItemsinDepartment"
                                                  IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}" />
                                     <ComboBox x:Name="cmbAllItemsinDepartment"
@@ -1174,7 +1256,7 @@
                                                  Margin="10,0,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
-                                                 Content="All Items in Vendor"
+                                                 Content="{DynamicResource PM_TextBlock_AllItemsInVendor}"
                                                  GroupName="cbAllItemsinVendor"
                                                  IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}" />
                                     <ComboBox x:Name="cmbAllItemsinVendor"
@@ -1195,7 +1277,7 @@
                                                  Margin="10,0,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Center"
-                                                 Content="Custom"
+                                                 Content="{DynamicResource PM_TextBlock_Custom}"
                                                  GroupName="rbCustom"
                                                  IsChecked="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=3}" />
                                     <Button x:Name="txtblCustom"
@@ -1208,9 +1290,9 @@
                                             VerticalAlignment="Center"
                                             CommandParameter="Edit"
                                             Content="{Binding SelectedPromotion.TotalSelectedProducts, Mode=OneWay}"
-                                            Visibility="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=3}"
                                             Foreground="Yellow"
-                                            Style="{DynamicResource ButtonDatagrid}" />
+                                            Style="{DynamicResource ButtonDatagrid}"
+                                            Visibility="{Binding SelectedPromotion.AffectDiscount, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=3}" />
                                 </Grid>
                             </Grid>
                         </Grid>

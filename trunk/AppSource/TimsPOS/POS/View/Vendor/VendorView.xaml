@@ -16,8 +16,10 @@
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="vendorView"
+             Width="Auto"
+             Height="Auto"
              Background="{DynamicResource UserControlBackground}"
-             mc:Ignorable="d" Width="Auto" Height="Auto">
+             mc:Ignorable="d">
     <!--
         helper:ValidationHelper.IsEnabled="True"
         helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
@@ -346,7 +348,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource Datagrid_RowDetailTemplate_Foreground}"
-                                           Text="{Binding DateCreated, Mode=OneWay, StringFormat=d}" />
+                                           Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -519,7 +521,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource Datagrid_RowDetailTemplate_Foreground}"
-                                           Text="{Binding RegularPrice, Mode=OneWay, StringFormat=c}" />
+                                           Text="{Binding RegularPrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                 <TextBlock x:Name="txtblTemplateBaseUnit"
                                            Grid.Row="4"
                                            Grid.Column="3"
@@ -547,7 +549,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource Datagrid_RowDetailTemplate_Foreground}"
-                                           Text="{Binding OnHandStore1, Mode=OneWay}" />
+                                           Text="{Binding OnHandStore1, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                 <TextBlock x:Name="txtblTemplateTax"
                                            Grid.Row="5"
                                            Grid.Column="3"
@@ -581,7 +583,8 @@
                     <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                 -->
-                <Grid x:Name="grdSearch">
+                <Grid x:Name="grdSearch"
+                      d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -691,11 +694,11 @@
                                                          DisplayItems="{Binding NumberOfDisplayItems}"
                                                          IsPaging="True"
                                                          IsReadOnly="True"
-                                                         SelectionMode="Extended"
                                                          ItemsSource="{Binding VendorCollection}"
                                                          NumberOfItems="{Binding VendorCollection.Count}"
                                                          RowDetailsTemplate="{DynamicResource RowDetailsTemplateVendorSearch}"
                                                          RowStyle="{DynamicResource DataGridToggleRowStyle}"
+                                                         SelectionMode="Extended"
                                                          Style="{DynamicResource DatagridWithRowHeader}">
                             <dataGridControl:DataGridControl.ContextMenu>
                                 <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
@@ -780,7 +783,7 @@
                     </Grid>
                 </Grid>
                 <Grid x:Name="grdDetail"
-                      Grid.Column="1" d:IsHidden="True">
+                      Grid.Column="1">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -940,23 +943,6 @@
                         <Grid x:Name="grdRemark1"
                               Width="40"
                               Height="40">
-                            <Grid x:Name="grdRemark"
-                                  Width="30"
-                                  Height="30">
-                                <Rectangle x:Name="imgRemark1"
-                                           Fill="{DynamicResource Remark}" />
-                                <TextBlock x:Name="txtblRemark1"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="Attachment"
-                                           Visibility="Collapsed" />
-                                <TextBox x:Name="txtbBindingRemark1"
-                                         IsReadOnly="True"
-                                         Style="{DynamicResource TextBoxRemark}"
-                                         Text="{Binding SelectedVendor.ResourceNoteCollection.Count, Mode=OneWay}"
-                                         TextWrapping="Wrap" />
-                            </Grid>
                             <ComboBox x:Name="cmbStick"
                                       Grid.ColumnSpan="2"
                                       SelectedIndex="0"
@@ -976,6 +962,14 @@
                                             Style="{DynamicResource ButtonComboboxItemRemark}" />
                                 </ComboBoxItem>
                             </ComboBox>
+                            <TextBox x:Name="txtbBindingRemark"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{DynamicResource TextBoxRemark}"
+                                     Text="{Binding SelectedVendor.ResourceNoteCollection.Count, Mode=OneWay}"
+                                     TextWrapping="Wrap"
+                                     Visibility="{Binding SelectedVendor.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
                         </Grid>
                     </StackPanel>
                     <TextBlock x:Name="txtblBindingVendor"
@@ -994,7 +988,9 @@
                     <Grid x:Name="grdBasic"
                           Grid.Row="1"
                           Grid.Column="1"
-                          Margin="10,10,10,0" Width="728" HorizontalAlignment="Left">
+                          Width="728"
+                          Margin="10,10,10,0"
+                          HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
                             <ColumnDefinition />
@@ -1908,9 +1904,15 @@
                                             <DataGridTextColumn Header="Order #"
                                                                 Binding="{Binding PurchaseOrderNo, Mode=OneWay}"
                                                                 Width="85" />
-                                            <DataGridTextColumn Header="Order Date"
-                                                                Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
-                                                                Width="70" />
+                                            <DataGridTemplateColumn Header="Order Date"
+                                                                    Width="70">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock HorizontalAlignment="Center"
+                                                                   Text="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <DataGridTextColumn Header="Status"
                                                                 Binding="{Binding Status, ConverterParameter=PurchaseStatus, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
                                                                 Width="100" />
@@ -1919,7 +1921,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
-                                                                   Text="{Binding Total, Mode=OneWay, StringFormat=c}" />
+                                                                   Text="{Binding Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -1928,7 +1930,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
-                                                                   Text="{Binding Paid, Mode=OneWay, StringFormat=c}" />
+                                                                   Text="{Binding Paid, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -1937,7 +1939,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock HorizontalAlignment="Right"
-                                                                   Text="{Binding Balance, Mode=OneWay, StringFormat=c}" />
+                                                                   Text="{Binding Balance, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -1989,7 +1991,7 @@
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockDatagridBottom}"
-                                                   Text="{Binding TotalPurchaseOrder.Total, Mode=OneWay, StringFormat=c}"
+                                                   Text="{Binding TotalPurchaseOrder.Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblBindingPaid"
                                                    Grid.Column="5"
@@ -1997,7 +1999,7 @@
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockDatagridBottom}"
-                                                   Text="{Binding TotalPurchaseOrder.Paid, Mode=OneWay, StringFormat=c}"
+                                                   Text="{Binding TotalPurchaseOrder.Paid, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblBindingBalance"
                                                    Grid.Column="6"
@@ -2005,7 +2007,7 @@
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"
                                                    Style="{DynamicResource TextBlockDatagridBottom}"
-                                                   Text="{Binding TotalPurchaseOrder.Balance, Mode=OneWay, StringFormat=c}"
+                                                   Text="{Binding TotalPurchaseOrder.Balance, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                    TextWrapping="NoWrap" />
                                     </Grid>
                                 </Grid>

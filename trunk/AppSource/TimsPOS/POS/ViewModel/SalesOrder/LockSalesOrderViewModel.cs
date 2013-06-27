@@ -931,7 +931,7 @@ namespace CPC.POS.ViewModel
                     {
                         salesOrderDetailModel.UOMId = productUOM.UOMId;
                         salesOrderDetailModel.UnitName = productUOM.Name;
-                        salesOrderDetailModel.BaseUOM = productUOM.Code;
+                        salesOrderDetailModel.UOM = productUOM.Name;
                         salesOrderDetailModel.RegularPrice = productUOM.RegularPrice;
                         salesOrderDetailModel.SalePrice = productUOM.RegularPrice;
                     }

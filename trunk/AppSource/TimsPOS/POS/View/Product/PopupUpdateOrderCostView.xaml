@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:CPC.Converter"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="UserControl"
@@ -42,6 +43,8 @@
                                                  Margin="10,0,0,0"
                                                  HorizontalAlignment="Left"
                                                  HorizontalContentAlignment="Right"
+                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                  Padding="2,0,2,0"
                                                  TextWrapping="NoWrap"
                                                  Value="{Binding NewOrderCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

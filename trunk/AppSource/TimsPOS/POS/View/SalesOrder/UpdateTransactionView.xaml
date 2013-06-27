@@ -6,14 +6,16 @@
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:local="clr-namespace:CPC.POS"
              x:Name="UserControl"
              Width="480"
              Height="301.107"
              mc:Ignorable="d">
     <UserControl.Resources>
-        
+
     </UserControl.Resources>
-    <Grid x:Name="grdUpdateTransaction" d:LayoutOverrides="Height">
+    <Grid x:Name="grdUpdateTransaction"
+          d:LayoutOverrides="Height">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="50" />
@@ -26,7 +28,8 @@
                 Background="{DynamicResource TabControlBackground}"
                 BorderBrush="{DynamicResource TabControlBorder}"
                 BorderThickness="1">
-            <Grid x:Name="grdgbItemInformation" Margin="10">
+            <Grid x:Name="grdgbItemInformation"
+                  Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition />
@@ -157,15 +160,17 @@
                            Text="New Price:"
                            TextWrapping="NoWrap" />
                 <cpcTextBox:TextBoxMoney x:Name="txtNewPrice"
-                         Grid.Row="4"
-                         Grid.Column="1"
-                         Width="100"
-                         Margin="0,2"
-                         HorizontalAlignment="Left"
-                         HorizontalContentAlignment="Right"
-                         Padding="2,0,2,0"
-                         Value="{Binding NewPrice,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="NoWrap" />
+                                         Grid.Row="4"
+                                         Grid.Column="1"
+                                         Width="100"
+                                         Margin="0,2"
+                                         HorizontalAlignment="Left"
+                                         HorizontalContentAlignment="Right"
+                                         Padding="2,0,2,0"
+                                         ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                         CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                         Value="{Binding NewPrice,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                         TextWrapping="NoWrap" />
                 <CheckBox x:Name="cbUpdate"
                           Grid.Row="6"
                           Grid.ColumnSpan="2"

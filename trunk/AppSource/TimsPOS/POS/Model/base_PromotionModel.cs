@@ -192,12 +192,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected int _getingValue;
+        protected decimal _getingValue;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the GetingValue</para>
         /// </summary>
-        public int GetingValue
+        public decimal GetingValue
         {
             get { return this._getingValue; }
             set
@@ -592,6 +592,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isConflict;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsConflict</para>
+        /// </summary>
+        public bool IsConflict
+        {
+            get { return this._isConflict; }
+            set
+            {
+                if (this._isConflict != value)
+                {
+                    this.IsDirty = true;
+                    this._isConflict = value;
+                    OnPropertyChanged(() => IsConflict);
+                    PropertyChangedCompleted(() => IsConflict);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -640,6 +660,7 @@ namespace CPC.POS.Model
             this.base_Promotion.CouponBarCode = this.CouponBarCode;
             this.base_Promotion.BarCodeNumber = this.BarCodeNumber;
             this.base_Promotion.BarCodeImage = this.BarCodeImage;
+            this.base_Promotion.IsConflict = this.IsConflict;
         }
 
         /// <summary>
@@ -675,6 +696,7 @@ namespace CPC.POS.Model
             this._couponBarCode = this.base_Promotion.CouponBarCode;
             this._barCodeNumber = this.base_Promotion.BarCodeNumber;
             this._barCodeImage = this.base_Promotion.BarCodeImage;
+            this._isConflict = this.base_Promotion.IsConflict;
         }
 
         /// <summary>
@@ -710,6 +732,7 @@ namespace CPC.POS.Model
             this.CouponBarCode = this.base_Promotion.CouponBarCode;
             this.BarCodeNumber = this.base_Promotion.BarCodeNumber;
             this.BarCodeImage = this.base_Promotion.BarCodeImage;
+            this.IsConflict = this.base_Promotion.IsConflict;
         }
 
         #endregion

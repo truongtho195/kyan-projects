@@ -30,12 +30,21 @@
         <converter:StringFormatConverter x:Key="stringFormatConverter" />
         <converter:StringPriceLevelConverter x:Key="stringPriceLevelConverter" />
         <converter:IntToCalculationConverter x:Key="intToCalculationConverter" />
-        <ContextMenu x:Key="SaleOrderShipContextMenu">
+        <DataTemplate x:Key="NewItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C125}" />
+        </DataTemplate>
+        <DataTemplate x:Key="EditItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C126}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ApplyItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_ApplyPricing}" />
+        </DataTemplate>
+		<ContextMenu x:Key="SaleOrderShipContextMenu">
             <MenuItem Command="{Binding DataContext.NewCommand,
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="NewItem"
-                      Header="New Item">
+                      HeaderTemplate="{StaticResource NewItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -47,7 +56,7 @@
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="{Binding .}"
-                      Header="Edit Item">
+                      HeaderTemplate="{StaticResource EditItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -59,7 +68,7 @@
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="{Binding .}"
-                      Header="Apply Pricing">
+                      HeaderTemplate="{StaticResource ApplyItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -69,7 +78,6 @@
             </MenuItem>
         </ContextMenu>
         <Style x:Key="DataGridMenuContextRowStyle"
-               BasedOn="{StaticResource {x:Type DataGridRow}}"
                TargetType="{x:Type DataGridRow}">
             <Setter Property="ContextMenu"
                     Value="{StaticResource SaleOrderShipContextMenu}" />
@@ -108,67 +116,68 @@
         </Style>
         <!--DataGridColumn In Search-->
         <DataTemplate x:Key="PricingNameHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_Name}" />
+            <TextBlock Text="{DynamicResource PR100}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingStatusHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Status2}" />
+            <TextBlock Text="{DynamicResource C151}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingItemHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_ItemCount}" />
+            <TextBlock Text="{DynamicResource C156}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingPriceLevelHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_PriceLevel}" />
+            <TextBlock Text="{DynamicResource C157}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingPriceBaseHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_BasePrice}" />
+            <TextBlock Text="{DynamicResource C158}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingAjMethodHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_AdjustmentMethod}" />
+            <TextBlock Text="{DynamicResource PR101}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingAmountHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_AmountChange}" />
+            <TextBlock Text="{DynamicResource PR102}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingDateCreatedHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_DateCreated}" />
+            <TextBlock Text="{DynamicResource C159}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingUserCreatedHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_UserCreated}" />
+            <TextBlock Text="{DynamicResource C160}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingDateAppliedHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_DateApplied}" />
+            <TextBlock Text="{DynamicResource C161}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingUserAppliedHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_UserApplied}" />
+            <TextBlock Text="{DynamicResource C162}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingDateRestoredHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_DateRestored}" />
+            <TextBlock Text="{DynamicResource C163}" />
         </DataTemplate>
         <DataTemplate x:Key="PricingUSerRetoreRestoredHeaderTemplate">
-            <TextBlock Text="{DynamicResource Product_Header_UserRestored}" />
+            <TextBlock Text="{DynamicResource C164}" />
         </DataTemplate>
 
         <!--DataGridColumn In Pricing Detail-->
         <DataTemplate x:Key="ItemCodeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemCode}" />
+            <TextBlock Text="{DynamicResource C114}" />
         </DataTemplate>
         <DataTemplate x:Key="ItemNameHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemName}" />
+            <TextBlock Text="{DynamicResource C115}" />
         </DataTemplate>
         <DataTemplate x:Key="AttributeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Attribute}" />
+            <TextBlock Text="{DynamicResource C116}" />
         </DataTemplate>
         <DataTemplate x:Key="SizeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Size}" />
+            <TextBlock Text="{DynamicResource C117}" />
         </DataTemplate>
         <DataTemplate x:Key="CostHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingDetail_Header_Cost}" />
+            <TextBlock Text="{DynamicResource PR103}" />
         </DataTemplate>
         <DataTemplate x:Key="PriceHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingDetail_Header_CurrentPrice}" />
+            <TextBlock Text="{DynamicResource PR111}" />
         </DataTemplate>
         <DataTemplate x:Key="NewPriceHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingDetail_Header_NewPrice}" />
+            <TextBlock Text="{DynamicResource PR110}" />
         </DataTemplate>
+		
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -195,7 +204,7 @@
                               Margin="10,10,10,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch1"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Search}"
+                                       Text="{DynamicResource C113}"
                                        TextWrapping="NoWrap"
                                        Style="{DynamicResource GroupboxTextBlock}" />
                         </GroupBox.Header>
@@ -235,12 +244,12 @@
                                     <CheckBox x:Name="cbAccountNo"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="{DynamicResource Product_Header_Name}"
+                                              Content="{DynamicResource PR100}"
                                               IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchPricingOptions.Name}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbPriceLevel"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="{DynamicResource Product_Header_PriceLevel}"
+                                              Content="{DynamicResource C157}"
                                               Margin="20,0,0,0"
                                               IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchPricingOptions.PriceLevel}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="10,0,0,0"
@@ -279,7 +288,7 @@
                         <dataGridControl:DataGridControl.Columns>
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource PricingNameHeaderTemplate}"
                                                     IsReadOnly="True"
-                                                    Width="*">
+                                                    Width="150">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name,Mode=OneWay}" />
@@ -288,7 +297,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource PricingStatusHeaderTemplate}"
                                                     IsReadOnly="True"
-                                                    Width="80">
+                                                    Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Status,Mode=OneWay}"
@@ -298,7 +307,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource PricingItemHeaderTemplate}"
                                                     IsReadOnly="True"
-                                                    Width="60">
+                                                    Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding ItemCount,Mode=OneWay}"
@@ -326,13 +335,13 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock TextAlignment="Center"
-                                                   Text="{Binding CalculateMethod,ConverterCulture=vi-VN,Converter={StaticResource intToCalculationConverter},ConverterParameter=0}" />
+                                                   Text="{Binding CalculateMethod,ConverterCulture={x:Static local:Define.ConverterCulture},Converter={StaticResource intToCalculationConverter},ConverterParameter=0}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource PricingAmountHeaderTemplate}"
                                                     IsReadOnly="True"
-                                                    Width="85">
+                                                    Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock TextAlignment="Right">
@@ -392,7 +401,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource PricingDateRestoredHeaderTemplate}"
                                                     IsReadOnly="True"
-                                                    Width="75">
+                                                    Width="70">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding DateRestored, Mode=OneWay,StringFormat={x:Static local:Define.DateFormat}}"
@@ -434,7 +443,7 @@
                             Command="{Binding DoubleClickViewCommand}"
                             Style="{DynamicResource ButtonBarSearch}">
                         <TextBlock VerticalAlignment="Center"
-                                   Text="{DynamicResource Button_Content_Search}"
+                                   Text="{DynamicResource C113}"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Center"
                                    x:Name="txtblShowSearch1"
@@ -453,7 +462,7 @@
                                Width="1"
                                HorizontalAlignment="Left"
                                Fill="{DynamicResource Spilter_Line_Background}"
-                               d:LayoutOverrides="GridBox" />
+                               d:LayoutOverrides="GridBox" Grid.Column="2" />
 
                     <Grid x:Name="grdSubDiscountPriceCoupon"
                           d:LayoutOverrides="Height"
@@ -700,32 +709,8 @@
                             <Grid x:Name="grdRemark1"
                                   Height="40"
                                   Margin="0"
-                                  Width="50">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="35" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid x:Name="grdRemark"
-                                      Width="30"
-                                      Height="30">
-                                    <Rectangle x:Name="imgRemark"
-                                               Fill="{DynamicResource Remark}" />
-                                    <TextBlock Margin="5,0,0,0"
-                                               x:Name="txtblRemark"
-                                               VerticalAlignment="Center"
-                                               Text="Attachment"
-                                               TextWrapping="NoWrap"
-                                               Visibility="Collapsed"
-                                               Style="{DynamicResource ButtonSystemTextBlock}"
-                                               d:LayoutOverrides="Width, HorizontalMargin" />
-                                    <TextBox x:Name="txtbBindingRemark"
-                                             TextWrapping="Wrap"
-                                             Text="{Binding SelectedItemPricing.ResourceNoteCollection.Count, Mode=OneWay}"
-                                             d:LayoutOverrides="Width, Height"
-                                             Style="{DynamicResource TextBoxRemark}" />
-                                </Grid>
+                                  Width="40">
                                 <ComboBox x:Name="cmbStick"
-                                          Grid.ColumnSpan="2"
                                           SelectedIndex="0"
                                           Style="{DynamicResource RemarkComboboxStyle}">
                                     <Button Width="75"
@@ -736,13 +721,16 @@
                                     <Button Width="75"
                                             Height="20"
                                             Command="{Binding ShowOrHiddenNoteCommand}"
-                                            Content="{Binding ShowOrHiddenNote,
-                                                          Mode=OneWay}"
+                                            Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
                                             Style="{DynamicResource ButtonComboboxItemRemark}"
-                                            Visibility="{Binding SelectedItemPricing.ResourceNoteCollection.Count,
-                                                             Converter={StaticResource enumToCollapsedConverter},
-                                                             ConverterParameter=0}" />
+                                            Visibility="{Binding SelectedItemPricing.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
                                 </ComboBox>
+                                <TextBox x:Name="txtbBindingRemark"
+                            		TextWrapping="Wrap"
+                            		Text="{Binding SelectedItemPricing.ResourceNoteCollection.Count, Mode=OneWay}"
+                            		Visibility="{Binding SelectedItemPricing.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}"
+                            		d:LayoutOverrides="Width, Height"
+                            		Style="{DynamicResource TextBoxRemark}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Grid>
                             <Button Style="{DynamicResource ButtonSystem}"
                                     x:Name="btnExit"
@@ -819,7 +807,7 @@
                                    Margin="2,0,2,0"
                                    Fill="{DynamicResource Spilter_Line_Background}" />
                         <TextBlock x:Name="txtblBindingDiscountType1"
-                                   Text="{DynamicResource Pricing_TextBlock_Title}"
+                                   Text="{DynamicResource PR114}"
                                    TextWrapping="NoWrap"
                                    Margin="0,0,20,7"
                                    HorizontalAlignment="Right"
@@ -837,7 +825,7 @@
                                 <RowDefinition Height="25" />
                             </Grid.RowDefinitions>
                             <TextBlock x:Name="txtblName"
-                                       Text="{DynamicResource PricingDetail_TextBlock_Name}"
+                                       Text="{DynamicResource PR104}"
                                        TextWrapping="NoWrap"
                                        Margin="10,0,0,0"
                                        VerticalAlignment="Center"
@@ -888,7 +876,7 @@
 
                                     </Grid.RowDefinitions>
                                     <TextBlock x:Name="txtblSet"
-                                               Text="{DynamicResource PricingDetail_TextBlock_Set}"
+                                               Text="{DynamicResource PR105}"
                                                TextWrapping="NoWrap"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Left"
@@ -912,7 +900,7 @@
                                         </Grid.RowDefinitions>
                                         <TextBlock x:Name="txblPriceLevel"
                                                    TextWrapping="Wrap"
-                                                   Text="{DynamicResource Product_Header_PriceLevel}"
+                                                   Text="{DynamicResource C157}"
                                                    Foreground="White"
                                                    Margin="35.773,0,0,0"
                                                    HorizontalAlignment="Left"
@@ -920,20 +908,20 @@
                                         <TextBlock x:Name="txblBasePrice"
                                                    Margin="120.1,0,0,0"
                                                    TextWrapping="Wrap"
-                                                   Text="{DynamicResource Product_Header_BasePrice}"
+                                                   Text="{DynamicResource C158}"
                                                    Foreground="White"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center" />
                                         <TextBlock x:Name="txblAdjustment"
                                                    TextWrapping="Wrap"
-                                                    Text="{DynamicResource PricingDetail_TextBlock_Adjustment}"
+                                                    Text="{DynamicResource PR106}"
                                                    Foreground="White"
                                                    Margin="187.33,0,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center" />
                                         <TextBlock x:Name="txblAmount"
                                                    TextWrapping="Wrap"
-                                                    Text="{DynamicResource PricingDetail_TextBlock_Amount}"
+                                                    Text="{DynamicResource C122}"
                                                    Foreground="White"
                                                    Margin="281.123,0,0,0"
                                                    HorizontalAlignment="Left"
@@ -980,8 +968,8 @@
                                                                        Grid.Row="1"
                                                                        Height="21"
                                                                        Width="90"
-                                                                       StringFormat="{x:Static local:Define.NumericFormat}"
-                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
+													                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                        Value="{Binding SelectedItemPricing.AmountChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                                        d:LayoutOverrides="GridBox" />
                                         <ComboBox x:Name="cmbAmount"
@@ -1004,7 +992,7 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <TextBlock x:Name="txtblProduct"
-                                               Text="{DynamicResource PricingDetail_TextBlock_Product}"
+                                               Text="{DynamicResource C165}"
                                                TextWrapping="NoWrap"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Left"
@@ -1037,7 +1025,7 @@
                                                          CommandParameter="All"
                                                          HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
-                                                         Content="{DynamicResource PricingDetail_RadioButton_AllItem}"
+                                                         Content="{DynamicResource C166}"
                                                          IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=0}"
                                                          Cursor="Hand" />
                                             <RadioButton x:Name="rbAllItemsinCategory"
@@ -1045,7 +1033,7 @@
                                                          Command="{Binding FilterProductCommand}"
                                                          CommandParameter="Category"
                                                          VerticalAlignment="Center"
-                                                         Content="{DynamicResource PricingDetail_RadioButton_AllItemsInCategory}"
+                                                         Content="{DynamicResource C167}"
                                                          Margin="10,0,0,0"
                                                          Cursor="Hand" />
                                             <RadioButton x:Name="cbAllItemsinVendor"
@@ -1053,7 +1041,7 @@
                                                          IsChecked="{Binding SelectedItemPricing.AffectPricing, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}"
                                                          Command="{Binding FilterProductCommand}"
                                                          CommandParameter="Vendor"
-                                                         Content="{DynamicResource PricingDetail_RadioButton_AllItemsinVendor}"
+                                                         Content="{DynamicResource C168}"
                                                          Margin="10,0,0,0"
                                                          Cursor="Hand" />
                                             <RadioButton x:Name="cbCustom"
@@ -1062,7 +1050,7 @@
                                                          CommandParameter="Custom"
                                                          HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
-                                                          Content="{DynamicResource PricingDetail_RadioButton_Custom}"
+                                                          Content="{DynamicResource C169}"
                                                          Margin="10,0,0,0"
                                                          Cursor="Hand" />
                                         </StackPanel>
@@ -1095,33 +1083,33 @@
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding ProductName,Mode=OneWay}"
-                                                                       TextAlignment="Center" />
+                                                                       TextAlignment="Left" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                         IsReadOnly="True"
-                                                                        Width="70">
+                                                                        Width="80">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Attribute, Mode=OneWay}"
-                                                                       TextAlignment="Center" />
+                                                                       TextAlignment="Left" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                         IsReadOnly="True"
-                                                                        Width="70">
+                                                                        Width="80">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding Size,Mode=OneWay}"
-                                                                       TextAlignment="Center" />
+                                                                       TextAlignment="Left" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn HeaderTemplate="{StaticResource CostHeaderTemplate}"
                                                                         IsReadOnly="True"
-                                                                        Width="70">
+                                                                        Width="80">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding AverageUnitCost,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
@@ -1131,7 +1119,7 @@
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
                                                                         IsReadOnly="True"
-                                                                        Width="70">
+                                                                        Width="80">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock TextAlignment="Right"
@@ -1142,7 +1130,7 @@
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn HeaderTemplate="{StaticResource NewPriceHeaderTemplate}"
                                                                         IsReadOnly="True"
-                                                                        Width="70">
+                                                                        Width="80">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding NewPrice,Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
@@ -1151,7 +1139,7 @@
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn  IsReadOnly="True"
-                                                                         Width="70">
+                                                                         Width="80">
                                                     <DataGridTemplateColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock TextAlignment="Right">
@@ -1161,12 +1149,12 @@
                                                                 <DataTrigger Binding="{Binding DataContext.SelectedItemPricing.BasePrice,Mode=OneWay,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl},AncestorLevel=1}}"
                                                                              Value="1">
                                                                     <Setter Property="Text"
-                                                                                Value="{DynamicResource PricingDetail_Header_CostChange}"></Setter>
+                                                                                Value="{DynamicResource PR112}"></Setter>
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding DataContext.SelectedItemPricing.BasePrice,Mode=OneWay,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type UserControl},AncestorLevel=1}}"
                                                                              Value="2">
                                                                     <Setter Property="Text"
-                                                                                Value="{DynamicResource PricingDetail_Header_PriceChange}"></Setter>
+                                                                                Value="{DynamicResource PR113}"></Setter>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>

@@ -9,33 +9,40 @@ namespace CPC.POS.ViewModel
     {
         #region Properties
 
-        private string _reasonReActive;
+        private string _reasonReactive;
         /// <summary>
-        /// Gets or sets the ReasonReActive.
+        /// Gets or sets the ReasonReactive.
         /// </summary>
-        public string ReasonReActive
+        public string ReasonReactive
         {
-            get { return _reasonReActive; }
+            get { return _reasonReactive; }
             set
             {
-                if (_reasonReActive != value)
+                if (_reasonReactive != value)
                 {
-                    _reasonReActive = value;
-                    OnPropertyChanged(() => ReasonReActive);
-                    ReasonReActiveBinding = ReasonReActive;
+                    _reasonReactive = value;
+                    OnPropertyChanged(() => ReasonReactive);
                 }
             }
         }
-
-        public string ReasonReActiveBinding { get; set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public PromotionReasonViewModel()
         {
             InitialCommand();
+        }
+
+        public PromotionReasonViewModel(string reasonReactive)
+            : this()
+        {
+            // Set reason reactive value
+            ReasonReactive = reasonReactive;
         }
 
         #endregion
@@ -55,7 +62,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnOkCommandCanExecute()
         {
-            return !string.IsNullOrWhiteSpace(ReasonReActiveBinding);
+            return !string.IsNullOrWhiteSpace(ReasonReactive);
         }
 
         /// <summary>

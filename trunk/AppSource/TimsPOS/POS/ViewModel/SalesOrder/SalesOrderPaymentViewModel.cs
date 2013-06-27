@@ -41,6 +41,7 @@ namespace CPC.POS.ViewModel
             TotalDiscount = saleOrderModel.DiscountAmount;
             TotalDeposit = totalDeposit;
             LastPayment = lastPayment;
+            Refunded = saleOrderModel.ReturnModel.TotalRefund;
             this.IsQuotation = false;
             InitialPaymentMethod(MarkType.SaleOrder.ToDescription(), saleOrderModel.Resource.ToString(), saleOrderModel.SONumber, saleOrderModel.Total, balance, saleOrderModel.RewardValueApply);
         }
@@ -209,6 +210,26 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+
+        #region Refunded
+        private decimal _refunded;
+        /// <summary>
+        /// Gets or sets the Refunded.
+        /// </summary>
+        public decimal Refunded
+        {
+            get { return _refunded; }
+            set
+            {
+                if (_refunded != value)
+                {
+                    _refunded = value;
+                    OnPropertyChanged(() => Refunded);
+                }
+            }
+        }
+        #endregion
+
 
         public bool IsPaidFull { get; set; }
 

@@ -72,6 +72,12 @@ namespace CPC.Converter
                     case "GuestRewardStatus":
                         result = Common.GuestRewardStatus.Single(x => x.Value == short.Parse(value.ToString())).Text;
                         break;
+                    case "AdjustmentReason":
+                        result = Common.AdjustmentReason.Single(x => x.Value == short.Parse(value.ToString())).Text;
+                        break;
+                    case "AdjustmentStatus":
+                        result = Common.AdjustmentStatus.Single(x => x.Value == short.Parse(value.ToString())).Text;
+                        break;
                     default:
                         break;
                 }

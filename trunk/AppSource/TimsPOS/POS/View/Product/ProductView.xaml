@@ -19,6 +19,7 @@
              helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <!--  region Converter  -->
         <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
         <converter:IntegerToBooleanConverter x:Key="reversedIntToBoolConverter"
                                              IsReversed="True" />
@@ -27,6 +28,78 @@
                                              FalseToVisibility="Visible" />
         <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
         <converter:StringFormatConverter x:Key="stringFormatConverter" />
+        <!--  endregion Converter  -->
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Code">
+            <TextBlock Text="{DynamicResource PD_Header_Code}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemType">
+            <TextBlock Text="{DynamicResource PD_Header_ItemType}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Category">
+            <TextBlock Text="{DynamicResource PD_Header_Category}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Vendor">
+            <TextBlock Text="{DynamicResource PD_Header_Vendor}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemName">
+            <TextBlock Text="{DynamicResource PD_Header_ItemName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Description">
+            <TextBlock Text="{DynamicResource PD_Header_Description}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
+            <TextBlock Text="{DynamicResource PD_Header_Attribute}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Size">
+            <TextBlock Text="{DynamicResource PD_Header_Size}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Barcode">
+            <TextBlock Text="{DynamicResource PD_Header_Barcode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_PartNo">
+            <TextBlock Text="{DynamicResource PD_Header_PartNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_BaseUOM">
+            <TextBlock Text="{DynamicResource PD_Header_BaseUOM}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_TaxCode">
+            <TextBlock Text="{DynamicResource PD_Header_TaxCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_RegularPrice">
+            <TextBlock Text="{DynamicResource PD_Header_RegularPrice}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnHandQty">
+            <TextBlock Text="{DynamicResource PD_Header_OnHandQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnOrder">
+            <TextBlock Text="{DynamicResource PD_Header_OnOrder}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_CreationDate">
+            <TextBlock Text="{DynamicResource PD_Header_CreationDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_VendorCode">
+            <TextBlock Text="{DynamicResource PD_Header_VendorCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Phone">
+            <TextBlock Text="{DynamicResource PD_Header_Phone}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Email">
+            <TextBlock Text="{DynamicResource PD_Header_Email}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Price">
+            <TextBlock Text="{DynamicResource PD_Header_Price}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_ProductInfo">
+            <TextBlock Text="{DynamicResource PD_TabHeader_ProductInfo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_Additional">
+            <TextBlock Text="{DynamicResource PD_TabHeader_Additional}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_VendorProduct">
+            <TextBlock Text="{DynamicResource PD_TabHeader_VendorProduct}" />
+        </DataTemplate>
+        <!--  endregion HeaderTemplate  -->
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -240,65 +313,78 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Code"
-                                                Binding="{Binding Code, Mode=OneWay}"
-                                                Width="80" />
-                            <DataGridTextColumn Header="Item Type"
-                                                Binding="{Binding ItemTypeId, ConverterParameter=ItemTypes, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
-                                                Width="80" />
-                            <DataGridTextColumn Header="Category"
-                                                Binding="{Binding CategoryName, Mode=OneWay}"
-                                                Width="130" />
-                            <DataGridTextColumn Header="Vendor"
-                                                Binding="{Binding VendorName, Mode=OneWay}"
-                                                Width="100" />
-                            <DataGridTextColumn Header="Item Name"
-                                                Binding="{Binding ProductName, Mode=OneWay}"
-                                                Width="100" />
-                            <DataGridTextColumn Header="Description"
-                                                Binding="{Binding Description, Mode=OneWay}"
-                                                Width="250" />
-                            <DataGridTextColumn Header="Attribute"
-                                                Binding="{Binding Attribute, Mode=OneWay}"
-                                                Width="80" />
-                            <DataGridTextColumn Header="Size"
-                                                Binding="{Binding Size, Mode=OneWay}"
-                                                Width="80" />
-                            <DataGridTextColumn Header="Barcode"
-                                                Binding="{Binding Barcode, Mode=OneWay}"
-                                                Width="100" />
-                            <DataGridTextColumn Header="Part No."
-                                                Binding="{Binding PartNumber, Mode=OneWay}"
-                                                Width="100" />
-                            <DataGridTextColumn Header="Base UOM"
-                                                Binding="{Binding UOMName, Mode=OneWay}"
-                                                Width="100" />
-                            <DataGridTextColumn Header="Tax Code"
-                                                Binding="{Binding TaxCode, Mode=OneWay}"
-                                                Width="80" />
-                            <DataGridTemplateColumn Header="Regular Price"
-                                                    Width="80">
+                            <DataGridTextColumn Binding="{Binding Code, Mode=OneWay}"
+                                                Width="100"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Code}" />
+                            <DataGridTextColumn Binding="{Binding ItemTypeId, ConverterParameter=ItemTypes, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                                Width="100"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemType}" />
+                            <DataGridTextColumn Binding="{Binding CategoryName, Mode=OneWay}"
+                                                Width="130"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Category}" />
+                            <DataGridTextColumn Binding="{Binding VendorName, Mode=OneWay}"
+                                                Width="150"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Vendor}" />
+                            <DataGridTextColumn Binding="{Binding ProductName, Mode=OneWay}"
+                                                Width="150"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemName}" />
+                            <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}"
+                                                Width="250"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Description}" />
+                            <DataGridTextColumn Binding="{Binding Attribute, Mode=OneWay}"
+                                                Width="80"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Attribute}" />
+                            <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}"
+                                                Width="80"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Size}" />
+                            <DataGridTextColumn Binding="{Binding Barcode, Mode=OneWay}"
+                                                Width="100"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Barcode}" />
+                            <DataGridTextColumn Binding="{Binding PartNumber, Mode=OneWay}"
+                                                Width="100"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_PartNo}" />
+                            <DataGridTextColumn Binding="{Binding UOMName, Mode=OneWay}"
+                                                Width="80"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_BaseUOM}" />
+                            <DataGridTextColumn Binding="{Binding TaxCode, Mode=OneWay}"
+                                                Width="80"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_TaxCode}" />
+                            <DataGridTemplateColumn Width="80"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_RegularPrice}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   Text="{Binding RegularPrice, Mode=OneWay, StringFormat=c}" />
+                                                   Text="{Binding RegularPrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="On-Hand Qty"
-                                                    Width="80">
+                            <DataGridTemplateColumn Width="80"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_OnHandQty}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   Text="{Binding QuantityOnHand, Mode=OneWay}" />
+                                                   Text="{Binding QuantityOnHand, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="On Order"
-                                                Width="80" />
-                            <DataGridTextColumn Header="Creation Date"
-                                                Binding="{Binding DateCreated, StringFormat={x:Static local:Define.DateFormat}, Mode=OneWay}"
-                                                Width="70" />
+                            <DataGridTemplateColumn Width="80"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_OnOrder}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding QuantityOnOrder, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="80"
+                                                    HeaderTemplate="{StaticResource DataTemplate_PD_Header_CreationDate}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </dataGridControl:DataGridControl>
                 </Grid>
@@ -451,28 +537,6 @@
                             <Grid x:Name="grdRemark1"
                                   Width="40"
                                   Height="40">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="35" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid x:Name="grdRemark"
-                                      Width="30"
-                                      Height="30">
-                                    <Rectangle x:Name="imgRemark1"
-                                               Fill="{DynamicResource Remark}" />
-                                    <TextBlock x:Name="txtblRemark1"
-                                               Margin="5,0,0,0"
-                                               VerticalAlignment="Center"
-                                               Style="{DynamicResource ButtonSystemTextBlock}"
-                                               Text="Attachment"
-                                               Visibility="Collapsed" />
-                                    <TextBox x:Name="txtbBindingRemark1"
-                                             IsReadOnly="True"
-                                             Style="{DynamicResource TextBoxRemark}"
-                                             Text="{Binding SelectedProduct.ResourceNoteCollection.Count, Mode=OneWay}"
-                                             TextWrapping="Wrap"
-                                             Visibility="{Binding SelectedProduct.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
-                                </Grid>
                                 <ComboBox x:Name="cmbStick"
                                           Grid.ColumnSpan="2"
                                           SelectedIndex="0"
@@ -492,6 +556,14 @@
                                                 Style="{DynamicResource ButtonComboboxItemRemark}" />
                                     </ComboBoxItem>
                                 </ComboBox>
+                                <TextBox x:Name="txtbBindingRemark1"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         IsReadOnly="True"
+                                         Style="{DynamicResource TextBoxRemark}"
+                                         Text="{Binding SelectedProduct.ResourceNoteCollection.Count, Mode=OneWay}"
+                                         TextWrapping="Wrap"
+                                         Visibility="{Binding SelectedProduct.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
                             </Grid>
                         </StackPanel>
                         <Rectangle x:Name="Line"
@@ -507,7 +579,7 @@
                                    VerticalAlignment="Bottom"
                                    FontFamily="Times New Roman"
                                    Style="{DynamicResource TextBlockTitleFormView}"
-                                   Text="Product"
+                                   Text="{DynamicResource PD_TextBlock_Title}"
                                    TextWrapping="NoWrap" />
                         <Grid x:Name="grdBasic"
                               Grid.Row="1"
@@ -527,7 +599,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Item #:"
+                                       Text="{DynamicResource PD_TextBlock_ItemNo}"
                                        TextWrapping="NoWrap" />
                             <TextBlock x:Name="txtblBindingItemNo"
                                        Grid.Column="1"
@@ -543,7 +615,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Item Type:"
+                                       Text="{DynamicResource PD_TextBlock_ItemType}"
                                        TextWrapping="NoWrap" />
                             <ComboBox x:Name="cmbItemType"
                                       Grid.Column="1"
@@ -561,7 +633,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Date:"
+                                       Text="{DynamicResource PD_TextBlock_Date}"
                                        TextWrapping="NoWrap" />
                             <DatePicker x:Name="dtpStartDate"
                                         Grid.Column="1"
@@ -575,7 +647,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Department:"
+                                       Text="{DynamicResource PD_TextBlock_Department}"
                                        TextWrapping="NoWrap" />
                             <AdornerDecorator Grid.Row="1"
                                               Grid.Column="1">
@@ -600,7 +672,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Category:"
+                                       Text="{DynamicResource PD_TextBlock_Category}"
                                        TextWrapping="NoWrap" />
                             <comboBoxControl:ComboBoxControl x:Name="cmbItemCategory"
                                                              Grid.Row="1"
@@ -626,21 +698,21 @@
                                                          DataChanged="{Binding SelectedProduct}"
                                                          IsValid="{Binding IsValidTab, Mode=OneWayToSource}">
                                 <cpcTabControl:CPCTabItemControl x:Name="tabitemProductInfo"
-                                                                 Header="Product Info"
+                                                                 HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_ProductInfo}"
                                                                  IsCheckError="True">
                                     <Grid x:Name="grdProductInfo">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="180" />
                                         </Grid.RowDefinitions>
-                                        <GroupBox x:Name="gbItemSearch"
+                                        <GroupBox x:Name="gbItemInformation"
                                                   Width="525"
                                                   Margin="10,10,0,0"
                                                   HorizontalAlignment="Left">
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblItemSearch"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Item Search"
+                                                           Text="{DynamicResource PD_GroupHeader_ItemInformation}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdItemSearchPriceRange1"
@@ -662,7 +734,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Item Name:"
+                                                           Text="{DynamicResource PD_TextBlock_ItemName}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtItemName"
                                                                         Grid.Column="1"
@@ -679,7 +751,7 @@
                                                            Margin="191.566,0,198.04,0"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Vendor:"
+                                                           Text="{DynamicResource PD_TextBlock_Vendor}"
                                                            TextWrapping="NoWrap" />
                                                 <comboBoxControl:ComboBoxControl x:Name="cmbVendor"
                                                                                  Grid.Column="1"
@@ -699,7 +771,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Barcode:"
+                                                           Text="{DynamicResource PD_TextBlock_Barcode}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtBarcode"
                                                                         Grid.Row="1"
@@ -718,7 +790,7 @@
                                                            Margin="195.15,0,198.04,0"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Part #:"
+                                                           Text="{DynamicResource PD_TextBlock_PartNo}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtPartNo"
                                                                         Grid.Row="1"
@@ -736,7 +808,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Brand:"
+                                                           Text="{DynamicResource PD_TextBlock_Brand}"
                                                            TextWrapping="NoWrap" />
                                                 <comboBoxControl:ComboBoxControl x:Name="cmbItemBrand"
                                                                                  Grid.Row="2"
@@ -759,7 +831,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Style/ Model:"
+                                                           Text="{DynamicResource PD_TextBlock_StyleModel}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtStyleModel"
                                                                         Grid.Row="2"
@@ -777,7 +849,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Attribute:"
+                                                           Text="{DynamicResource PD_TextBlock_Attribute}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtAttribute"
                                                                         Grid.Row="3"
@@ -794,7 +866,7 @@
                                                            Margin="206.75,0,198.04,0"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Size:"
+                                                           Text="{DynamicResource PD_TextBlock_Size}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtSize"
                                                                         Grid.Row="3"
@@ -824,7 +896,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Description:"
+                                                           Text="{DynamicResource PD_TextBlock_Description}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtItemDescription"
                                                                         Grid.Row="4"
@@ -859,13 +931,13 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblQuantity"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Quantity"
+                                                           Text="{DynamicResource PD_GroupHeader_Quantity}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdContentQuantity"
                                                   Margin="0,4,0,0">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="90" />
+                                                    <ColumnDefinition Width="105" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
@@ -882,50 +954,82 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="On-Hand Qty:"
+                                                           Text="{DynamicResource PD_TextBlock_OnHandQty}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxNumeric x:Name="txtOnHandQuantity"
                                                                                Grid.Column="1"
                                                                                Margin="0,2,10,2"
                                                                                HorizontalContentAlignment="Right"
+                                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                IsEnabled="{Binding IsEditOnHandQuantity, Mode=OneWay}"
+                                                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                Padding="2"
                                                                                TextWrapping="NoWrap"
                                                                                Value="{Binding SelectedProduct.OnHandStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TextBlock x:Name="txtblReorderPoint"
+                                                <TextBlock x:Name="txtblCompanyReorderPoint"
                                                            Grid.Row="1"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Reorder Point:"
+                                                           Text="{DynamicResource PD_TextBlock_CoReorderPoint}"
                                                            TextWrapping="NoWrap" />
-                                                <textBoxControl:TextBoxNumeric x:Name="txtReorderPoint"
+                                                <textBoxControl:TextBoxNumeric x:Name="txtCompanyReorderPoint"
                                                                                Grid.Row="1"
                                                                                Grid.Column="1"
-                                                                               Margin="0,2,10,2"
+                                                                               Margin="0,2,35,2"
                                                                                HorizontalContentAlignment="Right"
+                                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                IsEnabled="{Binding IsEditOnHandQuantity, Mode=OneWay}"
+                                                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                Padding="2,0,2,0"
                                                                                TextWrapping="NoWrap"
                                                                                Value="{Binding SelectedProduct.CompanyReOrderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Button x:Name="btnReorderPointByStore"
+                                                        Command="{Binding PopupReorderPointCommand}"
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Width="21"
+                                                        Height="21"
+                                                        Margin="0,2,10,2"
+                                                        HorizontalAlignment="Right"
+                                                        FontSize="12">
+                                                    <StackPanel x:Name="stkpBtnReorderPointByStore"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Orientation="Horizontal">
+                                                        <Rectangle x:Name="imgReorderPointByStore"
+                                                                   Width="16"
+                                                                   Height="16"
+                                                                   Fill="{DynamicResource Config}" />
+                                                        <TextBlock x:Name="txtblReorderPointByStore"
+                                                                   Margin="0"
+                                                                   VerticalAlignment="Center"
+                                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                                   Text="Reorder Point By Store"
+                                                                   TextWrapping="NoWrap"
+                                                                   Visibility="Collapsed" />
+                                                    </StackPanel>
+                                                </Button>
                                                 <TextBlock x:Name="txtblAvailableQuantity"
                                                            Grid.Row="2"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Available Qty:"
+                                                           Text="{DynamicResource PD_TextBlock_AvailableQty}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxNumeric x:Name="txtAvailableQuantity"
                                                                                Grid.Row="2"
                                                                                Grid.Column="1"
                                                                                Margin="0,2,10,2"
                                                                                HorizontalContentAlignment="Right"
+                                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                IsEnabled="False"
+                                                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                Padding="2,0,2,0"
                                                                                TextWrapping="NoWrap"
-                                                                               Value="{Binding SelectedProduct.QuantityOnHand, Mode=OneWay}" />
+                                                                               Value="{Binding SelectedProduct.ProductStoreDefault.QuantityAvailable, Mode=OneWay}" />
                                                 <Button x:Name="btnAvailable"
                                                         Command="{Binding PopupAvailableCommand}"
                                                         Grid.Row="5"
@@ -944,7 +1048,7 @@
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    Style="{DynamicResource ButtonTextBlock}"
-                                                                   Text="Available"
+                                                                   Text="{DynamicResource PD_Button_Available}"
                                                                    TextWrapping="NoWrap" />
                                                     </StackPanel>
                                                 </Button>
@@ -959,7 +1063,7 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblUnitOfMessure"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Unit Of Messure"
+                                                           Text="{DynamicResource PD_GroupHeader_UnitOfMeasure}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdUnitOfMessure"
@@ -1009,21 +1113,21 @@
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                Style="{DynamicResource TextBlockNormal}"
-                                                               Text="UOM"
+                                                               Text="{DynamicResource PD_TextBlock_UOM}"
                                                                TextWrapping="NoWrap" />
                                                     <TextBlock x:Name="txtblNoBaseUOM"
                                                                Margin="69.346,0,0,0"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                Style="{DynamicResource TextBlockNormal}"
-                                                               Text="# Base UOM"
+                                                               Text="{DynamicResource PD_TextBlock_NumberBaseUOM}"
                                                                TextWrapping="NoWrap" />
                                                     <TextBlock x:Name="txtblRegularPrice"
                                                                Margin="141.038,0,0,0"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                Style="{DynamicResource TextBlockNormal}"
-                                                               Text="Regular Price"
+                                                               Text="{DynamicResource PD_TextBlock_RegularPrice_UOM}"
                                                                TextWrapping="NoWrap" />
                                                     <comboBoxControl:ComboBoxControl Grid.Row="1"
                                                                                      Width="60"
@@ -1044,7 +1148,9 @@
                                                                                    Margin="75,2,0,2"
                                                                                    HorizontalAlignment="Left"
                                                                                    HorizontalContentAlignment="Right"
+                                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                    IsEnabled="{Binding SelectedProduct.ProductUOMCollection[0].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
+                                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                    Padding="2,0,2,0"
                                                                                    TextWrapping="NoWrap"
                                                                                    Value="{Binding SelectedProduct.ProductUOMCollection[0].BaseUnitNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1060,6 +1166,8 @@
                                                                                  Margin="0,2,10,2"
                                                                                  HorizontalAlignment="Right"
                                                                                  HorizontalContentAlignment="Right"
+                                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                                  IsEnabled="{Binding SelectedProduct.ProductUOMCollection[0].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
                                                                                  Padding="2,0,2,0"
                                                                                  TextLength="10"
@@ -1084,7 +1192,9 @@
                                                                                    Margin="75,2,0,2"
                                                                                    HorizontalAlignment="Left"
                                                                                    HorizontalContentAlignment="Right"
+                                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                    IsEnabled="{Binding SelectedProduct.ProductUOMCollection[1].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
+                                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                    Padding="2,0,2,0"
                                                                                    TextWrapping="NoWrap"
                                                                                    Value="{Binding SelectedProduct.ProductUOMCollection[1].BaseUnitNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1100,6 +1210,8 @@
                                                                                  Margin="0,2,10,2"
                                                                                  HorizontalAlignment="Right"
                                                                                  HorizontalContentAlignment="Right"
+                                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                                  IsEnabled="{Binding SelectedProduct.ProductUOMCollection[1].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
                                                                                  Padding="2,0,2,0"
                                                                                  TextLength="10"
@@ -1124,7 +1236,9 @@
                                                                                    Margin="75,2,0,2"
                                                                                    HorizontalAlignment="Left"
                                                                                    HorizontalContentAlignment="Right"
+                                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                    IsEnabled="{Binding SelectedProduct.ProductUOMCollection[2].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
+                                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                    Padding="2,0,2,0"
                                                                                    TextWrapping="NoWrap"
                                                                                    Value="{Binding SelectedProduct.ProductUOMCollection[2].BaseUnitNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1140,6 +1254,8 @@
                                                                                  Margin="0,2,10,2"
                                                                                  HorizontalAlignment="Right"
                                                                                  HorizontalContentAlignment="Right"
+                                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                                  IsEnabled="{Binding SelectedProduct.ProductUOMCollection[2].UOMId, Mode=OneWay, Converter={StaticResource reversedIntToBoolConverter}, ConverterParameter=0}"
                                                                                  Padding="2,0,2,0"
                                                                                  TextLength="10"
@@ -1162,7 +1278,7 @@
                                                                        Margin="5,0,0,0"
                                                                        VerticalAlignment="Center"
                                                                        Style="{DynamicResource ButtonTextBlock}"
-                                                                       Text="Manage UOM"
+                                                                       Text="{DynamicResource PD_Button_ManageUOM}"
                                                                        TextWrapping="NoWrap" />
                                                         </StackPanel>
                                                     </Button>
@@ -1179,7 +1295,7 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblPriceLevelsMarkdown"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Price Levels"
+                                                           Text="{DynamicResource PD_GroupHeader_PriceLevels}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdPriceLevelsMarkdown"
@@ -1201,12 +1317,14 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Regular Price:"
+                                                           Text="{DynamicResource PD_TextBlock_RegularPrice}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxMoney x:Name="txtRegularPrice1"
                                                                              Grid.Column="1"
                                                                              Margin="0,2,10,2"
                                                                              HorizontalContentAlignment="Right"
+                                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                              Padding="2,0,2,0"
                                                                              TextLength="10"
                                                                              TextWrapping="NoWrap"
@@ -1217,13 +1335,15 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Order Cost:"
+                                                           Text="{DynamicResource PD_TextBlock_OrderCost}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxMoney x:Name="txtOrderCost"
                                                                              Grid.Row="1"
                                                                              Grid.Column="1"
                                                                              Margin="0,2,10,2"
                                                                              HorizontalContentAlignment="Right"
+                                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                              Padding="2,0,2,0"
                                                                              TextLength="10"
                                                                              TextWrapping="NoWrap"
@@ -1234,13 +1354,15 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Avg Unit Cost:"
+                                                           Text="{DynamicResource PD_TextBlock_AvgUnitCost}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxMoney x:Name="txtAvgUnitCost"
                                                                              Grid.Row="2"
                                                                              Grid.Column="1"
                                                                              Margin="0,2,10,2"
                                                                              HorizontalContentAlignment="Right"
+                                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                              Padding="2,0,2,0"
                                                                              TextLength="10"
                                                                              TextWrapping="NoWrap"
@@ -1251,7 +1373,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Tax Code:"
+                                                           Text="{DynamicResource PD_TextBlock_TaxCode}"
                                                            TextWrapping="NoWrap" />
                                                 <ComboBox x:Name="cmbTaxCode"
                                                           Grid.Row="3"
@@ -1278,7 +1400,7 @@
                                                                    Margin="5,0,0,0"
                                                                    VerticalAlignment="Center"
                                                                    Style="{DynamicResource ButtonTextBlock}"
-                                                                   Text="Pricing"
+                                                                   Text="{DynamicResource PD_Button_Pricing}"
                                                                    TextWrapping="NoWrap" />
                                                     </StackPanel>
                                                 </Button>
@@ -1287,7 +1409,7 @@
                                     </Grid>
                                 </cpcTabControl:CPCTabItemControl>
                                 <cpcTabControl:CPCTabItemControl x:Name="tabitemAdditionalInfo"
-                                                                 Header="Additional"
+                                                                 HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_Additional}"
                                                                  IsCheckError="True">
                                     <Grid x:Name="grdContentAdditionalInfo">
                                         <Grid.RowDefinitions>
@@ -1301,7 +1423,7 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblWarranty"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Warranty"
+                                                           Text="{DynamicResource PD_GroupHeader_Warranty}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdWarranty"
@@ -1316,7 +1438,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Type of Warranty:"
+                                                           Text="{DynamicResource PD_TextBlock_TypeOfWarranty}"
                                                            TextWrapping="NoWrap" />
                                                 <ComboBox x:Name="cmbTypeofWarranty"
                                                           Width="125"
@@ -1333,7 +1455,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Warranty Period:"
+                                                           Text="{DynamicResource PD_TextBlock_WarrantyPeriod}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBoxNumeric x:Name="txtWarrantyPeriod"
                                                                                Grid.Row="1"
@@ -1341,7 +1463,9 @@
                                                                                Margin="120,2,0,2"
                                                                                HorizontalAlignment="Left"
                                                                                HorizontalContentAlignment="Right"
+                                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                IntegerLength="4"
+                                                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
                                                                                Padding="2,0,2,0"
                                                                                Value="{Binding SelectedProduct.WarrantyNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
                                                 <ComboBox x:Name="cmbWarrantyPeriod"
@@ -1363,7 +1487,7 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblLocation"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Location"
+                                                           Text="{DynamicResource PD_GroupHeader_Location}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdLocation"
@@ -1378,7 +1502,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="What is your location?"
+                                                           Text="{DynamicResource PD_TextBlock_YourLocation}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtLocation"
                                                                         Grid.Row="1"
@@ -1397,7 +1521,7 @@
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblMiscellaneousSettings"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Miscellaneous Settings"
+                                                           Text="{DynamicResource PD_GroupHeader_MiscellaneousSettings}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdMiscellaneousSettings"
@@ -1416,28 +1540,28 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Tracking Serial No."
+                                                           Text="{DynamicResource PD_TextBlock_TrackingSerialNo}"
                                                            TextWrapping="NoWrap" />
-                                                <CheckBox x:Name="cbTrackingSerialNo"
+                                                <CheckBox x:Name="chkTrackingSerialNo"
                                                           Margin="142,0,0,0"
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Center"
-                                                          Content="Prompt for serial number when putting this item on order"
+                                                          Content="{DynamicResource PD_TextBlock_TrackingSerialNo_Description}"
                                                           IsChecked="{Binding SelectedProduct.IsSerialTracking}" />
-                                                <TextBlock x:Name="txtblUnorderable1"
+                                                <TextBlock x:Name="txtblOpenItem"
                                                            Grid.Row="1"
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Open Item"
+                                                           Text="{DynamicResource PD_TextBlock_OpenItem}"
                                                            TextWrapping="NoWrap" />
-                                                <CheckBox x:Name="cbTemporaily1"
+                                                <CheckBox x:Name="chkOpenItem"
                                                           Grid.Row="1"
                                                           Margin="142,0,0,0"
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Center"
-                                                          Content="Can change item price after putting this item on order"
+                                                          Content="{DynamicResource PD_TextBlock_OpenItem_Description}"
                                                           IsChecked="{Binding SelectedProduct.IsOpenItem}" />
                                                 <TextBlock x:Name="txtblUnorderable"
                                                            Grid.Row="2"
@@ -1445,14 +1569,14 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Unorderable"
+                                                           Text="{DynamicResource PD_TextBlock_Unorderable}"
                                                            TextWrapping="NoWrap" />
-                                                <CheckBox x:Name="cbTemporaily"
+                                                <CheckBox x:Name="chkUnorderable"
                                                           Grid.Row="2"
                                                           Margin="142,0,0,0"
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Center"
-                                                          Content="Temporaily ignore the reorder point for this item and warn when putting it on a PO"
+                                                          Content="{DynamicResource PD_TextBlock_Unorderable_Description}"
                                                           IsChecked="{Binding SelectedProduct.IsUnOrderAble}" />
                                                 <TextBlock x:Name="txtblCommission"
                                                            Grid.Row="2"
@@ -1476,14 +1600,14 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Eligible for Rewards"
+                                                           Text="{DynamicResource PD_TextBlock_EligibleForRewards}"
                                                            TextWrapping="NoWrap" />
-                                                <CheckBox x:Name="cbRewards"
+                                                <CheckBox x:Name="chkEligibleForRewards"
                                                           Grid.Row="3"
                                                           Margin="142,0,0,0"
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Center"
-                                                          Content="Include sales of this item when earning customer rewards"
+                                                          Content="{DynamicResource PD_TextBlock_EligibleForRewards_Description}"
                                                           IsChecked="{Binding SelectedProduct.IsEligibleForReward}" />
                                                 <TextBlock x:Name="txtblItemAttach"
                                                            Grid.Row="4"
@@ -1522,14 +1646,14 @@
                                     </Grid>
                                 </cpcTabControl:CPCTabItemControl>
                                 <TabItem x:Name="tabitemVendorProduct"
-                                         Header="Vendor Product">
+                                         HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_VendorProduct}">
                                     <Grid x:Name="grdContentVendorProduct">
                                         <GroupBox x:Name="gbVendorProduct"
                                                   Margin="10">
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblVendorProduct"
                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                           Text="Vendor Product"
+                                                           Text="{DynamicResource PD_GroupHeader_VendorProduct}"
                                                            TextWrapping="NoWrap" />
                                             </GroupBox.Header>
                                             <Grid x:Name="grdgbConentVendorProduct"
@@ -1544,7 +1668,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Select Vendor:"
+                                                           Text="{DynamicResource PD_TextBlock_SelectVendor}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment" />
                                                 <comboBoxControl:ComboBoxControl x:Name="cmbSelectVendor"
@@ -1572,29 +1696,31 @@
                                                                                  NumberOfItems="{Binding SelectedProduct.VendorProductCollection.Count}"
                                                                                  Style="{DynamicResource DatagridWithRowHeader}">
                                                     <dataGridControl:DataGridControl.Columns>
-                                                        <DataGridTextColumn Header="Vendor Code"
-                                                                            Binding="{Binding VendorCode, Mode=OneWay}"
-                                                                            Width="120" />
-                                                        <DataGridTextColumn Header="Phone"
-                                                                            Binding="{Binding Phone, ConverterParameter=Phone, Converter={StaticResource stringFormatConverter}, Mode=OneWay}"
-                                                                            Width="150" />
-                                                        <DataGridTextColumn Header="Email"
-                                                                            Binding="{Binding Email, Mode=OneWay}"
-                                                                            Width="*" />
-                                                        <DataGridTemplateColumn Header="Price"
-                                                                                Width="100">
+                                                        <DataGridTextColumn Binding="{Binding VendorCode, Mode=OneWay}"
+                                                                            Width="100"
+                                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_VendorCode}" />
+                                                        <DataGridTextColumn Binding="{Binding Phone, ConverterParameter=Phone, Converter={StaticResource stringFormatConverter}, Mode=OneWay}"
+                                                                            Width="120"
+                                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Phone}" />
+                                                        <DataGridTextColumn Binding="{Binding Email, Mode=OneWay}"
+                                                                            Width="*"
+                                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Email}" />
+                                                        <DataGridTemplateColumn Width="80"
+                                                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_Price}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <TextBlock HorizontalAlignment="Right"
-                                                                               Text="{Binding Price, Mode=OneWay, StringFormat=c}" />
+                                                                               Text="{Binding Price, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
                                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                                 <DataTemplate>
-                                                                    <textBoxControl:TextBoxMoney TextLength="10"
+                                                                    <textBoxControl:TextBoxMoney ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                                                 TextLength="10"
                                                                                                  TextWrapping="NoWrap"
-                                                                                                 Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}" />
+                                                                                                 Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellEditingTemplate>
                                                         </DataGridTemplateColumn>
@@ -2156,9 +2282,6 @@
                                 </TabItem>
                                 <TabItem x:Name="tabitemUOM"
                                          Header="UOM"
-                                         BorderBrush="White"
-                                         d:IsHidden="True"
-                                         Foreground="White"
                                          Visibility="Collapsed">
                                     <Grid x:Name="grdContentUOM">
                                         <GroupBox x:Name="gbStandardUnitOfMeasure"

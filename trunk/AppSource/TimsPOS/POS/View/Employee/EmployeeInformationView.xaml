@@ -778,28 +778,63 @@
             </Style.Triggers>
         </Style>
 
-
+         <DataTemplate x:Key="TabInfoHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_EmployeeInfo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="TabTimeClockHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_TimeClock}" />
+        </DataTemplate>
+		<DataTemplate x:Key="TabCredentialHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_Credential}" />
+        </DataTemplate>
+		<DataTemplate x:Key="TabScheduleHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_Schedule}" />
+        </DataTemplate>
+		
+		<DataTemplate x:Key="EmployeeHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_EmployeeNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="StatusHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_UserName}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="TypeHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_EmployeeType}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FirstNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource TimeClockManualEventEditing_DatagridEmployeeName_FirstName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="LastNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource TimeClockManualEventEditing_DatagridEmployeeName_LastName}" />
+        </DataTemplate>
+		<DataTemplate x:Key="CompanyHeaderTemplate">
+            <TextBlock Text="{DynamicResource C170}" />
+        </DataTemplate>
+        <DataTemplate x:Key="JobTitleHeaderTemplate">
+            <TextBlock Text="{DynamicResource EM_Header_JobTitle}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="DepartmentHeaderTemplate">
+            <TextBlock Text="{DynamicResource D102}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PhoneHeaderTemplate">
+            <TextBlock Text="{DynamicResource C173}" />
+        </DataTemplate>
+        <DataTemplate x:Key="EmailHeaderTemplate">
+            <TextBlock Text="{DynamicResource C184}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="NewItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C125}" />
+        </DataTemplate>
+        <DataTemplate x:Key="EditItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C126}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DeleteItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C127}" />
+        </DataTemplate>
     </UserControl.Resources>
-    <Anno1:AnnotationManager.Annotations>
-        <Anno1:Annotation Author="bill pho"
-                          AuthorInitials="PERSONAL MARITAL STATUS"
-                          Left="2700"
-                          SerialNumber="1"
-                          Text="Khi chon Married thi moi hien SPOUSE INFO, con lai thi ko&#10;"
-                          Timestamp="07/05/2012 07:51:45"
-                          Top="156.57" />
-        <Anno1:Annotation Author="bill pho"
-                          AuthorInitials="PERSONAL MARITAL STATUS"
-                          Left="2700"
-                          SerialNumber="1"
-                          Text="Khi chon Married thi moi hien SPOUSE INFO, con lai thi ko&#10;"
-                          Timestamp="07/05/2012 07:51:45"
-                          Top="156.57" />
-    </Anno1:AnnotationManager.Annotations>
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
 
         <Grid x:Name="grdEmployee">
-            <Grid x:Name="grdSearch" d:IsHidden="True">
+            <Grid x:Name="grdSearch">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -866,7 +901,7 @@
                                     <CheckBox x:Name="cbAccountNo"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Account #"
+                                              Content="{DynamicResource EM_TextBlock_Account}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.AccountNum},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -875,7 +910,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="First Name"
+                                              Content="{DynamicResource TimeClockManualEventEditing_DatagridEmployeeName_FirstName}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.FirstName},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -884,7 +919,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Last Name"
+                                              Content="{DynamicResource TimeClockManualEventEditing_DatagridEmployeeName_LastName}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.LastName},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -893,7 +928,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Company"
+                                              Content="{DynamicResource C170}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.Company},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -902,7 +937,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Email"
+                                              Content="{DynamicResource C184}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.Email},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -911,7 +946,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Phone"
+                                               Content="{DynamicResource C173}"
                                               IsChecked="{Binding SearchOption,
                                                                   ConverterParameter={x:Static local:SearchOptions.Phone},
                                                                   Converter={StaticResource enumToBoolConverter},
@@ -962,8 +997,8 @@
                                                      Style="{DynamicResource DatagridWithRowHeader}">
                         <dataGridControl:DataGridControl.ContextMenu>
                             <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                <MenuItem Header="New Item"
-                                          Command="{Binding NewCommand}">
+                                <MenuItem HeaderTemplate="{StaticResource NewItemHeaderTemplate}"
+								          Command="{Binding NewCommand}">
                                     <MenuItem.Icon>
                                         <Rectangle Width="16"
                                                    Height="16"
@@ -971,7 +1006,7 @@
                                                    Stretch="Fill" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="Edit Item"
+                                <MenuItem HeaderTemplate="{StaticResource EditItemHeaderTemplate}"
                                           Command="{Binding DoubleClickViewCommand}"
                                           CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                                     <MenuItem.Icon>
@@ -981,7 +1016,7 @@
                                                    Stretch="Fill" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="Delete Item(s)"
+                                <MenuItem HeaderTemplate="{StaticResource DeleteItemHeaderTemplate}"
                                           Command="{Binding DeletesCommand}"
                                           CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                                     <MenuItem.Icon>
@@ -1011,19 +1046,19 @@
                             <DataGridTextColumn Width="80"
                                                 MinWidth="80"
                                                 Binding="{Binding GuestNo}"
-                                                Header="Employee #"
+                                                HeaderTemplate ="{StaticResource EmployeeHeaderTemplate}"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn Width="100"
                                                 MinWidth="80"
                                                 Binding="{Binding IsActived,
                                                                   Converter={StaticResource comboxItemToTextConverter},
                                                                   ConverterParameter=Status}"
-                                                Header="Status"
+                                                HeaderTemplate ="{StaticResource StatusHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 SortMemberPath="Status" />
                             <DataGridTemplateColumn Width="120"
                                                     MinWidth="120"
-                                                    Header="Employee Type"
+                                                    HeaderTemplate ="{StaticResource TypeHeaderTemplate}"
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -1060,19 +1095,19 @@
                             <DataGridTextColumn Width="*"
                                                 MinWidth="150"
                                                 Binding="{Binding FirstName}"
-                                                Header="First Name"
+                                                HeaderTemplate ="{StaticResource FirstNameHeaderTemplate}"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn Width="*"
                                                 MinWidth="150"
                                                 Binding="{Binding LastName}"
-                                                Header="Last Name"
+                                                HeaderTemplate ="{StaticResource LastNameHeaderTemplate}"
                                                 IsReadOnly="True" />
 
 
                             <DataGridTextColumn Width="150"
                                                 MinWidth="150"
                                                 Binding="{Binding Company}"
-                                                Header="Company"
+                                                HeaderTemplate ="{StaticResource CompanyHeaderTemplate}"
                                                 IsReadOnly="True" />
 
                             <DataGridTextColumn Width="150"
@@ -1081,24 +1116,24 @@
                                                                   Mode=OneWay,
                                                                   Converter={StaticResource comboxItemToTextConverter},
                                                                   ConverterParameter=JobTitle}"
-                                                Header="Job Title"
+                                                HeaderTemplate ="{StaticResource JobTitleHeaderTemplate}"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn Width="150"
                                                 MinWidth="150"
                                                 Binding="{Binding Department}"
-                                                Header="Department"
+                                                HeaderTemplate ="{StaticResource DepartmentHeaderTemplate}"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn Width="120"
                                                 MinWidth="120"
                                                 Binding="{Binding Phone1,
                                                                   Converter={StaticResource stringFormatConverter},
                                                                   ConverterParameter=Phone}"
-                                                Header="Phone"
+                                                HeaderTemplate ="{StaticResource PhoneHeaderTemplate}"
                                                 IsReadOnly="True" />
                             <DataGridTextColumn MinWidth="150"
                                                 Width="*"
                                                 Binding="{Binding Email}"
-                                                Header="Email"
+                                                HeaderTemplate ="{StaticResource EmailHeaderTemplate}"
                                                 IsReadOnly="True" />
                         </dataGridControl:DataGridControl.Columns>
                     </dataGridControl:DataGridControl>
@@ -1183,7 +1218,7 @@
                     </Button>
                 </Grid>
             </Grid>
-            <Grid x:Name="grdContentEmployee1">
+            <Grid x:Name="grdContentEmployee1" d:IsHidden="True">
                 <Grid.Visibility>
                     <Binding Mode="OneWay"
                              Path="IsSearchMode"
@@ -1210,7 +1245,7 @@
                                VerticalAlignment="Center"
                                FontWeight="Bold"
                                Style="{DynamicResource ButtonBarSearchTextBlock}"
-                               Text="Search"
+                               Text="{DynamicResource TimeClockManualEventEditing_gbSearch_HeaderSearch}"
                                TextWrapping="NoWrap">
                         <TextBlock.LayoutTransform>
                             <TransformGroup>
@@ -1228,7 +1263,7 @@
                            HorizontalAlignment="Left"
                            Fill="{DynamicResource Spilter_Line_Background}"
                            d:LayoutOverrides="GridBox"
-                           Grid.Column="2" />
+                           Grid.Column="2" d:IsHidden="True" />
                 <Grid x:Name="grdSubEmployee"
                       Grid.Column="1"
                       d:LayoutOverrides="GridBox">
@@ -1334,39 +1369,32 @@
                         <Grid x:Name="grdRemark1"
                               Width="40"
                               Height="40">
-                            <Grid x:Name="grdRemark"
-                                  Width="30"
-                                  Height="30">
-                                <Rectangle x:Name="imgRemark1"
-                                           Fill="{DynamicResource Remark}" />
-                                <TextBlock x:Name="txtblRemark1"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="Attachment"
-                                           Visibility="Collapsed" />
-                                <TextBox x:Name="txtbBindingRemark1"
-                                         IsReadOnly="True"
-                                         Style="{DynamicResource TextBoxRemark}"
-                                         Text="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, Mode=OneWay}"
-                                         TextWrapping="Wrap" />
-                            </Grid>
                             <ComboBox x:Name="cmbStick"
                                       Grid.ColumnSpan="2"
                                       SelectedIndex="0"
                                       Style="{DynamicResource RemarkComboboxStyle}">
-                                <Button Width="75"
+                                <ComboBoxItem>
+								<Button Width="75"
                                         Height="20"
                                         Command="{Binding NewNoteCommand}"
                                         Content="Add Sticky"
                                         Style="{DynamicResource ButtonComboboxItemRemark}" />
+										</ComboBoxItem>
+										<ComboBoxItem  Visibility="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" >
                                 <Button Width="75"
                                         Height="20"
                                         Command="{Binding ShowOrHiddenNoteCommand}"
                                         Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
                                         Style="{DynamicResource ButtonComboboxItemRemark}"
-                                        Visibility="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
-                            </ComboBox>
+                                       />
+                                   </ComboBoxItem>
+						    </ComboBox>
+                            <TextBox x:Name="txtbBindingRemark1"
+                        		IsReadOnly="True"
+                        		Style="{DynamicResource TextBoxRemark}"
+                        		Text="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, Mode=OneWay}"
+                        		Visibility="{Binding SelectedItemEmployee.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}"
+                        		TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </StackPanel>
                     <TextBlock x:Name="txtblBindingEmployeeType"
@@ -1377,7 +1405,7 @@
                                FontSize="33.333"
                                FontWeight="Bold"
                                Style="{DynamicResource TextBlockTitleFormView}"
-                               Text="Employee"
+                               Text="{DynamicResource EM_TextBlock_Employee}"
                                TextWrapping="NoWrap" />
                     <Rectangle x:Name="Line"
                                Height="1"
@@ -1401,7 +1429,7 @@
                                    Margin="10,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Text="Employee #:"
+                                    Text="{DynamicResource EM_TextBlock_EmployeeNo}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="HorizontalAlignment" />
                         <TextBlock x:Name="txtblBindingAccountNo"
@@ -1417,7 +1445,7 @@
                                    Margin="165,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Text="Employee Type:"
+                                   Text="{DynamicResource EM_TextBlock_EmployeeType}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="HorizontalAlignment" />
                         <ComboBox x:Name="cmbEmployeeType"
@@ -1437,7 +1465,7 @@
                                    Margin="440,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Text="Hire Date:"
+                                   Text="{DynamicResource EM_TextBlock_HireDate}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="Width" />
                         <DatePicker x:Name="dtpHireDate"
@@ -1455,7 +1483,7 @@
                                    Margin="10,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Text="Full Name:"
+                                   Text="{DynamicResource EM_TextBlock_FullName}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblBindingName"
                                    Grid.Row="1"
@@ -1473,7 +1501,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="Connected To TimeClock System:"
+                                   Text="{DynamicResource EM_TextBlock_ConnectedToTime}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="HorizontalAlignment" />
                         <CheckBox x:Name="cbtxtblConnectedToTimeClockSystem"
@@ -1492,7 +1520,7 @@
                                    Margin="440,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Text="Status :"
+                                   Text="{DynamicResource CS_TextBlock_Status}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="Width" />
 
@@ -1524,7 +1552,7 @@
                                                        VirtualizingStackPanel.IsVirtualizing="True"
                                                        VirtualizingStackPanel.VirtualizationMode="Standard">
                             <CPCOtherControl:CPCTabItemControl x:Name="tabitemEmployeeInfo"
-                                                               Header="Employee Info"
+                                                               HeaderTemplate="{StaticResource TabInfoHeaderTemplate}"
                                                                IsCheckError="True">
                                 <AdornerDecorator>
                                     <Grid x:Name="grdEmployeeInfo"
@@ -1577,7 +1605,7 @@
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="First Name:"
+                                                           Text="{DynamicResource EM_TextBlock_FirstName}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtFirstName"
                                                                         Grid.Column="1"
@@ -1599,7 +1627,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="M.I.:"
+                                                           Text="{DynamicResource EM_TextBlock_Initial}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtIntial"
                                                                         Grid.Column="1"
@@ -1620,7 +1648,7 @@
                                                            Margin="205,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="Last Name:"
+                                                           Text="{DynamicResource EM_TextBlock_LastName}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtLastName"
                                                                         Grid.Column="1"
@@ -1641,7 +1669,7 @@
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="Company:"
+                                                           Text="{DynamicResource EM_TextBlock_Company}"
                                                            TextWrapping="NoWrap"
                                                            Visibility="Visible"
                                                            d:LayoutOverrides="Width" />
@@ -1668,7 +1696,7 @@
                                                            Margin="205,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="Job Title:"
+                                                           Text="{DynamicResource EM_TextBlock_JobTitle}"
                                                            TextWrapping="NoWrap" />
                                                 <ComboBox x:Name="cmbJobTitle"
                                                           Grid.Row="1"
@@ -1712,7 +1740,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Department:"
+                                                           Text="{DynamicResource UL_TextBlock_Department}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Height" />
                                                 <textBoxControl:TextBox x:Name="txtblDepartment1"
@@ -1736,7 +1764,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Email:"
+                                                           Text="{DynamicResource EM_TextBlock_Email}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <textBoxControl:TextBoxEmail x:Name="txtEmail"
@@ -1760,13 +1788,15 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Commission:"
+                                                           Text="{DynamicResource EM_TextBlock_Commission}"
                                                            TextWrapping="NoWrap" />
                                                 <cpcControl:TextBoxNumeric x:Name="txtCommission"
                                                                            Margin="0,2"
                                                                            TextWrapping="NoWrap"
                                                                            Grid.Column="1"
                                                                            Padding="2,0,2,0"
+																		    NumericStringFormat="{x:Static local:Define.NumericFormat}"
+													          ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                            Value="{Binding SelectedItemEmployee.CommissionPercent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                                            HorizontalAlignment="Left"
                                                                            Width="120"
@@ -1792,7 +1822,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Website:"
+                                                           Text="{DynamicResource EM_TextBlock_Website}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <textBoxControl:TextBox x:Name="txtWebsite"
@@ -1814,7 +1844,7 @@
                                                            VerticalAlignment="Center"
                                                            FontWeight="Bold"
                                                            Foreground="White"
-                                                           Text="Phone Numbers"
+                                                           Text="{DynamicResource EM_TextBlock_PhoneNumbers}"
                                                            TextWrapping="NoWrap" />
                                                 <Rectangle x:Name="LinePhoneNumber"
                                                            Grid.Row="5"
@@ -1830,7 +1860,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Phone:"
+                                                           Text="{DynamicResource EM_TextBlock_Phone}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <control:MaskedTextBox x:Name="txtPhone"
@@ -1856,7 +1886,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Cellphone:"
+                                                           Text="{DynamicResource EM_TextBlock_Cellphone}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Height" />
                                                 <control:MaskedTextBox x:Name="txtCellphone1"
@@ -1880,7 +1910,7 @@
                                                            VerticalAlignment="Center"
                                                            FontWeight="Bold"
                                                            Foreground="White"
-                                                           Text="Personal Info"
+                                                           Text="{DynamicResource EM_TextBlock_PersonalInfo}"
                                                            TextWrapping="NoWrap" />
                                                 <Rectangle x:Name="LinePersonalInfo"
                                                            Grid.Row="7"
@@ -1896,7 +1926,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Gender:"
+                                                           Text="{DynamicResource EM_TextBlock_Gender}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <ComboBox x:Name="cmbGender"
@@ -1920,7 +1950,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Marital:"
+                                                           Text="{DynamicResource EM_TextBlock_Marital}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Width, Height" />
                                                 <ComboBox x:Name="cmbMaritalStatus"
@@ -1955,7 +1985,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="DOB:"
+                                                           Text="{DynamicResource EM_TextBlock_DOB}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Height" />
                                                 <DatePicker x:Name="dtpDOB"
@@ -1975,7 +2005,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="SSN:"
+                                                           Text="{DynamicResource EM_TextBlock_SSN}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <control:MaskedTextBox x:Name="txtSSN"
@@ -2001,7 +2031,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Id:"
+                                                           Text="{DynamicResource EM_TextBlock_Id}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Height" />
                                                 <control:MaskedTextBox x:Name="txtIdentification"
@@ -2026,7 +2056,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="State:"
+                                                           Text="{DynamicResource EM_TextBlock_State}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="Height" />
                                                 <ComboBox x:Name="cmbIssuedState"
@@ -2049,7 +2079,7 @@
                                                            VerticalAlignment="Bottom"
                                                            FontWeight="Bold"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="Emergency Contact"
+                                                           Text="{DynamicResource EM_TextBlock_EmergencyContact}"
                                                            TextWrapping="NoWrap" />
                                                 <Rectangle x:Name="LineEmergencyContact"
                                                            Grid.Row="10"
@@ -2064,7 +2094,7 @@
                                                            Margin="10,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="First Name:"
+                                                           Text="{DynamicResource EM_TextBlock_FirstName}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtFirstNameEmergencyContact"
                                                                         Grid.Row="11"
@@ -2088,7 +2118,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="M.I.:"
+                                                           Text="{DynamicResource EM_TextBlock_Initial}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtIntialEmergencyContact"
                                                                         Grid.Row="11"
@@ -2111,7 +2141,7 @@
                                                            Margin="205,0,0,0"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
-                                                           Text="Last Name:"
+                                                           Text="{DynamicResource EM_TextBlock_LastName}"
                                                            TextWrapping="NoWrap" />
                                                 <textBoxControl:TextBox x:Name="txtLastNameEmergencyContact"
                                                                         Grid.Row="11"
@@ -2134,7 +2164,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
-                                                           Text="Phone:"
+                                                           Text="{DynamicResource EM_TextBlock_Phone}"
                                                            TextWrapping="NoWrap"
                                                            d:LayoutOverrides="HorizontalAlignment, Height" />
                                                 <control:MaskedTextBox x:Name="txtPhoneEmergencyContact"
@@ -3176,7 +3206,7 @@
                                 </AdornerDecorator>
                             </TabItem>
                             <CPCOtherControl:CPCTabItemControl x:Name="tabitemTimeClock"
-                                                               Header="TimeClock">
+                                                               HeaderTemplate="{StaticResource TabTimeClockHeaderTemplate}">
                                 <CPCOtherControl:CPCTabItemControl.VisibilityTabItem>
                                     <Binding Mode="OneWay"
                                              Path="SelectedItemEmployee.IsTrackingHour"
@@ -3200,7 +3230,7 @@
                                                                        VirtualizingStackPanel.IsVirtualizing="True"
                                                                        VirtualizingStackPanel.VirtualizationMode="Standard">
                                             <TabItem x:Name="tabitemSchedule"
-                                                     Header="Schedule">
+                                                     HeaderTemplate="{StaticResource TabScheduleHeaderTemplate}">
                                                 <AdornerDecorator>
                                                     <Grid x:Name="grdSchedule">
                                                         <GroupBox x:Name="gbSchedule"
@@ -3209,7 +3239,7 @@
                                                                 <TextBlock x:Name="txtblgbWorkSchedule1"
                                                                            Foreground="{DynamicResource GroupboxHeaderForeground}"
                                                                            Style="{DynamicResource GroupboxTextBlock}"
-                                                                           Text="Work Schedule"
+                                                                           Text="{DynamicResource EM_TextBlock_WorkSchedule}"
                                                                            TextWrapping="NoWrap" />
                                                             </GroupBox.Header>
                                                             <Grid x:Name="grdgbSchedule"
@@ -3233,7 +3263,7 @@
                                                                     <GroupBox.Header>
                                                                         <TextBlock x:Name="txtblOptions"
                                                                                    Style="{DynamicResource GroupboxTextBlock}"
-                                                                                   Text="Options"
+                                                                                   Text="{DynamicResource EM_TextBlock_Options}"
                                                                                    TextWrapping="NoWrap" />
                                                                     </GroupBox.Header>
                                                                     <Grid x:Name="grdOptions"
@@ -3258,7 +3288,7 @@
                                                                                     d:LayoutOverrides="Height">
                                                                             <CheckBox x:Name="cbClockIn"
                                                                                       VerticalAlignment="Center"
-                                                                                      Content="Clock-In not authorized if employee arrives late by at least:"
+                                                                                      Content="{DynamicResource EM_TextBlock_Clock-Innotauthorized}"
                                                                                       IsChecked="{Binding SelectedItemEmployee.IsBlockArriveLate,
                                                                                                           Mode=TwoWay,
                                                                                                           UpdateSourceTrigger=PropertyChanged}"
@@ -3272,6 +3302,8 @@
                                                                                                            VerticalContentAlignment="Center"
                                                                                                            Padding="2,0,2,0"
                                                                                                            TextWrapping="NoWrap"
+																										    NumericStringFormat="{x:Static local:Define.NumericFormat}"
+													          ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                                            Value="{Binding SelectedItemEmployee.LateMinutes,
                                                                                                                            Mode=TwoWay,
                                                                                                                            UpdateSourceTrigger=PropertyChanged}" />
@@ -3280,7 +3312,7 @@
                                                                                        HorizontalAlignment="Left"
                                                                                        VerticalAlignment="Center"
                                                                                        Style="{DynamicResource TextBlockNormal}"
-                                                                                       Text="minutes."
+                                                                                       Text="{DynamicResource EM_TextBlock_Minutes}"
                                                                                        TextWrapping="NoWrap" />
                                                                         </StackPanel>
                                                                         <CheckBox x:Name="cbIfYouHave"
@@ -3288,7 +3320,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="Automatically deduct the lunch time in the reports when it is not registered during the assigned time."
+                                                                                  Content="{DynamicResource EM_TextBlock_Automaticallydeduct}"
                                                                                   IsChecked="{Binding SelectedItemEmployee.IsDeductLunchTime,
                                                                                                       Mode=TwoWay,
                                                                                                       UpdateSourceTrigger=PropertyChanged}"
@@ -3298,7 +3330,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="Uses overtime to balance those days where time was not completed."
+																				  Content="{DynamicResource EM_TextBlock_Overtimetobalance}"
                                                                                   IsChecked="{Binding SelectedItemEmployee.IsBalanceOvertime,
                                                                                                       Mode=TwoWay,
                                                                                                       UpdateSourceTrigger=PropertyChanged}"
@@ -3309,7 +3341,7 @@
                                                                                    VerticalAlignment="Center"
                                                                                    FontWeight="Bold"
                                                                                    Style="{DynamicResource TextBlockNormal}"
-                                                                                   Text="Overtime"
+                                                                                   Text="{DynamicResource EM_TextBlock_Overtime}"
                                                                                    TextWrapping="NoWrap"
                                                                                    d:LayoutOverrides="HorizontalAlignment" />
                                                                         <Rectangle x:Name="LineOvertime"
@@ -3331,12 +3363,14 @@
                                                                                        HorizontalAlignment="Left"
                                                                                        VerticalAlignment="Center"
                                                                                        Style="{DynamicResource TextBlockNormal}"
-                                                                                       Text="Consider overtime in reports only when it is at least:"
+                                                                                       Text="{DynamicResource EM_TextBlock_ConsiderOvertime}"
                                                                                        TextWrapping="NoWrap" />
                                                                             <textBoxControl:TextBoxNumeric x:Name="txtConsider"
                                                                                                            Width="30"
                                                                                                            Height="21"
                                                                                                            Margin="5,0,0,0"
+																										    NumericStringFormat="{x:Static local:Define.NumericFormat}"
+													          ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                                            HorizontalContentAlignment="Right"
                                                                                                            VerticalContentAlignment="Center"
                                                                                                            Padding="2,0,2,0"
@@ -3346,7 +3380,7 @@
                                                                                        Margin="5,0,0,0"
                                                                                        HorizontalAlignment="Left"
                                                                                        VerticalAlignment="Center"
-                                                                                       Text="minutes a day."
+                                                                                       Text="{DynamicResource EM_TextBlock_MinutesADay}"
                                                                                        TextWrapping="NoWrap" />
                                                                         </StackPanel>
                                                                         <CheckBox x:Name="cbBefore"
@@ -3354,7 +3388,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="Before the Clock-In hour."
+                                                                                  Content="{DynamicResource EM_TextBlock_ClockInhour}"
                                                                                   d:LayoutOverrides="HorizontalAlignment"
                                                                                   IsChecked="{Binding SelectedItemEmployee.OvertimeOption, ConverterParameter={x:Static local:Overtime.Before}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                                         <CheckBox x:Name="cbDuring"
@@ -3362,7 +3396,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="Break/ lunch time."
+                                                                                  Content="{DynamicResource EM_TextBlock_Lunchtime}"
                                                                                   d:LayoutOverrides="GridBox"
                                                                                   IsChecked="{Binding SelectedItemEmployee.OvertimeOption, ConverterParameter={x:Static local:Overtime.Break}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                                         <CheckBox x:Name="cbAfter"
@@ -3370,7 +3404,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="After the Clock-Out hour."
+                                                                                  Content="{DynamicResource EM_TextBlock_ClockOuthour}"
                                                                                   d:LayoutOverrides="HorizontalAlignment"
                                                                                   IsChecked="{Binding SelectedItemEmployee.OvertimeOption, ConverterParameter={x:Static local:Overtime.After}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                                         <CheckBox x:Name="cbHoliday"
@@ -3378,7 +3412,7 @@
                                                                                   Margin="10,0,0,0"
                                                                                   HorizontalAlignment="Left"
                                                                                   VerticalAlignment="Center"
-                                                                                  Content="Holiday or days - off."
+                                                                                  Content="{DynamicResource EM_TextBlock_Holiday}"
                                                                                   d:LayoutOverrides="HorizontalAlignment, GridBox"
                                                                                   IsChecked="{Binding SelectedItemEmployee.OvertimeOption, ConverterParameter={x:Static local:Overtime.Holiday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     </Grid>
@@ -3389,7 +3423,7 @@
                                                 </AdornerDecorator>
                                             </TabItem>
                                             <TabItem x:Name="tabitemCredential"
-                                                     Header="Credential">
+                                                      HeaderTemplate="{StaticResource TabCredentialHeaderTemplate}">
                                                 <AdornerDecorator Margin="0,10,0,0">
                                                     <Grid x:Name="grdContentCredential"
                                                           Height="Auto">
@@ -3405,7 +3439,7 @@
                                                                            FontSize="14"
                                                                            FontWeight="Bold"
                                                                            Foreground="{DynamicResource GroupboxHeaderForeground}"
-                                                                           Text="Left Fingerprint"
+                                                                           Text="{DynamicResource EM_TextBlock_LeftFingerprint}"
                                                                            TextWrapping="NoWrap" />
                                                             </GroupBox.Header>
                                                             <Grid x:Name="grdLeftFingerprint"
@@ -3456,7 +3490,7 @@
                                                                            HorizontalAlignment="Center"
                                                                            VerticalAlignment="Center"
                                                                            FontWeight="Bold"
-                                                                           Text="Click Here"
+                                                                           Text="{DynamicResource EM_TextBlock_ClickHere}"
                                                                            TextWrapping="NoWrap" />
                                                             </Grid>
                                                         </GroupBox>
@@ -3472,7 +3506,7 @@
                                                                            FontSize="14"
                                                                            FontWeight="Bold"
                                                                            Foreground="{DynamicResource GroupboxHeaderForeground}"
-                                                                           Text="Right Fingerprint"
+                                                                            Text="{DynamicResource EM_TextBlock_RightFingerprint}"
                                                                            TextWrapping="NoWrap" />
                                                             </GroupBox.Header>
                                                             <Grid x:Name="grdRightFingerprint"
@@ -3523,7 +3557,7 @@
                                                                            HorizontalAlignment="Center"
                                                                            VerticalAlignment="Center"
                                                                            FontWeight="Bold"
-                                                                           Text="Click Here"
+                                                                          Text="{DynamicResource EM_TextBlock_ClickHere}"
                                                                            TextWrapping="NoWrap" />
                                                             </Grid>
                                                         </GroupBox>

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Threading;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -397,6 +398,54 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region VisibilityCreateDepartment
+
+        private Visibility _visibilityCreateDepartment = Visibility.Collapsed;
+        /// <summary>
+        /// Show or not show 'Create New Department' text.
+        /// </summary>
+        public Visibility VisibilityCreateDepartment
+        {
+            get
+            {
+                return _visibilityCreateDepartment;
+            }
+            set
+            {
+                if (_visibilityCreateDepartment != value)
+                {
+                    _visibilityCreateDepartment = value;
+                    OnPropertyChanged(() => VisibilityCreateDepartment);
+                }
+            }
+        }
+
+        #endregion
+
+        #region VisibilityEditDepartment
+
+        private Visibility _visibilityEditDepartment;
+        /// <summary>
+        /// Show or not show 'Edit Department' text..
+        /// </summary>
+        public Visibility VisibilityEditDepartment
+        {
+            get
+            {
+                return _visibilityEditDepartment;
+            }
+            set
+            {
+                if (_visibilityEditDepartment != value)
+                {
+                    _visibilityEditDepartment = value;
+                    OnPropertyChanged(() => VisibilityEditDepartment);
+                }
+            }
+        }
+
+        #endregion
+
         #region VisibilityCategoryPart
 
         private Visibility _visibilityCategoryPart = Visibility.Collapsed;
@@ -415,6 +464,54 @@ namespace CPC.POS.ViewModel
                 {
                     _visibilityCategoryPart = value;
                     OnPropertyChanged(() => VisibilityCategoryPart);
+                }
+            }
+        }
+
+        #endregion
+
+        #region VisibilityCreateCategory
+
+        private Visibility _visibilityCreateCategory;
+        /// <summary>
+        /// Show or not show 'Create New Category' text.
+        /// </summary>
+        public Visibility VisibilityCreateCategory
+        {
+            get
+            {
+                return _visibilityCreateCategory;
+            }
+            set
+            {
+                if (_visibilityCreateCategory != value)
+                {
+                    _visibilityCreateCategory = value;
+                    OnPropertyChanged(() => VisibilityCreateCategory);
+                }
+            }
+        }
+
+        #endregion
+
+        #region VisibilityEditCategory
+
+        private Visibility _visibilityEditCategory;
+        /// <summary>
+        /// Show or not show 'Edit Category' text.
+        /// </summary>
+        public Visibility VisibilityEditCategory
+        {
+            get
+            {
+                return _visibilityEditCategory;
+            }
+            set
+            {
+                if (_visibilityEditCategory != value)
+                {
+                    _visibilityEditCategory = value;
+                    OnPropertyChanged(() => VisibilityEditCategory);
                 }
             }
         }
@@ -445,72 +542,48 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region HeaderDepartmentPart
+        #region VisibilityCreateBrand
 
-        private string _headerDepartmentPart;
+        private Visibility _visibilityCreateBrand;
         /// <summary>
-        /// Header of create new or edit part of deparment.
+        /// Show or not show 'Create New Brand' text.
         /// </summary>
-        public string HeaderDepartmentPart
+        public Visibility VisibilityCreateBrand
         {
             get
             {
-                return _headerDepartmentPart;
+                return _visibilityCreateBrand;
             }
             set
             {
-                if (_headerDepartmentPart != value)
+                if (_visibilityCreateBrand != value)
                 {
-                    _headerDepartmentPart = value;
-                    OnPropertyChanged(() => HeaderDepartmentPart);
+                    _visibilityCreateBrand = value;
+                    OnPropertyChanged(() => VisibilityCreateBrand);
                 }
             }
         }
 
         #endregion
 
-        #region HeaderCategoryPart
+        #region VisibilityEditBrand
 
-        private string _headerCategoryPart;
+        private Visibility _visibilityEditBrand;
         /// <summary>
-        /// Header of create new or edit part of category.
+        /// Show or not show 'Edit Brand' text.
         /// </summary>
-        public string HeaderCategoryPart
+        public Visibility VisibilityEditBrand
         {
             get
             {
-                return _headerCategoryPart;
+                return _visibilityEditBrand;
             }
             set
             {
-                if (_headerCategoryPart != value)
+                if (_visibilityEditBrand != value)
                 {
-                    _headerCategoryPart = value;
-                    OnPropertyChanged(() => HeaderCategoryPart);
-                }
-            }
-        }
-
-        #endregion
-
-        #region HeaderBrandPart
-
-        private string _headerBrandPart;
-        /// <summary>
-        /// Header of create new or edit part of brand.
-        /// </summary>
-        public string HeaderBrandPart
-        {
-            get
-            {
-                return _headerBrandPart;
-            }
-            set
-            {
-                if (_headerBrandPart != value)
-                {
-                    _headerBrandPart = value;
-                    OnPropertyChanged(() => HeaderBrandPart);
+                    _visibilityEditBrand = value;
+                    OnPropertyChanged(() => VisibilityEditBrand);
                 }
             }
         }
@@ -718,7 +791,8 @@ namespace CPC.POS.ViewModel
                 ShowDeparmentPart(true);
                 ProductDepartmentModel = new ProductDepartmentModel()
                 {
-                    ProductCategoryCollection = new CollectionBase<ProductCategoryModel>()
+                    ProductCategoryCollection = new CollectionBase<ProductCategoryModel>(),
+                    IsDirty = false
                 };
                 _isCreateElement = true;
                 _isEditingElement = false;
@@ -741,7 +815,8 @@ namespace CPC.POS.ViewModel
                         ProductDepartmentModel = deparment,
                         ProductDepartmentID = deparment.ProductDepartmentID,
                         ProductBrandCollection = new CollectionBase<ProductBrandModel>(),
-                        TaxCodeId = defaultTaxCodeItem != null ? defaultTaxCodeItem.TaxCode : null
+                        TaxCodeId = defaultTaxCodeItem != null ? defaultTaxCodeItem.TaxCode : null,
+                        IsDirty = false
                     };
                     _isCreateElement = true;
                     _isEditingElement = false;
@@ -762,7 +837,8 @@ namespace CPC.POS.ViewModel
                     ProductBrandModel = new ProductBrandModel
                     {
                         ProductCategoryModel = category,
-                        ProductCategoryID = category.ProductCategoryID
+                        ProductCategoryID = category.ProductCategoryID,
+                        IsDirty = false
                     };
                     _isCreateElement = true;
                     _isEditingElement = false;
@@ -1230,7 +1306,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1264,7 +1340,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1421,17 +1497,23 @@ namespace CPC.POS.ViewModel
             VisibilityTabControl = Visibility.Collapsed;
             VisibilityCategoryPart = Visibility.Collapsed;
             VisibilityBrandPart = Visibility.Collapsed;
+            VisibilityCreateDepartment = Visibility.Collapsed;
+            VisibilityEditDepartment = Visibility.Collapsed;
+            VisibilityCreateCategory = Visibility.Collapsed;
+            VisibilityEditCategory = Visibility.Collapsed;
+            VisibilityCreateBrand = Visibility.Collapsed;
+            VisibilityEditBrand = Visibility.Collapsed;
             VisibilityAllPart = Visibility.Visible;
             VisibilityDepartmentPart = Visibility.Visible;
             IsEnableSearchPart = false;
             _currentPart = Parts.Deparment;
             if (isCreateNew)
             {
-                HeaderDepartmentPart = "Creates New Department";
+                VisibilityCreateDepartment = Visibility.Visible;
             }
             else
             {
-                HeaderDepartmentPart = "Edit Department";
+                VisibilityEditDepartment = Visibility.Visible;
             }
         }
 
@@ -1447,17 +1529,23 @@ namespace CPC.POS.ViewModel
             VisibilityTabControl = Visibility.Collapsed;
             VisibilityDepartmentPart = Visibility.Collapsed;
             VisibilityBrandPart = Visibility.Collapsed;
+            VisibilityCreateDepartment = Visibility.Collapsed;
+            VisibilityEditDepartment = Visibility.Collapsed;
+            VisibilityCreateCategory = Visibility.Collapsed;
+            VisibilityEditCategory = Visibility.Collapsed;
+            VisibilityCreateBrand = Visibility.Collapsed;
+            VisibilityEditBrand = Visibility.Collapsed;
             VisibilityAllPart = Visibility.Visible;
             VisibilityCategoryPart = Visibility.Visible;
             IsEnableSearchPart = false;
             _currentPart = Parts.Category;
             if (isCreateNew)
             {
-                HeaderCategoryPart = "Creates New Category";
+                VisibilityCreateCategory = Visibility.Visible;
             }
             else
             {
-                HeaderCategoryPart = "Edit Category";
+                VisibilityEditCategory = Visibility.Visible;
             }
         }
 
@@ -1473,17 +1561,23 @@ namespace CPC.POS.ViewModel
             VisibilityTabControl = Visibility.Collapsed;
             VisibilityDepartmentPart = Visibility.Collapsed;
             VisibilityCategoryPart = Visibility.Collapsed;
+            VisibilityCreateDepartment = Visibility.Collapsed;
+            VisibilityEditDepartment = Visibility.Collapsed;
+            VisibilityCreateCategory = Visibility.Collapsed;
+            VisibilityEditCategory = Visibility.Collapsed;
+            VisibilityCreateBrand = Visibility.Collapsed;
+            VisibilityEditBrand = Visibility.Collapsed;
             VisibilityAllPart = Visibility.Visible;
             VisibilityBrandPart = Visibility.Visible;
             IsEnableSearchPart = false;
             _currentPart = Parts.Brand;
             if (isCreateNew)
             {
-                HeaderBrandPart = "Creates New Brand";
+                VisibilityCreateBrand = Visibility.Visible;
             }
             else
             {
-                HeaderBrandPart = "Edit Brand";
+                VisibilityEditBrand = Visibility.Visible;
             }
         }
 
@@ -1698,7 +1792,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1802,7 +1896,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1829,18 +1923,27 @@ namespace CPC.POS.ViewModel
                 ProductDepartmentModel.ProductDepartmentID = ProductDepartmentModel.base_Department.Id;
                 ProductDepartmentModel.IsNew = false;
                 ProductDepartmentModel.IsDirty = false;
+                DepartmentRootModel departmentRootModel;
                 if (SelectedItem is DepartmentRootModel)
                 {
-                    (SelectedItem as DepartmentRootModel).ProductDepartmentCollection.Add(ProductDepartmentModel);
+                    departmentRootModel = SelectedItem as DepartmentRootModel;
+                    departmentRootModel.ProductDepartmentCollection.Add(ProductDepartmentModel);
                 }
                 else
                 {
-                    _departmentCollection.First().ProductDepartmentCollection.Add(ProductDepartmentModel);
+                    departmentRootModel = _departmentCollection.First();
+                    departmentRootModel.ProductDepartmentCollection.Add(ProductDepartmentModel);
+                }
+
+                if (!departmentRootModel.IsExpanded)
+                {
+                    departmentRootModel.IsExpanded = true;
                 }
 
                 ProductDepartmentModel = new ProductDepartmentModel()
                 {
-                    ProductCategoryCollection = new CollectionBase<ProductCategoryModel>()
+                    ProductCategoryCollection = new CollectionBase<ProductCategoryModel>(),
+                    IsDirty = false
                 };
             }
             else
@@ -1872,7 +1975,7 @@ namespace CPC.POS.ViewModel
                 if (ProductDepartmentModel.IsNew || (!ProductDepartmentModel.IsNew && ProductDepartmentModel.IsDirty))
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -1894,12 +1997,20 @@ namespace CPC.POS.ViewModel
             }
             else // Errors.
             {
-                // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                if (ProductDepartmentModel.IsDirty)
                 {
-                    // Continue work.
-                    isUnactive = false;
+                    // Quention continue.
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // Continue work.
+                        isUnactive = false;
+                    }
+                    else
+                    {
+                        // Not continue work.
+                        isUnactive = true;
+                    }
                 }
                 else
                 {
@@ -1935,16 +2046,23 @@ namespace CPC.POS.ViewModel
                 ProductCategoryModel.ProductCategoryID = ProductCategoryModel.base_Department.Id;
                 ProductCategoryModel.IsNew = false;
                 ProductCategoryModel.IsDirty = false;
+                base_SaleTaxLocationModel defaultTaxCodeItem = _saleTaxLocations.FirstOrDefault(x => string.Compare(x.TaxCode, _defaultTaxCode, false) == 0);
                 if (SelectedItem is ProductDepartmentModel)
                 {
                     ProductDepartmentModel department = SelectedItem as ProductDepartmentModel;
                     department.ProductCategoryCollection.Add(ProductCategoryModel);
                     departmentRootModel.ProductCategoryCollection.Add(ProductCategoryModel);
+                    if (!department.IsExpanded)
+                    {
+                        department.IsExpanded = true;
+                    }
                     ProductCategoryModel = new ProductCategoryModel()
                     {
                         ProductBrandCollection = new CollectionBase<ProductBrandModel>(),
                         ProductDepartmentModel = department,
-                        ProductDepartmentID = department.ProductDepartmentID
+                        ProductDepartmentID = department.ProductDepartmentID,
+                        TaxCodeId = defaultTaxCodeItem != null ? defaultTaxCodeItem.TaxCode : null,
+                        IsDirty = false
                     };
                 }
                 else
@@ -1952,11 +2070,17 @@ namespace CPC.POS.ViewModel
                     ProductCategoryModel category = SelectedItem as ProductCategoryModel;
                     category.ProductDepartmentModel.ProductCategoryCollection.Add(ProductCategoryModel);
                     departmentRootModel.ProductCategoryCollection.Add(ProductCategoryModel);
+                    if (!category.ProductDepartmentModel.IsExpanded)
+                    {
+                        category.ProductDepartmentModel.IsExpanded = true;
+                    }
                     ProductCategoryModel = new ProductCategoryModel()
                     {
                         ProductBrandCollection = new CollectionBase<ProductBrandModel>(),
                         ProductDepartmentModel = category.ProductDepartmentModel,
-                        ProductDepartmentID = category.ProductDepartmentModel.ProductDepartmentID
+                        ProductDepartmentID = category.ProductDepartmentModel.ProductDepartmentID,
+                        TaxCodeId = defaultTaxCodeItem != null ? defaultTaxCodeItem.TaxCode : null,
+                        IsDirty = false
                     };
                 }
             }
@@ -1992,7 +2116,7 @@ namespace CPC.POS.ViewModel
                 if (ProductCategoryModel.IsNew || (!ProductCategoryModel.IsNew && ProductCategoryModel.IsDirty))
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2014,12 +2138,20 @@ namespace CPC.POS.ViewModel
             }
             else // Errors.
             {
-                // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                if (ProductCategoryModel.IsDirty)
                 {
-                    // Continue work.
-                    isUnactive = false;
+                    // Quention continue.
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // Continue work.
+                        isUnactive = false;
+                    }
+                    else
+                    {
+                        // Not continue work.
+                        isUnactive = true;
+                    }
                 }
                 else
                 {
@@ -2058,20 +2190,30 @@ namespace CPC.POS.ViewModel
                 {
                     ProductCategoryModel category = SelectedItem as ProductCategoryModel;
                     category.ProductBrandCollection.Add(ProductBrandModel);
+                    if (!category.IsExpanded)
+                    {
+                        category.IsExpanded = true;
+                    }
                     ProductBrandModel = new ProductBrandModel
                     {
                         ProductCategoryModel = category,
-                        ProductCategoryID = category.ProductCategoryID
+                        ProductCategoryID = category.ProductCategoryID,
+                        IsDirty = false
                     };
                 }
                 else
                 {
                     ProductBrandModel brand = SelectedItem as ProductBrandModel;
                     brand.ProductCategoryModel.ProductBrandCollection.Add(ProductBrandModel);
+                    if (!brand.ProductCategoryModel.IsExpanded)
+                    {
+                        brand.ProductCategoryModel.IsExpanded = true;
+                    }
                     ProductBrandModel = new ProductBrandModel
                     {
                         ProductCategoryModel = brand.ProductCategoryModel,
-                        ProductCategoryID = brand.ProductCategoryModel.ProductCategoryID
+                        ProductCategoryID = brand.ProductCategoryModel.ProductCategoryID,
+                        IsDirty = false
                     };
                 }
             }
@@ -2104,7 +2246,7 @@ namespace CPC.POS.ViewModel
                 if (ProductBrandModel.IsNew || (!ProductBrandModel.IsNew && ProductBrandModel.IsDirty))
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2126,12 +2268,20 @@ namespace CPC.POS.ViewModel
             }
             else // Errors.
             {
-                // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                if (ProductBrandModel.IsDirty)
                 {
-                    // Continue work.
-                    isUnactive = false;
+                    // Quention continue.
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // Continue work.
+                        isUnactive = false;
+                    }
+                    else
+                    {
+                        // Not continue work.
+                        isUnactive = true;
+                    }
                 }
                 else
                 {
@@ -2213,7 +2363,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2232,7 +2382,7 @@ namespace CPC.POS.ViewModel
                 DepartmentRootModel depRoot = _selectedItem as DepartmentRootModel;
                 if (depRoot.ProductCategoryCollection.IsDirty)
                 {
-                    MessageBoxResult result = MessageBox.Show("Categories have been edited, do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text16, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         SaveCategories(depRoot.ProductCategoryCollection);
@@ -2248,7 +2398,7 @@ namespace CPC.POS.ViewModel
                 ProductDepartmentModel department = _selectedItem as ProductDepartmentModel;
                 if (department.ProductCategoryCollection.IsDirty)
                 {
-                    MessageBoxResult result = MessageBox.Show("Categories have been edited, do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text16, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         SaveCategories(department.ProductCategoryCollection);
@@ -2482,7 +2632,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
 
             return isUnactive;

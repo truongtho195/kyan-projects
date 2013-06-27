@@ -613,7 +613,7 @@ namespace CPC.POS.Model
             get
             {
                 if (this.RewardAmtType.Equals((int)RewardType.Money))
-                    return this.RewardAmount.ToString(Define.CurrencyFormat);
+                    return string.Format(Define.ConverterCulture, Define.CurrencyFormat, this.RewardAmount);
                 return string.Format("{0} %", this.RewardAmount);
             }
         }
@@ -644,13 +644,14 @@ namespace CPC.POS.Model
 
         public string SetRewardInfo()
         {
+           
             StringBuilder sb = new StringBuilder();
             if (this.RewardAmtType.Equals((int)RewardType.Money))
-                sb.Append(this.RewardAmount.ToString(Define.CurrencyFormat));
+                sb.Append(string.Format(Define.ConverterCulture, Define.CurrencyFormat, this.RewardAmount));
             else
                 sb.AppendFormat("{0} %", this.RewardAmount);
 
-            sb.AppendFormat(" Off reward are earned for every {0} ", PurchaseThreshold.ToString(Define.CurrencyFormat));
+            sb.AppendFormat(" off reward are earned for every {0} ", string.Format(Define.ConverterCulture, Define.CurrencyFormat, PurchaseThreshold));
 
             if (IsTrackingPeriod)
             {

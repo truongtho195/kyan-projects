@@ -101,7 +101,7 @@
 
         <!--FileDataGridRowStyle-->
         <ContextMenu x:Key="FileDataGridRowContextMenu">
-            <MenuItem Header="Open">
+            <MenuItem Header="{DynamicResource A102}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cmd:EventToCommand Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -109,7 +109,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </MenuItem>
-            <MenuItem Header="Open With...">
+            <MenuItem Header="{DynamicResource A103}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cmd:EventToCommand Command="{Binding DataContext.OpenFileWithCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
@@ -123,13 +123,22 @@
         <HierarchicalDataTemplate DataType="{x:Type model:base_VirtualFolderModel}"
                                   ItemsSource="{Binding FolderCollection, Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
-                <Rectangle Width="16"
-                           Height="16"
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
                            Fill="{DynamicResource CloseFolder}" />
                 <TextBlock Text="{Binding FolderName, Mode=OneWay}"
-                           Foreground="White" />
-
+                           Foreground="White"
+                           Margin="3,0,0,0"/>
             </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter Property="Fill"
+                            TargetName="ImageRec"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
 
         <!--FolderTreeviewItemStyle-->
@@ -162,7 +171,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="20" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <ToggleButton x:Name="Expander"
@@ -170,9 +179,11 @@
                                           IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                           Style="{StaticResource ExpandCollapseToggleStyle}"
                                           HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
                                           Width="Auto"
                                           Height="Auto" />
                             <Border x:Name="Bd"
+                                    VerticalAlignment="Center"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Background="{TemplateBinding Background}"
@@ -211,6 +222,7 @@
                                 </Grid>
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost"
+                                            VerticalAlignment="Center"
                                             Grid.ColumnSpan="2"
                                             Grid.Column="1"
                                             Grid.Row="1" />
@@ -230,13 +242,6 @@
                             </Trigger>
                             <Trigger Property="IsSelected"
                                      Value="true">
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                                <Setter Property="FontStyle"
-                                        Value="Italic" />
                             </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
@@ -342,6 +347,18 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C178}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="CreatedDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource C159}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="InFolderHeaderTemplate">
+            <TextBlock Text="{DynamicResource A104}" />
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid x:Name="grdAttachmentScannerSearch">
@@ -384,7 +401,7 @@
                                   Margin="10,10,0,0">
                             <GroupBox.Header>
                                 <TextBlock x:Name="txtblSearch"
-                                           Text="Search"
+                                           Text="{DynamicResource C113}"
                                            TextWrapping="NoWrap"
                                            FontSize="14"
                                            FontWeight="Bold"
@@ -394,12 +411,12 @@
                                   Margin="0,4,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
-                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25" />
                                 </Grid.RowDefinitions>
                                 <xceedToolkit:WatermarkTextBox x:Name="txtSearch"
                                                                Margin="10,2"
                                                                Padding="20,0,2,0"
-                                                               Watermark="Keyword"
+                                                               Watermark="{DynamicResource C135}"
                                                                VerticalContentAlignment="Center"
                                                                TextWrapping="NoWrap"
                                                                Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
@@ -433,7 +450,7 @@
                                                             behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding OpenFileCommand}"
                                                             behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=Self}}">
                             <cpcDataGridToolkit:DataGridControl.Columns>
-                                <DataGridTemplateColumn Header="Name"
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                         Width="300">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -561,9 +578,9 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Width="300"
-                                                    Header="In Folder"
+                                                    HeaderTemplate="{StaticResource InFolderHeaderTemplate}"
                                                     Binding="{Binding ParentFolder.FolderName, Mode=OneWay}" />
-                                <DataGridTemplateColumn Header="Date Created"
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}"
                                                         Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -703,7 +720,7 @@
                                                        Width="16" />
                                             <TextBlock Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
-                                                       Text="New"
+                                                       Text="{DynamicResource C140}"
                                                        TextWrapping="NoWrap"
                                                        x:Name="txtblNewFolder"
                                                        Style="{DynamicResource ButtonTextBlock}" />
@@ -724,7 +741,7 @@
                                                        Width="16" />
                                             <TextBlock Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
-                                                       Text="Edit"
+                                                       Text="{DynamicResource C141}"
                                                        TextWrapping="NoWrap"
                                                        x:Name="txtblEditFolder"
                                                        Style="{DynamicResource ButtonTextBlock}" />
@@ -745,7 +762,7 @@
                                                        Width="16" />
                                             <TextBlock Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
-                                                       Text="Delete"
+                                                       Text="{DynamicResource C177}"
                                                        TextWrapping="NoWrap"
                                                        x:Name="txtblDeleteFolder"
                                                        Style="{DynamicResource ButtonTextBlock}" />
@@ -809,7 +826,7 @@
                                                        Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource ButtonTextBlock}"
-                                                       Text="Scan..."
+                                                       Text="{DynamicResource A100}"
                                                        TextWrapping="NoWrap" />
                                         </StackPanel>
                                     </Button>
@@ -830,7 +847,7 @@
                                                        Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource ButtonTextBlock}"
-                                                       Text="Attach"
+                                                       Text="{DynamicResource A101}"
                                                        TextWrapping="NoWrap" />
                                         </StackPanel>
                                     </Button>
@@ -851,7 +868,7 @@
                                                        Margin="5,0,0,0"
                                                        VerticalAlignment="Center"
                                                        Style="{DynamicResource ButtonTextBlock}"
-                                                       Text="Delete"
+                                                       Text="{DynamicResource C177}"
                                                        TextWrapping="NoWrap" />
                                         </StackPanel>
                                     </Button>
@@ -884,7 +901,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Name"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                                 Width="250">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -1136,7 +1153,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Date Created"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}"
                                                                 Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>

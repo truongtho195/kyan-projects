@@ -102,6 +102,7 @@ namespace CPC.POS.ViewModel
                 {
                     _selectedCountStock = value;
                     this.OnPropertyChanged(() => SelectedCountStock);
+                    this.IsSetAllQuantity = false;
                 }
             }
         }
@@ -404,6 +405,7 @@ namespace CPC.POS.ViewModel
                 {
                     _selectedStore = value;
                     this.OnPropertyChanged(() => SelectedStore);
+                    this.IsSetAllQuantity = false;
                     if (this.SelectedStore != null)
                     {
                         Expression<Func<base_ProductStore, bool>> predicate = PredicateBuilder.True<base_ProductStore>();
@@ -411,6 +413,32 @@ namespace CPC.POS.ViewModel
                         this.LoadProductWithStore(predicate, true);
                         this.SelectedCountStock.IsDirty = true;
                         this.SelectedCountStock.IsChangeProductCollection = true;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region IsSearchMode
+        private bool isSetAllQuantity = false;
+        /// <summary>
+        /// Search Mode: 
+        /// true open the Search grid.
+        /// false close the search grid and open data entry.
+        /// </summary>
+        public bool IsSetAllQuantity
+        {
+            get { return isSetAllQuantity; }
+            set
+            {
+                if (value != isSetAllQuantity)
+                {
+                    isSetAllQuantity = value;
+                    OnPropertyChanged(() => IsSetAllQuantity);
+                    if (this.IsSetAllQuantity && this.SelectedCountStock.Status <= 2)
+                    {
+                        foreach (var item in this.SelectedCountStock.CountStockDetailCollection.Where(x => !x.IsCounted))
+                            item.CountedQty = 0;
                     }
                 }
             }
@@ -436,9 +464,6 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnNewCommandExecute(object param)
         {
-            //To set enable of detail grid.
-            if (param != null)
-                this.IsSearchMode = !this.IsSearchMode;
             if (this.ChangeViewExecute(null))
             {
                 // TODO: Handle command logic here
@@ -458,6 +483,8 @@ namespace CPC.POS.ViewModel
                 this.SelectedCountStock.IsDirty = false;
                 this.SelectedCountStock.IsLoad = false;
                 this.SelectedCountStock.IsChangeProductCollection = false;
+                //To set enable of detail grid.
+                this.IsSearchMode = false;
             }
         }
         #endregion
@@ -674,11 +701,11 @@ namespace CPC.POS.ViewModel
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
             {
-                MessageBox.Show("When you adjust product in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Language.Text21, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            string content = string.Format("Do you want to adjust numbers of products in stocks?");
-            MessageBoxResult msgResult = MessageBox.Show(content, "POS", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            string content = string.Format(Language.Text22);
+            MessageBoxResult msgResult = MessageBox.Show(content, Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (msgResult.Is(MessageBoxResult.Yes))
                 this.Apply();
         }
@@ -824,7 +851,7 @@ namespace CPC.POS.ViewModel
             if (param != null)
             {
                 base_CountStockDetailModel countStockDetailModel = param as base_CountStockDetailModel;
-                MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
                 if (result.Is(MessageBoxResult.Yes))
                 {
                     this.SelectedCountStock.IsDirty = true;
@@ -1077,6 +1104,7 @@ namespace CPC.POS.ViewModel
             };
             bgWorker.RunWorkerAsync();
         }
+
         private void LoadProductWithStore(Expression<Func<base_ProductStore, bool>> predicate, bool refreshData = false, int currentIndex = 0)
         {
             // BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
@@ -1102,7 +1130,8 @@ namespace CPC.POS.ViewModel
                 model.Size = productStore.base_Product.Size;
                 model.Description = productStore.base_Product.Description;
                 model.ProductName = productStore.base_Product.ProductName;
-                model.Difference = 0;
+                model.Difference = null;
+                model.IsCounted = false;
                 model.EndUpdate();
                 model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
                 this.SelectedCountStock.CountStockDetailCollection.Add(model);
@@ -1121,9 +1150,11 @@ namespace CPC.POS.ViewModel
             if (!this.SelectedCountStock.IsLoad)
                 switch (e.PropertyName)
                 {
-                    case "CountedQuantity":
+                    case "CountedQty":
                         base_CountStockDetailModel model = sender as base_CountStockDetailModel;
-                        model.Difference = model.CountedQuantity - model.Quantity;
+                        model.Difference = model.CountedQty - model.Quantity;
+                        model.IsCounted = true;
+                        model.CountedQuantity = model.CountedQty;
                         this.SelectedCountStock.IsDirty = true;
                         this.SelectedCountStock.IsChangeProductCollection = true;
                         break;
@@ -1147,7 +1178,7 @@ namespace CPC.POS.ViewModel
             if (this.SelectedCountStock != null && this.SelectedCountStock.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                msgResult = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (this.OnSaveCommandCanExecute())
@@ -1206,18 +1237,28 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                this.SelectedCountStock.Status = 2;
-                this.SelectedCountStock.ToEntity();
-                foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
+                MessageBoxResult msgResult = MessageBoxResult.None;
+                msgResult = MessageBox.Show(Language.Text23, Language.Warning, MessageBoxButton.YesNo);
+                if (msgResult.Is(MessageBoxResult.Yes))
                 {
-                    item.ToEntity();
-                    this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
-                    item.EndUpdate();
+                    this.SelectedCountStock.Status = 2;
+                    this.SelectedCountStock.ToEntity();
+                    foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
+                    {
+                        item.CountedQuantity = item.CountedQty;
+                        if (item.Difference == null)
+                            item.Difference = 0;
+                        item.ToEntity();
+                        this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
+                        item.IsCounted = true;
+                        item.EndUpdate();
+                    }
+                    this._countStockRepository.Add(this.SelectedCountStock.base_CountStock);
+                    this._countStockRepository.Commit();
+                    this.SelectedCountStock.Id = this.SelectedCountStock.base_CountStock.Id;
+                    this.SelectedCountStock.EndUpdate();
+                    App.WriteLUserLog("CountStock", "User counted a stock." + this.SelectedCountStock.Id);
                 }
-                this._countStockRepository.Add(this.SelectedCountStock.base_CountStock);
-                this._countStockRepository.Commit();
-                this.SelectedCountStock.Id = this.SelectedCountStock.base_CountStock.Id;
-                this.SelectedCountStock.EndUpdate();
             }
             catch (Exception ex)
             {
@@ -1248,6 +1289,7 @@ namespace CPC.POS.ViewModel
                 this.SelectedCountStock.IsEnable = false;
                 this.SelectedCountStock.IsLoad = false;
                 this.SelectedCountStock.IsChangeProductCollection = false;
+                App.WriteLUserLog("CountStock", "User applied stock count." + this.SelectedCountStock.Id);
             }
             catch (Exception ex)
             {
@@ -1285,22 +1327,32 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                this.SelectedCountStock.Status = 2;
-                this.SelectedCountStock.ToEntity();
-                if (this.SelectedCountStock.IsChangeProductCollection)
+                MessageBoxResult msgResult = MessageBoxResult.None;
+                msgResult = MessageBox.Show(Language.Text23, Language.Warning, MessageBoxButton.YesNo);
+                if (msgResult.Is(MessageBoxResult.Yes))
                 {
-                    _countStockDetailRepository.Delete(this.SelectedCountStock.base_CountStock.base_CountStockDetail);
-                    this.SelectedCountStock.base_CountStock.base_CountStockDetail.Clear();
-                    _pricingChangeRepository.Commit();
-                    foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
+                    this.SelectedCountStock.Status = 2;
+                    this.SelectedCountStock.ToEntity();
+                    if (this.SelectedCountStock.IsChangeProductCollection)
                     {
-                        item.ToEntity();
-                        this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
-                        item.EndUpdate();
+                        _countStockDetailRepository.Delete(this.SelectedCountStock.base_CountStock.base_CountStockDetail);
+                        this.SelectedCountStock.base_CountStock.base_CountStockDetail.Clear();
+                        _pricingChangeRepository.Commit();
+                        foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
+                        {
+                            item.CountedQuantity = item.CountedQty;
+                            if (item.Difference == null)
+                                item.Difference = 0;
+                            item.ToEntity();
+                            this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
+                            item.IsCounted = true;
+                            item.EndUpdate();
+                            App.WriteLUserLog("CountStock", "User update stock count." + this.SelectedCountStock.Id);
+                        }
                     }
+                    this._pricingManagerRepository.Commit();
+                    this.SelectedCountStock.EndUpdate();
                 }
-                this._pricingManagerRepository.Commit();
-                this.SelectedCountStock.EndUpdate();
             }
             catch (Exception ex)
             {
@@ -1484,7 +1536,7 @@ namespace CPC.POS.ViewModel
             if (this.IsEditData())
             {
                 // Show notification when data has changed
-                MessageBoxResult msgResult = MessageBox.Show("Data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (this.OnSaveCommandCanExecute())
@@ -1558,9 +1610,11 @@ namespace CPC.POS.ViewModel
                         model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
                         model.Attribute = product.Attribute;
                         model.Size = product.Size;
+                        model.CountedQty = model.CountedQuantity;
                         model.Description = product.Description;
                         model.ProductName = product.ProductName;
                         model.ProductCode = product.Code;
+                        model.IsCounted = true;
                         model.EndUpdate();
                         this.SelectedCountStock.CountStockDetailCollection.Add(model);
                     }

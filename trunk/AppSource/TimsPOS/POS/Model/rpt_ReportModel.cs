@@ -192,22 +192,22 @@ namespace CPC.POS.Model
             }
         }
 
-        protected string _processName;
+        protected string _preProcessName;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the ProcessName</para>
+        /// <para>Gets or sets the PreProcessName</para>
         /// </summary>
-        public string ProcessName
+        public string PreProcessName
         {
-            get { return this._processName; }
+            get { return this._preProcessName; }
             set
             {
-                if (this._processName != value)
+                if (this._preProcessName != value)
                 {
                     this.IsDirty = true;
-                    this._processName = value;
-                    OnPropertyChanged(() => ProcessName);
-                    PropertyChangedCompleted(() => ProcessName);
+                    this._preProcessName = value;
+                    OnPropertyChanged(() => PreProcessName);
+                    PropertyChangedCompleted(() => PreProcessName);
                 }
             }
         }
@@ -332,12 +332,12 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<short> _printCopy;
+        protected short _printCopy;
         /// <summary>
         /// Property Model
         /// <para>Gets or sets the PrintCopy</para>
         /// </summary>
-        public Nullable<short> PrintCopy
+        public short PrintCopy
         {
             get { return this._printCopy; }
             set
@@ -348,26 +348,6 @@ namespace CPC.POS.Model
                     this._printCopy = value;
                     OnPropertyChanged(() => PrintCopy);
                     PropertyChangedCompleted(() => PrintCopy);
-                }
-            }
-        }
-
-        protected string _paperSize;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the PaperSize</para>
-        /// </summary>
-        public string PaperSize
-        {
-            get { return this._paperSize; }
-            set
-            {
-                if (this._paperSize != value)
-                {
-                    this.IsDirty = true;
-                    this._paperSize = value;
-                    OnPropertyChanged(() => PaperSize);
-                    PropertyChangedCompleted(() => PaperSize);
                 }
             }
         }
@@ -472,6 +452,66 @@ namespace CPC.POS.Model
             }
         }
 
+        protected short _paperSize;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the PaperSize</para>
+        /// </summary>
+        public short PaperSize
+        {
+            get { return this._paperSize; }
+            set
+            {
+                if (this._paperSize != value)
+                {
+                    this.IsDirty = true;
+                    this._paperSize = value;
+                    OnPropertyChanged(() => PaperSize);
+                    PropertyChangedCompleted(() => PaperSize);
+                }
+            }
+        }
+
+        protected int _screenTimes;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ScreenTimes</para>
+        /// </summary>
+        public int ScreenTimes
+        {
+            get { return this._screenTimes; }
+            set
+            {
+                if (this._screenTimes != value)
+                {
+                    this.IsDirty = true;
+                    this._screenTimes = value;
+                    OnPropertyChanged(() => ScreenTimes);
+                    PropertyChangedCompleted(() => ScreenTimes);
+                }
+            }
+        }
+
+        protected string _prepProcessDescription;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the PrepProcessDescription</para>
+        /// </summary>
+        public string PrepProcessDescription
+        {
+            get { return this._prepProcessDescription; }
+            set
+            {
+                if (this._prepProcessDescription != value)
+                {
+                    this.IsDirty = true;
+                    this._prepProcessDescription = value;
+                    OnPropertyChanged(() => PrepProcessDescription);
+                    PropertyChangedCompleted(() => PrepProcessDescription);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -500,7 +540,7 @@ namespace CPC.POS.Model
             this.rpt_Report.Name = this.Name;
             this.rpt_Report.FormatFile = this.FormatFile;
             this.rpt_Report.IsShow = this.IsShow;
-            this.rpt_Report.ProcessName = this.ProcessName;
+            this.rpt_Report.PreProcessName = this.PreProcessName;
             this.rpt_Report.SamplePicture = this.SamplePicture;
             this.rpt_Report.PrintTimes = this.PrintTimes;
             this.rpt_Report.LastPrintDate = this.LastPrintDate;
@@ -508,12 +548,14 @@ namespace CPC.POS.Model
             this.rpt_Report.ExcelFile = this.ExcelFile;
             this.rpt_Report.PrinterName = this.PrinterName;
             this.rpt_Report.PrintCopy = this.PrintCopy;
-            this.rpt_Report.PaperSize = this.PaperSize;
             this.rpt_Report.Remark = this.Remark;
             this.rpt_Report.DateCreated = this.DateCreated;
             this.rpt_Report.UserCreated = this.UserCreated;
             this.rpt_Report.DateUpdated = this.DateUpdated;
             this.rpt_Report.UserUpdated = this.UserUpdated;
+            this.rpt_Report.PaperSize = this.PaperSize;
+            this.rpt_Report.ScreenTimes = this.ScreenTimes;
+            this.rpt_Report.PrepProcessDescription = this.PrepProcessDescription;
         }
 
         /// <summary>
@@ -529,7 +571,7 @@ namespace CPC.POS.Model
             this._name = this.rpt_Report.Name;
             this._formatFile = this.rpt_Report.FormatFile;
             this._isShow = this.rpt_Report.IsShow;
-            this._processName = this.rpt_Report.ProcessName;
+            this._preProcessName = this.rpt_Report.PreProcessName;
             this._samplePicture = this.rpt_Report.SamplePicture;
             this._printTimes = this.rpt_Report.PrintTimes;
             this._lastPrintDate = this.rpt_Report.LastPrintDate;
@@ -537,12 +579,14 @@ namespace CPC.POS.Model
             this._excelFile = this.rpt_Report.ExcelFile;
             this._printerName = this.rpt_Report.PrinterName;
             this._printCopy = this.rpt_Report.PrintCopy;
-            this._paperSize = this.rpt_Report.PaperSize;
             this._remark = this.rpt_Report.Remark;
             this._dateCreated = this.rpt_Report.DateCreated;
             this._userCreated = this.rpt_Report.UserCreated;
             this._dateUpdated = this.rpt_Report.DateUpdated;
             this._userUpdated = this.rpt_Report.UserUpdated;
+            this._paperSize = this.rpt_Report.PaperSize;
+            this._screenTimes = this.rpt_Report.ScreenTimes;
+            this._prepProcessDescription = this.rpt_Report.PrepProcessDescription;
         }
 
         /// <summary>
@@ -558,7 +602,7 @@ namespace CPC.POS.Model
             this.Name = this.rpt_Report.Name;
             this.FormatFile = this.rpt_Report.FormatFile;
             this.IsShow = this.rpt_Report.IsShow;
-            this.ProcessName = this.rpt_Report.ProcessName;
+            this.PreProcessName = this.rpt_Report.PreProcessName;
             this.SamplePicture = this.rpt_Report.SamplePicture;
             this.PrintTimes = this.rpt_Report.PrintTimes;
             this.LastPrintDate = this.rpt_Report.LastPrintDate;
@@ -566,12 +610,14 @@ namespace CPC.POS.Model
             this.ExcelFile = this.rpt_Report.ExcelFile;
             this.PrinterName = this.rpt_Report.PrinterName;
             this.PrintCopy = this.rpt_Report.PrintCopy;
-            this.PaperSize = this.rpt_Report.PaperSize;
             this.Remark = this.rpt_Report.Remark;
             this.DateCreated = this.rpt_Report.DateCreated;
             this.UserCreated = this.rpt_Report.UserCreated;
             this.DateUpdated = this.rpt_Report.DateUpdated;
             this.UserUpdated = this.rpt_Report.UserUpdated;
+            this.PaperSize = this.rpt_Report.PaperSize;
+            this.ScreenTimes = this.rpt_Report.ScreenTimes;
+            this.PrepProcessDescription = this.rpt_Report.PrepProcessDescription;
         }
 
         #endregion

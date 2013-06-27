@@ -372,6 +372,40 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isCounted;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsCounted</para>
+        /// </summary>
+        public bool IsCounted
+        {
+            get { return this._isCounted; }
+            set
+            {
+                if (this._isCounted != value)
+                {
+                    this._isCounted = value;
+                    OnPropertyChanged(() => IsCounted);
+                }
+            }
+        }
+
+        protected int _countedQty;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the CountedQty</para>
+        /// </summary>
+        public int CountedQty
+        {
+            get { return this._countedQty; }
+            set
+            {
+                this.IsDirty = true;
+                this._countedQty = value;
+                OnPropertyChanged(() => CountedQty);
+                PropertyChangedCompleted(() => CountedQty);
+            }
+        }
         #endregion
 
         #region IDataErrorInfo Members

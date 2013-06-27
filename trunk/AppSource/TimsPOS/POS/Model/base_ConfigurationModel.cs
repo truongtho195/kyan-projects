@@ -48,7 +48,11 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_Configuration base_Configuration { get; private set; }
+        public base_Configuration base_Configuration
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -61,7 +65,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string CompanyName
         {
-            get { return this._companyName; }
+            get
+            {
+                return this._companyName;
+            }
             set
             {
                 if (this._companyName != value)
@@ -81,7 +88,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Address
         {
-            get { return this._address; }
+            get
+            {
+                return this._address;
+            }
             set
             {
                 if (this._address != value)
@@ -101,7 +111,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string City
         {
-            get { return this._city; }
+            get
+            {
+                return this._city;
+            }
             set
             {
                 if (this._city != value)
@@ -121,7 +134,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> State
         {
-            get { return this._state; }
+            get
+            {
+                return this._state;
+            }
             set
             {
                 if (this._state != value)
@@ -141,7 +157,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string ZipCode
         {
-            get { return this._zipCode; }
+            get
+            {
+                return this._zipCode;
+            }
             set
             {
                 if (this._zipCode != value)
@@ -161,7 +180,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> CountryId
         {
-            get { return this._countryId; }
+            get
+            {
+                return this._countryId;
+            }
             set
             {
                 if (this._countryId != value)
@@ -181,7 +203,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Phone
         {
-            get { return this._phone; }
+            get
+            {
+                return this._phone;
+            }
             set
             {
                 if (this._phone != value)
@@ -201,7 +226,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Fax
         {
-            get { return this._fax; }
+            get
+            {
+                return this._fax;
+            }
             set
             {
                 if (this._fax != value)
@@ -221,7 +249,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Email
         {
-            get { return this._email; }
+            get
+            {
+                return this._email;
+            }
             set
             {
                 if (this._email != value)
@@ -241,7 +272,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string Website
         {
-            get { return this._website; }
+            get
+            {
+                return this._website;
+            }
             set
             {
                 if (this._website != value)
@@ -261,7 +295,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string EmailPop3Server
         {
-            get { return this._emailPop3Server; }
+            get
+            {
+                return this._emailPop3Server;
+            }
             set
             {
                 if (this._emailPop3Server != value)
@@ -281,7 +318,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> EmailPop3Port
         {
-            get { return this._emailPop3Port; }
+            get
+            {
+                return this._emailPop3Port;
+            }
             set
             {
                 if (this._emailPop3Port != value)
@@ -301,7 +341,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string EmailAccount
         {
-            get { return this._emailAccount; }
+            get
+            {
+                return this._emailAccount;
+            }
             set
             {
                 if (this._emailAccount != value)
@@ -321,7 +364,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string EmailPassword
         {
-            get { return this._emailPassword; }
+            get
+            {
+                return this._emailPassword;
+            }
             set
             {
                 if (this._emailPassword != value)
@@ -341,7 +387,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsBarcodeScannerAttached
         {
-            get { return this._isBarcodeScannerAttached; }
+            get
+            {
+                return this._isBarcodeScannerAttached;
+            }
             set
             {
                 if (this._isBarcodeScannerAttached != value)
@@ -361,7 +410,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsEnableTouchScreenLayout
         {
-            get { return this._isEnableTouchScreenLayout; }
+            get
+            {
+                return this._isEnableTouchScreenLayout;
+            }
             set
             {
                 if (this._isEnableTouchScreenLayout != value)
@@ -381,7 +433,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowTimeClockAttached
         {
-            get { return this._isAllowTimeClockAttached; }
+            get
+            {
+                return this._isAllowTimeClockAttached;
+            }
             set
             {
                 if (this._isAllowTimeClockAttached != value)
@@ -401,7 +456,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowCollectTipCreditCard
         {
-            get { return this._isAllowCollectTipCreditCard; }
+            get
+            {
+                return this._isAllowCollectTipCreditCard;
+            }
             set
             {
                 if (this._isAllowCollectTipCreditCard != value)
@@ -421,7 +479,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowMutilUOM
         {
-            get { return this._isAllowMutilUOM; }
+            get
+            {
+                return this._isAllowMutilUOM;
+            }
             set
             {
                 if (this._isAllowMutilUOM != value)
@@ -441,7 +502,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> DefaultMaximumSticky
         {
-            get { return this._defaultMaximumSticky; }
+            get
+            {
+                return this._defaultMaximumSticky;
+            }
             set
             {
                 if (this._defaultMaximumSticky != value)
@@ -461,7 +525,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DefaultPriceSchema
         {
-            get { return this._defaultPriceSchema; }
+            get
+            {
+                return this._defaultPriceSchema;
+            }
             set
             {
                 if (this._defaultPriceSchema != value)
@@ -481,7 +548,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DefaultPaymentMethod
         {
-            get { return this._defaultPaymentMethod; }
+            get
+            {
+                return this._defaultPaymentMethod;
+            }
             set
             {
                 if (this._defaultPaymentMethod != value)
@@ -501,7 +571,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DefaultSaleTaxLocation
         {
-            get { return this._defaultSaleTaxLocation; }
+            get
+            {
+                return this._defaultSaleTaxLocation;
+            }
             set
             {
                 if (this._defaultSaleTaxLocation != value)
@@ -521,7 +594,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string DefaultTaxCodeNewDepartment
         {
-            get { return this._defaultTaxCodeNewDepartment; }
+            get
+            {
+                return this._defaultTaxCodeNewDepartment;
+            }
             set
             {
                 if (this._defaultTaxCodeNewDepartment != value)
@@ -541,7 +617,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string DefautlImagePath
         {
-            get { return this._defautlImagePath; }
+            get
+            {
+                return this._defautlImagePath;
+            }
             set
             {
                 if (this._defautlImagePath != value)
@@ -561,7 +640,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int DefautlDiscountScheduleTime
         {
-            get { return this._defautlDiscountScheduleTime; }
+            get
+            {
+                return this._defautlDiscountScheduleTime;
+            }
             set
             {
                 if (this._defautlDiscountScheduleTime != value)
@@ -581,7 +663,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateCreated
         {
-            get { return this._dateCreated; }
+            get
+            {
+                return this._dateCreated;
+            }
             set
             {
                 if (this._dateCreated != value)
@@ -601,7 +686,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get { return this._userCreated; }
+            get
+            {
+                return this._userCreated;
+            }
             set
             {
                 if (this._userCreated != value)
@@ -621,7 +709,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> TotalStore
         {
-            get { return this._totalStore; }
+            get
+            {
+                return this._totalStore;
+            }
             set
             {
                 if (this._totalStore != value)
@@ -641,7 +732,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsRequirePromotionCode
         {
-            get { return this._isRequirePromotionCode; }
+            get
+            {
+                return this._isRequirePromotionCode;
+            }
             set
             {
                 if (this._isRequirePromotionCode != value)
@@ -661,7 +755,10 @@ namespace CPC.POS.Model
         /// </summary>
         public short DefaultDiscountType
         {
-            get { return this._defaultDiscountType; }
+            get
+            {
+                return this._defaultDiscountType;
+            }
             set
             {
                 if (this._defaultDiscountType != value)
@@ -681,7 +778,10 @@ namespace CPC.POS.Model
         /// </summary>
         public short DefaultDiscountStatus
         {
-            get { return this._defaultDiscountStatus; }
+            get
+            {
+                return this._defaultDiscountStatus;
+            }
             set
             {
                 if (this._defaultDiscountStatus != value)
@@ -701,7 +801,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> LoginAllow
         {
-            get { return this._loginAllow; }
+            get
+            {
+                return this._loginAllow;
+            }
             set
             {
                 if (this._loginAllow != value)
@@ -721,7 +824,10 @@ namespace CPC.POS.Model
         /// </summary>
         public byte[] Logo
         {
-            get { return this._logo; }
+            get
+            {
+                return this._logo;
+            }
             set
             {
                 if (this._logo != value)
@@ -741,7 +847,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DefaultScanMethod
         {
-            get { return this._defaultScanMethod; }
+            get
+            {
+                return this._defaultScanMethod;
+            }
             set
             {
                 if (this._defaultScanMethod != value)
@@ -761,7 +870,10 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TipPercent
         {
-            get { return this._tipPercent; }
+            get
+            {
+                return this._tipPercent;
+            }
             set
             {
                 if (this._tipPercent != value)
@@ -781,7 +893,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> AcceptedPaymentMethod
         {
-            get { return this._acceptedPaymentMethod; }
+            get
+            {
+                return this._acceptedPaymentMethod;
+            }
             set
             {
                 if (this._acceptedPaymentMethod != value)
@@ -801,7 +916,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> AcceptedCardType
         {
-            get { return this._acceptedCardType; }
+            get
+            {
+                return this._acceptedCardType;
+            }
             set
             {
                 if (this._acceptedCardType != value)
@@ -821,7 +939,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsRequireDiscountReason
         {
-            get { return this._isRequireDiscountReason; }
+            get
+            {
+                return this._isRequireDiscountReason;
+            }
             set
             {
                 if (this._isRequireDiscountReason != value)
@@ -841,7 +962,10 @@ namespace CPC.POS.Model
         /// </summary>
         public short WorkHour
         {
-            get { return this._workHour; }
+            get
+            {
+                return this._workHour;
+            }
             set
             {
                 if (this._workHour != value)
@@ -861,7 +985,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int Id
         {
-            get { return this._id; }
+            get
+            {
+                return this._id;
+            }
             set
             {
                 if (this._id != value)
@@ -881,7 +1008,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DefaultShipUnit
         {
-            get { return this._defaultShipUnit; }
+            get
+            {
+                return this._defaultShipUnit;
+            }
             set
             {
                 if (this._defaultShipUnit != value)
@@ -901,7 +1031,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> DefaultCashiedUserName
         {
-            get { return this._defaultCashiedUserName; }
+            get
+            {
+                return this._defaultCashiedUserName;
+            }
             set
             {
                 if (this._defaultCashiedUserName != value)
@@ -921,7 +1054,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> KeepLog
         {
-            get { return this._keepLog; }
+            get
+            {
+                return this._keepLog;
+            }
             set
             {
                 if (this._keepLog != value)
@@ -941,7 +1077,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsAllowShift
         {
-            get { return this._isAllowShift; }
+            get
+            {
+                return this._isAllowShift;
+            }
             set
             {
                 if (this._isAllowShift != value)
@@ -961,7 +1100,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string DefaultLanguage
         {
-            get { return this._defaultLanguage; }
+            get
+            {
+                return this._defaultLanguage;
+            }
             set
             {
                 if (this._defaultLanguage != value)
@@ -981,7 +1123,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> TimeOutMinute
         {
-            get { return this._timeOutMinute; }
+            get
+            {
+                return this._timeOutMinute;
+            }
             set
             {
                 if (this._timeOutMinute != value)
@@ -1001,7 +1146,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAutoLogout
         {
-            get { return this._isAutoLogout; }
+            get
+            {
+                return this._isAutoLogout;
+            }
             set
             {
                 if (this._isAutoLogout != value)
@@ -1021,7 +1169,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsBackupWhenExit
         {
-            get { return this._isBackupWhenExit; }
+            get
+            {
+                return this._isBackupWhenExit;
+            }
             set
             {
                 if (this._isBackupWhenExit != value)
@@ -1041,7 +1192,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> BackupEvery
         {
-            get { return this._backupEvery; }
+            get
+            {
+                return this._backupEvery;
+            }
             set
             {
                 if (this._backupEvery != value)
@@ -1061,7 +1215,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string BackupPath
         {
-            get { return this._backupPath; }
+            get
+            {
+                return this._backupPath;
+            }
             set
             {
                 if (this._backupPath != value)
@@ -1081,7 +1238,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowRGO
         {
-            get { return this._isAllowRGO; }
+            get
+            {
+                return this._isAllowRGO;
+            }
             set
             {
                 if (this._isAllowRGO != value)
@@ -1101,7 +1261,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowChangeOrder
         {
-            get { return this._isAllowChangeOrder; }
+            get
+            {
+                return this._isAllowChangeOrder;
+            }
             set
             {
                 if (this._isAllowChangeOrder != value)
@@ -1121,7 +1284,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsAllowNegativeStore
         {
-            get { return this._isAllowNegativeStore; }
+            get
+            {
+                return this._isAllowNegativeStore;
+            }
             set
             {
                 if (this._isAllowNegativeStore != value)
@@ -1141,7 +1307,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int AcceptedGiftCardMethod
         {
-            get { return this._acceptedGiftCardMethod; }
+            get
+            {
+                return this._acceptedGiftCardMethod;
+            }
             set
             {
                 if (this._acceptedGiftCardMethod != value)
@@ -1161,7 +1330,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsRewardOnTax
         {
-            get { return this._isRewardOnTax; }
+            get
+            {
+                return this._isRewardOnTax;
+            }
             set
             {
                 if (this._isRewardOnTax != value)
@@ -1181,7 +1353,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsRewardOnMultiPayment
         {
-            get { return this._isRewardOnMultiPayment; }
+            get
+            {
+                return this._isRewardOnMultiPayment;
+            }
             set
             {
                 if (this._isRewardOnMultiPayment != value)
@@ -1201,7 +1376,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsIncludeReturnFee
         {
-            get { return this._isIncludeReturnFee; }
+            get
+            {
+                return this._isIncludeReturnFee;
+            }
             set
             {
                 if (this._isIncludeReturnFee != value)
@@ -1221,7 +1399,10 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal ReturnFeePercent
         {
-            get { return this._returnFeePercent; }
+            get
+            {
+                return this._returnFeePercent;
+            }
             set
             {
                 if (this._returnFeePercent != value)
@@ -1241,7 +1422,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsRewardLessThanDiscount
         {
-            get { return this._isRewardLessThanDiscount; }
+            get
+            {
+                return this._isRewardLessThanDiscount;
+            }
             set
             {
                 if (this._isRewardLessThanDiscount != value)
@@ -1261,7 +1445,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string CurrencySymbol
         {
-            get { return this._currencySymbol; }
+            get
+            {
+                return this._currencySymbol;
+            }
             set
             {
                 if (this._currencySymbol != value)
@@ -1281,7 +1468,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<short> DecimalPlaces
         {
-            get { return this._decimalPlaces; }
+            get
+            {
+                return this._decimalPlaces;
+            }
             set
             {
                 if (this._decimalPlaces != value)
@@ -1301,7 +1491,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string FomartCurrency
         {
-            get { return this._fomartCurrency; }
+            get
+            {
+                return this._fomartCurrency;
+            }
             set
             {
                 if (this._fomartCurrency != value)
@@ -1314,22 +1507,48 @@ namespace CPC.POS.Model
             }
         }
 
-        protected string _passwordLength;
+        protected string _passwordFormat;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the PasswordLength</para>
+        /// <para>Gets or sets the PasswordFormat</para>
         /// </summary>
-        public string PasswordLength
+        public string PasswordFormat
         {
-            get { return this._passwordLength; }
+            get
+            {
+                return this._passwordFormat;
+            }
             set
             {
-                if (this._passwordLength != value)
+                if (this._passwordFormat != value)
                 {
                     this.IsDirty = true;
-                    this._passwordLength = value;
-                    OnPropertyChanged(() => PasswordLength);
-                    PropertyChangedCompleted(() => PasswordLength);
+                    this._passwordFormat = value;
+                    OnPropertyChanged(() => PasswordFormat);
+                    PropertyChangedCompleted(() => PasswordFormat);
+                }
+            }
+        }
+
+        protected Nullable<int> _keepBackUp;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the KeepBackUp</para>
+        /// </summary>
+        public Nullable<int> KeepBackUp
+        {
+            get
+            {
+                return this._keepBackUp;
+            }
+            set
+            {
+                if (this._keepBackUp != value)
+                {
+                    this.IsDirty = true;
+                    this._keepBackUp = value;
+                    OnPropertyChanged(() => KeepBackUp);
+                    PropertyChangedCompleted(() => KeepBackUp);
                 }
             }
         }
@@ -1418,7 +1637,8 @@ namespace CPC.POS.Model
             this.base_Configuration.CurrencySymbol = this.CurrencySymbol;
             this.base_Configuration.DecimalPlaces = this.DecimalPlaces;
             this.base_Configuration.FomartCurrency = this.FomartCurrency;
-            this.base_Configuration.PasswordLength = this.PasswordLength;
+            this.base_Configuration.PasswordFormat = this.PasswordFormat;
+            this.base_Configuration.KeepBackUp = this.KeepBackUp;
         }
 
         /// <summary>
@@ -1490,7 +1710,8 @@ namespace CPC.POS.Model
             this._currencySymbol = this.base_Configuration.CurrencySymbol;
             this._decimalPlaces = this.base_Configuration.DecimalPlaces;
             this._fomartCurrency = this.base_Configuration.FomartCurrency;
-            this._passwordLength = this.base_Configuration.PasswordLength;
+            this._passwordFormat = this.base_Configuration.PasswordFormat;
+            this._keepBackUp = this.base_Configuration.KeepBackUp;
         }
 
         /// <summary>
@@ -1562,7 +1783,8 @@ namespace CPC.POS.Model
             this.CurrencySymbol = this.base_Configuration.CurrencySymbol;
             this.DecimalPlaces = this.base_Configuration.DecimalPlaces;
             this.FomartCurrency = this.base_Configuration.FomartCurrency;
-            this.PasswordLength = this.base_Configuration.PasswordLength;
+            this.PasswordFormat = this.base_Configuration.PasswordFormat;
+            this.KeepBackUp = this.base_Configuration.KeepBackUp;
         }
 
         #endregion
@@ -1590,6 +1812,30 @@ namespace CPC.POS.Model
 
         #region Properties
 
+        #region IsGeneralDirty
+
+        private bool _isGeneralDirty;
+        /// <summary>
+        /// Gets or sets value whether general setup is dirty.
+        /// </summary>
+        public bool IsGeneralDirty
+        {
+            get
+            {
+                return _isGeneralDirty;
+            }
+            set
+            {
+                if (_isGeneralDirty != value)
+                {
+                    _isGeneralDirty = value;
+                    OnPropertyChanged(() => IsGeneralDirty);
+                }
+            }
+        }
+
+        #endregion
+
         #region IsStoreInfoDirty
 
         private bool _isStoreInfoDirty;
@@ -1608,6 +1854,30 @@ namespace CPC.POS.Model
                 {
                     _isStoreInfoDirty = value;
                     OnPropertyChanged(() => IsStoreInfoDirty);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsInventoryDirty
+
+        private bool _isInventoryDirty;
+        /// <summary>
+        /// Gets or sets value whether inventory setup is dirty.
+        /// </summary>
+        public bool IsInventoryDirty
+        {
+            get
+            {
+                return _isInventoryDirty;
+            }
+            set
+            {
+                if (_isInventoryDirty != value)
+                {
+                    _isInventoryDirty = value;
+                    OnPropertyChanged(() => IsInventoryDirty);
                 }
             }
         }
@@ -1686,6 +1956,78 @@ namespace CPC.POS.Model
 
         #endregion
 
+        #region IsDiscountDirty
+
+        private bool _isDiscountDirty;
+        /// <summary>
+        /// Gets or sets value whether discount information is dirty.
+        /// </summary>
+        public bool IsDiscountDirty
+        {
+            get
+            {
+                return _isDiscountDirty;
+            }
+            set
+            {
+                if (_isDiscountDirty != value)
+                {
+                    _isDiscountDirty = value;
+                    OnPropertyChanged(() => IsDiscountDirty);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsRewardDirty
+
+        private bool _isRewardDirty;
+        /// <summary>
+        /// Gets or sets value whether reward information is dirty.
+        /// </summary>
+        public bool IsRewardDirty
+        {
+            get
+            {
+                return _isRewardDirty;
+            }
+            set
+            {
+                if (_isRewardDirty != value)
+                {
+                    _isRewardDirty = value;
+                    OnPropertyChanged(() => IsRewardDirty);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsReturnDirty
+
+        private bool _isReturnDirty;
+        /// <summary>
+        /// Gets or sets value whether return information is dirty.
+        /// </summary>
+        public bool IsReturnDirty
+        {
+            get
+            {
+                return _isReturnDirty;
+            }
+            set
+            {
+                if (_isReturnDirty != value)
+                {
+                    _isReturnDirty = value;
+                    OnPropertyChanged(() => IsReturnDirty);
+                }
+            }
+        }
+
+        #endregion
+
         #region IsEmailSetupDirty
 
         private bool _isEmailSetupDirty;
@@ -1704,6 +2046,30 @@ namespace CPC.POS.Model
                 {
                     _isEmailSetupDirty = value;
                     OnPropertyChanged(() => IsEmailSetupDirty);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsTimeClockDirty
+
+        private bool _isTimeClockDirty;
+        /// <summary>
+        /// Gets or sets value whether time clock setup is dirty.
+        /// </summary>
+        public bool IsTimeClockDirty
+        {
+            get
+            {
+                return _isTimeClockDirty;
+            }
+            set
+            {
+                if (_isTimeClockDirty != value)
+                {
+                    _isTimeClockDirty = value;
+                    OnPropertyChanged(() => IsTimeClockDirty);
                 }
             }
         }
@@ -1734,7 +2100,7 @@ namespace CPC.POS.Model
         {
             get
             {
-                CountryItem item = Common.Countries.FirstOrDefault(x => x.Value == _countryId);
+                ComboItem item = Common.Countries.FirstOrDefault(x => x.Value == _countryId);
                 return item == null ? false : item.HasState;
             }
         }
@@ -1838,11 +2204,17 @@ namespace CPC.POS.Model
             }
 
             IsDirty = false;
+            IsGeneralDirty = false;
             IsStoreInfoDirty = false;
+            IsInventoryDirty = false;
             IsUnitOfMeasureDirty = false;
             IsPricingDirty = false;
             IsSalesDirty = false;
+            IsDiscountDirty = false;
+            IsRewardDirty = false;
+            IsReturnDirty = false;
             IsEmailSetupDirty = false;
+            IsTimeClockDirty = false;
         }
 
         #endregion
@@ -1888,17 +2260,6 @@ namespace CPC.POS.Model
 
                 #endregion
 
-                #region IsAllowMutilUOM
-
-                case "IsAllowMutilUOM":
-
-                    IsUnitOfMeasureDirty = true;
-
-                    break;
-
-
-                #endregion
-
                 #region CountryId
 
                 case "CountryId":
@@ -1908,6 +2269,16 @@ namespace CPC.POS.Model
                     // Validates again.
                     OnPropertyChanged(() => State);
                     OnPropertyChanged(() => ZipCode);
+
+                    break;
+
+                #endregion
+
+                #region IsAllowMutilUOM
+
+                case "IsAllowMutilUOM":
+
+                    IsUnitOfMeasureDirty = true;
 
                     break;
 
@@ -1923,29 +2294,13 @@ namespace CPC.POS.Model
 
                 #endregion
 
-                #region AcceptedPaymentMethod
+                #region AcceptedPaymentMethod...
 
                 case "AcceptedPaymentMethod":
-
-                    IsSalesDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region AcceptedCardType
-
                 case "AcceptedCardType":
-
-                    IsSalesDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region DefaultPaymentMethod
-
                 case "DefaultPaymentMethod":
+                case "TipPercent":
+                case "AcceptedGiftCardMethod":
 
                     IsSalesDirty = true;
 
@@ -1968,58 +2323,10 @@ namespace CPC.POS.Model
 
                 #endregion
 
-                #region TipPercent
-
-                case "TipPercent":
-
-                    IsSalesDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region IsRequireDiscountReason
-
-                case "IsRequireDiscountReason":
-
-                    IsSalesDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region AcceptedGiftCardMethod
-
-                case "AcceptedGiftCardMethod":
-
-                    IsSalesDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region EmailPop3Server
+                #region EmailPop3Server...
 
                 case "EmailPop3Server":
-
-                    IsEmailSetupDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region EmailPop3Port
-
                 case "EmailPop3Port":
-
-                    IsEmailSetupDirty = true;
-
-                    break;
-
-                #endregion
-
-                #region EmailAccount
-
                 case "EmailAccount":
 
                     IsEmailSetupDirty = true;
@@ -2049,6 +2356,103 @@ namespace CPC.POS.Model
 
                     // Validates again.
                     OnPropertyChanged(() => EmailPassword);
+
+                    break;
+
+                #endregion
+
+                #region IsAllowNegativeStore
+
+                case "IsAllowNegativeStore":
+
+                    IsInventoryDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region IsRewardOnTax
+
+                case "IsRewardOnTax":
+                case "IsRewardLessThanDiscount":
+
+                    IsRewardDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region IsIncludeReturnFee
+
+                case "IsIncludeReturnFee":
+                case "ReturnFeePercent":
+
+                    IsReturnDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region DefaultDiscountType
+
+                case "DefaultDiscountType":
+                case "DefaultDiscountStatus":
+                case "IsRequireDiscountReason":
+
+                    IsDiscountDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region WorkHour
+
+                case "WorkHour":
+
+                    IsTimeClockDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region DefaultMaximumSticky...
+
+                case "DefaultMaximumSticky":
+                case "DefaultShipUnit":
+                case "DefautlImagePath":
+                case "DefaultLanguage":
+                case "IsAllowShift":
+                case "DefaultCashiedUserName":
+                case "IsRequirePromotionCode":
+                case "KeepLog":
+                case "CurrencySymbol":
+                case "DecimalPlaces":
+                case "PasswordFormat":
+                case "IsAutoLogout":
+                case "TimeOutMinute":
+                case "IsBackupWhenExit":
+                case "BackupEvery":
+                case "KeepBackUp":
+                case "BackupPath":
+
+                    IsGeneralDirty = true;
+
+                    break;
+
+                #endregion
+
+                #region FomartCurrency
+
+                case "FomartCurrency":
+
+                    // Update symbol.
+                    ComboItem item = Common.Currency.FirstOrDefault(x => x.CultureInfo.Name == _fomartCurrency);
+                    if (item != null)
+                    {
+                        _currencySymbol = item.Symbol;
+                    }
+
+                    IsGeneralDirty = true;
 
                     break;
 
@@ -2126,7 +2530,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_companyName))
                                 {
-                                    message = "Company's name is required.";
+                                    message = Language.Error6;
                                 }
 
                                 break;
@@ -2135,7 +2539,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_address))
                                 {
-                                    message = "Address is required.";
+                                    message = Language.Error7;
                                 }
 
                                 break;
@@ -2144,7 +2548,7 @@ namespace CPC.POS.Model
 
                                 if (_countryId == _notSelect)
                                 {
-                                    message = "Required select country.";
+                                    message = Language.Error8;
                                 }
 
                                 break;
@@ -2153,7 +2557,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_city))
                                 {
-                                    message = "City is required.";
+                                    message = Language.Error9;
                                 }
 
                                 break;
@@ -2162,7 +2566,7 @@ namespace CPC.POS.Model
 
                                 if (HasState && _state == _notSelect)
                                 {
-                                    message = "State select country.";
+                                    message = Language.Error10;
                                 }
 
                                 break;
@@ -2171,7 +2575,7 @@ namespace CPC.POS.Model
 
                                 if (HasState && (string.IsNullOrEmpty(_zipCode) || (_zipCode.Length > _outZipCodeLength1 && _zipCode.Length < _outZipCodeLength2)))
                                 {
-                                    message = "Zip is wrong format.";
+                                    message = Language.Error11;
                                 }
 
                                 break;
@@ -2180,7 +2584,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_fax))
                                 {
-                                    message = "Fax is wrong format.";
+                                    message = Language.Error12;
                                 }
 
                                 break;
@@ -2189,7 +2593,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_phone))
                                 {
-                                    message = "Phone is wrong format.";
+                                    message = Language.Error13;
                                 }
 
                                 break;
@@ -2198,7 +2602,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_email))
                                 {
-                                    message = "Email is wrong format.";
+                                    message = Language.Error14;
                                 }
 
                                 break;
@@ -2224,7 +2628,7 @@ namespace CPC.POS.Model
 
                                 if (string.IsNullOrEmpty(_emailAccount))
                                 {
-                                    message = "Email is wrong format.";
+                                    message = Language.Error14;
                                 }
 
                                 break;
@@ -2234,7 +2638,7 @@ namespace CPC.POS.Model
 
                                 if (string.Compare(_emailPassword, _retypeEmailPassword, false) != 0)
                                 {
-                                    message = "Inexact password";
+                                    message = Language.Error15;
                                 }
 
                                 break;

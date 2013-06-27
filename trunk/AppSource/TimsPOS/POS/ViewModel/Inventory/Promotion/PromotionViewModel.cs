@@ -108,9 +108,18 @@ namespace CPC.POS.ViewModel
                 {
                     _status = value;
                     OnPropertyChanged(() => Status);
-                    OnStatusChanged();
+                    if (SelectedPromotion != null)
+                        OnStatusChanged(SelectedPromotion);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the HiddenWarningConflict.
+        /// </summary>
+        public bool HiddenWarningConflict
+        {
+            get { return !PromotionCollection.Any(x => x.IsConflict); }
         }
 
         #region ListCheckBox PriceSchema
@@ -221,6 +230,12 @@ namespace CPC.POS.ViewModel
             // Load price schemas
             LoadPriceSchemas();
 
+            // Load categories from department table
+            LoadDepartment();
+
+            // Load vendor from guest table
+            LoadVendor();
+
             InitialCommand();
         }
 
@@ -264,8 +279,8 @@ namespace CPC.POS.ViewModel
                 SearchAlert = string.Empty;
                 if ((param == null || string.IsNullOrWhiteSpace(param.ToString())) && SearchOption == 0)//Search All
                 {
-                    Expression<Func<base_Promotion, bool>> predicate = CreateSearchPredicate(Keyword);
-                    LoadDataByPredicate(predicate, false, 0);
+                    // Load data by predicate
+                    LoadDataByPredicate();
                 }
                 else if (param != null)
                 {
@@ -277,8 +292,8 @@ namespace CPC.POS.ViewModel
                     }
                     else
                     {
-                        Expression<Func<base_Promotion, bool>> predicate = CreateSearchPredicate(Keyword);
-                        LoadDataByPredicate(predicate, false, 0);
+                        // Load data by predicate
+                        LoadDataByPredicate();
                     }
                 }
             }
@@ -378,19 +393,28 @@ namespace CPC.POS.ViewModel
                 }
                 else if (IsValid)
                 {
-                    //DeleteNote();
+                    // Check and remove conflict promotion
+                    CheckAndRemoveConflictPromotion(SelectedPromotion);
+
                     // Delete all promotion affect
                     SelectedPromotion.AffectDiscount = 0;
                     OnSavePromotionAffect();
+
                     // Delete promotion schedule
                     _promotionScheduleRepository.Delete(SelectedPromotion.PromotionScheduleModel.base_PromotionSchedule);
+
                     // Delete promotion
                     _promotionRepository.Delete(SelectedPromotion.base_Promotion);
+
                     // Accept changes
                     _promotionRepository.Commit();
+
+                    // Turn off IsDirty & IsNew
                     SelectedPromotion.EndUpdate();
                     SelectedPromotion.PromotionScheduleModel.EndUpdate();
                     //SelectedPromotion.PromotionAffectModel.EndUpdate();
+
+                    // Remove promotion from collection
                     PromotionCollection.Remove(SelectedPromotion);
                 }
                 else
@@ -478,11 +502,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnLoadStepCommandExecute()
         {
-            Expression<Func<base_Promotion, bool>> predicate = PredicateBuilder.True<base_Promotion>();
-            if (!string.IsNullOrWhiteSpace(FilterText))//Load Step Current With Search Current with Search
-                predicate = CreateSearchPredicate(Keyword);
-
-            LoadDataByPredicate(predicate, false, PromotionCollection.Count);
+            // Load data by predicate
+            LoadDataByPredicate();
         }
 
         #endregion
@@ -650,20 +671,31 @@ namespace CPC.POS.ViewModel
             {
                 for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
                 {
-                    base_PromotionModel model = (param as ObservableCollection<object>)[i] as base_PromotionModel;
-                    //DeleteNote();
+                    base_PromotionModel promotionModel = (param as ObservableCollection<object>)[i] as base_PromotionModel;
+
+                    // Check and remove conflict promotion
+                    CheckAndRemoveConflictPromotion(promotionModel);
+
                     // Delete all promotion affect
-                    model.AffectDiscount = 0;
-                    this.OnSavePromotionAffect(model);
+                    promotionModel.AffectDiscount = 0;
+                    OnSavePromotionAffect(promotionModel);
+
                     // Delete promotion schedule
-                    _promotionScheduleRepository.Delete(model.PromotionScheduleModel.base_PromotionSchedule);
+                    _promotionScheduleRepository.Delete(promotionModel.PromotionScheduleModel.base_PromotionSchedule);
+
                     // Delete promotion
-                    _promotionRepository.Delete(model.base_Promotion);
+                    _promotionRepository.Delete(promotionModel.base_Promotion);
+
                     // Accept changes
                     _promotionRepository.Commit();
-                    model.EndUpdate();
-                    model.PromotionScheduleModel.EndUpdate();
-                    this.PromotionCollection.Remove(model);
+
+                    // Turn off IsDirty & IsNew
+                    promotionModel.EndUpdate();
+                    promotionModel.PromotionScheduleModel.EndUpdate();
+
+                    // Remove promotion from collection
+                    PromotionCollection.Remove(promotionModel);
+
                     i--;
                 }
             }
@@ -692,7 +724,42 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnChangeStatusCommandExecute(object param)
         {
-            this.OnStatusChanged(param as base_PromotionModel);
+            // Get promotion model
+            base_PromotionModel promotionModel = param as base_PromotionModel;
+
+            // Update status value in ViewModel
+            if (promotionModel.Status.Equals((short)StatusBasic.Active))
+                _status = (short)StatusBasic.Deactive;
+            else
+                _status = (short)StatusBasic.Active;
+            OnPropertyChanged(() => Status);
+
+            // Process when status changed
+            if (OnStatusChanged(promotionModel))
+            {
+                promotionModel.DateUpdated = DateTimeExt.Now;
+                if (Define.USER != null)
+                    promotionModel.UserUpdated = Define.USER.LoginName;
+
+                // Update status promotion
+                promotionModel.Status = Status;
+
+                // Check conflick promotion
+                CheckConflictPromotion(promotionModel);
+
+                // Map data from model to entity
+                promotionModel.ToEntity();
+
+                // Accept changes
+                _promotionRepository.Commit();
+
+                // Turn off IsDirty & IsNew
+                promotionModel.EndUpdate();
+
+                // Show warning conflict
+                ShowWarningConflict(promotionModel);
+                OnPropertyChanged(() => HiddenWarningConflict);
+            }
         }
 
         #endregion
@@ -814,7 +881,10 @@ namespace CPC.POS.ViewModel
         /// <returns>Expression</returns>
         private Expression<Func<base_Promotion, bool>> CreateSearchPredicate(string keyword)
         {
+            // Initial predicate
             Expression<Func<base_Promotion, bool>> predicate = PredicateBuilder.True<base_Promotion>();
+
+            // Set conditions for predicate
             if (!string.IsNullOrWhiteSpace(keyword) && SearchOption > 0)
             {
                 if (SearchOption.Has(SearchOptions.ItemName))
@@ -823,23 +893,23 @@ namespace CPC.POS.ViewModel
                 }
                 if (SearchOption.Has(SearchOptions.Type))
                 {
-                    Expression<Func<base_Promotion, bool>> predicateType = PredicateBuilder.False<base_Promotion>();
-
+                    // Get all promotion types that contain keyword
                     IEnumerable<ComboItem> promotionTypes = Common.PromotionTypes.Where(x => x.Text.ToLower().Contains(keyword.ToLower()));
-                    foreach (ComboItem promotionType in promotionTypes)
-                    {
-                        short promotionTypeID = promotionType.Value;
-                        predicateType = predicateType.Or(x => x.PromotionTypeId.Equals(promotionTypeID));
-                    }
+                    IEnumerable<short> promotionTypeIDList = promotionTypes.Select(x => x.Value);
 
-                    predicate = predicate.And(predicateType);
+                    // Get all promotion that contain in promotion type list
+                    if (promotionTypeIDList.Count() > 0)
+                        predicate = predicate.And(x => promotionTypeIDList.Contains(x.PromotionTypeId));
+                    else
+                        // If condition in predicate is false, GetRange function can not get data from database.
+                        // Solution for this problem is create fake condition
+                        predicate = predicate.And(x => x.Id < 0);
                 }
                 if (SearchOption.Has(SearchOptions.Code))
                 {
                     predicate = predicate.And(x => x.CouponBarCode.Contains(keyword.ToLower()));
                 }
             }
-            //predicate = predicate.And(x => x.Status.Equals((short)StatusBasic.Active));
             return predicate;
         }
 
@@ -849,14 +919,34 @@ namespace CPC.POS.ViewModel
         /// </summary>
         /// <param name="predicate"></param>
         /// <param name="refreshData"></param>
-        /// <param name="currentIndex">index to load if index =0 , clear collection</param>
+        /// <param name="currentIndex">index to load if index = 0 , clear collection</param>
+        private void LoadDataByPredicate(bool refreshData = false, int currentIndex = 0)
+        {
+            // Create predicate
+            Expression<Func<base_Promotion, bool>> predicate = CreateSearchPredicate(Keyword);
+
+            // Load data by predicate
+            LoadDataByPredicate(predicate, refreshData, currentIndex);
+        }
+
+        /// <summary>
+        /// Method get Data from database
+        /// <para>Using load on the first time</para>
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="refreshData"></param>
+        /// <param name="currentIndex">index to load if index = 0 , clear collection</param>
         private void LoadDataByPredicate(Expression<Func<base_Promotion, bool>> predicate, bool refreshData = false, int currentIndex = 0)
         {
+            // Create background worker
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+
             if (currentIndex == 0)
                 PromotionCollection.Clear();
+
             bgWorker.DoWork += (sender, e) =>
             {
+                // Turn on BusyIndicator
                 if (Define.DisplayLoading)
                     IsBusy = true;
 
@@ -869,13 +959,7 @@ namespace CPC.POS.ViewModel
                     _guestRepository.Refresh();
                 }
 
-                // Load categories from department table
-                LoadDepartment();
-
-                // Load vendor from guest table
-                LoadVendor();
-
-                // Get data with range
+                // Get all promotions
                 IList<base_Promotion> promotions = _promotionRepository.GetRange(currentIndex, NumberOfDisplayItems, "It.Id", predicate);
                 foreach (base_Promotion promotion in promotions)
                 {
@@ -885,15 +969,25 @@ namespace CPC.POS.ViewModel
 
             bgWorker.ProgressChanged += (sender, e) =>
             {
+                // Create promotion model
                 base_PromotionModel promotionModel = new base_PromotionModel((base_Promotion)e.UserState);
+
+                // Load relation data
                 LoadRelationData(promotionModel);
+
+                // Add to collection
                 PromotionCollection.Add(promotionModel);
             };
 
             bgWorker.RunWorkerCompleted += (sender, e) =>
             {
+                OnPropertyChanged(() => HiddenWarningConflict);
+
+                // Turn off BusyIndicator
                 IsBusy = false;
             };
+
+            // Run async background worker
             bgWorker.RunWorkerAsync();
         }
 
@@ -1035,15 +1129,14 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool SavePromotion()
         {
-            //// Update EndDate value
-            //if (SelectedPromotion.PromotionScheduleModel.ExpirationNoEndDate)
-            //    SelectedPromotion.PromotionScheduleModel.EndDate = null;
-
             // Update Status
             SelectedPromotion.Status = Status;
 
             // Update PriceSchemaRange value
             OnCheckPriceSchema();
+
+            // Check conflict promotion
+            CheckConflictPromotion(SelectedPromotion);
 
             // Create new promotion
             if (SelectedPromotion.IsNew)
@@ -1057,6 +1150,10 @@ namespace CPC.POS.ViewModel
                 // Call function update promotion
                 SaveUpdate();
             }
+
+            // Show warning conflict
+            ShowWarningConflict(SelectedPromotion);
+            OnPropertyChanged(() => HiddenWarningConflict);
 
             // Turn off IsDirty & IsNew
             SelectedPromotion.EndUpdate();
@@ -1236,22 +1333,23 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Show popup reason to reactive when change status
         /// </summary>
-        private void OnStatusChanged()
+        private bool OnStatusChanged(base_PromotionModel promotionModel)
         {
-            if (Status == (short)StatusBasic.Active && !SelectedPromotion.IsNew &&
-                Define.CONFIGURATION.IsRequireDiscountReason.HasValue && Define.CONFIGURATION.IsRequireDiscountReason.Value)
+            bool result = true;
+
+            // Check required discount reason when reactive promotion
+            if (Status == (short)StatusBasic.Active && !promotionModel.IsNew &&
+                Define.CONFIGURATION.IsRequireDiscountReason == true)
             {
-                PromotionReasonViewModel viewModel = new PromotionReasonViewModel();
-                viewModel.ReasonReActive = SelectedPromotion.ReasonReActive;
+                PromotionReasonViewModel viewModel = new PromotionReasonViewModel(promotionModel.ReasonReActive);
                 bool? msgResult = _dialogService.ShowDialog<CPC.POS.View.PromotionReasonView>(_ownerViewModel, viewModel, "Entry for reason");
                 if (msgResult.HasValue)
                 {
                     if (msgResult.Value)
-                    {
-                        SelectedPromotion.ReasonReActive = viewModel.ReasonReActiveBinding;
-                    }
+                        promotionModel.ReasonReActive = viewModel.ReasonReactive;
                     else
                     {
+                        result = false;
                         App.Current.MainWindow.Dispatcher.BeginInvoke((Action)delegate
                         {
                             Status = (short)StatusBasic.Deactive;
@@ -1259,7 +1357,11 @@ namespace CPC.POS.ViewModel
                     }
                 }
             }
-            SelectedPromotion.IsDirty = true;
+
+            // Turn on IsDirty
+            promotionModel.IsDirty = true;
+
+            return result;
         }
 
         /// <summary>
@@ -1316,43 +1418,84 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Show popup reason to reactive when change status
+        /// Check and remove conflict promotion
         /// </summary>
-        private void OnStatusChanged(base_PromotionModel model)
+        private void CheckAndRemoveConflictPromotion(base_PromotionModel promotionModel)
         {
-            if (model.Status == 1)
-                _status = 2;
-            else
-                _status = 1;
-            OnPropertyChanged(() => Status);
-            if (Status == (short)StatusBasic.Active && !model.IsNew &&
-                Define.CONFIGURATION.IsRequireDiscountReason.HasValue && Define.CONFIGURATION.IsRequireDiscountReason.Value)
+            if (promotionModel.IsConflict)
             {
-                PromotionReasonViewModel viewModel = new PromotionReasonViewModel();
-                viewModel.ReasonReActive = model.ReasonReActive;
-                bool? msgResult = _dialogService.ShowDialog<CPC.POS.View.PromotionReasonView>(_ownerViewModel, viewModel, "Entry for reason");
-                if (msgResult.HasValue)
+                // Remove conflict for this promotion
+                promotionModel.IsConflict = false;
+
+                // Get all promotions is conflict
+                IEnumerable<base_PromotionModel> promotionList = PromotionCollection.Where(x => x.IsConflict);
+                if (PromotionCollection.Count(x => x.IsConflict) == 1)
                 {
-                    if (msgResult.Value)
-                        model.ReasonReActive = viewModel.ReasonReActiveBinding;
-                    else
-                    {
-                        App.Current.MainWindow.Dispatcher.BeginInvoke((Action)delegate
-                        {
-                            Status = (short)StatusBasic.Deactive;
-                        });
-                    }
+                    // Get relative conflict promotion
+                    base_PromotionModel promotionItem = PromotionCollection.SingleOrDefault(x => x.IsConflict);
+
+                    // Remove conflict for relative promotion
+                    promotionItem.IsConflict = false;
+
+                    // Map data from model to entity
+                    promotionItem.ToEntity();
+
+                    // Turn off IsDirty & IsNew
+                    promotionItem.EndUpdate();
                 }
             }
-            model.Status = Status;
-            model.DateUpdated = DateTimeExt.Now;
-            if (Define.USER != null)
-                model.UserUpdated = Define.USER.LoginName;
-            // Map data from model to entity
-            model.ToEntity();
-            // Accept changes
-            _promotionRepository.Commit();
-            model.EndUpdate();
+        }
+
+        /// <summary>
+        /// Check conflict promotion
+        /// </summary>
+        private void CheckConflictPromotion(base_PromotionModel promotionModel)
+        {
+            // Check and update conflict for promotion
+            if (promotionModel.Status.Equals((short)StatusBasic.Active))
+            {
+                // Get number of active promotion
+                int numberOfActivePromotion = PromotionCollection.Count(x => x.base_Promotion.Status.Equals((short)StatusBasic.Active));
+
+                if (numberOfActivePromotion > 0)
+                {
+                    if (numberOfActivePromotion == 1)
+                    {
+                        // Get active promotion
+                        base_PromotionModel promotionItem = PromotionCollection.SingleOrDefault(x => x.base_Promotion.Status.Equals((short)StatusBasic.Active));
+
+                        // Update conflict value for relative promotion
+                        promotionItem.IsConflict = true;
+
+                        // Map data from model to entity
+                        promotionItem.ToEntity();
+
+                        // Turn off IsDirty & IsNew
+                        promotionItem.EndUpdate();
+                    }
+
+                    // Update conflict value for this promotion
+                    promotionModel.IsConflict = true;
+                }
+            }
+            else
+            {
+                // Check and remove conflict promotion
+                CheckAndRemoveConflictPromotion(promotionModel);
+            }
+        }
+
+        /// <summary>
+        /// Show warning conflict
+        /// </summary>
+        /// <param name="promotionModel"></param>
+        private void ShowWarningConflict(base_PromotionModel promotionModel)
+        {
+            if (promotionModel.IsConflict)
+            {
+                // Show notification when data has changed
+                MessageBoxResult msgResult = MessageBox.Show("One or more items on the discount are listed or other active discount. The discount defined may not be applied.", "POS", MessageBoxButton.OK);
+            }
         }
 
         #endregion
@@ -1368,16 +1511,8 @@ namespace CPC.POS.ViewModel
             if (SelectedPromotion != null)
                 OnLoadPriceSchema();
 
-            Expression<Func<base_Promotion, bool>> predicate = PredicateBuilder.True<base_Promotion>();
-            if (!string.IsNullOrWhiteSpace(Keyword) && SearchOption > 0)//Load with Search Condition
-            {
-                predicate = CreateSearchPredicate(Keyword);
-            }
-            else
-            {
-                //predicate = predicate.And(x => x.Status.Equals((short)StatusBasic.Active));
-            }
-            LoadDataByPredicate(predicate, true);
+            // Load data by predicate
+            LoadDataByPredicate();
         }
 
         /// <summary>

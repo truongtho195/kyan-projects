@@ -18,6 +18,27 @@
     <UserControl.Resources>
         <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
         <converter:IntToProductStoreConverter x:Key="intToProductStoreConverter" />
+		<DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C114}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="DescriptionHeaderTemplate">
+            <TextBlock Text="{DynamicResource HolidayView_DatagridDate_Description}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="SizeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+		<DataTemplate x:Key="BarCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource RW_TextBlock_BarCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PartNoHeaderTemplate">
+            <TextBlock Text="{DynamicResource RW_TextBlock_PartNo}" />
+        </DataTemplate>
         <DataTemplate x:Key="DataTemplateRowDetailTemplateCurrentStock">
             <Grid x:Name="Layout1"
                   VerticalAlignment="Top"
@@ -153,7 +174,7 @@
                 <GroupBox x:Name="gbSearch">
                     <GroupBox.Header>
                         <TextBlock x:Name="txtblSearch"
-                                   Text="Search"
+                                   Text="{DynamicResource TimeClockManualEventEditing_gbSearch_HeaderSearch}"
                                    TextWrapping="NoWrap"
                                    Style="{DynamicResource GroupboxTextBlock}" />
                     </GroupBox.Header>
@@ -193,12 +214,12 @@
                                 <CheckBox x:Name="cbCode"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="Code"
+                                          Content="{DynamicResource C114}"
                                           IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchOptions.Code}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox x:Name="cbItemName"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="Item Name"
+                                          Content="{DynamicResource C115}"
                                           Margin="10,0,0,0"
                                           IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchOptions.ItemName}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox x:Name="cbPartNo"
@@ -210,7 +231,7 @@
                                 <CheckBox x:Name="cbBarcode"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="Barcode"
+                                          Content="{DynamicResource RW_TextBlock_BarCode}"
                                           Margin="10,0,0,0"
                                           IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchOptions.Barcode}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock Margin="10,0,0,0"
@@ -236,9 +257,9 @@
                                                  ItemsSource="{Binding ProductCollection}"
                                                  GridLinesVisibility="Horizontal"
                                                  Style="{DynamicResource DatagridWithRowHeader}"
-                                                 RowDetailsTemplate="{DynamicResource DataTemplateRowDetailTemplateCurrentStock}">
+                                                 RowDetailsTemplate="{DynamicResource DataTemplateRowDetailTemplateCurrentStock}" d:IsHidden="True">
                     <dataGridControl:DataGridControl.Columns>
-                        <DataGridTemplateColumn Header="Code"
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="95">
                             <DataGridTemplateColumn.CellTemplate>
@@ -248,7 +269,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Name"
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="100">
                             <DataGridTemplateColumn.CellTemplate>
@@ -258,11 +279,11 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Description"
+                        <DataGridTextColumn HeaderTemplate="{StaticResource DescriptionHeaderTemplate}"
                                             IsReadOnly="True"
                                             Binding="{Binding Description}"
                                             Width="*" />
-                        <DataGridTemplateColumn Header="Attribute"
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="80">
                             <DataGridTemplateColumn.CellTemplate>
@@ -272,7 +293,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Size"
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="80">
                             <DataGridTemplateColumn.CellTemplate>
@@ -282,7 +303,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Bar Code"
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource PartNoHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="100">
                             <DataGridTemplateColumn.CellTemplate>
@@ -292,7 +313,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Part No."
+                        <DataGridTemplateColumn HeaderTemplate="{StaticResource BarCodeHeaderTemplate}"
                                                 IsReadOnly="True"
                                                 Width="100">
                             <DataGridTemplateColumn.CellTemplate>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace CPC.POS
 {
@@ -491,7 +487,11 @@ namespace CPC.POS
         MultiStore,
         StoreCodes,
         Pricing,
-        Sales
+        Sales,
+        Discount,
+        Reward,
+        Return,
+        TimeClock
     }
 
     /// <summary>
@@ -553,12 +553,12 @@ namespace CPC.POS
     /// </summary>
     public enum PurchaseStatus
     {
-        Open = 0,
-        Receiving = 1,
-        FullyReceived = 2,
-        InProgress = 3,
-        PaidInFull = 4,
-        Closed = 5
+        Open = 1,
+        Receiving = 2,
+        FullyReceived = 3,
+        InProgress = 4,
+        PaidInFull = 5,
+        Closed = 6
     }
 
     /// <summary>
@@ -604,5 +604,43 @@ namespace CPC.POS
         Removed = 4
     }
 
+    #region AdjustmentStatus
 
+    /// <summary>
+    /// Using for CostAdjustment and QuantityAdjustment
+    /// </summary>
+    public enum AdjustmentStatus
+    {
+        Normal = 1,
+        Reversing = 2,
+        Reversed = 3
+    }
+
+    #endregion
+
+    #region AdjustmentReason
+
+    /// <summary>
+    /// Using for CostAdjustment and QuantityAdjustment
+    /// </summary>
+    public enum AdjustmentReason
+    {
+        ItemEdited = 1,
+        Reverse = 2,
+        CountedStock = 3,
+        TransferedStock = 4
+    }
+
+    #endregion
+
+    #region StockStatus
+
+    public enum StockStatus
+    {
+        Available = 1,
+        OnHand = 2,
+        OnReserved = 3
+    }
+
+    #endregion
 }

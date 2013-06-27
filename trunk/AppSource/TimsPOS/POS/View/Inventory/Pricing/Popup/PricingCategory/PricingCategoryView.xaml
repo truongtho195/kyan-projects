@@ -17,13 +17,13 @@
     <UserControl.Resources>
     	<!--DataGridColumn-->
         <DataTemplate x:Key="CategoryNameHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_CategoryName}" />
+            <TextBlock Text="{DynamicResource PR107}" />
         </DataTemplate>
         <DataTemplate x:Key="MarginHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Margin}" />
+            <TextBlock Text="{DynamicResource PR108}" />
         </DataTemplate>
         <DataTemplate x:Key="MarkupHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Markup}" />
+            <TextBlock Text="{DynamicResource PR109}" />
         </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="grdPricingCategory"

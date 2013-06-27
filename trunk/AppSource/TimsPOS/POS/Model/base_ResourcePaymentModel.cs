@@ -432,6 +432,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected string _cashier;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Cashier</para>
+        /// </summary>
+        public string Cashier
+        {
+            get { return this._cashier; }
+            set
+            {
+                if (this._cashier != value)
+                {
+                    this.IsDirty = true;
+                    this._cashier = value;
+                    OnPropertyChanged(() => Cashier);
+                    PropertyChangedCompleted(() => Cashier);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -472,6 +492,7 @@ namespace CPC.POS.Model
             this.base_ResourcePayment.TaxCode = this.TaxCode;
             this.base_ResourcePayment.TaxAmount = this.TaxAmount;
             this.base_ResourcePayment.LastRewardAmount = this.LastRewardAmount;
+            this.base_ResourcePayment.Cashier = this.Cashier;
         }
 
         /// <summary>
@@ -499,6 +520,7 @@ namespace CPC.POS.Model
             this._taxCode = this.base_ResourcePayment.TaxCode;
             this._taxAmount = this.base_ResourcePayment.TaxAmount;
             this._lastRewardAmount = this.base_ResourcePayment.LastRewardAmount;
+            this._cashier = this.base_ResourcePayment.Cashier;
         }
 
         /// <summary>
@@ -526,6 +548,7 @@ namespace CPC.POS.Model
             this.TaxCode = this.base_ResourcePayment.TaxCode;
             this.TaxAmount = this.base_ResourcePayment.TaxAmount;
             this.LastRewardAmount = this.base_ResourcePayment.LastRewardAmount;
+            this.Cashier = this.base_ResourcePayment.Cashier;
         }
 
         #endregion
@@ -551,84 +574,6 @@ namespace CPC.POS.Model
             }
         }
         #endregion
-
-        //#region CurrentTotalPaid
-        //private decimal _currentTotalPaid;
-        ///// <summary>
-        ///// Gets or sets the CurrentTotalPaid.
-        ///// </summary>
-        //public decimal CurrentTotalPaid
-        //{
-        //    get { return _currentTotalPaid; }
-        //    set
-        //    {
-        //        if (_currentTotalPaid != value)
-        //        {
-        //            this.IsDirty = true;
-        //            _currentTotalPaid = value;
-        //            OnPropertyChanged(() => CurrentTotalPaid);
-        //            PropertyChangedCompleted(() => CurrentTotalPaid);
-        //        }
-        //    }
-        //}
-        //#endregion
-
-        //#region CurrentTotalAmount
-        //private decimal _currentTotalAmount;
-        ///// <summary>
-        ///// Gets or sets the CurrentTotalAmount.
-        ///// </summary>
-        //public decimal CurrentTotalAmount
-        //{
-        //    get { return _currentTotalAmount; }
-        //    set
-        //    {
-        //        if (_currentTotalAmount != value)
-        //        {
-        //            this.IsDirty = true;
-        //            _currentTotalAmount = value;
-        //            OnPropertyChanged(() => CurrentTotalAmount);
-        //            PropertyChangedCompleted(() => CurrentTotalAmount);
-        //        }
-        //    }
-        //}
-        //#endregion
-
-        //#region CurrentChange
-        //private decimal _currentChange;
-        ///// <summary>
-        ///// Gets or sets the CurrentChange.
-        ///// </summary>
-        //public decimal CurrentChange
-        //{
-        //    get { return _currentChange; }
-        //    set
-        //    {
-        //        if (_currentChange != value)
-        //        {
-        //            _currentChange = value;
-        //            OnPropertyChanged(() => CurrentChange);
-        //        }
-        //    }
-        //}
-        //#endregion
-
-        private ObservableCollection<base_ResourcePaymentProductModel> _paymentProductCollection;
-        /// <summary>
-        /// Gets or sets the PaymentProductCollection.
-        /// </summary>
-        public ObservableCollection<base_ResourcePaymentProductModel> PaymentProductCollection
-        {
-            get { return _paymentProductCollection; }
-            set
-            {
-                if (_paymentProductCollection != value)
-                {
-                    _paymentProductCollection = value;
-                    OnPropertyChanged(() => PaymentProductCollection);
-                }
-            }
-        }
 
         #endregion
 

@@ -104,6 +104,7 @@ namespace CPC.POS
         // Format.
         public static string DateFormat = ConfigurationManager.AppSettings["DateFormat"];
         public static string IntegerFormat = ConfigurationManager.AppSettings["IntegerFormat"];
+        public static string DecimalFormat = ConfigurationManager.AppSettings["DecimalFormat"];
         public static string CurrencyFormat;
         public static string NumericFormat;
         public static CultureInfo ConverterCulture;

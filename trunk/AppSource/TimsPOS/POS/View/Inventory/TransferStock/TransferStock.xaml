@@ -33,12 +33,85 @@
         <converter:StringFormatConverter x:Key="stringFormatConverter" />
         <converter:StringPriceLevelConverter x:Key="stringPriceLevelConverter" />
         <converter:IntToCalculationConverter x:Key="intToCalculationConverter" />
-        <ContextMenu x:Key="TransferStockContextMenu">
+        
+		
+        <DataTemplate x:Key="TransferNoHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_CheckBox_TransferNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DateTransferedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_CheckBox_TransferDateTransfered}" />
+        </DataTemplate>
+        <DataTemplate x:Key="StatusHeaderTemplate">
+            <TextBlock Text="{DynamicResource C151}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FromStoreHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_FromStore}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ToStoreHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_ToStore}" />
+        </DataTemplate>
+        <DataTemplate x:Key="TotalQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_TotalQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserCreatedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserCreated}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DateAppliedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_DateApplied}" />
+        </DataTemplate>
+       <DataTemplate x:Key="UserAppliedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserApplied}" />
+        </DataTemplate>
+       <DataTemplate x:Key="DateReversedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_DateReversed}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserReversedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserReversed}" />
+        </DataTemplate>
+		
+		<!--Detail-->
+		<DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C114}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="SizeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource C120}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UOMHeaderTemplate">
+            <TextBlock Text="{DynamicResource C118}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PriceHeaderTemplate">
+            <TextBlock Text="{DynamicResource C119}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AmountHeaderTemplate">
+            <TextBlock Text="{DynamicResource C122}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AvailableQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_Header_AvailableQty}" />
+        </DataTemplate>
+		<DataTemplate x:Key="NewItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C125}" />
+        </DataTemplate>
+        <DataTemplate x:Key="EditItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C126}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ApplyItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_ApplyTransferStock}" />
+        </DataTemplate>
+		<ContextMenu x:Key="TransferStockContextMenu">
             <MenuItem Command="{Binding DataContext.NewCommand,
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="NewItem"
-                      Header="New Item">
+                      HeaderTemplate="{StaticResource NewItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -50,7 +123,7 @@
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="{Binding .}"
-                      Header="Edit Item">
+                      HeaderTemplate="{StaticResource EditItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -62,7 +135,7 @@
                                         RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                       CommandParameter="{Binding .}"
-                      Header="Apply TransferStock">
+                      HeaderTemplate="{StaticResource ApplyItemHeaderTemplate}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
                                Height="16"
@@ -72,8 +145,7 @@
             </MenuItem>
         </ContextMenu>
         <Style x:Key="TransferStockDataGridContextMenu"
-               BasedOn="{StaticResource {x:Type DataGridRow}}"
-               TargetType="{x:Type DataGridRow}">
+                TargetType="{x:Type DataGridRow}">
             <Setter Property="ContextMenu"
                     Value="{StaticResource TransferStockContextMenu}" />
             <Setter Property="Template">
@@ -104,7 +176,6 @@
                                                    Style="{DynamicResource DataGridRowHeaderStyle}" />
                             </SelectiveScrollingGrid>
                         </Border>
-
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -159,6 +230,7 @@
             </Style.Triggers>
         </Style>
         <!--End-->
+        
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -166,8 +238,7 @@
         <control:BusyIndicator IsBusy="{Binding IsBusy}">
             <Grid x:Name="grdTransferStock">
                 <Grid x:Name="grdContentSearch"
-                      d:LayoutOverrides="GridBox"
-                      d:IsHidden="True">
+                      d:LayoutOverrides="GridBox" d:IsHidden="True">
                     <Grid.Visibility>
                         <Binding Path="IsSearchMode"
                                  Mode="OneWay"
@@ -182,8 +253,7 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <GroupBox x:Name="gbSearch"
-                              Margin="10,10,10,0"
-                              d:IsHidden="True">
+                              Margin="10,10,10,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch"
                                        Text="Search"
@@ -203,7 +273,7 @@
                                                           Padding="20,0,2,0"
                                                           Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           TextWrapping="NoWrap"
-                                                          Watermark="Keyword">
+                                                          Watermark="{DynamicResource C135}">
                                     <control:WatermarkTextBox.InputBindings>
                                         <KeyBinding Key="Enter"
                                                     Command="{Binding SearchCommand}"
@@ -225,12 +295,12 @@
                                     <CheckBox x:Name="cbTransferNo"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Transfer No."
+                                              Content="{DynamicResource TS_CheckBox_TransferNo}"
                                               IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchTransferOptions.TransferNo}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbDateTransfered"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Date Transfered"
+                                              Content="{DynamicResource TransferDateTransfered}"
                                               Margin="10,0,0,0"
                                               IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchTransferOptions.DateTransfered}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Margin="10,0,0,0"
@@ -252,13 +322,14 @@
                                                      behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="DoubleClick"
                                                      NumberOfItems="{Binding TotalTransferStock}"
                                                      DisplayItems="{Binding NumberOfDisplayItems}"
+                                                     Command="{Binding LoadStepCommand}"
                                                      CurrentPageIndex="{Binding CurrentPageIndex}"
                                                      ItemsSource="{Binding TransferStockCollection}"
                                                      SelectedItem="{Binding SelectedTransferStock}"
-                                                     RowStyle="{DynamicResource TransferStockDataGridContextMenu}"
-                                                     Style="{DynamicResource DatagridWithoutRowHeader}">
+                                                     RowStyle="{StaticResource TransferStockDataGridContextMenu}"
+                                                     Style="{DynamicResource DatagridWithoutRowHeader}" d:IsHidden="True">
                         <dataGridControl:DataGridControl.Columns>
-                            <DataGridTemplateColumn Header="Transfer No."
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource TransferNoHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -268,7 +339,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Date Transfered"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource DateTransferedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="85">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -278,17 +349,17 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Status"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource StatusHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="70">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Status, Mode=OneWay,ConverterParameter=TransferStockStatus,Converter={StaticResource comboxItemToTextConverter}}"
-                                                   TextAlignment="Left" />
+                                                   TextAlignment="Center" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="From Store"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource FromStoreHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -298,7 +369,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="To Store"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource ToStoreHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -308,17 +379,17 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Total Qty"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource TotalQtyHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding TotalQuantity, Mode=OneWay}"
+                                        <TextBlock Text="{Binding TotalQuantity, Mode=OneWay,StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                    TextAlignment="Right" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="User Created"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource UserCreatedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -328,7 +399,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Date Applied"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource DateAppliedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="70">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -338,7 +409,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="User Applied"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource UserAppliedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -348,7 +419,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Date Reversed"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource DateReversedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="75">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -358,7 +429,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="User Reversed"
+                            <DataGridTemplateColumn HeaderTemplate="{StaticResource UserReversedHeaderTemplate}"
                                                     IsReadOnly="True"
                                                     Width="90">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -394,7 +465,7 @@
                             Style="{DynamicResource ButtonBarSearch}"
                             d:LayoutOverrides="GridBox">
                         <TextBlock VerticalAlignment="Center"
-                                   Text="Search"
+                                   Text="{DynamicResource TimeClockManualEventEditing_gbSearch_HeaderSearch}"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Center"
                                    x:Name="txtblShowSearch1"
@@ -593,7 +664,7 @@
                                    Grid.Row="1"
                                    Margin="2,0" />
                         <TextBlock x:Name="txtblBindingTransferStock"
-                                   Text="Transfer Stock"
+                                   Text="{DynamicResource TS_TextBox_TransferStock}"
                                    TextWrapping="NoWrap"
                                    Margin="0,0,20,7"
                                    HorizontalAlignment="Right"
@@ -621,7 +692,7 @@
                                 <ColumnDefinition Width="120" />
                             </Grid.ColumnDefinitions>
                             <TextBlock x:Name="txtblForm"
-                                       Text="Form:"
+                                       Text="{DynamicResource HolidayView_gbDate_rbFrom}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Right"
                                        Margin="0,0,10,0"
@@ -642,15 +713,15 @@
                                       DisplayMemberPath="Name"
                                       SelectedItem="{Binding SelectedTransferStock.ToStoreValue, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             <TextBlock x:Name="txtblTo"
-                                       Text="To:"
+                                       Text="{DynamicResource HolidayView_gbDate_To}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        Grid.Column="2"
                                        Margin="0,0,10,0"
                                        Style="{DynamicResource TextBlockNormal}" />
-                            <TextBlock x:Name="txtblShipDate"
-                                       Text="Ship Date:"
+                            <TextBlock x:Name="tblShipDate"
+                                       Text="{DynamicResource TS_TextBox_ShipDate}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        Margin="0,0,10,0"
@@ -688,7 +759,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                TextWrapping="NoWrap"
-                                               Text="Select Item:"
+                                               Text="{DynamicResource C100}"
                                                Style="{DynamicResource TextBlockNormal}" />
                                     <cpcAutoCompleteControl:AutoCompleteTextBox Height="21"
                                                                                 Margin="65,0,94,0"
@@ -724,7 +795,7 @@
                                             Command="{Binding SearchProductAdvanceCommand}"
                                             Width="90">
                                         <TextBlock VerticalAlignment="Center"
-                                                   Text="Advance Search"
+                                                   Text="{DynamicResource C104}"
                                                    TextWrapping="NoWrap"
                                                    x:Name="txtblAdvanceSearch"
                                                    Style="{DynamicResource ButtonTextBlock}" />
@@ -745,7 +816,7 @@
                                                                  Grid.Row="2"
                                                                  Margin="10,0,10,5">
                                     <dataGridControl:DataGridControl.Columns>
-                                        <DataGridTemplateColumn Header="Item Code"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="90">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -755,7 +826,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Name"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -765,7 +836,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Attribute"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="80">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -775,7 +846,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Size"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="80">
                                             <DataGridTemplateColumn.CellTemplate>
@@ -785,13 +856,13 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Quantity"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource QtyHeaderTemplate}"
                                                                 CellStyle="{StaticResource DataGridCellEnableStyle}"
                                                                 Width="70">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Center"
-                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock HorizontalAlignment="Right"
+                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,StringFormat={x:Static local:Define.NumericFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
@@ -799,6 +870,8 @@
                                                     <Grid>
                                                         <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
                                                                                        TextAlignment="Right"
+																					   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+																					   ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                                        Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                                        Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                        HorizontalContentAlignment="Stretch"
@@ -816,7 +889,7 @@
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="80"
                                                                 CellStyle="{StaticResource DataGridCellEnableStyle}"
-                                                                Header="UOM">
+                                                                HeaderTemplate="{StaticResource UOMHeaderTemplate}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock TextAlignment="Center"
@@ -838,32 +911,32 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Price"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="70">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Price, Mode=OneWay, StringFormat=\{0:c2\}}"
+                                                    <TextBlock Text="{Binding Price, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                                TextAlignment="Right" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Amount"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="90">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Amount, Mode=OneWay, StringFormat=\{0:c2\}}"
+                                                    <TextBlock Text="{Binding Amount, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                                TextAlignment="Right" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Available Qty"
+                                        <DataGridTemplateColumn HeaderTemplate="{StaticResource AvailableQtyHeaderTemplate}"
                                                                 IsReadOnly="True"
                                                                 Width="80">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding AvlQuantity, Mode=OneWay}"
+                                                    <TextBlock Text="{Binding AvlQuantity, Mode=OneWay,StringFormat={x:Static local:Define.NumericFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                                TextAlignment="Right" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
@@ -888,7 +961,7 @@
                                         <RowDefinition Height="35" />
                                     </Grid.RowDefinitions>
                                     <TextBlock x:Name="txtblRemark1"
-                                               Text="Remark:"
+                                               Text="{DynamicResource C102}"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
@@ -906,7 +979,7 @@
                                                             Text="{Binding SelectedTransferStock.Comment, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                             HorizontalAlignment="Left" />
                                     <TextBlock x:Name="txtblOTransferStockSubTotal"
-                                               Text="Sub-Total:"
+                                               Text="{DynamicResource C112}"
                                                TextWrapping="NoWrap"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Left"
@@ -921,7 +994,7 @@
                                              Margin="0,2"
                                              IsReadOnly="True"
                                              HorizontalContentAlignment="Right"
-                                             Text="{Binding SelectedTransferStock.SubTotal, Mode=OneWay, StringFormat=\{0:c2\}}" />
+                                             Text="{Binding SelectedTransferStock.SubTotal, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     <textBoxControl:TextBox x:Name="txtTransferStockTax"
                                                             Margin="0,2"
                                                             TextWrapping="NoWrap"
@@ -933,7 +1006,7 @@
                                                             Grid.Row="2"
                                                             Visibility="Collapsed" />
                                     <TextBlock x:Name="txtblFreight"
-                                               Text="Freight:"
+                                               Text="{DynamicResource TS_TextBox_Freight}"
                                                TextWrapping="NoWrap"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Left"
@@ -947,11 +1020,13 @@
                                                                  Padding="2,0,2,0"
                                                                  Grid.Column="4"
                                                                  Grid.RowSpan="1"
+																 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+																 ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                                  Value="{Binding SelectedTransferStock.ShippingFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                  HorizontalContentAlignment="Right"
                                                                  Grid.Row="1" />
                                     <TextBlock x:Name="txtblTransferStockTotal"
-                                               Text="Total:"
+                                               Text="{DynamicResource C103}"
                                                Foreground="White"
                                                TextWrapping="NoWrap"
                                                VerticalAlignment="Center"
@@ -969,7 +1044,7 @@
                                                             IsReadOnly="True"
                                                             HorizontalContentAlignment="Right"
                                                             VerticalContentAlignment="Center"
-                                                            Text="{Binding SelectedTransferStock.Total, Mode=OneWay, StringFormat=\{0:c2\}}"
+                                                            Text="{Binding SelectedTransferStock.Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat},ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                                             Style="{DynamicResource TextBoxTotal}" />
                                 </Grid>
 

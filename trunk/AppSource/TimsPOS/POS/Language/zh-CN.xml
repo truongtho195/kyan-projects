@@ -520,21 +520,7 @@
       <name>Poor</name>
     </item>
   </status>
-  <status key="ProductStatuses">
-    <item>
-      <value>0</value>
-      <name>Inactive</name>
-      <backcolor>Red</backcolor>
-      <forecolor>White</forecolor>
-    </item>
-    <item>
-      <value>1</value>
-      <name>Active</name>
-      <backcolor>Green</backcolor>
-      <forecolor>Black</forecolor>
-    </item>
-  </status>
-  <status key="ScheduleStatuses">
+  <combo key="ScheduleStatuses">
     <item>
       <value>0</value>
       <name>Inactive</name>
@@ -553,8 +539,8 @@
       <backcolor>Yellow</backcolor>
       <forecolor>Black</forecolor>
     </item>
-  </status>
-  <country>
+  </combo>
+  <combo key="country">
     <item>
       <value>0</value>
       <name>None</name>
@@ -577,8 +563,8 @@
       <symbol>CN</symbol>
       <hasstate>true</hasstate>
     </item>
-  </country>
-  <state>
+  </combo>
+  <combo key="state">
     <!-- 50 States -->
     <item>
       <value>0</value>
@@ -835,8 +821,8 @@
       <name>Wyoming</name>
       <symbol>WY</symbol>
     </item>
-  </state>
-  <groupofdrop>
+  </combo>
+  <combo key="groupofdrop">
     <item>
       <value>1</value>
       <name>Job Title</name>
@@ -847,7 +833,7 @@
       <name>Department</name>
       <tab>1</tab>
     </item>
-  </groupofdrop>
+  </combo>
   <report key="AnalysisReports">
     <item>
       <value>1</value>
@@ -896,7 +882,13 @@
     </item>
   </report>
 
-	<!--Dynamic Data-->
+  <!--Dynamic Data-->
+
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+
   <combo key="UserTypes">
     <item>
       <value>E</value>
@@ -1006,7 +998,7 @@
       <name>Custom Price</name>
     </item>
   </combo>
-  <status key="StatusBasic">
+  <combo key="StatusBasic">
     <item>
       <value>0</value>
       <name></name>
@@ -1025,21 +1017,7 @@
       <backcolor>Red</backcolor>
       <forecolor>Black</forecolor>
     </item>
-  </status>
-  <status key="JobPosition">
-    <item>
-      <value>0</value>
-      <name></name>
-    </item>
-    <item>
-      <value>1</value>
-      <name>Sale Executive</name>
-    </item>
-    <item>
-      <value>2</value>
-      <name>IT</name>
-    </item>
-  </status>
+  </combo>
   <combo key="JobTitles">
     <item>
       <value>0</value>
@@ -1087,49 +1065,49 @@
       <default>1</default>
       <name>Cash</name>
       <symbol>Payment</symbol>
-	  <islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
     <item>
       <value>2</value>
       <default>0</default>
       <name>Cheque</name>
       <symbol>Check</symbol>
-		<islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
     <item>
       <value>4</value>
       <default>0</default>
       <name>Credit Card</name>
       <symbol>Credit</symbol>
-		<islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
     <item>
       <value>8</value>
       <default>0</default>
       <name>Debit / ATM Card</name>
       <symbol>ATM</symbol>
-		<islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
     <item>
       <value>16</value>
       <default>0</default>
       <name>Deposit</name>
       <symbol></symbol>
-		<islocked>true</islocked>
+      <islocked>true</islocked>
     </item>
     <item>
       <value>32</value>
       <default>0</default>
       <name>Account</name>
       <symbol>ChargeOnAccount</symbol>
-		<islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
     <item>
       <value>64</value>
       <default>0</default>
       <name>Gift Card</name>
       <symbol>GiftCard</symbol>
-		<islocked>false</islocked>
+      <islocked>false</islocked>
     </item>
   </combo>
   <combo key="GiftCardType">
@@ -1146,20 +1124,6 @@
       <symbol>GiftCertificate</symbol>
     </item>
   </combo>
-  <status key="PromotionStatuses">
-    <item>
-      <value>0</value>
-      <name>Deactived</name>
-      <backcolor>White</backcolor>
-      <forecolor>Black</forecolor>
-    </item>
-    <item>
-      <value>1</value>
-      <name>Actived</name>
-      <backcolor>White</backcolor>
-      <forecolor>Black</forecolor>
-    </item>
-  </status>
   <combo key="PromotionTypes">
     <item>
       <value>0</value>
@@ -1196,6 +1160,7 @@
       <name>$ off</name>
     </item>
   </combo>
+  <!--ScanMethods Chua dung ScanMethods in Common-->
   <combo key="ScanMethods">
     <item>
       <value>1</value>
@@ -1287,28 +1252,28 @@
   </combo>
   <combo key="PurchaseStatus">
     <item>
-      <value>0</value>
-      <name> 开门</name>
-    </item>
-    <item>
       <value>1</value>
-      <name>接收</name>
+      <name>Open</name>
     </item>
     <item>
       <value>2</value>
-      <name>完全接收</name>
+      <name>Receiving</name>
     </item>
     <item>
       <value>3</value>
-      <name>进展</name>
+      <name>Fully Received</name>
     </item>
     <item>
       <value>4</value>
-      <name>完全支付</name>
+      <name>InProgress</name>
     </item>
     <item>
       <value>5</value>
-      <name>关闭</name>
+      <name>Paid In Full</name>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Closed</name>
     </item>
   </combo>
   <combo key="AvailableQuantity">
@@ -1348,19 +1313,45 @@
       <value>1</value>
       <code>VI</code>
       <culture>vi-VN</culture>
-      <name>越南人</name>
+      <name>Vietnamese</name>
     </item>
     <item>
       <value>2</value>
       <code>EN</code>
       <culture>en-US</culture>
-      <name>英语</name>
+      <name>English</name>
     </item>
     <item>
       <value>3</value>
       <code>ZH</code>
       <culture>zh-CN</culture>
-      <name>中国的</name>
+      <name>Chinese</name>
+    </item>
+  </combo>
+  <combo key="Currency">
+    <item>
+      <code>CNY</code>
+      <symbol>元</symbol>
+      <culture>zh-CN</culture>
+      <name>Chinese Yuan Renminbi  (元)</name>
+    </item>
+    <item>
+      <code>THB</code>
+      <symbol>฿</symbol>
+      <culture>th-TH</culture>
+      <name>Thai Baht (฿)</name>
+    </item>
+    <item>
+      <code>USD</code>
+      <symbol>$</symbol>
+      <culture>en-US</culture>
+      <name>US Dollar  ($)</name>
+    </item>
+    <item>
+      <code>VND</code>
+      <symbol>₫</symbol>
+      <culture>vi-VN</culture>
+      <name>Vietnamese Dong (₫)</name>
     </item>
   </combo>
   <combo key="Shift">
@@ -1395,23 +1386,23 @@
     </item>
   </combo>
   <combo key="RewardStatus">
-		<item>
-			<value>1</value>
-			<name>Available</name>
-		</item>
-		<item>
-			<value>2</value>
-			<name>Remove</name>
-		</item>
-		<item>
-			<value>3</value>
-			<name>Redeemed</name>
-		</item>
-		<item>
-			<value>4</value>
-			<name>Pending</name>
-		</item>
-	</combo>
+    <item>
+      <value>1</value>
+      <name>Available</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Redeemed</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Pending</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Remove</name>
+    </item>
+  </combo>
   <combo key="RewardExpiration">
     <item>
       <value>0</value>
@@ -1480,6 +1471,7 @@
       <name>Years</name>
     </item>
   </combo>
+  <!--ProductCard Chua dung ScanMethods in Common-->
   <combo key="ProductCard">
     <item>
       <name>Gift Card</name>
@@ -1567,7 +1559,125 @@
       <name>Cancelled</name>
     </item>
   </combo>
-	<!--End Dynamic Data-->
-	<!--Label Resource-->
-	<!--End Label Resource-->
+  <combo key="AdjustmentStatus">
+    <item>
+      <value>1</value>
+      <name>Normal</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Reversing</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Reversed</name>
+    </item>
+  </combo>
+  <combo key="AdjustmentReason">
+    <item>
+      <value>1</value>
+      <name>Item Edited</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Reverse</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Counted Stock</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Transfered Stock</name>
+    </item>
+  </combo>
+
+  <combo key="ItemSetting">
+    <item>
+      <value>1</value>
+      <name>General</name>
+      <settingPart>General</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Store Information</name>
+      <settingPart>StoreInfo</settingPart>
+      <parentId>1</parentId>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Inventory</name>
+      <settingPart>Inventory</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Unit Of Measure</name>
+      <settingPart>UnitOfMeasure</settingPart>
+      <parentId>3</parentId>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Email Setup</name>
+      <settingPart>Email</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Multi-Store</name>
+      <settingPart>MultiStore</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Store Codes</name>
+      <settingPart>StoreCodes</settingPart>
+      <parentId>6</parentId>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Pricing</name>
+      <settingPart>Pricing</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Sales</name>
+      <settingPart>Sales</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>10</value>
+      <name>Discount</name>
+      <settingPart>Discount</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>11</value>
+      <name>Reward</name>
+      <settingPart>Reward</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>12</value>
+      <name>Return</name>
+      <settingPart>Return</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>13</value>
+      <name>Time Clock</name>
+      <settingPart>TimeClock</settingPart>
+      <parentId>0</parentId>
+    </item>
+  </combo>
+
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+  <!--Khi them 1 danh sach nho them trong phuong thuc ChangeLanguage trong Common de doi ngon ngu-->
+
+  <!--End Dynamic Data-->
+
 </comboes>

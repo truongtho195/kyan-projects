@@ -21,10 +21,11 @@ namespace CPC.POS.ViewModel
         private base_SaleOrderRepository _saleOrderRepository = new base_SaleOrderRepository();
         private base_SaleOrderDetailRepository _saleOrderDetailRepository = new base_SaleOrderDetailRepository();
         private base_PurchaseOrderDetailRepository _purchaseOrderDetailRepository = new base_PurchaseOrderDetailRepository();
+        private base_ProductUOMRepository _productUOMRepository = new base_ProductUOMRepository();
 
         private ICollectionView _orderDetailCollectionView;
 
-        private IList<base_PurchaseOrderDetail> _purchaseOrderDetails;
+        private short _previousSelectedStockStatus;
 
         #endregion
 
@@ -47,22 +48,25 @@ namespace CPC.POS.ViewModel
             }
         }
 
-        private short _stockStatus = 1;
+        private short _selectedStockStatus = (short)StockStatus.Available;
         /// <summary>
-        /// Gets or sets the StockStatus.
+        /// Gets or sets the SelectedStockStatus.
         /// </summary>
-        public short StockStatus
+        public short SelectedStockStatus
         {
-            get { return _stockStatus; }
+            get { return _selectedStockStatus; }
             set
             {
-                if (_stockStatus != value)
+                if (_selectedStockStatus != value)
                 {
-                    _stockStatus = value;
-                    OnPropertyChanged(() => StockStatus);
+                    // Keep selected stock status before changed
+                    _previousSelectedStockStatus = SelectedStockStatus;
 
-                    // Update company quantities
-                    OnPropertyChanged(() => CompanyQuantities);
+                    _selectedStockStatus = value;
+                    OnPropertyChanged(() => SelectedStockStatus);
+
+                    // Process when stock status changed
+                    OnSelectedStockStatusChanged();
                 }
             }
         }
@@ -84,25 +88,21 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private base_ProductStoreModel _productStoreDefault;
         /// <summary>
-        /// Gets the CompanyQuantities
+        /// Gets or sets the ProductStoreDefault.
         /// </summary>
-        public int CompanyQuantities
+        public base_ProductStoreModel ProductStoreDefault
         {
-            get
+            get { return _productStoreDefault; }
+            set
             {
-                if (StockStatus.Equals(3))
-                    return ProductStoreCollection.Sum(x => x.OnReservedQuantity);
-                return ProductStoreCollection.Sum(x => x.QuantityOnHand);
+                if (_productStoreDefault != value)
+                {
+                    _productStoreDefault = value;
+                    OnPropertyChanged(() => ProductStoreDefault);
+                }
             }
-        }
-
-        /// <summary>
-        /// Gets the QuantityOnHand.
-        /// </summary>
-        public int QuantityOnHand
-        {
-            get { return ProductStoreCollection.Where(x => x.StoreCode.Equals(Define.StoreCode)).Sum(x => x.QuantityOnHand); }
         }
 
         private short _selectedAvailableQuantity = 1;
@@ -141,21 +141,14 @@ namespace CPC.POS.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets the QuantityOnSO.
+        /// Get total quantities by selected stock status
         /// </summary>
-        public int QuantityOnSO { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the QuantityOnPO.
-        /// </summary>
-        public int QuantityOnPO { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the QuantityAvailable.
-        /// </summary>
-        public int QuantityAvailable
+        public int TotalQuantities
         {
-            get { return QuantityOnHand - QuantityOnSO; }
+            get
+            {
+                return ProductStoreCollection.Sum(x => x.Quantity);
+            }
         }
 
         #endregion
@@ -259,19 +252,23 @@ namespace CPC.POS.ViewModel
             // Initial product store collection
             ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
 
-            for (short i = 0; i < _storeRepository.GetIQueryable().Count(); i++)
+            for (int storeCode = 0; storeCode < _storeRepository.GetIQueryable().Count(); storeCode++)
             {
                 // Create new product store model
-                base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = i };
+                base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = storeCode };
 
                 // Get product store by store code
-                base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(i));
+                base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
 
                 if (productStoreItem != null)
                 {
+                    productStoreModel.StoreCode = productStoreItem.StoreCode;
                     productStoreModel.OldQuantity = productStoreItem.OldQuantity;
                     productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
-                    productStoreModel.OnReservedQuantity = _purchaseOrderDetails.Where(x => x.base_PurchaseOrder.StoreCode.Equals(i)).Sum(x => x.Quantity);
+                    productStoreModel.QuantityOnOrder = productStoreItem.QuantityOnOrder;
+                    productStoreModel.QuantityOnCustomer = productStoreItem.QuantityOnCustomer;
+                    productStoreModel.QuantityAvailable = productStoreItem.QuantityAvailable;
+                    productStoreModel.Quantity = productStoreItem.QuantityAvailable;
                 }
 
                 // Register property changed event
@@ -279,6 +276,10 @@ namespace CPC.POS.ViewModel
 
                 // Add product store to list
                 ProductStoreCollection.Add(productStoreModel);
+
+                // Get product store default by define store code
+                if (storeCode.Equals(Define.StoreCode))
+                    ProductStoreDefault = productStoreModel;
             }
         }
 
@@ -288,47 +289,78 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadOrderDetailCollection(base_ProductModel productModel)
         {
+            // Get product store by store code
+            base_ProductStore productStore = productModel.base_Product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
+
             // Get product resource
             string productResource = productModel.Resource.ToString();
 
-            // Get sale order detail collection
-            IEnumerable<base_SaleOrderDetailModel> _saleOrderDetailCollection = _saleOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) &&
+            // Get sale order detail
+            IEnumerable<base_SaleOrderDetail> saleOrderDetails = _saleOrderDetailRepository.
+                GetAll(x => x.ProductResource.Equals(productResource) && !x.base_SaleOrder.IsPurge &&
                     x.base_SaleOrder.OrderStatus == (short)SaleOrderStatus.Open &&
-                    x.base_SaleOrder.StoreCode.Equals(Define.StoreCode)).
-                Select(x => new base_SaleOrderDetailModel(x)
+                    x.base_SaleOrder.StoreCode.Equals(Define.StoreCode));
+
+            // Create sale order detail collection
+            IList<base_SaleOrderDetailModel> saleOrderDetailCollection = new List<base_SaleOrderDetailModel>();
+
+            foreach (base_SaleOrderDetail saleOrderDetail in saleOrderDetails)
+            {
+                // Create new sale order detail model
+                base_SaleOrderDetailModel saleOrderDetailModel = new base_SaleOrderDetailModel();
+                saleOrderDetailModel.DocType = "Sale Order";
+                saleOrderDetailModel.SaleOrderModel = new base_SaleOrderModel(saleOrderDetail.base_SaleOrder);
+
+                if (productStore != null)
                 {
-                    DocType = "Sale Order",
-                    SaleOrderModel = new base_SaleOrderModel(x.base_SaleOrder)
-                });
+                    // Get product UOM
+                    base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetail.UOMId));
+
+                    if (productUOM != null)
+                        saleOrderDetailModel.Quantity = saleOrderDetail.Quantity * productUOM.BaseUnitNumber;
+                }
+
+                // Add new sale order detail to collection
+                saleOrderDetailCollection.Add(saleOrderDetailModel);
+            }
 
             // Get purchase order detail
-            _purchaseOrderDetails = _purchaseOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) && x.base_PurchaseOrder.Status == (short)PurchaseStatus.Open);
+            IList<base_PurchaseOrderDetail> purchaseOrderDetails = _purchaseOrderDetailRepository.
+                GetAll(x => x.ProductResource.Equals(productResource) && !x.base_PurchaseOrder.IsPurge &&
+                    x.base_PurchaseOrder.Status == (short)PurchaseStatus.Receiving &&
+                    x.base_PurchaseOrder.StoreCode.Equals(Define.StoreCode));
 
-            // Get purchase order detail collection
-            IEnumerable<base_SaleOrderDetailModel> _purchaseOrderDetailCollection = _purchaseOrderDetails.
-                Where(x => x.base_PurchaseOrder.StoreCode.Equals(Define.StoreCode)).
-                Select(x => new base_SaleOrderDetailModel
+            // Create purchase order detail collection
+            IList<base_SaleOrderDetailModel> purchaseOrderDetailCollection = new List<base_SaleOrderDetailModel>();
+
+            foreach (base_PurchaseOrderDetail purchaseOrderDetail in purchaseOrderDetails)
+            {
+                // Create new purchase order detail model
+                base_SaleOrderDetailModel purchaseOrderDetailModel = new base_SaleOrderDetailModel();
+                purchaseOrderDetailModel.DocType = "Purchase Order";
+                purchaseOrderDetailModel.SaleOrderModel = new base_SaleOrderModel
                 {
-                    DocType = "Purchase Order",
-                    SaleOrderModel = new base_SaleOrderModel
-                    {
-                        OrderDate = x.base_PurchaseOrder.PurchasedDate,
-                        SONumber = x.base_PurchaseOrder.PurchaseOrderNo
-                    },
-                    Quantity = x.Quantity,
-                    IsNew = false
-                });
+                    OrderDate = purchaseOrderDetail.base_PurchaseOrder.PurchasedDate,
+                    SONumber = purchaseOrderDetail.base_PurchaseOrder.PurchaseOrderNo
+                };
+
+                if (productStore != null)
+                {
+                    // Get product UOM
+                    base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(purchaseOrderDetail.UOMId));
+
+                    if (productUOM != null)
+                        purchaseOrderDetailModel.Quantity = purchaseOrderDetail.Quantity * productUOM.BaseUnitNumber;
+                }
+
+                // Add new purchase order detail to collection
+                purchaseOrderDetailCollection.Add(purchaseOrderDetailModel);
+            }
 
             // Get all order detail collection
-            OrderDetailCollection = new ObservableCollection<base_SaleOrderDetailModel>(_saleOrderDetailCollection.Union(_purchaseOrderDetailCollection));
+            OrderDetailCollection = new ObservableCollection<base_SaleOrderDetailModel>(saleOrderDetailCollection.Union(purchaseOrderDetailCollection));
 
-            // Update quantity values
-            QuantityOnSO = _saleOrderDetailCollection.Sum(x => x.Quantity);
-            QuantityOnPO = _purchaseOrderDetailCollection.Sum(x => x.Quantity);
-            OnPropertyChanged(() => QuantityAvailable);
-
+            // Get default view for filter
             _orderDetailCollectionView = CollectionViewSource.GetDefaultView(OrderDetailCollection);
         }
 
@@ -364,6 +396,50 @@ namespace CPC.POS.ViewModel
             };
         }
 
+        /// <summary>
+        /// Process when stock status changed
+        /// </summary>
+        private void OnSelectedStockStatusChanged()
+        {
+            foreach (base_ProductStoreModel productStoreItem in ProductStoreCollection)
+            {
+                switch (_previousSelectedStockStatus)
+                {
+                    case (short)StockStatus.Available:
+                        // Update quantity available
+                        productStoreItem.QuantityAvailable = productStoreItem.Quantity;
+                        break;
+                    case (short)StockStatus.OnHand:
+                        // Update quantity on hand
+                        productStoreItem.QuantityOnHand = productStoreItem.Quantity;
+                        break;
+                    case (short)StockStatus.OnReserved:
+                        // Update quantity on order
+                        productStoreItem.QuantityOnOrder = productStoreItem.Quantity;
+                        break;
+                }
+
+                switch (SelectedStockStatus)
+                {
+                    case (short)StockStatus.Available:
+                        // Update quantity available
+                        productStoreItem.Quantity = productStoreItem.QuantityAvailable;
+                        break;
+                    case (short)StockStatus.OnHand:
+                        // Update quantity on hand
+                        productStoreItem.Quantity = productStoreItem.QuantityOnHand;
+                        break;
+                    case (short)StockStatus.OnReserved:
+                        // Update quantity on order
+                        productStoreItem.Quantity = productStoreItem.QuantityOnOrder;
+                        break;
+                }
+            }
+
+            // Update total quantities
+            OnPropertyChanged(() => TotalQuantities);
+        }
+
         #endregion
 
         #region Event Methods
@@ -371,20 +447,21 @@ namespace CPC.POS.ViewModel
         private void productStoreItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base_ProductStoreModel productStoreModel = sender as base_ProductStoreModel;
-
-            if (e.PropertyName.Equals("QuantityOnHand"))
+            switch (e.PropertyName)
             {
-                // Update company quantities
-                OnPropertyChanged(() => CompanyQuantities);
-
-                if (productStoreModel.StoreCode.Equals(Define.StoreCode))
-                {
-                    // Update quantity on hand
-                    OnPropertyChanged(() => QuantityOnHand);
+                case "Quantity":
+                    if (SelectedStockStatus.Equals((short)StockStatus.OnHand))
+                        productStoreModel.QuantityOnHand = productStoreModel.Quantity;
+                    break;
+                case "QuantityOnHand":
+                    // Update total quantities
+                    OnPropertyChanged(() => TotalQuantities);
 
                     // Update quantity available
-                    OnPropertyChanged(() => QuantityAvailable);
-                }
+                    productStoreModel.UpdateAvailableQuantity();
+                    break;
+                default:
+                    break;
             }
         }
 

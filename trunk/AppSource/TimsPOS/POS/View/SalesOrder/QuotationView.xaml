@@ -36,105 +36,100 @@
         <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
         <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
         <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
-
-
-        <DataTemplate x:Key="RowDetailDataTemplateOrderInvoice">
+		<DataTemplate x:Key="RowDetailDataTemplateOrderInvoice">
             <Grid x:Name="grdTemplateCustomer"
                   Height="Auto"
                   Margin="0"
                   Background="#FFFFF2F2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="400" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-
                     <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
-                <StackPanel x:Name="stkpDiscount"
-                            Grid.Row="1"
+                <StackPanel Grid.Row="1"
                             Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            Orientation="Horizontal"
-                            d:LayoutOverrides="Height">
-                    <TextBlock x:Name="txtblTemplatePrice"
-                               Margin="0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="Regular Price:"
-                               TextWrapping="NoWrap" />
-                    <TextBlock x:Name="txtblBindingRegularPrice"
-                               Margin="5,0,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="{Binding RegularPrice,
-                                              Mode=OneWay,
-                                              StringFormat={x:Static local:Define.CurrencyFormat}}"
-                               TextWrapping="NoWrap" />
-                    <TextBlock x:Name="txtblUnitDiscount"
-                               Margin="20,0,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="Unit Discount:"
-                               TextWrapping="NoWrap" />
-                    <TextBlock x:Name="txtblBindingUnitDiscount"
-                               Margin="5,0,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="{Binding UnitDiscount,
-                                              StringFormat={x:Static local:Define.CurrencyFormat}}"
-                               TextWrapping="NoWrap" />
-                    <TextBlock x:Name="txtblTotalDiscount"
-                               Margin="20,0,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="Total Discount:"
-                               TextWrapping="NoWrap" />
-                    <TextBlock x:Name="txtblBindingTotalDiscount"
-                               Margin="5,0,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontStyle="Italic"
-                               Foreground="Red"
-                               Text="{Binding TotalDiscount,
-                                              StringFormat={x:Static local:Define.CurrencyFormat}}"
-                               TextWrapping="NoWrap" />
-                </StackPanel>
-                <Button x:Name="btnSerial"
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Height="25"
-                        Margin="0,0,0,0"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Left"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        FontStyle="Italic"
-                        Foreground="#FF0010FF"
-                        Style="{DynamicResource ButtonRowDetailDataTemplateOrder}">
-                    <Button.Visibility>
-                        <Binding Mode="OneWay"
-                                 Path="ProductModel.IsSerialTracking"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.Converter>
-                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
-                            </Binding.Converter>
-                        </Binding>
-                    </Button.Visibility>
-                    <StackPanel Orientation="Horizontal">
+                            Orientation="Horizontal">
+                    <StackPanel x:Name="stkpDiscount"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                        <StackPanel.Visibility>
+                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                                <Binding.Converter>
+                                    <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                </Binding.Converter>
+                            </Binding>
+                        </StackPanel.Visibility>
+                        <TextBlock x:Name="txtblTemplatePrice"
+                                   Margin="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="Regular Price:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingRegularPrice"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="{Binding RegularPrice,
+                                                  Mode=OneWay,
+                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblUnitDiscount"
+                                   Margin="20,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="Unit Discount:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingUnitDiscount"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="{Binding UnitDiscount,
+                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblTotalDiscount"
+                                   Margin="20,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="Total Discount:"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblBindingTotalDiscount"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="Red"
+                                   Text="{Binding TotalDiscount,
+                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                   TextWrapping="NoWrap" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="stkSerial"
+                                Height="25"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                        <StackPanel.Visibility>
+                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                                <Binding.Converter>
+                                    <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                </Binding.Converter>
+                            </Binding>
+                        </StackPanel.Visibility>
                         <TextBlock x:Name="txtblTemplateSerialNo"
                                    Margin="0"
                                    HorizontalAlignment="Left"
@@ -150,25 +145,56 @@
                                    VerticalAlignment="Center"
                                    FontStyle="Italic"
                                    Foreground="#FF0010FF"
+                                   Text="{Binding SerialTrackingDisplay,
+                                                  Mode=OneWay}"
+                                   TextDecorations="Underline"
+                                   TextWrapping="NoWrap" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="stkCoupon"
+                                Height="25"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                        <StackPanel.Visibility>
+                            <Binding Mode="OneWay" Path="ProductModel.IsCoupon">
+                                <Binding.Converter>
+                                    <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                </Binding.Converter>
+                            </Binding>
+                        </StackPanel.Visibility>
+                        <TextBlock x:Name="txtblTemplateCoupon"
+                                   Margin="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="#FF0010FF"
+                                   Text="Coupon code: "
+                                   TextDecorations="Underline"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txCoupon"
+                                   Margin="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Italic"
+                                   Foreground="#FF0010FF"
                                    Text="{Binding SerialTracking,
                                                   Mode=OneWay}"
                                    TextDecorations="Underline"
                                    TextWrapping="NoWrap" />
-
                     </StackPanel>
-
-                </Button>
+                </StackPanel>
             </Grid>
             <DataTemplate.Triggers>
-
                 <DataTrigger Binding="{Binding SerialTracking}" Value="{x:Static sys:String.Empty}">
-                    <Setter TargetName="btnSerial" Property="Visibility" Value="Collapsed" />
+                    <Setter TargetName="stkSerial" Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding DiscountPercent}" Value="0">
                     <Setter TargetName="stkpDiscount" Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
+		
+		
         <Style x:Key="ButtonRowDetailDataTemplateOrder" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -373,6 +399,22 @@
                     <Setter Property="Padding" Value="0,1" />
                     <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}" />
                 </Trigger>
+            </Style.Triggers>
+        </Style>
+		
+		<Style TargetType="{x:Type ListViewItem}"
+               x:Key="ListViewItemColorStyle">
+            <!--<Setter Property="VerticalContentAlignment"
+                    Value="Center" />-->
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOpenItem}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource ForegroundGreenBrush }" />
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
+                </DataTrigger>
+                
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
@@ -589,7 +631,8 @@
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Total, Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
 
@@ -602,7 +645,8 @@
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Paid, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Paid, Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
 
@@ -808,7 +852,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Customer:"
+                                       Text="{DynamicResource SO_TextBlock_Customer}"
                                        TextWrapping="NoWrap"
                                        d:LayoutOverrides="GridBox" />
                             <cpcComboBox:ComboBoxControl Grid.Column="1"
@@ -837,7 +881,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Booking Chanel:"
+                                      Text="{DynamicResource SO_TextBlock_BookingChannel}"
                                        TextWrapping="NoWrap" />
                             <ComboBox x:Name="cmbTransType"
                                       Grid.Column="3"
@@ -856,7 +900,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="SO #:"
+                                          Text="{DynamicResource SO_TextBlock_SONum}"
                                        TextWrapping="NoWrap" />
                             <TextBlock x:Name="txtblBindingSONo"
                                        Grid.Column="5"
@@ -875,7 +919,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Bill Address:"
+                                       Text="{DynamicResource SO_TextBlock_BillAddress}"
                                        TextWrapping="NoWrap"
                                        d:LayoutOverrides="Width" />
                             <TextBox x:Name="txtBillAddress"
@@ -911,7 +955,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Ship Address:"
+                                        Text="{DynamicResource C147}"
                                        TextWrapping="NoWrap" />
                             <TextBox x:Name="txtShipAddress"
                                      Grid.Row="1"
@@ -946,7 +990,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="SO Date:"
+                                       Text="{DynamicResource SO_TextBlock_SODate}"
                                        TextWrapping="NoWrap" />
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Row="1"
@@ -965,7 +1009,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Status:"
+                                       Text="{DynamicResource C151}"
                                        TextWrapping="NoWrap" />
                             <ComboBox x:Name="cmbStatus"
                                       Grid.Row="2"
@@ -1002,7 +1046,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource TextBlockNormal}"
-                                           Text="Select Item:"
+                                           Text="{DynamicResource C100}"
                                            TextWrapping="NoWrap" />
                                 <cpcAutoComplete:AutoCompleteTextBox Grid.Column="1"
                                                                      Width="350"
@@ -1012,6 +1056,7 @@
                                                                      VerticalAlignment="Center"
                                                                      AutoChangeSelectedItem="False"
                                                                      FieldShow="ProductName"
+																	 ListViewItemStyle="{StaticResource ListViewItemColorStyle}"
                                                                      FieldSource="{Binding ProductFieldCollection}"
                                                                      FilterMode="Contains"
                                                                      IsTextCompletionEnabled="False"
@@ -1020,19 +1065,27 @@
                                                                                                   Mode=TwoWay,
                                                                                                   UpdateSourceTrigger=PropertyChanged}">
                                     <cpcAutoComplete:AutoCompleteTextBox.Columns>
-                                        <GridViewColumn Width="120"
-                                                        DisplayMemberBinding="{Binding Code}"
-                                                        Header="Code" />
+                                       <GridViewColumn Width="150"
+                                                                    DisplayMemberBinding="{Binding ProductName}"
+                                                                    Header="{DynamicResource C175}" />
 
-                                        <GridViewColumn Width="150"
-                                                        DisplayMemberBinding="{Binding ProductName}"
-                                                        Header="ProductName" />
-                                        <GridViewColumn Width="80"
-                                                        DisplayMemberBinding="{Binding Attribute}"
-                                                        Header="Attribute" />
-                                        <GridViewColumn Width="80"
-                                                        DisplayMemberBinding="{Binding Size}"
-                                                        Header="Size" />
+                                                    <GridViewColumn Width="70"
+                                                                    DisplayMemberBinding="{Binding Attribute}"
+                                                                    Header="{DynamicResource C116}" />
+
+                                                    <GridViewColumn Width="70"
+                                                                    DisplayMemberBinding="{Binding Size}"
+                                                                    Header="{DynamicResource C117}" />
+
+                                                    <GridViewColumn Width="100"
+                                                                    Header="{DynamicResource C119}">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock TextAlignment="Right"
+                                                                           HorizontalAlignment="Stretch" Text="{Binding RegularPrice, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
                                     </cpcAutoComplete:AutoCompleteTextBox.Columns>
                                 </cpcAutoComplete:AutoCompleteTextBox>
 
@@ -1082,27 +1135,34 @@
                                                                 Reward has 2 rewards available for redemption
                                                                 Text="{Binding SelectedCustomer.GuestRewardCollection.Count,Mode=OneWay,StringFormat="}"
                                                             -->
+                                                    <StackPanel Grid.Row="2"
+                                                                Width="15"
+                                                                Height="15"
+                                                                Margin="0,7.5,0,0">
                                                     <Rectangle x:Name="imgReward"
-                                                               Grid.Row="2"
-                                                               Width="15"
-                                                               Height="15"
-                                                               Margin="0,7.5,0,0"
+                                                               
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Top"
                                                                Fill="{DynamicResource RewardGold}" />
                                                     <TextBlock x:Name="txtblRewardHas1"
-                                                               Grid.Row="5"
-                                                               Margin="22,0,0,0"
+                                                               Margin="5,0,0,0"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
                                                                Style="{DynamicResource TextBlockNormal}"
-                                                               TextWrapping="Wrap">
-                                                                <TextBlock.Text>
-                                                                    <Binding Mode="OneWay"
-                                                                             Path="SelectedCustomer.RequirePurchaseNextReward"
-                                                                             StringFormat=" {0:C} until the next reward is earned" />
-                                                                </TextBlock.Text>
-                                                    </TextBlock>
+                                                               Text="{Binding SelectedCustomer.RequirePurchaseNextReward,
+                                                                                              Mode=OneWay,
+                                                                                              ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                                              StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                                               TextWrapping="Wrap" />
+
+                                                    <TextBlock x:Name="txtblRewardHasText"
+                                                               Margin="5,0,0,0"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               Text=" until the next reward is earned"
+                                                               TextWrapping="Wrap" />
+                                                    </StackPanel>
                                                 </Grid>
                                             </Border>
                                         </ToolTip>
@@ -1131,7 +1191,7 @@
                                     <TextBlock x:Name="txtblAdvanceSearch"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource ButtonTextBlock}"
-                                               Text="Advance Search"
+                                                 Text="{DynamicResource C104}"
                                                TextWrapping="NoWrap" />
                                 </Button>
 
@@ -1160,24 +1220,40 @@
                                     <cpcDataGrid:DataGridControl.Columns>
                                         <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemCode}"
-                                                            Header="Item Code"
-                                                            IsReadOnly="True" />
+                                                            
+                                                            IsReadOnly="True">
+                                        	  <DataGridTextColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C114}" />
+                                                        </DataGridTextColumn.Header>                         
+															</DataGridTextColumn>
                                         <DataGridTextColumn Width="*"
                                                             Binding="{Binding ItemName}"
-                                                            Header="Item Name"
-                                                            IsReadOnly="True" />
+                                                            
+                                                            IsReadOnly="True" >
+                                        	 <DataGridTextColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C115}" />
+                                                        </DataGridTextColumn.Header>                         
+															</DataGridTextColumn>
                                         <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemAtribute,
                                                                               Mode=OneWay}"
-                                                            Header="Attribute"
-                                                            IsReadOnly="True" />
+                                                            
+                                                            IsReadOnly="True">
+                                        	 <DataGridTextColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C116}" />
+                                                        </DataGridTextColumn.Header></DataGridTextColumn>
                                         <DataGridTextColumn Width="80"
                                                             Binding="{Binding ItemSize,
                                                                               Mode=OneWay}"
-                                                            Header="Size"
-                                                            IsReadOnly="True" />
-                                        <DataGridTemplateColumn Width="75" Header="Quantity">
-
+                                                            
+                                                            IsReadOnly="True" >
+                                        	  <DataGridTextColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C117}" />
+                                                        </DataGridTextColumn.Header></DataGridTextColumn>
+                                        <DataGridTemplateColumn Width="75" CellStyle="{DynamicResource DataGridCellDisableStyle}">
+ 											<DataGridTemplateColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C120}" />
+                                                        </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock   HorizontalAlignment="Right" Text="{Binding Qty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1190,7 +1266,9 @@
                                                                                HorizontalAlignment="Right"
                                                                                Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
                                                                                HorizontalContentAlignment="Center"
-                                                                                   Value="{Binding Qty,
+                                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                               NumericStringFormat="{}{0:N0}"
+                                                                               Value="{Binding Qty,
                                                                                                    Mode=TwoWay,
                                                                                                    UpdateSourceTrigger=PropertyChanged}">
                                                             <i:Interaction.Triggers>
@@ -1204,8 +1282,11 @@
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Width="80"
-                                                                Header="Price"
+                                                                
                                                                 CellStyle="{StaticResource DataGridPriceCellStyle}" >
+                                        	 <DataGridTemplateColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C119}" />
+                                                        </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
@@ -1216,6 +1297,8 @@
                                                         <cpcTextBox:TextBoxMoney x:Name="txtSalePrice"
                                                                                  HorizontalAlignment="Right"
                                                                              Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                              Value="{Binding SalePrice,
                                                                                                  Mode=TwoWay,
                                                                                                  UpdateSourceTrigger=PropertyChanged}" />
@@ -1223,7 +1306,10 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellEditingTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="75" Header="UOM">
+                                        <DataGridTemplateColumn Width="75">
+                                        	 <DataGridTemplateColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C118}" />
+                                                        </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding UnitName, Mode=OneWay}" />
@@ -1247,8 +1333,11 @@
                                         </DataGridTemplateColumn>
 
                                         <DataGridTemplateColumn Width="75"
-                                                                Header="Amount"
+                                                                
                                                                 IsReadOnly="True">
+                                        	<DataGridTemplateColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C122}" />
+                                                        </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock x:Name="tblSubTotal"
@@ -1259,7 +1348,10 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Width="75" Header="On-Hand Qty">
+                                        <DataGridTemplateColumn Width="75" >
+                                        	 <DataGridTemplateColumn.Header>
+                                                            <TextBlock Text="{DynamicResource C152}" />
+                                                        </DataGridTemplateColumn.Header>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock HorizontalAlignment="Right" Text="{Binding OnHandQty, Mode=OneWay}" />
@@ -1296,7 +1388,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Payment Terms:"
+                                               Text="{DynamicResource SO_TextBlock_PaymentTerms}"
                                                TextWrapping="NoWrap"
                                                d:LayoutOverrides="HorizontalAlignment" />
                                     <cpcTextBox:TextBox x:Name="txtTerm"
@@ -1335,7 +1427,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Request Ship Date:"
+                                               Text="{DynamicResource SO_TextBlock_RequestShipDate}"
                                                TextWrapping="NoWrap" />
                                     <DatePicker x:Name="dtpRequestShipDate"
                                                 Grid.Row="1"
@@ -1348,7 +1440,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Sales Rep:"
+                                               Text="{DynamicResource SO_TextBlock_SalesRep}"
                                                TextWrapping="NoWrap"
                                                d:LayoutOverrides="HorizontalAlignment">
                                         <!--  when user choise booking channel is website, Sales rep will be collapsed  -->
@@ -1381,7 +1473,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Deposit:"
+                                               Text="{DynamicResource SO_TextBlock_Deposit}"
                                                TextWrapping="NoWrap"
                                                d:LayoutOverrides="HorizontalAlignment">
                                         <TextBlock.Visibility>
@@ -1402,6 +1494,7 @@
                                              Padding="2,0,2,0"
                                              Text="{Binding SelectedSaleOrder.Deposit,
                                                             Mode=OneWay,
+                                                            ConverterCulture={x:Static local:Define.ConverterCulture},
                                                             StringFormat={x:Static local:Define.CurrencyFormat}}"
                                              TextWrapping="NoWrap"
                                              Visibility="{Binding Path=Visibility,
@@ -1439,7 +1532,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Remark:"
+                                               Text="{DynamicResource C102}"
                                                TextWrapping="NoWrap" />
                                     <TextBox x:Name="txtRemark1"
                                              Grid.Row="1"
@@ -1477,7 +1570,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Tax Location:"
+                                                   Text="{DynamicResource SO_TextBlock_TaxLocation}"
                                                    TextWrapping="NoWrap" />
 
                                         <TextBlock x:Name="txtblBindingTaxLocation"
@@ -1495,7 +1588,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Tax Code:"
+                                                  Text="{DynamicResource C144}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblBindingTaxCode"
                                                    Margin="10,0,0,0"
@@ -1526,7 +1619,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Tax Excemption"
+                                                    Text="{DynamicResource SO_TextBlock_TaxExcemption}"
                                                    TextWrapping="NoWrap" />
 
                                         <TextBlock x:Name="txtblTaxExcemptionNo"
@@ -1535,7 +1628,7 @@
                                                    FontWeight="Bold"
                                                    Foreground="#FFFEFF00"
                                                    Style="{DynamicResource TextBlockNormal}"
-                                                   Text="Tax Code:"
+                                                   Text="{DynamicResource C144}"
                                                    TextWrapping="NoWrap" />
                                         <TextBlock x:Name="txtblBindingTaxExcemptionNo"
                                                    Margin="10,0,0,0"
@@ -1552,7 +1645,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Price Level:"
+                                               Text="{DynamicResource C157}"
                                                TextWrapping="NoWrap"
                                                d:LayoutOverrides="HorizontalAlignment" />
                                     <ComboBox x:Name="cmbPriceLevel2"
@@ -1571,7 +1664,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Sub-Total:"
+                                                Text="{DynamicResource C112}"
                                                TextWrapping="NoWrap" />
                                     <TextBox x:Name="txtOrderTabSubTotal"
                                              Grid.RowSpan="1"
@@ -1585,13 +1678,14 @@
                                              Padding="2,0,2,0"
                                              Text="{Binding SelectedSaleOrder.SubTotal,
                                                             Mode=OneWay,
+                                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                                             StringFormat={x:Static local:Define.CurrencyFormat}}"
                                              TextWrapping="NoWrap" />
                                     <TextBlock x:Name="txtblOrderTabDiscountleft"
                                                Grid.Column="2"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
-                                               Text="Discount:"
+                                               Text="{DynamicResource C121}"
                                                TextWrapping="NoWrap">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
@@ -1619,6 +1713,8 @@
                                                                IntegerLength="3"
                                                                Padding="2,0,2,0"
                                                                TextWrapping="NoWrap"
+                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                               NumericStringFormat="{}{0:N0}"
                                                                Value="{Binding SelectedSaleOrder.DiscountPercent,
                                                                                Mode=TwoWay,
                                                                                UpdateSourceTrigger=PropertyChanged}">
@@ -1650,7 +1746,7 @@
                                                Margin="10,0,0,0"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
-                                               Text="Discount:"
+                                                 Text="{DynamicResource C121}"
                                                TextWrapping="NoWrap">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
@@ -1670,8 +1766,8 @@
                                                              Margin="0,2"
                                                              HorizontalContentAlignment="Right"
                                                              Padding="2,0,2,0"
-                                                             SymbolAlignment="Left"
-                                                             
+                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              TextWrapping="NoWrap"
                                                              Value="{Binding SelectedSaleOrder.DiscountAmount,
                                                                              Mode=TwoWay,
@@ -1694,7 +1790,7 @@
                                                Grid.Column="2"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
-                                               Text="Tax:"
+                                               Text="{DynamicResource SO_TextBlock_Tax}"
                                                TextWrapping="NoWrap">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
@@ -1723,6 +1819,8 @@
                                                                IsReadOnly="True"
                                                                Padding="2,0,2,0"
                                                                TextWrapping="NoWrap"
+                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                               NumericStringFormat="{}{0:N0}"
                                                                Value="{Binding SelectedSaleOrder.TaxPercent,
                                                                                Mode=TwoWay,
                                                                                UpdateSourceTrigger=PropertyChanged}">
@@ -1754,7 +1852,7 @@
                                                Margin="10,0,0,0"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
-                                               Text="Tax:"
+                                               Text="{DynamicResource SO_TextBlock_Tax}"
                                                TextWrapping="NoWrap">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource TextBlockNormal}" TargetType="{x:Type TextBlock}">
@@ -1775,6 +1873,8 @@
                                                              IsReadOnly="True"
                                                              Padding="2,0,2,0"
                                                              TextWrapping="NoWrap"
+                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                              Value="{Binding SelectedSaleOrder.TaxAmount,
                                                                              Mode=TwoWay,
                                                                              UpdateSourceTrigger=PropertyChanged}">
@@ -1799,7 +1899,7 @@
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Shipping:"
+                                              Text="{DynamicResource SO_TextBlock_Shipping}"
                                                TextWrapping="NoWrap" />
                                     <cpcTextBox:TextBoxMoney x:Name="txtOrderTabShippingHandling"
                                                              Grid.Row="3"
@@ -1808,8 +1908,9 @@
                                                              Margin="0,2"
                                                              HorizontalContentAlignment="Right"
                                                              Padding="2,0,2,0"
-                                                             SymbolAlignment="Left"
-                                                             
+                                                             ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+
                                                              TextWrapping="NoWrap"
                                                              Value="{Binding SelectedSaleOrder.Shipping,
                                                                              Mode=TwoWay,
@@ -1829,7 +1930,7 @@
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Total:"
+                                               Text="{DynamicResource C103}"
                                                TextWrapping="NoWrap" />
                                     <TextBox x:Name="txtOrderTotal"
                                              Grid.Row="5"
@@ -1851,7 +1952,7 @@
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource TextBlockNormal}"
-                                               Text="Balance:"
+                                               Text="{DynamicResource C108}"
                                                TextWrapping="NoWrap" />
                                     <TextBox x:Name="txtBalance"
                                              Grid.Row="7"

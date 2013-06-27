@@ -1214,6 +1214,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isQuationConverted;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsQuationConverted</para>
+        /// </summary>
+        public bool IsQuationConverted
+        {
+            get { return this._isQuationConverted; }
+            set
+            {
+                if (this._isQuationConverted != value)
+                {
+                    this.IsDirty = true;
+                    this._isQuationConverted = value;
+                    OnPropertyChanged(() => IsQuationConverted);
+                    PropertyChangedCompleted(() => IsQuationConverted);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -1293,6 +1313,7 @@ namespace CPC.POS.Model
             this.base_SaleOrder.IsLocked = this.IsLocked;
             this.base_SaleOrder.RewardAmount = this.RewardAmount;
             this.base_SaleOrder.Cashier = this.Cashier;
+            this.base_SaleOrder.IsQuationConverted = this.IsQuationConverted;
         }
 
         /// <summary>
@@ -1359,6 +1380,7 @@ namespace CPC.POS.Model
             this._isLocked = this.base_SaleOrder.IsLocked;
             this._rewardAmount = this.base_SaleOrder.RewardAmount;
             this._cashier = this.base_SaleOrder.Cashier;
+            this._isQuationConverted = this.base_SaleOrder.IsQuationConverted;
         }
 
         /// <summary>
@@ -1425,6 +1447,7 @@ namespace CPC.POS.Model
             this.IsLocked = this.base_SaleOrder.IsLocked;
             this.RewardAmount = this.base_SaleOrder.RewardAmount;
             this.Cashier = this.base_SaleOrder.Cashier;
+            this.IsQuationConverted = this.base_SaleOrder.IsQuationConverted;
         }
 
         #endregion
@@ -1603,7 +1626,7 @@ namespace CPC.POS.Model
         #endregion
 
         #region AnyShipped
-        private bool _anyShipped;
+        //private bool _anyShipped;
         /// <summary>
         /// Gets or sets the AnyShipped.
         /// </summary>
@@ -1709,7 +1732,6 @@ namespace CPC.POS.Model
         }
         #endregion
 
-
         #region SaleOrderShipDetailCollection
         private CollectionBase<base_SaleOrderShipDetailModel> _saleOrderShipDetailCollection;
         /// <summary>
@@ -1752,6 +1774,8 @@ namespace CPC.POS.Model
         private CollectionBase<base_SaleOrderDetailModel> _saleOrderShippedCollection;
         /// <summary>
         /// Gets or sets the SaleOrderReturnedCollection.
+        /// <para>store items saleorderdetail is shipped </para>
+        /// <para>quantity of shipped is PickQty</para>
         /// </summary>
         public CollectionBase<base_SaleOrderDetailModel> SaleOrderShippedCollection
         {
@@ -1824,7 +1848,50 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        #region IsShowErrorColumn
+        private bool _isHiddenErrorColumn;
+        /// <summary>
+        /// Gets or sets the IsHiddenErrorColumn.
+        /// </summary>
+        public bool IsHiddenErrorColumn
+        {
+            get { return _isHiddenErrorColumn; }
+            set
+            {
+                if (_isHiddenErrorColumn != value)
+                {
+                    _isHiddenErrorColumn = value;
+                    OnPropertyChanged(() => IsHiddenErrorColumn);
+                }
+            }
+        }
+        #endregion
 
+        #region TotalPaid
+        //private decimal _totalPaid;
+        /// <summary>
+        /// Gets or sets the TotalPaid.
+        /// </summary>
+        public decimal TotalPaid
+        {
+            get
+            {
+                if (this.PaymentCollection != null)
+                    return this.PaymentCollection.Sum(x => x.TotalPaid -x.Change);
+                return 0;
+            }
+            //set
+            //{
+            //    if (_totalPaid != value)
+            //    {
+            //        _totalPaid = value;
+            //        OnPropertyChanged(() => TotalPaid);
+            //    }
+            //}
+        }
+
+
+        #endregion
 
         #endregion
 
@@ -1871,8 +1938,8 @@ namespace CPC.POS.Model
             if (IsDeposit)
                 this.Balance = this.Total - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
             else
-                
-            this.Balance = this.RewardAmount - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
+
+                this.Balance = this.RewardAmount - (this.Deposit.HasValue ? this.Deposit.Value : 0) - this.Paid;
         }
 
         /// <summary>
@@ -1919,6 +1986,23 @@ namespace CPC.POS.Model
         public void RaisePropertyChanged(string propertyChanged)
         {
             OnPropertyChanged(propertyChanged);
+        }
+
+        public void CalcDueQty()
+        {
+            QtyDue = QtyOrdered - QtyReceived;
+        }
+
+
+        /// <summary>
+        /// Calculate Unfill
+        /// </summary>
+        public void CalUnfill()
+        {
+            if (QtyOrdered != 0)
+                UnFilled = (Convert.ToDecimal(QtyDue) / Convert.ToDecimal(QtyOrdered)) * 100;
+            else
+                UnFilled = 0;
         }
 
 
@@ -2016,6 +2100,14 @@ namespace CPC.POS.Model
             this.IsDeposit = saleOrderModel.IsDeposit;
         }
 
+
+        public void RaiseTotalPaid() {
+            OnPropertyChanged(() => TotalPaid);
+        }
+        public void RaisePropertyChanged(Expression<Func<base_SaleOrderModel>> model)
+        {
+            OnPropertyChanged(model);
+        }
         #endregion
 
         #region Override Methods

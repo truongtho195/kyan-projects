@@ -10,6 +10,26 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         ShowInTaskbar="False">
+	<Window.Resources>
+		<DataTemplate x:Key="LoginNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_LoginName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_UserName}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="IPSourceHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_IPSource}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ConnectedOnHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_ConnectedOn}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DisConnectedOnHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_DisConnectedOn}" />
+        </DataTemplate>
+		<DataTemplate x:Key="DisConnectedHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_DisConnected}" />
+        </DataTemplate>
+	</Window.Resources>
     <Grid>
         <dataGridControl:DataGridControl x:Name="dtgrdUsers"
                                          AutoGenerateColumns="False"
@@ -26,7 +46,7 @@
                                          CurrentPageIndex="{Binding CurrentPageIndex,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
                                          VisibilityAddItem="Collapsed">
             <dataGridControl:DataGridControl.Columns>
-                <DataGridTextColumn Header="Login Name"
+                <DataGridTextColumn HeaderTemplate="{StaticResource LoginNameHeaderTemplate}"
                                     Binding="{Binding LoginName}"
                                     IsReadOnly="True"
                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -34,7 +54,7 @@
                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                     Width="150" />
-                <DataGridTextColumn Header="User Name "
+                <DataGridTextColumn HeaderTemplate="{StaticResource UserNameHeaderTemplate}"
                                     Binding="{Binding UserName}"
                                     IsReadOnly="True"
                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -42,7 +62,8 @@
                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                     Width="150" />
-                <DataGridTextColumn Header="Ip Source"
+                <DataGridTextColumn 
+				                    HeaderTemplate="{StaticResource IPSourceHeaderTemplate}"
                                     Binding="{Binding IpSource}"
                                     IsReadOnly="True"
                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -50,7 +71,7 @@
                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                     Width="150" />
-                <DataGridTextColumn Header="Connected On"
+                <DataGridTextColumn HeaderTemplate="{StaticResource ConnectedOnHeaderTemplate}"
                                     Binding="{Binding ConnectedOn}"
                                     IsReadOnly="True"
                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -58,7 +79,7 @@
                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                     Width="150" />
-                <DataGridTextColumn Header="DisConnected On"
+                <DataGridTextColumn HeaderTemplate="{StaticResource DisConnectedOnHeaderTemplate}"
                                     Binding="{Binding DisConnectedOn}"
                                     IsReadOnly="True"
                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -66,7 +87,7 @@
                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                     Width="150" />
-                <DataGridTemplateColumn Header="DisConnected"
+                <DataGridTemplateColumn HeaderTemplate="{StaticResource DisConnectedHeaderTemplate}"
                                         IsReadOnly="True"
                                         SortMemberPath="IsDisconected"
                                         dataGridControl:DataGridColumnExtensions.IsFilter="True"

@@ -385,8 +385,9 @@ namespace CPC.POS.ViewModel
         {
             if (ChangeViewExecute(null))
             {
-                CreateEmployee();
-                IsSearchMode = false;
+                this.CreateEmployee();
+                //To set enable of detail grid.
+                this.IsSearchMode = false;
             }
         }
         #endregion
@@ -434,8 +435,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDeleteCommandExecute()
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
-            if (result.Is(MessageBoxResult.Yes))
+            MessageBoxResult msgResult = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo);
+            if (msgResult.Is(MessageBoxResult.Yes))
             {
                 if (SelectedItemEmployee.IsNew)
                 {
@@ -456,6 +457,7 @@ namespace CPC.POS.ViewModel
                         NumberOfItems = NumberOfItems - 1;
                         DeleteNote();
                         IsSearchMode = true;
+                        App.WriteLUserLog("Employee", "User deleted an employee.");
                     }
                     else
                     {
@@ -495,8 +497,8 @@ namespace CPC.POS.ViewModel
                     Keyword = param.ToString();
                     if (SearchOption == 0)
                     {
-                        //Thong bao Can co dk
-                        SearchAlert = "Search Option is required";
+                        //Notification when search condition is empty.
+                        SearchAlert = Language.Text20;
                     }
                     else
                     {
@@ -762,10 +764,11 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDeletesCommandExecute(object param)
         {
-            MessageBoxResult msgResult = MessageBox.Show("Do you want to delete this vendor?", "POS", MessageBoxButton.YesNo);
+            MessageBoxResult msgResult = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo);
             if (msgResult.Is(MessageBoxResult.Yes))
             {
                 bool flag = false;
+                string employeeID = string.Empty;
                 List<ItemModel> ItemModel = new List<ItemModel>();
                 for (int i = 0; i < (param as ObservableCollection<object>).Count; i++)
                 {
@@ -781,6 +784,7 @@ namespace CPC.POS.ViewModel
                         NumberOfItems = NumberOfItems - 1;
                         this.DeleteNoteExt(model);
                         i--;
+                        employeeID += employeeID + model.GuestNo;
                     }
                     else
                     {
@@ -790,6 +794,8 @@ namespace CPC.POS.ViewModel
                 }
                 if (flag)
                     _dialogService.ShowDialog<ProblemDetectionView>(_ownerViewModel, new ProblemDetectionViewModel(ItemModel, "Employee"), "Problem Detection");
+                if (ItemModel.Count < (param as ObservableCollection<object>).Count)
+                    App.WriteLUserLog("Employee", "User deleted employee(s)." + employeeID);
             }
         }
         #endregion
@@ -961,6 +967,7 @@ namespace CPC.POS.ViewModel
             // To turn off IsDirty & IsNew
             this.SelectedItemEmployee.EndUpdate();
             this.EmployeeCollection.Add(this.SelectedItemEmployee);
+            App.WriteLUserLog("Employee", "User inserted new employee.");
         }
         #endregion
 
@@ -1046,6 +1053,7 @@ namespace CPC.POS.ViewModel
             _guestRepository.Commit();
             // To turn off IsDirty & IsNew
             this.SelectedItemEmployee.EndUpdate();
+            App.WriteLUserLog("Employee", "User updated an employee.");
         }
         #endregion
 
@@ -1060,7 +1068,7 @@ namespace CPC.POS.ViewModel
             if (this.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (OnSaveCommandCanExecute(null))

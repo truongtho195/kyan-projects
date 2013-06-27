@@ -1169,8 +1169,8 @@ namespace CPC.POS.ViewModel
                         {
                             purchaseOrderDetailModel.UnitName = productUOM.Name;
                         }
-                        purchaseOrderDetailModel.OnHandQty = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
-                        purchaseOrderDetailModel.OnHandQtyTemp = purchaseOrderDetailModel.OnHandQty;
+                        purchaseOrderDetailModel.OnHandQtyOnBaseUnit = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
+                        purchaseOrderDetailModel.OnHandQtyOnBaseUnitTemp = purchaseOrderDetailModel.OnHandQtyOnBaseUnit;
                         purchaseOrderDetailModel.BackupQuantity = item.Quantity;
                         purchaseOrderDetailModel.PurchaseOrder = _selectedPurchaseOrder;
                         purchaseOrderDetailModel.IsDirty = false;

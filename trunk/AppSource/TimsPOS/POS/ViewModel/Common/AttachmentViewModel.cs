@@ -22,6 +22,7 @@ using CPC.Toolkit.Scanner;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Data;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -952,7 +953,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -981,7 +982,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1022,7 +1023,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1189,7 +1190,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1219,7 +1220,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1305,7 +1306,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1340,7 +1341,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
             finally
             {
@@ -1387,13 +1388,13 @@ namespace CPC.POS.ViewModel
                 else
                 {
                     _log4net.Error(string.Format("Message: {0}. Source: {1}", win32Exception.Message, win32Exception.Source));
-                    MessageBox.Show(win32Exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    MessageBox.Show(win32Exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1425,7 +1426,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1488,7 +1489,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1528,7 +1529,7 @@ namespace CPC.POS.ViewModel
             }
             else
             {
-                MessageBox.Show("Scanner device not found!");
+                MessageBox.Show(Language.Text17);
             }
         }
 
@@ -1590,7 +1591,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1752,7 +1753,7 @@ namespace CPC.POS.ViewModel
                             {
                                 // Get old name.
                                 currentFolder.FolderName = currentFolder.base_VirtualFolder.FolderName;
-                                MessageBox.Show(string.Format("Cannot rename {0}. A folder with the name you specified already exists.", currentFolder.FolderName));
+                                MessageBox.Show(string.Format(Language.Text18, currentFolder.FolderName));
                             }
                             else
                             {
@@ -1768,7 +1769,7 @@ namespace CPC.POS.ViewModel
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 }
             }
 
@@ -1815,7 +1816,7 @@ namespace CPC.POS.ViewModel
                             {
                                 // Get old name.
                                 currentAttachment.FileName = currentAttachment.base_Attachment.FileName;
-                                MessageBox.Show(string.Format("Cannot rename {0}. A file with the name you specified already exists.", currentAttachment.FileName));
+                                MessageBox.Show(string.Format(Language.Text19, currentAttachment.FileName));
                             }
                             else
                             {
@@ -1831,7 +1832,7 @@ namespace CPC.POS.ViewModel
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 }
             }
 

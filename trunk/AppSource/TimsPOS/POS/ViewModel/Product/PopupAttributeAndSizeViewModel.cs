@@ -330,7 +330,7 @@ namespace CPC.POS.ViewModel
                     productStoreItem.StoreCode = comboItem.ParentId;
                 }
 
-                // Update quantity on hand
+                // Update total quantity on product
                 productModel.UpdateQuantityOnHand();
             }
         }

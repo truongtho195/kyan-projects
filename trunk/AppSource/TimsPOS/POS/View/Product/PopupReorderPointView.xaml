@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupReorderPointView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="368"
+             Height="357"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="ListBoxItemAvailableQty"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                SnapsToDevicePixels="true">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="grdReorderPointByStore">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentReorderPointByStore"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdReorderPointByStore1"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="136" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblCompanyReorderPoint"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Company Reorder Point:"
+                           TextWrapping="NoWrap" />
+                <textBoxControl:TextBoxNumeric x:Name="txtCompanyReorderPoint"
+                                               Grid.Column="1"
+                                               Margin="0,2,10,2"
+                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                               NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding CompanyReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ListBox x:Name="lbStoreQty"
+                         Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         Background="{x:Null}"
+                         BorderBrush="{x:Null}"
+                         BorderThickness="0"
+                         ItemContainerStyle="{DynamicResource ListBoxItemAvailableQty}"
+                         ItemsSource="{Binding ProductStoreCollection}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="25"
+                                  Background="{x:Null}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="134.5" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="0,0,10,0"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{Binding StorePosition}"
+                                           TextWrapping="NoWrap" />
+                                <textBoxControl:TextBoxNumeric x:Name="txtValue"
+                                                               Grid.Column="1"
+                                                               Grid.ColumnSpan="1"
+                                                               Width="80"
+                                                               Margin="0,2"
+                                                               ConverterCulture="{Binding Source={x:Static local:Define.ConverterCulture}}"
+                                                               NumericStringFormat="{}{0:N0}"
+                                                               Padding="2,0,2,0"
+                                                               TextWrapping="NoWrap"
+                                                               Value="{Binding ReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

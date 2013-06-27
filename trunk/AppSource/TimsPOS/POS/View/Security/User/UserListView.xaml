@@ -93,6 +93,18 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+		<DataTemplate x:Key="LoginNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_LoginName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_UserName}" />
+        </DataTemplate>
+		 <DataTemplate x:Key="CodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_Code}" />
+        </DataTemplate>
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_Name}" />
+        </DataTemplate>
     </UserControl.Resources>
     <Anno:AnnotationManager.Annotations>
         <Anno:Annotation AuthorInitials="BUTTON ADD USER PERMISSION "
@@ -199,7 +211,7 @@
                                Height="1"
                                Margin="2,0" />
                     <TextBlock x:Name="txtblBindingUserPermission"
-                               Text="Permission"
+                               Text="{DynamicResource UL_TextBlock_Permission}"
                                TextWrapping="NoWrap"
                                FontSize="33.333"
                                Margin="0,0,20,7"
@@ -230,7 +242,7 @@
                                           Margin="0">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblUser"
-                                                   Text="User"
+                                                   Text="{DynamicResource UL_TextBlock_User}"
                                                    TextWrapping="NoWrap"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
                                     </GroupBox.Header>
@@ -245,7 +257,7 @@
                                         </Grid.RowDefinitions>
                                         <CheckBox IsChecked="{Binding IsIncludeAccountLocked,UpdateSourceTrigger=PropertyChanged}"
                                                   x:Name="cbIncluded"
-                                                  Content="Included locked accounts"
+                                                  Content="{DynamicResource UL_TextBlock_Includedlocked}"
                                                   VerticalAlignment="Center"
                                                   Margin="10,0,0,0"
                                                   HorizontalAlignment="Left"
@@ -271,7 +283,7 @@
                                                                          RowStyle="{StaticResource myEditDataGridRowStyle}"
                                                                          Grid.Row="2">
                                             <dataGridControl:DataGridControl.Columns>
-                                                <DataGridTextColumn Header="UserName "
+                                                <DataGridTextColumn HeaderTemplate="{StaticResource UserNameHeaderTemplate}"
                                                                     Binding="{Binding UserName}"
                                                                     IsReadOnly="True"
                                                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -279,7 +291,7 @@
                                                                     dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
                                                                     dataGridControl:DataGridColumnExtensions.FilterType="Text"
                                                                     Width="110" />
-                                                <DataGridTextColumn Header="Login Name"
+                                                <DataGridTextColumn HeaderTemplate="{StaticResource LoginNameHeaderTemplate}"
                                                                     Binding="{Binding LoginName}"
                                                                     IsReadOnly="True"
                                                                     dataGridControl:DataGridColumnExtensions.IsFilter="True"
@@ -296,7 +308,7 @@
                                           Margin="0,10,0,0">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblUserInfo"
-                                                   Text="User Info"
+                                                   Text="{DynamicResource UL_TextBlock_UserInfo}"
                                                    TextWrapping="NoWrap"
                                                    FontWeight="Bold"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
@@ -315,7 +327,7 @@
                                             <RowDefinition Height="25" />
                                         </Grid.RowDefinitions>
                                         <TextBlock x:Name="txtblUsername"
-                                                   Text="Username:"
+                                                   Text="{DynamicResource LG_TextBlock_UserName}"
                                                    TextWrapping="NoWrap"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
@@ -330,7 +342,7 @@
                                                                    Grid.Column="1"
                                                                    IsEnabled="False" />
                                         <TextBlock x:Name="txtblLogin"
-                                                   Text="Login:"
+                                                   Text="{DynamicResource UL_TextBlock_LoginName}"
                                                    TextWrapping="NoWrap"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
@@ -347,7 +359,7 @@
                                                                    Grid.Column="1"
                                                                    Grid.Row="1" />
                                         <TextBlock x:Name="txtblDepartment"
-                                                   Text="Department:"
+                                                   Text="{DynamicResource UL_TextBlock_Department}"
                                                    TextWrapping="NoWrap"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
@@ -364,7 +376,7 @@
                                                                    Grid.Row="2"
                                                                    IsEnabled="False" />
                                         <TextBlock x:Name="txtblPosition"
-                                                   Text="Position:"
+                                                   Text="{DynamicResource UL_TextBlock_Position}"
                                                    TextWrapping="NoWrap"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
@@ -396,7 +408,7 @@
                                 <GroupBox x:Name="gbSecurity">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblSecurity"
-                                                   Text="Security"
+                                                   Text="{DynamicResource UL_TextBlock_Security}"
                                                    TextWrapping="NoWrap"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
                                     </GroupBox.Header>
@@ -435,7 +447,7 @@
                                         </Grid>
                                         <CheckBox x:Name="cbSetDefault"
                                                   IsChecked="{Binding IsSetDefault}"
-                                                  Content="Set Default"
+                                                  Content="{DynamicResource UL_TextBlock_SetDefault}"
                                                   VerticalAlignment="Center"
                                                   Margin="10,0,0,0"
                                                   d:LayoutOverrides="Width"
@@ -444,7 +456,7 @@
                                                   Grid.Row="1"
                                                   Grid.ColumnSpan="2" />
                                         <TextBlock x:Name="txtblExpiryDate"
-                                                   Text="Expiry Date:"
+                                                   Text="{DynamicResource UL_TextBlock_ExpiryDate}"
                                                    TextWrapping="NoWrap"
                                                    Margin="135,0,0,0"
                                                    Style="{DynamicResource TextBlockNormal}"
@@ -462,7 +474,7 @@
                                                     HorizontalAlignment="Left"
                                                     Grid.Row="1" />
                                         <TextBlock x:Name="txtblPassword"
-                                                   Text="Password:"
+                                                   Text="{DynamicResource LG_TextBlock_Password}"
                                                    TextWrapping="NoWrap"
                                                    Grid.Row="3"
                                                    VerticalAlignment="Center"
@@ -481,7 +493,7 @@
                                                      helper:PasswordHelper.BoundPassword="{Binding SelectedItemUser.ClonePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
                                                      HorizontalAlignment="Left" />
                                         <TextBlock x:Name="txtblConfirm"
-                                                   Text="Confirm:"
+                                                   Text="{DynamicResource UL_TextBlock_Confirm}"
                                                    TextWrapping="NoWrap"
                                                    Grid.Row="3"
                                                    VerticalAlignment="Center"
@@ -510,7 +522,7 @@
                                           VerticalContentAlignment="Stretch">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblUserRight"
-                                                   Text="User Rights"
+                                                   Text="{DynamicResource UL_TextBlock_UserRight}"
                                                    Style="{DynamicResource TextBlockValidationStyle}"
                                                    Tag="{Binding IsCheckedAll, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
                                                    TextWrapping="NoWrap" />
@@ -536,15 +548,16 @@
                                                                           Margin="5,0,5,5"
                                                                           Grid.Row="1">
                                             <dataGridControl:DataGridControl.Columns>
-                                                <DataGridTextColumn Header="Code"
+                                                <DataGridTextColumn HeaderTemplate="{StaticResource CodeHeaderTemplate}"
                                                                     Binding="{Binding Code}"
                                                                     IsReadOnly="True"
                                                                     MinWidth="110" />
-                                                <DataGridTextColumn Header="Name"
+                                                <DataGridTextColumn HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                                     Binding="{Binding Name}"
                                                                     IsReadOnly="True"
                                                                     Width="*" />
                                                 <DataGridCheckBoxColumn MinWidth="25"
+                                                                        CanUserSort="False"
                                                                         Binding="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                                     <DataGridCheckBoxColumn.HeaderTemplate>
                                                         <DataTemplate>

@@ -5,6 +5,7 @@
              xmlns:converter="clr-namespace:CPC.Converter"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
@@ -12,14 +13,12 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
-                   Grid.RowSpan="2"
                    Fill="{DynamicResource UserControl_Background_Image}" />
-        <control:BusyIndicator Grid.Row="1"
-                               Grid.RowSpan="1"
-                               IsBusy="{Binding IsBusy}">
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
             <Grid x:Name="grdCostAdjustmentHistory">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50" />
@@ -32,11 +31,11 @@
                             Orientation="Horizontal">
                     <Button x:Name="btnRestore"
                             Command="{Binding RestoreCommand}"
-                            CommandParameter="{Binding SelectedItem, ElementName=dtgrdCostAdjustmentHistory}"
                             Width="40"
                             Height="40"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            CommandParameter="{Binding SelectedItem, ElementName=dtgrdCostAdjustmentHistory}"
                             Style="{DynamicResource ButtonSystem}">
                         <StackPanel x:Name="stkpBtnRestore"
                                     HorizontalAlignment="Center"
@@ -130,7 +129,7 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Description/Style/Model"
+                                              Content="Description/StyleModel"
                                               IsChecked="{Binding SearchOption, ConverterParameter={x:Static local:SearchOptions.Description}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbVendor"
                                               Margin="10,0,0,0"
@@ -155,6 +154,17 @@
                                                Text="{Binding SearchAlert}"
                                                TextWrapping="Wrap" />
                                 </StackPanel>
+                                <Button x:Name="btnAdvanceSearch"
+                                        Command="{Binding PopupAdvanceSearchCommand}"
+                                        Grid.Row="2"
+                                        Width="100"
+                                        Height="20"
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CommandParameter="{Binding Path=Text, ElementName=txtKeyword}"
+                                        Content="Advance Search"
+                                        Style="{DynamicResource ButtonAdvanceSearch}" />
                             </Grid>
                         </Grid>
                     </GroupBox>
@@ -171,18 +181,38 @@
                                                      ItemsSource="{Binding CostAdjustmentCollection}"
                                                      NumberOfItems="{Binding TotalCostAdjustment}"
                                                      Style="{DynamicResource DatagridWithoutRowHeader}">
-                        <dataGridControl:DataGridControl.Columns>
-                            <DataGridTextColumn Header="Date"
-                                                Binding="{Binding LoggedTime, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
-                                                Width="70" />
+                        <DataGrid.ContextMenu>
+                            <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                <MenuItem Header="Restore"
+                                          Command="{Binding RestoreCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource Restore}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Date"
+                                                    Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding LoggedTime, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Store"
                                                 Binding="{Binding StoreName, Mode=OneWay}"
                                                 Width="150" />
                             <DataGridTextColumn Header="Reason"
-                                                Binding="{Binding Reason, Mode=OneWay}"
-                                                Width="500" />
+                                                Binding="{Binding Reason, Mode=OneWay, ConverterParameter=AdjustmentReason, Converter={StaticResource comboxItemToTextConverter}}"
+                                                Width="200" />
                             <DataGridTextColumn Header="Status"
-                                                Binding="{Binding Status, Mode=OneWay}"
+                                                Binding="{Binding Status, Mode=OneWay, ConverterParameter=AdjustmentStatus, Converter={StaticResource comboxItemToTextConverter}}"
                                                 Width="100" />
                             <DataGridTextColumn Header="Code"
                                                 Binding="{Binding ProductModel.Code, Mode=OneWay}"
@@ -201,7 +231,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   Text="{Binding OldCost, Mode=OneWay, StringFormat=c}" />
+                                                   Text="{Binding OldCost, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -210,7 +240,8 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   Text="{Binding NewCost, Mode=OneWay, StringFormat=c}" />
+                                                   Foreground="{DynamicResource ForegroundGreenBrush}"
+                                                   Text="{Binding NewCost, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -219,11 +250,12 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   Text="{Binding CostDifference, Mode=OneWay, StringFormat=c}" />
+                                                   Foreground="{DynamicResource ForegroundRedBrush}"
+                                                   Text="{Binding CostDifference, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                        </dataGridControl:DataGridControl.Columns>
+                        </DataGrid.Columns>
                     </dataGridControl:DataGridControl>
                 </Grid>
             </Grid>

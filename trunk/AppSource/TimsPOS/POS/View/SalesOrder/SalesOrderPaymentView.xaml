@@ -143,8 +143,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Right"
-                                                   
-                                                   Text="{Binding Paid, StringFormat={x:Static local:Define.CurrencyFormat}}">
+                                                   Text="{Binding Paid,Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}">
                                              <TextBlock.Visibility>
                                                 <Binding Mode="OneWay"
                                                          Path="IsPaymentCardMethod"
@@ -164,7 +163,8 @@
                                                                  cpcBehavior:DataGridCellFocusHelper.Command="{Binding DataContext.FillMoneyCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl},
                                                                        Mode=FindAncestor}}"
                                                                  HorizontalAlignment="Right"
-                                                                 
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
                                                                  Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
                                                                  Value="{Binding Paid,
                                                                                  Mode=TwoWay,
@@ -200,7 +200,8 @@
                     <Grid x:Name="grdTotal1" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="95" />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="0.644*" />
+                            <ColumnDefinition Width="0.356*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25" />
@@ -221,7 +222,7 @@
                                    FontWeight="Bold"
                                    Style="{DynamicResource TextBlockNormal}"
                                    Text="{Binding TotalDeposit,
-                                                  Mode=OneWay,
+                                                  Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture},
                                                   StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblTotalDiscount"
@@ -240,7 +241,7 @@
                                    FontWeight="Bold"
                                    Style="{DynamicResource TextBlockNormal}"
                                    Text="{Binding TotalDiscount,
-                                                  Mode=OneWay,
+                                                  Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                   StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblLastPaid"
@@ -253,16 +254,34 @@
                                    TextWrapping="NoWrap" Grid.Column="1" />
                         <TextBlock x:Name="txtblBindingLastPaid"
                                    Grid.Row="0"
-                                   Grid.Column="1"
-                                   Margin="180,0,0,0"
+                                   Grid.Column="2"
+                                   Margin="0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    FontWeight="Bold"
                                    Style="{DynamicResource TextBlockNormal}"
                                    Text="{Binding LastPayment,
-                                                  Mode=OneWay,
+                                                  Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                   StringFormat={x:Static local:Define.CurrencyFormat}}"
                                    TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblRefunded"
+                        	Margin="120,0,0,0"
+                        	HorizontalAlignment="Left"
+                        	VerticalAlignment="Center"
+                        	FontWeight="Bold"
+                        	Style="{DynamicResource TextBlockNormal}"
+                        	Text="Refunded:"
+                        	TextWrapping="NoWrap" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock x:Name="txtblBindingRefunded"
+                        	Grid.Row="1"
+                        	Grid.Column="2"
+                        	Margin="0"
+                        	HorizontalAlignment="Left"
+                        	VerticalAlignment="Center"
+                        	FontWeight="Bold"
+                        	Style="{DynamicResource TextBlockNormal}"
+                        	Text="{Binding Refunded, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+                        	TextWrapping="NoWrap" />
                     </Grid>
 
                 </Grid>
@@ -294,7 +313,7 @@
                                  IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
                                  Text="{Binding PaymentModel.TotalAmount,
-                                                Mode=OneWay,
+                                                Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                 StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblTotal"
                                    Margin="10,10,0,0"
@@ -316,7 +335,7 @@
                                  Foreground="#FF00FF10"
                                  IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
-                                 Text="{Binding PaymentModel.TotalPaid,
+                                 Text="{Binding PaymentModel.TotalPaid,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                 StringFormat={x:Static local:Define.CurrencyFormat},
                                                 Mode=OneWay}" />
                         <TextBlock x:Name="txtblPaid"
@@ -347,7 +366,7 @@
                                  IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
                                  Text="{Binding PaymentModel.Change,
-                                                Mode=OneWay,
+                                                Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                 StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblChange"
                                    Margin="10,10,0,0"
@@ -378,7 +397,7 @@
                                  IsReadOnly="True"
                                  Style="{DynamicResource TextBoxPayment}"
                                  Text="{Binding PaymentModel.Balance,
-                                                Mode=OneWay,
+                                                Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture},
                                                 StringFormat={x:Static local:Define.CurrencyFormat}}" />
                         <TextBlock x:Name="txtblBalance"
                                    Margin="10,10,0,0"

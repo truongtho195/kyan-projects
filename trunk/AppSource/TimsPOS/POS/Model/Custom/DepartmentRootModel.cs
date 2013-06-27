@@ -206,6 +206,7 @@ namespace CPC.POS.Model
                 {
                     _isSelected = value;
                     OnPropertyChanged(() => IsSelected);
+                    PropertyChangedCompleted(() => IsSelected);
                 }
             }
         }
@@ -228,8 +229,18 @@ namespace CPC.POS.Model
 
         #endregion
 
-        #region Custom Code
+        #region Property Changed Methods
 
+        protected override void PropertyChangedCompleted(string propertyName)
+        {
+            if (propertyName == "IsSelected")
+            {
+                if (_isSelected && !_isExpanded && _productDepartmentCollection != null && _productDepartmentCollection.Any())
+                {
+                    IsExpanded = true;
+                }
+            }
+        }
 
         #endregion
     }

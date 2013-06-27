@@ -336,7 +336,7 @@
                         <cpcDataGridToolkit:DataGridControl.Columns>
 
                             <DataGridTextColumn Header="PO #"
-                                                Width="80"
+                                                Width="85"
                                                 Binding="{Binding PurchaseOrderNo}" />
 
                             <DataGridTextColumn Header="PO Date"
@@ -345,14 +345,14 @@
                                                 Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                             <DataGridTextColumn Header="Status"
-                                                Binding="{Binding StatusName}" />
+                                                Binding="{Binding StatusName}" Width="100" />
 
                             <DataGridTextColumn Header="Vendor"
                                                 Width="*"
                                                 Binding="{Binding VendorName}" />
 
                             <DataGridTextColumn Header="Total"
-                                                Width="90"
+                                                Width="80"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
                                                 Binding="{Binding Total, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
@@ -525,7 +525,7 @@
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Column="7"
                                         Margin="0,2"
-                                        Width="110"
+                                        Width="90"
                                         HorizontalAlignment="Left"
                                         SelectedDate="{Binding SelectedPurchaseOrder.PurchasedDate, Converter={StaticResource NullToDefaultValueConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -578,7 +578,7 @@
                                         Margin="0,2"
                                         Grid.Column="7"
                                         HorizontalAlignment="Left"
-                                        Width="110"
+                                        Width="90"
                                         Grid.Row="1"
                                         SelectedDate="{Binding SelectedPurchaseOrder.ShipDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -619,9 +619,9 @@
                                         Grid.Row="2"
                                         Grid.Column="5"
                                         Height="21"
-                                        Width="110"
+                                        Width="90"
                                         HorizontalAlignment="Left"
-                                        SelectedDate="{Binding SelectedPurchaseOrder.CancelDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        SelectedDate="{Binding SelectedPurchaseOrder.CancelDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2" />
 
                         </Grid>
 
@@ -629,7 +629,7 @@
                               Grid.Row="3"
                               d:LayoutOverrides="Width">
 
-                            <otherControl:CPCTabControl x:Name="TabSalesOrder"
+                            <otherControl:CPCTabControl x:Name="TabPOList"
                                                         Margin="10"
                                                         SelectedIndex="{Binding CurrentTabItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
@@ -705,39 +705,39 @@
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Item Name"
-                                                                        Width="100"
+                                                                        Width="150"
                                                                         SortMemberPath="ItemName"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Attribute"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemAtribute"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Size"
-                                                                        Width="50"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemSize"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="UOM"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         SortMemberPath="UnitName"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Price"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Price"
                                                                         Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Quantity"
-                                                                        Width="50"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Quantity"
                                                                         Binding="{Binding Quantity, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                                                     <DataGridTextColumn Header="Discount"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Discount"
                                                                         Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
@@ -749,13 +749,13 @@
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Received"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="ReceivedQty"
                                                                         Binding="{Binding ReceivedQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                                                     <DataGridTextColumn Header="Due Qty"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="DueQty"
                                                                         Binding="{Binding DueQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
@@ -960,38 +960,38 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTextColumn Header="Received Date"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="ReceiveDate"
                                                                         Binding="{Binding ReceiveDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                                                     <DataGridTextColumn Header="Item Code"
-                                                                        Width="110"
+                                                                        Width="100"
                                                                         SortMemberPath="ItemCode"
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Item Name"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         SortMemberPath="ItemName"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Attribute"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemAtribute"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Size"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemSize"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Received Qty"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         SortMemberPath="RecQty"
                                                                         Binding="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                                                     <DataGridTextColumn Header="Received"
-                                                                        Width="50"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource ReceivedTextBlockStyle}"
                                                                         SortMemberPath="IsReceived"
                                                                         Binding="{Binding IsReceived, Mode=OneWay}" />
@@ -1119,50 +1119,50 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTextColumn Header="Item Code"
-                                                                        Width="110"
+                                                                        Width="100"
                                                                         SortMemberPath="ItemCode"
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Item Name"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         SortMemberPath="ItemName"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Attribute"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemAtribute"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Size"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemSize"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="UOM"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         SortMemberPath="UnitName"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Price"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Price"
                                                                         Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Received Qty"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="RecQty"
                                                                         Binding="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                                                     <DataGridTextColumn Header="Discount"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Discount"
                                                                         Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Amount"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Amount"
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
@@ -1393,62 +1393,62 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTextColumn Header="Return Date"
-                                                                        Width="100"
+                                                                        Width="70"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="ReturnedDate"
                                                                         Binding="{Binding ReturnedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                                                     <DataGridTextColumn Header="Item Code"
-                                                                        Width="110"
+                                                                        Width="100"
                                                                         SortMemberPath="ItemCode"
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Item Name"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         SortMemberPath="ItemName"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Attribute"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemAtribute"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Size"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         SortMemberPath="ItemSize"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="UOM"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         SortMemberPath="UnitName"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn Header="Price"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Price"
                                                                         Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Returned Qty"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="ReturnQty"
                                                                         Binding="{Binding ReturnQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
 
                                                     <DataGridTextColumn Header="Discount"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Discount"
                                                                         Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Amount"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         SortMemberPath="Amount"
                                                                         Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
 
                                                     <DataGridTextColumn Header="Returned"
-                                                                        Width="50"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource ReturnedTextBlockStyle}"
                                                                         SortMemberPath="IsReturned"
                                                                         Binding="{Binding IsReturned, Mode=OneWay}" />
