@@ -60,10 +60,10 @@
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
                                        TextWrapping="Wrap">
-                                <Run Text="This transaction is in use and has been locked. Only &quot;" />
+                                <Run Text="{DynamicResource LP_TextBlock_Transaction1}" />
                                 <Run FontWeight="Bold"
                                      Text="{Binding LoginName, Mode=OneWay}" />
-                                <Run Text="&quot; or an administrator can unlock." />
+                                <Run Text="{DynamicResource LP_TextBlock_Transaction2}" />
                             </TextBlock>
                         </Border>
                         <Grid x:Name="grdLoginPassword"
@@ -80,7 +80,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="User Name:"
+                                       Text="{DynamicResource LG_TextBlock_UserName}"
                                        TextWrapping="NoWrap" />
                             <CPCToolkitExt_TextBoxControl:TextBox x:Name="txtUsername"
                                                                   Width="200"
@@ -102,7 +102,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="Password:"
+                                       Text="{DynamicResource LG_TextBlock_Password}"
                                        TextWrapping="NoWrap" />
                             <PasswordBox x:Name="txtPassword"
                                          Grid.Row="1"
@@ -148,7 +148,7 @@
                                                Margin="5,0,0,0"
                                                VerticalAlignment="Center"
                                                Style="{DynamicResource ButtonTextBlock}"
-                                               Text="Login"
+                                               Text="{DynamicResource LG_TextBlock_Login}"
                                                TextWrapping="NoWrap" />
                                 </StackPanel>
                             </Button>

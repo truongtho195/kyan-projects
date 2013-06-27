@@ -277,6 +277,7 @@ namespace CPC.POS.ViewModel
             {
                 this.RewardManagerModel = new base_RewardManagerModel();
                 this.RewardManagerModel.TotalRewardRedeemed = 10;
+                this.RewardManagerModel.RewardAmtType = 1;
                 this.RewardManagerModel.IsDirty = false;
             }
             this.RewardManagerModel.PropertyChanged += new PropertyChangedEventHandler(RewardManagerModel_PropertyChanged);
@@ -338,6 +339,7 @@ namespace CPC.POS.ViewModel
                 this._rewardManagerRepository.Add(this.RewardManagerModel.base_RewardManager);
                 this._rewardManagerRepository.Commit();
                 this.RewardManagerModel.EndUpdate();
+                App.WriteLUserLog("Reward", "User inserted a new reward.");
             }
             catch (Exception ex)
             {
@@ -349,12 +351,20 @@ namespace CPC.POS.ViewModel
             try
             {
                 this.NumbersOfRewardRelation = 0;
+                short Availablestatus = (short)GuestRewardStatus.Available;
+                //To check that this reward used.
+                var checkReward = this._guestRewardRepository.GetAll().Where(x => (x.Status == Availablestatus));
                 //To update data into base_GuestReward table.
-                if (this.RewardManagerModel.PurchaseThreshold != this.RewardManagerModel.base_RewardManager.PurchaseThreshold
+                if ((this.RewardManagerModel.PurchaseThreshold != this.RewardManagerModel.base_RewardManager.PurchaseThreshold
                     || this.RewardManagerModel.RewardExpiration != this.RewardManagerModel.base_RewardManager.RewardExpiration
                 || this.RewardManagerModel.RedemptionAfterDays != this.RewardManagerModel.base_RewardManager.RedemptionAfterDays)
+                && (checkReward != null && checkReward.Count() > 0))
                 {
-                    string message = String.Format("{0}\n {1}\n {2}\n {3}", "Do you want to keep existing customer's rewards available ?", "[Yes] = Keep existing customer's rewards available.", "[No]  = Discard and recalculate existing rewards.The redemption will not be allowed.", "[Cancel] = Leave this message.");
+                    string message = String.Format("{0}\n {1}\n {2}\n {3}"
+                        , Application.Current.FindResource("RW_Message_Keepexisting") as string
+                        , Application.Current.FindResource("RW_Message_Yes") as string
+                        , Application.Current.FindResource("RW_Message_No") as string
+                        , Application.Current.FindResource("RW_Message_Cancel") as string);
                     MessageBoxResult result = MessageBox.Show(message, "Notification", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Cancel)
                         return;
@@ -364,7 +374,6 @@ namespace CPC.POS.ViewModel
                         if (!this.IsChangePurCharseThreshold)
                         {
                             int date = int.Parse(Common.RewardExpirationTypes.SingleOrDefault(x => x.ObjValue.Equals(this.RewardManagerModel.RewardExpiration.ToString())).Detail.ToString());
-                            short Availablestatus = (short)GuestRewardStatus.Available;
                             short RedeemedStatus = (short)GuestRewardStatus.Redeemed;
                             //To group guest on sale order.
                             var queryGuest = this._guestRewardRepository.GetAll().Where(x => (x.Status == Availablestatus || x.Status == RedeemedStatus) && (x.Reason != "Manual" || x.SaleOrderNo.Length > 0)).GroupBy(x => x.GuestId);
@@ -389,9 +398,10 @@ namespace CPC.POS.ViewModel
                 this.RewardManagerModel.ToEntity();
                 this._rewardManagerRepository.Commit();
                 this.RewardManagerModel.EndUpdate();
+                App.WriteLUserLog("Reward", "User updated a reward.");
                 //Notification numbers of reward changed.
                 if (this.NumbersOfRewardRelation > 0)
-                    MessageBox.Show(String.Format("{0} reward(s) issued.", this.NumbersOfRewardRelation), "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(String.Format(Application.Current.FindResource("RW_Message_Issued") as string, this.NumbersOfRewardRelation), Language.Information, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -516,8 +526,8 @@ namespace CPC.POS.ViewModel
             {
                 if (this.RewardManagerModel.IsDirty)
                 {
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
+                    MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
+                    if (msgResult == MessageBoxResult.Yes)
                         //To don't do anything if user click Cancel.
                         isUnactive = false;
                     else

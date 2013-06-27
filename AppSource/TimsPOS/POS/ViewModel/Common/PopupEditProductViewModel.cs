@@ -355,6 +355,7 @@ namespace CPC.POS.ViewModel
                     break;
             }
 
+            OnPropertyChanged(() => IsEditPromotion);
             if (!IsEditPromotion)
             {
                 // Switch promotion to manual when selected product UOM difference with base UOM

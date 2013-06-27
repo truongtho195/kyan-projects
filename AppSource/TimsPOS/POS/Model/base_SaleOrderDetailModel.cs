@@ -14,7 +14,6 @@ using System.ComponentModel;
 using CPC.POS.Database;
 using CPC.Toolkit.Base;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace CPC.POS.Model
 {
@@ -354,22 +353,22 @@ namespace CPC.POS.Model
             }
         }
 
-        protected string _baseUOM;
+        protected string _uOM;
         /// <summary>
         /// Property Model
-        /// <para>Gets or sets the BaseUOM</para>
+        /// <para>Gets or sets the UOM</para>
         /// </summary>
-        public string BaseUOM
+        public string UOM
         {
-            get { return this._baseUOM; }
+            get { return this._uOM; }
             set
             {
-                if (this._baseUOM != value)
+                if (this._uOM != value)
                 {
                     this.IsDirty = true;
-                    this._baseUOM = value;
-                    OnPropertyChanged(() => BaseUOM);
-                    PropertyChangedCompleted(() => BaseUOM);
+                    this._uOM = value;
+                    OnPropertyChanged(() => UOM);
+                    PropertyChangedCompleted(() => UOM);
                 }
             }
         }
@@ -630,7 +629,7 @@ namespace CPC.POS.Model
             this.base_SaleOrderDetail.RegularPrice = this.RegularPrice;
             this.base_SaleOrderDetail.SalePrice = this.SalePrice;
             this.base_SaleOrderDetail.UOMId = this.UOMId;
-            this.base_SaleOrderDetail.BaseUOM = this.BaseUOM;
+            this.base_SaleOrderDetail.UOM = this.UOM;
             this.base_SaleOrderDetail.DiscountPercent = this.DiscountPercent;
             this.base_SaleOrderDetail.DiscountAmount = this.DiscountAmount;
             this.base_SaleOrderDetail.SubTotal = this.SubTotal;
@@ -665,7 +664,7 @@ namespace CPC.POS.Model
             this._regularPrice = this.base_SaleOrderDetail.RegularPrice;
             this._salePrice = this.base_SaleOrderDetail.SalePrice;
             this._uOMId = this.base_SaleOrderDetail.UOMId;
-            this._baseUOM = this.base_SaleOrderDetail.BaseUOM;
+            this._uOM = this.base_SaleOrderDetail.UOM;
             this._discountPercent = this.base_SaleOrderDetail.DiscountPercent;
             this._discountAmount = this.base_SaleOrderDetail.DiscountAmount;
             this._subTotal = this.base_SaleOrderDetail.SubTotal;
@@ -700,7 +699,7 @@ namespace CPC.POS.Model
             this.RegularPrice = this.base_SaleOrderDetail.RegularPrice;
             this.SalePrice = this.base_SaleOrderDetail.SalePrice;
             this.UOMId = this.base_SaleOrderDetail.UOMId;
-            this.BaseUOM = this.base_SaleOrderDetail.BaseUOM;
+            this.UOM = this.base_SaleOrderDetail.UOM;
             this.DiscountPercent = this.base_SaleOrderDetail.DiscountPercent;
             this.DiscountAmount = this.base_SaleOrderDetail.DiscountAmount;
             this.SubTotal = this.base_SaleOrderDetail.SubTotal;
@@ -720,7 +719,8 @@ namespace CPC.POS.Model
 
         #region Properties
         /// <summary>
-        /// Flag Validation QtyOfPick > DueQty in Pick & Pack process
+        /// Flag Validation QtyOfPick > DueQty in Pick & Pack  process
+        /// <para>Using in pick & pack view</para>
         /// </summary>
         public bool IsPickProcess { get; set; }
 
@@ -809,10 +809,10 @@ namespace CPC.POS.Model
 
         #region QtyOfPick
         private int _qtyOfPick;
+        
         /// <summary>
         /// Gets or sets the QtyOfPick.
-        /// Quantity when user pick in current pick & pack process
-        /// </summary>
+        /// Quantity when user pick in current pick & pack process</summary>
         public int QtyOfPick
         {
             get { return _qtyOfPick; }
@@ -924,7 +924,7 @@ namespace CPC.POS.Model
         private decimal _qtyAfterRetrun;
         /// <summary>
         /// Gets or sets the QtyAfterRerturn.
-        /// //Using for return = PickQty- QtyReturned
+        /// Using for return = PickQty- QtyReturned
         /// </summary>
         public decimal QtyAfterRerturn
         {
@@ -1000,7 +1000,6 @@ namespace CPC.POS.Model
         }
         #endregion
 
-
         #region SalePriceChange
         private decimal _salePriceChange;
         /// <summary>
@@ -1042,7 +1041,7 @@ namespace CPC.POS.Model
         public void CalUnfill()
         {
             if (Quantity != 0)
-                UnFilled = (DueQty / Quantity) * 100;
+                UnFilled = (Convert.ToDecimal(DueQty) / Convert.ToDecimal(Quantity)) * 100;
             else
                 UnFilled = 0;
         }
@@ -1110,7 +1109,7 @@ namespace CPC.POS.Model
             this._regularPrice = saleOrderDetailModel.RegularPrice;
             this._salePrice = saleOrderDetailModel.SalePrice;
             this._uOMId = saleOrderDetailModel.UOMId;
-            this._baseUOM = saleOrderDetailModel.BaseUOM;
+            this._uOM = saleOrderDetailModel._uOM;
             this._discountPercent = saleOrderDetailModel.DiscountPercent;
             this._discountAmount = saleOrderDetailModel.DiscountAmount;
             this._subTotal = saleOrderDetailModel.SubTotal;
@@ -1136,14 +1135,6 @@ namespace CPC.POS.Model
         {
             OnPropertyChanged(() => IsQuantityAccepted);
         }
-
-
-        public void RaisePropertyChanged(string propertyChanged)
-        {
-            OnPropertyChanged(propertyChanged);
-        }
-
-
         #endregion
 
         #region Override Methods
@@ -1234,17 +1225,14 @@ namespace CPC.POS.Model
                         break;
                     case "IsQuantityAccepted":
                         if (!IsQuantityAccepted)
-                        {
                             message = "Quantity is not more than quantity store";
-                        }
                         break;
-
-
                 }
 
 
                 if (!string.IsNullOrWhiteSpace(message))
                     return message;
+                
                 return null;
             }
         }
@@ -1286,7 +1274,7 @@ namespace CPC.POS.Model
             this.RegularPrice = saleOrderDetailModel.RegularPrice;
             this.SalePrice = saleOrderDetailModel.SalePrice;
             this.UOMId = saleOrderDetailModel.UOMId;
-            this.BaseUOM = saleOrderDetailModel.BaseUOM;
+            this.UOM = saleOrderDetailModel.UOM;
             this.DiscountPercent = saleOrderDetailModel.DiscountPercent;
             this.DiscountAmount = saleOrderDetailModel.DiscountAmount;
             this.SubTotal = saleOrderDetailModel.SubTotal;

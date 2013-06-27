@@ -56,17 +56,7 @@
                   HorizontalAlignment="Center"
                   RenderTransformOrigin="0.5,0.5">
 
-              <Rectangle Stroke="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}">
-                <Rectangle.Fill>
-                  <LinearGradientBrush EndPoint="0.5,1"
-                                       StartPoint="0.5,0">
-                    <GradientStop Color="Black"
-                                  Offset="0.326"/>
-                    <GradientStop Color="#00000000"
-                                  Offset="0.344"/>
-                  </LinearGradientBrush>
-                </Rectangle.Fill>
-              </Rectangle>
+              <Rectangle Stroke="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow_Background}"/>
             </Grid>
             <Grid
               x:Name="grdZoomOut"
@@ -77,39 +67,19 @@
               Height="10"
               RenderTransformOrigin="0.5,0.5">
 
-              <Rectangle Stroke="Black"
+              <Rectangle Stroke="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}"
                          RenderTransformOrigin="0.5,0.5"
                          HorizontalAlignment="Right"
                          Width="8"
                          Height="8"
-                         VerticalAlignment="Top">
-                <Rectangle.Fill>
-                  <LinearGradientBrush EndPoint="0.5,1"
-                                       StartPoint="0.5,0">
-                    <GradientStop Color="Black"
-                                  Offset="0.326"/>
-                    <GradientStop Color="#00000000"
-                                  Offset="0.344"/>
-                  </LinearGradientBrush>
-                </Rectangle.Fill>
-              </Rectangle>
-              <Rectangle Stroke="Black"
+                         VerticalAlignment="Top" Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow_Background}"/>
+              <Rectangle Stroke="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}"
                          RenderTransformOrigin="0.5,0.5"
                          Width="8"
                          Height="8"
                          VerticalAlignment="Bottom"
                          HorizontalAlignment="Left"
-                         Margin="0,0,0,0">
-                <Rectangle.Fill>
-                  <LinearGradientBrush EndPoint="0.5,1"
-                                       StartPoint="0.5,0">
-                    <GradientStop Color="Black"
-                                  Offset="0.326"/>
-                    <GradientStop Color="#00000000"
-                                  Offset="0.344"/>
-                  </LinearGradientBrush>
-                </Rectangle.Fill>
-              </Rectangle>
+                         Margin="0,0,0,0" Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow_Background}"/>
             </Grid>
           </Grid>
           <ControlTemplate.Triggers>
@@ -189,171 +159,7 @@
       </Setter.Value>
     </Setter>
   </Style>
-  <Style x:Key="ToggleButtonActiveInactive"
-         TargetType="{x:Type ToggleButton}">
-    <Setter Property="FocusVisualStyle"
-            Value="{StaticResource ButtonFocusVisual}"/>
-    <Setter Property="HorizontalContentAlignment"
-            Value="Center"/>
-    <Setter Property="VerticalContentAlignment"
-            Value="Center"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="{x:Type ToggleButton}">
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Border x:Name="bg"
-                    BorderThickness="1"
-                    Grid.ColumnSpan="3"
-                    Margin="0"
-                    CornerRadius="12"
-                    BorderBrush="White"
-                    Background="#FFE4E4E4"/>
-            <Grid x:Name="grdActive"
-                  Margin="3,0,0,0"
-                  Width="18"
-                  Height="18"
-                  HorizontalAlignment="Left"
-                  Visibility="Visible">
-              <Rectangle x:Name="bgActive"
-                         Stroke="#FF4D4D4D"
-                         RadiusY="16"
-                         Grid.ColumnSpan="1"
-                         Margin="0"
-                         Width="18"
-                         HorizontalAlignment="Left"
-                         Height="18"
-                         VerticalAlignment="Center"
-                         RadiusX="16"
-                         StrokeThickness="0.75">
-                <Rectangle.Fill>
-                  <RadialGradientBrush>
-                    <GradientStop Color="White"
-                                  Offset="1"/>
-                    <GradientStop Color="#FF8F8F8F"/>
-                  </RadialGradientBrush>
-                </Rectangle.Fill>
-              </Rectangle>
-              <Ellipse x:Name="elActive"
-                       Grid.ColumnSpan="1"
-                       Width="9"
-                       Height="9"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Stroke="White"
-                       Margin="0"
-                       StrokeThickness="0.5">
-                <Ellipse.Fill>
-                  <LinearGradientBrush EndPoint="0.5,1"
-                                       StartPoint="0.5,0">
-                    <GradientStop Color="#FF29F922"
-                                  Offset="0"/>
-                    <GradientStop Color="#FF013510"
-                                  Offset="1"/>
-                  </LinearGradientBrush>
-                </Ellipse.Fill>
-              </Ellipse>
-            </Grid>
-            <TextBlock x:Name="txtblActive"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Text="Active"
-                       VerticalAlignment="Center"
-                       Foreground="#FF00930F"
-                       Grid.Column="1"
-                       FontWeight="Bold"
-                       FontFamily="Arial"
-                       FontSize="12"/>
-            <TextBlock x:Name="txtblInactive"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Text="Inactive"
-                       VerticalAlignment="Center"
-                       Foreground="Red"
-                       Grid.Column="1"
-                       FontWeight="Bold"
-                       FontFamily="Arial"
-                       FontSize="12"
-                       Visibility="Collapsed"/>
-            <Grid x:Name="grdInActive"
-                  Margin="0,0,3,0"
-                  Width="18"
-                  Height="18"
-                  HorizontalAlignment="Right"
-                  Grid.Column="2"
-                  Visibility="Collapsed">
-              <Rectangle x:Name="bgInActive"
-                         Stroke="#FF4D4D4D"
-                         RadiusY="16"
-                         Grid.ColumnSpan="1"
-                         Margin="0"
-                         Width="18"
-                         HorizontalAlignment="Left"
-                         Height="18"
-                         VerticalAlignment="Center"
-                         RadiusX="16"
-                         StrokeThickness="0.75">
-                <Rectangle.Fill>
-                  <RadialGradientBrush>
-                    <GradientStop Color="White"
-                                  Offset="1"/>
-                    <GradientStop Color="#FF8F8F8F"/>
-                  </RadialGradientBrush>
-                </Rectangle.Fill>
-              </Rectangle>
-              <Ellipse x:Name="elInActive"
-                       Grid.ColumnSpan="1"
-                       Width="9"
-                       Height="9"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Stroke="White"
-                       Margin="0"
-                       StrokeThickness="0.5">
-                <Ellipse.Fill>
-                  <LinearGradientBrush EndPoint="0.5,1"
-                                       StartPoint="0.5,0">
-                    <GradientStop Color="Red"
-                                  Offset="0"/>
-                    <GradientStop Color="#FF390000"
-                                  Offset="1"/>
-                  </LinearGradientBrush>
-                </Ellipse.Fill>
-              </Ellipse>
-            </Grid>
-          </Grid>
-          <ControlTemplate.Triggers>
-            <Trigger Property="IsKeyboardFocused"
-                     Value="true"/>
-            <Trigger Property="IsChecked"
-                     Value="false">
-              <Setter Property="Visibility"
-                      TargetName="grdActive"
-                      Value="Collapsed"/>
-              <Setter Property="Visibility"
-                      TargetName="txtblActive"
-                      Value="Collapsed"/>
-              <Setter Property="Visibility"
-                      TargetName="txtblInactive"
-                      Value="Visible"/>
-              <Setter Property="Visibility"
-                      TargetName="grdInActive"
-                      Value="Visible"/>
-            </Trigger>
-            <Trigger Property="IsEnabled"
-                     Value="false">
-              <Setter Property="Foreground"
-                      Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-            </Trigger>
-          </ControlTemplate.Triggers>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
+  
   <Style x:Key="RibbonStatusToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
     <Style.Triggers>
@@ -448,4 +254,23 @@
       </Setter.Value>
     </Setter>
   </Style>
+  <Style x:Key="ToggleButtonTrueFalse" TargetType="{x:Type ToggleButton}">
+  	<Setter Property="Template">
+  		<Setter.Value>
+  			<ControlTemplate TargetType="{x:Type ToggleButton}">
+  				<Grid Background="#02FFFFFF">
+  					<Rectangle x:Name="True" Fill="{DynamicResource True}" Width="16" Height="16" Visibility="Collapsed"/>
+  					<Rectangle x:Name="False" Fill="{DynamicResource False}" Visibility="Visible" Width="16" Height="16"/>
+  					<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
+  				</Grid>
+  				<ControlTemplate.Triggers>
+  					<Trigger Property="IsChecked" Value="True">
+  						<Setter Property="Visibility" TargetName="False" Value="Collapsed"/>
+  						<Setter Property="Visibility" TargetName="True" Value="Visible"/>
+  					</Trigger>
+  				</ControlTemplate.Triggers>
+  			</ControlTemplate>
+  		</Setter.Value>
+  	</Setter>
+	</Style>
 </ResourceDictionary>

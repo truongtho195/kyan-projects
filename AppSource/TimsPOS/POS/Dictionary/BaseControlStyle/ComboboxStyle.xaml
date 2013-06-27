@@ -2553,7 +2553,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ToggleButton}">
-					<Grid SnapsToDevicePixels="true"
+					<Grid x:Name="grid" SnapsToDevicePixels="true"
 							Background="#02FFFFFF">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
@@ -2594,11 +2594,14 @@
 									</TransformGroup>
 								</ed:RegularPolygon.RenderTransform>
 							</ed:RegularPolygon>
+								<Rectangle x:Name="imgRemark1" Fill="{DynamicResource Remark}" Width="30" Height="30" />
+								
 						</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ComboboxRemark_IsMouseOver_Background}"/>
 							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
 							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ComboboxRemark_IsPress_Background}"/>
@@ -2800,7 +2803,7 @@
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
-	<Style x:Key="LanguageComboboxStyle" TargetType="{x:Type ComboBox}">
+	<Style x:Key="LanguageComboBoxStyle" TargetType="{x:Type ComboBox}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource LanguageComboBoxFocusVisual}"/>
 		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
 		<Setter Property="Padding" Value="4,3,4,3"/>
@@ -2855,6 +2858,60 @@
 				<Setter Property="Template" Value="{DynamicResource LanguageComboBoxEditableTemplate}"/>
 			</Trigger>
 		</Style.Triggers>
+	</Style>
+	<Visibility x:Key="ComboBoxItem Language">Visible</Visibility>
+	<Style x:Key="LanguageComboBoxItemStyle"
+		TargetType="{x:Type ComboBoxItem}">
+		<Setter Property="HorizontalContentAlignment"
+			Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+		<Setter Property="VerticalContentAlignment"
+			Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+		<Setter Property="Padding"
+			Value="3,0,3,0" />
+		<Setter Property="Background"
+			Value="Transparent" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBoxItem}">
+					<Border x:Name="Bd"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						Padding="{TemplateBinding Padding}"
+						SnapsToDevicePixels="true"
+						Background="{TemplateBinding Background}">
+						<StackPanel Orientation="Horizontal">
+							<Path x:Name="CheckIcon"
+								Width="10.5"
+								Height="10"
+								Margin="0,0,2,0"
+								Fill="{DynamicResource ChechboxRadiobuttonCheckIcon_Background}"
+								Opacity="1"
+								Stretch="Fill" />
+							<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+						</StackPanel>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsHighlighted"
+							Value="true">
+							<Setter Property="Background"
+								TargetName="Bd"
+								Value="{DynamicResource Combobox_MouseOver_Background}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+							Value="false" />
+						<Trigger Property="IsSelected"
+							Value="true">
+							<Setter Property="Data"
+								TargetName="CheckIcon"
+								Value="M102.03442,598.79645 L105.22962,597.78918 L106.78825,600.42358 C106.78825,600.42358 108.51028,595.74304 110.21724,593.60419 C112.00967,591.35822 114.89314,591.42316 114.89314,591.42316 C114.89314,591.42316 112.67844,593.42645 111.93174,594.44464 C110.7449,596.06293 107.15683,604.13837 107.15683,604.13837 z" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Height"
+			Value="20" />
 	</Style>
 
     <!--Edit-->

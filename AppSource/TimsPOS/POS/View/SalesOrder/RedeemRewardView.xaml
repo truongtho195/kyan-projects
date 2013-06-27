@@ -198,8 +198,7 @@
                                             Header="Program"
                                             IsReadOnly="True" />
                         <DataGridTextColumn Width="120"
-                                            Binding="{Binding TotalRewardDisplay,
-                                                              StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                            Binding="{Binding TotalRewardDisplay}"
                                             Header="New Total"
                                             IsReadOnly="True" />
                     </cpcDataGrid:DataGridControl.Columns>

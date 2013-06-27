@@ -252,46 +252,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected string _reason;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the Reason</para>
-        /// </summary>
-        public string Reason
-        {
-            get { return this._reason; }
-            set
-            {
-                if (this._reason != value)
-                {
-                    this.IsDirty = true;
-                    this._reason = value;
-                    OnPropertyChanged(() => Reason);
-                    PropertyChangedCompleted(() => Reason);
-                }
-            }
-        }
-
-        protected string _status;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the Status</para>
-        /// </summary>
-        public string Status
-        {
-            get { return this._status; }
-            set
-            {
-                if (this._status != value)
-                {
-                    this.IsDirty = true;
-                    this._status = value;
-                    OnPropertyChanged(() => Status);
-                    PropertyChangedCompleted(() => Status);
-                }
-            }
-        }
-
         protected string _userCreated;
         /// <summary>
         /// Property Model
@@ -352,6 +312,66 @@ namespace CPC.POS.Model
             }
         }
 
+        protected string _resource;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Resource</para>
+        /// </summary>
+        public string Resource
+        {
+            get { return this._resource; }
+            set
+            {
+                if (this._resource != value)
+                {
+                    this.IsDirty = true;
+                    this._resource = value;
+                    OnPropertyChanged(() => Resource);
+                    PropertyChangedCompleted(() => Resource);
+                }
+            }
+        }
+
+        protected short _status;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Status</para>
+        /// </summary>
+        public short Status
+        {
+            get { return this._status; }
+            set
+            {
+                if (this._status != value)
+                {
+                    this.IsDirty = true;
+                    this._status = value;
+                    OnPropertyChanged(() => Status);
+                    PropertyChangedCompleted(() => Status);
+                }
+            }
+        }
+
+        protected short _reason;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Reason</para>
+        /// </summary>
+        public short Reason
+        {
+            get { return this._reason; }
+            set
+            {
+                if (this._reason != value)
+                {
+                    this.IsDirty = true;
+                    this._reason = value;
+                    OnPropertyChanged(() => Reason);
+                    PropertyChangedCompleted(() => Reason);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -383,11 +403,12 @@ namespace CPC.POS.Model
             this.base_CostAdjustment.AdjustmentOldCost = this.AdjustmentOldCost;
             this.base_CostAdjustment.AdjustCostDifference = this.AdjustCostDifference;
             this.base_CostAdjustment.LoggedTime = this.LoggedTime;
-            this.base_CostAdjustment.Reason = this.Reason;
-            this.base_CostAdjustment.Status = this.Status;
             this.base_CostAdjustment.UserCreated = this.UserCreated;
             this.base_CostAdjustment.IsReversed = this.IsReversed;
             this.base_CostAdjustment.StoreCode = this.StoreCode;
+            this.base_CostAdjustment.Resource = this.Resource;
+            this.base_CostAdjustment.Status = this.Status;
+            this.base_CostAdjustment.Reason = this.Reason;
         }
 
         /// <summary>
@@ -406,11 +427,12 @@ namespace CPC.POS.Model
             this._adjustmentOldCost = this.base_CostAdjustment.AdjustmentOldCost;
             this._adjustCostDifference = this.base_CostAdjustment.AdjustCostDifference;
             this._loggedTime = this.base_CostAdjustment.LoggedTime;
-            this._reason = this.base_CostAdjustment.Reason;
-            this._status = this.base_CostAdjustment.Status;
             this._userCreated = this.base_CostAdjustment.UserCreated;
             this._isReversed = this.base_CostAdjustment.IsReversed;
             this._storeCode = this.base_CostAdjustment.StoreCode;
+            this._resource = this.base_CostAdjustment.Resource;
+            this._status = this.base_CostAdjustment.Status;
+            this._reason = this.base_CostAdjustment.Reason;
         }
 
         /// <summary>
@@ -429,11 +451,12 @@ namespace CPC.POS.Model
             this.AdjustmentOldCost = this.base_CostAdjustment.AdjustmentOldCost;
             this.AdjustCostDifference = this.base_CostAdjustment.AdjustCostDifference;
             this.LoggedTime = this.base_CostAdjustment.LoggedTime;
-            this.Reason = this.base_CostAdjustment.Reason;
-            this.Status = this.base_CostAdjustment.Status;
             this.UserCreated = this.base_CostAdjustment.UserCreated;
             this.IsReversed = this.base_CostAdjustment.IsReversed;
             this.StoreCode = this.base_CostAdjustment.StoreCode;
+            this.Resource = this.base_CostAdjustment.Resource;
+            this.Status = this.base_CostAdjustment.Status;
+            this.Reason = this.base_CostAdjustment.Reason;
         }
 
         #endregion

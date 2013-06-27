@@ -34,6 +34,7 @@ namespace CPC.POS.ViewModel
         public ManagementUserLogViewModel()
         {
             this.InitialCommand();
+            this.IsHiddenColunm = true;
         }
         #endregion
 
@@ -124,6 +125,29 @@ namespace CPC.POS.ViewModel
                 {
                     _currentPageIndex = value;
                     OnPropertyChanged(() => CurrentPageIndex);
+                }
+            }
+        }
+
+        #endregion
+
+        #region IsHiddenColunm
+        /// <summary>
+        /// Gets or sets the CurrentPageIndex.
+        /// </summary>
+        private bool _isHiddenColunm = false;
+        public bool IsHiddenColunm
+        {
+            get
+            {
+                return _isHiddenColunm;
+            }
+            set
+            {
+                if (value != _isHiddenColunm)
+                {
+                    _isHiddenColunm = value;
+                    OnPropertyChanged(() => IsHiddenColunm);
                 }
             }
         }

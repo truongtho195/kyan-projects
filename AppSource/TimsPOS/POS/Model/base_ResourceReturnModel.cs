@@ -373,6 +373,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<decimal> _redeemed;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the Redeemed</para>
+        /// </summary>
+        public Nullable<decimal> Redeemed
+        {
+            get { return this._redeemed; }
+            set
+            {
+                if (this._redeemed != value)
+                {
+                    this.IsDirty = true;
+                    this._redeemed = value;
+                    OnPropertyChanged(() => Redeemed);
+                    PropertyChangedCompleted(() => Redeemed);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -410,6 +430,7 @@ namespace CPC.POS.Model
             this.base_ResourceReturn.SubTotal = this.SubTotal;
             this.base_ResourceReturn.ReturnFee = this.ReturnFee;
             this.base_ResourceReturn.ReturnFeePercent = this.ReturnFeePercent;
+            this.base_ResourceReturn.Redeemed = this.Redeemed;
         }
 
         /// <summary>
@@ -434,6 +455,7 @@ namespace CPC.POS.Model
             this._subTotal = this.base_ResourceReturn.SubTotal;
             this._returnFee = this.base_ResourceReturn.ReturnFee;
             this._returnFeePercent = this.base_ResourceReturn.ReturnFeePercent;
+            this._redeemed = this.base_ResourceReturn.Redeemed;
         }
 
         /// <summary>
@@ -458,6 +480,7 @@ namespace CPC.POS.Model
             this.SubTotal = this.base_ResourceReturn.SubTotal;
             this.ReturnFee = this.base_ResourceReturn.ReturnFee;
             this.ReturnFeePercent = this.base_ResourceReturn.ReturnFeePercent;
+            this.Redeemed = this.base_ResourceReturn.Redeemed;
         }
 
         #endregion
@@ -516,10 +539,11 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        public decimal TotalPaid { get; set; }
         #endregion
 
         #region Methods
-        private void CalcReturnFee()
+        public void CalcReturnFee()
         {
             if (_returnFeePercent > 0)
                 _returnFee = _subTotal * _returnFeePercent / 100;
@@ -533,11 +557,17 @@ namespace CPC.POS.Model
         {
             if (this.Mark.Equals(MarkType.PurchaseOrder.ToDescription()))
             {
-                _balance = _subTotal - _returnFee - _totalRefund;
-            }
-            else
-            {
                 _balance = _subTotal + _returnFee - _totalRefund;
+            }
+            OnPropertyChanged(() => Balance);
+        }
+
+        public void CalcBalance(decimal totalPaid)
+        {
+            TotalPaid = totalPaid;
+            if (this.Mark.Equals(MarkType.SaleOrder.ToDescription()))
+            {
+                _balance = totalPaid - _returnFee - _totalRefund;
             }
             OnPropertyChanged(() => Balance);
         }
@@ -548,6 +578,11 @@ namespace CPC.POS.Model
             OnPropertyChanged(() => RefundAccepted);
         }
 
+        public void SetRefundedFeePercent()
+        {
+            _returnFeePercent = 0;
+            OnPropertyChanged(() => ReturnFeePercent);
+        }
         #endregion
 
         #region Override Methods
@@ -559,20 +594,15 @@ namespace CPC.POS.Model
             switch (propertyName)
             {
                 case "ReturnFee":
-                    CalcBalance();
                     _returnFeePercent = 0;
                     OnPropertyChanged(() => ReturnFeePercent);
                     break;
                 case "ReturnFeePercent":
                     CalcReturnFee();
-                    CalcBalance();
                     break;
                 case "SubTotal":
-                    CalcReturnFee();
-                    CalcBalance();
                     break;
                 case "TotalRefund":
-                    CalcBalance();
                     break;
             }
         }
@@ -609,12 +639,24 @@ namespace CPC.POS.Model
             {
                 string message = null;
 
-                switch (columnName)
+                if (this.Mark.Equals(MarkType.PurchaseOrder.ToDescription()))
                 {
-                    default:
-                        break;
+                    switch (columnName)
+                    {
+                        default:
+                            break;
+                    }
                 }
-
+                else
+                {
+                    switch (columnName)
+                    {
+                        case "TotalRefund":
+                            if (TotalPaid>0 && TotalRefund > (TotalPaid - _returnFee) && this.ReturnDetailCollection != null && this.ReturnDetailCollection.Any(x => x.IsReturned))
+                                message = "Refuned is not greater than " + (TotalPaid - _returnFee);
+                            break;
+                    }
+                }
                 return message;
             }
         }

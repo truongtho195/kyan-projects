@@ -104,15 +104,15 @@ namespace CPC.POS.ViewModel
             };
             _bgWorkerSplashScreen.RunWorkerCompleted += (sender, e) =>
             {
+                // Stop timer
+                _timerSplashScreen.Stop();
+
                 // Show alert message if connection failed
                 if (!CanConnectDB)
                 {
                     StatusMessage = _messageConnectionFailed;
                     MessageBoxResult msgResult = MessageBox.Show(_splashScreenView, StatusMessage, "POS", MessageBoxButton.OK);
                 }
-
-                // Stop timer
-                _timerSplashScreen.Stop();
 
                 // Close splash screen view
                 _splashScreenView.DialogResult = CanConnectDB;

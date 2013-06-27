@@ -10,7 +10,6 @@
                                     Source="Language/en-US.xaml" />
                 <ResourceDictionary Source="Control\ImageViewer\Themes\Generic.xaml" />
                 <ResourceDictionary Source="Control\ImageList\Themes\Generic.xaml" />
-                <!--<ResourceDictionary Source="Dictionary/zh-CN.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}"
                              Color="#FF000000" />

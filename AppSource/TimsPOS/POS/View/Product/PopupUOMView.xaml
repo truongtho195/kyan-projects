@@ -6,7 +6,7 @@
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              x:Name="UserControl"
              Width="370"
              Height="157">
@@ -42,7 +42,7 @@
                            Style="{DynamicResource TextBlockNormal}"
                            Text="Code:"
                            TextWrapping="NoWrap" />
-                <textBoxToolkit:TextBox x:Name="txtUnit"
+                <textBoxControl:TextBox x:Name="txtUnit"
                                         Grid.RowSpan="1"
                                         Grid.Column="1"
                                         Width="250"
@@ -60,7 +60,7 @@
                            Style="{DynamicResource TextBlockNormal}"
                            Text="Name:"
                            TextWrapping="NoWrap" />
-                <textBoxToolkit:TextBox x:Name="txtName"
+                <textBoxControl:TextBox x:Name="txtName"
                                         Grid.Row="1"
                                         Grid.RowSpan="1"
                                         Grid.Column="1"

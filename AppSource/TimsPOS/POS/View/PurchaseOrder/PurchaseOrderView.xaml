@@ -26,7 +26,6 @@
              Height="Auto">
 
     <UserControl.Resources>
-
         <sys:Int32 x:Key="PaymentTermDescriptionMaxLength">50</sys:Int32>
         <sys:Int32 x:Key="RemarkMaxLength">200</sys:Int32>
         <sys:Int32 x:Key="SubTotalMaxLength">10</sys:Int32>
@@ -147,46 +146,54 @@
             </Style.Triggers>
         </Style>
 
-        <!--ReceivedTextBlockStyle-->
-        <Style x:Key="ReceivedTextBlockStyle"
-               BasedOn="{StaticResource TextBlockNormal}"
-               TargetType="{x:Type TextBlock}">
-            <Style.Setters>
-                <Setter Property="Foreground"
-                        Value="Green" />
-                <Setter Property="HorizontalAlignment"
-                        Value="Center" />
-                <Setter Property="FontWeight"
-                        Value="Bold" />
-            </Style.Setters>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsReceived, Mode=OneWay}"
-                             Value="True">
-                    <Setter Property="Foreground"
-                            Value="Red" />
-                </DataTrigger>
-            </Style.Triggers>
+        <!--PORDataGridRowStyle-->
+        <Style x:Key="PORDataGridRowStyle"
+               BasedOn="{StaticResource myDataGridControlRowStyle}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding IsReceived, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
         </Style>
 
-        <!--ReturnedTextBlockStyle-->
-        <Style x:Key="ReturnedTextBlockStyle"
-               BasedOn="{StaticResource TextBlockNormal}"
-               TargetType="{x:Type TextBlock}">
-            <Style.Setters>
-                <Setter Property="Foreground"
-                        Value="Green" />
-                <Setter Property="HorizontalAlignment"
-                        Value="Center" />
-                <Setter Property="FontWeight"
-                        Value="Bold" />
-            </Style.Setters>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsReturned, Mode=OneWay}"
-                             Value="True">
-                    <Setter Property="Foreground"
-                            Value="Red" />
-                </DataTrigger>
-            </Style.Triggers>
+        <!--RRDDataGridRowStyle-->
+        <Style x:Key="RRDDataGridRowStyle"
+               BasedOn="{StaticResource myDataGridControlRowStyle}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding IsReturned, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+        </Style>
+
+        <!--UOMDataGridCellStyle-->
+        <Style x:Key="UOMDataGridCellStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding HasReceivedItem, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+        </Style>
+
+        <!--PriceDataGridCellStyle-->
+        <Style x:Key="PriceDataGridCellStyle"
+               BasedOn="{StaticResource UOMDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}" />
+
+        <!--DiscountDataGridCellStyle-->
+        <Style x:Key="DiscountDataGridCellStyle"
+               BasedOn="{StaticResource UOMDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}" />
+
+        <!--QuantityDataGridCellStyle-->
+        <Style x:Key="QuantityDataGridCellStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding IsFullReceived, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
         </Style>
 
         <!--NumberTextBlock-->
@@ -199,7 +206,7 @@
         <!--PurchaseOrderContextMenu-->
         <ContextMenu x:Key="PurchaseOrderContextMenu"
                      Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_NewItem}"
+            <MenuItem Header="{DynamicResource C125}"
                       Command="{Binding NewCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -208,7 +215,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_EditItem}"
+            <MenuItem Header="{DynamicResource C126}"
                       Command="{Binding EditCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -218,7 +225,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DeleteItems}"
+            <MenuItem Header="{DynamicResource C127}"
                       Command="{Binding DeletesCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -228,7 +235,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DuplicateItem}"
+            <MenuItem Header="{DynamicResource C128}"
                       Command="{Binding DuplicateCommand}"
                       CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
                 <MenuItem.Icon>
@@ -242,7 +249,7 @@
 
         <!--PurchaseOrderDetailContextMenu-->
         <ContextMenu x:Key="PurchaseOrderDetailContextMenu">
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_EditItem}"
+            <MenuItem Header="{DynamicResource C126}"
                       Command="{Binding EditProductCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -251,7 +258,7 @@
                                Stretch="Fill" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_SerialTrackingDetail}"
+            <MenuItem Header="{DynamicResource C129}"
                       Command="{Binding OpenSelectTrackingNumberViewCommand}">
                 <MenuItem.Style>
                     <Style BasedOn="{StaticResource {x:Type MenuItem}}"
@@ -274,7 +281,7 @@
                     </Style>
                 </MenuItem.Style>
             </MenuItem>
-            <MenuItem Header="{DynamicResource PurchaseOrderView_MenuItem_DeleteItem}"
+            <MenuItem Header="{DynamicResource C127}"
                       Command="{Binding DeletePurchaseOrderDetailCommand}">
                 <MenuItem.Icon>
                     <Rectangle Width="16"
@@ -287,97 +294,97 @@
 
         <!--DataGridColumn In Search-->
         <DataTemplate x:Key="PODateHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_PODate}" />
+            <TextBlock Text="{DynamicResource PO120}" />
         </DataTemplate>
         <DataTemplate x:Key="PONumberHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_PONumber2}" />
+            <TextBlock Text="{DynamicResource PO101}" />
         </DataTemplate>
         <DataTemplate x:Key="StatusHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Status2}" />
+            <TextBlock Text="{DynamicResource C151}" />
         </DataTemplate>
         <DataTemplate x:Key="VendorHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Vendor2}" />
+            <TextBlock Text="{DynamicResource C134}" />
         </DataTemplate>
         <DataTemplate x:Key="QtyOrderedHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyOrdered}" />
+            <TextBlock Text="{DynamicResource PO121}" />
         </DataTemplate>
         <DataTemplate x:Key="QtyDueHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyDue}" />
+            <TextBlock Text="{DynamicResource PO122}" />
         </DataTemplate>
         <DataTemplate x:Key="QtyReceiveHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_QtyReceive}" />
+            <TextBlock Text="{DynamicResource PO123}" />
         </DataTemplate>
         <DataTemplate x:Key="UnfilledHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Unfilled}" />
+            <TextBlock Text="{DynamicResource PO124}" />
         </DataTemplate>
         <DataTemplate x:Key="TotalHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Total2}" />
+            <TextBlock Text="{DynamicResource C103}" />
         </DataTemplate>
         <DataTemplate x:Key="PaidHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Paid2}" />
+            <TextBlock Text="{DynamicResource C107}" />
         </DataTemplate>
         <DataTemplate x:Key="BalanceHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Balance2}" />
+            <TextBlock Text="{DynamicResource C108}" />
         </DataTemplate>
         <DataTemplate x:Key="DueDateHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_DueDate}" />
+            <TextBlock Text="{DynamicResource C133}" />
         </DataTemplate>
         <DataTemplate x:Key="ShipDateHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ShipDate2}" />
+            <TextBlock Text="{DynamicResource C149}" />
         </DataTemplate>
 
         <!--DataGridColumn In Order TabItem-->
         <DataTemplate x:Key="ItemCodeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemCode}" />
+            <TextBlock Text="{DynamicResource C114}" />
         </DataTemplate>
         <DataTemplate x:Key="ItemNameHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ItemName}" />
+            <TextBlock Text="{DynamicResource C115}" />
         </DataTemplate>
         <DataTemplate x:Key="AttributeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Attribute}" />
+            <TextBlock Text="{DynamicResource C116}" />
         </DataTemplate>
         <DataTemplate x:Key="SizeHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Size}" />
+            <TextBlock Text="{DynamicResource C117}" />
         </DataTemplate>
         <DataTemplate x:Key="UOMHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_UOM}" />
+            <TextBlock Text="{DynamicResource C118}" />
         </DataTemplate>
         <DataTemplate x:Key="PriceHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Price}" />
+            <TextBlock Text="{DynamicResource C119}" />
         </DataTemplate>
         <DataTemplate x:Key="QuantityHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Quantity}" />
+            <TextBlock Text="{DynamicResource C120}" />
         </DataTemplate>
         <DataTemplate x:Key="DiscountHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Discount}" />
+            <TextBlock Text="{DynamicResource C121}" />
         </DataTemplate>
         <DataTemplate x:Key="AmountHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Amount}" />
+            <TextBlock Text="{DynamicResource C122}" />
         </DataTemplate>
         <DataTemplate x:Key="ReceivedHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Received}" />
+            <TextBlock Text="{DynamicResource PO115}" />
         </DataTemplate>
         <DataTemplate x:Key="DueQtyHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_DueQty}" />
+            <TextBlock Text="{DynamicResource PO117}" />
         </DataTemplate>
 
         <!--DataGridColumn In Receive TabItem-->
         <DataTemplate x:Key="ReceivedQtyHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReceivedQty}" />
+            <TextBlock Text="{DynamicResource PO118}" />
         </DataTemplate>
         <DataTemplate x:Key="ReceivedDateHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReceivedDate}" />
+            <TextBlock Text="{DynamicResource PO119}" />
         </DataTemplate>
 
         <!--DataGridColumn In Return TabItem-->
         <DataTemplate x:Key="ReturnDateHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnDate}" />
+            <TextBlock Text="{DynamicResource C130}" />
         </DataTemplate>
         <DataTemplate x:Key="ReturnedQtyHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnedQty}" />
+            <TextBlock Text="{DynamicResource C131}" />
         </DataTemplate>
         <DataTemplate x:Key="ReturnedHeaderTemplate">
-            <TextBlock Text="{DynamicResource PurchaseOrderView_TextBlock_Returned}" />
+            <TextBlock Text="{DynamicResource C132}" />
         </DataTemplate>
 
     </UserControl.Resources>
@@ -393,7 +400,8 @@
 
                 <!--Search-->
                 <Grid x:Name="grdContentSearch"
-                      Visibility="{Binding IsSearchMode, Converter={StaticResource CollapsedWhenFalseConverter}, Mode=OneWay}">
+                      Visibility="{Binding IsSearchMode, Converter={StaticResource CollapsedWhenFalseConverter}, Mode=OneWay}"
+                      d:IsHidden="True">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="113" />
@@ -404,7 +412,7 @@
                               Margin="10,10,10,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Search}"
+                                       Text="{DynamicResource C113}"
                                        TextWrapping="NoWrap"
                                        Style="{DynamicResource GroupboxTextBlock}" />
                         </GroupBox.Header>
@@ -424,7 +432,7 @@
                                                               VerticalContentAlignment="Center"
                                                               Padding="24,0,5,0"
                                                               TextWrapping="NoWrap"
-                                                              Watermark="{DynamicResource PurchaseOrderView_WatermarkTextBox_Keyword}"
+                                                              Watermark="{DynamicResource C135}"
                                                               Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                 <xceedWpfToolkit:WatermarkTextBox.InputBindings>
@@ -445,7 +453,7 @@
                                     HorizontalAlignment="Left"
                                     Width="100"
                                     VerticalAlignment="Center"
-                                    Content="{DynamicResource PurchaseOrderView_Button_AdvanceSearch}"
+                                    Content="{DynamicResource C104}"
                                     Margin="10,0,0,0"
                                     Style="{DynamicResource ButtonAdvanceSearch}"
                                     Command="{Binding SearchPOAdvanceCommand}" />
@@ -460,12 +468,12 @@
                                 <CheckBox x:Name="cbPONo"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="{DynamicResource PurchaseOrderView_CheckBox_PONo}"
+                                          Content="{DynamicResource PO125}"
                                           IsChecked="{Binding HasSearchPurchaseOrderNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <CheckBox x:Name="cbVendor"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
-                                          Content="{DynamicResource PurchaseOrderView_CheckBox_Vendor}"
+                                          Content="{DynamicResource C134}"
                                           Margin="10,0,0,0"
                                           IsChecked="{Binding HasSearchVendor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
@@ -494,7 +502,7 @@
                         <cpcDataGridToolkit:DataGridControl.Columns>
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource PONumberHeaderTemplate}"
-                                                Width="80"
+                                                Width="85"
                                                 Binding="{Binding PurchaseOrderNo}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource PODateHeaderTemplate}"
@@ -503,35 +511,36 @@
                                                 Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource StatusHeaderTemplate}"
-                                                Binding="{Binding StatusItem.Text}" />
+                                                Binding="{Binding StatusItem.Text}"
+                                                Width="100" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource VendorHeaderTemplate}"
-                                                Width="*"
+                                                Width="150"
                                                 Binding="{Binding VendorName}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource QtyOrderedHeaderTemplate}"
-                                                Width="70"
+                                                Width="75"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding QtyOrdered, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                Binding="{Binding QtyOrdered, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource QtyDueHeaderTemplate}"
-                                                Width="70"
+                                                Width="75"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding QtyDue, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                Binding="{Binding QtyDue, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource QtyReceiveHeaderTemplate}"
-                                                Width="70"
+                                                Width="75"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding QtyReceived, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                Binding="{Binding QtyReceived, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTemplateColumn HeaderTemplate="{StaticResource UnfilledHeaderTemplate}"
-                                                    Width="70"
+                                                    Width="75"
                                                     SortMemberPath="UnFilled">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Right">
-                                            <TextBlock Text="{Binding UnFilled, StringFormat={x:Static pos:Define.PercentFormat}}" />
+                                            <TextBlock Text="{Binding UnFilled, StringFormat={x:Static pos:Define.PercentFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                             <TextBlock Margin="2,0,0,0"
                                                        Text="%" />
                                         </StackPanel>
@@ -540,19 +549,19 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource TotalHeaderTemplate}"
-                                                Width="90"
+                                                Width="80"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding Total, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                Binding="{Binding Total, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource PaidHeaderTemplate}"
-                                                Width="90"
+                                                Width="80"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding Paid, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                Binding="{Binding Paid, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource BalanceHeaderTemplate}"
-                                                Width="90"
+                                                Width="80"
                                                 ElementStyle="{StaticResource NumberTextBlock}"
-                                                Binding="{Binding Balance, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                Binding="{Binding Balance, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                             <DataGridTextColumn HeaderTemplate="{StaticResource DueDateHeaderTemplate}"
                                                 Width="70"
@@ -573,8 +582,7 @@
                 <!--Detail-->
                 <Grid x:Name="grdContentPO1"
                       Visibility="{Binding IsSearchMode, Converter={StaticResource VisibleWhenFalseConverter}, Mode=OneWay}"
-                      Grid.Column="1"
-                      d:IsHidden="True">
+                      Grid.Column="1">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="22" />
@@ -588,7 +596,7 @@
                             Style="{DynamicResource ButtonBarSearch}"
                             Command="{Binding OpenSearchComponentCommand}">
                         <TextBlock VerticalAlignment="Center"
-                                   Text="{DynamicResource PurchaseOrderView_TextBlock_Search}"
+                                   Text="{DynamicResource C113}"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Center"
                                    x:Name="txtblShowSearch1"
@@ -719,7 +727,7 @@
                                    Margin="2,0" />
 
                         <TextBlock x:Name="txtblBindingPO"
-                                   Text="{DynamicResource PurchaseOrderView_TextBlock_PurchaseOrder}"
+                                   Text="{DynamicResource PO100}"
                                    TextWrapping="NoWrap"
                                    Margin="0,0,20,7"
                                    HorizontalAlignment="Right"
@@ -750,7 +758,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock x:Name="txtblPONo"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_PONumber}"
+                                       Text="{DynamicResource PO101}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
@@ -767,7 +775,7 @@
                                        Text="{Binding SelectedPurchaseOrder.PurchaseOrderNo, Mode=OneWay}" />
 
                             <TextBlock x:Name="txtblShipAddress"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_ShipAddress}"
+                                       Text="{DynamicResource C147}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
@@ -786,7 +794,7 @@
                                       SelectedIndex="{Binding SelectedPurchaseOrder.StoreCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblOrderDate"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_OrderDate}"
+                                       Text="{DynamicResource C148}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        Margin="25,0,0,0"
@@ -798,12 +806,13 @@
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Column="7"
                                         Margin="0,2"
-                                        Width="110"
+                                        Width="90"
                                         HorizontalAlignment="Left"
-                                        SelectedDate="{Binding SelectedPurchaseOrder.PurchasedDate, Converter={StaticResource NullToDefaultValueConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        SelectedDate="{Binding SelectedPurchaseOrder.PurchasedDate, Converter={StaticResource NullToDefaultValueConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Height="21" />
 
                             <TextBlock x:Name="txtblVendor"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Vendor}"
+                                       Text="{DynamicResource C134}"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
                                        Margin="10,0,0,0"
@@ -838,7 +847,7 @@
 
 
                             <TextBlock x:Name="txtblShipDate"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_ShipDate}"
+                                       Text="{DynamicResource C149}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        Margin="25,0,0,0"
@@ -852,12 +861,13 @@
                                         Margin="0,2"
                                         Grid.Column="7"
                                         HorizontalAlignment="Left"
-                                        Width="110"
+                                        Width="90"
                                         Grid.Row="1"
-                                        SelectedDate="{Binding SelectedPurchaseOrder.ShipDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        SelectedDate="{Binding SelectedPurchaseOrder.ShipDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Height="21" />
 
                             <TextBlock x:Name="txtblStatus"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_Status}"
+                                       Text="{DynamicResource C151}"
                                        TextWrapping="NoWrap"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
@@ -878,7 +888,7 @@
                                       SelectedValue="{Binding SelectedPurchaseOrder.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <TextBlock x:Name="txtblOrderCancelDate"
-                                       Text="{DynamicResource PurchaseOrderView_TextBlock_CancelDate}"
+                                       Text="{DynamicResource C150}"
                                        TextWrapping="NoWrap"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"
@@ -893,9 +903,10 @@
                                         Grid.Row="2"
                                         Grid.Column="5"
                                         Height="21"
-                                        Width="110"
+                                        Width="90"
                                         HorizontalAlignment="Left"
-                                        SelectedDate="{Binding SelectedPurchaseOrder.CancelDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        SelectedDate="{Binding SelectedPurchaseOrder.CancelDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Margin="0,2" />
 
                         </Grid>
 
@@ -903,13 +914,13 @@
                               Grid.Row="3"
                               d:LayoutOverrides="Width">
 
-                            <otherControl:CPCTabControl x:Name="TabSalesOrder"
+                            <otherControl:CPCTabControl x:Name="TabPO"
                                                         Margin="10"
                                                         SelectedIndex="{Binding CurrentTabItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                 <!--Order Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemOrder"
-                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Order}">
+                                                                Header="{DynamicResource C136}">
                                     <AdornerDecorator>
 
                                         <Grid x:Name="grdContentOrder">
@@ -927,7 +938,7 @@
                                                        VerticalAlignment="Center"
                                                        Margin="10,0,0,0"
                                                        TextWrapping="NoWrap"
-                                                       Text="{DynamicResource PurchaseOrderView_TextBlock_SelectItem}"
+                                                       Text="{DynamicResource C100}"
                                                        Style="{DynamicResource TextBlockNormal}" />
 
                                             <!--Search Products-->
@@ -946,19 +957,19 @@
                                                                                    FieldSource="{Binding ProductFieldCollection}"
                                                                                    SelectedItemResult="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                 <atCompleteControl:AutoCompleteTextBox.Columns>
-                                                    <GridViewColumn Header="Code"
+                                                    <GridViewColumn Header="{DynamicResource C174}"
                                                                     Width="120"
                                                                     DisplayMemberBinding="{Binding Code}" />
-                                                    <GridViewColumn Header="ProductName"
+                                                    <GridViewColumn Header="{DynamicResource C175}"
                                                                     Width="130"
                                                                     DisplayMemberBinding="{Binding ProductName}" />
-                                                    <GridViewColumn Header="Attribute"
+                                                    <GridViewColumn Header="{DynamicResource C116}"
                                                                     Width="90"
                                                                     DisplayMemberBinding="{Binding Attribute}" />
-                                                    <GridViewColumn Header="Size"
+                                                    <GridViewColumn Header="{DynamicResource C117}"
                                                                     Width="90"
                                                                     DisplayMemberBinding="{Binding Size}" />
-                                                    <GridViewColumn Header="Barcode"
+                                                    <GridViewColumn Header="{DynamicResource C176}"
                                                                     Width="100"
                                                                     DisplayMemberBinding="{Binding Barcode}" />
                                                 </atCompleteControl:AutoCompleteTextBox.Columns>
@@ -972,7 +983,7 @@
                                                     Width="90"
                                                     Command="{Binding SearchProductAdvanceCommand}">
                                                 <TextBlock VerticalAlignment="Center"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_AdvanceSearch}"
+                                                           Text="{DynamicResource C104}"
                                                            TextWrapping="NoWrap"
                                                            x:Name="txtblAdvanceSearch"
                                                            Style="{DynamicResource ButtonTextBlock}" />
@@ -1005,22 +1016,23 @@
                                                                         Binding="{Binding ItemCode}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="150"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
-                                                                        Width="50"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize}" />
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
-                                                                            Width="100"
+                                                                            CellStyle="{StaticResource UOMDataGridCellStyle}"
+                                                                            Width="80"
                                                                             SortMemberPath="UnitName">
 
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -1031,147 +1043,87 @@
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <ComboBox x:Name="cmbUOM"
-                                                                              ItemsSource="{Binding UOMCollection, Mode=OneWay}"
-                                                                              DisplayMemberPath="Name"
-                                                                              SelectedValuePath="UOMId"
-                                                                              SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbUOM"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding UnitName, Mode=OneWay}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding HasReceivedItem, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="cmbUOM"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbUOM"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <ComboBox x:Name="cmbUOM"
+                                                                          Style="{DynamicResource ComboBoxInsideDataGridStyle}"
+                                                                          ItemsSource="{Binding UOMCollection, Mode=OneWay}"
+                                                                          DisplayMemberPath="Name"
+                                                                          SelectedValuePath="UOMId"
+                                                                          SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
-                                                                            Width="70"
+                                                                            CellStyle="{StaticResource PriceDataGridCellStyle}"
+                                                                            Width="80"
                                                                             SortMemberPath="Price">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                           Text="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                           Text="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <textBoxToolkit:TextBoxMoney x:Name="txtPrice"
-                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
-                                                                                                 Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbPrice"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding HasReceivedItem, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtPrice"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbPrice"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <textBoxToolkit:TextBoxMoney x:Name="txtPrice"
+                                                                                             Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                             Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource QuantityHeaderTemplate}"
-                                                                            Width="50"
+                                                                            CellStyle="{StaticResource QuantityDataGridCellStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="Quantity">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                           Text="{Binding Quantity, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                           Text="{Binding Quantity, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <textBoxToolkit:TextBoxNumber x:Name="txtQuantity"
-                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
-                                                                                                  Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
-                                                                        <i:Interaction.Triggers>
-                                                                            <i:EventTrigger EventName="LostFocus">
-                                                                                <cmd:EventToCommand Command="{Binding DataContext.QuantityChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
-                                                                            </i:EventTrigger>
-                                                                        </i:Interaction.Triggers>
-                                                                    </textBoxToolkit:TextBoxNumber>
-                                                                    <TextBlock x:Name="txtbQuantity"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding Quantity, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsFullReceived, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtQuantity"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbQuantity"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <textBoxToolkit:TextBoxNumber x:Name="txtQuantity"
+                                                                                              Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
+                                                                                              ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                              Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                                                                    <i:Interaction.Triggers>
+                                                                        <i:EventTrigger EventName="LostFocus">
+                                                                            <cmd:EventToCommand Command="{Binding DataContext.QuantityChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
+                                                                        </i:EventTrigger>
+                                                                    </i:Interaction.Triggers>
+                                                                </textBoxToolkit:TextBoxNumber>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
-                                                                            Width="70"
+                                                                            CellStyle="{StaticResource DiscountDataGridCellStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="Discount">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                           Text="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                           Text="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <textBoxToolkit:TextBoxMoney x:Name="txtDiscount"
-                                                                                                 Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
-                                                                                                 Value="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbDiscount"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding HasReceivedItem, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtDiscount"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbDiscount"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <textBoxToolkit:TextBoxMoney x:Name="txtDiscount"
+                                                                                             Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                             Value="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
@@ -1180,22 +1132,42 @@
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
                                                                         Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ReceivedHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding ReceivedQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                        Binding="{Binding ReceivedQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource DueQtyHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding DueQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                        Binding="{Binding DueQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
-                                                    <!--<DataGridTextColumn Header="On-Hand Qty"
-                                                                    Width="80"
-                                                                    ElementStyle="{StaticResource NumberTextBlock}"
-                                                                    Binding="{Binding OnHandQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />-->
+                                                    <DataGridTextColumn Header="On-Hand Qty"
+                                                                        Width="80"
+                                                                        IsReadOnly="True">
+                                                        <DataGridTextColumn.ElementStyle>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="HorizontalAlignment"
+                                                                        Value="Right" />
+                                                                <Setter Property="Text"
+                                                                        Value="{Binding OnHandQty, Mode=OneWay, StringFormat={x:Static pos:Define.DecimalFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding OnHandQty, Mode=OneWay}"
+                                                                                 Value="0">
+                                                                        <Setter Property="Text"
+                                                                                Value="{Binding OnHandQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </DataGridTextColumn.ElementStyle>
+                                                    </DataGridTextColumn>
+
+                                                    <!--<DataGridTextColumn Header="On-Hand Qty On Base Unit"
+                                                                        Width="80"
+                                                                        ElementStyle="{StaticResource NumberTextBlock}"
+                                                                        Binding="{Binding OnHandQtyOnBaseUnit, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />-->
 
                                                 </cpcDataGridToolkit:DataGridControl.Columns>
 
@@ -1219,7 +1191,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblTerm"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Term}"
+                                                           Text="{DynamicResource C101}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1263,7 +1235,7 @@
                                                 </Button>
 
                                                 <TextBlock x:Name="txtblPaymentDueDate"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_PaymentDueDate}"
+                                                           Text="{DynamicResource PO111}"
                                                            TextWrapping="NoWrap"
                                                            Grid.Row="1"
                                                            HorizontalAlignment="Left"
@@ -1282,7 +1254,7 @@
                                                             Height="21" />
 
                                                 <TextBlock x:Name="txtblRemark1"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
+                                                           Text="{DynamicResource C102}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1306,16 +1278,8 @@
                                                                         Width="230"
                                                                         HorizontalAlignment="Left" />
 
-                                                <!--SubTotal-->
-
-                                                <!--DiscountPercent-->
-
-                                                <!--DiscountAmount-->
-
-                                                <!--Freight-->
-
                                                 <TextBlock x:Name="txtblOrderTotal"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Total}"
+                                                           Text="{DynamicResource C103}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1325,21 +1289,21 @@
                                                            Style="{DynamicResource TextBlockNormal}" />
 
                                                 <!--Total-->
-                                                <TextBox x:Name="txtOrderTotal"
-                                                         Margin="0,2"
-                                                         TextWrapping="NoWrap"
-                                                         Padding="2,0,2,0"
-                                                         Grid.Column="4"
-                                                         Grid.Row="0"
-                                                         HorizontalContentAlignment="Right"
-                                                         VerticalContentAlignment="Center"
-                                                         IsReadOnly="True"
-                                                         Style="{DynamicResource TextBoxTotal}"
-                                                         MaxLength="{StaticResource TotalMaxLength}"
-                                                         Text="{Binding SelectedPurchaseOrder.Total, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged}"
-                                                         Height="31"
-                                                         Grid.RowSpan="2"
-                                                         VerticalAlignment="Top" />
+                                                <textBoxToolkit:TextBox x:Name="txtOrderTotal"
+                                                                        Margin="0,2"
+                                                                        TextWrapping="NoWrap"
+                                                                        Padding="2,0,2,0"
+                                                                        Grid.Column="4"
+                                                                        Grid.Row="0"
+                                                                        HorizontalContentAlignment="Right"
+                                                                        VerticalContentAlignment="Center"
+                                                                        IsReadOnly="True"
+                                                                        Style="{DynamicResource TextBoxTotal}"
+                                                                        MaxLength="{StaticResource TotalMaxLength}"
+                                                                        Text="{Binding SelectedPurchaseOrder.Total, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged, ConverterCulture={x:Static pos:Define.ConverterCulture}}"
+                                                                        Height="31"
+                                                                        Grid.RowSpan="2"
+                                                                        VerticalAlignment="Top" />
 
                                             </Grid>
 
@@ -1351,7 +1315,7 @@
 
                                 <!--Receive Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemReceive"
-                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Receive}"
+                                                                Header="{DynamicResource PO116}"
                                                                 Visibility="{Binding SelectedPurchaseOrder.HasReceive, Mode=OneWay, Converter={StaticResource CollapsedWhenFalseConverter}}">
                                     <AdornerDecorator>
 
@@ -1382,7 +1346,7 @@
                                                                Width="20" />
                                                     <TextBlock Margin="5,0,0,0"
                                                                VerticalAlignment="Center"
-                                                               Text="{DynamicResource PurchaseOrderView_TextBlock_ReceiveAll}"
+                                                               Text="{DynamicResource PO112}"
                                                                TextWrapping="NoWrap"
                                                                x:Name="txtblReceiveAll"
                                                                Style="{DynamicResource ButtonTextBlock}" />
@@ -1400,6 +1364,7 @@
                                                                                 IsReadOnly="{Binding SelectedPurchaseOrder.CanEditItemCollection, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                                 VisibilityNavigationBar="Collapsed"
                                                                                 Style="{DynamicResource DatagridWithRowHeader}"
+                                                                                RowStyle="{StaticResource PORDataGridRowStyle}"
                                                                                 ItemsSource="{Binding SelectedPurchaseOrder.PurchaseOrderReceiveCollection, Mode=OneWay}"
                                                                                 SelectedItem="{Binding SelectedPurchaseOrderReceive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                 DeleteItemCommand="{Binding DeletePurchaseOrderReceiveCommand}">
@@ -1411,7 +1376,8 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedDateHeaderTemplate}"
-                                                                            Width="100"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="80"
                                                                             SortMemberPath="ReceiveDate">
 
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -1423,32 +1389,16 @@
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <DatePicker x:Name="dtpReceiveDate"
-                                                                                SelectedDate="{Binding ReceiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultValueConverter}}" />
-                                                                    <TextBlock x:Name="txtbReceiveDate"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding ReceiveDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReceived, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="dtpReceiveDate"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbReceiveDate"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <DatePicker x:Name="dtpReceiveDate"
+                                                                            SelectedDate="{Binding ReceiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultValueConverter}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
-                                                                            Width="110"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="100"
                                                                             SortMemberPath="ItemCode">
 
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -1460,140 +1410,111 @@
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <atCompleteControl:AutoCompleteTextBox x:Name="atCompleteTextBoxItemCode"
-                                                                                                           Foreground="Black"
-                                                                                                           AutoChangeSelectedItem="False"
-                                                                                                           IsTextCompletionEnabled="True"
-                                                                                                           FieldShow="ItemName"
-                                                                                                           FilterMode="Contains"
-                                                                                                           Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
-                                                                                                           ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReceiveCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                                                                           FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                                                                           SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                                        <atCompleteControl:AutoCompleteTextBox.Columns>
-                                                                            <GridViewColumn Header="Code"
-                                                                                            Width="120"
-                                                                                            DisplayMemberBinding="{Binding ItemCode}" />
-                                                                            <GridViewColumn Header="ProductName"
-                                                                                            Width="130"
-                                                                                            DisplayMemberBinding="{Binding ItemName}" />
-                                                                            <GridViewColumn Header="Attribute"
-                                                                                            Width="90"
-                                                                                            DisplayMemberBinding="{Binding ItemAtribute}" />
-                                                                            <GridViewColumn Header="Size"
-                                                                                            Width="90"
-                                                                                            DisplayMemberBinding="{Binding ItemSize}" />
-                                                                        </atCompleteControl:AutoCompleteTextBox.Columns>
-                                                                    </atCompleteControl:AutoCompleteTextBox>
-                                                                    <TextBlock x:Name="txtbItemCode"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding ItemCode, Mode=OneWay}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReceived, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="atCompleteTextBoxItemCode"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbItemCode"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <atCompleteControl:AutoCompleteTextBox x:Name="atCompleteTextBoxItemCode"
+                                                                                                       Foreground="Black"
+                                                                                                       AutoChangeSelectedItem="False"
+                                                                                                       IsTextCompletionEnabled="True"
+                                                                                                       FieldShow="ItemName"
+                                                                                                       FilterMode="Contains"
+                                                                                                       Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
+                                                                                                       ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReceiveCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                                                       FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                                                       SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                    <atCompleteControl:AutoCompleteTextBox.Columns>
+                                                                        <GridViewColumn Header="{DynamicResource C174}"
+                                                                                        Width="120"
+                                                                                        DisplayMemberBinding="{Binding ItemCode}" />
+                                                                        <GridViewColumn Header="{DynamicResource C175}"
+                                                                                        Width="130"
+                                                                                        DisplayMemberBinding="{Binding ItemName}" />
+                                                                        <GridViewColumn Header="{DynamicResource C116}"
+                                                                                        Width="90"
+                                                                                        DisplayMemberBinding="{Binding ItemAtribute}" />
+                                                                        <GridViewColumn Header="{DynamicResource C117}"
+                                                                                        Width="90"
+                                                                                        DisplayMemberBinding="{Binding ItemSize}" />
+
+                                                                    </atCompleteControl:AutoCompleteTextBox.Columns>
+                                                                </atCompleteControl:AutoCompleteTextBox>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize}" />
 
+                                                    <DataGridTextColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
+                                                                        Width="80"
+                                                                        IsReadOnly="True"
+                                                                        Binding="{Binding UnitName, Mode=OneWay}" />
+
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedQtyHeaderTemplate}"
-                                                                            Width="70"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="RecQty">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                           Text="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                           Text="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <textBoxToolkit:TextBoxNumber x:Name="txtRecQty"
-                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
-                                                                                                  Value="{Binding RecQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbRecQty"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReceived, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtRecQty"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbRecQty"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <textBoxToolkit:TextBoxNumber x:Name="txtRecQty"
+                                                                                              Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
+                                                                                              ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                              Value="{Binding RecQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReceivedHeaderTemplate}"
-                                                                            Width="50"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="IsReceived">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock Style="{StaticResource ReceivedTextBlockStyle}"
-                                                                           Text="{Binding IsReceived, Mode=OneWay}" />
+                                                                <ToggleButton x:Name="tgReceived"
+                                                                              HorizontalAlignment="Center"
+                                                                              Visibility="Collapsed"
+                                                                              IsEnabled="{Binding IsReceived, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                                              IsChecked="{Binding IsReceived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              Style="{StaticResource ToggleButtonTrueFalse}" />
+                                                                <DataTemplate.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsTemporary, Mode=OneWay}"
+                                                                                 Value="False">
+                                                                        <Setter Property="Visibility"
+                                                                                Value="Visible"
+                                                                                TargetName="tgReceived" />
+                                                                    </DataTrigger>
+                                                                </DataTemplate.Triggers>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <CheckBox x:Name="chkIsReceived1"
+                                                                <ToggleButton x:Name="tgReceived"
                                                                               HorizontalAlignment="Center"
-                                                                              IsThreeState="False"
-                                                                              IsChecked="{Binding IsReceived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbIsReceived1"
-                                                                               Visibility="Collapsed"
-                                                                               Style="{StaticResource ReceivedTextBlockStyle}"
-                                                                               Text="{Binding IsReceived, Mode=OneWay}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReceived, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="chkIsReceived1"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbIsReceived1"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                              IsEnabled="{Binding IsReceived, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                                              IsChecked="{Binding IsReceived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              Style="{StaticResource ToggleButtonTrueFalse}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
@@ -1619,7 +1540,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblRemark2"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
+                                                           Text="{DynamicResource C102}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1642,7 +1563,7 @@
                                                                         Text="{Binding SelectedPurchaseOrder.RecRemark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                                 <TextBlock x:Name="txtblTotalOrder"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_TotalOrdered}"
+                                                           Text="{DynamicResource PO113}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1659,10 +1580,10 @@
                                                            VerticalAlignment="Center"
                                                            Grid.Column="2"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="{Binding SelectedPurchaseOrder.QtyOrdered, Mode=OneWay}" />
+                                                           Text="{Binding SelectedPurchaseOrder.QtyOrdered, Mode=OneWay, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                 <TextBlock x:Name="txtblTotalReceive"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_TotalReceived}"
+                                                           Text="{DynamicResource PO114}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="0"
@@ -1681,7 +1602,7 @@
                                                            Grid.Row="1"
                                                            Grid.Column="2"
                                                            Style="{DynamicResource TextBlockNormal}"
-                                                           Text="{Binding SelectedPurchaseOrder.TotalReceive, Mode=OneWay}" />
+                                                           Text="{Binding SelectedPurchaseOrder.TotalReceive, Mode=OneWay, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                             </Grid>
 
@@ -1693,7 +1614,7 @@
 
                                 <!--Payment Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemPayment"
-                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Payment}"
+                                                                Header="{DynamicResource C123}"
                                                                 Visibility="{Binding Visibility, ElementName=tabitemReceive, Mode=OneWay}">
                                     <AdornerDecorator>
 
@@ -1722,49 +1643,49 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
-                                                                        Width="110"
+                                                                        Width="100"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemCode, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ReceivedQtyHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                        Binding="{Binding RecQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                 </cpcDataGridToolkit:DataGridControl.Columns>
 
@@ -1790,7 +1711,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblDatePaid"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_DatePaid}"
+                                                           Text="{DynamicResource C105}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Bottom"
@@ -1807,7 +1728,7 @@
                                                             Height="21" />
 
                                                 <TextBlock x:Name="txtblPaymentMethod"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_PaymentMethod}"
+                                                           Text="{DynamicResource C106}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
@@ -1830,7 +1751,7 @@
                                                           VerticalAlignment="Top" />
 
                                                 <TextBlock x:Name="txtblPaymentRemark"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Remark}"
+                                                           Text="{DynamicResource C102}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Margin="20,0,0,5"
@@ -1856,7 +1777,7 @@
                                                                         Text="{Binding SelectedPurchaseOrder.ResourcePayment.Remark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                                                 <TextBlock x:Name="txtblPaymentTotal"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Total}"
+                                                           Text="{DynamicResource C103}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Bottom"
                                                            HorizontalAlignment="Left"
@@ -1865,21 +1786,21 @@
                                                            Style="{DynamicResource TextBlockNormal}" />
 
                                                 <!--TotalAmount-->
-                                                <TextBox x:Name="txtPaymentTotal"
-                                                         Margin="0,2"
-                                                         TextWrapping="NoWrap"
-                                                         Padding="2,0,2,0"
-                                                         Grid.Column="4"
-                                                         Grid.Row="0"
-                                                         HorizontalContentAlignment="Right"
-                                                         VerticalContentAlignment="Center"
-                                                         IsReadOnly="True"
-                                                         Style="{DynamicResource TextBoxTotal}"
-                                                         MaxLength="{StaticResource TotalMaxLength}"
-                                                         Text="{Binding SelectedPurchaseOrder.ResourcePayment.TotalAmount, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <textBoxToolkit:TextBox x:Name="txtPaymentTotal"
+                                                                        Margin="0,2"
+                                                                        TextWrapping="NoWrap"
+                                                                        Padding="2,0,2,0"
+                                                                        Grid.Column="4"
+                                                                        Grid.Row="0"
+                                                                        HorizontalContentAlignment="Right"
+                                                                        VerticalContentAlignment="Center"
+                                                                        IsReadOnly="True"
+                                                                        Style="{DynamicResource TextBoxTotal}"
+                                                                        MaxLength="{StaticResource TotalMaxLength}"
+                                                                        Text="{Binding SelectedPurchaseOrder.ResourcePayment.TotalAmount, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                 <TextBlock x:Name="txtblPaymentPaid"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Paid}"
+                                                           Text="{DynamicResource C107}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1902,10 +1823,11 @@
                                                                              Foreground="Red"
                                                                              IsReadOnly="{Binding SelectedPurchaseOrder.CanEditBaseInformation, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
                                                                              MaxLength="{StaticResource TotalMaxLength}"
+                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourcePayment.TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblPaymentBalance"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Balance}"
+                                                           Text="{DynamicResource C108}"
                                                            Foreground="White"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
@@ -1916,17 +1838,17 @@
                                                            Style="{DynamicResource TextBlockNormal}" />
 
                                                 <!--Balance-->
-                                                <TextBox x:Name="txtPaymentBalance"
-                                                         Margin="0,2"
-                                                         TextWrapping="NoWrap"
-                                                         Padding="2,0,2,0"
-                                                         Grid.Column="4"
-                                                         Grid.Row="2"
-                                                         HorizontalContentAlignment="Right"
-                                                         VerticalContentAlignment="Center"
-                                                         IsReadOnly="True"
-                                                         Style="{DynamicResource TextBoxTotal}"
-                                                         Text="{Binding SelectedPurchaseOrder.ResourcePayment.Balance, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <textBoxToolkit:TextBox x:Name="txtPaymentBalance"
+                                                                        Margin="0,2"
+                                                                        TextWrapping="NoWrap"
+                                                                        Padding="2,0,2,0"
+                                                                        Grid.Column="4"
+                                                                        Grid.Row="2"
+                                                                        HorizontalContentAlignment="Right"
+                                                                        VerticalContentAlignment="Center"
+                                                                        IsReadOnly="True"
+                                                                        Style="{DynamicResource TextBoxTotal}"
+                                                                        Text="{Binding SelectedPurchaseOrder.ResourcePayment.Balance, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                             </Grid>
 
@@ -1938,7 +1860,7 @@
 
                                 <!--Return Tab-->
                                 <otherControl:CPCTabItemControl x:Name="tabitemReturn"
-                                                                Header="{DynamicResource PurchaseOrderView_TabItem_Return}"
+                                                                Header="{DynamicResource C124}"
                                                                 Visibility="{Binding Visibility, ElementName=tabitemReceive, Mode=OneWay}">
                                     <AdornerDecorator>
 
@@ -1969,7 +1891,7 @@
                                                                Width="20" />
                                                     <TextBlock Margin="5,0,0,0"
                                                                VerticalAlignment="Center"
-                                                               Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnAll}"
+                                                               Text="{DynamicResource C109}"
                                                                TextWrapping="NoWrap"
                                                                x:Name="txtblReturnAll"
                                                                Style="{DynamicResource ButtonTextBlock}" />
@@ -1987,6 +1909,7 @@
                                                                                 VisibilityNavigationBar="Collapsed"
                                                                                 IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                                 Style="{DynamicResource DatagridWithRowHeader}"
+                                                                                RowStyle="{StaticResource RRDDataGridRowStyle}"
                                                                                 ItemsSource="{Binding SelectedPurchaseOrder.ResourceReturnDetailCollection, Mode=OneWay}"
                                                                                 SelectedItem="{Binding SelectedResourceReturnDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                 DeleteItemCommand="{Binding DeleteResourceReturnDetailCommand}">
@@ -1998,7 +1921,8 @@
                                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnDateHeaderTemplate}"
-                                                                            Width="100"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="70"
                                                                             SortMemberPath="ReturnedDate">
 
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -2010,32 +1934,16 @@
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <DatePicker x:Name="dtpReturnedDate"
-                                                                                SelectedDate="{Binding ReturnedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultValueConverter}}" />
-                                                                    <TextBlock x:Name="txtbReturnedDate"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding ReturnedDate, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReturned, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="dtpReturnedDate"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbReturnedDate"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <DatePicker x:Name="dtpReturnedDate"
+                                                                            SelectedDate="{Binding ReturnedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToDefaultValueConverter}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
-                                                                            Width="110"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="100"
                                                                             SortMemberPath="ItemCode">
 
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -2047,161 +1955,126 @@
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <atCompleteControl:AutoCompleteTextBox x:Name="atCompleteTextBoxItemCode"
-                                                                                                           Foreground="Black"
-                                                                                                           AutoChangeSelectedItem="False"
-                                                                                                           IsTextCompletionEnabled="True"
-                                                                                                           FieldShow="ItemName"
-                                                                                                           FilterMode="Contains"
-                                                                                                           Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
-                                                                                                           ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReturnCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                                                                           FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                                                                           SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                                        <atCompleteControl:AutoCompleteTextBox.Columns>
-                                                                            <GridViewColumn Header="Code"
-                                                                                            Width="120"
-                                                                                            DisplayMemberBinding="{Binding ItemCode}" />
-                                                                            <GridViewColumn Header="ProductName"
-                                                                                            Width="130"
-                                                                                            DisplayMemberBinding="{Binding ItemName}" />
-                                                                            <GridViewColumn Header="Attribute"
-                                                                                            Width="90"
-                                                                                            DisplayMemberBinding="{Binding ItemAtribute}" />
-                                                                            <GridViewColumn Header="Size"
-                                                                                            Width="90"
-                                                                                            DisplayMemberBinding="{Binding ItemSize}" />
-                                                                        </atCompleteControl:AutoCompleteTextBox.Columns>
-                                                                    </atCompleteControl:AutoCompleteTextBox>
-                                                                    <TextBlock x:Name="txtbItemCode"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding ItemCode, Mode=OneWay}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReturned, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="atCompleteTextBoxItemCode"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbItemCode"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <atCompleteControl:AutoCompleteTextBox x:Name="atCompleteTextBoxItemCode"
+                                                                                                       Foreground="Black"
+                                                                                                       AutoChangeSelectedItem="False"
+                                                                                                       IsTextCompletionEnabled="True"
+                                                                                                       FieldShow="ItemName"
+                                                                                                       FilterMode="Contains"
+                                                                                                       Style="{DynamicResource AutoCompleteInsideDataGridStyle}"
+                                                                                                       ItemsSource="{Binding DataContext.SelectedPurchaseOrder.PurchaseOrderDetailReturnCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                                                       FieldSource="{Binding DataContext.PurchaseOrderDetailFieldCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                                                       SelectedItemResult="{Binding PurchaseOrderDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                    <atCompleteControl:AutoCompleteTextBox.Columns>
+                                                                        <GridViewColumn Header="{DynamicResource C174}"
+                                                                                        Width="120"
+                                                                                        DisplayMemberBinding="{Binding ItemCode}" />
+                                                                        <GridViewColumn Header="{DynamicResource C175}"
+                                                                                        Width="130"
+                                                                                        DisplayMemberBinding="{Binding ItemName}" />
+                                                                        <GridViewColumn Header="{DynamicResource C116}"
+                                                                                        Width="90"
+                                                                                        DisplayMemberBinding="{Binding ItemAtribute}" />
+                                                                        <GridViewColumn Header="{DynamicResource C117}"
+                                                                                        Width="90"
+                                                                                        DisplayMemberBinding="{Binding ItemSize}" />
+                                                                    </atCompleteControl:AutoCompleteTextBox.Columns>
+                                                                </atCompleteControl:AutoCompleteTextBox>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="*"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemAtribute, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding ItemSize, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource UOMHeaderTemplate}"
-                                                                        Width="100"
+                                                                        Width="80"
                                                                         IsReadOnly="True"
                                                                         Binding="{Binding UnitName, Mode=OneWay}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource PriceHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Price, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnedQtyHeaderTemplate}"
-                                                                            Width="70"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="ReturnQty">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                           Text="{Binding ReturnQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
+                                                                           Text="{Binding ReturnQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <textBoxToolkit:TextBoxNumber x:Name="txtReturnQty"
-                                                                                                  Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
-                                                                                                  Value="{Binding ReturnQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbReturnQty"
-                                                                               HorizontalAlignment="Right"
-                                                                               Visibility="Collapsed"
-                                                                               Text="{Binding ReturnQty, Mode=OneWay, StringFormat={x:Static pos:Define.IntegerFormat}}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReturned, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtReturnQty"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbReturnQty"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                <textBoxToolkit:TextBoxNumber x:Name="txtReturnQty"
+                                                                                              Style="{DynamicResource TextBoxNumberInsideDataGridStyle}"
+                                                                                              ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                              Value="{Binding ReturnQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
                                                     </DataGridTemplateColumn>
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource DiscountHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="75"
                                                                         IsReadOnly="True"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Discount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTextColumn HeaderTemplate="{StaticResource AmountHeaderTemplate}"
-                                                                        Width="70"
+                                                                        Width="80"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
-                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+                                                                        Binding="{Binding Amount, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                                     <DataGridTemplateColumn HeaderTemplate="{StaticResource ReturnedHeaderTemplate}"
-                                                                            Width="50"
+                                                                            CellStyle="{StaticResource DataGridCellDisableStyle}"
+                                                                            Width="75"
                                                                             SortMemberPath="IsReturned">
 
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock Style="{StaticResource ReturnedTextBlockStyle}"
-                                                                           Text="{Binding IsReturned, Mode=OneWay}" />
+                                                                <ToggleButton x:Name="tgReturned"
+                                                                              HorizontalAlignment="Center"
+                                                                              Visibility="Collapsed"
+                                                                              IsEnabled="{Binding IsReturned, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                                              IsChecked="{Binding IsReturned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              Style="{StaticResource ToggleButtonTrueFalse}" />
+                                                                <DataTemplate.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsTemporary, Mode=OneWay}"
+                                                                                 Value="False">
+                                                                        <Setter Property="Visibility"
+                                                                                Value="Visible"
+                                                                                TargetName="tgReturned" />
+                                                                    </DataTrigger>
+                                                                </DataTemplate.Triggers>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                         <DataGridTemplateColumn.CellEditingTemplate>
                                                             <DataTemplate>
-                                                                <Grid>
-                                                                    <CheckBox x:Name="chkIsReturned"
+                                                                <ToggleButton x:Name="tgReturned"
                                                                               HorizontalAlignment="Center"
-                                                                              IsThreeState="False"
-                                                                              IsChecked="{Binding IsReturned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                    <TextBlock x:Name="txtbIsReturned"
-                                                                               Visibility="Collapsed"
-                                                                               Style="{StaticResource ReturnedTextBlockStyle}"
-                                                                               Text="{Binding IsReturned, Mode=OneWay}" />
-                                                                </Grid>
-                                                                <DataTemplate.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsReturned, Mode=OneWay}"
-                                                                                 Value="True">
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="chkIsReturned"
-                                                                                Value="Collapsed" />
-                                                                        <Setter Property="Visibility"
-                                                                                TargetName="txtbIsReturned"
-                                                                                Value="Visible" />
-                                                                    </DataTrigger>
-                                                                </DataTemplate.Triggers>
+                                                                              IsEnabled="{Binding IsReturned, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}"
+                                                                              IsChecked="{Binding IsReturned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              Style="{StaticResource ToggleButtonTrueFalse}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellEditingTemplate>
 
@@ -2231,7 +2104,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblReturnSubTotal1"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_SubTotal}"
+                                                           Text="{DynamicResource C112}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2249,10 +2122,11 @@
                                                                              HorizontalContentAlignment="Right"
                                                                              IsReadOnly="True"
                                                                              TextLength="{StaticResource SubTotalMaxLength}"
+                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.SubTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblReturnReturnFee"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_ReturnFee}"
+                                                           Text="{DynamicResource C111}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2272,10 +2146,11 @@
                                                                              HorizontalContentAlignment="Right"
                                                                              IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                              TextLength="{StaticResource DiscountAmountMaxLength}"
+                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
                                                                              Value="{Binding SelectedPurchaseOrder.ResourceReturn.ReturnFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <TextBlock x:Name="txtblReturnRefund"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Refund}"
+                                                           Text="{DynamicResource C110}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2295,10 +2170,17 @@
                                                                              HorizontalContentAlignment="Right"
                                                                              IsReadOnly="{Binding SelectedPurchaseOrder.IsLocked, Mode=OneWay}"
                                                                              TextLength="{StaticResource FreightMaxLength}"
-                                                                             Value="{Binding SelectedPurchaseOrder.ResourceReturn.TotalRefund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                             Value="{Binding SelectedPurchaseOrder.ResourceReturn.TotalRefund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="LostFocus">
+                                                            <cmd:EventToCommand Command="{Binding DataContext.TotalRefundChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </textBoxToolkit:TextBoxMoney>
 
                                                 <TextBlock x:Name="txtblBalance"
-                                                           Text="{DynamicResource PurchaseOrderView_TextBlock_Balance}"
+                                                           Text="{DynamicResource C108}"
                                                            TextWrapping="NoWrap"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
@@ -2308,18 +2190,18 @@
                                                            Style="{DynamicResource TextBlockNormal}" />
 
                                                 <!--Balance-->
-                                                <TextBox x:Name="txtReturnBalance"
-                                                         Margin="0,2"
-                                                         TextWrapping="NoWrap"
-                                                         Padding="2,0,2,0"
-                                                         Grid.Column="4"
-                                                         Grid.Row="3"
-                                                         HorizontalContentAlignment="Right"
-                                                         VerticalContentAlignment="Center"
-                                                         IsReadOnly="True"
-                                                         Style="{DynamicResource TextBoxTotal}"
-                                                         MaxLength="{StaticResource TotalMaxLength}"
-                                                         Text="{Binding SelectedPurchaseOrder.ResourceReturn.Balance, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <textBoxToolkit:TextBox x:Name="txtReturnBalance"
+                                                                        Margin="0,2"
+                                                                        TextWrapping="NoWrap"
+                                                                        Padding="2,0,2,0"
+                                                                        Grid.Column="4"
+                                                                        Grid.Row="3"
+                                                                        HorizontalContentAlignment="Right"
+                                                                        VerticalContentAlignment="Center"
+                                                                        IsReadOnly="True"
+                                                                        Style="{DynamicResource TextBoxTotal}"
+                                                                        MaxLength="{StaticResource TotalMaxLength}"
+                                                                        Text="{Binding SelectedPurchaseOrder.ResourceReturn.Balance, Mode=TwoWay, StringFormat={x:Static pos:Define.CurrencyFormat}, UpdateSourceTrigger=PropertyChanged, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
 
                                             </Grid>
 

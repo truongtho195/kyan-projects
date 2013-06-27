@@ -132,6 +132,86 @@ namespace CPC.POS.Model
             }
         }
 
+        protected int _quantityOnCustomer;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the QuantityOnCustomer</para>
+        /// </summary>
+        public int QuantityOnCustomer
+        {
+            get { return this._quantityOnCustomer; }
+            set
+            {
+                if (this._quantityOnCustomer != value)
+                {
+                    this.IsDirty = true;
+                    this._quantityOnCustomer = value;
+                    OnPropertyChanged(() => QuantityOnCustomer);
+                    PropertyChangedCompleted(() => QuantityOnCustomer);
+                }
+            }
+        }
+
+        protected int _quantityOnOrder;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the QuantityOnOrder</para>
+        /// </summary>
+        public int QuantityOnOrder
+        {
+            get { return this._quantityOnOrder; }
+            set
+            {
+                if (this._quantityOnOrder != value)
+                {
+                    this.IsDirty = true;
+                    this._quantityOnOrder = value;
+                    OnPropertyChanged(() => QuantityOnOrder);
+                    PropertyChangedCompleted(() => QuantityOnOrder);
+                }
+            }
+        }
+
+        protected int _reorderPoint;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the ReorderPoint</para>
+        /// </summary>
+        public int ReorderPoint
+        {
+            get { return this._reorderPoint; }
+            set
+            {
+                if (this._reorderPoint != value)
+                {
+                    this.IsDirty = true;
+                    this._reorderPoint = value;
+                    OnPropertyChanged(() => ReorderPoint);
+                    PropertyChangedCompleted(() => ReorderPoint);
+                }
+            }
+        }
+
+        protected int _quantityAvailable;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the QuantityAvailable</para>
+        /// </summary>
+        public int QuantityAvailable
+        {
+            get { return this._quantityAvailable; }
+            set
+            {
+                if (this._quantityAvailable != value)
+                {
+                    this.IsDirty = true;
+                    this._quantityAvailable = value;
+                    OnPropertyChanged(() => QuantityAvailable);
+                    PropertyChangedCompleted(() => QuantityAvailable);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -157,6 +237,10 @@ namespace CPC.POS.Model
             this.base_ProductStore.ProductId = this.ProductId;
             this.base_ProductStore.QuantityOnHand = this.QuantityOnHand;
             this.base_ProductStore.StoreCode = this.StoreCode;
+            this.base_ProductStore.QuantityOnCustomer = this.QuantityOnCustomer;
+            this.base_ProductStore.QuantityOnOrder = this.QuantityOnOrder;
+            this.base_ProductStore.ReorderPoint = this.ReorderPoint;
+            this.base_ProductStore.QuantityAvailable = this.QuantityAvailable;
         }
 
         /// <summary>
@@ -169,6 +253,10 @@ namespace CPC.POS.Model
             this._productId = this.base_ProductStore.ProductId;
             this._quantityOnHand = this.base_ProductStore.QuantityOnHand;
             this._storeCode = this.base_ProductStore.StoreCode;
+            this._quantityOnCustomer = this.base_ProductStore.QuantityOnCustomer;
+            this._quantityOnOrder = this.base_ProductStore.QuantityOnOrder;
+            this._reorderPoint = this.base_ProductStore.ReorderPoint;
+            this._quantityAvailable = this.base_ProductStore.QuantityAvailable;
         }
 
         /// <summary>
@@ -181,6 +269,10 @@ namespace CPC.POS.Model
             this.ProductId = this.base_ProductStore.ProductId;
             this.QuantityOnHand = this.base_ProductStore.QuantityOnHand;
             this.StoreCode = this.base_ProductStore.StoreCode;
+            this.QuantityOnCustomer = this.base_ProductStore.QuantityOnCustomer;
+            this.QuantityOnOrder = this.base_ProductStore.QuantityOnOrder;
+            this.ReorderPoint = this.base_ProductStore.ReorderPoint;
+            this.QuantityAvailable = this.base_ProductStore.QuantityAvailable;
         }
 
         #endregion
@@ -211,29 +303,29 @@ namespace CPC.POS.Model
         /// </summary>
         public int OldQuantity { get; set; }
 
-        private int _onReservedQuantity;
-        /// <summary>
-        /// Gets or sets the OnReservedQuantity.
-        /// </summary>
-        public int OnReservedQuantity
-        {
-            get { return _onReservedQuantity; }
-            set
-            {
-                if (_onReservedQuantity != value)
-                {
-                    _onReservedQuantity = value;
-                    OnPropertyChanged(() => OnReservedQuantity);
-                }
-            }
-        }
-
         /// <summary>
         /// Gets the StorePosition.
         /// </summary>
         public string StorePosition
         {
             get { return (StoreCode + 1).ToString(); }
+        }
+
+        private int _quantity;
+        /// <summary>
+        /// Gets or sets the Quantity.
+        /// </summary>
+        public int Quantity
+        {
+            get { return _quantity; }
+            set
+            {
+                if (_quantity != value)
+                {
+                    _quantity = value;
+                    OnPropertyChanged(() => Quantity);
+                }
+            }
         }
 
         #endregion
@@ -249,6 +341,16 @@ namespace CPC.POS.Model
             //this._productId = productStoreModel.ProductId;
             this._quantityOnHand = productStoreModel.QuantityOnHand;
             this._storeCode = productStoreModel.StoreCode;
+            this._quantityOnCustomer = productStoreModel.QuantityOnCustomer;
+            this._quantityOnOrder = productStoreModel.QuantityOnOrder;
+        }
+
+        /// <summary>
+        /// Update available quantity by store code
+        /// </summary>
+        public void UpdateAvailableQuantity()
+        {
+            this.QuantityAvailable = this.QuantityOnHand - this.QuantityOnCustomer;
         }
 
         #endregion

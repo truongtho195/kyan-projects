@@ -38,6 +38,7 @@ namespace CPC.POS.ViewModel
         private bool _isSelectionChanged = false;
         private string _currentUserResource = string.Empty;
         private bool _cloneIsSetDefault = false;
+        protected string DefaultPassword="!1Username";
         #endregion
 
         #region Constructors
@@ -220,8 +221,8 @@ namespace CPC.POS.ViewModel
                     if (!this._isSelectionChanged)
                         if (this.SelectedItemUser != null && value)
                         {
-                            this.SelectedItemUser.ClonePassword = Define.PasswordTemp;
-                            this.SelectedItemUser.ConfirmPassword = Define.PasswordTemp;
+                            this.SelectedItemUser.ClonePassword = this.DefaultPassword;
+                            this.SelectedItemUser.ConfirmPassword = this.DefaultPassword;
                             this.SelectedItemUser.IsEnablePassword = false;
                         }
                         else if (this.SelectedItemUser != null && !value)
@@ -486,7 +487,7 @@ namespace CPC.POS.ViewModel
         {
             //To load data from base_UserRight.
             this.UserRightCollection.Clear();
-            IList<base_UserRight> _userRights = _userRightRepository.GetAll();
+            IOrderedEnumerable<base_UserRight> _userRights = _userRightRepository.GetAll().OrderBy(x=>x.Code);
             foreach (var item in _userRights)
             {
                 base_UserRightModel _userRightModel = new base_UserRightModel(item);
@@ -684,7 +685,7 @@ namespace CPC.POS.ViewModel
                 //To check loginName on DB.
                 if (this.IsExistLoginName())
                 {
-                    this.ShowMessageBox("Login existed.!.Please enter another LoginName.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    this.ShowMessageBox("Username existed.!.Please enter another username.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     return;
                 }
                 //To insert data into base_ResourceAccount table.
@@ -714,6 +715,7 @@ namespace CPC.POS.ViewModel
                 this.SelectedItemUser.IsNewUser = false;
                 this.SelectedItemUser.EndUpdate();
                 this.SetDefaultValue();
+                App.WriteLUserLog("User Manegement", "User inserted a new user." + this.SelectedItemUser.Id);
             }
             catch (Exception ex)
             {
@@ -741,6 +743,7 @@ namespace CPC.POS.ViewModel
                 {
                     this.SelectedItemUser.IsLocked = false;
                     this.SelectedItemUser.ExpiredDate = null;
+                    App.WriteLUserLog("User Manegement", "User unlocked a user." + this.SelectedItemUser.Id);
                 }
                 this.SelectedItemUser.ToEntity();
                 this._resourceAccountRepository.Commit();
@@ -772,6 +775,7 @@ namespace CPC.POS.ViewModel
                 //To finish inserting data.
                 this.SelectedItemUser.EndUpdate();
                 this.SetDefaultValue();
+                App.WriteLUserLog("User Manegement", "User updated a new user." + this.SelectedItemUser.Id);
             }
             catch (Exception ex)
             {
@@ -803,6 +807,7 @@ namespace CPC.POS.ViewModel
                         this.SelectedItemUser.IsCheckLocked = true;
                         this.SelectedItemUser.IsDirty = false;
                         this.SelectedItemUser = null;
+                        App.WriteLUserLog("User Manegement", "User locked a user." + this.SelectedItemUser.Id);
                     }
                 }
             }

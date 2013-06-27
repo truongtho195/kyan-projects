@@ -17,8 +17,7 @@
         helper:ValidationHelper.IsEnabled="True"
         xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
         helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}" 
-        Title="Truong Giang - Authentication"
-        Icon="/POS.ico">
+        Title="Truong Giang - Authentication">
     <Border CornerRadius="5,5,5,5"
             BorderThickness="5,5,5,5"
             BorderBrush="{DynamicResource TitleBarBorder}"
@@ -67,7 +66,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock VerticalAlignment="Center"
-                                   Text="User Name:"
+                                   Text="{DynamicResource LG_TextBlock_UserName}"
                                    x:Name="txtblUsername"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Left"
@@ -87,7 +86,7 @@
                                    Width="16"
                                    Height="16" />
                         <TextBlock VerticalAlignment="Center"
-                                   Text="Password:"
+                                   Text="{DynamicResource LG_TextBlock_Password}"
                                    x:Name="txtblPassword"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Left"
@@ -112,7 +111,7 @@
                                    Height="16"
                                    Grid.Row="1" />
                         <TextBlock VerticalAlignment="Center"
-                                   Text="Language:"
+                                   Text="{DynamicResource LG_TextBlock_Language}"
                                    x:Name="txtblLanguage"
                                    TextWrapping="NoWrap"
                                    HorizontalAlignment="Left"
@@ -129,7 +128,7 @@
                                   Width="90.417" />
                         <CheckBox x:Name="cbRememeber"
                                   HorizontalAlignment="Right"
-                                  Content="Remember Me"
+                                  Content="{DynamicResource LG_TextBlock_RememberMe}"
                                   Grid.Row="2"
                                   IsChecked="{Binding Remember, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White"
@@ -141,7 +140,7 @@
                               Visibility="{Binding VisibilityAllowShift}"
                               HorizontalAlignment="Left">
                             <TextBlock VerticalAlignment="Center"
-                                       Text="Shift:"
+                                       Text="{DynamicResource LG_TextBlock_Shift}"
                                        x:Name="txtblShift"
                                        TextWrapping="NoWrap"
                                        HorizontalAlignment="Left"
@@ -198,7 +197,7 @@
                                                Fill="{DynamicResource Login}" />
                                     <TextBlock Margin="5,0,0,0"
                                                VerticalAlignment="Center"
-                                               Text="Login"
+                                               Text="{DynamicResource LG_TextBlock_Login}"
                                                TextWrapping="NoWrap"
                                                x:Name="txtblLogin"
                                                Style="{DynamicResource ButtonTextBlock}" />
@@ -219,7 +218,7 @@
                                                Fill="{DynamicResource Exit}" />
                                     <TextBlock Margin="5,0,0,0"
                                                VerticalAlignment="Center"
-                                               Text="Exit"
+                                               Text="{DynamicResource LG_TextBlock_Exit}"
                                                TextWrapping="NoWrap"
                                                x:Name="txtblExit"
                                                Style="{DynamicResource ButtonTextBlock}" />

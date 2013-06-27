@@ -448,9 +448,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnNewCommandExecute(object param)
         {
-            //To set enable of detail grid.
-            if (param != null)
-                this.IsSearchMode = !this.IsSearchMode;
+            
             if (this.ChangeViewExecute(null))
             {
                 // TODO: Handle command logic here
@@ -471,6 +469,8 @@ namespace CPC.POS.ViewModel
                 this.SelectedItemPricing.IsErrorProductCollection = false;
                 this.ChangeCurrentPrice();
                 this.TotalProducts = this.SelectedItemPricing.ProductCollection.Count;
+                //To set enable of detail grid.
+                this.IsSearchMode = false;
             }
         }
         #endregion
@@ -793,8 +793,7 @@ namespace CPC.POS.ViewModel
                 return;
             }
             //To apply that restore pricing.
-            PromotionReasonViewModel viewModel = new PromotionReasonViewModel();
-            viewModel.ReasonReActive = this.SelectedItemPricing.Reason;
+            PromotionReasonViewModel viewModel = new PromotionReasonViewModel(this.SelectedItemPricing.Reason);
             bool? msgResult = _dialogService.ShowDialog<CPC.POS.View.PromotionReasonView>(_ownerViewModel, viewModel, "Entry for reason");
             if (msgResult.HasValue)
             {
@@ -802,7 +801,7 @@ namespace CPC.POS.ViewModel
                 {
                     //To close product view
                     (this._ownerViewModel as MainViewModel).CloseItem("Product");
-                    this.SelectedItemPricing.Reason = viewModel.ReasonReActiveBinding;
+                    this.SelectedItemPricing.Reason = viewModel.ReasonReactive;
                     this.Restore();
                     this.IsSearchMode = false;
                 }
@@ -1177,7 +1176,7 @@ namespace CPC.POS.ViewModel
             if (this.SelectedItemPricing != null && this.SelectedItemPricing.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
+                msgResult = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (OnSaveCommandCanExecute())
@@ -1262,6 +1261,7 @@ namespace CPC.POS.ViewModel
                 this._pricingManagerRepository.Commit();
                 this.SelectedItemPricing.Id = this.SelectedItemPricing.base_PricingManager.Id;
                 this.SelectedItemPricing.EndUpdate();
+                App.WriteLUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.base_PricingManager.Id);
             }
             catch (Exception ex)
             {
@@ -1312,6 +1312,7 @@ namespace CPC.POS.ViewModel
                 this.SelectedItemPricing.VisibilityRestore = Visibility.Visible;
                 this.SelectedItemPricing.VisibilityApplied = Visibility.Collapsed;
                 this.SelectedItemPricing.EndUpdate();
+                App.WriteLUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
             }
             catch (Exception ex)
             {
@@ -1370,6 +1371,7 @@ namespace CPC.POS.ViewModel
                 }
                 this._pricingManagerRepository.Commit();
                 this.SelectedItemPricing.EndUpdate();
+                App.WriteLUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
             }
             catch (Exception ex)
             {
@@ -1422,6 +1424,7 @@ namespace CPC.POS.ViewModel
                     }
                     this.SelectedItemPricing.IsEnable = false;
                     this.SelectedItemPricing.EndUpdate();
+                    App.WriteLUserLog("Pricing", "User insterd a new pricing." + this.SelectedItemPricing.Id);
                 }
             }
             catch (Exception ex)
@@ -1664,7 +1667,7 @@ namespace CPC.POS.ViewModel
             if (this.IsEditData())
             {
                 // Show notification when data has changed
-                MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
+                MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Information, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (this.OnSaveCommandCanExecute())

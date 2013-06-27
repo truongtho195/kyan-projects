@@ -34,7 +34,7 @@ namespace CPC.POS.ViewModel
         private bool IsUserAuthenicated { set; get; }
         private bool _isUpdateExpiredAccount = false;
         private string _defaultUsernName = "admin";
-        private string _defaultPassword = "iktfcGzCJQ13CBk3uR6n9A==";
+        private string _defaultPassword = "aXrrCFTdvOaYDeGLj3dmlDkBmsbXmy0yThKtMlV/6zw=";
         private bool IsLoginDefaultUser = false;
         #endregion
 
@@ -59,7 +59,7 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets or sets the Shifts.
         /// </summary>
-        public IList<LanguageItem> Shifts
+        public IList<ComboItem> Shifts
         {
             get
             {
@@ -285,8 +285,8 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// To get, set value from Shift ComboBox.
         /// </summary>
-        private LanguageItem _shiftItem;
-        public LanguageItem ShiftItem
+        private ComboItem _shiftItem;
+        public ComboItem ShiftItem
         {
             get { return _shiftItem; }
             set
@@ -412,10 +412,10 @@ namespace CPC.POS.ViewModel
                     this._numberOfLogins++;
                     MessageBox.Show(this._message, "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                //To shutdown the application when user login fail on 5 times. 
-                if ((Define.CONFIGURATION.LoginAllow != null && this._numberOfLogins == Define.CONFIGURATION.LoginAllow) || this._numberOfLogins == 3)
+                //To shutdown the application when login fail on 5 times. 
+                if ((Define.CONFIGURATION != null && Define.CONFIGURATION.LoginAllow != null && this._numberOfLogins == Define.CONFIGURATION.LoginAllow) || this._numberOfLogins == 3)
                 {
-                    MessageBox.Show("The application will shutdown.", "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(Application.Current.FindResource("Login_Message_Shutdown") as string, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                     this._view.Close();
                     Application.Current.Shutdown();
                 }
@@ -551,7 +551,7 @@ namespace CPC.POS.ViewModel
                 {
                     if (resourceAccount.IsLocked.HasValue && resourceAccount.IsLocked.Value)
                     {
-                        this._message = "This account is locked . Please contact to admin to unlock this account.";
+                        this._message = Application.Current.FindResource("Login_Message_AccountLocked") as string;
                         return false;
                     }
                     //To login seccessfully.
@@ -582,14 +582,14 @@ namespace CPC.POS.ViewModel
                             return true;
                         }
                         else
-                            this._message = "This account is being used by another user.";
+                            this._message = Application.Current.FindResource("Login_Message_AccountAnother") as string;
                     }
                     //Account expired.
                     else
                     {
                         if (!this._isUpdateExpiredAccount)
                             this.UpdateExpiredAccount(resourceAccount.UserResource);
-                        this._message = "This account expired . Please contact to admin to reset this account.";
+                        this._message = Application.Current.FindResource("Login_Message_AccountExpired") as string;
                         return false;
                     }
                 }
@@ -600,7 +600,7 @@ namespace CPC.POS.ViewModel
                     {
                         this.IsLoginDefaultUser = true;
                         //To get user inoformation as admin.
-                        Define.USER = new base_ResourceAccountModel { LoginName = "admin", Password = this._defaultPassword, IpAddress = Dns.GetHostAddresses(Dns.GetHostName())[0].ToString() };
+                        Define.USER = new base_ResourceAccountModel { LoginName = "admin", Password = this._defaultPassword, IpAddress = Dns.GetHostAddresses(Dns.GetHostName())[0].ToString(), Resource = Guid.Empty };
                         return true;
                     }
                 }
@@ -610,7 +610,7 @@ namespace CPC.POS.ViewModel
                 Debug.WriteLine("IsLoginSuccess" + ex.ToString());
             }
             if (string.IsNullOrEmpty(this._message))
-                this._message = "Could not verify this account . Please try again.";
+                this._message = Application.Current.FindResource("Login_Message_AccountVerify") as string;
             return null;
         }
         #endregion
@@ -724,7 +724,7 @@ namespace CPC.POS.ViewModel
                         }
                         else
                         {
-                            Regex regex = new Regex("[a-zA-Z0-9]{3,50}");
+                            Regex regex = new Regex("[a-zA-Z0-9]{5,50}");
                             if (!regex.IsMatch(this.userName))
                             {
                                 message = "User name must a-z and length of 3-50 characters";
@@ -738,10 +738,10 @@ namespace CPC.POS.ViewModel
                         }
                         else
                         {
-                            Regex regex = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
+                            Regex regex = new Regex(Define.CONFIGURATION.PasswordFormat);
                             if (!regex.IsMatch(this.userPassword))
                             {
-                                message = "Password must a-z and length of 3-50 characters";
+                                message = "Password must a-z and length of 8-50 characters";
                             }
                         }
                         break;
@@ -754,10 +754,10 @@ namespace CPC.POS.ViewModel
                             }
                             else
                             {
-                                Regex regex = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
+                                Regex regex = new Regex(Define.CONFIGURATION.PasswordFormat);
                                 if (!regex.IsMatch(this.newUserPassword))
                                 {
-                                    message = "New password must a-z and length of 3-50 characters";
+                                    message = "New password must a-z and length of 8-50 characters";
                                 }
                                 else if (this.newUserPassword != this.confirmUserPassword)
                                 {
@@ -775,10 +775,10 @@ namespace CPC.POS.ViewModel
                             }
                             else
                             {
-                                Regex regex = new Regex("[a-zA-Z0-9!@#$%&*(){}|=]{3,50}");
+                                Regex regex = new Regex(Define.CONFIGURATION.PasswordFormat);
                                 if (!regex.IsMatch(this.confirmUserPassword))
                                 {
-                                    message = "Re-enter password must a-z and length of 3-50 characters";
+                                    message = "Re-enter password must a-z and length of 8-50 characters";
                                 }
                                 else if (this.newUserPassword != this.confirmUserPassword)
                                 {

@@ -274,7 +274,7 @@ namespace CPC.POS.ViewModel
                     || SelectedCustomer.PersonalInfoModel.IsDirty
                     || SelectedCustomer.ContactCollection.Any(x => x.IsDirty || (x.PersonalInfoModel != null && x.PersonalInfoModel.IsDirty))
                     || SelectedCustomer.ContactCollection.DeletedItems.Any()
-                    || (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection!=null && SelectedCustomer.GuestRewardCollection.Any(x => x.IsDirty)));
+                    || (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection != null && SelectedCustomer.GuestRewardCollection.Any(x => x.IsDirty)));
             }
         }
         #endregion
@@ -661,7 +661,7 @@ namespace CPC.POS.ViewModel
                     SelectedCustomer.AdditionalModel.PropertyChanged -= new PropertyChangedEventHandler(AdditionalModel_PropertyChanged);
                     SelectedCustomer.AdditionalModel.PropertyChanged += new PropertyChangedEventHandler(AdditionalModel_PropertyChanged);
                 }
-                
+
                 //Reset filter
                 _rewardCollectionView = null;
 
@@ -1100,6 +1100,8 @@ namespace CPC.POS.ViewModel
         /// 
         private void OnIssueRewardManagerCommandExecute(object param)
         {
+            if (SelectedCustomer.GuestRewardCollection == null)
+                SelectedCustomer.GuestRewardCollection = new CollectionBase<base_GuestRewardModel>();
             RewardEarnViewModel rewardEarnViewModel = new RewardEarnViewModel(SelectedCustomer.Id, RewardProgram, SelectedCustomer.GuestRewardCollection);
             bool? result = _dialogService.ShowDialog<RewardEarnView>(_ownerViewModel, rewardEarnViewModel, "Earn Reward");
 
@@ -1163,23 +1165,31 @@ namespace CPC.POS.ViewModel
             //Get All Sale Tax
             SaleTaxCollection = new ObservableCollection<base_SaleTaxLocationModel>();
             AllSaleTax = _saleTaxLocationRepository.GetAll().ToList();
-            foreach (base_SaleTaxLocation saleTaxLocation in AllSaleTax.Where(x => x.ParentId == 0))
+            if (AllSaleTax != null)
             {
-                base_SaleTaxLocationModel saleTaxModel = new base_SaleTaxLocationModel(saleTaxLocation);
-                SaleTaxCollection.Add(new base_SaleTaxLocationModel(saleTaxLocation));
+                foreach (base_SaleTaxLocation saleTaxLocation in AllSaleTax.Where(x => x.ParentId == 0))
+                {
+                    base_SaleTaxLocationModel saleTaxModel = new base_SaleTaxLocationModel(saleTaxLocation);
+                    SaleTaxCollection.Add(new base_SaleTaxLocationModel(saleTaxLocation));
+                }
+                //Add Item null for sale tax using radio button set none sale tax
+                base_SaleTaxLocationModel saleTaxNone = new base_SaleTaxLocationModel()
+                {
+                    Id = 0,
+                    ParentId = 0,
+                    Name = ""
+                }
+                ;
+                SaleTaxCollection.Insert(0, saleTaxNone);
             }
-            //Add Item null for sale tax using radio button set none sale tax
-            base_SaleTaxLocationModel saleTaxNone = new base_SaleTaxLocationModel()
-            {
-                Id = 0,
-                ParentId = 0,
-                Name = ""
-            };
-            SaleTaxCollection.Insert(0, saleTaxNone);
 
-            RewardProgram = new base_RewardManagerModel(_rewardManagerRepository.Get(x => true));
+            base_RewardManager reward = _rewardManagerRepository.Get(x => true);
+            if (reward != null)
+                RewardProgram = new base_RewardManagerModel(reward);
+            else
+                RewardProgram = new base_RewardManagerModel();
             RewardProgram.RewardInfo = RewardProgram.ToString();
-            
+
         }
 
         /// <summary>
@@ -1317,7 +1327,7 @@ namespace CPC.POS.ViewModel
             }
 
             //Guest Reward
-            if (SelectedCustomer.IsRewardMember)
+            if (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection!=null)
             {
                 foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
                 {
@@ -1334,7 +1344,7 @@ namespace CPC.POS.ViewModel
             CustomerCollection.Add(SelectedCustomer);
 
             //Set ID
-            if (SelectedCustomer.IsRewardMember)
+            if (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection!=null)
             {
                 foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))
                 {
@@ -1471,7 +1481,7 @@ namespace CPC.POS.ViewModel
                 guestPaymentCardModel.EndUpdate();
             }
 
-            if (SelectedCustomer.IsRewardMember)
+            if (SelectedCustomer.IsRewardMember && SelectedCustomer.GuestRewardCollection!=null)
             {
                 //Add New Or Update GuestReward
                 foreach (base_GuestRewardModel guestRewardModel in SelectedCustomer.GuestRewardCollection.Where(x => x.IsDirty))

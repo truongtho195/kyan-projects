@@ -5,6 +5,7 @@ using System.Text;
 using CPC.Toolkit.Base;
 using System.ComponentModel;
 using CPC.POS.Database;
+using CPC.Helper;
 
 namespace CPC.POS.Model
 {
@@ -462,7 +463,7 @@ namespace CPC.POS.Model
 
                         if (string.IsNullOrWhiteSpace(_name))
                         {
-                            message = "Name is required.";
+                            message = Language.Error4;
                         }
 
                         break;

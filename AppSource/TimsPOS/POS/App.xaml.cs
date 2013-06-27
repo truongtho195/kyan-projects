@@ -67,14 +67,22 @@ namespace CPC.POS
         {
             try
             {
+                Define.CONFIGURATION = null;
+                Define.NumericFormat = null;
+                Define.CurrencyFormat = null;
+                Define.ConverterCulture = null;
                 base_ConfigurationRepository configurationRepository = new base_ConfigurationRepository();
                 IQueryable<base_Configuration> configQuery = configurationRepository.GetIQueryable();
                 if (configQuery.Count() > 0)
                 {
+                    configurationRepository.Refresh(configQuery);
                     Define.CONFIGURATION = new Model.base_ConfigurationModel(configurationRepository.GetIQueryable().FirstOrDefault());
                     //To define currency format
                     Define.NumericFormat = "{0:N" + Define.CONFIGURATION.DecimalPlaces + "}";
-                    Define.CurrencyFormat = Define.CONFIGURATION.CurrencySymbol + Define.NumericFormat;
+                    if (Define.CONFIGURATION.FomartCurrency.Equals("vi-VN"))
+                        Define.CurrencyFormat = Define.NumericFormat + Define.CONFIGURATION.CurrencySymbol;
+                    else
+                        Define.CurrencyFormat = Define.CONFIGURATION.CurrencySymbol + Define.NumericFormat;
                     Define.ConverterCulture = new CultureInfo(Define.CONFIGURATION.FomartCurrency);
                 }
             }
@@ -94,6 +102,11 @@ namespace CPC.POS
         {
             try
             {
+                if (ISUpdateOldUser)
+                {
+                    //Reload configuration data from database
+                    this.InitialData();
+                }
                 if (Application.Current.ShutdownMode != ShutdownMode.OnExplicitShutdown)
                     Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 _loginView = new LoginView();
@@ -192,6 +205,7 @@ namespace CPC.POS
                     Define.USER = null;
                     Define.USER_AUTHORIZATION = null;
                     this.IsUserAuthenicated = false;
+                    App.WriteLUserLog("LogOut", "User log out.");
                     this.OpenLoginView(true);
                 }
                 else
@@ -268,7 +282,7 @@ namespace CPC.POS
         {
             try
             {
-                if (Define.USER != null)
+                if (Define.USER != null && Define.USER.Resource != null && Define.USER.Resource != Guid.Empty)
                 {
                     base_UserLogDetail userLogDetail = new base_UserLogDetail();
                     userLogDetail.Id = Guid.NewGuid();
@@ -285,6 +299,14 @@ namespace CPC.POS
             {
                 Debug.WriteLine("WriteLUserLog" + ex.ToString());
             }
+        }
+        public static bool IsExistResourceAccount(Guid Resource)
+        {
+            base_ResourceAccountRepository resourceAccountRepository = new base_ResourceAccountRepository();
+            var query = resourceAccountRepository.GetIQueryable(x => x.Resource == Resource).SingleOrDefault();
+            if (query != null)
+                return true;
+            return false;
         }
         #endregion
 

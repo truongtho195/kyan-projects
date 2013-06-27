@@ -68,7 +68,28 @@
         <!--HierarchicalDataTemplate-->
         <HierarchicalDataTemplate DataType="{x:Type model:ItemSettingModel}"
                                   ItemsSource="{Binding Childs, Mode=OneWay}">
-            <TextBlock Text="{Binding Name, Mode=OneWay}" />
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           Fill="{DynamicResource Document}" />
+                <TextBlock Text="{Binding Name, Mode=OneWay}"
+                           Margin="3,0,0,0" />
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding DataContext.Parent, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="{x:Null}">
+                    <Setter Property="Fill"
+                            TargetName="ImageRec"
+                            Value="{DynamicResource CloseFolder}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter Property="Fill"
+                            TargetName="ImageRec"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
 
         <!--ItemSettingTreeviewItemStyle-->
@@ -101,7 +122,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="20" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <ToggleButton x:Name="Expander"
@@ -109,9 +130,11 @@
                                           IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                           Style="{StaticResource ExpandCollapseToggleStyle}"
                                           HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
                                           Width="Auto"
                                           Height="Auto" />
                             <Border x:Name="Bd"
+                                    VerticalAlignment="Center"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Background="{TemplateBinding Background}"
@@ -124,6 +147,7 @@
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost"
+                                            VerticalAlignment="Center"
                                             Grid.ColumnSpan="2"
                                             Grid.Column="1"
                                             Grid.Row="1" />
@@ -140,16 +164,6 @@
                                 <Setter Property="Visibility"
                                         TargetName="Expander"
                                         Value="Hidden" />
-                            </Trigger>
-                            <Trigger Property="IsSelected"
-                                     Value="true">
-                                <Setter Property="Background"
-                                        TargetName="Bd"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                                <Setter Property="FontStyle"
-                                        Value="Italic" />
                             </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
@@ -231,6 +245,77 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <DataTemplate x:Key="CodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C174}" />
+        </DataTemplate>
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C178}" />
+        </DataTemplate>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ChechboxRadiobutton_Foreground}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource EmptyCheckBoxFocusVisual}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <BulletDecorator Background="Transparent"
+                                         SnapsToDevicePixels="true">
+                            <BulletDecorator.Bullet>
+                                <Grid HorizontalAlignment="Left"
+                                      Height="13"
+                                      VerticalAlignment="Top"
+                                      Width="13">
+                                    <Rectangle x:Name="bg"
+                                               Fill="{DynamicResource ChechboxRadiobutton_Background}"
+                                               Stroke="{DynamicResource ChechboxRadiobutton_Border}" />
+                                    <Path Height="10"
+                                          Margin="1,1,0,1.5"
+                                          x:Name="CheckIcon"
+                                          Width="10.5"
+                                          Opacity="1"
+                                          Stretch="Fill"
+                                          Data="M102.03442,598.79645 L105.22962,597.78918 L106.78825,600.42358 C106.78825,600.42358 108.51028,595.74304 110.21724,593.60419 C112.00967,591.35822 114.89314,591.42316 114.89314,591.42316 C114.89314,591.42316 112.67844,593.42645 111.93174,594.44464 C110.7449,596.06293 107.15683,604.13837 107.15683,604.13837 z"
+                                          Fill="{DynamicResource ChechboxRadiobuttonCheckIcon_Background}"
+                                          Visibility="Collapsed" />
+                                </Grid>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" />
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Stroke"
+                                        TargetName="bg"
+                                        Value="#FFFF7F00" />
+                            </Trigger>
+                            <Trigger Property="IsChecked"
+                                     Value="True">
+                                <Setter Property="Visibility"
+                                        TargetName="CheckIcon"
+                                        Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="#FFADADAD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="Padding"
+                    Value="7,0,0,0" />
         </Style>
 
     </UserControl.Resources>
@@ -346,12 +431,514 @@
                     <Grid x:Name="grdContentCompany"
                           Grid.Column="1">
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++General++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++Group General++++++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--General-->
                         <Grid x:Name="grdGeneral"
                               Visibility="{Binding GridGeneralVisibility, Mode=OneWay}"
-                              d:IsHidden="True" />
+                              d:IsHidden="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="137" />
+                                <RowDefinition Height="150" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <GroupBox x:Name="gbOptionDefault"
+                                      Margin="10,10,0,0"
+                                      Width="529"
+                                      HorizontalAlignment="Left"
+                                      d:LayoutOverrides="GridBox">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblOptionDefault"
+                                               Text="{DynamicResource CS156}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentOptionDefault"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblMaximumStickyNote"
+                                               Text="{DynamicResource CS157}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <ComboBox Margin="0,2,10,2"
+                                              x:Name="cmbMaximumStickyNote"
+                                              Grid.Column="1"
+                                              Width="129"
+                                              HorizontalAlignment="Left"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultMaximumSticky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <sys:Int32>1</sys:Int32>
+                                        <sys:Int32>2</sys:Int32>
+                                        <sys:Int32>3</sys:Int32>
+                                        <sys:Int32>4</sys:Int32>
+                                        <sys:Int32>5</sys:Int32>
+                                    </ComboBox>
+                                    <TextBlock x:Name="txtblShipUnit"
+                                               Text="{DynamicResource CS158}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               Margin="0,0,149,0"
+                                               Grid.Column="1"
+                                               VerticalAlignment="Center" />
+                                    <ComboBox Margin="0,2,10,2"
+                                              x:Name="cmbShipUnit"
+                                              Grid.Column="1"
+                                              Width="129"
+                                              HorizontalAlignment="Right"
+                                              ItemsSource="{x:Static helper:Common.ShipUnits}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultShipUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblImagePath"
+                                               Text="{DynamicResource CS159}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="1"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBox x:Name="txtImagePath"
+                                                            Margin="0,2,35,2"
+                                                            TextWrapping="Wrap"
+                                                            Grid.Column="1"
+                                                            Padding="2,0,2,0"
+                                                            Grid.Row="1"
+                                                            IsReadOnly="True"
+                                                            Text="{Binding ConfigurationModel.DefautlImagePath, Mode=OneWay}" />
+                                    <Button x:Name="btnImagePath"
+                                            Margin="0,2,10,2"
+                                            Content="..."
+                                            Width="21"
+                                            HorizontalAlignment="Right"
+                                            Grid.Row="1"
+                                            Height="21"
+                                            Grid.Column="1"
+                                            Command="{Binding SelectImagePathCommand}" />
+                                    <TextBlock x:Name="txtblLanguage"
+                                               Text="{DynamicResource CS160}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="2"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center" />
+                                    <ComboBox Margin="0,2"
+                                              x:Name="cmbLanguage"
+                                              Grid.Column="1"
+                                              Grid.Row="2"
+                                              Width="129"
+                                              HorizontalAlignment="Left"
+                                              ItemsSource="{x:Static helper:Common.Languages}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="Code"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel x:Name="stkpAllowCashierRequire"
+                                                Orientation="Horizontal"
+                                                Grid.Row="3"
+                                                d:LayoutOverrides="Width"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Grid.ColumnSpan="2"
+                                                Margin="10,0,0,0">
+                                        <TextBlock x:Name="txtblAllowShift"
+                                                   Text="{DynamicResource CS161}"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center" />
+                                        <CheckBox x:Name="cbAllowShift"
+                                                  VerticalAlignment="Center"
+                                                  Margin="5,0,0,0"
+                                                  IsThreeState="False"
+                                                  IsChecked="{Binding ConfigurationModel.IsAllowShift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblCashierbyUserName"
+                                                   Text="{DynamicResource CS162}"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="57,0,0,0" />
+                                        <CheckBox x:Name="cbCashierbyUserName"
+                                                  Margin="5,0,0,0"
+                                                  IsThreeState="False"
+                                                  VerticalAlignment="Center"
+                                                  IsChecked="{Binding ConfigurationModel.DefaultCashiedUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblRequirePromotionCode"
+                                                   Text="{DynamicResource CS163}"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="57,0,0,0" />
+                                        <CheckBox x:Name="cbRequirePromotionCode"
+                                                  Margin="5,0,0,0"
+                                                  IsThreeState="False"
+                                                  VerticalAlignment="Center"
+                                                  IsChecked="{Binding ConfigurationModel.IsRequirePromotionCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbLogin"
+                                      Margin="10,10,0,0"
+                                      Grid.Row="1"
+                                      HorizontalAlignment="Left"
+                                      Width="230"
+                                      d:LayoutOverrides="GridBox"
+                                      VerticalAlignment="Top"
+                                      Height="52">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblLogin"
+                                               Text="{DynamicResource CS152}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentLogin"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="0" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblKeepLog"
+                                               Text="{DynamicResource CS164}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <ComboBox Margin="0,2,40,2"
+                                              x:Name="cmbKeepLog"
+                                              Grid.Column="1"
+                                              SelectedValue="{Binding ConfigurationModel.KeepLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <sys:Int16>3</sys:Int16>
+                                        <sys:Int16>4</sys:Int16>
+                                        <sys:Int16>5</sys:Int16>
+                                        <sys:Int16>6</sys:Int16>
+                                        <sys:Int16>7</sys:Int16>
+                                        <sys:Int16>8</sys:Int16>
+                                        <sys:Int16>9</sys:Int16>
+                                        <sys:Int16>10</sys:Int16>
+                                        <sys:Int16>11</sys:Int16>
+                                        <sys:Int16>12</sys:Int16>
+                                        <sys:Int16>13</sys:Int16>
+                                        <sys:Int16>14</sys:Int16>
+                                        <sys:Int16>15</sys:Int16>
+                                        <sys:Int16>16</sys:Int16>
+                                        <sys:Int16>17</sys:Int16>
+                                        <sys:Int16>18</sys:Int16>
+                                        <sys:Int16>19</sys:Int16>
+                                        <sys:Int16>20</sys:Int16>
+                                        <sys:Int16>21</sys:Int16>
+                                        <sys:Int16>22</sys:Int16>
+                                        <sys:Int16>23</sys:Int16>
+                                        <sys:Int16>24</sys:Int16>
+                                        <sys:Int16>25</sys:Int16>
+                                        <sys:Int16>26</sys:Int16>
+                                        <sys:Int16>27</sys:Int16>
+                                        <sys:Int16>28</sys:Int16>
+                                        <sys:Int16>29</sys:Int16>
+                                        <sys:Int16>30</sys:Int16>
+                                    </ComboBox>
+                                    <TextBlock x:Name="txtblKeepLogDays"
+                                               Text="{DynamicResource CS165}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"
+                                               Grid.Column="1" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbCurrency"
+                                      Margin="10,0,0,0"
+                                      HorizontalAlignment="Left"
+                                      Width="230"
+                                      Grid.Row="1"
+                                      VerticalAlignment="Bottom"
+                                      Height="77">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblCurrency"
+                                               Text="{DynamicResource CS154}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentCurrency"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblSymbol"
+                                               Text="{DynamicResource CS167}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <ComboBox Margin="0,2,10,2"
+                                              x:Name="cmbSymbol"
+                                              Grid.Column="1"
+                                              ItemsSource="{x:Static helper:Common.Currency}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="CultureInfo.Name"
+                                              SelectedValue="{Binding ConfigurationModel.FomartCurrency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblDecimalPlace"
+                                               Text="{DynamicResource CS168}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Grid.Row="1" />
+                                    <ComboBox Margin="0,2,10,2"
+                                              x:Name="cmbDecimalPlace"
+                                              Grid.Column="1"
+                                              Grid.Row="1"
+                                              SelectedValue="{Binding ConfigurationModel.DecimalPlaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <sys:Int16>0</sys:Int16>
+                                        <sys:Int16>1</sys:Int16>
+                                        <sys:Int16>2</sys:Int16>
+                                        <sys:Int16>3</sys:Int16>
+                                    </ComboBox>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbSecurity"
+                                      Margin="253,10,0,0"
+                                      Grid.Row="1"
+                                      Width="286"
+                                      HorizontalAlignment="Left">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblSecurity"
+                                               Text="{DynamicResource CS153}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentSecurity"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblPasswordFormat"
+                                               Text="{DynamicResource CS169}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBox x:Name="txtPasswordFormat"
+                                                            Margin="0,2,10,2"
+                                                            TextWrapping="Wrap"
+                                                            Grid.Column="1"
+                                                            Padding="2,0,2,0"
+                                                            Text="{Binding ConfigurationModel.PasswordFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblAllowAutoLogout"
+                                               Text="{DynamicResource CS170}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Grid.Row="1" />
+                                    <CheckBox x:Name="cbAllowAutoLogout"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              IsThreeState="False"
+                                              Grid.Row="1"
+                                              Grid.Column="1"
+                                              IsChecked="{Binding ConfigurationModel.IsAutoLogout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblTimeOut"
+                                               Text="{DynamicResource CS171}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="2"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBoxNumber x:Name="txtTimeOut"
+                                                                  Margin="0,2"
+                                                                  TextWrapping="NoWrap"
+                                                                  Grid.Column="1"
+                                                                  Padding="2,0,2,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  Width="50"
+                                                                  Grid.Row="2"
+                                                                  HorizontalContentAlignment="Right"
+                                                                  MaxLength="3"
+                                                                  Value="{Binding ConfigurationModel.TimeOutMinute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblMinutes"
+                                               Text="{DynamicResource CS172}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="2"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="55,0,10,0"
+                                               Grid.Column="1" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbBackup"
+                                      Margin="10,10,10,0"
+                                      Grid.Row="2"
+                                      VerticalAlignment="Top"
+                                      Height="127"
+                                      Width="529"
+                                      HorizontalAlignment="Left">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblBackup1"
+                                               Text="{DynamicResource CS155}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentBackup"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblBackupWhenExit"
+                                               Text="{DynamicResource CS174}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <CheckBox x:Name="cbBackupWhenExit"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Grid.Column="1"
+                                              IsThreeState="False"
+                                              IsChecked="{Binding ConfigurationModel.IsBackupWhenExit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblBackupEvery"
+                                               Text="{DynamicResource CS175}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="1"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBoxNumber x:Name="txtBackupEvery"
+                                                                  Margin="0,2"
+                                                                  TextWrapping="NoWrap"
+                                                                  Grid.Column="1"
+                                                                  Padding="2,0,2,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  Width="50"
+                                                                  Grid.Row="1"
+                                                                  HorizontalContentAlignment="Right"
+                                                                  MaxLength="2"
+                                                                  Value="{Binding ConfigurationModel.BackupEvery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblBackupDays"
+                                               Text="{DynamicResource CS176}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="1"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="55,0,10,0"
+                                               Grid.Column="1" />
+                                    <TextBlock x:Name="txtblKeepBackupUpto"
+                                               Text="{DynamicResource CS177}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="2"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBoxNumber x:Name="txtKeepBackupUpto"
+                                                                  Margin="0,2"
+                                                                  TextWrapping="NoWrap"
+                                                                  Grid.Column="1"
+                                                                  Padding="2,0,2,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  Width="50"
+                                                                  Grid.Row="2"
+                                                                  HorizontalContentAlignment="Right"
+                                                                  MaxLength="2"
+                                                                  Value="{Binding ConfigurationModel.KeepBackUp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblKeepBackupUptoDays"
+                                               Text="{DynamicResource CS176}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="2"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="55,0,10,0"
+                                               Grid.Column="1" />
+                                    <TextBlock x:Name="txtblSaveDirectory"
+                                               Text="{DynamicResource CS178}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="3"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <textBoxToolkit:TextBox x:Name="txtSaveDirectory"
+                                                            Margin="0,2,35,2"
+                                                            TextWrapping="NoWrap"
+                                                            Grid.Column="1"
+                                                            Padding="2,0,2,0"
+                                                            Grid.Row="3"
+                                                            IsReadOnly="True"
+                                                            Text="{Binding ConfigurationModel.BackupPath, Mode=OneWay}" />
+                                    <Button x:Name="btnBackupPath"
+                                            Margin="0,2,10,2"
+                                            Content="..."
+                                            Width="21"
+                                            HorizontalAlignment="Right"
+                                            Grid.Row="3"
+                                            Height="21"
+                                            Grid.Column="1"
+                                            Command="{Binding SelectBackupPathCommand}" />
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
 
                         <!--StoreInfo-->
                         <Grid x:Name="grdStoreInfo"
@@ -368,7 +955,7 @@
                                 <GroupBox.Header>
 
                                     <TextBlock x:Name="txtblCompanyInfo"
-                                               Text="Store Information"
+                                               Text="{DynamicResource CS100}"
                                                TextWrapping="NoWrap"
                                                Style="{DynamicResource GroupboxTextBlock}" />
 
@@ -401,7 +988,7 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock x:Name="txtblCompany"
-                                               Text="Company:"
+                                               Text="{DynamicResource C170}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -415,7 +1002,7 @@
                                                             Text="{Binding ConfigurationModel.CompanyName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblStreet"
                                                Grid.Row="2"
-                                               Text="Street:"
+                                               Text="{DynamicResource C179}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -430,7 +1017,7 @@
                                                             Text="{Binding ConfigurationModel.Address, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblCountry"
                                                Grid.Row="3"
-                                               Text="Country:"
+                                               Text="{DynamicResource C172}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -447,7 +1034,7 @@
                                               SelectedValue="{Binding ConfigurationModel.CountryId, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblCity"
                                                Grid.Row="4"
-                                               Text="City:"
+                                               Text="{DynamicResource C180}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -462,7 +1049,7 @@
                                                             Text="{Binding ConfigurationModel.City, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblState"
                                                Grid.Row="5"
-                                               Text="State:"
+                                               Text="{DynamicResource C181}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -482,7 +1069,7 @@
                                               IsEnabled="{Binding SelectedItem.HasState, ElementName=cmbCountry, Mode=OneWay}" />
                                     <TextBlock x:Name="txtblZipCity"
                                                Grid.Row="6"
-                                               Text="Zip:"
+                                               Text="{DynamicResource C182}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -499,7 +1086,7 @@
                                                                    Value="{Binding ConfigurationModel.ZipCode, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                                                                    IsEnabled="{Binding SelectedItem.HasState, ElementName=cmbCountry, Mode=OneWay}" />
                                     <TextBlock x:Name="txtblPhoneNumber"
-                                               Text="Phone Numbers"
+                                               Text="{DynamicResource CS101}"
                                                TextWrapping="NoWrap"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Left"
@@ -515,7 +1102,7 @@
                                                Margin="107,0,0,0"
                                                Grid.ColumnSpan="2" />
                                     <TextBlock x:Name="txtblPhone"
-                                               Text="Phone:"
+                                               Text="{DynamicResource C173}"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                Margin="10,0,0,0"
@@ -532,7 +1119,7 @@
                                                                    behavior:MoveFocusHelper.MoveFocus="True"
                                                                    Value="{Binding ConfigurationModel.Phone, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblFax"
-                                               Text="Fax:"
+                                               Text="{DynamicResource C183}"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
@@ -549,7 +1136,7 @@
                                                                    behavior:MoveFocusHelper.MoveFocus="True"
                                                                    Value="{Binding ConfigurationModel.Fax, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblInternet"
-                                               Text="Internet"
+                                               Text="{DynamicResource CS102}"
                                                TextWrapping="NoWrap"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Left"
@@ -565,7 +1152,7 @@
                                                Margin="60,0,0,0"
                                                Grid.ColumnSpan="2" />
                                     <TextBlock x:Name="txtblEmail"
-                                               Text="Email:"
+                                               Text="{DynamicResource C184}"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
@@ -581,7 +1168,7 @@
                                                                  MaxLength="{StaticResource EmailMaxLength}"
                                                                  Value="{Binding ConfigurationModel.Email, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
                                     <TextBlock x:Name="txtblWebsite"
-                                               Text="Website:"
+                                               Text="{DynamicResource C185}"
                                                TextWrapping="NoWrap"
                                                Grid.Row="12"
                                                VerticalAlignment="Center"
@@ -632,7 +1219,7 @@
                                                    Width="20" />
                                         <TextBlock Margin="5,0,0,0"
                                                    VerticalAlignment="Center"
-                                                   Text="Browse"
+                                                   Text="{DynamicResource C186}"
                                                    TextWrapping="NoWrap"
                                                    x:Name="txtblBrowse"
                                                    Style="{DynamicResource ButtonTextBlock}" />
@@ -654,7 +1241,7 @@
                                         <TextBlock Margin="5,0,0,0"
                                                    x:Name="txtblClear1"
                                                    VerticalAlignment="Center"
-                                                   Text="Clear"
+                                                   Text="{DynamicResource C187}"
                                                    TextWrapping="NoWrap"
                                                    Style="{DynamicResource ButtonTextBlock}" />
                                     </StackPanel>
@@ -663,16 +1250,14 @@
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++General++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group General++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++MutliStore+++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++Group MutliStore+++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--MutliStore-->
                         <Grid x:Name="grdMutliStore"
                               Visibility="{Binding GridMutliStoreVisibility, Mode=OneWay}"
-                              d:IsHidden="True">
-
-                        </Grid>
+                              d:IsHidden="True" />
 
                         <!--StoreCode-->
                         <Grid x:Name="grdStoreCode"
@@ -690,7 +1275,7 @@
                                       Margin="0">
                                 <GroupBox.Header>
                                     <TextBlock x:Name="txtblNumberOfStore"
-                                               Text="Number of Store"
+                                               Text="{DynamicResource CS103}"
                                                TextWrapping="NoWrap"
                                                Style="{DynamicResource GroupboxTextBlock}" />
                                 </GroupBox.Header>
@@ -699,7 +1284,7 @@
                                       Height="25"
                                       VerticalAlignment="Top">
                                     <TextBlock x:Name="txtblSelectTheNumber"
-                                               Text="Select the number of stores in your company:"
+                                               Text="{DynamicResource CS104}"
                                                TextWrapping="NoWrap"
                                                Margin="10,0,0,0"
                                                VerticalAlignment="Center"
@@ -737,7 +1322,7 @@
 
                                 <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                    <DataGridTemplateColumn Header="Code"
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource CodeHeaderTemplate}"
                                                             SortMemberPath="Code"
                                                             Width="250">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -753,7 +1338,7 @@
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
 
-                                    <DataGridTemplateColumn Header="Name"
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                             SortMemberPath="Name"
                                                             Width="250">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -775,7 +1360,7 @@
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++MutliStore+++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group MutliStore+++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--++++++++++++++++++++++++++++++++++++++++++++Inventory++++++++++++++++++++++++++++++++++++++++++++++-->
 
@@ -783,7 +1368,35 @@
                         <Grid x:Name="grdInventory"
                               Visibility="{Binding GridInventoryVisibility, Mode=OneWay}"
                               d:IsHidden="True">
-
+                            <GroupBox x:Name="gbInventory"
+                                      Margin="10,10,0,0"
+                                      Width="529"
+                                      HorizontalAlignment="Left"
+                                      d:LayoutOverrides="GridBox"
+                                      VerticalAlignment="Top"
+                                      Height="52">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblInventory"
+                                               Text="Inventory"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentInventory"
+                                      Margin="0,4,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                    </Grid.RowDefinitions>
+                                    <CheckBox x:Name="cbAllowNegativeStore"
+                                              VerticalAlignment="Center"
+                                              Content="{DynamicResource CS141}"
+                                              Margin="10,0,0,0"
+                                              IsThreeState="False"
+                                              HorizontalAlignment="Left"
+                                              IsChecked="{Binding ConfigurationModel.IsAllowNegativeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
                         </Grid>
 
                         <!--Unit Of Measure-->
@@ -803,7 +1416,7 @@
                                 <GroupBox.Header>
 
                                     <TextBlock x:Name="txtblgbUnitOfMeasure"
-                                               Text="Unit Of Measure"
+                                               Text="{DynamicResource CS105}"
                                                TextWrapping="NoWrap"
                                                Style="{DynamicResource GroupboxTextBlock}" />
 
@@ -837,7 +1450,7 @@
 
                                         <cpcDataGridToolkit:DataGridControl.Columns>
 
-                                            <DataGridTemplateColumn Header="Code"
+                                            <DataGridTemplateColumn HeaderTemplate="{StaticResource CodeHeaderTemplate}"
                                                                     SortMemberPath="Code"
                                                                     Width="250">
                                                 <DataGridTemplateColumn.CellTemplate>
@@ -853,7 +1466,7 @@
                                                 </DataGridTemplateColumn.CellEditingTemplate>
                                             </DataGridTemplateColumn>
 
-                                            <DataGridTemplateColumn Header="Name"
+                                            <DataGridTemplateColumn HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                                     SortMemberPath="Name"
                                                                     Width="250">
                                                 <DataGridTemplateColumn.CellTemplate>
@@ -883,7 +1496,7 @@
 
                                 <GroupBox.Header>
                                     <TextBlock x:Name="txtblMultipleUnitsOfMeasure"
-                                               Text="Multiple Units Of Measure "
+                                               Text="{DynamicResource CS106}"
                                                TextWrapping="NoWrap"
                                                Style="{DynamicResource GroupboxTextBlock}" />
                                 </GroupBox.Header>
@@ -903,10 +1516,10 @@
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Content="Allow set up multiple UOM for inventory, non-inventory and se service items."
+                                              Content="{DynamicResource CS107}"
                                               IsChecked="{Binding ConfigurationModel.IsAllowMutilUOM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="Examples of mutilple units of measure:"
+                                               Text="{DynamicResource CS108}"
                                                x:Name="txtblExamplesOfMutiple"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
@@ -914,7 +1527,7 @@
                                                Grid.Row="1"
                                                Style="{DynamicResource TextBlockNormal}" />
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="I order dog food in cases of 24 cans. I sell dog food by the individual can and by the case."
+                                               Text="{DynamicResource CS109}"
                                                x:Name="txtblIOrderDog"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
@@ -923,7 +1536,7 @@
                                                Style="{DynamicResource TextBlockNormal}"
                                                FontFamily="/DemoPOS;component/Fonts/#Tahoma" />
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="I receive nails in 30 poun boxes and I sell nails in 1 and 5 pound boxes."
+                                               Text="{DynamicResource CS110}"
                                                x:Name="txtblIReceiveNailIn"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
@@ -937,10 +1550,11 @@
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++Inventory++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group Inventory++++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--++++++++++++++++++++++++++++++++++++++++++++Pricing++++++++++++++++++++++++++++++++++++++++++++++++-->
 
+                        <!--Pricing-->
                         <Grid x:Name="grdPricing"
                               Visibility="{Binding GridPricingVisibility, Mode=OneWay}"
                               d:IsHidden="True">
@@ -957,7 +1571,7 @@
                                           Margin="10,10,10,0">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblDefaultPrice"
-                                                   Text="Default Price"
+                                                   Text="{DynamicResource CS111}"
                                                    TextWrapping="NoWrap"
                                                    FontWeight="Bold"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
@@ -968,7 +1582,7 @@
                                             <RowDefinition Height="25" />
                                         </Grid.RowDefinitions>
                                         <TextBlock x:Name="txtblPurchaseThreshold"
-                                                   Text="Select the price level that should be used by default on new sales receipts and customer orders."
+                                                   Text="{DynamicResource CS112}"
                                                    TextWrapping="NoWrap"
                                                    Margin="10,0,0,0"
                                                    VerticalAlignment="Center"
@@ -990,7 +1604,7 @@
                                           Grid.Row="1">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblPriceLevel"
-                                                   Text="Reward Option"
+                                                   Text="{DynamicResource CS113}"
                                                    TextWrapping="NoWrap"
                                                    FontWeight="Bold"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
@@ -1008,14 +1622,14 @@
                                             <RowDefinition Height="25" />
                                             <RowDefinition Height="25" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Text="Enter a name and markdown % ( from your regulare price ) for each optional price level you would like to use. The markdowns entered are used to calculate each level's price for new items only."
+                                        <TextBlock Text="{DynamicResource CS114}"
                                                    TextWrapping="Wrap"
                                                    x:Name="txtblEnteraname"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
                                                    Style="{DynamicResource TextBlockNormal}" />
-                                        <TextBlock Text="Tip: To mark a price level up from your regular price, enter a negative markdown ( Example: -10 )"
+                                        <TextBlock Text="{DynamicResource CS115}"
                                                    TextWrapping="Wrap"
                                                    x:Name="txtbTipToMark"
                                                    HorizontalAlignment="Left"
@@ -1023,7 +1637,7 @@
                                                    Margin="10,0,0,0"
                                                    Style="{DynamicResource TextBlockNormal}"
                                                    Grid.Row="1" />
-                                        <TextBlock Text="Price Level Name:"
+                                        <TextBlock Text="{DynamicResource CS116}"
                                                    TextWrapping="Wrap"
                                                    x:Name="txtbPriceLevelName"
                                                    HorizontalAlignment="Left"
@@ -1068,7 +1682,7 @@
                                                                 Grid.Row="6"
                                                                 MaxLength="{StaticResource NamePriceMaxLength}"
                                                                 Text="{Binding PriceCollection[3].Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock Text="Markdown % ( for new items )"
+                                        <TextBlock Text="{DynamicResource CS117}"
                                                    TextWrapping="Wrap"
                                                    x:Name="txtbMarkdown"
                                                    HorizontalAlignment="Left"
@@ -1124,272 +1738,417 @@
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++Pricing+++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group Pricing+++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--++++++++++++++++++++++++++++++++++++++++++++Sales++++++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--Sales-->
                         <Grid x:Name="grdSales"
-                              Visibility="{Binding GridSalesVisibility, Mode=OneWay}">
+                              Visibility="{Binding GridSalesVisibility, Mode=OneWay}"
+                              d:IsHidden="True">
 
-                            <TabControl x:Name="TabSales"
-                                        Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="185" />
+                                <RowDefinition Height="135" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
 
-                                <TabItem x:Name="tabitemReceive"
-                                         Header="Receive">
-                                    <Grid x:Name="grdReceive">
+                            <GroupBox x:Name="gbPaymentMethods1"
+                                      Margin="10,10,10,0"
+                                      Width="529"
+                                      HorizontalAlignment="Left">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblPaymentMethods1"
+                                               Text="{DynamicResource CS118}"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdPaymentMethods1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblSelectthepayment1"
+                                               Text="{DynamicResource CS119}"
+                                               TextWrapping="NoWrap"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}" />
 
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="185" />
-                                            <RowDefinition Height="135" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <GroupBox x:Name="gbPaymentMethods"
-                                                  Margin="10,10,10,0">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblPaymentMethods"
-                                                           Text="Payment Methods"
-                                                           TextWrapping="NoWrap"
-                                                           FontWeight="Bold"
-                                                           Style="{DynamicResource GroupboxTextBlock}" />
-                                            </GroupBox.Header>
-                                            <Grid x:Name="grdPaymentMethods">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="25" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="25" />
-                                                </Grid.RowDefinitions>
-                                                <TextBlock x:Name="txtblSelectthepayment"
-                                                           Text="Select the payment methods you accept."
-                                                           TextWrapping="NoWrap"
-                                                           Margin="10,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           Style="{DynamicResource TextBlockNormal}" />
-
-                                                <xceedWpfToolkit:CheckListBox Grid.Row="1"
-                                                                              Width="500"
-                                                                              Margin="10,0,0,0"
-                                                                              HorizontalAlignment="Left"
-                                                                              VerticalAlignment="Center"
-                                                                              Style="{DynamicResource NonVisualCheckListBoxStyle}"
-                                                                              ItemContainerStyle="{StaticResource PaymentMethodNonVisualCheckListBoxItemStyle}"
-                                                                              ItemsSource="{x:Static helper:Common.PaymentMethods}"
-                                                                              DisplayMemberPath="Text"
-                                                                              ValueMemberPath="Value"
-                                                                              SelectedValue="{Binding ConfigurationModel.AcceptedPaymentMethod, ConverterParameter={x:Static helper:Common.PaymentMethods}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                    <i:Interaction.Triggers>
-                                                        <i:EventTrigger EventName="ItemSelectionChanged">
-                                                            <cmd:EventToCommand PassEventArgsToCommand="True"
-                                                                                Command="{Binding ItemSelectionChangedCommand}" />
-                                                        </i:EventTrigger>
-                                                    </i:Interaction.Triggers>
-                                                </xceedWpfToolkit:CheckListBox>
-
-                                                <TextBlock x:Name="txtblUse"
-                                                           Text="Use"
-                                                           TextWrapping="NoWrap"
-                                                           Margin="10,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           Style="{DynamicResource TextBlockNormal}"
-                                                           Grid.Row="2" />
-                                                <ComboBox Margin="40,2,0,2"
-                                                          x:Name="cmbUse"
-                                                          HorizontalAlignment="Left"
-                                                          Width="120"
-                                                          Grid.Row="2"
-                                                          ItemsSource="{Binding PaymentMethodCollection, Mode=OneWay}"
-                                                          DisplayMemberPath="Text"
-                                                          SelectedValuePath="Value"
-                                                          SelectedValue="{Binding ConfigurationModel.DefaultPaymentMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TextBlock x:Name="txtblAsTheDefault"
-                                                           Text="as the default payment method for the new receipts"
-                                                           TextWrapping="NoWrap"
-                                                           Margin="181,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           Style="{DynamicResource TextBlockNormal}"
-                                                           Grid.Row="2" />
-                                            </Grid>
-                                        </GroupBox>
-                                        <GroupBox x:Name="gbCardType"
-                                                  Margin="10,10,10,0"
-                                                  Grid.Row="1"
-                                                  Width="310"
-                                                  HorizontalAlignment="Left">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblCardType"
-                                                           Text="Card Type"
-                                                           TextWrapping="NoWrap"
-                                                           FontWeight="Bold"
-                                                           Style="{DynamicResource GroupboxTextBlock}" />
-                                            </GroupBox.Header>
-                                            <Grid Width="Auto"
-                                                  x:Name="grdCardType"
-                                                  Margin="0,4,0,0">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="25" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="Select the credit cards you accept"
-                                                           TextWrapping="Wrap"
-                                                           x:Name="txtblSelectTheCreditCard"
-                                                           HorizontalAlignment="Left"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0,0,0"
-                                                           Style="{DynamicResource TextBlockNormal}" />
-                                                <xceedWpfToolkit:CheckListBox Grid.Row="1"
-                                                                              Width="500"
-                                                                              Margin="10,0,0,0"
-                                                                              HorizontalAlignment="Left"
-                                                                              VerticalAlignment="Top"
-                                                                              Style="{DynamicResource NonVisualCheckListBoxStyle}"
-                                                                              ItemsSource="{x:Static helper:Common.PaymentCardTypes}"
-                                                                              DisplayMemberPath="Text"
-                                                                              ValueMemberPath="Value"
-                                                                              SelectedValue="{Binding ConfigurationModel.AcceptedCardType, ConverterParameter={x:Static helper:Common.PaymentCardTypes}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </Grid>
-                                        </GroupBox>
-                                        <GroupBox x:Name="gbCardType1"
-                                                  Margin="333,10,10,0"
-                                                  Grid.Row="1">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblCardType1"
-                                                           Text="Card Type"
-                                                           TextWrapping="NoWrap"
-                                                           FontWeight="Bold"
-                                                           Style="{DynamicResource GroupboxTextBlock}" />
-                                            </GroupBox.Header>
-                                            <Grid Width="Auto"
-                                                  x:Name="grdGiftCardType"
-                                                  Margin="0,4,0,0">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="25" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="Select the gift cards you accept"
-                                                           TextWrapping="Wrap"
-                                                           x:Name="txtblSelectTheCreditCard1"
-                                                           HorizontalAlignment="Left"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0,0,0"
-                                                           Style="{DynamicResource TextBlockNormal}" />
-                                                <xceedWpfToolkit:CheckListBox Grid.Row="1"
-                                                                              Width="200"
-                                                                              Margin="10,0,0,0"
-                                                                              HorizontalAlignment="Left"
-                                                                              VerticalAlignment="Top"
-                                                                              Style="{DynamicResource NonVisualCheckListBoxStyle}"
-                                                                              ItemsSource="{x:Static helper:Common.GiftCardTypes}"
-                                                                              DisplayMemberPath="Text"
-                                                                              ValueMemberPath="Value"
-                                                                              SelectedValue="{Binding ConfigurationModel.AcceptedGiftCardMethod, ConverterParameter={x:Static helper:Common.GiftCardTypes}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </Grid>
-                                        </GroupBox>
-                                        <GroupBox x:Name="gbTips"
-                                                  Margin="10"
-                                                  Grid.Row="2">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblTips"
-                                                           Text="Tips"
-                                                           TextWrapping="NoWrap"
-                                                           Style="{DynamicResource GroupboxTextBlock}" />
-                                            </GroupBox.Header>
-                                            <Grid Width="Auto"
-                                                  x:Name="grdTips"
-                                                  Margin="0,4,0,0"
-                                                  VerticalAlignment="Top"
-                                                  Height="25">
-                                                <StackPanel Margin="10,0,0,0"
-                                                            Orientation="Horizontal"
-                                                            d:LayoutOverrides="Height"
-                                                            HorizontalAlignment="Left"
-                                                            VerticalAlignment="Center">
-                                                    <CheckBox x:Name="cbCollectCustomerTips"
-                                                              Content="Collect customer tips on credit, account, and gift card transactions"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center"
-                                                              IsChecked="{Binding ConfigurationModel.IsAllowCollectTipCreditCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <textBoxToolkit:TextBoxPercent x:Name="txtPercent"
-                                                                                   TextWrapping="NoWrap"
-                                                                                   Width="50"
-                                                                                   Height="21"
-                                                                                   Margin="10,0,0,0"
-                                                                                   HorizontalContentAlignment="Right"
-                                                                                   TextLength="2"
-                                                                                   IsEnabled="{Binding IsChecked, ElementName=cbCollectCustomerTips, Mode=OneWay}"
-                                                                                   Value="{Binding ConfigurationModel.TipPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBlock x:Name="txtblPercent"
-                                                               Text="%"
-                                                               TextWrapping="NoWrap"
-                                                               VerticalAlignment="Center"
-                                                               HorizontalAlignment="Left"
-                                                               Style="{DynamicResource TextBlockNormal}"
-                                                               Margin="10,0,0,0" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </GroupBox>
-
-                                    </Grid>
-                                </TabItem>
-
-                                <TabItem x:Name="tabitemDiscount"
-                                         Header="Discount">
-                                    <Grid x:Name="grdDiscount">
-
-                                        <GroupBox x:Name="gbDiscount"
-                                                  Margin="10"
-                                                  VerticalAlignment="Top">
-                                            <GroupBox.Header>
-                                                <TextBlock x:Name="txtblDiscount"
-                                                           Text="Discount"
-                                                           TextWrapping="NoWrap"
-                                                           Style="{DynamicResource GroupboxTextBlock}" />
-                                            </GroupBox.Header>
-
-                                            <Grid x:Name="grdtiDiscount">
-
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="35" />
-                                                    <RowDefinition Height="25" />
-                                                    <RowDefinition Height="0" />
-                                                    <RowDefinition Height="0" />
-                                                    <RowDefinition Height="0" />
-                                                    <RowDefinition Height="0" />
-                                                </Grid.RowDefinitions>
-
-                                                <TextBlock x:Name="txtblWhen"
-                                                           Text="When manally changing discount status from deactive to active, you can associate a discount reason."
-                                                           TextWrapping="Wrap"
-                                                           Margin="10,0,0,0"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           Style="{DynamicResource TextBlockNormal}" />
-                                                <CheckBox x:Name="cbCash1"
-                                                          Content="Require a discount reason for manal discounts"
-                                                          HorizontalAlignment="Left"
-                                                          d:LayoutOverrides="Height"
-                                                          VerticalAlignment="Center"
-                                                          Grid.Row="1"
-                                                          Margin="10,0,0,0"
-                                                          IsChecked="{Binding ConfigurationModel.IsRequireDiscountReason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </Grid>
-
-                                        </GroupBox>
-
-                                    </Grid>
-                                </TabItem>
-
-                            </TabControl>
+                                    <xceedWpfToolkit:CheckListBox Grid.Row="1"
+                                                                  Width="500"
+                                                                  Margin="10,0,0,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"
+                                                                  Style="{DynamicResource NonVisualCheckListBoxStyle}"
+                                                                  ItemContainerStyle="{StaticResource PaymentMethodNonVisualCheckListBoxItemStyle}"
+                                                                  ItemsSource="{x:Static helper:Common.PaymentMethods}"
+                                                                  DisplayMemberPath="Text"
+                                                                  ValueMemberPath="Value"
+                                                                  SelectedValue="{Binding ConfigurationModel.AcceptedPaymentMethod, ConverterParameter={x:Static helper:Common.PaymentMethods}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ItemSelectionChanged">
+                                                <cmd:EventToCommand PassEventArgsToCommand="True"
+                                                                    Command="{Binding ItemSelectionChangedCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </xceedWpfToolkit:CheckListBox>
+                                    <TextBlock x:Name="txtblDefaultPaymentMethod"
+                                               TextWrapping="NoWrap"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Grid.Row="2"
+                                               Text="{DynamicResource CS121}" />
+                                    <ComboBox Margin="140,2,0,2"
+                                              x:Name="cmbDefaultPaymentMethod"
+                                              HorizontalAlignment="Left"
+                                              Width="120"
+                                              Grid.Row="2"
+                                              ItemsSource="{Binding PaymentMethodCollection, Mode=OneWay}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultPaymentMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbCardType2"
+                                      Margin="10,10,10,0"
+                                      Grid.Row="1"
+                                      Width="310"
+                                      HorizontalAlignment="Left">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblCardType2"
+                                               Text="{DynamicResource CS122}"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid Width="Auto"
+                                      x:Name="grdCardType1"
+                                      Margin="0,4,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{DynamicResource CS123}"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtblSelectTheCreditCard2"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Style="{DynamicResource TextBlockNormal}" />
+                                    <xceedWpfToolkit:CheckListBox Grid.Row="1"
+                                                                  Width="500"
+                                                                  Margin="10,0,0,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Top"
+                                                                  Style="{DynamicResource NonVisualCheckListBoxStyle}"
+                                                                  ItemsSource="{x:Static helper:Common.PaymentCardTypes}"
+                                                                  DisplayMemberPath="Text"
+                                                                  ValueMemberPath="Value"
+                                                                  SelectedValue="{Binding ConfigurationModel.AcceptedCardType, ConverterParameter={x:Static helper:Common.PaymentCardTypes}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbCardType3"
+                                      Margin="333,10,10,0"
+                                      Grid.Row="1"
+                                      HorizontalAlignment="Left"
+                                      Width="206">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblCardType3"
+                                               Text="{DynamicResource CS124}"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid Width="Auto"
+                                      x:Name="grdGiftCardType1"
+                                      Margin="0,4,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{DynamicResource CS125}"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtblSelectTheCreditCard3"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Style="{DynamicResource TextBlockNormal}" />
+                                    <xceedWpfToolkit:CheckListBox Grid.Row="1"
+                                                                  Width="200"
+                                                                  Margin="10,0,0,0"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Top"
+                                                                  Style="{DynamicResource NonVisualCheckListBoxStyle}"
+                                                                  ItemsSource="{x:Static helper:Common.GiftCardTypes}"
+                                                                  DisplayMemberPath="Text"
+                                                                  ValueMemberPath="Value"
+                                                                  SelectedValue="{Binding ConfigurationModel.AcceptedGiftCardMethod, ConverterParameter={x:Static helper:Common.GiftCardTypes}, Converter={StaticResource BinaryTotalToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox x:Name="gbTips1"
+                                      Margin="10"
+                                      Grid.Row="2"
+                                      Width="529"
+                                      HorizontalAlignment="Left">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblTips1"
+                                               Text="{DynamicResource CS126}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid Width="Auto"
+                                      x:Name="grdTips1"
+                                      Margin="0,4,0,0"
+                                      VerticalAlignment="Top"
+                                      Height="25">
+                                    <StackPanel Margin="10,0,0,0"
+                                                Orientation="Horizontal"
+                                                d:LayoutOverrides="Height"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center">
+                                        <CheckBox x:Name="cbCollectCustomerTips1"
+                                                  Content="{DynamicResource CS127}"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  IsChecked="{Binding ConfigurationModel.IsAllowCollectTipCreditCard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <textBoxToolkit:TextBoxPercent x:Name="txtPercent1"
+                                                                       TextWrapping="NoWrap"
+                                                                       Width="50"
+                                                                       Height="21"
+                                                                       Margin="10,0,0,0"
+                                                                       HorizontalContentAlignment="Right"
+                                                                       TextLength="2"
+                                                                       IsEnabled="{Binding IsChecked, ElementName=cbCollectCustomerTips, Mode=OneWay}"
+                                                                       Value="{Binding ConfigurationModel.TipPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblPercent1"
+                                                   Text="%"
+                                                   TextWrapping="NoWrap"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Margin="10,0,0,0" />
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++Sales++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--Discount-->
+                        <Grid x:Name="grdDiscount"
+                              Visibility="{Binding GridDiscountVisibility, Mode=OneWay}"
+                              d:IsHidden="True">
+
+                            <GroupBox x:Name="gbDiscount1"
+                                      Margin="10"
+                                      VerticalAlignment="Top">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblDiscount1"
+                                               Text="{DynamicResource C121}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+
+                                <Grid x:Name="grdtiDiscount1"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="95" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblDiscountType"
+                                               Text="{DynamicResource CS146}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <ComboBox Margin="0,2"
+                                              x:Name="cmbDiscountType"
+                                              Grid.Column="1"
+                                              Width="163"
+                                              HorizontalAlignment="Left"
+                                              ItemsSource="{x:Static helper:Common.PromotionTypes}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultDiscountType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                    </ComboBox>
+                                    <TextBlock x:Name="txtblDiscountStatus"
+                                               Text="{DynamicResource CS147}"
+                                               TextWrapping="NoWrap"
+                                               Grid.Row="1"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center" />
+                                    <ComboBox Margin="0,2"
+                                              x:Name="cmbDiscountStatus"
+                                              Grid.Column="1"
+                                              Grid.Row="1"
+                                              Width="163"
+                                              HorizontalAlignment="Left"
+                                              ItemsSource="{x:Static helper:Common.StatusBasic}"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="Value"
+                                              SelectedValue="{Binding ConfigurationModel.DefaultDiscountStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                    </ComboBox>
+                                    <StackPanel x:Name="stkpRequire"
+                                                Orientation="Horizontal"
+                                                Grid.Row="2"
+                                                d:LayoutOverrides="Width"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Grid.ColumnSpan="2"
+                                                Margin="10,0,0,0">
+                                        <TextBlock x:Name="txtblRequire"
+                                                   Text="{DynamicResource CS129}"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center" />
+                                        <CheckBox x:Name="cbCash2"
+                                                  HorizontalAlignment="Left"
+                                                  d:LayoutOverrides="Height"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="1"
+                                                  Margin="10,0,0,0"
+                                                  IsChecked="{Binding ConfigurationModel.IsRequireDiscountReason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </Grid>
+
+                            </GroupBox>
+
+                        </Grid>
+
+                        <!--Reward-->
+                        <Grid x:Name="grdReward"
+                              Visibility="{Binding GridRewardVisibility, Mode=OneWay}"
+                              d:LayoutOverrides="Width"
+                              d:IsHidden="True">
+                            <GroupBox x:Name="gbReward"
+                                      Margin="10,10,0,0"
+                                      Width="529"
+                                      HorizontalAlignment="Left"
+                                      d:LayoutOverrides="GridBox"
+                                      VerticalAlignment="Top">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblReward1"
+                                               Text="{DynamicResource CS151}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdReward3"
+                                      Margin="0,4,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <CheckBox x:Name="cbCalculate"
+                                              VerticalAlignment="Center"
+                                              Content="{DynamicResource CS142}"
+                                              Margin="10,0,0,0"
+                                              IsThreeState="False"
+                                              HorizontalAlignment="Left"
+                                              IsChecked="{Binding ConfigurationModel.IsRewardOnTax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbAllow"
+                                              VerticalAlignment="Center"
+                                              Content="{DynamicResource CS143}"
+                                              Margin="10,0,0,0"
+                                              IsThreeState="False"
+                                              HorizontalAlignment="Left"
+                                              Grid.Row="1"
+                                              IsChecked="{Binding ConfigurationModel.IsRewardLessThanDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+
+                        <!--Return-->
+                        <Grid x:Name="grdReturn"
+                              Visibility="{Binding GridReturnVisibility, Mode=OneWay}"
+                              d:IsHidden="True">
+                            <Grid x:Name="grdReturn1"
+                                  d:LayoutOverrides="Width">
+                                <GroupBox x:Name="gbReturn"
+                                          Margin="10,10,0,0"
+                                          Width="529"
+                                          HorizontalAlignment="Left"
+                                          d:LayoutOverrides="GridBox"
+                                          VerticalAlignment="Top"
+                                          Height="77">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblReturn"
+                                                   Text="{DynamicResource CS150}"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource GroupboxTextBlock}" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdReturn2"
+                                          Margin="0,4,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblAllowReturn"
+                                                   Text="{DynamicResource CS144}"
+                                                   TextWrapping="NoWrap"
+                                                   HorizontalAlignment="Left"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   d:LayoutOverrides="Height"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0" />
+                                        <CheckBox x:Name="cbAllowReturn"
+                                                  VerticalAlignment="Center"
+                                                  Margin="110.997,0,0,0"
+                                                  IsThreeState="False"
+                                                  HorizontalAlignment="Left"
+                                                  IsChecked="{Binding ConfigurationModel.IsIncludeReturnFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblReturnFeePercent"
+                                                   Text="{DynamicResource CS145}"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,0,0,0"
+                                                   Grid.Row="1" />
+                                        <textBoxToolkit:TextBoxDecimal x:Name="txtReturnFeePercent"
+                                                                       TextWrapping="NoWrap"
+                                                                       Padding="2,0,2,0"
+                                                                       Width="60"
+                                                                       HorizontalContentAlignment="Right"
+                                                                       Margin="110.997,2,0,2"
+                                                                       HorizontalAlignment="Left"
+                                                                       Grid.Row="1"
+                                                                       TextLength="2"
+                                                                       Value="{Binding ConfigurationModel.ReturnFeePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblReturnPercent"
+                                                   Text="%"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="175,0,0,0"
+                                                   Grid.Row="1" />
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Grid>
+
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group Sales++++++++++++++++++++++++++++++++++++++++++++++++-->
 
                         <!--++++++++++++++++++++++++++++++++++++++++++++Email++++++++++++++++++++++++++++++++++++++++++++++++-->
 
+                        <!--Email-->
                         <Grid x:Name="grdEmailSetup"
                               Visibility="{Binding GridEmailSetupVisibility, Mode=OneWay}"
                               d:IsHidden="True">
@@ -1403,7 +2162,7 @@
                                     <GroupBox.Header>
 
                                         <TextBlock x:Name="txtblOutgoingEmailSetup"
-                                                   Text="Outgoing Email Setup"
+                                                   Text="{DynamicResource CS130}"
                                                    TextWrapping="NoWrap"
                                                    Style="{DynamicResource GroupboxTextBlock}" />
 
@@ -1421,7 +2180,7 @@
                                         </Grid.RowDefinitions>
 
                                         <TextBlock x:Name="txtblConnect"
-                                                   Text="Connect to e-mail account at your Internet service provide ( ISP) or your organization mail server."
+                                                   Text="{DynamicResource CS131}"
                                                    TextWrapping="Wrap"
                                                    HorizontalAlignment="Left"
                                                    Margin="10,0,0,0"
@@ -1440,7 +2199,7 @@
 
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblISPServerPort"
-                                                           Text="ISP Server &amp; Port"
+                                                           Text="{DynamicResource CS132}"
                                                            TextWrapping="NoWrap"
                                                            Style="{DynamicResource GroupboxTextBlock}" />
                                             </GroupBox.Header>
@@ -1457,7 +2216,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblPOP3Server"
-                                                           Text="POP3 Server:"
+                                                           Text="{DynamicResource CS133}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1472,7 +2231,7 @@
                                                                         MaxLength="{StaticResource EmailPop3ServerMaxLength}"
                                                                         Text="{Binding ConfigurationModel.EmailPop3Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 <TextBlock x:Name="txtblExampleEmailAddress"
-                                                           Text="Examle: Mail.mailserver.com"
+                                                           Text="{DynamicResource CS134}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="1"
@@ -1480,7 +2239,7 @@
                                                            Margin="120,0,0,0"
                                                            Style="{DynamicResource TextBlockNormal}" />
                                                 <TextBlock x:Name="txtblPOP3Port"
-                                                           Text="POP3 Port:"
+                                                           Text="{DynamicResource CS135}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="2"
@@ -1497,7 +2256,7 @@
                                                                               Width="70"
                                                                               Value="{Binding ConfigurationModel.EmailPop3Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 <TextBlock x:Name="txtblPortNo"
-                                                           Text="Port No. provide by ISP Service Provider."
+                                                           Text="{DynamicResource CS136}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="3"
@@ -1516,7 +2275,7 @@
 
                                             <GroupBox.Header>
                                                 <TextBlock x:Name="txtblEmailPassword"
-                                                           Text="Email &amp; Password"
+                                                           Text="{DynamicResource CS137}"
                                                            TextWrapping="NoWrap"
                                                            Style="{DynamicResource GroupboxTextBlock}" />
                                             </GroupBox.Header>
@@ -1534,7 +2293,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="txtblEmailPasswordEmail"
-                                                           Text="Email:"
+                                                           Text="{DynamicResource C184}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Center"
@@ -1549,7 +2308,7 @@
                                                                              MaxLength="{StaticResource EmailAccountMaxLength}"
                                                                              Value="{Binding ConfigurationModel.EmailAccount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                                                 <TextBlock x:Name="txtblEmailPasswordExampleEmail"
-                                                           Text="Example: Barbara@gmail.com"
+                                                           Text="{DynamicResource CS138}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="1"
@@ -1557,7 +2316,7 @@
                                                            Margin="120,0,0,0"
                                                            Style="{DynamicResource TextBlockNormal}" />
                                                 <TextBlock x:Name="txtblPassword"
-                                                           Text="Password:"
+                                                           Text="{DynamicResource C188}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="2"
@@ -1573,7 +2332,7 @@
                                                              helper:PasswordHelper.BindPassword="True"
                                                              helper:PasswordHelper.BoundPassword="{Binding ConfigurationModel.EmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                                                 <TextBlock x:Name="txtblRetypePassword"
-                                                           Text="Retype Password:"
+                                                           Text="{DynamicResource CS139}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="3"
@@ -1589,7 +2348,7 @@
                                                              helper:PasswordHelper.BindPassword="True"
                                                              helper:PasswordHelper.BoundPassword="{Binding ConfigurationModel.RetypeEmailPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                                                 <TextBlock x:Name="txtblType"
-                                                           Text="Type the Password your Internet service provider has given you."
+                                                           Text="{DynamicResource CS140}"
                                                            TextWrapping="NoWrap"
                                                            HorizontalAlignment="Left"
                                                            Grid.Row="4"
@@ -1609,7 +2368,86 @@
 
                         </Grid>
 
-                        <!--++++++++++++++++++++++++++++++++++++++++++++Email++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group Email++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+                        <!--++++++++++++++++++++++++++++++++++++++++++++Timeclock++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+                        <!--Timeclock-->
+                        <Grid x:Name="grdTimeclock"
+                              Visibility="{Binding GridTimeclockVisibility, Mode=OneWay}"
+                              d:LayoutOverrides="Width"
+                              d:IsHidden="True">
+                            <GroupBox x:Name="gbTimeclock"
+                                      Margin="10,10,0,0"
+                                      Width="529"
+                                      HorizontalAlignment="Left"
+                                      d:LayoutOverrides="GridBox"
+                                      VerticalAlignment="Top"
+                                      Height="52">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblTimeclock"
+                                               Text="{DynamicResource CS149}"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentTimeclock"
+                                      Margin="0,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="75" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblWorkHour"
+                                               Text="{DynamicResource CS148}"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="Height"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+                                    <ComboBox x:Name="cmbBackupEvery"
+                                              Margin="0,0,0,2"
+                                              Grid.Column="1"
+                                              Padding="2,0,2,0"
+                                              HorizontalAlignment="Left"
+                                              Width="50"
+                                              HorizontalContentAlignment="Right"
+                                              Height="21"
+                                              SelectedValue="{Binding ConfigurationModel.WorkHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <sys:Int16>1</sys:Int16>
+                                        <sys:Int16>2</sys:Int16>
+                                        <sys:Int16>3</sys:Int16>
+                                        <sys:Int16>4</sys:Int16>
+                                        <sys:Int16>5</sys:Int16>
+                                        <sys:Int16>6</sys:Int16>
+                                        <sys:Int16>7</sys:Int16>
+                                        <sys:Int16>8</sys:Int16>
+                                        <sys:Int16>9</sys:Int16>
+                                        <sys:Int16>10</sys:Int16>
+                                        <sys:Int16>11</sys:Int16>
+                                        <sys:Int16>12</sys:Int16>
+                                        <sys:Int16>13</sys:Int16>
+                                        <sys:Int16>14</sys:Int16>
+                                        <sys:Int16>15</sys:Int16>
+                                        <sys:Int16>16</sys:Int16>
+                                        <sys:Int16>17</sys:Int16>
+                                        <sys:Int16>18</sys:Int16>
+                                        <sys:Int16>19</sys:Int16>
+                                        <sys:Int16>20</sys:Int16>
+                                        <sys:Int16>21</sys:Int16>
+                                        <sys:Int16>22</sys:Int16>
+                                        <sys:Int16>23</sys:Int16>
+                                        <sys:Int16>24</sys:Int16>
+                                    </ComboBox>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+
+                        <!--++++++++++++++++++++++++++++++++++++++++++++End Group Timeclock++++++++++++++++++++++++++++++++++++++++++++++++-->
 
                     </Grid>
 

@@ -14,6 +14,7 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -24,6 +25,7 @@ namespace CPC.POS.ViewModel
         private base_ProductRepository _productRepository = new base_ProductRepository();
         private base_TransferStockRepository _transferStockRepository = new base_TransferStockRepository();
         private base_TransferStockDetailRepository _transferStockDetailRepository = new base_TransferStockDetailRepository();
+        private base_ProductStoreRepository _productStoreRepository = new base_ProductStoreRepository();
         public RelayCommand<object> NewCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand<object> EditCommand { get; private set; }
@@ -373,9 +375,6 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnNewCommandExecute(object param)
         {
-            //To set enable of detail grid.
-            if (param != null)
-                this.IsSearchMode = !this.IsSearchMode;
             if (this.ChangeViewExecute(null))
             {
                 // TODO: Handle command logic here
@@ -383,7 +382,9 @@ namespace CPC.POS.ViewModel
                 this.SelectedTransferStock.Resource = Guid.NewGuid();
                 this.SelectedTransferStock.IsLoad = true;
                 this.SelectedTransferStock.UserCreated = Define.USER.LoginName;
-                this.SelectedTransferStock.FromStore = -1;
+                this.SelectedTransferStock.FromStore = Int16.Parse(Define.StoreCode.ToString());
+                this.SelectedTransferStock.FromStoreValue = FromStoreCollection[Define.StoreCode];
+                this.ChangeDataToStore(this.FromStoreCollection.IndexOf(this.SelectedTransferStock.FromStoreValue));
                 this.SelectedTransferStock.ToStore = -1;
                 this.SelectedTransferStock.ShippingFee = 0;
                 this.SelectedTransferStock.Status = 1;
@@ -391,6 +392,8 @@ namespace CPC.POS.ViewModel
                 this.SelectedTransferStock.DateCreated = DateTimeExt.Today;
                 this.SelectedTransferStock.IsLoad = false;
                 this.SelectedTransferStock.IsDirty = false;
+                //To set enable of detail grid.
+                this.IsSearchMode = false;
             }
         }
         #endregion
@@ -629,7 +632,7 @@ namespace CPC.POS.ViewModel
             if (param != null)
             {
                 base_TransferStockDetailModel transferStockDetailModel = param as base_TransferStockDetailModel;
-                MessageBoxResult result = MessageBox.Show("Do you want to delete?", "POS", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo);
                 if (result.Is(MessageBoxResult.Yes))
                 {
                     this.SelectedTransferStock.IsDirty = true;
@@ -657,26 +660,32 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnTransferCommandExecute()
         {
-            //To close product view
-            if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-            {
-                MessageBox.Show("When you transfer products in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }//To apply that restore pricing.
-            string quantity = string.Empty;
-            if (this.SelectedTransferStock.TotalQuantity <= 1)
-                quantity = string.Format("{0} product", this.SelectedTransferStock.TotalQuantity);
-            else
-                quantity = string.Format("{0} products", this.SelectedTransferStock.TotalQuantity);
-            string content = string.Format("Do you want to transfer {0} from {1} to {2} ?", quantity, this.SelectedTransferStock.FromStoreValue.Name, this.SelectedTransferStock.ToStoreValue.Name);
-            MessageBoxResult msgResult = MessageBox.Show(content, "POS", MessageBoxButton.YesNo);
-            if (msgResult.Is(MessageBoxResult.Yes))
+            try
             {
                 //To close product view
-                this.SelectedTransferStock.IsEnable = false;
-                this.TransferStock();
+                if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
+                {
+                    MessageBox.Show(Language.Text24, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }//To apply that restore pricing.
+                string quantity = string.Empty;
+                if (this.SelectedTransferStock.TotalQuantity <= 1)
+                    quantity = string.Format(Application.Current.FindResource("TS_Message_Product") as string, this.SelectedTransferStock.TotalQuantity);
+                else
+                    quantity = string.Format(Application.Current.FindResource("TS_Message_Products") as string, this.SelectedTransferStock.TotalQuantity);
+                string content = string.Format(Application.Current.FindResource("TransferMessage") as string, quantity, this.SelectedTransferStock.FromStoreValue.Name, this.SelectedTransferStock.ToStoreValue.Name);
+                MessageBoxResult msgResult = MessageBox.Show(content, Language.Information, MessageBoxButton.YesNo);
+                if (msgResult.Is(MessageBoxResult.Yes))
+                {
+                    //To close product view
+                    this.SelectedTransferStock.IsEnable = false;
+                    this.TransferStock();
+                }
             }
-
+            catch (Exception ex)
+            {
+                Debug.WriteLine("OnTransferCommandExecute" + ex);
+            }
         }
         #endregion
 
@@ -694,27 +703,59 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnRevertCommandExecute()
         {
-            //To close product view
-            if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
-            {
-                MessageBox.Show("When you revert products in stores, You should close product view.", "POS", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            //To apply that restore pricing.
-            string quantity = string.Empty;
-            if (this.SelectedTransferStock.TotalQuantity <= 1)
-                quantity = string.Format("{0} product", this.SelectedTransferStock.TotalQuantity);
-            else
-                quantity = string.Format("{0} products", this.SelectedTransferStock.TotalQuantity);
-            string content = string.Format("Do you want to revert {0} from {1} to {2} ?", quantity, this.SelectedTransferStock.ToStoreValue.Name, this.SelectedTransferStock.FromStoreValue.Name);
-            MessageBoxResult msgResult = MessageBox.Show(content, "POS", MessageBoxButton.YesNo);
-            if (msgResult.Is(MessageBoxResult.Yes))
+            try
             {
                 //To close product view
-                this.SelectedTransferStock.IsEnable = false;
-                this.RevertStock();
+                if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
+                {
+                    MessageBox.Show(Language.Text25, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                //To apply that restore pricing.
+                string quantity = string.Empty;
+                if (this.SelectedTransferStock.TotalQuantity <= 1)
+                    quantity = string.Format(Application.Current.FindResource("TS_Message_Product") as string, this.SelectedTransferStock.TotalQuantity);
+                else
+                    quantity = string.Format(Application.Current.FindResource("TS_Message_Products") as string, this.SelectedTransferStock.TotalQuantity);
+                string content = string.Format(Application.Current.FindResource("RevertMessage") as string, quantity, this.SelectedTransferStock.ToStoreValue.Name, this.SelectedTransferStock.FromStoreValue.Name);
+                MessageBoxResult msgResult = MessageBox.Show(content, Language.Information, MessageBoxButton.YesNo);
+                if (msgResult.Is(MessageBoxResult.Yes))
+                {
+                    //To close product view
+                    this.SelectedTransferStock.IsEnable = false;
+                    this.RevertStock();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("OnRevertCommandExecute" + ex);
             }
 
+        }
+        #endregion
+
+        #region LoadDataByStepCommand
+
+        public RelayCommand<object> LoadStepCommand { get; private set; }
+        /// <summary>
+        /// Method to check whether the LoadStep command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLoadStepCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the LoadStep command is executed.
+        /// </summary>
+        private void OnLoadStepCommandExecute(object param)
+        {
+            BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+            Expression<Func<base_TransferStock, bool>> predicate = PredicateBuilder.True<base_TransferStock>();
+            if (!string.IsNullOrWhiteSpace(FilterText))//Load Step Current With Search Current with Search
+                predicate = this.CreateSearchPredicate(this.Keyword);
+            this.LoadTransferStock(predicate, true, this.CurrentPageIndex);
         }
         #endregion
 
@@ -734,6 +775,8 @@ namespace CPC.POS.ViewModel
                 switch (e.PropertyName)
                 {
                     case "FromStoreValue":
+                        this.SelectedTransferStock.IsChangeProductCollection = true;
+                        this.SelectedTransferStock.TransferStockDetailCollection.Clear();
                         this.ChangeDataToStore(this.FromStoreCollection.IndexOf(this.SelectedTransferStock.FromStoreValue));
                         break;
 
@@ -763,6 +806,7 @@ namespace CPC.POS.ViewModel
             this.SearchProductAdvanceCommand = new RelayCommand<object>(OnSearchProductAdvanceCommandExecute, OnSearchProductAdvanceCommandCanExecute);
             this.TransferCommand = new RelayCommand(OnTransferCommandExecute, OnTransferCommandCanExecute);
             this.RevertCommand = new RelayCommand(OnRevertCommandExecute, OnRevertCommandCanExecute);
+            this.LoadStepCommand = new RelayCommand<object>(this.OnLoadStepCommandExecute, this.OnLoadStepCommandCanExecute);
         }
         #endregion
 
@@ -777,7 +821,7 @@ namespace CPC.POS.ViewModel
             if (this.SelectedTransferStock != null && this.SelectedTransferStock.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (OnSaveCommandCanExecute())
@@ -840,7 +884,47 @@ namespace CPC.POS.ViewModel
             this._toStoreCollectionView = CollectionViewSource.GetDefaultView(this.ToStoreCollection);
 
             //To load all of product
-            this.ProductCollection = new ObservableCollection<base_ProductModel>(_productRepository.GetAll().Select(x => new base_ProductModel(x)));
+            // this.ProductCollection = new ObservableCollection<base_ProductModel>(_productRepository.GetAll().Select(x => new base_ProductModel(x)));
+
+        }
+        #endregion
+
+        #region LoadProductWithStore
+        private void LoadProductWithStore(Expression<Func<base_ProductStore, bool>> predicate, bool refreshData = false, int currentIndex = 0)
+        {
+            try
+            {
+                //To add item.
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+                this.ProductCollection = new ObservableCollection<base_ProductModel>();
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    //base.IsBusy = true;
+                    IEnumerable<base_ProductStore> productStores = _productStoreRepository.GetAll(predicate).OrderBy(x => x.StoreCode);
+                    //if (productStores.Count() == 0)
+                    //   base.IsBusy = false;
+                    foreach (var productStore in productStores)
+                        bgWorker.ReportProgress(0, productStore);
+                };
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    //To add item.
+                    base_ProductStore productStore = e.UserState as base_ProductStore;
+                    base_ProductModel productModel = new base_ProductModel(productStore.base_Product);
+                    this.ProductCollection.Add(productModel);
+                };
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    //To count all User in Data base show on grid
+                    this.TotalProducts = this.ProductCollection.Count;
+                    //base.IsBusy = false;
+                };
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
 
         }
         #endregion
@@ -883,6 +967,8 @@ namespace CPC.POS.ViewModel
             this.SelectedTransferStock.EndUpdate();
             //To add new item into TransferStockCollection.
             this.TransferStockCollection.Add(this.SelectedTransferStock);
+            this.TotalTransferStock = this.TransferStockCollection.Count();
+            App.WriteLUserLog("TransferStock", "User insert a new  TransferStock." + this.SelectedTransferStock.Id);
         }
         /// <summary>
         /// To update item in base_TransferStock table. 
@@ -908,6 +994,7 @@ namespace CPC.POS.ViewModel
             }
             this.SelectedTransferStock.EndUpdate();
             this._transferStockRepository.Commit();
+            App.WriteLUserLog("TransferStock", "User update a TransferStock." + this.SelectedTransferStock.Id);
         }
 
         /// <summary>
@@ -940,6 +1027,7 @@ namespace CPC.POS.ViewModel
                 this._transferStockRepository.Commit();
                 this.SelectedTransferStock.EndUpdate();
                 this.SelectedTransferStock.IsChangeProductCollection = false;
+                App.WriteLUserLog("TransferStock", "User transfered numbers of products in stock." + this.SelectedTransferStock.Id);
             }
             catch (Exception ex)
             {
@@ -976,6 +1064,7 @@ namespace CPC.POS.ViewModel
                 this._transferStockRepository.Commit();
                 this.SelectedTransferStock.EndUpdate();
                 this.SelectedTransferStock.IsChangeProductCollection = false;
+                App.WriteLUserLog("TransferStock", "User reverted numbers of products in stock." + this.SelectedTransferStock.Id);
             }
             catch (Exception ex)
             {
@@ -996,12 +1085,26 @@ namespace CPC.POS.ViewModel
         }
         private void ChangeDataToStore(int id)
         {
-            this._toStoreCollectionView.Filter = x =>
+            try
             {
-                if (this.ToStoreCollection.IndexOf((x as base_Store)) == id)
-                    return false;
-                return true;
-            };
+                this._toStoreCollectionView.Filter = x =>
+                {
+                    if (this.ToStoreCollection.IndexOf((x as base_Store)) == id)
+                        return false;
+                    return true;
+                };
+                // Initial predicate
+                Expression<Func<base_ProductStore, bool>> predicate = PredicateBuilder.True<base_ProductStore>();
+                // Set conditions for predicate
+                int storeID = this.FromStoreCollection.IndexOf(this.SelectedTransferStock.FromStoreValue);
+                predicate = predicate.And(x => x.StoreCode == storeID);
+                this.LoadProductWithStore(predicate, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ChangeDataToStore" + ex);
+            }
+
         }
         #endregion
 
@@ -1323,7 +1426,7 @@ namespace CPC.POS.ViewModel
             if (this.IsEditData())
             {
                 //To show notification when data has changed
-                MessageBoxResult msgResult = MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo);
+                MessageBoxResult msgResult = MessageBox.Show(Language.Text13, Language.Save, MessageBoxButton.YesNo);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (this.OnSaveCommandCanExecute())
@@ -1411,8 +1514,11 @@ namespace CPC.POS.ViewModel
 
                     }
                 }
-                this.ChangeDataFromStore(this.SelectedTransferStock.ToStore);
+                if (this.SelectedTransferStock.Status <= 1)
+                    //{
+                    this.ChangeDataFromStore(this.SelectedTransferStock.ToStore);
                 this.ChangeDataToStore(this.SelectedTransferStock.FromStore);
+                //}
                 this.TotalProducts = this.SelectedTransferStock.TransferStockDetailCollection.Count();
                 this.SelectedTransferStock.EndUpdate();
                 this.SelectedTransferStock.IsLoad = false;

@@ -1007,6 +1007,26 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region TotalRefundChangedCommand
+
+        private ICommand _totalRefundChangedCommand;
+        /// <summary>
+        /// When TotalRefund property of return detail changed, TotalRefundChangedCommand will executes.
+        /// </summary>
+        public ICommand TotalRefundChangedCommand
+        {
+            get
+            {
+                if (_totalRefundChangedCommand == null)
+                {
+                    _totalRefundChangedCommand = new RelayCommand(TotalRefundChangedExecute);
+                }
+                return _totalRefundChangedCommand;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Command Methods
@@ -1671,6 +1691,22 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region TotalRefundChangedExecute
+
+        /// <summary>
+        /// Calls when TotalRefund property of return detail changed.
+        /// </summary>
+        private void TotalRefundChangedExecute()
+        {
+            decimal totalRefund = GetTotalRefundOfResourceReturn();
+            if (_selectedPurchaseOrder.ResourceReturn.TotalRefund < totalRefund)
+            {
+                MessageBox.Show(Language.Text28, Language.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Property Changed Methods
@@ -1985,6 +2021,7 @@ namespace CPC.POS.ViewModel
         {
             base_StoreModel store = _storeCollection.ElementAt(Define.StoreCode);
             base_PurchaseOrderModel purchaseOrder = new base_PurchaseOrderModel();
+            purchaseOrder.Status = (short)PurchaseStatus.Open;
             purchaseOrder.PurchaseOrderNo = DateTime.Now.ToString(Define.PurchaseOrderNoFormat);
             purchaseOrder.PurchasedDate = DateTime.Now.Date;
             purchaseOrder.ShipDate = DateTime.Now.Date;
@@ -2162,11 +2199,6 @@ namespace CPC.POS.ViewModel
             base_UOMRepository UOMRepository = new base_UOMRepository();
             base_ProductUOMModel productUOM;
             base_PurchaseOrderDetailModel purchaseOrderDetail = new base_PurchaseOrderDetailModel();
-            purchaseOrderDetail.UOMCollection = GetUOMCollection(_selectedProduct.base_Product);
-            if (purchaseOrderDetail.UOMCollection == null)
-            {
-                purchaseOrderDetail.UOMCollection = new CollectionBase<base_ProductUOMModel>();
-            }
             purchaseOrderDetail.PurchaseOrderId = _selectedPurchaseOrder.Id;
             purchaseOrderDetail.PurchaseOrder = _selectedPurchaseOrder;
             purchaseOrderDetail.ProductResource = _selectedProduct.Resource.ToString();
@@ -2175,6 +2207,26 @@ namespace CPC.POS.ViewModel
             purchaseOrderDetail.ItemAtribute = _selectedProduct.Attribute;
             purchaseOrderDetail.ItemSize = _selectedProduct.Size;
             purchaseOrderDetail.IsSerialTracking = _selectedProduct.IsSerialTracking;
+
+            base_PurchaseOrderDetailModel purchaseOrderDetailContainProductBefore = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
+                x.ProductResource == purchaseOrderDetail.ProductResource);
+            if (purchaseOrderDetailContainProductBefore != null)
+            {
+                purchaseOrderDetail.OnHandQtyOnBaseUnit = purchaseOrderDetailContainProductBefore.OnHandQtyOnBaseUnit;
+                purchaseOrderDetail.OnHandQtyOnBaseUnitTemp = purchaseOrderDetailContainProductBefore.OnHandQtyOnBaseUnitTemp;
+                purchaseOrderDetail.UOMCollection = purchaseOrderDetailContainProductBefore.UOMCollection;
+            }
+            else
+            {
+                purchaseOrderDetail.OnHandQtyOnBaseUnit = GetOnHandQty(_selectedPurchaseOrder.StoreCode, _selectedProduct);
+                purchaseOrderDetail.OnHandQtyOnBaseUnitTemp = purchaseOrderDetail.OnHandQtyOnBaseUnit;
+                purchaseOrderDetail.UOMCollection = GetUOMCollection(_selectedProduct.base_Product);
+            }
+            if (purchaseOrderDetail.UOMCollection == null)
+            {
+                purchaseOrderDetail.UOMCollection = new CollectionBase<base_ProductUOMModel>();
+            }
+
             if (_selectedProduct.OrderUOMId.HasValue)
             {
                 productUOM = purchaseOrderDetail.UOMCollection.FirstOrDefault(x => x.UOMId == _selectedProduct.OrderUOMId);
@@ -2188,6 +2240,7 @@ namespace CPC.POS.ViewModel
                 purchaseOrderDetail.UOMId = productUOM.UOMId;
                 purchaseOrderDetail.UnitName = productUOM.Name;
                 purchaseOrderDetail.BaseUOM = productUOM.Code;
+                purchaseOrderDetail.OnHandQty = Math.Round((decimal)purchaseOrderDetail.OnHandQtyOnBaseUnit / productUOM.BaseUnitNumber, 2);
                 purchaseOrderDetail.Price = productUOM.RegularPrice;
             }
             else
@@ -2195,18 +2248,6 @@ namespace CPC.POS.ViewModel
                 purchaseOrderDetail.Price = 0;
             }
 
-            base_PurchaseOrderDetailModel purchaseOrderDetailContainProductBefore = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
-                x.ProductResource == purchaseOrderDetail.ProductResource);
-            if (purchaseOrderDetailContainProductBefore != null)
-            {
-                purchaseOrderDetail.OnHandQty = purchaseOrderDetailContainProductBefore.OnHandQty;
-                purchaseOrderDetail.OnHandQtyTemp = purchaseOrderDetailContainProductBefore.OnHandQtyTemp;
-            }
-            else
-            {
-                purchaseOrderDetail.OnHandQty = GetOnHandQty(_selectedPurchaseOrder.StoreCode, _selectedProduct);
-                purchaseOrderDetail.OnHandQtyTemp = purchaseOrderDetail.OnHandQty;
-            }
             purchaseOrderDetail.Quantity = 1;
             purchaseOrderDetail.BackupQuantity = 1;
             purchaseOrderDetail.DueQty = 1;
@@ -2238,7 +2279,7 @@ namespace CPC.POS.ViewModel
         /// Add a purchase order detail.
         /// </summary>
         /// <param name="product">Product to add on purchase order detail.</param>
-        private void AddPurchaseOrderDetail(base_ProductModel product)
+        private void AddPurchaseOrderDetail(base_ProductModel product, bool hasPurchaseManyItem)
         {
             if (product == null)
             {
@@ -2259,11 +2300,6 @@ namespace CPC.POS.ViewModel
             base_UOMRepository UOMRepository = new base_UOMRepository();
             base_ProductUOMModel productUOM;
             base_PurchaseOrderDetailModel purchaseOrderDetail = new base_PurchaseOrderDetailModel();
-            purchaseOrderDetail.UOMCollection = GetUOMCollection(product.base_Product);
-            if (purchaseOrderDetail.UOMCollection == null)
-            {
-                purchaseOrderDetail.UOMCollection = new CollectionBase<base_ProductUOMModel>();
-            }
             purchaseOrderDetail.PurchaseOrderId = _selectedPurchaseOrder.Id;
             purchaseOrderDetail.PurchaseOrder = _selectedPurchaseOrder;
             purchaseOrderDetail.ProductResource = product.Resource.ToString();
@@ -2272,6 +2308,26 @@ namespace CPC.POS.ViewModel
             purchaseOrderDetail.ItemAtribute = product.Attribute;
             purchaseOrderDetail.ItemSize = product.Size;
             purchaseOrderDetail.IsSerialTracking = product.IsSerialTracking;
+
+            base_PurchaseOrderDetailModel purchaseOrderDetailContainProductBefore = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
+                x.ProductResource == purchaseOrderDetail.ProductResource);
+            if (purchaseOrderDetailContainProductBefore != null)
+            {
+                purchaseOrderDetail.OnHandQtyOnBaseUnit = purchaseOrderDetailContainProductBefore.OnHandQtyOnBaseUnit;
+                purchaseOrderDetail.OnHandQtyOnBaseUnitTemp = purchaseOrderDetailContainProductBefore.OnHandQtyOnBaseUnitTemp;
+                purchaseOrderDetail.UOMCollection = purchaseOrderDetailContainProductBefore.UOMCollection;
+            }
+            else
+            {
+                purchaseOrderDetail.OnHandQtyOnBaseUnit = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
+                purchaseOrderDetail.OnHandQtyOnBaseUnitTemp = purchaseOrderDetail.OnHandQtyOnBaseUnit;
+                purchaseOrderDetail.UOMCollection = GetUOMCollection(product.base_Product);
+            }
+            if (purchaseOrderDetail.UOMCollection == null)
+            {
+                purchaseOrderDetail.UOMCollection = new CollectionBase<base_ProductUOMModel>();
+            }
+
             if (product.OrderUOMId.HasValue)
             {
                 productUOM = purchaseOrderDetail.UOMCollection.FirstOrDefault(x => x.UOMId == product.OrderUOMId);
@@ -2285,6 +2341,7 @@ namespace CPC.POS.ViewModel
                 purchaseOrderDetail.UOMId = productUOM.UOMId;
                 purchaseOrderDetail.UnitName = productUOM.Name;
                 purchaseOrderDetail.BaseUOM = productUOM.Code;
+                purchaseOrderDetail.OnHandQty = Math.Round((decimal)purchaseOrderDetail.OnHandQtyOnBaseUnit / productUOM.BaseUnitNumber, 2);
                 purchaseOrderDetail.Price = productUOM.RegularPrice;
             }
             else
@@ -2292,21 +2349,10 @@ namespace CPC.POS.ViewModel
                 purchaseOrderDetail.Price = 0;
             }
 
-            base_PurchaseOrderDetailModel purchaseOrderDetailContainProductBefore = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
-                x.ProductResource == purchaseOrderDetail.ProductResource);
-            if (purchaseOrderDetailContainProductBefore != null)
-            {
-                purchaseOrderDetail.OnHandQty = purchaseOrderDetailContainProductBefore.OnHandQty;
-                purchaseOrderDetail.OnHandQtyTemp = purchaseOrderDetailContainProductBefore.OnHandQtyTemp;
-            }
-            else
-            {
-                purchaseOrderDetail.OnHandQty = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
-                purchaseOrderDetail.OnHandQtyTemp = purchaseOrderDetail.OnHandQty;
-            }
-            purchaseOrderDetail.Quantity = 1;
-            purchaseOrderDetail.BackupQuantity = 1;
-            purchaseOrderDetail.DueQty = 1;
+
+            purchaseOrderDetail.Quantity = product.ReOrderQuatity;
+            purchaseOrderDetail.BackupQuantity = product.ReOrderQuatity;
+            purchaseOrderDetail.DueQty = product.ReOrderQuatity;
             purchaseOrderDetail.Amount = purchaseOrderDetail.Quantity * purchaseOrderDetail.Price;
             purchaseOrderDetail.Resource = Guid.NewGuid();
 
@@ -2314,6 +2360,11 @@ namespace CPC.POS.ViewModel
             purchaseOrderDetail.IsNew = true;
             _selectedPurchaseOrder.PurchaseOrderDetailCollection.Add(purchaseOrderDetail);
             _selectedPurchaseOrder.PurchaseOrderDetailReceiveCollection.Add(purchaseOrderDetail);
+
+            if (hasPurchaseManyItem)
+            {
+                AddSerials(purchaseOrderDetail, true);
+            }
 
             CalculateTotalForPurchaseOrder();
 
@@ -2349,6 +2400,7 @@ namespace CPC.POS.ViewModel
                             UOMId = UOM.Id,
                             Code = UOM.Code,
                             Name = UOM.Name,
+                            BaseUnitNumber = 1,
                             RegularPrice = product.RegularPrice,
                             IsNew = false,
                             IsDirty = false
@@ -2371,8 +2423,6 @@ namespace CPC.POS.ViewModel
                             });
                         }
                     }
-
-
                 }
             }
             catch (Exception exception)
@@ -2784,8 +2834,19 @@ namespace CPC.POS.ViewModel
                     _selectedPurchaseOrder.IsDirty = false;
 
                     // Insert PurchaseOrderDetail.
+                    base_ProductUOMModel newProductUOM;
                     foreach (base_PurchaseOrderDetailModel item in _selectedPurchaseOrder.PurchaseOrderDetailCollection)
                     {
+                        newProductUOM = item.UOMCollection.FirstOrDefault(x => x.UOMId == item.UOMId);
+                        if (newProductUOM != null)
+                        {
+                            int increaseQtyQuantityOnOrder = (item.Quantity - item.ReceivedQty) * newProductUOM.BaseUnitNumber;
+                            if (increaseQtyQuantityOnOrder != 0)
+                            {
+                                productRepository.UpdateQuantityOnOrder(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQtyQuantityOnOrder);
+                            }
+                        }
+
                         item.PurchaseOrderId = _selectedPurchaseOrder.Id;
                         item.ToEntity();
                         purchaseOrderDetailRepository.Add(item.base_PurchaseOrderDetail);
@@ -2813,8 +2874,19 @@ namespace CPC.POS.ViewModel
                     ObservableCollection<base_PurchaseOrderDetailModel> newItems = _selectedPurchaseOrder.PurchaseOrderDetailCollection.NewItems;
                     if (newItems.Count > 0)
                     {
+                        base_ProductUOMModel newProductUOM;
                         foreach (base_PurchaseOrderDetailModel item in newItems)
                         {
+                            newProductUOM = item.UOMCollection.FirstOrDefault(x => x.UOMId == item.UOMId);
+                            if (newProductUOM != null)
+                            {
+                                int increaseQtyQuantityOnOrder = (item.Quantity - item.ReceivedQty) * newProductUOM.BaseUnitNumber;
+                                if (increaseQtyQuantityOnOrder != 0)
+                                {
+                                    productRepository.UpdateQuantityOnOrder(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQtyQuantityOnOrder);
+                                }
+                            }
+
                             item.PurchaseOrderId = _selectedPurchaseOrder.Id;
                             item.ToEntity();
                             purchaseOrderDetailRepository.Add(item.base_PurchaseOrderDetail);
@@ -2829,8 +2901,23 @@ namespace CPC.POS.ViewModel
                     ObservableCollection<base_PurchaseOrderDetailModel> dirtyItems = _selectedPurchaseOrder.PurchaseOrderDetailCollection.DirtyItems;
                     if (dirtyItems.Count > 0)
                     {
+                        base_ProductUOMModel newProductUOM;
+                        base_ProductUOMModel oldProductUOM;
                         foreach (base_PurchaseOrderDetailModel item in dirtyItems)
                         {
+                            oldProductUOM = item.UOMCollection.FirstOrDefault(x => x.UOMId == item.base_PurchaseOrderDetail.UOMId);
+                            newProductUOM = item.UOMCollection.FirstOrDefault(x => x.UOMId == item.UOMId);
+                            if (newProductUOM != null && oldProductUOM != null)
+                            {
+                                int increaseQtyQuantityOnOrder = (item.Quantity * newProductUOM.BaseUnitNumber) -
+                                    (item.base_PurchaseOrderDetail.Quantity * oldProductUOM.BaseUnitNumber) -
+                                    (item.ReceivedQty * newProductUOM.BaseUnitNumber - item.base_PurchaseOrderDetail.ReceivedQty * oldProductUOM.BaseUnitNumber);
+                                if (increaseQtyQuantityOnOrder != 0)
+                                {
+                                    productRepository.UpdateQuantityOnOrder(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQtyQuantityOnOrder);
+                                }
+                            }
+
                             item.ToEntity();
                             purchaseOrderDetailRepository.Commit();
                             item.IsDirty = false;
@@ -2885,8 +2972,19 @@ namespace CPC.POS.ViewModel
                     ObservableCollection<base_PurchaseOrderDetailModel> deletedItems = _selectedPurchaseOrder.PurchaseOrderDetailCollection.DeletedItems;
                     if (deletedItems.Count > 0)
                     {
+                        base_ProductUOMModel oldProductUOM;
                         foreach (base_PurchaseOrderDetailModel item in deletedItems)
                         {
+                            oldProductUOM = item.UOMCollection.FirstOrDefault(x => x.UOMId == item.base_PurchaseOrderDetail.UOMId);
+                            if (oldProductUOM != null)
+                            {
+                                int increaseQtyQuantityOnOrder = -(item.base_PurchaseOrderDetail.Quantity * oldProductUOM.BaseUnitNumber);
+                                if (increaseQtyQuantityOnOrder != 0)
+                                {
+                                    productRepository.UpdateQuantityOnOrder(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQtyQuantityOnOrder);
+                                }
+                            }
+
                             purchaseOrderDetailRepository.Delete(item.base_PurchaseOrderDetail);
                             purchaseOrderDetailRepository.Commit();
                         }
@@ -3033,25 +3131,29 @@ namespace CPC.POS.ViewModel
                     IEnumerable<base_PurchaseOrderDetailModel> productList = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Distinct(new PurchaseOrderDetailComparer());
                     foreach (base_PurchaseOrderDetailModel item in productList)
                     {
-                        int increaseQty = item.OnHandQty - item.OnHandQtyTemp;
+                        // Always quantity on base unit.
+                        int increaseQty = item.OnHandQtyOnBaseUnit - item.OnHandQtyOnBaseUnitTemp;
                         if (increaseQty == 0)
                         {
                             continue;
                         }
+
                         if (increaseQty > 0)
                         {
-                            currentOnHandQty = productRepository.UpdateOnHandQuantity(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQty);
+                            currentOnHandQty = productRepository.UpdateOnHandQuantity(item.ProductResource, _selectedPurchaseOrder.StoreCode, increaseQty, false);
                         }
                         else
                         {
                             currentOnHandQty = productRepository.UpdateOnHandQuantity(item.ProductResource, _selectedPurchaseOrder.StoreCode, Math.Abs(increaseQty), true);
                         }
+
                         productRepository.Commit();
+
                         foreach (base_PurchaseOrderDetailModel itemFriend in _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
                             x.ProductResource == item.ProductResource))
                         {
-                            itemFriend.OnHandQty = currentOnHandQty;
-                            itemFriend.OnHandQtyTemp = itemFriend.OnHandQty;
+                            itemFriend.OnHandQtyOnBaseUnit = currentOnHandQty;
+                            itemFriend.OnHandQtyOnBaseUnitTemp = itemFriend.OnHandQtyOnBaseUnit;
                             itemFriend.IsDirty = false;
                         }
                     }
@@ -3310,7 +3412,7 @@ namespace CPC.POS.ViewModel
                     product.ToModel();
 
                     // Add new PurchaseOrderDetail.
-                    AddPurchaseOrderDetail(product);
+                    AddPurchaseOrderDetail(product, false);
                 }
 
                 IEnumerable<base_PurchaseOrderDetailModel> serialPurchaseOrderDetails = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
@@ -3423,8 +3525,11 @@ namespace CPC.POS.ViewModel
 
                         // Gets and refresh product of item.
                         product = _productCollection.FirstOrDefault(x => x.Resource.ToString() == item.ProductResource);
-                        productRepository.Refresh(product.base_Product);
-                        product.ToModel();
+                        if (product != null)
+                        {
+                            productRepository.Refresh(product.base_Product);
+                            product.ToModel();
+                        }
 
                         // Gets UOMCollection.
                         purchaseOrderDetailModelBefore = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
@@ -3454,8 +3559,8 @@ namespace CPC.POS.ViewModel
                         {
                             purchaseOrderDetailModel.UnitName = productUOM.Name;
                         }
-                        purchaseOrderDetailModel.OnHandQty = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
-                        purchaseOrderDetailModel.OnHandQtyTemp = purchaseOrderDetailModel.OnHandQty;
+                        purchaseOrderDetailModel.OnHandQtyOnBaseUnit = GetOnHandQty(_selectedPurchaseOrder.StoreCode, product);
+                        purchaseOrderDetailModel.OnHandQtyOnBaseUnitTemp = purchaseOrderDetailModel.OnHandQtyOnBaseUnit;
                         purchaseOrderDetailModel.BackupQuantity = item.Quantity;
                         purchaseOrderDetailModel.PurchaseOrder = _selectedPurchaseOrder;
                         purchaseOrderDetailModel.PropertyChanged += PurchaseOrderDetailPropertyChanged;
@@ -3716,25 +3821,46 @@ namespace CPC.POS.ViewModel
                 return;
             }
 
-            int sumReceivedQty = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
-                x.PODResource == id && x.IsReceived).Sum(x => x.RecQty);
+            // Gets received items.
+            IEnumerable<base_PurchaseOrderReceiveModel> receivedList = _selectedPurchaseOrder.PurchaseOrderReceiveCollection.Where(x =>
+                x.PODResource == id && x.IsReceived);
+
+            base_ProductUOMModel productUOM;
+            int sumReceivedQty = 0;
+            int sumReceivedQtyOnBaseUnit = 0;
+            foreach (base_PurchaseOrderReceiveModel item in receivedList)
+            {
+                if (item.PurchaseOrderDetail != null && item.PurchaseOrderDetail.UOMCollection != null)
+                {
+                    productUOM = item.PurchaseOrderDetail.UOMCollection.FirstOrDefault(x => x.UOMId == item.PurchaseOrderDetail.UOMId);
+                    if (productUOM != null)
+                    {
+                        sumReceivedQtyOnBaseUnit += productUOM.BaseUnitNumber * item.RecQty;
+                        sumReceivedQty += item.RecQty;
+                    }
+                }
+            }
 
             base_PurchaseOrderDetailModel purchaseOrderDetail = _selectedPurchaseOrder.PurchaseOrderDetailCollection.FirstOrDefault(x =>
                 x.Resource.ToString() == id);
-            if (purchaseOrderDetail != null)
+            if (purchaseOrderDetail != null && purchaseOrderDetail.UOMCollection != null)
             {
-                int increase = sumReceivedQty - purchaseOrderDetail.ReceivedQty;
-                purchaseOrderDetail.ReceivedQty = sumReceivedQty;
-
-                // Update On-hand quantity in stock.
-                purchaseOrderDetail.OnHandQty += increase;
-
-                IEnumerable<base_PurchaseOrderDetailModel> productList = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
-                    x.ProductResource == purchaseOrderDetail.ProductResource);
-                foreach (base_PurchaseOrderDetailModel itemFriend in productList)
+                productUOM = purchaseOrderDetail.UOMCollection.FirstOrDefault(x => x.UOMId == purchaseOrderDetail.UOMId);
+                if (productUOM != null)
                 {
-                    itemFriend.OnHandQty = purchaseOrderDetail.OnHandQty;
+                    int increase = sumReceivedQtyOnBaseUnit - (productUOM.BaseUnitNumber * purchaseOrderDetail.ReceivedQty);
+
+                    // Update On-hand quantity in stock.
+                    purchaseOrderDetail.OnHandQtyOnBaseUnit += increase;
+
+                    IEnumerable<base_PurchaseOrderDetailModel> productList = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
+                        x.ProductResource == purchaseOrderDetail.ProductResource);
+                    foreach (base_PurchaseOrderDetailModel itemFriend in productList)
+                    {
+                        itemFriend.OnHandQtyOnBaseUnit = purchaseOrderDetail.OnHandQtyOnBaseUnit;
+                    }
                 }
+                purchaseOrderDetail.ReceivedQty = sumReceivedQty;
             }
         }
 
@@ -4179,16 +4305,20 @@ namespace CPC.POS.ViewModel
         {
             if (_productCollectionOutSide != null && _productCollectionOutSide.Count() > 0)
             {
+                bool hasPurchaseManyItem = _productCollectionOutSide.Any(x => x.IsSerialTracking && x.ReOrderQuatity > 1);
                 foreach (base_ProductModel product in _productCollectionOutSide)
                 {
-                    AddPurchaseOrderDetail(product);
+                    AddPurchaseOrderDetail(product, hasPurchaseManyItem);
                 }
 
-                IEnumerable<base_PurchaseOrderDetailModel> serialPurchaseOrderDetails = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
-                    x.IsSerialTracking);
-                if (serialPurchaseOrderDetails.Any())
+                if (!hasPurchaseManyItem)
                 {
-                    AddSerials(serialPurchaseOrderDetails);
+                    IEnumerable<base_PurchaseOrderDetailModel> serialPurchaseOrderDetails = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
+                        x.IsSerialTracking);
+                    if (serialPurchaseOrderDetails.Any())
+                    {
+                        AddSerials(serialPurchaseOrderDetails);
+                    }
                 }
             }
         }
@@ -4227,22 +4357,29 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CalculateOnHandQtyWhenReturn(base_ResourceReturnDetailModel resourceReturnDetail, bool isIncrease = false)
         {
-            if (resourceReturnDetail.PurchaseOrderDetail != null)
+            if (resourceReturnDetail.PurchaseOrderDetail != null && resourceReturnDetail.PurchaseOrderDetail.UOMCollection != null)
             {
+                base_ProductUOMModel productUOM = resourceReturnDetail.PurchaseOrderDetail.UOMCollection.FirstOrDefault(x =>
+                    x.UOMId == resourceReturnDetail.PurchaseOrderDetail.UOMId);
+                if (productUOM == null)
+                {
+                    return;
+                }
+
                 if (isIncrease)
                 {
-                    resourceReturnDetail.PurchaseOrderDetail.OnHandQty += resourceReturnDetail.ReturnQty;
+                    resourceReturnDetail.PurchaseOrderDetail.OnHandQtyOnBaseUnit += resourceReturnDetail.ReturnQty * productUOM.BaseUnitNumber;
                 }
                 else
                 {
-                    resourceReturnDetail.PurchaseOrderDetail.OnHandQty -= resourceReturnDetail.ReturnQty;
+                    resourceReturnDetail.PurchaseOrderDetail.OnHandQtyOnBaseUnit -= resourceReturnDetail.ReturnQty * productUOM.BaseUnitNumber;
                 }
 
                 IEnumerable<base_PurchaseOrderDetailModel> productList = _selectedPurchaseOrder.PurchaseOrderDetailCollection.Where(x =>
                     x.ProductResource == resourceReturnDetail.PurchaseOrderDetail.ProductResource);
                 foreach (base_PurchaseOrderDetailModel itemFriend in productList)
                 {
-                    itemFriend.OnHandQty = resourceReturnDetail.PurchaseOrderDetail.OnHandQty;
+                    itemFriend.OnHandQtyOnBaseUnit = resourceReturnDetail.PurchaseOrderDetail.OnHandQtyOnBaseUnit;
                 }
             }
         }
@@ -4262,6 +4399,42 @@ namespace CPC.POS.ViewModel
                 subTotal += item.Amount;
             }
             _selectedPurchaseOrder.ResourceReturn.SubTotal = subTotal;
+        }
+
+        #endregion
+
+        #region CalculateTotalRefundForResourceReturn
+
+        /// <summary>
+        /// Calculate TotalRefund in return TabItem.
+        /// </summary>
+        private void CalculateTotalRefundForResourceReturn()
+        {
+            decimal totalRefund = 0;
+            foreach (base_ResourceReturnDetailModel item in _selectedPurchaseOrder.ResourceReturnDetailCollection)
+            {
+                if (item.IsReturned)
+                {
+                    totalRefund += item.Amount;
+                }
+            }
+            _selectedPurchaseOrder.ResourceReturn.TotalRefund = totalRefund;
+        }
+
+        /// <summary>
+        /// Calculate TotalRefund in return TabItem.
+        /// </summary>
+        private decimal GetTotalRefundOfResourceReturn()
+        {
+            decimal totalRefund = 0;
+            foreach (base_ResourceReturnDetailModel item in _selectedPurchaseOrder.ResourceReturnDetailCollection)
+            {
+                if (item.IsReturned)
+                {
+                    totalRefund += item.Amount;
+                }
+            }
+            return totalRefund;
         }
 
         #endregion
@@ -4491,9 +4664,9 @@ namespace CPC.POS.ViewModel
                         // Update on-hand quantity in stock.
                         foreach (base_PurchaseOrderDetailModel item in purchaseOrder.PurchaseOrderDetailCollection)
                         {
-                            item.OnHandQty = GetOnHandQty(purchaseOrder.StoreCode, _productCollection.FirstOrDefault(x =>
+                            item.OnHandQtyOnBaseUnit = GetOnHandQty(purchaseOrder.StoreCode, _productCollection.FirstOrDefault(x =>
                                 x.Resource.ToString() == item.ProductResource));
-                            item.OnHandQtyTemp = item.OnHandQty;
+                            item.OnHandQtyOnBaseUnitTemp = item.OnHandQtyOnBaseUnit;
                         }
                     }
 
@@ -4584,6 +4757,7 @@ namespace CPC.POS.ViewModel
                         {
                             purchaseOrderDetail.UnitName = productUOM.Name;
                             purchaseOrderDetail.BaseUOM = productUOM.Code;
+                            purchaseOrderDetail.OnHandQty = Math.Round((decimal)purchaseOrderDetail.OnHandQtyOnBaseUnit / productUOM.BaseUnitNumber, 2);
                             purchaseOrderDetail.Price = productUOM.RegularPrice;
 
                             // Update Price in PurchaseOrderReceive.
@@ -4714,6 +4888,19 @@ namespace CPC.POS.ViewModel
                     CheckFullWorkflow();
 
                     break;
+
+                case "OnHandQtyOnBaseUnit":
+
+                    if (purchaseOrderDetail.UOMCollection != null)
+                    {
+                        base_ProductUOMModel productUOM = purchaseOrderDetail.UOMCollection.FirstOrDefault(x => x.UOMId == purchaseOrderDetail.UOMId);
+                        if (productUOM != null)
+                        {
+                            purchaseOrderDetail.OnHandQty = Math.Round((decimal)purchaseOrderDetail.OnHandQtyOnBaseUnit / productUOM.BaseUnitNumber, 2);
+                        }
+                    }
+
+                    break;
             }
         }
 
@@ -4831,6 +5018,12 @@ namespace CPC.POS.ViewModel
                         AddRemovePayment(purchaseOrderReceive);
                         CalculateSumReceivedQty(purchaseOrderReceive.PODResource);
                         _selectedPurchaseOrder.RaiseCanChangeStorePropertyChanged();
+                    }
+
+                    // Not allow Change UOM, Price, Discount.
+                    if (purchaseOrderReceive.PurchaseOrderDetail != null)
+                    {
+                        purchaseOrderReceive.PurchaseOrderDetail.RaiseHasReceivedItemChanged();
                     }
 
                     break;
@@ -4985,10 +5178,12 @@ namespace CPC.POS.ViewModel
                         }
 
                         CalculateOnHandQtyWhenReturn(resourceReturnDetail);
+                        CalculateTotalRefundForResourceReturn();
                     }
                     else
                     {
                         CalculateOnHandQtyWhenReturn(resourceReturnDetail, true);
+                        CalculateTotalRefundForResourceReturn();
                     }
 
                     break;
@@ -5004,13 +5199,12 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "SubTotal":
-                case "DiscountPercent":
-                case "DiscountAmount":
-                case "Freight":
+                case "ReturnFee":
                 case "TotalRefund":
-                case "Balance":
 
                     _selectedPurchaseOrder.IsDirty = true;
+                    _selectedPurchaseOrder.ResourceReturn.Balance = (_selectedPurchaseOrder.ResourceReturn.SubTotal - _selectedPurchaseOrder.ResourceReturn.TotalRefund) +
+                        _selectedPurchaseOrder.ResourceReturn.ReturnFee;
 
                     break;
             }

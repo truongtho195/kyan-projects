@@ -17,8 +17,8 @@ namespace CPC.POS.ViewModel
     {
         #region Defines
 
-        private base_ProductRepository _productRepository = new base_ProductRepository();
         private base_CostAdjustmentRepository _costAdjustmentRepository = new base_CostAdjustmentRepository();
+        private base_QuantityAdjustmentRepository _quantityAdjustmentRepository = new base_QuantityAdjustmentRepository();
         private base_DepartmentRepository _departmentRepository = new base_DepartmentRepository();
         private base_GuestRepository _guestRepository = new base_GuestRepository();
         private base_StoreRepository _storeRepository = new base_StoreRepository();
@@ -151,6 +151,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public CostAdjustmentHistoryViewModel()
         {
+            _ownerViewModel = App.Current.MainWindow.DataContext;
+
             LoadStaticData();
             InitialCommand();
         }
@@ -183,18 +185,6 @@ namespace CPC.POS.ViewModel
             try
             {
                 SearchAlert = string.Empty;
-
-                //// Initial predicate
-                //Expression<Func<base_CostAdjustment, bool>> predicate = PredicateBuilder.True<base_CostAdjustment>();
-
-                //// Default condition
-                //string keyword = "mini";
-                //predicate = predicate.And(x => x.base_Product.IsPurge == false);
-                //predicate = predicate.And(x => x.base_Product.Description.ToLower().Contains(keyword) ||
-                //    x.base_Product.StyleModel.ToLower().Contains(keyword));
-                //predicate = predicate.And(x => x.base_Product.PartNumber.ToLower().Contains(keyword));
-                //predicate = predicate.And(x => x.base_Product.Code.ToLower().Contains(keyword));
-                //var ling = _costAdjustmentRepository.GetAll(predicate);
 
                 // Search All
                 if ((param == null || string.IsNullOrWhiteSpace(param.ToString())) && SearchOption == 0)
@@ -286,13 +276,67 @@ namespace CPC.POS.ViewModel
 
             // Update status
             costAdjustmentModel.IsReversed = true;
-            costAdjustmentModel.Status = "Reversed";
+            costAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
+            costAdjustmentModel.Status = (short)AdjustmentStatus.Reversing;
 
             // Map data from model to entity
             costAdjustmentModel.ToEntity();
 
+            // Save adjustment
+            SaveAdjustment(costAdjustmentModel);
+
+            // Restore average unit cost
+            costAdjustmentModel.ProductModel.AverageUnitCost = costAdjustmentModel.NewCost;
+
+            // Map data from model to entity
+            costAdjustmentModel.ProductModel.ToEntity();
+
             // Accept changes
             _costAdjustmentRepository.Commit();
+        }
+
+        #endregion
+
+        #region PopupAdvanceSearchCommand
+
+        /// <summary>
+        /// Gets the PopupAdvanceSearchCommand command.
+        /// </summary>
+        public ICommand PopupAdvanceSearchCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the PopupAdvanceSearchCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnPopupAdvanceSearchCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the PopupAdvanceSearchCommand command is executed.
+        /// </summary>
+        private void OnPopupAdvanceSearchCommandExecute(object param)
+        {
+            PopupAdjustmentAdvanceSearchViewModel viewModel = new PopupAdjustmentAdvanceSearchViewModel();
+            bool? msgResult = _dialogService.ShowDialog<CPC.POS.View.PopupAdjustmentAdvanceSearchView>(_ownerViewModel, viewModel, "Advance Search");
+            if (msgResult.HasValue)
+            {
+                if (msgResult.Value)
+                {
+                    if (param != null)
+                        Keyword = param.ToString();
+
+                    // Create basic predicate combine with advance predicate
+                    Expression<Func<base_CostAdjustment, bool>> predicate = CreateSearchPredicate(Keyword);
+
+                    // Set advance search condition
+                    predicate = predicate.And(viewModel.CostAdjustmentPredicate);
+
+                    // Load data by search predicate
+                    LoadDataByPredicate(predicate, false, 0);
+                }
+            }
         }
 
         #endregion
@@ -334,96 +378,7 @@ namespace CPC.POS.ViewModel
             SearchCommand = new RelayCommand<object>(OnSearchCommandExecute, OnSearchCommandCanExecute);
             LoadStepCommand = new RelayCommand(OnLoadStepCommandExecute, OnLoadStepCommandCanExecute);
             RestoreCommand = new RelayCommand<object>(OnRestoreCommandExecute, OnRestoreCommandCanExecute);
-        }
-
-        /// <summary>
-        /// Gets a value that indicates whether the data is edit.
-        /// </summary>
-        /// <returns>true if the data is edit; otherwise, false.</returns>
-        private bool IsEdit()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Create predicate with condition for search
-        /// </summary>
-        /// <param name="keyword">Keyword</param>
-        /// <returns>Expression</returns>
-        private Expression<Func<base_Product, bool>> CreateProductSearchPredicate(string keyword)
-        {
-            // Initial predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
-
-            // Default condition
-            predicate = predicate.And(x => x.IsPurge == false);
-
-            // Set conditions for predicate
-            if (!string.IsNullOrWhiteSpace(keyword) && SearchOption > 0)
-            {
-                if (SearchOption.Has(SearchOptions.Code))
-                {
-                    predicate = predicate.And(x => x.Code.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOption.Has(SearchOptions.ItemName))
-                {
-                    predicate = predicate.And(x => x.ProductName.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOption.Has(SearchOptions.PartNumber))
-                {
-                    predicate = predicate.And(x => x.PartNumber.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOption.Has(SearchOptions.Description))
-                {
-                    // Initial sub predicate
-                    //Expression<Func<base_CostAdjustment, bool>> predicateDescription = PredicateBuilder.False<base_CostAdjustment>();
-                    //predicateDescription = predicateDescription.Or(x => x.base_Product.Description.Contains(keyword.ToLower()));
-                    //predicateDescription = predicateDescription.Or(x => x.base_Product.StyleModel.Contains(keyword.ToLower()));
-                    //predicate = predicate.And(predicateDescription);
-
-                    predicate = predicate.And(x => x.Description.ToLower().Contains(keyword.ToLower()) ||
-                        x.StyleModel.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOption.Has(SearchOptions.Vendor))
-                {
-                    // Get all vendors that contain keyword
-                    IEnumerable<base_GuestModel> vendors = VendorList.Where(x => x.Company.ToLower().Contains(keyword.ToLower()));
-                    IEnumerable<long> vendorIDList = vendors.Select(x => x.Id);
-
-                    // Get all product that contain in category list
-                    if (vendorIDList.Count() > 0)
-                        predicate = predicate.And(x => vendorIDList.Contains(x.VendorId));
-                    else
-                        // If condition in predicate is false, GetRange function can not get data from database.
-                        // Solution for this problem is create fake condition
-                        predicate = predicate.And(x => x.Id < 0);
-                }
-                if (SearchOption.Has(SearchOptions.Barcode))
-                {
-                    predicate = predicate.And(x => x.Barcode.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOption.Has(SearchOptions.Category))
-                {
-                    // Get all categories that contain keyword
-                    IEnumerable<base_DepartmentModel> categories = CategoryList.Where(x => x.Name.ToLower().Contains(keyword.ToLower()));
-                    IEnumerable<int> categoryIDList = categories.Select(x => x.Id);
-
-                    // Get all brands that contain keyword
-                    IEnumerable<base_DepartmentModel> brands = BrandList.Where(x => x.Name.ToLower().Contains(keyword.ToLower()));
-                    IEnumerable<int> brandIDList = brands.Select(x => x.Id);
-
-                    // Get all product that contain in category or brand list
-                    if (categoryIDList.Count() > 0)
-                        predicate = predicate.And(x => categoryIDList.Contains(x.ProductCategoryId) ||
-                            (x.ProductBrandId.HasValue && brandIDList.Contains(x.ProductBrandId.Value)));
-                    else
-                        // If condition in predicate is false, GetRange function can not get data from database.
-                        // Solution for this problem is create fake condition
-                        predicate = predicate.And(x => x.Id < 0);
-                }
-            }
-
-            return predicate;
+            PopupAdvanceSearchCommand = new RelayCommand<object>(OnPopupAdvanceSearchCommandExecute, OnPopupAdvanceSearchCommandCanExecute);
         }
 
         /// <summary>
@@ -460,11 +415,11 @@ namespace CPC.POS.ViewModel
                 {
                     // Get all vendors that contain keyword
                     IEnumerable<base_GuestModel> vendors = VendorList.Where(x => x.Company.ToLower().Contains(keyword.ToLower()));
-                    List<long> vendorIDList = vendors.Select(x => x.Id).ToList();
+                    IEnumerable<long> vendorIDList = vendors.Select(x => x.Id);
 
                     // Get all product that contain in category list
                     if (vendorIDList.Count() > 0)
-                        predicate = predicate.And(x => vendorIDList.Contains(x.base_Product.VendorId));
+                        predicate = predicate.And(x => vendorIDList.Count(y => y.Equals(x.base_Product.VendorId)) > 0);
                     else
                         // If condition in predicate is false, GetRange function can not get data from database.
                         // Solution for this problem is create fake condition
@@ -485,9 +440,9 @@ namespace CPC.POS.ViewModel
                     IEnumerable<int> brandIDList = brands.Select(x => x.Id);
 
                     // Get all product that contain in category or brand list
-                    if (categoryIDList.Count() > 0)
-                        predicate = predicate.And(x => categoryIDList.Contains(x.base_Product.ProductCategoryId) ||
-                            (x.base_Product.ProductBrandId.HasValue && brandIDList.Contains(x.base_Product.ProductBrandId.Value)));
+                    if (categoryIDList.Count() > 0 || brandIDList.Count() > 0)
+                        predicate = predicate.And(x => categoryIDList.Count(y => y.Equals(x.base_Product.ProductCategoryId)) > 0 ||
+                            (x.base_Product.ProductBrandId.HasValue && brandIDList.Count(y => y.Equals(x.base_Product.ProductBrandId.Value)) > 0));
                     else
                         // If condition in predicate is false, GetRange function can not get data from database.
                         // Solution for this problem is create fake condition
@@ -512,8 +467,20 @@ namespace CPC.POS.ViewModel
         {
             // Create predicate
             Expression<Func<base_CostAdjustment, bool>> predicate = CreateSearchPredicate(Keyword);
-            //Expression<Func<base_Product, bool>> predicateProduct = CreateProductSearchPredicate(Keyword);
 
+            // Load data by predicate
+            LoadDataByPredicate(predicate, refreshData, currentIndex);
+        }
+
+        /// <summary>
+        /// Method get Data from database
+        /// <para>Using load on the first time</para>
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="refreshData"></param>
+        /// <param name="currentIndex">index to load if index =0 , clear collection</param>
+        private void LoadDataByPredicate(Expression<Func<base_CostAdjustment, bool>> predicate, bool refreshData = false, int currentIndex = 0)
+        {
             // Create background worker
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
 
@@ -535,19 +502,13 @@ namespace CPC.POS.ViewModel
                     }
 
                     // Get total cost adjustment with condition in predicate
-                    //TotalCostAdjustment = _costAdjustmentRepository.GetIQueryable(predicate).Count();
+                    TotalCostAdjustment = _costAdjustmentRepository.GetIQueryable(predicate).Count();
 
                     // Get data with range
-                    //IList<base_CostAdjustment> costAdjustments = _costAdjustmentRepository.GetRange(currentIndex, NumberOfDisplayItems, "It.Id", predicate);
-
-                    lock (UnitOfWork.Locker)
+                    IList<base_CostAdjustment> costAdjustments = _costAdjustmentRepository.GetRange(currentIndex, NumberOfDisplayItems, "It.Id", predicate);
+                    foreach (base_CostAdjustment costAdjustment in costAdjustments)
                     {
-                        IList<base_CostAdjustment> costAdjustments = _costAdjustmentRepository.GetAll(predicate);
-
-                        foreach (base_CostAdjustment costAdjustment in costAdjustments)
-                        {
-                            bgWorker.ReportProgress(0, costAdjustment);
-                        }
+                        bgWorker.ReportProgress(0, costAdjustment);
                     }
                 }
                 catch (Exception ex)
@@ -584,6 +545,79 @@ namespace CPC.POS.ViewModel
             // Get store name
             if (costAdjustmentModel.StoreCode.HasValue)
                 costAdjustmentModel.StoreName = StoreList.ElementAt(costAdjustmentModel.StoreCode.Value).Name;
+        }
+
+        /// <summary>
+        /// Save adjustment when restore cost
+        /// </summary>
+        /// <param name="costAdjustmentItem"></param>
+        private void SaveAdjustment(base_CostAdjustmentModel costAdjustmentItem)
+        {
+            // Get logged time
+            DateTime loggedTime = DateTimeExt.Now;
+
+            // Get product store model
+            base_ProductStore productStore = costAdjustmentItem.base_CostAdjustment.base_Product.base_ProductStore.
+                SingleOrDefault(x => x.StoreCode.Equals(costAdjustmentItem.StoreCode));
+
+            // Get new and old quantity
+            int newQuantity = productStore.QuantityOnHand;
+            int oldQuantity = newQuantity;
+
+            // Get new and old cost
+            decimal newCost = costAdjustmentItem.NewCost / newQuantity;
+            decimal oldCost = costAdjustmentItem.ProductModel.AverageUnitCost;
+
+            // Save quantity adjustment
+            // Create new quantity adjustment
+            base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
+            quantityAdjustment.ProductId = costAdjustmentItem.ProductModel.Id;
+            quantityAdjustment.ProductResource = costAdjustmentItem.ProductModel.Resource.ToString();
+            quantityAdjustment.NewQty = newQuantity;
+            quantityAdjustment.OldQty = oldQuantity;
+            quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
+            quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
+            quantityAdjustment.LoggedTime = loggedTime;
+            quantityAdjustment.Reason = (short)AdjustmentReason.Reverse;
+            quantityAdjustment.Status = (short)AdjustmentStatus.Reversed;
+            quantityAdjustment.UserCreated = Define.USER.LoginName;
+            quantityAdjustment.IsReversed = true;
+            quantityAdjustment.StoreCode = costAdjustmentItem.StoreCode;
+
+            // Add new quantity adjustment item to database
+            _quantityAdjustmentRepository.Add(quantityAdjustment);
+
+            // Save cost adjustment
+            // Create new cost adjustment
+            base_CostAdjustmentModel costAdjustmentModel = new base_CostAdjustmentModel();
+            costAdjustmentModel.ProductId = costAdjustmentItem.ProductModel.Id;
+            costAdjustmentModel.ProductResource = costAdjustmentItem.ProductModel.Resource.ToString();
+            costAdjustmentModel.AdjustmentNewCost = newCost;
+            costAdjustmentModel.AdjustmentOldCost = oldCost;
+            costAdjustmentModel.AdjustCostDifference = newCost - oldCost;
+            costAdjustmentModel.NewCost = newCost * newQuantity;
+            costAdjustmentModel.OldCost = oldCost * newQuantity;
+            costAdjustmentModel.CostDifference = costAdjustmentModel.NewCost - costAdjustmentModel.OldCost;
+            costAdjustmentModel.LoggedTime = loggedTime;
+            costAdjustmentModel.Reason = (short)AdjustmentReason.Reverse;
+            costAdjustmentModel.Status = (short)AdjustmentStatus.Reversed;
+            costAdjustmentModel.UserCreated = Define.USER.LoginName;
+            costAdjustmentModel.IsReversed = true;
+            costAdjustmentModel.StoreCode = costAdjustmentItem.StoreCode;
+            costAdjustmentModel.StoreName = costAdjustmentItem.StoreName;
+            costAdjustmentModel.ProductModel = costAdjustmentItem.ProductModel;
+
+            // Add new cost adjustment to collection
+            CostAdjustmentCollection.Add(costAdjustmentModel);
+
+            // Update total cost adjustment
+            TotalCostAdjustment++;
+
+            // Map data from model to entity
+            costAdjustmentModel.ToEntity();
+
+            // Add new cost adjustment item to database
+            _costAdjustmentRepository.Add(costAdjustmentModel.base_CostAdjustment);
         }
 
         #endregion

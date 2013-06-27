@@ -210,7 +210,9 @@
         <Setter Property="ItemContainerStyle"
                 Value="{DynamicResource ComboBoxItemControlStyle}" />
 		 <Setter Property="BorderBrush"
-                                  Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />		
+                                  Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
+        <Setter Property="BorderThickness"
+                                  Value="1" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
                 Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility"

@@ -17,16 +17,16 @@
     <UserControl.Resources>
     	<!--DataGridColumn-->
         <DataTemplate x:Key="CompanyHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Company}" />
+            <TextBlock Text="{DynamicResource C170}" />
         </DataTemplate>
         <DataTemplate x:Key="AccountHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Account}" />
+            <TextBlock Text="{DynamicResource C171}" />
         </DataTemplate>
         <DataTemplate x:Key="CountryHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Country}" />
+            <TextBlock Text="{DynamicResource C172}" />
         </DataTemplate>
 		 <DataTemplate x:Key="PhoneHeaderTemplate">
-            <TextBlock Text="{DynamicResource PricingPopup_Header_Phone}" />
+            <TextBlock Text="{DynamicResource C173}" />
         </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="grdPricingVendor"

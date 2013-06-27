@@ -343,6 +343,7 @@ namespace CPC.POS.Repository
             if (productStore != null)
             {
                 productStore.QuantityOnHand = onHandStore;
+                productStore.QuantityAvailable = productStore.QuantityOnHand - productStore.QuantityOnOrder;
 
                 // Update quantity on hand for product UOM
                 if (productStore.base_ProductUOM != null)
@@ -358,10 +359,77 @@ namespace CPC.POS.Repository
                 productStore.ProductId = product.Id;
                 productStore.StoreCode = storeNumber;
                 productStore.QuantityOnHand = onHandStore;
+                productStore.QuantityAvailable = onHandStore;
                 product.base_ProductStore.Add(productStore);
             }
 
             return onHandStore;
+        }
+
+        /// <summary>
+        /// Save adjustment when cost or quantity changed
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="productStoreModel"></param>
+        private void SaveAdjustment(base_Product product, int deltaQuantity, int storeCode, DateTime loggedTime)
+        {
+            // Get product store by store code
+            base_ProductStore productStore = product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+            // Create new product store
+            if (productStore == null)
+                productStore = new base_ProductStore { StoreCode = storeCode };
+
+            // Add new product store to database
+            product.base_ProductStore.Add(productStore);
+
+            // Get new and old quantity
+            int newQuantity = productStore.QuantityOnHand + deltaQuantity;
+            int oldQuantity = productStore.QuantityOnHand;
+
+            // Get new and old cost
+            decimal newCost = product.AverageUnitCost;
+            decimal oldCost = product.AverageUnitCost;
+
+            // Save quantity adjustment
+            // Create new quantity adjustment item
+            base_QuantityAdjustment quantityAdjustment = new base_QuantityAdjustment();
+            quantityAdjustment.ProductId = product.Id;
+            quantityAdjustment.ProductResource = product.Resource.ToString();
+            quantityAdjustment.NewQty = newQuantity;
+            quantityAdjustment.OldQty = oldQuantity;
+            quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
+            quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
+            quantityAdjustment.LoggedTime = loggedTime;
+            quantityAdjustment.Reason = (short)AdjustmentReason.TransferedStock;
+            quantityAdjustment.Status = (short)AdjustmentStatus.Normal;
+            quantityAdjustment.UserCreated = Define.USER.LoginName;
+            quantityAdjustment.IsReversed = false;
+            quantityAdjustment.StoreCode = storeCode;
+
+            // Add new quantity adjustment item to database
+            UnitOfWork.Add(quantityAdjustment);
+
+            // Save cost adjustment
+            // Create new cost adjustment item
+            base_CostAdjustment costAdjustment = new base_CostAdjustment();
+            costAdjustment.ProductId = product.Id;
+            costAdjustment.ProductResource = product.Resource.ToString();
+            costAdjustment.AdjustmentNewCost = newCost;
+            costAdjustment.AdjustmentOldCost = oldCost;
+            costAdjustment.AdjustCostDifference = newCost - oldCost;
+            costAdjustment.NewCost = newCost * newQuantity;
+            costAdjustment.OldCost = oldCost * newQuantity;
+            costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
+            costAdjustment.LoggedTime = loggedTime;
+            costAdjustment.Reason = (short)AdjustmentReason.TransferedStock;
+            costAdjustment.Status = (short)AdjustmentStatus.Normal;
+            costAdjustment.UserCreated = Define.USER.LoginName;
+            costAdjustment.IsReversed = false;
+            costAdjustment.StoreCode = storeCode;
+
+            // Add new cost adjustment item to database
+            UnitOfWork.Add(costAdjustment);
         }
 
         #endregion
@@ -402,17 +470,80 @@ namespace CPC.POS.Repository
         public void TransferStock(string productResource, int sourceStoreNumber, int targetStoreNumber,
             int quantity, bool isReversed = false, int baseUnitNumber = 1)
         {
+            // Get logged time
+            DateTime loggedTime = DateTimeExt.Now;
+
+            // Get delta quantity
+            int deltaQuantity = quantity * baseUnitNumber;
+
             // Get product
             base_Product product = Get(productResource);
 
+            // Save adjustment when change quantity in source store
+            SaveAdjustment(product, -1 * deltaQuantity, sourceStoreNumber, loggedTime);
+
+            // Save adjustment when change quantity in target store
+            SaveAdjustment(product, deltaQuantity, targetStoreNumber, loggedTime);
+
             // Decrease quantity at source store
-            UpdateOnHandStore(product, sourceStoreNumber, quantity * baseUnitNumber, !isReversed);
+            UpdateOnHandStore(product, sourceStoreNumber, deltaQuantity, !isReversed);
 
             // Increase quantity at target store
-            UpdateOnHandStore(product, targetStoreNumber, quantity * baseUnitNumber, isReversed);
+            UpdateOnHandStore(product, targetStoreNumber, deltaQuantity, isReversed);
 
             // Accept changes
             this.Commit();
+        }
+
+        /// <summary>
+        /// Update quantity on order (PO)
+        /// </summary>
+        public void UpdateQuantityOnOrder(string productResource, int storeCode, int quantity)
+        {
+            // Get product
+            base_Product product = Get(productResource);
+
+            if (product != null)
+            {
+                // Update quantity on order in product
+                product.QuantityOnOrder += quantity;
+
+                // Get product store
+                base_ProductStore productStore = product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                if (productStore != null)
+                {
+                    // Update quantity on order in product store
+                    productStore.QuantityOnOrder += quantity;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update quantity on customer (SO)
+        /// </summary>
+        public void UpdateQuantityOnCustomer(string productResource, int storeCode, int quantity)
+        {
+            // Get product
+            base_Product product = Get(productResource);
+
+            if (product != null)
+            {
+                // Update quantity on order in product
+                product.QuantityOnCustomer += quantity;
+
+                // Get product store
+                base_ProductStore productStore = product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                if (productStore != null)
+                {
+                    // Update quantity on order in product store
+                    productStore.QuantityOnCustomer += quantity;
+
+                    // Update quantity available in product store
+                    productStore.QuantityAvailable -= quantity;
+                }
+            }
         }
 
         #endregion

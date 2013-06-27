@@ -142,10 +142,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Expander"
@@ -153,11 +154,20 @@
                                       IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                       Style="{StaticResource ExpandCollapseToggleStyle}"
                                       HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
                                       Width="Auto"
                                       Height="Auto" />
+                        <Rectangle x:Name="Image"
+                                   Grid.Column="1"
+                                   Width="16"
+                                   Height="16"
+                                   VerticalAlignment="Center"
+                                   Visibility="Collapsed"
+                                   Fill="{DynamicResource OK}" />
                         <Border x:Name="Bd"
+                                VerticalAlignment="Center"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Padding="{TemplateBinding Padding}"
                                 SnapsToDevicePixels="true">
                             <Grid>
@@ -166,16 +176,12 @@
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                                   Visibility="Visible" />
-                                <Rectangle x:Name="rectangle"
-                                           Fill="White"
-                                           VerticalAlignment="Bottom"
-                                           Height="1"
-                                           Visibility="Collapsed" />
                             </Grid>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost"
+                                        VerticalAlignment="Center"
                                         Grid.ColumnSpan="2"
-                                        Grid.Column="1"
+                                        Grid.Column="2"
                                         Grid.Row="1" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -184,9 +190,6 @@
                             <Setter Property="Cursor"
                                     TargetName="grid"
                                     Value="Hand" />
-                            <Setter Property="Visibility"
-                                    TargetName="rectangle"
-                                    Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsExpanded"
                                  Value="false">
@@ -202,14 +205,17 @@
                         </Trigger>
                         <Trigger Property="IsSelected"
                                  Value="true">
-                            <Setter Property="Foreground"
+                            <!--<Setter Property="Foreground"
                                     Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
                             <Setter Property="Background"
                                     TargetName="Bd"
                                     Value="{DynamicResource TreeviewItem_IsSelected_Background}" />
                             <Setter Property="BorderBrush"
                                     TargetName="Bd"
-                                    Value="{DynamicResource TreeviewItem_IsSelected_BorderBrush}" />
+                                    Value="{DynamicResource TreeviewItem_IsSelected_BorderBrush}" />-->
+                            <Setter Property="Visibility"
+                                    TargetName="Image"
+                                    Value="Visible" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -239,7 +245,8 @@
                 Value="1" />
         <Setter Property="Foreground"
                 Value="{DynamicResource TreeViewForeground}" />
-        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="MinHeight"
+                Value="20" />
         <Style.Triggers>
             <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
                      Value="true">
@@ -395,7 +402,8 @@
                 Value="1" />
         <Setter Property="Foreground"
                 Value="{DynamicResource TreeViewForeground}" />
-        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="MinHeight"
+                Value="20" />
         <Style.Triggers>
             <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
                      Value="true">
@@ -420,5 +428,12 @@
         <Setter Property="Foreground"
                 Value="White" />
     </Style>
-
+    <!--<Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                            <Setter Property="Background"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource TreeviewItem_IsSelected_Background}" />
+                            <Setter Property="BorderBrush"
+                                    TargetName="Bd"
+                                    Value="{DynamicResource TreeviewItem_IsSelected_BorderBrush}" />-->
 </ResourceDictionary>

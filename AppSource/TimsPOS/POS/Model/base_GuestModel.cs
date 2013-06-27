@@ -1984,7 +1984,7 @@ namespace CPC.POS.Model
                 if (this.Resource.HasValue)
                     return this.Resource.ToString();
                 return Guid.NewGuid().ToString();
-                     
+
             }
 
         }
@@ -1994,6 +1994,7 @@ namespace CPC.POS.Model
         private int _totalReward;
         /// <summary>
         /// Gets or sets the TotalReward.
+        /// <para>Using for TabReward & Filter</para>
         /// </summary>
         public int TotalReward
         {
@@ -2008,6 +2009,25 @@ namespace CPC.POS.Model
             }
         }
         #endregion
+
+
+        #region TotalOfReward
+        /// <summary>
+        /// Gets the TotalOfReward.
+        /// <para>Using DataGridSearch</para>
+        /// </summary>
+        public int TotalOfReward
+        {
+            get
+            {
+                if (GuestRewardCollection != null)
+                    return GuestRewardCollection.Count();
+                return 0;
+            }
+           
+        }
+        #endregion
+
 
 
 
@@ -2053,6 +2073,117 @@ namespace CPC.POS.Model
             OnPropertyChanged(() => IsPrimary);
         }
 
+        public void UpdateModel(base_Guest guest)
+        {
+            this.base_Guest = guest;
+            //this.Id = this.base_Guest.Id;
+            this.FirstName = guest.FirstName;
+            this.MiddleName = guest.MiddleName;
+            this.LastName = guest.LastName;
+            this.Company = guest.Company;
+            this.Phone1 = guest.Phone1;
+            this.Ext1 = guest.Ext1;
+            this.Phone2 = guest.Phone2;
+            this.Ext2 = guest.Ext2;
+            this.Fax = guest.Fax;
+            this.CellPhone = guest.CellPhone;
+            this.Email = guest.Email;
+            this.Website = guest.Website;
+            this.UserCreated = guest.UserCreated;
+            this.UserUpdated = guest.UserUpdated;
+            this.DateCreated = guest.DateCreated;
+            this.DateUpdated = guest.DateUpdated;
+            this.IsPurged = guest.IsPurged;
+            this.GuestTypeId = guest.GuestTypeId;
+            this.IsActived = guest.IsActived;
+            this.GuestNo = guest.GuestNo;
+            this.PositionId = guest.PositionId;
+            this.Department = guest.Department;
+            this.Mark = guest.Mark;
+            this.AccountNumber = guest.AccountNumber;
+            this.ParentId = guest.ParentId;
+            this.IsRewardMember = guest.IsRewardMember;
+            this.CheckLimit = guest.CheckLimit;
+            this.CreditLimit = guest.CreditLimit;
+            this.BalanceDue = guest.BalanceDue;
+            this.AvailCredit = guest.AvailCredit;
+            this.PastDue = guest.PastDue;
+            this.IsPrimary = guest.IsPrimary;
+            this.CommissionPercent = guest.CommissionPercent;
+            this.Resource = guest.Resource;
+            this.TotalRewardRedeemed = guest.TotalRewardRedeemed;
+            this.PurchaseDuringTrackingPeriod = guest.PurchaseDuringTrackingPeriod;
+            this.RequirePurchaseNextReward = guest.RequirePurchaseNextReward;
+            this.HireDate = guest.HireDate;
+            this.IsBlockArriveLate = guest.IsBlockArriveLate;
+            this.IsDeductLunchTime = guest.IsDeductLunchTime;
+            this.IsBalanceOvertime = guest.IsBalanceOvertime;
+            this.LateMinutes = guest.LateMinutes;
+            this.OvertimeOption = guest.OvertimeOption;
+            this.OTLeastMinute = guest.OTLeastMinute;
+            this.IsTrackingHour = guest.IsTrackingHour;
+            this.TermDiscount = guest.TermDiscount;
+            this.TermNetDue = guest.TermNetDue;
+            this.TermPaidWithinDay = guest.TermPaidWithinDay;
+            this.PaymentTermDescription = guest.PaymentTermDescription;
+            this.SaleRepId = guest.SaleRepId;
+        }
+
+        public void UpdateModel(base_GuestModel guestModel )
+        {
+            this.base_Guest = guestModel.base_Guest;
+            //this.Id = this.base_Guest.Id;
+            this.FirstName = guestModel.FirstName;
+            this.MiddleName = guestModel.MiddleName;
+            this.LastName = guestModel.LastName;
+            this.Company = guestModel.Company;
+            this.Phone1 = guestModel.Phone1;
+            this.Ext1 = guestModel.Ext1;
+            this.Phone2 = guestModel.Phone2;
+            this.Ext2 = guestModel.Ext2;
+            this.Fax = guestModel.Fax;
+            this.CellPhone = guestModel.CellPhone;
+            this.Email = guestModel.Email;
+            this.Website = guestModel.Website;
+            this.UserCreated = guestModel.UserCreated;
+            this.UserUpdated = guestModel.UserUpdated;
+            this.DateCreated = guestModel.DateCreated;
+            this.DateUpdated = guestModel.DateUpdated;
+            this.IsPurged = guestModel.IsPurged;
+            this.GuestTypeId = guestModel.GuestTypeId;
+            this.IsActived = guestModel.IsActived;
+            this.GuestNo = guestModel.GuestNo;
+            this.PositionId = guestModel.PositionId;
+            this.Department = guestModel.Department;
+            this.Mark = guestModel.Mark;
+            this.AccountNumber = guestModel.AccountNumber;
+            this.ParentId = guestModel.ParentId;
+            this.IsRewardMember = guestModel.IsRewardMember;
+            this.CheckLimit = guestModel.CheckLimit;
+            this.CreditLimit = guestModel.CreditLimit;
+            this.BalanceDue = guestModel.BalanceDue;
+            this.AvailCredit = guestModel.AvailCredit;
+            this.PastDue = guestModel.PastDue;
+            this.IsPrimary = guestModel.IsPrimary;
+            this.CommissionPercent = guestModel.CommissionPercent;
+            this.Resource = guestModel.Resource;
+            this.TotalRewardRedeemed = guestModel.TotalRewardRedeemed;
+            this.PurchaseDuringTrackingPeriod = guestModel.PurchaseDuringTrackingPeriod;
+            this.RequirePurchaseNextReward = guestModel.RequirePurchaseNextReward;
+            this.HireDate = guestModel.HireDate;
+            this.IsBlockArriveLate = guestModel.IsBlockArriveLate;
+            this.IsDeductLunchTime = guestModel.IsDeductLunchTime;
+            this.IsBalanceOvertime = guestModel.IsBalanceOvertime;
+            this.LateMinutes = guestModel.LateMinutes;
+            this.OvertimeOption = guestModel.OvertimeOption;
+            this.OTLeastMinute = guestModel.OTLeastMinute;
+            this.IsTrackingHour = guestModel.IsTrackingHour;
+            this.TermDiscount = guestModel.TermDiscount;
+            this.TermNetDue = guestModel.TermNetDue;
+            this.TermPaidWithinDay = guestModel.TermPaidWithinDay;
+            this.PaymentTermDescription = guestModel.PaymentTermDescription;
+            this.SaleRepId = guestModel.SaleRepId;
+        }
         #endregion
 
         #endregion

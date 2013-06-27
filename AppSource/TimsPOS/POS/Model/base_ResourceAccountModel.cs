@@ -644,11 +644,27 @@ namespace CPC.POS.Model
                         break;
                     case "LoginName":
                         if (string.IsNullOrEmpty(this.LoginName))
-                            message = "LoginName is required.";
+                            message = "User name is required.";
+                        else
+                        {
+                            Regex regex = new Regex("[a-zA-Z0-9]{5,50}");
+                            if (!regex.IsMatch(this.LoginName))
+                            {
+                                message = "User name must a-z and length of 5-50 characters";
+                            }
+                        }
                         break;
                     case "ClonePassword":
                         if (string.IsNullOrEmpty(this.ClonePassword))
+                        {
                             message = "Password is required.";
+                        }
+                        else
+                        {
+                            Regex regex = new Regex(Define.CONFIGURATION.PasswordFormat);
+                            if (!regex.IsMatch(this.ClonePassword))
+                                message = "Password must a-z and length of 8-50 characters";
+                        }
                         break;
                     case "ConfirmPassword":
                         if (string.Compare(this.ClonePassword, this.ConfirmPassword, false) != 0)

@@ -520,7 +520,31 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnChangeStyleCommandExecute(object param)
         {
-            // TODO: Handle command logic here
+            int count = Application.Current.Resources.MergedDictionaries.Count;
+            ResourceDictionary skin = Application.Current.Resources.MergedDictionaries[count - 2];
+
+            switch (param.ToString())
+            {
+                case "BlueResources":
+                    {
+                        skin.Source = new Uri(@"..\Dictionary\Brushes\Blue\" + param + ".xaml", UriKind.Relative);
+                        skin = Application.Current.Resources.MergedDictionaries[count - 1];
+                        break;
+                    }
+                case "GreyResources":
+                    {
+                        skin.Source = new Uri(@"..\Dictionary\Brushes\Grey\" + param + ".xaml", UriKind.Relative);
+                        skin = Application.Current.Resources.MergedDictionaries[count - 1];
+                        break;
+                    }
+                case "RedResources":
+                    {
+                        skin.Source = new Uri(@"..\Dictionary\Brushes\Red\" + param + ".xaml", UriKind.Relative);
+                        skin = Application.Current.Resources.MergedDictionaries[count - 1];
+                        break;
+                    }
+            }
+
         }
 
         #endregion
@@ -1011,8 +1035,8 @@ namespace CPC.POS.ViewModel
                     view = new TransferStockView();
                     viewModel = new TransferStockViewModel(host.IsOpenList, host.Tag);
                     break;
-                case "ReorderStock":
-                    view = new ReorderStockView();
+                case "ReOrderStock":
+                    view = new ReOrderStockView();
                     viewModel = new ReorderStockViewModel();
                     break;
                 case "WorkOrder":
@@ -1114,7 +1138,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "LayawayHistory":
                     view = new LayawayOrderHistoryView();
-                    viewModel = new LayawayOrderHistoryViewModel();
+
                     break;
 
                 #endregion
@@ -1550,7 +1574,10 @@ namespace CPC.POS.ViewModel
         public void LoadStoreName()
         {
             // Get store name
-            StoreName = _storeRepository.GetAll().OrderBy(x => x.Id).ElementAt(Define.StoreCode).Name;
+
+            IOrderedEnumerable<base_Store> store = _storeRepository.GetAll().OrderBy(x => x.Id);
+            if (store != null && store.Count() > 0)
+                StoreName = store.ElementAt(Define.StoreCode).Name;
         }
 
         /// <summary>
@@ -1559,7 +1586,18 @@ namespace CPC.POS.ViewModel
         public void LoadTaxLocationAndCode()
         {
             // Get tax location
-            TaxLocation = _saleTaxLocationRepository.Get(x => x.Id.Equals(Define.CONFIGURATION.DefaultSaleTaxLocation.Value)).Name;
+            base_SaleTaxLocation taxLocation = null;
+            if (Define.CONFIGURATION.DefaultSaleTaxLocation.HasValue)
+            {
+                taxLocation = _saleTaxLocationRepository.Get(x => x.Id.Equals(Define.CONFIGURATION.DefaultSaleTaxLocation.Value));
+            }
+            if (taxLocation != null)
+                TaxLocation = taxLocation.Name;
+            else
+            {
+                taxLocation = _saleTaxLocationRepository.CreateDefaulSaleTaxLocation();
+                TaxLocation = taxLocation.Name;
+            }
 
             // Get tax code
             TaxCode = Define.CONFIGURATION.DefaultTaxCodeNewDepartment;

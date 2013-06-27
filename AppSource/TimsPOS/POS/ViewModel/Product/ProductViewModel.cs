@@ -34,6 +34,7 @@ namespace CPC.POS.ViewModel
         private base_ProductUOMRepository _productUOMRepository = new base_ProductUOMRepository();
         private base_SaleTaxLocationRepository _taxLocationRepository = new base_SaleTaxLocationRepository();
         private base_VendorProductRepository _vendorProductRepository = new base_VendorProductRepository();
+        private base_SaleOrderDetailRepository _saleOrderDetailRepository = new base_SaleOrderDetailRepository();
 
         private base_CostAdjustmentRepository _costAdjustmentRepository = new base_CostAdjustmentRepository();
         private base_QuantityAdjustmentRepository _quantityAdjustmentRepository = new base_QuantityAdjustmentRepository();
@@ -616,6 +617,9 @@ namespace CPC.POS.ViewModel
                 // Load vendor product collection
                 LoadVendorProductCollection(SelectedProduct);
 
+                // Register property changed event to process filter category, brand by department
+                SelectedProduct.PropertyChanged += new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
+
                 // Raise ProductDepartmentId, ProductCategoryId and BaseUOMId to run filter
                 SelectedProduct.RaiseFilterCollectionView();
 
@@ -873,6 +877,59 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region PopupReorderPointCommand
+
+        /// <summary>
+        /// Gets the PopupReorderPointCommand command.
+        /// </summary>
+        public ICommand PopupReorderPointCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the PopupReorderPointCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnPopupReorderPointCommandCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the PopupReorderPointCommand command is executed.
+        /// </summary>
+        private void OnPopupReorderPointCommandExecute()
+        {
+            PopupReorderPointViewModel viewModel = new PopupReorderPointViewModel(SelectedProduct);
+            bool? result = _dialogService.ShowDialog<PopupReorderPointView>(_ownerViewModel, viewModel, "Reorder Point");
+            if (result.HasValue && result.Value)
+            {
+                foreach (base_ProductStoreModel productStoreItem in viewModel.ProductStoreCollection)
+                {
+                    // Check change
+                    if (productStoreItem.IsDirty)
+                    {
+                        // Get product store by store code
+                        base_ProductStoreModel productStoreModel = SelectedProduct.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(productStoreItem.StoreCode));
+
+                        if (productStoreModel == null)
+                        {
+                            // Add new product store to collection
+                            SelectedProduct.ProductStoreCollection.Add(productStoreItem);
+                        }
+                        else
+                        {
+                            // Update quantity in product store
+                            productStoreModel.ReorderPoint = productStoreItem.ReorderPoint;
+                        }
+                    }
+                }
+
+                // Update company store in product
+                SelectedProduct.CompanyReOrderPoint = viewModel.CompanyReorderPoint;
+            }
+        }
+
+        #endregion
+
         #region PopupAvailableCommand
 
         /// <summary>
@@ -900,7 +957,7 @@ namespace CPC.POS.ViewModel
             {
                 foreach (base_ProductStoreModel productStoreItem in viewModel.ProductStoreCollection)
                 {
-                    // Check change
+                    // Check quantity on hand change
                     if (productStoreItem.QuantityOnHand != productStoreItem.OldQuantity)
                     {
                         // Get product store by store code
@@ -915,18 +972,23 @@ namespace CPC.POS.ViewModel
                         {
                             // Update quantity in product store
                             productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
-                        }
 
-                        if (productStoreItem.StoreCode.Equals(Define.StoreCode))
-                        {
-                            // Update quantity store in product
-                            SelectedProduct.OnHandStore = productStoreItem.QuantityOnHand;
+                            // Update quantity available in product store
+                            productStoreModel.QuantityAvailable = productStoreItem.QuantityAvailable;
+
+                            if (productStoreItem.StoreCode.Equals(Define.StoreCode))
+                            {
+                                // Update quantity store in product
+                                SelectedProduct.OnHandStore = productStoreItem.QuantityOnHand;
+                            }
+                            else
+                            {
+                                // Update quantity in product by store code
+                                SelectedProduct.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
+                            }
                         }
                     }
                 }
-
-                // Update all quantity in product
-                SelectedProduct.QuantityOnHand = viewModel.QuantityOnHand;
             }
         }
 
@@ -1251,6 +1313,7 @@ namespace CPC.POS.ViewModel
             PopupVendorCommand = new RelayCommand<object>(OnPopupVendorCommandExecute, OnPopupVendorCommandCanExecute);
             PopupUOMCommand = new RelayCommand<object>(OnPopupUOMCommandExecute, OnPopupUOMCommandCanExecute);
             PopupAttributeAndSizeCommand = new RelayCommand(OnPopupAttributeAndSizeCommandExecute, OnPopupAttributeAndSizeCommandCanExecute);
+            PopupReorderPointCommand = new RelayCommand(OnPopupReorderPointCommandExecute, OnPopupReorderPointCommandCanExecute);
             PopupAvailableCommand = new RelayCommand(OnPopupAvailableCommandExecute, OnPopupAvailableCommandCanExecute);
             PopupManageUOMCommand = new RelayCommand(OnPopupManageUOMCommandExecute, OnPopupManageUOMCommandCanExecute);
             PopupPricingCommand = new RelayCommand(OnPopupPricingCommandExecute, OnPopupPricingCommandCanExecute);
@@ -1272,10 +1335,13 @@ namespace CPC.POS.ViewModel
             if (SelectedProduct == null)
                 return false;
 
-            return SelectedProduct.IsDirty ||
+            bool productStoreCollectionIsDirty = SelectedProduct.ProductStoreCollection != null &&
+                SelectedProduct.ProductStoreCollection.IsDirty &&
+                SelectedProduct.ProductStoreCollection.Count(x => x.IsNew && x.IsDirty) > 0;
+
+            return SelectedProduct.IsDirty || productStoreCollectionIsDirty ||
                 (SelectedProduct.PhotoCollection != null && SelectedProduct.PhotoCollection.IsDirty) ||
                 (SelectedProduct.ProductCollection != null && SelectedProduct.ProductCollection.IsDirty) ||
-                (SelectedProduct.ProductStoreCollection != null && SelectedProduct.ProductStoreCollection.IsDirty) ||
                 (SelectedProduct.ProductUOMCollection != null && SelectedProduct.ProductUOMCollection.IsDirty) ||
                 (SelectedProduct.VendorProductCollection != null && SelectedProduct.VendorProductCollection.IsDirty);
         }
@@ -1331,6 +1397,8 @@ namespace CPC.POS.ViewModel
                         // Rollback data
                         SelectedProduct.PhotoCollection = null;
                         SelectedProduct.ProductCollection = null;
+                        SelectedProduct.ProductStoreDefault = null;
+                        SelectedProduct.ProductStoreCollection = null;
                         SelectedProduct.ProductUOMCollection = null;
                         SelectedProduct.VendorProductCollection = null;
                         _oldItemTypeID = 0;
@@ -1495,6 +1563,36 @@ namespace CPC.POS.ViewModel
                 if (refreshData)
                 {
                     OnPropertyChanged(() => AllowMutilUOM);
+
+                    if (SelectedProduct != null && !SelectedProduct.IsNew)
+                    {
+                        foreach (base_ProductStoreModel productStoreItem in SelectedProduct.ProductStoreCollection)
+                        {
+                            // Refresh data from entity
+                            productStoreItem.ToModelAndRaise();
+
+                            if (productStoreItem.StoreCode.Equals(Define.StoreCode))
+                            {
+                                // Unregister property changed event to avoid raise other properties
+                                SelectedProduct.PropertyChanged -= new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
+
+                                // Update quantity on hand
+                                SelectedProduct.OnHandStore = productStoreItem.QuantityOnHand;
+
+                                // Register property changed event
+                                SelectedProduct.PropertyChanged += new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
+                            }
+
+                            // Turn off IsDirty & IsNew
+                            productStoreItem.EndUpdate();
+                        }
+
+                        // Refresh data from entity
+                        SelectedProduct.ToModelAndRaise();
+
+                        // Turn off IsDirty & IsNew
+                        SelectedProduct.EndUpdate();
+                    }
                 }
 
                 // Get total products with condition in predicate
@@ -1536,9 +1634,6 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadRelationData(base_ProductModel productModel)
         {
-            // Register property changed event to process filter category, brand by department
-            productModel.PropertyChanged += new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
-
             // Get category name for product
             if (string.IsNullOrWhiteSpace(productModel.CategoryName))
             {
@@ -1733,6 +1828,9 @@ namespace CPC.POS.ViewModel
 
                 // Get quantity for product
                 productModel.OnHandStore = productModel.ProductStoreDefault.QuantityOnHand;
+
+                // Update available quantity
+                //productModel.ProductStoreDefault.UpdateAvailableQuantity();
             }
         }
 
@@ -1861,35 +1959,33 @@ namespace CPC.POS.ViewModel
             // Add new product store default to collection
             SelectedProduct.ProductStoreCollection.Add(SelectedProduct.ProductStoreDefault);
 
-            if (AllowMutilUOM)
+            // Initital product uom list
+            List<base_ProductUOMModel> productUOMList = new List<base_ProductUOMModel>();
+
+            for (int i = 0; i < 3; i++)
             {
-                // Initital product uom list
-                List<base_ProductUOMModel> productUOMList = new List<base_ProductUOMModel>();
+                // Create new product uom model
+                base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
 
-                for (int i = 0; i < 3; i++)
-                {
-                    // Create new product uom model
-                    base_ProductUOMModel productUOMModel = new base_ProductUOMModel();
+                // Register property changed event
+                productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
 
-                    // Register property changed event
-                    productUOMModel.PropertyChanged += new PropertyChangedEventHandler(ProductUOMModel_PropertyChanged);
+                // Get default markdown and update price
+                GetDefaultMarkdown(productUOMModel);
 
-                    // Get default markdown and update price
-                    GetDefaultMarkdown(productUOMModel);
+                // Add new product uom to list
+                productUOMList.Add(productUOMModel);
 
-                    // Add new product uom to list
-                    productUOMList.Add(productUOMModel);
-
-                    // Turn off IsDirty & IsNew
-                    productUOMModel.EndUpdate();
-                }
-
-                // Initial product uom collection from list
-                SelectedProduct.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(productUOMList);
+                // Turn off IsDirty & IsNew
+                productUOMModel.EndUpdate();
             }
+
+            // Initial product uom collection from list
+            SelectedProduct.ProductUOMCollection = new CollectionBase<base_ProductUOMModel>(productUOMList);
 
             // Turn off IsDirty
             SelectedProduct.IsDirty = false;
+            SelectedProduct.ProductStoreDefault.IsDirty = false;
         }
 
         /// <summary>
@@ -1914,9 +2010,13 @@ namespace CPC.POS.ViewModel
             {
                 // Save product when edited
                 SaveUpdate(productModel);
+
+                // Save adjustment
+                SaveAdjustment(productModel);
             }
 
-            SaveAdjustment(productModel);
+            // Update old cost
+            productModel.OldCost = productModel.AverageUnitCost;
 
             // Update default photo
             productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
@@ -2729,10 +2829,10 @@ namespace CPC.POS.ViewModel
 
         #region Save Adjustment
 
-        private string _costAdjustmentReason = "Cost adjustment";
-        private string _quantityAdjustmentReason = "Quantity adjustment";
-        private DateTime _loggedTime;
-
+        /// <summary>
+        /// Save adjustment for product that have same attribute group
+        /// </summary>
+        /// <param name="productModel"></param>
         private void SaveAdjustment(base_ProductModel productModel)
         {
             if (productModel.ProductCollection == null)
@@ -2754,10 +2854,15 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        /// <summary>
+        /// Save adjustment when cost or quantity changed
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <param name="productStoreModel"></param>
         private void SaveAdjustment(base_ProductModel productModel, base_ProductStoreModel productStoreModel)
         {
             // Get logged time
-            _loggedTime = DateTimeExt.Now;
+            DateTime loggedTime = DateTimeExt.Now;
 
             // Get new and old quantity
             int newQuantity = productStoreModel.QuantityOnHand;
@@ -2779,10 +2884,11 @@ namespace CPC.POS.ViewModel
                 quantityAdjustment.OldQty = oldQuantity;
                 quantityAdjustment.AdjustmentQtyDiff = newQuantity - oldQuantity;
                 quantityAdjustment.CostDifference = newCost * quantityAdjustment.AdjustmentQtyDiff;
-                quantityAdjustment.LoggedTime = _loggedTime;
-                quantityAdjustment.Reason = _quantityAdjustmentReason;
-                quantityAdjustment.Status = _quantityAdjustmentReason;
+                quantityAdjustment.LoggedTime = loggedTime;
+                quantityAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
+                quantityAdjustment.Status = (short)AdjustmentStatus.Normal;
                 quantityAdjustment.UserCreated = Define.USER.LoginName;
+                quantityAdjustment.IsReversed = false;
                 quantityAdjustment.StoreCode = productStoreModel.StoreCode;
 
                 // Add new quantity adjustment item to database
@@ -2799,10 +2905,11 @@ namespace CPC.POS.ViewModel
                 costAdjustment.NewCost = newCost * newQuantity;
                 costAdjustment.OldCost = oldCost * newQuantity;
                 costAdjustment.CostDifference = costAdjustment.NewCost - costAdjustment.OldCost;
-                costAdjustment.LoggedTime = _loggedTime;
-                costAdjustment.Reason = _costAdjustmentReason;
-                costAdjustment.Status = _costAdjustmentReason;
+                costAdjustment.LoggedTime = loggedTime;
+                costAdjustment.Reason = (short)AdjustmentReason.ItemEdited;
+                costAdjustment.Status = (short)AdjustmentStatus.Normal;
                 costAdjustment.UserCreated = Define.USER.LoginName;
+                costAdjustment.IsReversed = false;
                 costAdjustment.StoreCode = productStoreModel.StoreCode;
 
                 // Add new cost adjustment item to database
@@ -2812,8 +2919,8 @@ namespace CPC.POS.ViewModel
             // Accept all changes
             _productRepository.Commit();
 
-            // Update old cost
-            productModel.OldCost = newCost;
+            // Update old quantity
+            productStoreModel.OldQuantity = productStoreModel.QuantityOnHand;
         }
 
         #endregion
@@ -3024,6 +3131,9 @@ namespace CPC.POS.ViewModel
 
                     // Update total quantity in product
                     productModel.UpdateQuantityOnHand();
+
+                    // Update available quantity
+                    productModel.ProductStoreDefault.UpdateAvailableQuantity();
                     break;
             }
         }

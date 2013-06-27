@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CPC.Toolkit.Command;
 using CPC.Toolkit.Base;
 using System.Collections.ObjectModel;
@@ -15,12 +14,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using CPC.Service.FrameworkDialogs.OpenFile;
 using System.IO;
-using System.Windows.Data;
-using System.Reflection;
 using CPC.Helper;
 using System.Xml.Linq;
 using Xceed.Wpf.Toolkit.Primitives;
 using SecurityLib;
+using CPC.Service.FrameworkDialogs.FolderBrowse;
 
 
 namespace CPC.POS.ViewModel
@@ -596,6 +594,102 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region GridDiscountVisibility
+
+        private Visibility _gridDiscountVisibility = Visibility.Collapsed;
+        /// <summary>
+        /// Show or collapsed 'Discount' Grid.
+        /// </summary>
+        public Visibility GridDiscountVisibility
+        {
+            get
+            {
+                return _gridDiscountVisibility;
+            }
+            set
+            {
+                if (_gridDiscountVisibility != value)
+                {
+                    _gridDiscountVisibility = value;
+                    OnPropertyChanged(() => GridDiscountVisibility);
+                }
+            }
+        }
+
+        #endregion
+
+        #region GridRewardVisibility
+
+        private Visibility _gridRewardVisibility = Visibility.Collapsed;
+        /// <summary>
+        /// Show or collapsed 'Reward' Grid.
+        /// </summary>
+        public Visibility GridRewardVisibility
+        {
+            get
+            {
+                return _gridRewardVisibility;
+            }
+            set
+            {
+                if (_gridRewardVisibility != value)
+                {
+                    _gridRewardVisibility = value;
+                    OnPropertyChanged(() => GridRewardVisibility);
+                }
+            }
+        }
+
+        #endregion
+
+        #region GridReturnVisibility
+
+        private Visibility _gridReturnVisibility = Visibility.Collapsed;
+        /// <summary>
+        /// Show or collapsed 'Return' Grid.
+        /// </summary>
+        public Visibility GridReturnVisibility
+        {
+            get
+            {
+                return _gridReturnVisibility;
+            }
+            set
+            {
+                if (_gridReturnVisibility != value)
+                {
+                    _gridReturnVisibility = value;
+                    OnPropertyChanged(() => GridReturnVisibility);
+                }
+            }
+        }
+
+        #endregion
+
+        #region GridTimeclockVisibility
+
+        private Visibility _gridTimeclockVisibility = Visibility.Collapsed;
+        /// <summary>
+        /// Show or collapsed 'Timeclock' Grid.
+        /// </summary>
+        public Visibility GridTimeclockVisibility
+        {
+            get
+            {
+                return _gridTimeclockVisibility;
+            }
+            set
+            {
+                if (_gridTimeclockVisibility != value)
+                {
+                    _gridTimeclockVisibility = value;
+                    OnPropertyChanged(() => GridTimeclockVisibility);
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #endregion
@@ -742,6 +836,46 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region SelectImagePathCommand
+
+        private ICommand _selectImagePathCommand;
+        /// <summary>
+        /// When '...' Button clicked, SelectImagePathCommand will executes.
+        /// </summary>
+        public ICommand SelectImagePathCommand
+        {
+            get
+            {
+                if (_selectImagePathCommand == null)
+                {
+                    _selectImagePathCommand = new RelayCommand(SelectImagePathExecute, CanSelectImagePathExecute);
+                }
+                return _selectImagePathCommand;
+            }
+        }
+
+        #endregion
+
+        #region SelectBackupPathCommand
+
+        private ICommand _selectBackupPathCommand;
+        /// <summary>
+        /// When '...' Button clicked, SelectBackupPathCommand will executes.
+        /// </summary>
+        public ICommand SelectBackupPathCommand
+        {
+            get
+            {
+                if (_selectBackupPathCommand == null)
+                {
+                    _selectBackupPathCommand = new RelayCommand(SelectBackupPathExecute, CanSelectBackupPathExecute);
+                }
+                return _selectBackupPathCommand;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Command Methods
@@ -784,7 +918,13 @@ namespace CPC.POS.ViewModel
                 #region General
 
                 case SettingParts.General:
-                    return false;
+
+                    if (_configurationModel == null || !_configurationModel.IsGeneralDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
 
                 #endregion
 
@@ -804,7 +944,13 @@ namespace CPC.POS.ViewModel
                 #region Inventory
 
                 case SettingParts.Inventory:
-                    return false;
+
+                    if (_configurationModel == null || !_configurationModel.IsInventoryDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
 
                 #endregion
 
@@ -877,6 +1023,58 @@ namespace CPC.POS.ViewModel
 
                 #endregion
 
+                #region Discount
+
+                case SettingParts.Discount:
+
+                    if (_configurationModel == null || !_configurationModel.IsDiscountDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region Reward
+
+                case SettingParts.Reward:
+
+                    if (_configurationModel == null || !_configurationModel.IsRewardDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region Return
+
+                case SettingParts.Return:
+
+                    if (_configurationModel == null || !_configurationModel.IsReturnDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region TimeClock
+
+                case SettingParts.TimeClock:
+
+                    if (_configurationModel == null || !_configurationModel.IsTimeClockDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
                 default:
                     return false;
             }
@@ -910,7 +1108,13 @@ namespace CPC.POS.ViewModel
                 #region General
 
                 case SettingParts.General:
-                    return false;
+
+                    if (_configurationModel == null || !_configurationModel.IsGeneralDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
 
                 #endregion
 
@@ -930,7 +1134,13 @@ namespace CPC.POS.ViewModel
                 #region Inventory
 
                 case SettingParts.Inventory:
-                    return false;
+
+                    if (_configurationModel == null || !_configurationModel.IsInventoryDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
 
                 #endregion
 
@@ -993,6 +1203,58 @@ namespace CPC.POS.ViewModel
                 case SettingParts.Sales:
 
                     if (_configurationModel == null || !_configurationModel.IsSalesDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region Discount
+
+                case SettingParts.Discount:
+
+                    if (_configurationModel == null || !_configurationModel.IsDiscountDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region Reward
+
+                case SettingParts.Reward:
+
+                    if (_configurationModel == null || !_configurationModel.IsRewardDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region Return
+
+                case SettingParts.Return:
+
+                    if (_configurationModel == null || !_configurationModel.IsReturnDirty)
+                    {
+                        return false;
+                    }
+
+                    return true;
+
+                #endregion
+
+                #region TimeClock
+
+                case SettingParts.TimeClock:
+
+                    if (_configurationModel == null || !_configurationModel.IsTimeClockDirty)
                     {
                         return false;
                     }
@@ -1089,6 +1351,82 @@ namespace CPC.POS.ViewModel
         private void ItemSelectionChangedExecute(ItemSelectionChangedEventArgs e)
         {
             AddRemovePaymentMethod(e.Item as ComboItem, e.IsSelected);
+        }
+
+        #endregion
+
+        #region SelectImagePathExecute
+
+        /// <summary>
+        /// Select default image path used for save images.
+        /// </summary>
+        private void SelectImagePathExecute()
+        {
+            FolderBrowserDialogViewModel folderBrowserDialogViewModel = new FolderBrowserDialogViewModel();
+            folderBrowserDialogViewModel.ShowNewFolderButton = true;
+            folderBrowserDialogViewModel.Description = Language.Text26;
+            System.Windows.Forms.DialogResult result = _dialogService.ShowFolderBrowserDialog(_ownerViewModel, folderBrowserDialogViewModel);
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                _configurationModel.DefautlImagePath = folderBrowserDialogViewModel.SelectedPath;
+            }
+        }
+
+        #endregion
+
+        #region CanSelectImagePathExecute
+
+        /// <summary>
+        /// Determine whether can call SelectImagePathExecute method.
+        /// </summary>
+        /// <returns>True will call. Otherwise False.</returns>
+        private bool CanSelectImagePathExecute()
+        {
+            if (_configurationModel == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region SelectBackupPathExecute
+
+        /// <summary>
+        /// Select default backup path used for save backup files.
+        /// </summary>
+        private void SelectBackupPathExecute()
+        {
+            FolderBrowserDialogViewModel folderBrowserDialogViewModel = new FolderBrowserDialogViewModel();
+            folderBrowserDialogViewModel.ShowNewFolderButton = true;
+            folderBrowserDialogViewModel.Description = Language.Text27;
+            System.Windows.Forms.DialogResult result = _dialogService.ShowFolderBrowserDialog(_ownerViewModel, folderBrowserDialogViewModel);
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                _configurationModel.BackupPath = folderBrowserDialogViewModel.SelectedPath;
+            }
+        }
+
+        #endregion
+
+        #region CanSelectBackupPathExecute
+
+        /// <summary>
+        /// Determine whether can call SelectBackupPathExecute method.
+        /// </summary>
+        /// <returns>True will call. Otherwise False.</returns>
+        private bool CanSelectBackupPathExecute()
+        {
+            if (_configurationModel == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion
@@ -1256,6 +1594,8 @@ namespace CPC.POS.ViewModel
 
                     // Not have, add configuration default to database.
                     short valueAlwaysPaymentMethod = Common.PaymentMethods.FirstOrDefault(x => x.IntValue == Define.AlwaysPaymentMethod).Value;
+                    short defaultDiscountType = Common.PromotionTypes.First().Value;
+                    short defaultDiscountStatus = Common.StatusBasic.First().Value;
 
                     if (configuration == null)
                     {
@@ -1265,7 +1605,9 @@ namespace CPC.POS.ViewModel
                             TotalStore = _defaultTotalStore,
                             IsAllowCollectTipCreditCard = false,
                             AcceptedPaymentMethod = valueAlwaysPaymentMethod,
-                            DefaultPaymentMethod = valueAlwaysPaymentMethod
+                            DefaultPaymentMethod = valueAlwaysPaymentMethod,
+                            DefaultDiscountType = defaultDiscountType,
+                            DefaultDiscountStatus = defaultDiscountStatus,
                         };
                         configurationRepository.Add(configuration);
                         configurationRepository.Commit();
@@ -1301,7 +1643,14 @@ namespace CPC.POS.ViewModel
                         {
                             configuration.DefaultPaymentMethod = valueAlwaysPaymentMethod;
                         }
-
+                        if (configuration.DefaultDiscountType == 0)
+                        {
+                            configuration.DefaultDiscountType = defaultDiscountType;
+                        }
+                        if (configuration.DefaultDiscountStatus == 0)
+                        {
+                            configuration.DefaultDiscountStatus = defaultDiscountStatus;
+                        }
                         if (configuration.EntityState == System.Data.EntityState.Modified)
                         {
                             configurationRepository.Commit();
@@ -1327,11 +1676,17 @@ namespace CPC.POS.ViewModel
                     _configurationModel.SettingParts = _currentSettingPart;
 
                     _configurationModel.IsDirty = false;
+                    _configurationModel.IsGeneralDirty = false;
                     _configurationModel.IsStoreInfoDirty = false;
+                    _configurationModel.IsInventoryDirty = false;
                     _configurationModel.IsUnitOfMeasureDirty = false;
                     _configurationModel.IsPricingDirty = false;
                     _configurationModel.IsSalesDirty = false;
+                    _configurationModel.IsDiscountDirty = false;
+                    _configurationModel.IsRewardDirty = false;
+                    _configurationModel.IsReturnDirty = false;
                     _configurationModel.IsEmailSetupDirty = false;
+                    _configurationModel.IsTimeClockDirty = false;
 
                     // Update application.
                     Define.CONFIGURATION = _configurationModel.ShallowClone();
@@ -1342,7 +1697,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1355,52 +1710,41 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CreateItemSettings()
         {
-            int id = 1;
-            ItemSettings = new CollectionBase<ItemSettingModel>();
-
-            ItemSettingModel itemSetting;
-
-            itemSetting = new ItemSettingModel(SettingParts.General, id++, "General")
+            if (Common.ItemSettings != null)
             {
-                Childs = new CollectionBase<ItemSettingModel>(),
-            };
-            itemSetting.Childs.Add(new ItemSettingModel(SettingParts.StoreInfo, id++, "Store Information")
+                ItemSettings = new CollectionBase<ItemSettingModel>(Common.ItemSettings);
+            }
+            else
             {
-                Parent = itemSetting
-            });
-            _itemSettings.Add(itemSetting);
+                ItemSettings = new CollectionBase<ItemSettingModel>();
+                IList<ComboItem> itemSettingList = Common.GetElements("ItemSetting");
+                var rootElements = itemSettingList.Where(x => x.ParentId == 0);
+                ItemSettingModel itemSetting;
+                foreach (var rootElement in rootElements)
+                {
+                    itemSetting = new ItemSettingModel((SettingParts)Enum.Parse(typeof(SettingParts), rootElement.SettingPart), rootElement.Value, rootElement.Text)
+                    {
+                        Childs = new CollectionBase<ItemSettingModel>(),
+                        IsExpanded = true
+                    };
 
-            itemSetting = new ItemSettingModel(SettingParts.Inventory, id++, "Inventory")
-            {
-                Childs = new CollectionBase<ItemSettingModel>()
-            };
-            itemSetting.Childs.Add(new ItemSettingModel(SettingParts.UnitOfMeasure, id++, "Unit Of Measure")
-            {
-                Parent = itemSetting
-            });
-            _itemSettings.Add(itemSetting);
+                    var childs = itemSettingList.Where(x => x.ParentId == itemSetting.Id);
+                    if (childs.Any())
+                    {
+                        foreach (var child in childs)
+                        {
+                            itemSetting.Childs.Add(new ItemSettingModel((SettingParts)Enum.Parse(typeof(SettingParts), child.SettingPart), child.Value, child.Text)
+                            {
+                                Parent = itemSetting
+                            });
+                        }
+                    }
 
-            itemSetting = new ItemSettingModel(SettingParts.Email, id++, "Email Setup");
-            _itemSettings.Add(itemSetting);
+                    _itemSettings.Add(itemSetting);
+                }
 
-            itemSetting = new ItemSettingModel(SettingParts.MultiStore, id++, "Multi-Store")
-            {
-                Childs = new CollectionBase<ItemSettingModel>(),
-            };
-            itemSetting.Childs.Add(new ItemSettingModel(SettingParts.StoreCodes, id++, "Store Codes")
-            {
-                Parent = itemSetting
-            });
-            _itemSettings.Add(itemSetting);
-
-            itemSetting = new ItemSettingModel(SettingParts.Pricing, id++, "Pricing");
-            _itemSettings.Add(itemSetting);
-
-            itemSetting = new ItemSettingModel(SettingParts.Sales, id++, "Sales")
-            {
-                Childs = new CollectionBase<ItemSettingModel>(),
-            };
-            _itemSettings.Add(itemSetting);
+                Common.ItemSettings = ItemSettings;
+            }
         }
 
         #endregion
@@ -1424,7 +1768,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1484,7 +1828,7 @@ namespace CPC.POS.ViewModel
             {
                 storeRepository.RollbackTransaction();
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1576,7 +1920,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -1611,6 +1955,10 @@ namespace CPC.POS.ViewModel
             GridStoreCodeVisibility = Visibility.Collapsed;
             GridPricingVisibility = Visibility.Collapsed;
             GridSalesVisibility = Visibility.Collapsed;
+            GridDiscountVisibility = Visibility.Collapsed;
+            GridRewardVisibility = Visibility.Collapsed;
+            GridReturnVisibility = Visibility.Collapsed;
+            GridTimeclockVisibility = Visibility.Collapsed;
 
             switch (_currentSettingPart)
             {
@@ -1665,6 +2013,30 @@ namespace CPC.POS.ViewModel
                 case SettingParts.Sales:
 
                     GridSalesVisibility = Visibility.Visible;
+
+                    break;
+
+                case SettingParts.Discount:
+
+                    GridDiscountVisibility = Visibility.Visible;
+
+                    break;
+
+                case SettingParts.Reward:
+
+                    GridRewardVisibility = Visibility.Visible;
+
+                    break;
+
+                case SettingParts.Return:
+
+                    GridReturnVisibility = Visibility.Visible;
+
+                    break;
+
+                case SettingParts.TimeClock:
+
+                    GridTimeclockVisibility = Visibility.Visible;
 
                     break;
             }
@@ -1770,6 +2142,9 @@ namespace CPC.POS.ViewModel
             switch (_currentSettingPart)
             {
                 case SettingParts.General:
+
+                    SaveGeneralConfiguration();
+
                     break;
 
                 case SettingParts.StoreInfo:
@@ -1779,17 +2154,14 @@ namespace CPC.POS.ViewModel
                     break;
 
                 case SettingParts.Inventory:
+
+                    SaveInventoryConfiguration();
+
                     break;
 
                 case SettingParts.UnitOfMeasure:
 
                     SaveUOMConfiguration();
-
-                    break;
-
-                case SettingParts.Email:
-
-                    SaveEmailConfiguration();
 
                     break;
 
@@ -1810,6 +2182,36 @@ namespace CPC.POS.ViewModel
                     SaveSalesConfiguration();
 
                     break;
+
+                case SettingParts.Discount:
+
+                    SaveDiscountConfiguration();
+
+                    break;
+
+                case SettingParts.Reward:
+
+                    SaveRewardConfiguration();
+
+                    break;
+
+                case SettingParts.Return:
+
+                    SaveReturnConfiguration();
+
+                    break;
+
+                case SettingParts.Email:
+
+                    SaveEmailConfiguration();
+
+                    break;
+
+                case SettingParts.TimeClock:
+
+                    SaveTimeClockConfiguration();
+
+                    break;
             }
         }
 
@@ -1828,6 +2230,9 @@ namespace CPC.POS.ViewModel
             switch (_currentSettingPart)
             {
                 case SettingParts.General:
+
+                    isUnactive = SaveGeneralConfigurationWithQuestion();
+
                     break;
 
                 case SettingParts.StoreInfo:
@@ -1837,17 +2242,14 @@ namespace CPC.POS.ViewModel
                     break;
 
                 case SettingParts.Inventory:
+
+                    isUnactive = SaveInventoryConfigurationWithQuestion();
+
                     break;
 
                 case SettingParts.UnitOfMeasure:
 
                     isUnactive = SaveUOMConfigurationWithQuestion();
-
-                    break;
-
-                case SettingParts.Email:
-
-                    isUnactive = SaveEmailConfigurationWithQuestion();
 
                     break;
 
@@ -1868,6 +2270,36 @@ namespace CPC.POS.ViewModel
                     isUnactive = SaveSalesConfigurationWithQuestion();
 
                     break;
+
+                case SettingParts.Discount:
+
+                    isUnactive = SaveDiscountConfigurationWithQuestion();
+
+                    break;
+
+                case SettingParts.Reward:
+
+                    isUnactive = SaveRewardConfigurationWithQuestion();
+
+                    break;
+
+                case SettingParts.Return:
+
+                    isUnactive = SaveReturnConfigurationWithQuestion();
+
+                    break;
+
+                case SettingParts.Email:
+
+                    isUnactive = SaveEmailConfigurationWithQuestion();
+
+                    break;
+
+                case SettingParts.TimeClock:
+
+                    isUnactive = SaveTimeClockConfigurationWithQuestion();
+
+                    break;
             }
 
             return isUnactive;
@@ -1885,6 +2317,9 @@ namespace CPC.POS.ViewModel
             switch (_currentSettingPart)
             {
                 case SettingParts.General:
+
+                    RestoreGeneralConfiguration();
+
                     break;
 
                 case SettingParts.StoreInfo:
@@ -1894,17 +2329,14 @@ namespace CPC.POS.ViewModel
                     break;
 
                 case SettingParts.Inventory:
+
+                    RestoreInventoryConfiguration();
+
                     break;
 
                 case SettingParts.UnitOfMeasure:
 
                     RestoreUOMConfiguration();
-
-                    break;
-
-                case SettingParts.Email:
-
-                    RestoreEmailConfiguration();
 
                     break;
 
@@ -1923,6 +2355,36 @@ namespace CPC.POS.ViewModel
                 case SettingParts.Sales:
 
                     RestoreSalesConfiguration();
+
+                    break;
+
+                case SettingParts.Discount:
+
+                    RestoreDiscountConfiguration();
+
+                    break;
+
+                case SettingParts.Reward:
+
+                    RestoreRewardConfiguration();
+
+                    break;
+
+                case SettingParts.Return:
+
+                    RestoreReturnConfiguration();
+
+                    break;
+
+                case SettingParts.Email:
+
+                    RestoreEmailConfiguration();
+
+                    break;
+
+                case SettingParts.TimeClock:
+
+                    RestoreTimeClockConfiguration();
 
                     break;
             }
@@ -1989,11 +2451,17 @@ namespace CPC.POS.ViewModel
                 }
 
                 _configurationModel.IsDirty = false;
+                _configurationModel.IsGeneralDirty = false;
                 _configurationModel.IsStoreInfoDirty = false;
+                _configurationModel.IsInventoryDirty = false;
                 _configurationModel.IsUnitOfMeasureDirty = false;
                 _configurationModel.IsPricingDirty = false;
                 _configurationModel.IsSalesDirty = false;
+                _configurationModel.IsDiscountDirty = false;
+                _configurationModel.IsRewardDirty = false;
+                _configurationModel.IsReturnDirty = false;
                 _configurationModel.IsEmailSetupDirty = false;
+                _configurationModel.IsTimeClockDirty = false;
 
                 // Update application.
                 Define.CONFIGURATION = _configurationModel.ShallowClone();
@@ -2001,7 +2469,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2015,6 +2483,68 @@ namespace CPC.POS.ViewModel
         private void RestoreConfiguration()
         {
             _configurationModel.Restore();
+        }
+
+        #endregion
+
+        #region SaveGeneralConfiguration
+
+        /// <summary>
+        /// Save General configuration.
+        /// </summary>
+        private void SaveGeneralConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveGeneralConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save General configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveGeneralConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsGeneralDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveGeneralConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreGeneralConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreGeneralConfiguration
+
+        /// <summary>
+        /// Restore General configuration.
+        /// </summary>
+        private void RestoreGeneralConfiguration()
+        {
+            RestoreConfiguration();
         }
 
         #endregion
@@ -2047,7 +2577,7 @@ namespace CPC.POS.ViewModel
                 if (_configurationModel.IsStoreInfoDirty)
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2071,7 +2601,7 @@ namespace CPC.POS.ViewModel
             else // Errors.
             {
                 // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Continue work.
@@ -2096,6 +2626,68 @@ namespace CPC.POS.ViewModel
         /// Restore StoreInfo configuration.
         /// </summary>
         private void RestoreStoreInfoConfiguration()
+        {
+            RestoreConfiguration();
+        }
+
+        #endregion
+
+        #region SaveInventoryConfiguration
+
+        /// <summary>
+        /// Save Inventory configuration.
+        /// </summary>
+        private void SaveInventoryConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveInventoryConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save Inventory configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveInventoryConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsInventoryDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveInventoryConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreInventoryConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreInventoryConfiguration
+
+        /// <summary>
+        /// Restore Inventory configuration.
+        /// </summary>
+        private void RestoreInventoryConfiguration()
         {
             RestoreConfiguration();
         }
@@ -2192,7 +2784,7 @@ namespace CPC.POS.ViewModel
             {
                 UOMRepository.RollbackTransaction();
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2214,7 +2806,7 @@ namespace CPC.POS.ViewModel
                 if (_UOMCollection.IsDirty || _configurationModel.IsUnitOfMeasureDirty)
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2238,7 +2830,7 @@ namespace CPC.POS.ViewModel
             else // Errors.
             {
                 // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Continue work.
@@ -2352,7 +2944,7 @@ namespace CPC.POS.ViewModel
             {
                 storeRepository.RollbackTransaction();
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2374,7 +2966,7 @@ namespace CPC.POS.ViewModel
                 if (_storeCollection.IsDirty)
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2398,7 +2990,7 @@ namespace CPC.POS.ViewModel
             else // Errors.
             {
                 // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Continue work.
@@ -2490,7 +3082,7 @@ namespace CPC.POS.ViewModel
             catch (Exception exception)
             {
                 _log4net.Error(string.Format("Message: {0}. Source: {1}", exception.Message, exception.Source));
-                MessageBox.Show(exception.Message, "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                MessageBox.Show(exception.Message, Language.Error, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -2511,7 +3103,7 @@ namespace CPC.POS.ViewModel
                 _configurationModel.IsPricingDirty)
             {
                 // Question save.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Save.
@@ -2581,7 +3173,7 @@ namespace CPC.POS.ViewModel
             if (_configurationModel.IsSalesDirty)
             {
                 // Question save.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Save.
@@ -2618,6 +3210,192 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region SaveDiscountConfiguration
+
+        /// <summary>
+        /// Save Discount configuration.
+        /// </summary>
+        private void SaveDiscountConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveDiscountConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save Discount configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveDiscountConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsDiscountDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveDiscountConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreDiscountConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreDiscountConfiguration
+
+        /// <summary>
+        /// Restore Discount configuration.
+        /// </summary>
+        private void RestoreDiscountConfiguration()
+        {
+            RestoreConfiguration();
+        }
+
+        #endregion
+
+        #region SaveRewardConfiguration
+
+        /// <summary>
+        /// Save Reward configuration.
+        /// </summary>
+        private void SaveRewardConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveRewardConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save Reward configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveRewardConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsRewardDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveRewardConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreRewardConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreRewardConfiguration
+
+        /// <summary>
+        /// Restore Reward configuration.
+        /// </summary>
+        private void RestoreRewardConfiguration()
+        {
+            RestoreConfiguration();
+        }
+
+        #endregion
+
+        #region SaveReturnConfiguration
+
+        /// <summary>
+        /// Save Return configuration.
+        /// </summary>
+        private void SaveReturnConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveReturnConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save Return configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveReturnConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsReturnDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveReturnConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreReturnConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreReturnConfiguration
+
+        /// <summary>
+        /// Restore Return configuration.
+        /// </summary>
+        private void RestoreReturnConfiguration()
+        {
+            RestoreConfiguration();
+        }
+
+        #endregion
+
         #region SaveEmailConfiguration
 
         /// <summary>
@@ -2646,7 +3424,7 @@ namespace CPC.POS.ViewModel
                 if (_configurationModel.IsEmailSetupDirty)
                 {
                     // Question save.
-                    MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (result == MessageBoxResult.Yes)
                     {
                         // Save.
@@ -2670,7 +3448,7 @@ namespace CPC.POS.ViewModel
             else // Errors.
             {
                 // Quention continue.
-                MessageBoxResult result = MessageBox.Show("Some data has been changed. Do you want to save?", "Save", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     // Continue work.
@@ -2695,6 +3473,68 @@ namespace CPC.POS.ViewModel
         /// Restore Email configuration.
         /// </summary>
         private void RestoreEmailConfiguration()
+        {
+            RestoreConfiguration();
+        }
+
+        #endregion
+
+        #region SaveTimeClockConfiguration
+
+        /// <summary>
+        /// Save TimeClock configuration.
+        /// </summary>
+        private void SaveTimeClockConfiguration()
+        {
+            SaveConfiguration();
+        }
+
+        #endregion
+
+        #region SaveTimeClockConfigurationWithQuestion
+
+        /// <summary>
+        /// Question before save TimeClock configuration.
+        /// </summary>
+        /// <returns>True is save. False is not save.</returns>
+        private bool SaveTimeClockConfigurationWithQuestion()
+        {
+            bool isUnactive = true;
+
+            if (_configurationModel.IsTimeClockDirty)
+            {
+                // Question save.
+                MessageBoxResult result = MessageBox.Show(Language.Text7, Language.Save, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Save.
+                    SaveTimeClockConfiguration();
+                    isUnactive = true;
+                }
+                else
+                {
+                    // Not Save.
+                    RestoreTimeClockConfiguration();
+                    isUnactive = true;
+                }
+            }
+            else
+            {
+                // Item not edit.
+                isUnactive = true;
+            }
+
+            return isUnactive;
+        }
+
+        #endregion
+
+        #region RestoreTimeClockConfiguration
+
+        /// <summary>
+        /// Restore TimeClock configuration.
+        /// </summary>
+        private void RestoreTimeClockConfiguration()
         {
             RestoreConfiguration();
         }
@@ -2728,7 +3568,7 @@ namespace CPC.POS.ViewModel
 
             if (UOMError == null || isContainsErrorItem)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete item(s)?", "Delete item(s)", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(Language.Text4, Language.DeleteItems, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     foreach (var UOM in selectedUOMs)

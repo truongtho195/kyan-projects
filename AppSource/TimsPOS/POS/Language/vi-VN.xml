@@ -534,7 +534,7 @@
       <forecolor>Black</forecolor>
     </item>
   </status>
-  <status key="ScheduleStatuses">
+  <combo key="ScheduleStatuses">
     <item>
       <value>0</value>
       <name>Inactive</name>
@@ -553,8 +553,8 @@
       <backcolor>Yellow</backcolor>
       <forecolor>Black</forecolor>
     </item>
-  </status>
-  <country>
+  </combo>
+  <combo key="country">
     <item>
       <value>0</value>
       <name>None</name>
@@ -577,8 +577,8 @@
       <symbol>CN</symbol>
       <hasstate>true</hasstate>
     </item>
-  </country>
-  <state>
+  </combo>
+  <combo key="state">
     <!-- 50 States -->
     <item>
       <value>0</value>
@@ -835,8 +835,8 @@
       <name>Wyoming</name>
       <symbol>WY</symbol>
     </item>
-  </state>
-  <groupofdrop>
+  </combo>
+  <combo key="groupofdrop">
     <item>
       <value>1</value>
       <name>Job Title</name>
@@ -847,7 +847,7 @@
       <name>Department</name>
       <tab>1</tab>
     </item>
-  </groupofdrop>
+  </combo>
   <report key="AnalysisReports">
     <item>
       <value>1</value>
@@ -1007,7 +1007,7 @@
       <name>Custom Price</name>
     </item>
   </combo>
-  <status key="StatusBasic">
+  <combo key="StatusBasic">
     <item>
       <value>0</value>
       <name></name>
@@ -1026,7 +1026,7 @@
       <backcolor>Red</backcolor>
       <forecolor>Black</forecolor>
     </item>
-  </status>
+  </combo>
   <status key="JobPosition">
     <item>
       <value>0</value>
@@ -1288,27 +1288,27 @@
   </combo>
   <combo key="PurchaseStatus">
     <item>
-      <value>0</value>
+      <value>1</value>
       <name>Tạo mới</name>
     </item>
     <item>
-      <value>1</value>
+      <value>2</value>
       <name>Đang nhận hàng</name>
     </item>
     <item>
-      <value>2</value>
+      <value>3</value>
       <name>Đã nhận đủ</name>
     </item>
     <item>
-      <value>3</value>
+      <value>4</value>
       <name>Đang xử lý</name>
     </item>
     <item>
-      <value>4</value>
+      <value>5</value>
       <name>Đã thanh toán</name>
     </item>
     <item>
-      <value>5</value>
+      <value>6</value>
       <name>Hoàn thành</name>
     </item>
   </combo>
@@ -1362,6 +1362,32 @@
       <code>ZH</code>
       <culture>zh-CN</culture>
       <name>Trung Quốc</name>
+    </item>
+  </combo>
+  <combo key="Currency">
+    <item>
+      <code>CNY</code>
+      <symbol>元</symbol>
+      <culture>zh-CN</culture>
+      <name>Chinese Yuan Renminbi  (元)</name>
+    </item>
+    <item>
+      <code>THB</code>
+      <symbol>฿</symbol>
+      <culture>th-TH</culture>
+      <name>Thai Baht (฿)</name>
+    </item>
+    <item>
+      <code>USD</code>
+      <symbol>$</symbol>
+      <culture>en-US</culture>
+      <name>US Dollar  ($)</name>
+    </item>
+    <item>
+      <code>VND</code>
+      <symbol>₫</symbol>
+      <culture>vi-VN</culture>
+      <name>Vietnamese Dong (₫)</name>
     </item>
   </combo>
   <combo key="Shift">
@@ -1566,6 +1592,118 @@
     <item>
       <value>4</value>
       <name>Cancelled</name>
+    </item>
+  </combo>
+  <combo key="AdjustmentStatus">
+	<item>
+		<value>1</value>
+		<name>Normal</name>
+	</item>
+	<item>
+		<value>2</value>
+		<name>Reversing</name>
+	</item>
+	<item>
+		<value>3</value>
+		<name>Reversed</name>
+	</item>
+</combo>
+  <combo key="AdjustmentReason">
+		<item>
+			<value>1</value>
+			<name>Item Edited</name>
+		</item>
+		<item>
+			<value>2</value>
+			<name>Reverse</name>
+		</item>
+	  <item>
+		  <value>3</value>
+		  <name>Counted Stock</name>
+	  </item>
+	  <item>
+		  <value>4</value>
+		  <name>Transfered Stock</name>
+	  </item>
+	</combo>
+  <combo key="ItemSetting">
+    <item>
+      <value>1</value>
+      <name>Tổng Quát</name>
+      <settingPart>General</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Thông Tin Cửa Hàng</name>
+      <settingPart>StoreInfo</settingPart>
+      <parentId>1</parentId>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Tồn Kho</name>
+      <settingPart>Inventory</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Đơn Vị Đo Lường</name>
+      <settingPart>UnitOfMeasure</settingPart>
+      <parentId>3</parentId>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Thiết Lập Email</name>
+      <settingPart>Email</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Cửa Hàng</name>
+      <settingPart>MultiStore</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Danh Sách Cửa Hàng</name>
+      <settingPart>StoreCodes</settingPart>
+      <parentId>6</parentId>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Giá</name>
+      <settingPart>Pricing</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Bán Hàng</name>
+      <settingPart>Sales</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>10</value>
+      <name>Giảm Giá</name>
+      <settingPart>Discount</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>11</value>
+      <name>Thưởng</name>
+      <settingPart>Reward</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>12</value>
+      <name>Trả Hàng</name>
+      <settingPart>Return</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>13</value>
+      <name>Đồng Hồ</name>
+      <settingPart>TimeClock</settingPart>
+      <parentId>0</parentId>
     </item>
   </combo>
 	<!--End Dynamic Data-->

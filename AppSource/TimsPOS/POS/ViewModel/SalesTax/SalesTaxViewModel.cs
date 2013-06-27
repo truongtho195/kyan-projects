@@ -374,7 +374,7 @@ namespace CPC.POS.ViewModel
                         //check item Remove has using for shipping && update ShippingTaxCodeId
                         if (SaleTaxLocationCollection.Any(x => x.ShippingTaxCodeId.Equals(SelectedSaleTaxLocation.Id)))
                         {
-                            foreach (base_SaleTaxLocationModel TaxLocationModel in SaleTaxLocationCollection.Where(x => x.ParentId==0 && x.ShippingTaxCodeId.Equals(SelectedSaleTaxLocation.Id)))
+                            foreach (base_SaleTaxLocationModel TaxLocationModel in SaleTaxLocationCollection.Where(x => x.ParentId == 0 && x.ShippingTaxCodeId.Equals(SelectedSaleTaxLocation.Id)))
                             {
                                 TaxLocationModel.ShippingTaxCodeId = DefaultTaxCode.Id;
                                 TaxLocationModel.ToEntity();
@@ -383,7 +383,7 @@ namespace CPC.POS.ViewModel
                             _saleTaxRespository.Commit();
                         }
                     }
-                    
+
                     UpdateDepartment(SelectedSaleTaxLocation.TaxCode, DefaultTaxCode.TaxCode);
                     DeleteSaleTax(SelectedSaleTaxLocation);
                 }
@@ -653,7 +653,7 @@ namespace CPC.POS.ViewModel
             saleTaxLocationModel.RaiseProperyChanged("HasTaxCodeOption");
         }
 
-       
+
 
         /// <summary>
         /// Create New Sales Tax Location or Tax Code
@@ -669,12 +669,15 @@ namespace CPC.POS.ViewModel
             saleTaxLocationModel.IsShipingTaxable = false;
             saleTaxLocationModel.IsActived = true;
             saleTaxLocationModel.TaxOption = 0;
-            
+
             if (saleTaxLocationModel.ParentId != 0)
                 saleTaxLocationModel.SaleTaxLocationOptionCollection = new CollectionBase<base_SaleTaxLocationOptionModel>();
 
             saleTaxLocationModel.SortIndex = GetSortIndex(saleTaxLocationModel);
-            saleTaxLocationModel.ShippingTaxCodeId = PrimaryTaxLocation.TaxCodeCollection.FirstOrDefault().Id;
+            if (PrimaryTaxLocation != null && PrimaryTaxLocation.TaxCodeCollection != null && PrimaryTaxLocation.TaxCodeCollection.Any())
+                saleTaxLocationModel.ShippingTaxCodeId = PrimaryTaxLocation.TaxCodeCollection.FirstOrDefault().Id;
+            else
+                saleTaxLocationModel.ShippingTaxCodeId = 0;
 
             saleTaxLocationModel.IsDirty = false;
             return saleTaxLocationModel;
@@ -965,6 +968,18 @@ namespace CPC.POS.ViewModel
             taxLocationModel.IsPrimary = true;
             taxLocationModel.Name = "Sale Tax Location";
             SaveNewSaleTax(taxLocationModel);
+            IQueryable<base_Configuration> configQuery = _configurationRepository.GetIQueryable();
+            if (configQuery.Any())
+            {
+                base_Configuration config = configQuery.FirstOrDefault();
+                config.DefaultSaleTaxLocation = (short)taxLocationModel.Id;
+                _configurationRepository.Commit();
+
+                //Update for define
+                Define.CONFIGURATION = new base_ConfigurationModel(config);
+                (_ownerViewModel as MainViewModel).LoadTaxLocationAndCode();
+
+            }
         }
 
         /// <summary>
@@ -989,19 +1004,29 @@ namespace CPC.POS.ViewModel
             if (configQuery.Any())
             {
                 base_Configuration config = configQuery.FirstOrDefault();
-
-                string defaultTaxCode = PrimaryTaxLocation.TaxCodeCollection.SingleOrDefault(x => x.Id == DefaultTaxCode.Id).TaxCode;
-
+                if (DefaultTaxCode != null)
+                {
+                    string defaultTaxCode = PrimaryTaxLocation.TaxCodeCollection.SingleOrDefault(x => x.Id == DefaultTaxCode.Id).TaxCode;
+                    config.DefaultTaxCodeNewDepartment = defaultTaxCode;
+                }
+                else
+                {
+                    if (SaleTaxLocationCollection.Where(x => x.ParentId != 0).Count() == 1)
+                    {
+                        string defaultTaxCode = SaleTaxLocationCollection.SingleOrDefault(x => x.ParentId != 0).TaxCode;
+                        config.DefaultTaxCodeNewDepartment = defaultTaxCode;
+                    }
+                }
                 //Set taxCode for config
                 config.DefaultSaleTaxLocation = (short)PrimaryTaxLocation.Id;
-                config.DefaultTaxCodeNewDepartment = defaultTaxCode;
+
 
                 _configurationRepository.Commit();
 
                 //Update for define
                 Define.CONFIGURATION = new base_ConfigurationModel(config);
                 (_ownerViewModel as MainViewModel).LoadTaxLocationAndCode();
-                
+
             }
 
             if (this.PrimaryTaxLocation.PrimarySaleTaxEdited)
@@ -1126,6 +1151,14 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public override void LoadData()
         {
+            App.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                InitData();
+            }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        private void InitData()
+        {
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
             this.SaleTaxLocationCollection.Clear();
 
@@ -1180,12 +1213,12 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         protected override bool OnViewChangingCommandCanExecute(bool isClosing)
         {
-            if (!isClosing && SelectedSaleTaxLocation!=null)
+            if (!isClosing && SelectedSaleTaxLocation != null)
                 _selectedId = SelectedSaleTaxLocation.Id;
             return ChangeViewExecute(isClosing);
         }
 
-        
+
         #endregion
     }
 }

@@ -48,7 +48,11 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_VirtualFolder base_VirtualFolder { get; private set; }
+        public base_VirtualFolder base_VirtualFolder
+        {
+            get;
+            private set;
+        }
 
         #endregion
 
@@ -61,7 +65,10 @@ namespace CPC.POS.Model
         /// </summary>
         public int Id
         {
-            get { return this._id; }
+            get
+            {
+                return this._id;
+            }
             set
             {
                 if (this._id != value)
@@ -81,7 +88,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<int> ParentFolderId
         {
-            get { return this._parentFolderId; }
+            get
+            {
+                return this._parentFolderId;
+            }
             set
             {
                 if (this._parentFolderId != value)
@@ -101,7 +111,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string FolderName
         {
-            get { return this._folderName; }
+            get
+            {
+                return this._folderName;
+            }
             set
             {
                 if (this._folderName != value)
@@ -121,7 +134,10 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsActived
         {
-            get { return this._isActived; }
+            get
+            {
+                return this._isActived;
+            }
             set
             {
                 if (this._isActived != value)
@@ -141,7 +157,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateCreated
         {
-            get { return this._dateCreated; }
+            get
+            {
+                return this._dateCreated;
+            }
             set
             {
                 if (this._dateCreated != value)
@@ -161,7 +180,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get { return this._userCreated; }
+            get
+            {
+                return this._userCreated;
+            }
             set
             {
                 if (this._userCreated != value)
@@ -181,7 +203,10 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateUpdated
         {
-            get { return this._dateUpdated; }
+            get
+            {
+                return this._dateUpdated;
+            }
             set
             {
                 if (this._dateUpdated != value)
@@ -201,7 +226,10 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserUpdated
         {
-            get { return this._userUpdated; }
+            get
+            {
+                return this._userUpdated;
+            }
             set
             {
                 if (this._userUpdated != value)
@@ -221,7 +249,10 @@ namespace CPC.POS.Model
         /// </summary>
         public System.Guid Resource
         {
-            get { return this._resource; }
+            get
+            {
+                return this._resource;
+            }
             set
             {
                 if (this._resource != value)
@@ -505,6 +536,7 @@ namespace CPC.POS.Model
                 {
                     _isSelected = value;
                     OnPropertyChanged(() => IsSelected);
+                    PropertyChangedCompleted(() => IsSelected);
                 }
             }
         }
@@ -640,6 +672,15 @@ namespace CPC.POS.Model
                     }
 
                     break;
+
+                case "IsSelected":
+
+                    if (_isSelected && !_isExpanded && _folderCollection != null && _folderCollection.Any())
+                    {
+                        IsExpanded = true;
+                    }
+
+                    break;
             }
         }
 
@@ -661,15 +702,7 @@ namespace CPC.POS.Model
         {
             get
             {
-                string message = null;
-
-                switch (columnName)
-                {
-                    case "FolderName":
-                        break;
-                }
-
-                return message;
+                return null;
             }
         }
 

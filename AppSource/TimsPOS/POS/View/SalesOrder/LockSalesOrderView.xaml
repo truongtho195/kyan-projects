@@ -298,6 +298,7 @@
                                Foreground="Red"
                                Text="{Binding RegularPrice,
                                               Mode=OneWay,
+                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                               StringFormat={x:Static local:Define.CurrencyFormat}}"
                                TextWrapping="NoWrap" />
                     <TextBlock x:Name="txtblUnitDiscount"
@@ -315,6 +316,7 @@
                                FontStyle="Italic"
                                Foreground="Red"
                                Text="{Binding UnitDiscount,
+                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                               StringFormat={x:Static local:Define.CurrencyFormat}}"
                                TextWrapping="NoWrap" />
                     <TextBlock x:Name="txtblTotalDiscount"
@@ -332,6 +334,7 @@
                                FontStyle="Italic"
                                Foreground="Red"
                                Text="{Binding TotalDiscount,
+                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                               StringFormat={x:Static local:Define.CurrencyFormat}}"
                                TextWrapping="NoWrap" />
                 </StackPanel>
@@ -611,7 +614,8 @@
                                                     IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding Total, Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -1101,7 +1105,8 @@
                                                                         Header="Price">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding SalePrice, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                            <TextBlock HorizontalAlignment="Right"
+                                                                       Text="{Binding SalePrice, Mode=OneWay,ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -1152,6 +1157,7 @@
                                                                        HorizontalAlignment="Right"
                                                                        Text="{Binding SubTotal,
                                                                                       Mode=OneWay,
+                                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
@@ -1436,6 +1442,7 @@
                                                      Padding="2,0,2,0"
                                                      Text="{Binding SelectedSaleOrder.SubTotal,
                                                                     Mode=OneWay,
+                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
                                             <TextBlock x:Name="txtblOrderTabDiscountleft"
@@ -1626,6 +1633,7 @@
                                                      Padding="2,0,2,0"
                                                      Text="{Binding SelectedSaleOrder.TaxAmount,
                                                                     Mode=OneWay,
+                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap">
                                                 <TextBox.Style>
@@ -1693,6 +1701,7 @@
                                                      Style="{DynamicResource TextBoxTotal}"
                                                      Text="{Binding SelectedSaleOrder.Total,
                                                                     Mode=OneWay,
+                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
                                         </Grid>
@@ -2006,6 +2015,7 @@
                                                 <DataGridTextColumn Width="*"
                                                                     Binding="{Binding TotalAmount,
                                                                                       Mode=OneWay,
+                                                    ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                     ElementStyle="{StaticResource NumberTextBlock}"
                                                                     Header="Total Amount"
@@ -2013,6 +2023,7 @@
                                                 <DataGridTextColumn Width="*"
                                                                     Binding="{Binding TotalPaid,
                                                                                       Mode=OneWay,
+                                                    ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                     ElementStyle="{StaticResource NumberTextBlock}"
                                                                     Header="Total Paid"
@@ -2020,6 +2031,7 @@
                                                 <DataGridTextColumn Width="*"
                                                                     Binding="{Binding Balance,
                                                                                       Mode=OneWay,
+                                                    ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                     ElementStyle="{StaticResource NumberTextBlock}"
                                                                     Header="Balance"
@@ -2027,6 +2039,7 @@
                                                 <DataGridTextColumn Width="*"
                                                                     Binding="{Binding Change,
                                                                                       Mode=OneWay,
+                                                    ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                       StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                     ElementStyle="{StaticResource NumberTextBlock}"
                                                                     Header="Change"
@@ -2067,6 +2080,7 @@
                                                      IsReadOnly="True"
                                                      Padding="2,0,2,0"
                                                      Text="{Binding SelectedSaleOrder.RewardAmount,
+ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     Mode=OneWay,
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
@@ -2090,6 +2104,7 @@
                                                      Padding="2,0,2,0"
                                                      Text="{Binding SelectedSaleOrder.Paid,
                                                                     Mode=OneWay,
+                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap">
                                                 <TextBox.Style>
@@ -2126,6 +2141,7 @@
                                                      Style="{DynamicResource TextBoxTotal}"
                                                      Text="{Binding SelectedSaleOrder.Balance,
                                                                     Mode=OneWay,
+                                                ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                     StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                      TextWrapping="NoWrap" />
                                         </Grid>
@@ -2272,6 +2288,7 @@
                                                     <DataGridTextColumn Width="80"
                                                                         Binding="{Binding Price,
                                                                                           Mode=OneWay,
+                                                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                           StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Header="Price" />
@@ -2296,6 +2313,7 @@
                                                     <DataGridTextColumn Width="80"
                                                                         Binding="{Binding Amount,
                                                                                           Mode=OneWay,
+                                                        ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                           StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                         ElementStyle="{StaticResource NumberTextBlock}"
                                                                         Header="Amount" />

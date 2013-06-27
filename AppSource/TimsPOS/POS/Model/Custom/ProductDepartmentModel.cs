@@ -5,6 +5,7 @@ using System.Text;
 using CPC.Toolkit.Base;
 using System.ComponentModel;
 using CPC.POS.Database;
+using CPC.Helper;
 
 namespace CPC.POS.Model
 {
@@ -343,6 +344,7 @@ namespace CPC.POS.Model
                 {
                     _isSelected = value;
                     OnPropertyChanged(() => IsSelected);
+                    PropertyChangedCompleted(() => IsSelected);
                 }
             }
         }
@@ -410,8 +412,18 @@ namespace CPC.POS.Model
 
         #endregion
 
-        #region Custom Code
+        #region Property Changed Methods
 
+        protected override void PropertyChangedCompleted(string propertyName)
+        {
+            if (propertyName == "IsSelected")
+            {
+                if (_isSelected && !_isExpanded && _productCategoryCollection != null && _productCategoryCollection.Any())
+                {
+                    IsExpanded = true;
+                }
+            }
+        }
 
         #endregion
 
@@ -437,7 +449,7 @@ namespace CPC.POS.Model
 
                         if (string.IsNullOrWhiteSpace(_name))
                         {
-                            message = "Name is required.";
+                            message = Language.Error4;
                         }
 
                         break;

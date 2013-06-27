@@ -222,15 +222,19 @@
                            FontSize="{TemplateBinding FontSize}"
                            Grid.Column="2"
                            Style="{DynamicResource TextBlockDatagridBottom}">
-            		
-    				<TextBlock.Text>
-    					<MultiBinding StringFormat="Total : {0} items . Current Index : {1}">
+    				<Run Text="{DynamicResource DataGrid_Text_Total}"></Run>
+					<Run Text="{Binding NumberOfItems,RelativeSource={RelativeSource AncestorType={x:Type dataGridControl:DataGridControl}}}"></Run>
+					<Run Text="{DynamicResource DataGrid_Text_Item}"></Run>
+					<Run Text="{DynamicResource DataGrid_Text_CurrentIndex}"></Run>
+					<Run Text="{Binding RowIndex,RelativeSource={RelativeSource AncestorType={x:Type dataGridControl:DataGridControl}}}"></Run>
+					<!--<TextBlock.Text>
+    					<MultiBinding StringFormat="Total : {0} item(s) . Current Index : {1}">
     						<Binding Path="NumberOfItems"
                                      RelativeSource="{RelativeSource AncestorType={x:Type dataGridControl:DataGridControl}}" />
     						<Binding Path="RowIndex"
                                      RelativeSource="{RelativeSource AncestorType={x:Type dataGridControl:DataGridControl}}" />
     					</MultiBinding>
-    				</TextBlock.Text>
+    				</TextBlock.Text>-->
                 </TextBlock>
                 <Button x:Name="btnTop"
                         Command="{Binding TopCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}"
@@ -389,7 +393,7 @@
         <Setter Property="Background"
                 Value="{DynamicResource DatagridColumnHeaderBackground}" />
         <Setter Property="BorderBrush"
-                Value="{DynamicResource DatagridBorderBrush}" />
+                Value="{DynamicResource DatagridColumnHeaderBorder}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -540,7 +544,7 @@
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="Foreground"
-                Value="{DynamicResource Datagrid_RowDetailTemplate_Foreground}" />
+                Value="White" />
         <Setter Property="BorderThickness"
                 Value="0,0,0,1" />
     </Style>
@@ -600,8 +604,6 @@
         </Setter>
         <Setter Property="BorderBrush"
                 Value="#FF766E6E" />
-        <Setter Property="Background"
-                Value="{DynamicResource DatagridBackground}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding RowToolTip, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}"
                          Value="">
@@ -1354,7 +1356,7 @@
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="Foreground"
-                Value="{DynamicResource Datagrid_RowDetailTemplate_Foreground}" />
+                Value="White" />
     </Style>
 
     <Style x:Key="DataGridFilterWithRowHeaderStyle"
@@ -1541,4 +1543,10 @@
                 Value="{Binding .,RelativeSource={RelativeSource Self}}"></Setter>
     </Style>
     <!--End-->
+	<!--SolidColorBrush-->
+	<SolidColorBrush x:Key="ForegroundGreenBrush"
+                             Color="#FF0B620B" />
+	<SolidColorBrush x:Key="ForegroundRedBrush"
+                             Color="Red" />
+	 <!---->		
 </ResourceDictionary>

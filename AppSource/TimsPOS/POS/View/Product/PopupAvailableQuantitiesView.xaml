@@ -90,7 +90,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding QuantityOnHand, Mode=OneWay}"
+                                   Text="{Binding ProductStoreDefault.QuantityOnHand, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="Width" />
                         <TextBlock x:Name="txtblQuantityOnOrder"
@@ -98,14 +98,14 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="Quantity On PO"
+                                   Text="Quantity On Reserved"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblBindingQuantityOnOrder"
                                    Margin="0,0,33,0"
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding QuantityOnPO, Mode=OneWay}"
+                                   Text="{Binding ProductStoreDefault.QuantityOnOrder, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                    TextWrapping="NoWrap"
                                    d:LayoutOverrides="Width" />
                         <TextBlock x:Name="txtblQuantityOnCustomerOrders"
@@ -114,7 +114,7 @@
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="Quantity On SO"
+                                   Text="Quantity On Order"
                                    TextWrapping="NoWrap"
                                    UseLayoutRounding="False" />
                         <TextBlock x:Name="txtblBindingQuantityOnCustomerOrders"
@@ -123,7 +123,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding QuantityOnSO, Mode=OneWay}"
+                                   Text="{Binding ProductStoreDefault.QuantityOnCustomer, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblQuantityPending"
                                    Grid.Row="1"
@@ -165,7 +165,7 @@
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Center"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding QuantityAvailable, Mode=OneWay}"
+                                   Text="{Binding ProductStoreDefault.QuantityAvailable, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                    TextWrapping="NoWrap" />
                         <TextBlock x:Name="txtblShow"
                                    Grid.Row="5"
@@ -200,9 +200,15 @@
                                 <DataGridTextColumn Header="Type"
                                                     Binding="{Binding DocType, Mode=OneWay}"
                                                     Width="*" />
-                                <DataGridTextColumn Header="Date"
-                                                    Binding="{Binding SaleOrderModel.OrderDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
-                                                    Width="*" />
+                                <DataGridTemplateColumn Header="Date"
+                                                        Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Text="{Binding SaleOrderModel.OrderDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Doc #"
                                                     Binding="{Binding SaleOrderModel.SONumber, Mode=OneWay}"
                                                     Width="*" />
@@ -211,7 +217,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock HorizontalAlignment="Right"
-                                                       Text="{Binding Quantity, Mode=OneWay}" />
+                                                       Text="{Binding Quantity, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -252,7 +258,7 @@
                                   Margin="0,2,10,2"
                                   DisplayMemberPath="Text"
                                   ItemsSource="{x:Static helper:Common.StockStatus}"
-                                  SelectedValue="{Binding StockStatus}"
+                                  SelectedValue="{Binding SelectedStockStatus}"
                                   SelectedValuePath="Value" />
                         <ListBox x:Name="lbStoreQty"
                                  Grid.Row="1"
@@ -281,32 +287,13 @@
                                                                        Grid.ColumnSpan="1"
                                                                        Width="80"
                                                                        Margin="0,2"
+                                                                       ConverterCulture="{Binding Source={x:Static local:Define.ConverterCulture}}"
                                                                        IsEnabled="{Binding SelectedValue, Mode=OneWay, ElementName=cmbShow1, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}"
+                                                                       NumericStringFormat="{}{0:N0}"
                                                                        Padding="2,0,2,0"
                                                                        TextWrapping="NoWrap"
-                                                                       Value="{Binding QuantityOnHand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <textBoxControl:TextBoxNumeric x:Name="txtOnReservedQuantity"
-                                                                       Grid.Column="1"
-                                                                       Grid.ColumnSpan="1"
-                                                                       Width="80"
-                                                                       Margin="0,2"
-                                                                       IsEnabled="False"
-                                                                       Padding="2,0,2,0"
-                                                                       TextWrapping="NoWrap"
-                                                                       Visibility="Collapsed"
-                                                                       Value="{Binding OnReservedQuantity, Mode=OneWay}" />
+                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </Grid>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedValue, Mode=OneWay, ElementName=cmbShow1}"
-                                                     Value="3">
-                                            <Setter TargetName="txtValue"
-                                                    Property="Visibility"
-                                                    Value="Collapsed" />
-                                            <Setter TargetName="txtOnReservedQuantity"
-                                                    Property="Visibility"
-                                                    Value="Visible" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -329,7 +316,7 @@
                                    FontWeight="Bold"
                                    RenderTransformOrigin="-6.746,2.097"
                                    Style="{DynamicResource TextBlockNormal}"
-                                   Text="{Binding CompanyQuantities}"
+                                   Text="{Binding TotalQuantities, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
                                    TextWrapping="NoWrap" />
                     </Grid>
                 </GroupBox>

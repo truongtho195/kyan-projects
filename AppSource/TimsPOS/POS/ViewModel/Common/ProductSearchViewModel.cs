@@ -11,6 +11,7 @@ using CPC.POS.Repository;
 using CPC.POS.Database;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using CPC.Helper;
 
 namespace CPC.POS.ViewModel
 {
@@ -32,8 +33,13 @@ namespace CPC.POS.ViewModel
         /// Product predicate.
         /// </summary>
         Expression<Func<base_Product, bool>> _predicate = PredicateBuilder.True<base_Product>();
+        Expression<Func<base_ProductModel, bool>> _predicateModel = PredicateBuilder.True<base_ProductModel>();
 
         private readonly string _doubleClick = "DoubleClick";
+
+        private CollectionBase<base_ProductModel> _productCollectionOutSide = new CollectionBase<base_ProductModel>();
+
+        private int _productOutSideCount = 0;
 
         #endregion
 
@@ -45,6 +51,26 @@ namespace CPC.POS.ViewModel
             _backgroundWorker.DoWork += new DoWorkEventHandler(WorkerDoWork);
             _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
             _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerRunWorkerCompleted);
+
+            if (Define.CONFIGURATION.AcceptedPaymentMethod.Value.Has(64))
+            {
+                //Get PaymentCard with config
+                foreach (ComboItem paymentCard in Common.GiftCardTypes)
+                {
+                    if (Define.CONFIGURATION.AcceptedGiftCardMethod.Has((int)paymentCard.Value))
+                    {
+                        base_ProductModel couponItem = new base_ProductModel();
+                        couponItem.ProductName = paymentCard.Text;
+                        string strGuidPatern = "{0}{0}{0}{0}{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}";
+                        couponItem.Code = string.Format("{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}", Convert.ToInt32(paymentCard.ObjValue));
+                        string guidID = string.Format(strGuidPatern, Convert.ToInt32(paymentCard.ObjValue));
+                        couponItem.Resource = Guid.Parse(guidID);
+                        couponItem.IsOpenItem = true;
+                        couponItem.IsCoupon = true;
+                        _productCollectionOutSide.Add(couponItem);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -414,40 +440,49 @@ namespace CPC.POS.ViewModel
                 if (argument == "SearchProduct")
                 {
                     _predicate = PredicateBuilder.True<base_Product>();
+                    _predicateModel = PredicateBuilder.True<base_ProductModel>();
                     if (!string.IsNullOrWhiteSpace(_code))
                     {
                         _predicate = _predicate.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
+                        _predicateModel = _predicateModel.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
                     }
                     if (!string.IsNullOrWhiteSpace(_productName))
                     {
                         _predicate = _predicate.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
+                        _predicateModel = _predicateModel.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
                     }
                     if (!string.IsNullOrWhiteSpace(_category))
                     {
                         IEnumerable<int> depIdList = departmentRepository.GetAll(x =>
                             x.LevelId == Define.ProductCategoryLevel && x.Name != null && x.Name.ToLower().Contains(_category.ToLower())).Select(x => x.Id);
                         _predicate = _predicate.And(x => depIdList.Contains(x.ProductCategoryId));
+                        _predicateModel = _predicateModel.And(x => depIdList.Contains(x.ProductCategoryId));
                     }
                     if (!string.IsNullOrWhiteSpace(_attributeSize))
                     {
                         _predicate = _predicate.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
                             (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
+                        _predicateModel = _predicateModel.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
+                            (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
                     }
                     if (!string.IsNullOrWhiteSpace(_partNumber))
                     {
                         _predicate = _predicate.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
+                        _predicateModel = _predicateModel.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
                     }
                     if (!string.IsNullOrWhiteSpace(_barcode))
                     {
                         _predicate = _predicate.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
+                        _predicateModel = _predicateModel.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
                     }
 
                     // Initialize ProductCollection.
                     ProductCollection = new CollectionBase<base_ProductModel>();
+                    _productOutSideCount = 0;
                     ProductTotal = productRepository.GetIQueryable(_predicate).Count();
                 }
 
-                IList<base_Product> products = productRepository.GetRange(_productCollection.Count, NumberOfDisplayItems, _productColumnSort, _predicate);
+                IList<base_Product> products = productRepository.GetRange(_productCollection.Count - _productOutSideCount, NumberOfDisplayItems, _productColumnSort, _predicate);
                 foreach (base_Product product in products)
                 {
                     if (productRepository.Refresh(product) != null)
@@ -512,6 +547,7 @@ namespace CPC.POS.ViewModel
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
             IsBusy = true;
+            e.Result = e.Argument.ToString();
             GetProducts(e.Argument.ToString());
         }
 
@@ -522,6 +558,17 @@ namespace CPC.POS.ViewModel
 
         private void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Result.ToString() == "SearchProduct")
+            {
+                IQueryable<base_ProductModel> productOutSideList = _productCollectionOutSide.AsQueryable().Where(_predicateModel);
+                _productOutSideCount = productOutSideList.Count();
+                ProductTotal += _productOutSideCount;
+                foreach (base_ProductModel product in productOutSideList)
+                {
+                    _productCollection.Add(product);
+                }
+            }
+
             IsBusy = false;
         }
 

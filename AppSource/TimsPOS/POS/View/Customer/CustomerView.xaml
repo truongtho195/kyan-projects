@@ -625,20 +625,41 @@
                 </ScrollViewer>
             </Grid>
         </DataTemplate>
+
+
+        
         <!--  #EndRegion  -->
+        
+        
+       <!--#Region Style-->
+        <Style x:Key="NumberTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+        </Style>
+        <!--#EndRegion-->
 
     </UserControl.Resources>
-	<Anno:AnnotationManager.Annotations>
-		<Anno:Annotation Author="bill pho"
-			AuthorInitials="Button New Issue Reward"
-			Left="3076"
-			SerialNumber="1"
-			Text="Click vao se Popup Form New Issue Reward"
-			Timestamp="06/08/2012 03:47:59"
-			Top="183.277" />
-	</Anno:AnnotationManager.Annotations>
+    <Anno:AnnotationManager.Annotations>
+        <Anno:Annotation Author="bill pho"
+                         AuthorInitials="Button New Issue Reward"
+                         Left="3076"
+                         SerialNumber="1"
+                         Text="Click vao se Popup Form New Issue Reward"
+                         Timestamp="06/08/2012 03:47:59"
+                         Top="183.277" />
+    </Anno:AnnotationManager.Annotations>
     <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
         <Grid x:Name="GridLayout">
+            <Grid.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="False">
+                            <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=txtKeyword}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
             <Grid x:Name="grdCustomer">
                 <!--  Search Gird  -->
@@ -930,9 +951,22 @@
                                                     Binding="{Binding Website}"
                                                     Header="Website"
                                                     IsReadOnly="True" />
-                                <DataGridTextColumn Width="100" Header="Total Purchase" />
-                                <DataGridTextColumn Width="100" Header="Total Rewards" />
-                                <DataGridTextColumn Width="100" Header="Total Redeemed" />
+                                <DataGridTextColumn Width="100"
+                                                    ElementStyle="{StaticResource NumberTextBlock}"
+                                                    Binding="{Binding PurchaseDuringTrackingPeriod,
+                                                                      ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                      StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                                    Header="Total Purchase" />
+                                <DataGridTextColumn Width="100"
+                                                    ElementStyle="{StaticResource NumberTextBlock}"
+                                                    Binding="{Binding TotalOfReward}"
+                                                    Header="Total Rewards" />
+                                <DataGridTextColumn Width="100"
+                                                    ElementStyle="{StaticResource NumberTextBlock}"
+                                                    Binding="{Binding TotalRewardRedeemed,
+                                                                      ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                      StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                                    Header="Total Redeemed" />
                             </cpcDataGrid:DataGridControl.Columns>
                         </cpcDataGrid:DataGridControl>
                     </Grid>
@@ -1167,24 +1201,6 @@
                         <Grid x:Name="grdRemark1"
                               Width="40"
                               Height="40">
-                            <Grid x:Name="grdRemark"
-                                  Width="30"
-                                  Height="30">
-                                <Rectangle x:Name="imgRemark1" Fill="{DynamicResource Remark}" />
-                                <TextBlock x:Name="txtblRemark1"
-                                           Margin="5,0,0,0"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource ButtonSystemTextBlock}"
-                                           Text="Attachment"
-                                           Visibility="Collapsed" />
-                                <TextBox x:Name="txtbBindingRemark1"
-                                         IsReadOnly="True"
-                                         Style="{DynamicResource TextBoxRemark}"
-                                         Visibility="{Binding SelectedCustomer.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}"
-                                         Text="{Binding SelectedCustomer.ResourceNoteCollection.Count,
-                                                        Mode=OneWay}"
-                                         TextWrapping="Wrap" />
-                            </Grid>
                             <ComboBox x:Name="cmbStick"
                                       Grid.ColumnSpan="2"
                                       Style="{DynamicResource RemarkComboboxStyle}">
@@ -1200,14 +1216,19 @@
                                     <Button Width="75"
                                             MinHeight="20"
                                             Command="{Binding ShowOrHiddenNoteCommand}"
-                                            Content="{Binding ShowOrHiddenNote,
-                                                              Mode=OneWay}"
+                                            Content="{Binding ShowOrHiddenNote, Mode=OneWay}"
                                             Style="{DynamicResource ButtonComboboxItemRemark}" />
 
                                 </ComboBoxItem>
 
 
                             </ComboBox>
+                            <TextBox x:Name="txtbBindingRemark1"
+                        		IsReadOnly="True"
+                        		Style="{DynamicResource TextBoxRemark}"
+                        		Text="{Binding SelectedCustomer.ResourceNoteCollection.Count, Mode=OneWay}"
+                        		TextWrapping="Wrap"
+                        		Visibility="{Binding SelectedCustomer.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </Grid>
                     </StackPanel>
                     <Rectangle x:Name="Line"
@@ -3226,10 +3247,10 @@
                                                            VerticalAlignment="Center"
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="{Binding RewardProgram.RewardInfo,
-                                                                              Mode=OneWay}"
+                                                                          Mode=OneWay}"
                                                            TextWrapping="Wrap"
                                                            d:LayoutOverrides="Height" />
-                                                
+
                                                 <Rectangle x:Name="LineRewarProgramInformation"
                                                            Grid.Row="1"
                                                            Height="1"
@@ -3247,6 +3268,7 @@
                                                                Style="{DynamicResource TextBlockNormal}"
                                                                Text="{Binding SelectedCustomer.RequirePurchaseNextReward,
                                                                               Mode=OneWay,
+                                                                              ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                               StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                TextWrapping="NoWrap"
                                                                d:LayoutOverrides="Width" />
@@ -3259,36 +3281,39 @@
                                                                d:LayoutOverrides="Width" />
                                                 </StackPanel>
                                                 <Button x:Name="btnIssueNewReward"
-                                                	Width="40"
-                                                	Height="40"
-                                                	HorizontalAlignment="Right"
-                                                	Command="{Binding IssueRewardManagerCommand}"
-                                                	Style="{DynamicResource ButtonSystem}" Margin="0,0,10,0" VerticalAlignment="Center" Grid.Row="2">
-                                                	<Anno:AnnotationManager.Annotations>
-                                                		<Anno:Annotation Author="bill pho"
-                                                			AuthorInitials="Button New Issue Reward"
-                                                			Left="3076"
-                                                			SerialNumber="1"
-                                                			Text="Click vao se Popup Form New Issue Reward"
-                                                			Timestamp="06/08/2012 03:47:59"
-                                                			Top="183.277" />
-                                                	</Anno:AnnotationManager.Annotations>
-                                                	<StackPanel x:Name="stkpBtnIssueNewReward"
-                                                		HorizontalAlignment="Center"
-                                                		VerticalAlignment="Center"
-                                                		Orientation="Horizontal">
-                                                		<Rectangle x:Name="imgIssueNewReward"
-                                                			Width="35"
-                                                			Height="35"
-                                                			Fill="{DynamicResource IssueReward}" />
-                                                		<TextBlock x:Name="txtblIssueNewReward"
-                                                			Margin="5,0,0,0"
-                                                			VerticalAlignment="Center"
-                                                			Style="{DynamicResource ButtonSystemTextBlock}"
-                                                			Text="New Issue Reward"
-                                                			TextWrapping="NoWrap"
-                                                			Visibility="Collapsed" />
-                                                	</StackPanel>
+                                                        Grid.Row="2"
+                                                        Width="40"
+                                                        Height="40"
+                                                        Margin="0,0,10,0"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Command="{Binding IssueRewardManagerCommand}"
+                                                        Style="{DynamicResource ButtonSystem}">
+                                                    <Anno:AnnotationManager.Annotations>
+                                                        <Anno:Annotation Author="bill pho"
+                                                                         AuthorInitials="Button New Issue Reward"
+                                                                         Left="3076"
+                                                                         SerialNumber="1"
+                                                                         Text="Click vao se Popup Form New Issue Reward"
+                                                                         Timestamp="06/08/2012 03:47:59"
+                                                                         Top="183.277" />
+                                                    </Anno:AnnotationManager.Annotations>
+                                                    <StackPanel x:Name="stkpBtnIssueNewReward"
+                                                                HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Orientation="Horizontal">
+                                                        <Rectangle x:Name="imgIssueNewReward"
+                                                                   Width="35"
+                                                                   Height="35"
+                                                                   Fill="{DynamicResource IssueReward}" />
+                                                        <TextBlock x:Name="txtblIssueNewReward"
+                                                                   Margin="5,0,0,0"
+                                                                   VerticalAlignment="Center"
+                                                                   Style="{DynamicResource ButtonSystemTextBlock}"
+                                                                   Text="New Issue Reward"
+                                                                   TextWrapping="NoWrap"
+                                                                   Visibility="Collapsed" />
+                                                    </StackPanel>
                                                 </Button>
                                             </Grid>
                                         </GroupBox>
@@ -3324,6 +3349,7 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="{Binding SelectedCustomer.PurchaseDuringTrackingPeriod,
                                                                           Mode=OneWay,
+                                                                          ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                           StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                            TextWrapping="Wrap" />
                                                 <TextBlock x:Name="txtblTotalReward"
@@ -3359,6 +3385,7 @@
                                                            Style="{DynamicResource TextBlockNormal}"
                                                            Text="{Binding SelectedCustomer.TotalRewardRedeemed,
                                                                           Mode=OneWay,
+                                                                          ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                           StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                            TextWrapping="Wrap" />
                                                 <TextBlock x:Name="txtblTotalTotalAvailableRewardRedeemed"
@@ -3412,7 +3439,9 @@
                                                                 Margin="10,2,0,0"
                                                                 HorizontalAlignment="Left"
                                                                 VerticalAlignment="Center"
-                                                                SelectedDate="{Binding StartDateReward,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                                                SelectedDate="{Binding StartDateReward,
+                                                                                       Mode=TwoWay,
+                                                                                       UpdateSourceTrigger=PropertyChanged}" />
                                                     <TextBlock x:Name="txtblRewardProgramHistoryTo"
                                                                Margin="25,2,0,2"
                                                                VerticalAlignment="Center"
@@ -3424,17 +3453,20 @@
                                                                 Height="21"
                                                                 Margin="10,2,0,0"
                                                                 VerticalAlignment="Center"
-                                                                SelectedDate="{Binding EndDateReward,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                                                SelectedDate="{Binding EndDateReward,
+                                                                                       Mode=TwoWay,
+                                                                                       UpdateSourceTrigger=PropertyChanged}" />
                                                 </StackPanel>
                                                 <cpcDataGrid:DataGridControl x:Name="dtgrdRewardsEarned"
                                                                              Grid.Row="2"
                                                                              Margin="5,0"
                                                                              AutoGenerateColumns="False"
                                                                              CanUserAddRows="False"
-                                                                             NumberOfItems="{Binding SelectedCustomer.TotalReward,Mode=OneWay}"
                                                                              CanUserDeleteRows="False"
                                                                              IsSynchronizedWithCurrentItem="False"
                                                                              ItemsSource="{Binding SelectedCustomer.GuestRewardCollection}"
+                                                                             NumberOfItems="{Binding SelectedCustomer.TotalReward,
+                                                                                                     Mode=OneWay}"
                                                                              Style="{DynamicResource DatagridWithRowHeader}">
                                                     <cpcDataGrid:DataGridControl.Columns>
                                                         <DataGridTextColumn Width="*"
@@ -3461,6 +3493,7 @@
                                                         <DataGridTextColumn Width="*"
                                                                             Binding="{Binding RewardValue,
                                                                                               Mode=OneWay,
+                                                                                              ConverterCulture={x:Static local:Define.ConverterCulture},
                                                                                               StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                                             Header="Value" />
                                                     </cpcDataGrid:DataGridControl.Columns>
@@ -3470,6 +3503,7 @@
                                     </Grid>
                                 </AdornerDecorator>
                             </cpcOtherControl:CPCTabItemControl>
+                            <!--  Sale Order History  -->
                             <cpcOtherControl:CPCTabItemControl x:Name="tabitemSOHistory" Header="SO History">
                                 <AdornerDecorator>
                                     <Grid x:Name="grdContentSOHistory">
@@ -3509,21 +3543,21 @@
                                                 <DataGridTemplateColumn Width="*" Header="Total">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Total, Mode=OneWay, StringFormat=c}" />
+                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Total, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*" Header="Paid">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Paid, Mode=OneWay, StringFormat=c}" />
+                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Paid, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Width="*" Header="Balance">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Balance, Mode=OneWay, StringFormat=c}" />
+                                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Balance, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -3576,7 +3610,8 @@
                                                        Style="{DynamicResource TextBlockDatagridBottom}"
                                                        Text="{Binding TotalSaleOrder.Total,
                                                                       Mode=OneWay,
-                                                                      StringFormat=c}"
+                                                                      ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                      StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                        TextWrapping="NoWrap" />
                                             <TextBlock x:Name="txtblBindingPaid"
                                                        Grid.Column="5"
@@ -3586,7 +3621,8 @@
                                                        Style="{DynamicResource TextBlockDatagridBottom}"
                                                        Text="{Binding TotalSaleOrder.Paid,
                                                                       Mode=OneWay,
-                                                                      StringFormat=c}"
+                                                                      ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                      StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                        TextWrapping="NoWrap" />
                                             <TextBlock x:Name="txtblBindingBalance"
                                                        Grid.Column="6"
@@ -3596,7 +3632,8 @@
                                                        Style="{DynamicResource TextBlockDatagridBottom}"
                                                        Text="{Binding TotalSaleOrder.Balance,
                                                                       Mode=OneWay,
-                                                                      StringFormat=c}"
+                                                                      ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                      StringFormat={x:Static local:Define.CurrencyFormat}}"
                                                        TextWrapping="NoWrap" />
                                         </Grid>
                                     </Grid>

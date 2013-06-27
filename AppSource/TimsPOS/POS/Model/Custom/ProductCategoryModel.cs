@@ -5,6 +5,7 @@ using System.Text;
 using CPC.Toolkit.Base;
 using System.ComponentModel;
 using CPC.POS.Database;
+using CPC.Helper;
 
 namespace CPC.POS.Model
 {
@@ -460,6 +461,7 @@ namespace CPC.POS.Model
                 {
                     _isSelected = value;
                     OnPropertyChanged(() => IsSelected);
+                    PropertyChangedCompleted(() => IsSelected);
                 }
             }
         }
@@ -588,6 +590,15 @@ namespace CPC.POS.Model
                     OnPropertyChanged(() => Margin);
 
                     break;
+
+                case "IsSelected":
+
+                    if (_isSelected && !_isExpanded && _productBrandCollection != null && _productBrandCollection.Any())
+                    {
+                        IsExpanded = true;
+                    }
+
+                    break;
             }
         }
 
@@ -620,7 +631,7 @@ namespace CPC.POS.Model
 
                         if (string.IsNullOrWhiteSpace(_name))
                         {
-                            message = "Name is required.";
+                            message = Language.Error4;
                         }
 
                         break;
@@ -629,7 +640,7 @@ namespace CPC.POS.Model
 
                         if (string.IsNullOrWhiteSpace(_taxCodeId))
                         {
-                            message = "Tax code is required.";
+                            message = Language.Error5;
                         }
 
                         break;

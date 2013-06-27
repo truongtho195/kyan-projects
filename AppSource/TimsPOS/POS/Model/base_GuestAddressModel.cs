@@ -574,7 +574,7 @@ namespace CPC.POS.Model
                     case "StateProvinceId":
                         if (CountryId > 0)
                         {
-                            CountryItem country = Common.Countries.SingleOrDefault(x => Convert.ToInt32(x.Value) == CountryId);
+                            ComboItem country = Common.Countries.SingleOrDefault(x => Convert.ToInt32(x.Value) == CountryId);
                             if (country != null && country.HasState && StateProvinceId == 0)
                             {
                                 message = "State is required";
@@ -584,7 +584,7 @@ namespace CPC.POS.Model
                     case "PostalCode":
                         if (CountryId > 0)
                         {
-                            CountryItem country = Common.Countries.SingleOrDefault(x => Convert.ToInt32(x.Value) == CountryId);
+                            ComboItem country = Common.Countries.SingleOrDefault(x => Convert.ToInt32(x.Value) == CountryId);
                             if (country != null && country.HasState && string.IsNullOrWhiteSpace(PostalCode))
                                 message = "Zip is required";
                         }

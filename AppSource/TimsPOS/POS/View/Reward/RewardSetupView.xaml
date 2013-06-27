@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-             xmlns:local="CPC.POS.View"
+             xmlns:local="clr-namespace:CPC.POS"
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              mc:Ignorable="d"
              x:Class="CPC.POS.View.RewardSetupView"
@@ -21,7 +21,7 @@
              Background="{DynamicResource UserControlBackground}">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
-		<converter:BoolToStringConverter x:Key="boolToStringConverter" />
+        <converter:BoolToStringConverter x:Key="boolToStringConverter" />
     </UserControl.Resources>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -262,12 +262,12 @@
                     </Grid.RowDefinitions>
                     <GroupBox x:Name="gbReward"
                               Margin="0"
-							  IsEnabled="{Binding RewardManagerModel.IsActived}"
+                              IsEnabled="{Binding RewardManagerModel.IsActived}"
                               HorizontalAlignment="Left"
                               Width="355">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblReward1"
-                                       Text="Reward"
+                                       Text="{DynamicResource RW_TextBlock_Reward}"
                                        TextWrapping="NoWrap"
                                        FontSize="14"
                                        FontWeight="Bold"
@@ -282,7 +282,7 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <TextBlock x:Name="txtblPurchaseThreshold"
-                                       Text="Purchase Threshold:"
+                                       Text="{DynamicResource RW_TextBlock_PurchaseThreshold}"
                                        TextWrapping="NoWrap"
                                        Margin="10,0,0,0"
                                        VerticalAlignment="Center"
@@ -294,6 +294,8 @@
                                                             VerticalAlignment="Stretch"
                                                             Padding="2,0,2,0"
                                                             Width="120"
+                                                            CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                            ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                             Value="{Binding RewardManagerModel.PurchaseThreshold,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                             HorizontalAlignment="Left"
                                                             HorizontalContentAlignment="Right">
@@ -304,7 +306,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </cpcTextBoxControl:TextBoxMoney>
-                            <TextBlock Text="Reward Amount:"
+                            <TextBlock Text="{DynamicResource RW_TextBlock_RewardAmount}"
                                        TextWrapping="Wrap"
                                        x:Name="txtblRewardAmount"
                                        HorizontalAlignment="Left"
@@ -318,6 +320,8 @@
                                                               VerticalAlignment="Stretch"
                                                               Padding="2,0,2,0"
                                                               Width="58"
+                                                              NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                              ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                               IntegerLength="19"
                                                               DecimalPlaces="2"
                                                               Value="{Binding RewardManagerModel.RewardAmount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -335,7 +339,7 @@
                                       SelectedValue="{Binding RewardManagerModel.RewardAmtType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       Grid.Row="1">
                             </ComboBox>
-                            <TextBlock Text="Reward Expiration:"
+                            <TextBlock Text="{DynamicResource RW_TextBlock_RewardExpiration}"
                                        TextWrapping="Wrap"
                                        x:Name="txtblRewardExpiration"
                                        HorizontalAlignment="Left"
@@ -358,7 +362,7 @@
                                       HorizontalAlignment="Left"
                                       Margin="10,0,0,0"
                                       VerticalAlignment="Center"
-                                      Content="  Purchase Tracking Period"
+                                      Content="{DynamicResource RW_CheckBox_ PurchaseTrackingPeriod}"
                                       Grid.Row="3"
                                       IsChecked="{Binding RewardManagerModel.IsTrackingPeriod,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       FontWeight="Bold" />
@@ -378,7 +382,7 @@
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="25" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Start Date:"
+                                <TextBlock Text="{DynamicResource RW_TextBlock_StartDate}"
                                            TextWrapping="Wrap"
                                            x:Name="txtblStartDate"
                                            HorizontalAlignment="Left"
@@ -393,7 +397,7 @@
                                             HorizontalAlignment="Left"
                                             Width="90"
                                             Height="21" />
-                                <TextBlock Text="End Date:"
+                                <TextBlock Text="{DynamicResource RW_TextBlock_EndDate}"
                                            TextWrapping="Wrap"
                                            x:Name="txtblEndDate"
                                            HorizontalAlignment="Left"
@@ -434,7 +438,7 @@
                                           IsEnabled="{Binding RewardManagerModel.IsTrackingPeriod,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                           IsChecked="{Binding RewardManagerModel.IsNoEndDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                           VerticalAlignment="Center"
-                                          Content="  No End Date"
+                                          Content="{DynamicResource RW_CheckBox_NoEndDate}"
                                           Grid.Row="2" />
                             </Grid>
                         </Grid>
@@ -445,7 +449,7 @@
                               HorizontalAlignment="Left">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblRewardProgramStatus"
-                                       Text="Reward Program Status"
+                                       Text="{DynamicResource RW_TextBlock_RewardProgramStatus}"
                                        TextWrapping="NoWrap"
                                        FontSize="14"
                                        FontWeight="Bold"
@@ -460,22 +464,25 @@
                                 <RowDefinition Height="25" />
                                 <RowDefinition Height="25" />
                             </Grid.RowDefinitions>
-                            <Grid HorizontalAlignment="Left" Margin="10,0,0,0">
-                            	<Grid.ColumnDefinitions>
-                            		<ColumnDefinition Width="Auto"/>
-                            		<ColumnDefinition Width="Auto"/>
-                            	</Grid.ColumnDefinitions>
-								<TextBlock Text="Reward Tracking is"
-								    MinWidth="95"
-                        			TextWrapping="Wrap"
-                        			HorizontalAlignment="Left"
-                        			VerticalAlignment="Center"
-                        			Style="{DynamicResource TextBlockNormal}" />
-								<TextBlock 
-								    MinWidth="20"
-                        			TextWrapping="Wrap"
-                        			x:Name="txtbRewardTracking" 
-									Grid.Column="1" VerticalAlignment="Center">
+                            <Grid HorizontalAlignment="Left"
+                                  Margin="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{DynamicResource RW_TextBlock_RewardTracking}"
+                                           MinWidth="97"
+                                           TextWrapping="Wrap"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}" />
+                                <TextBlock TextWrapping="Wrap"
+                                           x:Name="txtbRewardTracking"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           MinWidth="20"
+                                           Margin="0,0,0,-2">
 									 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}"
                                            BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -483,29 +490,28 @@
                                             <DataTrigger Binding="{Binding RewardManagerModel.IsActived}"
                                                          Value="False">
                                                 <Setter Property="Text"
-                                                        Value="OFF"/>
+                                                        Value="{DynamicResource RW_TextBlock_RewardTrackingOFF}" />
 												<Setter Property="Foreground"
-                                                        Value="Red"/>
+                                                        Value="{DynamicResource ForegroundRedBrush}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding RewardManagerModel.IsActived}"
                                                          Value="True">
                                                 <Setter Property="Text"
-                                                        Value="ON"/>
+                                                        Value="{DynamicResource RW_TextBlock_RewardTrackingON}" />
 												<Setter Property="Foreground"
-                                                        Value="#FF3CF92C"/>
+                                                        Value="{DynamicResource ForegroundGreenBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBlock.Style>
-									</TextBlock>
-                        	</Grid>
+                                </TextBlock>
+                            </Grid>
                             <TextBlock TextWrapping="Wrap"
                                        x:Name="txtbTotalReward"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Margin="10,0,0,0"
                                        Grid.Row="1"
-                                       Visibility="Collapsed"
                                        Style="{DynamicResource TextBlockNormal}">
                             	<TextBlock.Text>
     					<MultiBinding StringFormat="Total Rewards Redeemed : {0}">
@@ -514,7 +520,6 @@
     				</TextBlock.Text>
                             </TextBlock>
                             <TextBlock TextWrapping="Wrap"
-                                       Visibility="Collapsed"
                                        x:Name="txtbMemberList"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
@@ -546,12 +551,12 @@
                                             <DataTrigger Binding="{Binding RewardManagerModel.IsActived}"
                                                          Value="False">
                                                 <Setter Property="Content"
-                                                        Value="Turn Tracking ON "/>
+                                                        Value="{DynamicResource RW_Button_TurnTrackingON}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding RewardManagerModel.IsActived}"
                                                          Value="True">
                                                 <Setter Property="Content"
-                                                        Value="Turn Tracking OFF "/>
+                                                        Value="{DynamicResource RW_Button_TurnTrackingOFF}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -561,11 +566,11 @@
                     </GroupBox>
                     <GroupBox x:Name="gbRewardOption"
                               Margin="0,10,0,0"
-							   IsEnabled="{Binding RewardManagerModel.IsActived}"
+                              IsEnabled="{Binding RewardManagerModel.IsActived}"
                               Grid.Row="1">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblRewardOption"
-                                       Text="Reward Option"
+                                       Text="{DynamicResource RW_TextBlock_RewardOption}"
                                        TextWrapping="NoWrap"
                                        FontSize="14"
                                        FontWeight="Bold"
@@ -587,19 +592,19 @@
                                       Margin="10,0,0,0"
                                       IsChecked="{Binding RewardManagerModel.IsAutoEnroll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       VerticalAlignment="Center"
-                                      Content="  Automatically enroll new customers in Rewards Program" />
+                                      Content="{DynamicResource RW_CheckBox_Automatically}" />
                             <CheckBox x:Name="cbPrompt"
                                       HorizontalAlignment="Left"
                                       Margin="10,0,0,0"
                                       VerticalAlignment="Center"
-                                      Content="  Prompt to enroll when making sales to non-members"
+                                      Content="{DynamicResource RW_CheckBox_Prompttoenroll}"
                                       Grid.Row="1"
                                       IsChecked="{Binding RewardManagerModel.IsPromptEnroll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                             <CheckBox x:Name="cbInform"
                                       HorizontalAlignment="Left"
                                       Margin="10,0,0,0"
                                       VerticalAlignment="Center"
-                                      Content="  Inform cashier when sales rewards are earned"
+                                      Content="{DynamicResource RW_CheckBox_InformCashier}"
                                       Grid.Row="2"
                                       IsChecked="{Binding RewardManagerModel.IsInformCashier,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                             <CheckBox x:Name="cbReward"
@@ -608,7 +613,8 @@
                                       VerticalAlignment="Center"
                                       Content="  Reward redemption Limit"
                                       Grid.Row="3"
-                                      IsChecked="{Binding RewardManagerModel.IsRedemptionLimit,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed" />
+                                      IsChecked="{Binding RewardManagerModel.IsRedemptionLimit,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                      Visibility="Collapsed" />
                             <cpcTextBoxControl:TextBoxMoney x:Name="txtReward"
                                                             TextWrapping="NoWrap"
                                                             Margin="180,2,0,2"
@@ -619,12 +625,13 @@
                                                             Value="{Binding RewardManagerModel.RedemptionLimitAmount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                             HorizontalAlignment="Left"
                                                             Grid.Row="3"
-                                                            HorizontalContentAlignment="Right" Visibility="Collapsed" />
+                                                            HorizontalContentAlignment="Right"
+                                                            Visibility="Collapsed" />
                             <CheckBox x:Name="cbBlock"
                                       HorizontalAlignment="Left"
                                       Margin="10,0,0,0"
                                       VerticalAlignment="Center"
-                                      Content="  Block reward redemption for"
+                                      Content="{DynamicResource RW_CheckBox_BlockReward}"
                                       Grid.Row="3"
                                       IsChecked="{Binding RewardManagerModel.IsBlockRedemption,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                             <cpcTextBoxControl:TextBoxNumeric x:Name="txtBlock"
@@ -633,13 +640,15 @@
                                                               VerticalAlignment="Stretch"
                                                               Padding="2,0,2,0"
                                                               Width="40"
+                                                              NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                              ConverterCulture="{x:Static local:Define.ConverterCulture}"
                                                               IsEnabled="{Binding RewardManagerModel.IsBlockRedemption,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
                                                               HorizontalAlignment="Left"
                                                               Grid.Row="3"
                                                               IntegerLength="4"
                                                               Value="{Binding RewardManagerModel.RedemptionAfterDays,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                               HorizontalContentAlignment="Right" />
-                            <TextBlock Text="days after earned."
+                            <TextBlock Text="{DynamicResource RW_CheckBox_Daysafter}"
                                        TextWrapping="Wrap"
                                        x:Name="txtbDaysAfter"
                                        HorizontalAlignment="Left"
@@ -653,7 +662,8 @@
                                       VerticalAlignment="Center"
                                       Content="  Block reward earn with purchase redeem"
                                       Grid.Row="7"
-                                      IsChecked="{Binding RewardManagerModel.IsBlockPurchaseRedeem,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed" />
+                                      IsChecked="{Binding RewardManagerModel.IsBlockPurchaseRedeem,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                      Visibility="Collapsed" />
                         </Grid>
                     </GroupBox>
                 </Grid>
