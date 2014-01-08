@@ -1,0 +1,837 @@
+﻿<UserControl x:Class="CPC.POS.View.DepartmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cmd="clr-namespace:CPC.Toolkit.Command"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:model="clr-namespace:CPC.POS.Model"
+             xmlns:txtToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:xceedToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:xceedWpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:pos="clr-namespace:CPC.POS"
+             x:Name="UserControl"
+             Background="{DynamicResource UserControlBackground}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:PermissionConverter x:Key="permissionConverter" />
+        <!--  HierarchicalDataTemplate  -->
+        <HierarchicalDataTemplate DataType="{x:Type model:DepartmentRootModel}"
+                                  ItemsSource="{Binding ProductDepartmentCollection, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           VerticalAlignment="Center"
+                           Fill="{DynamicResource CloseFolder}" />
+                <TextBlock Margin="3,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="{Binding Name, Mode=OneWay}" />
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:ProductDepartmentModel}"
+                                  ItemsSource="{Binding ProductCategoryCollection, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           VerticalAlignment="Center"
+                           Fill="{DynamicResource CloseFolder}" />
+                <TextBlock Margin="3,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name, Mode=OneWay}">
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="False">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="Tomato" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="True">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="White" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:ProductCategoryModel}"
+                                  ItemsSource="{Binding ProductBrandCollection, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           VerticalAlignment="Center"
+                           Fill="{DynamicResource CloseFolder}" />
+                <TextBlock Margin="3,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name, Mode=OneWay}">
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="False">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="Tomato" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="True">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="White" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+        <DataTemplate DataType="{x:Type model:ProductBrandModel}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           VerticalAlignment="Center"
+                           Fill="{DynamicResource Document}" />
+                <TextBlock Margin="3,0,0,0"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name, Mode=OneWay}">
+                    <TextBlock.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="False">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="Tomato" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsActived, Mode=OneWay}"
+                                             Value="True">
+                                    <Setter Property="TextBlock.Foreground"
+                                            Value="White" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <!--  DepartmentTreeviewItemStyle  -->
+        <Style x:Key="DepartmentTreeviewItemStyle"
+               TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Left" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="1,0,0,0" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{DynamicResource TreeViewItemFocusVisual}" />
+            <Setter Property="IsExpanded"
+                    Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  MinWidth="19" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ToggleButton x:Name="Expander"
+                                          Width="Auto"
+                                          Height="Auto"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          ClickMode="Press"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{DynamicResource ExpandCollapseToggleStyle}" />
+                            <Border x:Name="Bd"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="PART_Header"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  ContentSource="Header"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded"
+                                     Value="false">
+                                <Setter TargetName="ItemsHost"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="HasItems"
+                                     Value="false">
+                                <Setter TargetName="Expander"
+                                        Property="Visibility"
+                                        Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <EventSetter Event="Selected"
+                         Handler="TreeViewSelectedItemChanged" />
+            <Style.Triggers>
+                <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
+                         Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  HeaderDataGridColumn  -->
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource D106}" />
+        </DataTemplate>
+        <DataTemplate x:Key="TaxCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C144}" />
+        </DataTemplate>
+        <DataTemplate x:Key="MarginHeaderTemplate">
+            <TextBlock Text="{DynamicResource C145}" />
+        </DataTemplate>
+        <DataTemplate x:Key="MarkupHeaderTemplate">
+            <TextBlock Text="{DynamicResource C146}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ActiveHeaderTemplate">
+            <TextBlock Text="{DynamicResource C137}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C114}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DescriptionHeaderTemplate">
+            <TextBlock Text="{DynamicResource C138}" />
+        </DataTemplate>
+        <DataTemplate x:Key="RegularPriceHeaderTemplate">
+            <TextBlock Text="{DynamicResource C139}" />
+        </DataTemplate>
+    </UserControl.Resources>
+	<UserControl.InputBindings>
+		<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+	</UserControl.InputBindings>
+    <Grid x:Name="GridLayout"
+          d:LayoutOverrides="Height">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <xceedToolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}">
+            <Grid x:Name="grdDepartment">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--  Cac Button chinh  -->
+                <StackPanel x:Name="stkpButton"
+                            Margin="20,0,0,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnNew"
+                            Command="{Binding NewCommand}"
+                            Width="40"
+                            Height="40"
+                            IsEnabled="{Binding AllowAddProduct, Mode=OneWay}"
+                            Style="{DynamicResource ButtonSystem}"
+                            ToolTip="{DynamicResource C140}"
+                            ToolTipService.ShowOnDisabled="True">
+                        <StackPanel x:Name="stkpBtnNew"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgNew"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource New}" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnEdit"
+                            Command="{Binding EditCommand}"
+                            Width="40"
+                            Height="40"
+                            IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-01-09}"
+                            Style="{DynamicResource ButtonSystem}"
+                            ToolTip="{DynamicResource C141}"
+                            ToolTipService.ShowOnDisabled="True">
+                        <StackPanel x:Name="stkpBtnEdit"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgEdit"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Edit}" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave"
+                            Command="{Binding SaveCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}"
+                            ToolTip="{DynamicResource C142}"
+                            ToolTipService.ShowOnDisabled="True">
+                        <StackPanel x:Name="stkpBtnSave"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgSave"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Save}" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnCancel"
+                            Command="{Binding CancelCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}"
+                            ToolTip="{DynamicResource C143}"
+                            ToolTipService.ShowOnDisabled="True">
+                        <StackPanel x:Name="stkpBtnCancel"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgSave1"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Cancel}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Rectangle x:Name="Line"
+                           Height="1"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <TextBlock x:Name="txtblBindingDepartmentType"
+                           Margin="0,0,20,7"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Style="{DynamicResource TextBlockTitleFormView}"
+                           Text="{DynamicResource D102}"
+                           TextWrapping="NoWrap" />
+                <!--  Phan quan ly Department, Category, Brand  -->
+                <Border x:Name="brdSubDepartment"
+                        Grid.Row="1"
+                        Margin="10"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1">
+                    <Grid x:Name="grdSubDepartment">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!--  Search Department, Category, Brand  -->
+                        <Grid x:Name="grdSearchDepartment"
+                              Margin="10"
+                              IsEnabled="{Binding IsEnableSearchPart, Mode=OneWay}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!--  Search  -->
+                            <xceedWpfTool:WatermarkTextBox x:Name="txtSearch"
+                                                           Margin="0,2"
+                                                           VerticalContentAlignment="Center"
+                                                           BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                                           KeyDown="WatermarkTextBoxKeyDown"
+                                                           Padding="24,0,2,0"
+                                                           Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                           TextWrapping="NoWrap"
+                                                           Watermark="{DynamicResource C135}" />
+                            <Rectangle x:Name="imgFind"
+                                       Width="20"
+                                       Margin="3,3,0,3"
+                                       HorizontalAlignment="Left"
+                                       Fill="{DynamicResource Find}" />
+                            <!--  TreeView chua Department, Category, Brand  -->
+                            <TreeView x:Name="tvDepartment"
+                                      Grid.Row="1"
+                                      Margin="0,5,0,0"
+                                      IsHitTestVisible="True"
+                                      ItemContainerStyle="{StaticResource DepartmentTreeviewItemStyle}"
+                                      ItemsSource="{Binding DepartmentCollection, Mode=OneWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <cmd:EventToCommand Command="{Binding SelectedItemChangedCommand}"
+                                                            CommandParameter="{Binding ElementName=tvDepartment}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TreeView>
+                        </Grid>
+                        <Rectangle x:Name="LineSpliter"
+                                   Width="1"
+                                   HorizontalAlignment="Right"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <Grid x:Name="grdExposedSeach"
+                              Grid.Column="1"
+                              Background="#19FFFFFF">
+                            <!--  Tao moi, cap nhat Department,Category, Brand  -->
+                            <Grid x:Name="grdCreateNewDeptCateBrandStyleModel"
+                                  d:IsHidden="True"
+                                  Visibility="{Binding VisibilityAllPart, Mode=OneWay}">
+                                <GroupBox x:Name="gbDeptCateBrandStyleModel"
+                                          MinHeight="70"
+                                          Margin="10,27,10,0"
+                                          VerticalAlignment="Top">
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock x:Name="txtblCreateNewDepartment"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D107}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityCreateDepartment, Mode=OneWay}" />
+                                            <TextBlock x:Name="txtblCreateNewDepartment2"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D108}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityEditDepartment, Mode=OneWay}" />
+                                            <TextBlock x:Name="txtblCreateNewCategory"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D109}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityCreateCategory, Mode=OneWay}" />
+                                            <TextBlock x:Name="txtblCreateNewCategory2"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D110}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityEditCategory, Mode=OneWay}" />
+                                            <TextBlock x:Name="txtblCreateNewBrand"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D111}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityCreateBrand, Mode=OneWay}" />
+                                            <TextBlock x:Name="txtblCreateNewBrand2"
+                                                       Foreground="White"
+                                                       Style="{DynamicResource GroupboxTextBlock}"
+                                                       Text="{DynamicResource D112}"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="{Binding VisibilityEditBrand, Mode=OneWay}" />
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdDeptCateBrandStyleModel"
+                                          Margin="0,4,0,0">
+                                        <Grid x:Name="grdDepartment1"
+                                              Height="50"
+                                              Margin="0,4,0,0"
+                                              VerticalAlignment="Top"
+                                              Visibility="{Binding VisibilityDepartmentPart, Mode=OneWay}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblDeptName1"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource D103}"
+                                                       TextWrapping="NoWrap" />
+                                            <txtToolkit:TextBox x:Name="txtDeptName"
+                                                                Grid.RowSpan="1"
+                                                                Grid.Column="1"
+                                                                Width="250"
+                                                                Margin="0,2,10,2"
+                                                                HorizontalAlignment="Left"
+                                                                MaxLength="200"
+                                                                Padding="2,0,2,0"
+                                                                Text="{Binding ProductDepartmentModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
+                                                                TextWrapping="NoWrap">
+                                                <i:Interaction.Behaviors>
+                                                    <behavior:AutoFocusBehavior FocusBehaviorType="VisibleChanged" />
+                                                    <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                                </i:Interaction.Behaviors>
+                                            </txtToolkit:TextBox>
+                                            <TextBlock Grid.Row="1"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C137}"
+                                                       TextWrapping="NoWrap" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      IsChecked="{Binding ProductDepartmentModel.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-01-10}"
+                                                      IsThreeState="False" />
+                                        </Grid>
+                                        <Grid x:Name="grdCategory"
+                                              VerticalAlignment="Top"
+                                              d:IsHidden="True"
+                                              Visibility="{Binding VisibilityCategoryPart, Mode=OneWay}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="105" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblCategory1"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource D104}"
+                                                       TextWrapping="NoWrap" />
+                                            <txtToolkit:TextBox x:Name="txtCategory2"
+                                                                Grid.RowSpan="1"
+                                                                Grid.Column="1"
+                                                                Width="250"
+                                                                Margin="0,2,10,2"
+                                                                HorizontalAlignment="Left"
+                                                                MaxLength="200"
+                                                                Padding="2,0,2,0"
+                                                                Text="{Binding ProductCategoryModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
+                                                                TextWrapping="NoWrap">
+                                                <i:Interaction.Behaviors>
+                                                    <behavior:AutoFocusBehavior FocusBehaviorType="VisibleChanged" />
+                                                    <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                                </i:Interaction.Behaviors>
+                                            </txtToolkit:TextBox>
+                                            <TextBlock x:Name="txtblTaxCode"
+                                                       Grid.Row="1"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C144}"
+                                                       TextWrapping="NoWrap" />
+                                            <ComboBox x:Name="cmbTaxCode"
+                                                      Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      Width="250"
+                                                      Margin="0,2"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Stretch"
+                                                      DisplayMemberPath="Name"
+                                                      ItemsSource="{Binding SaleTaxLocations, Mode=OneWay}"
+                                                      SelectedValue="{Binding ProductCategoryModel.TaxCodeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
+                                                      SelectedValuePath="TaxCode" />
+                                            <TextBlock x:Name="txtblMarginPercent1"
+                                                       Grid.Row="2"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C145}"
+                                                       TextWrapping="NoWrap" />
+                                            <txtToolkit:TextBoxPercent x:Name="txtMarginPercent1"
+                                                                       Grid.Row="2"
+                                                                       Grid.RowSpan="1"
+                                                                       Grid.Column="1"
+                                                                       Width="45"
+                                                                       Margin="0,2"
+                                                                       HorizontalAlignment="Left"
+                                                                       Padding="2,0,2,0"
+                                                                       TextLength="2"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding ProductCategoryModel.Margin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock x:Name="txtblMarkupPercent1"
+                                                       Grid.Row="2"
+                                                       Grid.Column="1"
+                                                       Margin="55,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C146}"
+                                                       TextWrapping="NoWrap" />
+                                            <txtToolkit:TextBoxPercent x:Name="txtMarkupPercent1"
+                                                                       Grid.Row="2"
+                                                                       Grid.RowSpan="1"
+                                                                       Grid.Column="1"
+                                                                       Width="45"
+                                                                       Margin="120,2,0,2"
+                                                                       HorizontalAlignment="Left"
+                                                                       Padding="2,0,2,0"
+                                                                       TextLength="2"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding ProductCategoryModel.MarkUp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Grid.Row="3"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C137}"
+                                                       TextWrapping="NoWrap" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="1"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      IsChecked="{Binding ProductCategoryModel.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsThreeState="False" />
+                                        </Grid>
+                                        <Grid x:Name="grdgbBrand"
+                                              Height="50"
+                                              VerticalAlignment="Top"
+                                              d:IsHidden="True"
+                                              Visibility="{Binding VisibilityBrandPart, Mode=OneWay}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="90" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblBrandName"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource D105}"
+                                                       TextWrapping="NoWrap" />
+                                            <txtToolkit:TextBox x:Name="txtBrand1"
+                                                                Grid.RowSpan="1"
+                                                                Grid.Column="1"
+                                                                Width="250"
+                                                                Margin="0,2,10,2"
+                                                                HorizontalAlignment="Left"
+                                                                MaxLength="200"
+                                                                Padding="2,0,2,0"
+                                                                Text="{Binding ProductBrandModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
+                                                                TextWrapping="NoWrap">
+                                                <i:Interaction.Behaviors>
+                                                    <behavior:AutoFocusBehavior FocusBehaviorType="VisibleChanged" />
+                                                    <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                                </i:Interaction.Behaviors>
+                                            </txtToolkit:TextBox>
+                                            <TextBlock Grid.Row="1"
+                                                       Margin="10,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{DynamicResource C137}"
+                                                       TextWrapping="NoWrap" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="1"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      IsChecked="{Binding ProductBrandModel.IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      IsThreeState="False" />
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                            <!--  Hien thi all Categories, all items  -->
+                            <TabControl x:Name="TabDepartment"
+                                        Margin="10"
+                                        Background="{DynamicResource TabControlBackground}"
+                                        BorderBrush="{DynamicResource TabControlBorder}"
+                                        SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Visibility="{Binding VisibilityTabControl, Mode=OneWay}">
+                                <TabItem x:Name="tabitemDepartment"
+                                         Header="{DynamicResource D113}"
+                                         Visibility="{Binding VisibilityDepartmentsTabItem, Mode=OneWay}">
+                                    <Grid x:Name="grdContentDepartment"
+                                          Height="Auto">
+                                        <cpcDataGridToolkit:DataGridControl x:Name="dtgrdDepartment"
+                                                                            Margin="10,10,10,0"
+                                                                            AutoGenerateColumns="False"
+                                                                            behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding EditDepartmentCommand}"
+                                                                            behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=Self}}"
+                                                                            CanUserAddRows="False"
+                                                                            CanUserDeleteRows="False"
+                                                                            Field="IsNew"
+                                                                            ItemsSource="{Binding ProductDepartmentCollection, Mode=OneWay}"
+                                                                            NumberOfItems="{Binding ProductDepartmentCollection.Count, Mode=OneWay}"
+                                                                            Style="{DynamicResource DatagridWithRowHeader}">
+                                            <cpcDataGridToolkit:DataGridControl.Columns>
+                                                <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}"
+                                                                    Width="*"
+                                                                    HeaderTemplate="{StaticResource NameHeaderTemplate}" />
+                                                <DataGridTemplateColumn  HeaderTemplate="{StaticResource ActiveHeaderTemplate}"
+                                                                         Width="50">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      IsChecked="{Binding IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </cpcDataGridToolkit:DataGridControl.Columns>
+                                        </cpcDataGridToolkit:DataGridControl>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem x:Name="tabitemCategory"
+                                         Header="{DynamicResource D100}"
+                                         Visibility="{Binding VisibilityCategoriesTabItem, Mode=OneWay}">
+                                    <Grid x:Name="grdContentCategory"
+                                          Height="Auto">
+                                        <cpcDataGridToolkit:DataGridControl x:Name="dtgrdCategory"
+                                                                            Margin="10,10,10,0"
+                                                                            AutoGenerateColumns="False"
+                                                                            behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding EditCategoryCommand}"
+                                                                            behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=Self}}"
+                                                                            CanUserAddRows="False"
+                                                                            CanUserDeleteRows="False"
+                                                                            Field="IsNew"
+                                                                            ItemsSource="{Binding ProductCategoryCollection, Mode=OneWay}"
+                                                                            NumberOfItems="{Binding ProductCategoryCollection.Count, Mode=OneWay}"
+                                                                            Style="{DynamicResource DatagridWithRowHeader}">
+                                            <cpcDataGridToolkit:DataGridControl.Columns>
+                                                <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}"
+                                                                    Width="*"
+                                                                    HeaderTemplate="{StaticResource NameHeaderTemplate}" />
+                                                <DataGridTextColumn Binding="{Binding TaxCodeId, Mode=OneWay}"
+                                                                    Width="100"
+                                                                    HeaderTemplate="{StaticResource TaxCodeHeaderTemplate}" />
+                                                <DataGridTemplateColumn Width="100"
+                                                                        HeaderTemplate="{StaticResource MarginHeaderTemplate}">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock HorizontalAlignment="Right"
+                                                                       Text="{Binding Margin, Mode=OneWay}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Width="100"
+                                                                        HeaderTemplate="{StaticResource MarkupHeaderTemplate}">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock HorizontalAlignment="Right"
+                                                                       Text="{Binding MarkUp, Mode=OneWay}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn  HeaderTemplate="{StaticResource ActiveHeaderTemplate}"
+                                                                         Width="50">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      IsChecked="{Binding IsActived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </cpcDataGridToolkit:DataGridControl.Columns>
+                                        </cpcDataGridToolkit:DataGridControl>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem x:Name="tabitemItem"
+                                         Header="{DynamicResource D101}">
+                                    <Grid x:Name="grdContentItem"
+                                          Height="Auto">
+                                        <cpcDataGridToolkit:DataGridControl x:Name="dtgrdItem"
+                                                                            Command="{Binding GetProductsCommand}"
+                                                                            Margin="10"
+                                                                            AutoGenerateColumns="False"
+                                                                            DisplayItems="{Binding NumberOfDisplayItems, Mode=OneWay}"
+                                                                            Field="IsNew"
+                                                                            IsReadOnly="True"
+                                                                            ItemsSource="{Binding SelectedItem.ProductCollection, Mode=OneWay, ElementName=tvDepartment}"
+                                                                            NumberOfItems="{Binding SelectedItem.ProductTotal, Mode=OneWay, ElementName=tvDepartment}"
+                                                                            Style="{DynamicResource DatagridWithRowHeader}">
+                                            <cpcDataGridToolkit:DataGridControl.Columns>
+                                                <DataGridTextColumn Binding="{Binding Code, Mode=OneWay}"
+                                                                    Width="90"
+                                                                    HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}" />
+                                                <DataGridTextColumn Binding="{Binding ProductName, Mode=OneWay}"
+                                                                    Width="*"
+                                                                    HeaderTemplate="{StaticResource DescriptionHeaderTemplate}" />
+                                                <DataGridTemplateColumn Width="200"
+                                                                        HeaderTemplate="{StaticResource RegularPriceHeaderTemplate}">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock HorizontalAlignment="Right"
+                                                                       Text="{Binding RegularPrice, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}, ConverterCulture={x:Static pos:Define.ConverterCulture}}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </cpcDataGridToolkit:DataGridControl.Columns>
+                                        </cpcDataGridToolkit:DataGridControl>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </xceedToolkit:BusyIndicator>
+    </Grid>
+</UserControl>

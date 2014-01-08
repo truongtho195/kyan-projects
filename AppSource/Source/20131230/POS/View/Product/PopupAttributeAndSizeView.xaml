@@ -1,0 +1,293 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupAttributeAndSizeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cmd="clr-namespace:CPC.Toolkit.Command"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="660"
+             Height="340"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!--  DataGridReadOnlyRowStyle  -->
+        <Style x:Key="DataGridCellFocusStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.AllowAccessPermission, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+        </Style>
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Size">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Barcode">
+            <TextBlock Text="{DynamicResource C176}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_PartNo">
+            <TextBlock Text="{DynamicResource PD_PartNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ALU">
+            <TextBlock Text="{DynamicResource PD_ALU}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_RegularPrice">
+            <TextBlock Text="{DynamicResource C139}" />
+        </DataTemplate>
+        <!--  endregion HeaderTemplate  -->
+        <s:Int32 x:Key="BarcodeMaxLength">20</s:Int32>
+        <s:Int32 x:Key="PartNoMaxLength">20</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="grdAttributeAndSize"
+          Margin="0,0,2,2">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdAttributeSize"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentAttributeAndSize"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblStore"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C155}"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="cmbStore"
+                          Width="123"
+                          Height="21"
+                          Margin="45,2,0,2"
+                          HorizontalAlignment="Left"
+                          DisplayMemberPath="Code"
+                          IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+                          ItemsSource="{Binding StoreCollection, Mode=OneWay}"
+                          SelectedIndex="{Binding SelectedStoreIndex}">
+                    <i:Interaction.Behaviors>
+                        <behavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+                <TabControl x:Name="TabAttributeSizeBarcode"
+                            Grid.Row="2"
+                            Grid.RowSpan="1"
+                            Margin="0,5,0,0"
+                            IsSynchronizedWithCurrentItem="True"
+                            SelectedItem="{Binding SelectedTab, Mode=OneWayToSource}">
+                    <TabItem x:Name="tabitemAttributeAndSize"
+                             Header="{DynamicResource PD_AttributeAndSize}">
+                        <Grid x:Name="grdContentAttributeAndAttribute">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28.7" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Border x:Name="brdAttribute"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0"
+                                    Background="{DynamicResource DatagridColumnHeaderBackground}"
+                                    BorderBrush="{DynamicResource DatagridBorderBrush}"
+                                    BorderThickness="1,1,1,0">
+                                <StackPanel x:Name="stkpAttribute"
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <TextBlock x:Name="txtblAttribute"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontFamily="Tahoma"
+                                               FontSize="11"
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               Text="{DynamicResource C116}"
+                                               TextWrapping="NoWrap" />
+                                    <ed:BlockArrow x:Name="ArrowAttribute"
+                                                   Width="11"
+                                                   Height="11"
+                                                   Margin="5,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   ArrowBodySize="0.4"
+                                                   ArrowheadAngle="88"
+                                                   Fill="#FFF4F4F5"
+                                                   Orientation="Right" />
+                                </StackPanel>
+                            </Border>
+                            <cpcControl:DataGridCanAddColumnRowControl Grid.Row="1"
+                                                                       IsRaiseTotal="{Binding IsRaiseTotal}"
+                                                                       ItemsSource="{Binding CellCollection}" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="tabitemBarcode"
+                             HeaderTemplate="{StaticResource DataTemplate_PD_Header_Barcode}">
+                        <Grid x:Name="grdContentBarcode">
+                            <dataGridControl:DataGridControl x:Name="dtgrdBardcode"
+                                                             Margin="5"
+                                                             AutoGenerateColumns="False"
+                                                             CanUserAddRows="False"
+                                                             CanUserDeleteRows="False"
+                                                             IsPaging="False"
+                                                             IsRollBackData="True"
+                                                             ItemsSource="{Binding CellCollection, Mode=OneWay}"
+                                                             NumberOfItems="{Binding CellCollection.Count}"
+                                                             Style="{DynamicResource DatagridWithoutRowHeader}"
+                                                             VisibilityNavigationBar="Collapsed">
+                                <dataGridControl:DataGridControl.Columns>
+                                    <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}"
+                                                        Width="*"
+                                                        HeaderTemplate="{StaticResource DataTemplate_PD_Header_Attribute}" />
+                                    <DataGridTextColumn Binding="{Binding Attribute, Mode=OneWay}"
+                                                        Width="*"
+                                                        HeaderTemplate="{StaticResource DataTemplate_PD_Header_Size}" />
+                                    <DataGridTemplateColumn Width="*"
+                                                            CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Barcode}"
+                                                            SortMemberPath="Barcode">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Barcode, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxControl:TextBox MaxLength="{StaticResource BarcodeMaxLength}"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="LostFocus">
+                                                            <cmd:EventToCommand Command="{Binding DataContext.CheckBarcodeCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                                                                CommandParameter="{Binding}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </textBoxControl:TextBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                            CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_ALU}"
+                                                            SortMemberPath="ALU">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding ALU, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxControl:TextBox MaxLength="{StaticResource BarcodeMaxLength}"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding ALU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="LostFocus">
+                                                            <cmd:EventToCommand Command="{Binding DataContext.CheckALUCommand, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"
+                                                                                CommandParameter="{Binding}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </textBoxControl:TextBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                            CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_RegularPrice}"
+                                                            SortMemberPath="RegularPrice">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Right"
+                                                           Text="{Binding RegularPrice, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxControl:TextBoxMoney ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                             CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                             Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+                                                                             TextWrapping="NoWrap"
+                                                                             Value="{Binding RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                </dataGridControl:DataGridControl.Columns>
+                            </dataGridControl:DataGridControl>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

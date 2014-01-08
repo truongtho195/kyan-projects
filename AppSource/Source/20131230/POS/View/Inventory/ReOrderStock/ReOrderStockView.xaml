@@ -1,0 +1,299 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:CPC.POS"
+             x:Class="CPC.POS.View.ReOrderStockView"
+             x:Name="reOrderStockView"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             Background="{DynamicResource UserControlBackground}">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C114}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="SizeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="OnHandQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource C152}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AvailableHeaderTemplate">
+            <TextBlock Text="{DynamicResource C154}" />
+        </DataTemplate>
+        <DataTemplate x:Key="OnOrderHeaderTemplate">
+            <TextBlock Text="{DynamicResource C153}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReorderPointHeaderTemplate">
+            <TextBlock Text="{DynamicResource RO103}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReOrderQuantityHeaderTemplate">
+            <TextBlock Text="{DynamicResource RO102}" />
+        </DataTemplate>
+        <DataTemplate x:Key="VendorHeaderTemplate">
+            <TextBlock Text="{DynamicResource C134}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ReOrderHeaderTemplate">
+            <TextBlock Text="{DynamicResource RO100}" />
+        </DataTemplate>
+
+    </UserControl.Resources>
+	<UserControl.InputBindings>
+		<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+	</UserControl.InputBindings>
+    <control:BusyIndicator IsBusy="{Binding IsBusy}">
+        <Grid x:Name="grdReorderStock"
+              d:LayoutOverrides="Height">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="UserControl_Background_Image"
+                       Fill="{DynamicResource UserControl_Background_Image}"
+                       Grid.RowSpan="2" />
+            <StackPanel x:Name="stkpBtn"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0">
+                <Button Style="{DynamicResource ButtonSystem}"
+                        x:Name="btnReorder"
+                        Width="40"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding SelectedItems,ElementName=dtgrdReorderStock}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Height="40">
+                    <StackPanel HorizontalAlignment="Center"
+                                x:Name="stkpBtnReorder"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle Fill="{DynamicResource ReorderStock}"
+                                   Height="30"
+                                   Width="30" />
+                        <TextBlock Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Text="Reorder"
+                                   x:Name="txtblReorder"
+                                   TextWrapping="NoWrap"
+                                   Visibility="Collapsed"
+                                   Style="{DynamicResource ButtonSystemTextBlock}" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{DynamicResource ButtonSystem}"
+                        x:Name="btnExit"
+                        Visibility="Collapsed"
+                        Height="40"
+                        Width="40"
+                        Margin="0">
+                    <StackPanel HorizontalAlignment="Center"
+                                x:Name="stkpBtnExit"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgExit"
+                                   Fill="{DynamicResource Exit}"
+                                   Height="30"
+                                   Width="30" />
+                        <TextBlock Margin="5,0,0,0"
+                                   x:Name="txtblExit"
+                                   VerticalAlignment="Center"
+                                   Text="Exit"
+                                   TextWrapping="NoWrap"
+                                   Visibility="Collapsed"
+                                   Style="{DynamicResource ButtonSystemTextBlock}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                       HorizontalAlignment="Stretch"
+                       x:Name="Line"
+                       VerticalAlignment="Top"
+                       Height="1"
+                       Grid.Row="1"
+                       Margin="2,0,2,0" />
+            <Grid x:Name="grdContentReorderStock"
+                  Margin="10"
+                  Grid.Row="1">
+                <Border x:Name="brdReorderStock"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderThickness="1"
+                        BorderBrush="{DynamicResource TabControlBorder}">
+                    <Grid x:Name="grdContentReorderStock1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblStore"
+                                   Text="{DynamicResource C155}"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   d:LayoutOverrides="HorizontalAlignment, Height"
+                                   Margin="10,0,0,0"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   VerticalAlignment="Center" />
+                        <ComboBox x:Name="cmbStore"
+                                  DisplayMemberPath="Name"
+                                  ItemsSource="{Binding StoreCollection}"
+                                  SelectedItem="{Binding SelectedStore}"
+                                  Margin="50,2,0,2"
+                                  Height="21"
+                                  Width="250"
+                                  HorizontalAlignment="Left" />
+                        <dataGridControl:DataGridControl x:Name="dtgrdReorderStock"
+                                                         Margin="10,0.2,10,10"
+                                                         IsRollBackData="False"
+                                                         AutoGenerateColumns="False"
+                                                         CanUserAddRows="False"
+                                                         CanUserDeleteRows="False"
+                                                         behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+                                                         behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem,ElementName=dtgrdReorderStock}"
+                                                         Command="{Binding LoadStepCommand}"
+                                                         SelectionMode="Extended"
+                                                         DisplayItems="{Binding NumberOfDisplayItems}"
+                                                         IsPaging="True"
+                                                         ItemsSource="{Binding ProductCollection,IsAsync=True}"
+                                                         NumberOfItems="{Binding TotalProducts}"
+                                                         Style="{DynamicResource DatagridWithRowHeader}"
+                                                         Grid.Row="2">
+                            <dataGridControl:DataGridControl.ContextMenu>
+                                <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                    <MenuItem  HeaderTemplate="{DynamicResource ReOrderHeaderTemplate}"
+                                               Command="{Binding SaveCommand}"
+                                               CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}">
+                                        <MenuItem.Icon>
+                                            <Rectangle Width="16"
+                                                       Height="16"
+                                                       Fill="{DynamicResource ReorderStock}"
+                                                       Stretch="Fill" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </dataGridControl:DataGridControl.ContextMenu>
+                            <dataGridControl:DataGridControl.Columns>
+                                <DataGridTextColumn HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
+                                                    IsReadOnly="True"
+                                                    Binding="{Binding Code}"
+                                                    Width="80" />
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Left"
+                                                       Text="{Binding ProductName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Left"
+                                                       Text="{Binding Attribute, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource SizeHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Left"
+                                                       Text="{Binding Size, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource OnHandQtyHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right"
+                                                       Text="{Binding QuantityOnHand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,
+													   StringFormat={x:Static local:Define.NumericFormat}
+													  ,ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource AvailableHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right"
+                                                       Text="{Binding QuantityAvailable, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,StringFormat={x:Static local:Define.NumericFormat}
+													  ,ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource OnOrderHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right"
+                                                       Text="{Binding QuantityOnPO, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,StringFormat={x:Static local:Define.NumericFormat}
+													  ,ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn  HeaderTemplate="{StaticResource ReorderPointHeaderTemplate}"
+                                                         IsReadOnly="True"
+                                                         Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right"
+                                                       Foreground="{DynamicResource ForegroundGreenBrush}"
+                                                       Text="{Binding CompanyReOrderPoint, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,StringFormat={x:Static local:Define.NumericFormat}
+													  ,ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource ReOrderQuantityHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="75">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right"
+                                                       Foreground="{DynamicResource ForegroundRedBrush}"
+                                                       Text="{Binding ReOrderQuatity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,StringFormat={x:Static local:Define.NumericFormat}
+													  ,ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn HeaderTemplate="{StaticResource VendorHeaderTemplate}"
+                                                        IsReadOnly="True"
+                                                        Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Left"
+                                                       Text="{Binding VendorName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </dataGridControl:DataGridControl.Columns>
+                        </dataGridControl:DataGridControl>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </control:BusyIndicator>
+</UserControl>

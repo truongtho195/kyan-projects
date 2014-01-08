@@ -1,0 +1,2916 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="POSModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="POSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="pga_exception" EntityType="POSModel.pga_exception" />
+    <EntitySet Name="pga_job" EntityType="POSModel.pga_job" />
+    <EntitySet Name="pga_jobagent" EntityType="POSModel.pga_jobagent" />
+    <EntitySet Name="pga_jobclass" EntityType="POSModel.pga_jobclass" />
+    <EntitySet Name="pga_joblog" EntityType="POSModel.pga_joblog" />
+    <EntitySet Name="pga_jobstep" EntityType="POSModel.pga_jobstep" />
+    <EntitySet Name="pga_jobsteplog" EntityType="POSModel.pga_jobsteplog" />
+    <EntitySet Name="pga_schedule" EntityType="POSModel.pga_schedule" />
+    <EntitySet Name="base_Attachment" EntityType="POSModel.base_Attachment" />
+    <EntitySet Name="base_Authorize" EntityType="POSModel.base_Authorize" />
+    <EntitySet Name="base_CardManagement" EntityType="POSModel.base_CardManagement" />
+    <EntitySet Name="base_CashFlow" EntityType="POSModel.base_CashFlow" />
+    <EntitySet Name="base_Configuration" EntityType="POSModel.base_Configuration" />
+    <EntitySet Name="base_CostAdjustment" EntityType="POSModel.base_CostAdjustment" />
+    <EntitySet Name="base_CountStock" EntityType="POSModel.base_CountStock" />
+    <EntitySet Name="base_CountStockDetail" EntityType="POSModel.base_CountStockDetail" />
+    <EntitySet Name="base_CustomerReminder" EntityType="POSModel.base_CustomerReminder" />
+    <EntitySet Name="base_CustomField" EntityType="POSModel.base_CustomField" />
+    <EntitySet Name="base_Department" EntityType="POSModel.base_Department" />
+    <EntitySet Name="base_GenericCode" EntityType="POSModel.base_GenericCode" />
+    <EntitySet Name="base_Guest" EntityType="POSModel.base_Guest" />
+    <EntitySet Name="base_GuestAdditional" EntityType="POSModel.base_GuestAdditional" />
+    <EntitySet Name="base_GuestAddress" EntityType="POSModel.base_GuestAddress" />
+    <EntitySet Name="base_GuestFingerPrint" EntityType="POSModel.base_GuestFingerPrint" />
+    <EntitySet Name="base_GuestGroup" EntityType="POSModel.base_GuestGroup" />
+    <EntitySet Name="base_GuestPaymentCard" EntityType="POSModel.base_GuestPaymentCard" />
+    <EntitySet Name="base_GuestProfile" EntityType="POSModel.base_GuestProfile" />
+    <EntitySet Name="base_GuestReward" EntityType="POSModel.base_GuestReward" />
+    <EntitySet Name="base_GuestSchedule" EntityType="POSModel.base_GuestSchedule" />
+    <EntitySet Name="base_LayawayManager" EntityType="POSModel.base_LayawayManager" />
+    <EntitySet Name="base_MemberShip" EntityType="POSModel.base_MemberShip" />
+    <EntitySet Name="base_PricingChange" EntityType="POSModel.base_PricingChange" />
+    <EntitySet Name="base_PricingManager" EntityType="POSModel.base_PricingManager" />
+    <EntitySet Name="base_Product" EntityType="POSModel.base_Product" />
+    <EntitySet Name="base_ProductGroup" EntityType="POSModel.base_ProductGroup" />
+    <EntitySet Name="base_ProductStore" EntityType="POSModel.base_ProductStore" />
+    <EntitySet Name="base_ProductUOM" EntityType="POSModel.base_ProductUOM" />
+    <EntitySet Name="base_Promotion" EntityType="POSModel.base_Promotion" />
+    <EntitySet Name="base_PromotionAffect" EntityType="POSModel.base_PromotionAffect" />
+    <EntitySet Name="base_PromotionSchedule" EntityType="POSModel.base_PromotionSchedule" />
+    <EntitySet Name="base_PurchaseOrder" EntityType="POSModel.base_PurchaseOrder" />
+    <EntitySet Name="base_PurchaseOrderDetail" EntityType="POSModel.base_PurchaseOrderDetail" />
+    <EntitySet Name="base_PurchaseOrderReceive" EntityType="POSModel.base_PurchaseOrderReceive" />
+    <EntitySet Name="base_QuantityAdjustment" EntityType="POSModel.base_QuantityAdjustment" />
+    <EntitySet Name="base_Reminder" EntityType="POSModel.base_Reminder" />
+    <EntitySet Name="base_ResourceAccount" EntityType="POSModel.base_ResourceAccount" />
+    <EntitySet Name="base_ResourceNote" EntityType="POSModel.base_ResourceNote" />
+    <EntitySet Name="base_ResourcePayment" EntityType="POSModel.base_ResourcePayment" />
+    <EntitySet Name="base_ResourcePaymentDetail" EntityType="POSModel.base_ResourcePaymentDetail" />
+    <EntitySet Name="base_ResourcePhoto" EntityType="POSModel.base_ResourcePhoto" />
+    <EntitySet Name="base_ResourceReturn" EntityType="POSModel.base_ResourceReturn" />
+    <EntitySet Name="base_ResourceReturnDetail" EntityType="POSModel.base_ResourceReturnDetail" />
+    <EntitySet Name="base_RewardManager" EntityType="POSModel.base_RewardManager" />
+    <EntitySet Name="base_SaleCommission" EntityType="POSModel.base_SaleCommission" />
+    <EntitySet Name="base_SaleOrder" EntityType="POSModel.base_SaleOrder" />
+    <EntitySet Name="base_SaleOrderDetail" EntityType="POSModel.base_SaleOrderDetail" />
+    <EntitySet Name="base_SaleOrderShip" EntityType="POSModel.base_SaleOrderShip" />
+    <EntitySet Name="base_SaleOrderShipDetail" EntityType="POSModel.base_SaleOrderShipDetail" />
+    <EntitySet Name="base_SaleTaxLocation" EntityType="POSModel.base_SaleTaxLocation" />
+    <EntitySet Name="base_SaleTaxLocationOption" EntityType="POSModel.base_SaleTaxLocationOption" />
+    <EntitySet Name="base_Store" EntityType="POSModel.base_Store" />
+    <EntitySet Name="base_TransferStock" EntityType="POSModel.base_TransferStock" />
+    <EntitySet Name="base_TransferStockDetail" EntityType="POSModel.base_TransferStockDetail" />
+    <EntitySet Name="base_UOM" EntityType="POSModel.base_UOM" />
+    <EntitySet Name="base_UserLog" EntityType="POSModel.base_UserLog" />
+    <EntitySet Name="base_UserLogDetail" EntityType="POSModel.base_UserLogDetail" />
+    <EntitySet Name="base_UserRight" EntityType="POSModel.base_UserRight" />
+    <EntitySet Name="base_VendorProduct" EntityType="POSModel.base_VendorProduct" />
+    <EntitySet Name="base_VirtualFolder" EntityType="POSModel.base_VirtualFolder" />
+    <EntitySet Name="rpt_Department" EntityType="POSModel.rpt_Department" />
+    <EntitySet Name="rpt_Group" EntityType="POSModel.rpt_Group" />
+    <EntitySet Name="rpt_Menu" EntityType="POSModel.rpt_Menu" />
+    <EntitySet Name="rpt_Report" EntityType="POSModel.rpt_Report" />
+    <EntitySet Name="rpt_UMPermission" EntityType="POSModel.rpt_UMPermission" />
+    <EntitySet Name="rpt_URPermission" EntityType="POSModel.rpt_URPermission" />
+    <EntitySet Name="rpt_User" EntityType="POSModel.rpt_User" />
+    <EntitySet Name="tims_Holiday" EntityType="POSModel.tims_Holiday" />
+    <EntitySet Name="tims_HolidayHistory" EntityType="POSModel.tims_HolidayHistory" />
+    <EntitySet Name="tims_TimeLog" EntityType="POSModel.tims_TimeLog" />
+    <EntitySet Name="tims_WorkPermission" EntityType="POSModel.tims_WorkPermission" />
+    <EntitySet Name="tims_WorkSchedule" EntityType="POSModel.tims_WorkSchedule" />
+    <EntitySet Name="tims_WorkWeek" EntityType="POSModel.tims_WorkWeek" />
+    <AssociationSet Name="pga_exception_jexscid_fkey" Association="POSModel.pga_exception_jexscid_fkey">
+      <End Role="pga_schedule" EntitySet="pga_schedule" />
+      <End Role="pga_exception" EntitySet="pga_exception" />
+    </AssociationSet>
+    <AssociationSet Name="pga_job_jobagentid_fkey" Association="POSModel.pga_job_jobagentid_fkey">
+      <End Role="pga_jobagent" EntitySet="pga_jobagent" />
+      <End Role="pga_job" EntitySet="pga_job" />
+    </AssociationSet>
+    <AssociationSet Name="pga_job_jobjclid_fkey" Association="POSModel.pga_job_jobjclid_fkey">
+      <End Role="pga_jobclass" EntitySet="pga_jobclass" />
+      <End Role="pga_job" EntitySet="pga_job" />
+    </AssociationSet>
+    <AssociationSet Name="pga_joblog_jlgjobid_fkey" Association="POSModel.pga_joblog_jlgjobid_fkey">
+      <End Role="pga_job" EntitySet="pga_job" />
+      <End Role="pga_joblog" EntitySet="pga_joblog" />
+    </AssociationSet>
+    <AssociationSet Name="pga_jobstep_jstjobid_fkey" Association="POSModel.pga_jobstep_jstjobid_fkey">
+      <End Role="pga_job" EntitySet="pga_job" />
+      <End Role="pga_jobstep" EntitySet="pga_jobstep" />
+    </AssociationSet>
+    <AssociationSet Name="pga_schedule_jscjobid_fkey" Association="POSModel.pga_schedule_jscjobid_fkey">
+      <End Role="pga_job" EntitySet="pga_job" />
+      <End Role="pga_schedule" EntitySet="pga_schedule" />
+    </AssociationSet>
+    <AssociationSet Name="pga_jobsteplog_jsljlgid_fkey" Association="POSModel.pga_jobsteplog_jsljlgid_fkey">
+      <End Role="pga_joblog" EntitySet="pga_joblog" />
+      <End Role="pga_jobsteplog" EntitySet="pga_jobsteplog" />
+    </AssociationSet>
+    <AssociationSet Name="pga_jobsteplog_jsljstid_fkey" Association="POSModel.pga_jobsteplog_jsljstid_fkey">
+      <End Role="pga_jobstep" EntitySet="pga_jobstep" />
+      <End Role="pga_jobsteplog" EntitySet="pga_jobsteplog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id" Association="POSModel.FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id">
+      <End Role="base_VirtualFolder" EntitySet="base_VirtualFolder" />
+      <End Role="base_Attachment" EntitySet="base_Attachment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_CostAdjustment_base_Product" Association="POSModel.FK_base_CostAdjustment_base_Product">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_CostAdjustment" EntitySet="base_CostAdjustment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_CounStockDetail_CountStockId_base_CountStock_id" Association="POSModel.FK_base_CounStockDetail_CountStockId_base_CountStock_id">
+      <End Role="base_CountStock" EntitySet="base_CountStock" />
+      <End Role="base_CountStockDetail" EntitySet="base_CountStockDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_Department_ParentId_base_Department_Id" Association="POSModel.FK_base_Department_ParentId_base_Department_Id">
+      <End Role="base_Department" EntitySet="base_Department" />
+      <End Role="base_Department1" EntitySet="base_Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_Guest_ParentId_base_Guest_Id" Association="POSModel.FK_base_Guest_ParentId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_Guest1" EntitySet="base_Guest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestAdditional_base_Guest_Id" Association="POSModel.FK_base_GuestAdditional_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestAdditional" EntitySet="base_GuestAdditional" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestAddress_base_Guest_Id" Association="POSModel.FK_base_GuestAddress_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestAddress" EntitySet="base_GuestAddress" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestFingerPrint_GuestId_base_Guest_Id" Association="POSModel.FK_base_GuestFingerPrint_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestFingerPrint" EntitySet="base_GuestFingerPrint" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestPaymentCard_GuestId_base_Guest_Id" Association="POSModel.FK_base_GuestPaymentCard_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestPaymentCard" EntitySet="base_GuestPaymentCard" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestProfile_GuestId_base_Guest_Id" Association="POSModel.FK_base_GuestProfile_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestProfile" EntitySet="base_GuestProfile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestReward_GuestId_base_Guest_Id" Association="POSModel.FK_base_GuestReward_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestReward" EntitySet="base_GuestReward" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestSchedule_GuestId_base_Guest_Id" Association="POSModel.FK_base_GuestSchedule_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_GuestSchedule" EntitySet="base_GuestSchedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_MemberShip_GuestId_base_Guest_Id" Association="POSModel.FK_base_MemberShip_GuestId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_MemberShip" EntitySet="base_MemberShip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_VendorProduct_VendorId_base_Guest_Id" Association="POSModel.FK_base_VendorProduct_VendorId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="base_VendorProduct" EntitySet="base_VendorProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tims_TimeLog_EmployeeId_base_Guest_Id" Association="POSModel.FK_tims_TimeLog_EmployeeId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="tims_TimeLog" EntitySet="tims_TimeLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tims_WorkPermission_EmployeeId_base_Guest_Id" Association="POSModel.FK_tims_WorkPermission_EmployeeId_base_Guest_Id">
+      <End Role="base_Guest" EntitySet="base_Guest" />
+      <End Role="tims_WorkPermission" EntitySet="tims_WorkPermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestReward_RewardId_base_RewardManager_Id" Association="POSModel.FK_base_GuestReward_RewardId_base_RewardManager_Id">
+      <End Role="base_RewardManager" EntitySet="base_RewardManager" />
+      <End Role="base_GuestReward" EntitySet="base_GuestReward" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id" Association="POSModel.FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id">
+      <End Role="tims_WorkSchedule" EntitySet="tims_WorkSchedule" />
+      <End Role="base_GuestSchedule" EntitySet="base_GuestSchedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PricingChange_PricingManagerId_base_PricingManager_Id" Association="POSModel.FK_base_PricingChange_PricingManagerId_base_PricingManager_Id">
+      <End Role="base_PricingManager" EntitySet="base_PricingManager" />
+      <End Role="base_PricingChange" EntitySet="base_PricingChange" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PricingChange_ProductId_base_Product_Id" Association="POSModel.FK_base_PricingChange_ProductId_base_Product_Id">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_PricingChange" EntitySet="base_PricingChange" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ProductGroup_ProductId_base_Product_Id" Association="POSModel.FK_base_ProductGroup_ProductId_base_Product_Id">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_ProductGroup" EntitySet="base_ProductGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ProductGroup_ProductParentId_base_Product_Id" Association="POSModel.FK_base_ProductGroup_ProductParentId_base_Product_Id">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_ProductGroup" EntitySet="base_ProductGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_QuantityAdjustment_base_Product" Association="POSModel.FK_base_QuantityAdjustment_base_Product">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_QuantityAdjustment" EntitySet="base_QuantityAdjustment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_VendorProduct_ProductId_base_Product_Id" Association="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_VendorProduct" EntitySet="base_VendorProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_baseProductStore_ProductId_base_Product_Id" Association="POSModel.FK_baseProductStore_ProductId_base_Product_Id">
+      <End Role="base_Product" EntitySet="base_Product" />
+      <End Role="base_ProductStore" EntitySet="base_ProductStore" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" Association="POSModel.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id">
+      <End Role="base_ProductStore" EntitySet="base_ProductStore" />
+      <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ProductUOM_UOMId_base_UOM_Id" Association="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id">
+      <End Role="base_UOM" EntitySet="base_UOM" />
+      <End Role="base_ProductUOM" EntitySet="base_ProductUOM" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id" Association="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
+      <End Role="base_Promotion" EntitySet="base_Promotion" />
+      <End Role="base_PromotionAffect" EntitySet="base_PromotionAffect" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" Association="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
+      <End Role="base_Promotion" EntitySet="base_Promotion" />
+      <End Role="base_PromotionSchedule" EntitySet="base_PromotionSchedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" Association="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_">
+      <End Role="base_PurchaseOrder" EntitySet="base_PurchaseOrder" />
+      <End Role="base_PurchaseOrderDetail" EntitySet="base_PurchaseOrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas" Association="POSModel.FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas">
+      <End Role="base_PurchaseOrderDetail" EntitySet="base_PurchaseOrderDetail" />
+      <End Role="base_PurchaseOrderReceive" EntitySet="base_PurchaseOrderReceive" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa" Association="POSModel.FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa">
+      <End Role="base_ResourcePayment" EntitySet="base_ResourcePayment" />
+      <End Role="base_ResourcePaymentDetail" EntitySet="base_ResourcePaymentDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu" Association="POSModel.FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu">
+      <End Role="base_ResourceReturn" EntitySet="base_ResourceReturn" />
+      <End Role="base_ResourceReturnDetail" EntitySet="base_ResourceReturnDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" Association="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id">
+      <End Role="base_SaleOrder" EntitySet="base_SaleOrder" />
+      <End Role="base_SaleOrderDetail" EntitySet="base_SaleOrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" Association="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id">
+      <End Role="base_SaleOrder" EntitySet="base_SaleOrder" />
+      <End Role="base_SaleOrderShip" EntitySet="base_SaleOrderShip" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_" Association="POSModel.FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_">
+      <End Role="base_SaleOrderShip" EntitySet="base_SaleOrderShip" />
+      <End Role="base_SaleOrderShipDetail" EntitySet="base_SaleOrderShipDetail" />
+    </AssociationSet>
+    <AssociationSet Name="base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati" Association="POSModel.base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati">
+      <End Role="base_SaleTaxLocation" EntitySet="base_SaleTaxLocation" />
+      <End Role="base_SaleTaxLocationOption" EntitySet="base_SaleTaxLocationOption" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_TransferStockDetail_TransferStockId_base_TransferStock_" Association="POSModel.FK_base_TransferStockDetail_TransferStockId_base_TransferStock_">
+      <End Role="base_TransferStock" EntitySet="base_TransferStock" />
+      <End Role="base_TransferStockDetail" EntitySet="base_TransferStockDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_UserLogDetail_UserLogId_base_UserLog_Id" Association="POSModel.FK_base_UserLogDetail_UserLogId_base_UserLog_Id">
+      <End Role="base_UserLog" EntitySet="base_UserLog" />
+      <End Role="base_UserLogDetail" EntitySet="base_UserLogDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId" Association="POSModel.FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId">
+      <End Role="base_VirtualFolder" EntitySet="base_VirtualFolder" />
+      <End Role="base_VirtualFolder1" EntitySet="base_VirtualFolder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rpt_Report_GroupId_rpt_Group_Id" Association="POSModel.FK_rpt_Report_GroupId_rpt_Group_Id">
+      <End Role="rpt_Group" EntitySet="rpt_Group" />
+      <End Role="rpt_Report" EntitySet="rpt_Report" />
+    </AssociationSet>
+    <AssociationSet Name="rpt_UMPermission_MenuId_fkey" Association="POSModel.rpt_UMPermission_MenuId_fkey">
+      <End Role="rpt_Menu" EntitySet="rpt_Menu" />
+      <End Role="rpt_UMPermission" EntitySet="rpt_UMPermission" />
+    </AssociationSet>
+    <AssociationSet Name="rpt_URPermission_ReportId_fkey" Association="POSModel.rpt_URPermission_ReportId_fkey">
+      <End Role="rpt_Report" EntitySet="rpt_Report" />
+      <End Role="rpt_URPermission" EntitySet="rpt_URPermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id" Association="POSModel.FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id">
+      <End Role="tims_WorkSchedule" EntitySet="tims_WorkSchedule" />
+      <End Role="tims_TimeLog" EntitySet="tims_TimeLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id" Association="POSModel.FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id">
+      <End Role="tims_WorkSchedule" EntitySet="tims_WorkSchedule" />
+      <End Role="tims_WorkWeek" EntitySet="tims_WorkWeek" />
+    </AssociationSet>
+    <AssociationSet Name="tims_TimeLogPermission" Association="POSModel.tims_TimeLogPermission">
+      <End Role="tims_TimeLog" EntitySet="tims_TimeLog" />
+      <End Role="tims_WorkPermission" EntitySet="tims_WorkPermission" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="pga_exception">
+    <Key>
+      <PropertyRef Name="jexid" />
+    </Key>
+    <Property Name="jexid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jexscid" Type="Int32" Nullable="false" />
+    <Property Name="jexdate" Type="DateTime" Precision="0" />
+    <Property Name="jextime" Type="Time" Precision="6" />
+    <NavigationProperty Name="pga_schedule" Relationship="POSModel.pga_exception_jexscid_fkey" FromRole="pga_exception" ToRole="pga_schedule" />
+  </EntityType>
+  <EntityType Name="pga_job">
+    <Key>
+      <PropertyRef Name="jobid" />
+    </Key>
+    <Property Name="jobid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jobjclid" Type="Int32" Nullable="false" />
+    <Property Name="jobname" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jobdesc" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jobhostagent" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jobenabled" Type="Boolean" Nullable="false" />
+    <Property Name="jobcreated" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <Property Name="jobchanged" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <Property Name="jobagentid" Type="Int32" />
+    <Property Name="jobnextrun" Type="DateTimeOffset" Precision="7" />
+    <Property Name="joblastrun" Type="DateTimeOffset" Precision="7" />
+    <NavigationProperty Name="pga_jobagent" Relationship="POSModel.pga_job_jobagentid_fkey" FromRole="pga_job" ToRole="pga_jobagent" />
+    <NavigationProperty Name="pga_jobclass" Relationship="POSModel.pga_job_jobjclid_fkey" FromRole="pga_job" ToRole="pga_jobclass" />
+    <NavigationProperty Name="pga_joblog" Relationship="POSModel.pga_joblog_jlgjobid_fkey" FromRole="pga_job" ToRole="pga_joblog" />
+    <NavigationProperty Name="pga_jobstep" Relationship="POSModel.pga_jobstep_jstjobid_fkey" FromRole="pga_job" ToRole="pga_jobstep" />
+    <NavigationProperty Name="pga_schedule" Relationship="POSModel.pga_schedule_jscjobid_fkey" FromRole="pga_job" ToRole="pga_schedule" />
+  </EntityType>
+  <EntityType Name="pga_jobagent">
+    <Key>
+      <PropertyRef Name="jagpid" />
+    </Key>
+    <Property Name="jagpid" Type="Int32" Nullable="false" />
+    <Property Name="jaglogintime" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <Property Name="jagstation" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="pga_job" Relationship="POSModel.pga_job_jobagentid_fkey" FromRole="pga_jobagent" ToRole="pga_job" />
+  </EntityType>
+  <EntityType Name="pga_jobclass">
+    <Key>
+      <PropertyRef Name="jclid" />
+    </Key>
+    <Property Name="jclid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jclname" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="pga_job" Relationship="POSModel.pga_job_jobjclid_fkey" FromRole="pga_jobclass" ToRole="pga_job" />
+  </EntityType>
+  <EntityType Name="pga_joblog">
+    <Key>
+      <PropertyRef Name="jlgid" />
+    </Key>
+    <Property Name="jlgid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jlgjobid" Type="Int32" Nullable="false" />
+    <Property Name="jlgstatus" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="jlgstart" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <NavigationProperty Name="pga_job" Relationship="POSModel.pga_joblog_jlgjobid_fkey" FromRole="pga_joblog" ToRole="pga_job" />
+    <NavigationProperty Name="pga_jobsteplog" Relationship="POSModel.pga_jobsteplog_jsljlgid_fkey" FromRole="pga_joblog" ToRole="pga_jobsteplog" />
+  </EntityType>
+  <EntityType Name="pga_jobstep">
+    <Key>
+      <PropertyRef Name="jstid" />
+    </Key>
+    <Property Name="jstid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jstjobid" Type="Int32" Nullable="false" />
+    <Property Name="jstname" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jstdesc" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jstenabled" Type="Boolean" Nullable="false" />
+    <Property Name="jstkind" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="jstcode" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jstconnstr" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jstonerror" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="jscnextrun" Type="DateTimeOffset" Precision="7" />
+    <NavigationProperty Name="pga_job" Relationship="POSModel.pga_jobstep_jstjobid_fkey" FromRole="pga_jobstep" ToRole="pga_job" />
+    <NavigationProperty Name="pga_jobsteplog" Relationship="POSModel.pga_jobsteplog_jsljstid_fkey" FromRole="pga_jobstep" ToRole="pga_jobsteplog" />
+  </EntityType>
+  <EntityType Name="pga_jobsteplog">
+    <Key>
+      <PropertyRef Name="jslid" />
+    </Key>
+    <Property Name="jslid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jsljlgid" Type="Int32" Nullable="false" />
+    <Property Name="jsljstid" Type="Int32" Nullable="false" />
+    <Property Name="jslstatus" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="jslresult" Type="Int32" />
+    <Property Name="jslstart" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <Property Name="jsloutput" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="pga_joblog" Relationship="POSModel.pga_jobsteplog_jsljlgid_fkey" FromRole="pga_jobsteplog" ToRole="pga_joblog" />
+    <NavigationProperty Name="pga_jobstep" Relationship="POSModel.pga_jobsteplog_jsljstid_fkey" FromRole="pga_jobsteplog" ToRole="pga_jobstep" />
+  </EntityType>
+  <EntityType Name="pga_schedule">
+    <Key>
+      <PropertyRef Name="jscid" />
+    </Key>
+    <Property Name="jscid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jscjobid" Type="Int32" Nullable="false" />
+    <Property Name="jscname" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jscdesc" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="jscenabled" Type="Boolean" Nullable="false" />
+    <Property Name="jscstart" Type="DateTimeOffset" Nullable="false" Precision="7" />
+    <Property Name="jscend" Type="DateTimeOffset" Precision="7" />
+    <NavigationProperty Name="pga_exception" Relationship="POSModel.pga_exception_jexscid_fkey" FromRole="pga_schedule" ToRole="pga_exception" />
+    <NavigationProperty Name="pga_job" Relationship="POSModel.pga_schedule_jscjobid_fkey" FromRole="pga_schedule" ToRole="pga_job" />
+  </EntityType>
+  <EntityType Name="base_Attachment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FileOriginalName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="FileName" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
+    <Property Name="FileExtension" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+    <Property Name="VirtualFolderId" Type="Int32" Nullable="false" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Counter" Type="Int16" Nullable="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_VirtualFolder" Relationship="POSModel.FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id" FromRole="base_Attachment" ToRole="base_VirtualFolder" />
+  </EntityType>
+  <EntityType Name="base_Authorize">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Resource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_CardManagement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="16" Unicode="true" FixedLength="false" />
+    <Property Name="PurchaseDate" Type="DateTime" Precision="6" />
+    <Property Name="InitialAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="LastUsed" Type="DateTime" Precision="6" />
+    <Property Name="RemainingAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="GuestResourcePurchased" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="GuestGiftedResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IsUsed" Type="Boolean" Nullable="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="IsPurged" Type="Boolean" Nullable="false" />
+    <Property Name="PurgeReason" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ScanCode" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ScanImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="IsSold" Type="Boolean" Nullable="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="CardTypeId" Type="Int16" Nullable="false" />
+  </EntityType>
+  <EntityType Name="base_CashFlow">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="CashierResource" />
+      <PropertyRef Name="OpenDate" />
+      <PropertyRef Name="OpenBalance" />
+      <PropertyRef Name="DrawerNo" />
+      <PropertyRef Name="O1" />
+      <PropertyRef Name="O2" />
+      <PropertyRef Name="O3" />
+      <PropertyRef Name="O4" />
+      <PropertyRef Name="O5" />
+      <PropertyRef Name="O6" />
+      <PropertyRef Name="O7" />
+      <PropertyRef Name="O8" />
+      <PropertyRef Name="O9" />
+      <PropertyRef Name="O10" />
+      <PropertyRef Name="O11" />
+      <PropertyRef Name="O12" />
+      <PropertyRef Name="O13" />
+      <PropertyRef Name="O14" />
+      <PropertyRef Name="O15" />
+      <PropertyRef Name="OpenOtherCashTotal" />
+      <PropertyRef Name="OpenCashTotal" />
+      <PropertyRef Name="C1" />
+      <PropertyRef Name="C2" />
+      <PropertyRef Name="C3" />
+      <PropertyRef Name="C4" />
+      <PropertyRef Name="C5" />
+      <PropertyRef Name="C6" />
+      <PropertyRef Name="C7" />
+      <PropertyRef Name="C8" />
+      <PropertyRef Name="C9" />
+      <PropertyRef Name="C10" />
+      <PropertyRef Name="C11" />
+      <PropertyRef Name="C12" />
+      <PropertyRef Name="C13" />
+      <PropertyRef Name="C14" />
+      <PropertyRef Name="C15" />
+      <PropertyRef Name="CloseCashTotal" />
+      <PropertyRef Name="CreditCashTotal" />
+      <PropertyRef Name="VoucherTotal" />
+      <PropertyRef Name="CheckTotal" />
+      <PropertyRef Name="CloseDate" />
+      <PropertyRef Name="CloseBalance" />
+      <PropertyRef Name="ApprovedResource" />
+      <PropertyRef Name="IsCashOut" />
+      <PropertyRef Name="UserCreated" />
+      <PropertyRef Name="DateCreated" />
+      <PropertyRef Name="UserUpdated" />
+      <PropertyRef Name="DateUpdated" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" />
+    <Property Name="CashierResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="OpenDate" Type="Int16" Nullable="false" />
+    <Property Name="OpenBalance" Type="Int16" Nullable="false" />
+    <Property Name="DrawerNo" Type="Int16" Nullable="false" />
+    <Property Name="O1" Type="Int16" Nullable="false" />
+    <Property Name="O2" Type="Int16" Nullable="false" />
+    <Property Name="O3" Type="Int16" Nullable="false" />
+    <Property Name="O4" Type="Int16" Nullable="false" />
+    <Property Name="O5" Type="Int16" Nullable="false" />
+    <Property Name="O6" Type="Int16" Nullable="false" />
+    <Property Name="O7" Type="Int16" Nullable="false" />
+    <Property Name="O8" Type="Int16" Nullable="false" />
+    <Property Name="O9" Type="Int16" Nullable="false" />
+    <Property Name="O10" Type="Int16" Nullable="false" />
+    <Property Name="O11" Type="Int16" Nullable="false" />
+    <Property Name="O12" Type="Int16" Nullable="false" />
+    <Property Name="O13" Type="Int16" Nullable="false" />
+    <Property Name="O14" Type="Int16" Nullable="false" />
+    <Property Name="O15" Type="Int16" Nullable="false" />
+    <Property Name="OpenOtherCashTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="OpenCashTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="C1" Type="Int16" Nullable="false" />
+    <Property Name="C2" Type="Int16" Nullable="false" />
+    <Property Name="C3" Type="Int16" Nullable="false" />
+    <Property Name="C4" Type="Int16" Nullable="false" />
+    <Property Name="C5" Type="Int16" Nullable="false" />
+    <Property Name="C6" Type="Int16" Nullable="false" />
+    <Property Name="C7" Type="Int16" Nullable="false" />
+    <Property Name="C8" Type="Int16" Nullable="false" />
+    <Property Name="C9" Type="Int16" Nullable="false" />
+    <Property Name="C10" Type="Int16" Nullable="false" />
+    <Property Name="C11" Type="Int16" Nullable="false" />
+    <Property Name="C12" Type="Int16" Nullable="false" />
+    <Property Name="C13" Type="Int16" Nullable="false" />
+    <Property Name="C14" Type="Int16" Nullable="false" />
+    <Property Name="C15" Type="Int16" Nullable="false" />
+    <Property Name="CloseCashTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="CreditCashTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="VoucherTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="CheckTotal" Type="Decimal" Nullable="false" Precision="12" Scale="0" />
+    <Property Name="CloseDate" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CloseBalance" Type="Int16" Nullable="false" />
+    <Property Name="ApprovedResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IsCashOut" Type="Boolean" Nullable="false" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+  </EntityType>
+  <EntityType Name="base_Configuration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="CompanyName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Address" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+    <Property Name="City" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="State" Type="Int16" />
+    <Property Name="ZipCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="CountryId" Type="Int16" />
+    <Property Name="Phone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Fax" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Website" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="EmailPop3Server" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="EmailPop3Port" Type="Int32" />
+    <Property Name="EmailAccount" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="EmailPassword" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="IsBarcodeScannerAttached" Type="Boolean" />
+    <Property Name="IsEnableTouchScreenLayout" Type="Boolean" />
+    <Property Name="IsAllowTimeClockAttached" Type="Boolean" />
+    <Property Name="IsAllowCollectTipCreditCard" Type="Boolean" />
+    <Property Name="IsAllowMutilUOM" Type="Boolean" />
+    <Property Name="DefaultMaximumSticky" Type="Int32" />
+    <Property Name="DefaultPriceSchema" Type="Int16" />
+    <Property Name="DefaultPaymentMethod" Type="Int16" />
+    <Property Name="DefaultSaleTaxLocation" Type="Int16" />
+    <Property Name="DefaultTaxCodeNewDepartment" Type="String" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="DefautlImagePath" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="DefautlDiscountScheduleTime" Type="Int32" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="TotalStore" Type="Int16" />
+    <Property Name="IsRequirePromotionCode" Type="Boolean" />
+    <Property Name="DefaultDiscountType" Type="Int16" Nullable="false" />
+    <Property Name="DefaultDiscountStatus" Type="Int16" Nullable="false" />
+    <Property Name="LoginAllow" Type="Int16" />
+    <Property Name="Logo" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="DefaultScanMethod" Type="Int16" />
+    <Property Name="TipPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="AcceptedPaymentMethod" Type="Int32" />
+    <Property Name="AcceptedCardType" Type="Int32" />
+    <Property Name="IsRequireDiscountReason" Type="Boolean" />
+    <Property Name="WorkHour" Type="Int16" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DefaultShipUnit" Type="Int16" />
+    <Property Name="DefaultCashiedUserName" Type="Boolean" />
+    <Property Name="KeepLog" Type="Int16" />
+    <Property Name="IsAllowShift" Type="Boolean" Nullable="false" />
+    <Property Name="DefaultLanguage" Type="String" MaxLength="2" Unicode="true" FixedLength="false" />
+    <Property Name="TimeOutMinute" Type="Int32" />
+    <Property Name="IsAutoLogout" Type="Boolean" />
+    <Property Name="IsBackupWhenExit" Type="Boolean" />
+    <Property Name="BackupEvery" Type="Int32" />
+    <Property Name="BackupPath" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="IsAllowRGO" Type="Boolean" />
+    <Property Name="IsAllowChangeOrder" Type="Boolean" />
+    <Property Name="IsAllowNegativeStore" Type="Boolean" />
+    <Property Name="IsRewardOnTax" Type="Boolean" Nullable="false" />
+    <Property Name="IsRewardOnMultiPayment" Type="Boolean" Nullable="false" />
+    <Property Name="IsIncludeReturnFee" Type="Boolean" Nullable="false" />
+    <Property Name="ReturnFeePercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="IsRewardLessThanDiscount" Type="Boolean" Nullable="false" />
+    <Property Name="CurrencySymbol" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+    <Property Name="DecimalPlaces" Type="Int16" />
+    <Property Name="FomartCurrency" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+    <Property Name="PasswordFormat" Type="String" MaxLength="70" Unicode="true" FixedLength="false" />
+    <Property Name="KeepBackUp" Type="Int32" />
+    <Property Name="CostMethod" Type="Int16" />
+    <Property Name="GenDate" Type="DateTime" Precision="6" />
+    <Property Name="RegNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="MD5Lic" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="StoreFolder" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="SynSchedule" Type="Time" Precision="6" />
+    <Property Name="StoreCode" Type="Int16" />
+    <Property Name="IsLive" Type="Boolean" />
+    <Property Name="POSId" Type="String" MaxLength="8000" Unicode="true" FixedLength="false" />
+    <Property Name="ExpireDate" Type="Int32" />
+    <Property Name="IsRewardOnDiscount" Type="Boolean" />
+    <Property Name="IsCalRewardAfterRedeem" Type="Boolean" Nullable="false" />
+    <Property Name="IsRewardOnRetailer" Type="Boolean" Nullable="false" />
+    <Property Name="ReceiptMessage" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="NegativeNumber" Type="Int16" Nullable="false" />
+    <Property Name="TextNumberAlign" Type="Int16" Nullable="false" />
+    <Property Name="IsAUPPG" Type="Boolean" Nullable="false" />
+    <Property Name="IsStateCode" Type="Boolean" Nullable="false" />
+    <Property Name="IsManualGenerate" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllowFirstCap" Type="Boolean" Nullable="false" />
+    <Property Name="DataSource" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsSendEmailCustomer" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllowAntiExemptionTax" Type="Boolean" Nullable="false" />
+    <Property Name="IsManualPriceCalculation" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllowPayMultiReward" Type="Boolean" Nullable="false" />
+    <Property Name="IsSumCashReward" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllwayCommision" Type="Boolean" Nullable="false" />
+    <Property Name="ReminderDay" Type="Int16" Nullable="false" />
+    <Property Name="WeekHour" Type="Int32" Nullable="false" />
+    <Property Name="RefundVoucherThresHold" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+  </EntityType>
+  <EntityType Name="base_CostAdjustment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="CostDifference" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="NewCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OldCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="AdjustmentNewCost" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="AdjustmentOldCost" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="AdjustCostDifference" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="LoggedTime" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="IsReversed" Type="Boolean" />
+    <Property Name="StoreCode" Type="Int32" />
+    <Property Name="Resource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="Reason" Type="Int16" Nullable="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_CostAdjustment_base_Product" FromRole="base_CostAdjustment" ToRole="base_Product" />
+  </EntityType>
+  <EntityType Name="base_CountStock">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DocumentNo" Type="String" Nullable="false" MaxLength="12" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="CompletedDate" Type="DateTime" Precision="6" />
+    <Property Name="UserCounted" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_CountStockDetail" Relationship="POSModel.FK_base_CounStockDetail_CountStockId_base_CountStock_id" FromRole="base_CountStock" ToRole="base_CountStockDetail" />
+  </EntityType>
+  <EntityType Name="base_CountStockDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountStockId" Type="Int64" Nullable="false" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="StoreId" Type="Int16" Nullable="false" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CountedQuantity" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Difference" Type="Decimal" Precision="12" Scale="2" />
+    <NavigationProperty Name="base_CountStock" Relationship="POSModel.FK_base_CounStockDetail_CountStockId_base_CountStock_id" FromRole="base_CountStockDetail" ToRole="base_CountStock" />
+  </EntityType>
+  <EntityType Name="base_CustomerReminder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ReminderTypeId" Type="Int16" />
+    <Property Name="IsSend" Type="Boolean" Nullable="false" />
+    <Property Name="DateSend" Type="DateTime" Precision="6" />
+    <Property Name="CardName" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="DOB" Type="DateTime" Precision="6" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Company" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Phone" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_CustomField">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Mark" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="FieldName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsShow" Type="Boolean" Nullable="false" />
+    <Property Name="Label" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_Department">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="TaxCodeId" Type="String" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="Margin" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="MarkUp" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="LevelId" Type="Int16" Nullable="false" />
+    <Property Name="IsActived" Type="Boolean" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <NavigationProperty Name="base_Department1" Relationship="POSModel.FK_base_Department_ParentId_base_Department_Id" FromRole="base_Department" ToRole="base_Department1" />
+    <NavigationProperty Name="base_Department2" Relationship="POSModel.FK_base_Department_ParentId_base_Department_Id" FromRole="base_Department1" ToRole="base_Department" />
+  </EntityType>
+  <EntityType Name="base_GenericCode">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Code" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="Language" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_Guest">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="2" Unicode="true" FixedLength="true" />
+    <Property Name="LastName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Company" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Phone1" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Ext1" Type="String" MaxLength="6" Unicode="true" FixedLength="true" />
+    <Property Name="Phone2" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Ext2" Type="String" MaxLength="6" Unicode="true" FixedLength="true" />
+    <Property Name="Fax" Type="String" MaxLength="14" Unicode="true" FixedLength="false" />
+    <Property Name="CellPhone" Type="String" MaxLength="14" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Website" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="IsPurged" Type="Boolean" Nullable="false" />
+    <Property Name="GuestTypeId" Type="Int16" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="GuestNo" Type="String" MaxLength="16" Unicode="true" FixedLength="false" />
+    <Property Name="PositionId" Type="Int16" />
+    <Property Name="Department" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Mark" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="AccountNumber" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ParentId" Type="Int64" />
+    <Property Name="IsRewardMember" Type="Boolean" Nullable="false" />
+    <Property Name="CheckLimit" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="CreditLimit" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="BalanceDue" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="AvailCredit" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="PastDue" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
+    <Property Name="CommissionPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="Resource" Type="Guid" />
+    <Property Name="TotalRewardRedeemed" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="PurchaseDuringTrackingPeriod" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="RequirePurchaseNextReward" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="HireDate" Type="DateTime" Precision="6" />
+    <Property Name="IsBlockArriveLate" Type="Boolean" Nullable="false" />
+    <Property Name="IsDeductLunchTime" Type="Boolean" Nullable="false" />
+    <Property Name="IsBalanceOvertime" Type="Boolean" Nullable="false" />
+    <Property Name="LateMinutes" Type="Int16" Nullable="false" />
+    <Property Name="OvertimeOption" Type="Int32" Nullable="false" />
+    <Property Name="OTLeastMinute" Type="Int16" Nullable="false" />
+    <Property Name="IsTrackingHour" Type="Boolean" Nullable="false" />
+    <Property Name="TermDiscount" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="TermNetDue" Type="Int16" Nullable="false" />
+    <Property Name="TermPaidWithinDay" Type="Int16" Nullable="false" />
+    <Property Name="PaymentTermDescription" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="SaleRepId" Type="Int64" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="IdCard" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IdCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="Remark" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="GroupResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IM" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom2" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom3" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom4" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom5" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom6" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom7" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Custom8" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="Int16" Nullable="false" />
+    <Property Name="IsLayaway" Type="Boolean" Nullable="false" />
+    <Property Name="CreditLine" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="ManagerResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IsVIP" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="base_Guest1" Relationship="POSModel.FK_base_Guest_ParentId_base_Guest_Id" FromRole="base_Guest" ToRole="base_Guest1" />
+    <NavigationProperty Name="base_Guest2" Relationship="POSModel.FK_base_Guest_ParentId_base_Guest_Id" FromRole="base_Guest1" ToRole="base_Guest" />
+    <NavigationProperty Name="base_GuestAdditional" Relationship="POSModel.FK_base_GuestAdditional_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestAdditional" />
+    <NavigationProperty Name="base_GuestAddress" Relationship="POSModel.FK_base_GuestAddress_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestAddress" />
+    <NavigationProperty Name="base_GuestFingerPrint" Relationship="POSModel.FK_base_GuestFingerPrint_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestFingerPrint" />
+    <NavigationProperty Name="base_GuestPaymentCard" Relationship="POSModel.FK_base_GuestPaymentCard_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestPaymentCard" />
+    <NavigationProperty Name="base_GuestProfile" Relationship="POSModel.FK_base_GuestProfile_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestProfile" />
+    <NavigationProperty Name="base_GuestReward" Relationship="POSModel.FK_base_GuestReward_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestReward" />
+    <NavigationProperty Name="base_GuestSchedule" Relationship="POSModel.FK_base_GuestSchedule_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_GuestSchedule" />
+    <NavigationProperty Name="base_MemberShip" Relationship="POSModel.FK_base_MemberShip_GuestId_base_Guest_Id" FromRole="base_Guest" ToRole="base_MemberShip" />
+    <NavigationProperty Name="base_VendorProduct" Relationship="POSModel.FK_base_VendorProduct_VendorId_base_Guest_Id" FromRole="base_Guest" ToRole="base_VendorProduct" />
+    <NavigationProperty Name="tims_TimeLog" Relationship="POSModel.FK_tims_TimeLog_EmployeeId_base_Guest_Id" FromRole="base_Guest" ToRole="tims_TimeLog" />
+    <NavigationProperty Name="tims_WorkPermission" Relationship="POSModel.FK_tims_WorkPermission_EmployeeId_base_Guest_Id" FromRole="base_Guest" ToRole="tims_WorkPermission" />
+  </EntityType>
+  <EntityType Name="base_GuestAdditional">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TaxRate" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="IsNoDiscount" Type="Boolean" />
+    <Property Name="FixDiscount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Unit" Type="Int16" />
+    <Property Name="PriceSchemeId" Type="Int16" />
+    <Property Name="GuestId" Type="Int64" />
+    <Property Name="LayawayNo" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ChargeACNo" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="FedTaxId" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="IsTaxExemption" Type="Boolean" Nullable="false" />
+    <Property Name="SaleTaxLocation" Type="Int32" Nullable="false" />
+    <Property Name="TaxExemptionNo" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ResellerTaxId" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestAdditional_base_Guest_Id" FromRole="base_GuestAdditional" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_GuestAddress">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestId" Type="Int64" Nullable="false" />
+    <Property Name="AddressTypeId" Type="Int32" Nullable="false" />
+    <Property Name="AddressLine1" Type="String" MaxLength="120" Unicode="true" FixedLength="false" />
+    <Property Name="AddressLine2" Type="String" MaxLength="120" Unicode="true" FixedLength="false" />
+    <Property Name="City" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="StateProvinceId" Type="Int32" Nullable="false" />
+    <Property Name="PostalCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestAddress_base_Guest_Id" FromRole="base_GuestAddress" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_GuestFingerPrint">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestId" Type="Int64" Nullable="false" />
+    <Property Name="FingerIndex" Type="Int32" Nullable="false" />
+    <Property Name="HandFlag" Type="Boolean" Nullable="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdaed" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="FingerPrintImage" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestFingerPrint_GuestId_base_Guest_Id" FromRole="base_GuestFingerPrint" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_GuestGroup">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="base_GuestPaymentCard">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestId" Type="Int64" />
+    <Property Name="CardTypeId" Type="Int16" Nullable="false" />
+    <Property Name="CardNumber" Type="String" MaxLength="25" Unicode="true" FixedLength="false" />
+    <Property Name="ExpMonth" Type="Int16" />
+    <Property Name="ExpYear" Type="Int16" Nullable="false" />
+    <Property Name="CCID" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+    <Property Name="BillingAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="NameOnCard" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ZipCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestPaymentCard_GuestId_base_Guest_Id" FromRole="base_GuestPaymentCard" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_GuestProfile">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Gender" Type="Int16" />
+    <Property Name="Marital" Type="Int16" />
+    <Property Name="SSN" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="Identification" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="DOB" Type="DateTime" Precision="6" />
+    <Property Name="IsSpouse" Type="Boolean" />
+    <Property Name="FirstName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="LastName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="State" Type="String" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="SGender" Type="Int16" />
+    <Property Name="SFirstName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="SLastName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="SMiddleName" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="SPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="SCellPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="SSSN" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="SState" Type="String" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="SEmail" Type="String" MaxLength="40" Unicode="true" FixedLength="false" />
+    <Property Name="IsEmergency" Type="Boolean" />
+    <Property Name="EFirstName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ELastName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="EMiddleName" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="EPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ECellPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ERelationship" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="GuestId" Type="Int64" />
+    <Property Name="SRelationShip" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="SIM" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="SDOB" Type="DateTime" Precision="6" />
+    <Property Name="STitle" Type="Int16" Nullable="false" />
+    <Property Name="SIdentification" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ETitle" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestProfile_GuestId_base_Guest_Id" FromRole="base_GuestProfile" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_GuestReward">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestId" Type="Int64" Nullable="false" />
+    <Property Name="RewardId" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="IsApply" Type="Boolean" Nullable="false" />
+    <Property Name="EarnedDate" Type="DateTime" Precision="6" />
+    <Property Name="AppliedDate" Type="DateTime" Precision="6" />
+    <Property Name="RewardValue" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="SaleOrderResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="SaleOrderNo" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="Remark" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ActivedDate" Type="DateTime" Precision="6" />
+    <Property Name="ExpireDate" Type="DateTime" Precision="6" />
+    <Property Name="Reason" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int16" />
+    <Property Name="RewardSetupAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="RewardSetupUnit" Type="Int16" Nullable="false" />
+    <Property Name="Sign" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestReward_GuestId_base_Guest_Id" FromRole="base_GuestReward" ToRole="base_Guest" />
+    <NavigationProperty Name="base_RewardManager" Relationship="POSModel.FK_base_GuestReward_RewardId_base_RewardManager_Id" FromRole="base_GuestReward" ToRole="base_RewardManager" />
+  </EntityType>
+  <EntityType Name="base_GuestSchedule">
+    <Key>
+      <PropertyRef Name="GuestId" />
+      <PropertyRef Name="WorkScheduleId" />
+      <PropertyRef Name="StartDate" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestId" Type="Int64" Nullable="false" />
+    <Property Name="WorkScheduleId" Type="Int32" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="AssignDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_GuestSchedule_GuestId_base_Guest_Id" FromRole="base_GuestSchedule" ToRole="base_Guest" />
+    <NavigationProperty Name="tims_WorkSchedule" Relationship="POSModel.FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id" FromRole="base_GuestSchedule" ToRole="tims_WorkSchedule" />
+  </EntityType>
+  <EntityType Name="base_LayawayManager">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Deposit" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DepositUnit" Type="Int16" Nullable="false" />
+    <Property Name="Term" Type="Int32" Nullable="false" />
+    <Property Name="PaymentSchedule" Type="Int32" />
+    <Property Name="PaymentScheduleType" Type="Int16" />
+    <Property Name="Fee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="FeeUnit" Type="Int16" Nullable="false" />
+    <Property Name="OpenFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CancellationFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CancellationUnit" Type="Int16" Nullable="false" />
+    <Property Name="MinimumPurchase" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="LateFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="ReasonReActive" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="StartDate" Type="DateTime" Precision="6" />
+    <Property Name="EndDate" Type="DateTime" Precision="6" />
+  </EntityType>
+  <EntityType Name="base_MemberShip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCard" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="IdCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="GuestId" Type="Int64" Nullable="false" />
+    <Property Name="MemberType" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="IsPurged" Type="Boolean" Nullable="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="TotalCashReward" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TotalPointReward" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TotalPercentReward" Type="Int32" Nullable="false" />
+    <Property Name="CashRewardCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="CashRewardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="PointRewardCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="PointRewardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="PercentRewardCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="PercentRewardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_MemberShip_GuestId_base_Guest_Id" FromRole="base_MemberShip" ToRole="base_Guest" />
+  </EntityType>
+  <EntityType Name="base_PricingChange">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PricingManagerId" Type="Int32" Nullable="false" />
+    <Property Name="PricingManagerResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Cost" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="CurrentPrice" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="NewPrice" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="PriceChanged" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <NavigationProperty Name="base_PricingManager" Relationship="POSModel.FK_base_PricingChange_PricingManagerId_base_PricingManager_Id" FromRole="base_PricingChange" ToRole="base_PricingManager" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_PricingChange_ProductId_base_Product_Id" FromRole="base_PricingChange" ToRole="base_Product" />
+  </EntityType>
+  <EntityType Name="base_PricingManager">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="DateApplied" Type="DateTime" Precision="6" />
+    <Property Name="UserApplied" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="DateRestored" Type="DateTime" Precision="6" />
+    <Property Name="UserRestored" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="AffectPricing" Type="Int16" Nullable="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="PriceLevel" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="BasePrice" Type="Int16" Nullable="false" />
+    <Property Name="CalculateMethod" Type="Int16" />
+    <Property Name="AmountChange" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="AmountUnit" Type="Int16" />
+    <Property Name="ItemCount" Type="Int32" />
+    <Property Name="Reason" Type="String" MaxLength="400" Unicode="true" FixedLength="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_PricingChange" Relationship="POSModel.FK_base_PricingChange_PricingManagerId_base_PricingManager_Id" FromRole="base_PricingManager" ToRole="base_PricingChange" />
+  </EntityType>
+  <EntityType Name="base_Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemTypeId" Type="Int16" Nullable="false" />
+    <Property Name="ProductDepartmentId" Type="Int32" Nullable="false" />
+    <Property Name="ProductCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProductBrandId" Type="Int32" />
+    <Property Name="StyleModel" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" Unicode="true" FixedLength="false" />
+    <Property Name="Barcode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Attribute" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Size" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="IsSerialTracking" Type="Boolean" Nullable="false" />
+    <Property Name="IsPublicWeb" Type="Boolean" Nullable="false" />
+    <Property Name="OnHandStore1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore5" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore6" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore7" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore8" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore9" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandStore10" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityOnHand" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityOnOrder" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CompanyReOrderPoint" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsUnOrderAble" Type="Boolean" Nullable="false" />
+    <Property Name="IsEligibleForCommission" Type="Boolean" Nullable="false" />
+    <Property Name="IsEligibleForReward" Type="Boolean" Nullable="false" />
+    <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="Price1" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="Price2" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="Price3" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="Price4" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="OrderCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="AverageUnitCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TaxCode" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="MarginPercent" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+    <Property Name="MarkupPercent" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+    <Property Name="BaseUOMId" Type="Int32" Nullable="false" />
+    <Property Name="GroupAttribute" Type="Guid" />
+    <Property Name="Custom1" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom2" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom3" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom4" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom5" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom6" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Custom7" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="WarrantyType" Type="Int16" />
+    <Property Name="WarrantyNumber" Type="Int16" />
+    <Property Name="WarrantyPeriod" Type="Int16" />
+    <Property Name="PartNumber" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="SellUOMId" Type="Int32" />
+    <Property Name="OrderUOMId" Type="Int32" />
+    <Property Name="IsPurge" Type="Boolean" />
+    <Property Name="VendorId" Type="Int64" Nullable="false" />
+    <Property Name="UserAssignedCommission" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="AssignedCommissionPercent" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="AssignedCommissionAmount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Serial" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="OrderUOM" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="MarkdownPercent1" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkdownPercent2" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkdownPercent3" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkdownPercent4" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="IsOpenItem" Type="Boolean" Nullable="false" />
+    <Property Name="Location" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="QuantityOnCustomer" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityAvailable" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Shift" Type="String" MaxLength="8000" Unicode="true" FixedLength="false" />
+    <Property Name="BarCodeImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="IsLayaway" Type="Boolean" Nullable="false" />
+    <Property Name="ALU" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="IsAllowCommission" Type="Boolean" Nullable="false" />
+    <Property Name="ComissionPercent" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CommissionUnit" Type="Int16" Nullable="false" />
+    <Property Name="IPriceFrom" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IPriceTo" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Aisle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Shell" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_CostAdjustment" Relationship="POSModel.FK_base_CostAdjustment_base_Product" FromRole="base_Product" ToRole="base_CostAdjustment" />
+    <NavigationProperty Name="base_PricingChange" Relationship="POSModel.FK_base_PricingChange_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_PricingChange" />
+    <NavigationProperty Name="base_ProductGroup" Relationship="POSModel.FK_base_ProductGroup_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_ProductGroup" />
+    <NavigationProperty Name="base_ProductGroup1" Relationship="POSModel.FK_base_ProductGroup_ProductParentId_base_Product_Id" FromRole="base_Product" ToRole="base_ProductGroup" />
+    <NavigationProperty Name="base_QuantityAdjustment" Relationship="POSModel.FK_base_QuantityAdjustment_base_Product" FromRole="base_Product" ToRole="base_QuantityAdjustment" />
+    <NavigationProperty Name="base_VendorProduct" Relationship="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_VendorProduct" />
+    <NavigationProperty Name="base_ProductStore" Relationship="POSModel.FK_baseProductStore_ProductId_base_Product_Id" FromRole="base_Product" ToRole="base_ProductStore" />
+  </EntityType>
+  <EntityType Name="base_ProductGroup">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductParentId" Type="Int64" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAttribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UOMId" Type="Int32" Nullable="false" />
+    <Property Name="UOM" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_ProductGroup_ProductId_base_Product_Id" FromRole="base_ProductGroup" ToRole="base_Product" />
+    <NavigationProperty Name="base_Product1" Relationship="POSModel.FK_base_ProductGroup_ProductParentId_base_Product_Id" FromRole="base_ProductGroup" ToRole="base_Product" />
+  </EntityType>
+  <EntityType Name="base_ProductStore">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="QuantityOnHand" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="StoreCode" Type="Int32" Nullable="false" />
+    <Property Name="QuantityOnCustomer" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityOnOrder" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReorderPoint" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityAvailable" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="SoldQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TotalSale" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="TotalCOGS" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="SaleProfit" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="PurchasedQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="PurchasedSubTotal" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="TotalProfit" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="SOReturnedQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="SOTotalReturned" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <Property Name="POReturnedQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="POTotalReturned" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_baseProductStore_ProductId_base_Product_Id" FromRole="base_ProductStore" ToRole="base_Product" />
+    <NavigationProperty Name="base_ProductUOM" Relationship="POSModel.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" FromRole="base_ProductStore" ToRole="base_ProductUOM" />
+  </EntityType>
+  <EntityType Name="base_ProductUOM">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductStoreId" Type="Int64" />
+    <Property Name="UOMId" Type="Int32" Nullable="false" />
+    <Property Name="BaseUnitNumber" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+    <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QuantityOnHand" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="AverageCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="MarkDownPercent1" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkDownPercent2" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkDownPercent3" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkDownPercent4" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarginPercent" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="MarkupPercent" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="UPC" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ALU" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_ProductStore" Relationship="POSModel.FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id" FromRole="base_ProductUOM" ToRole="base_ProductStore" />
+    <NavigationProperty Name="base_UOM" Relationship="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id" FromRole="base_ProductUOM" ToRole="base_UOM" />
+  </EntityType>
+  <EntityType Name="base_Promotion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="PromotionTypeId" Type="Int16" Nullable="false" />
+    <Property Name="TakeOffOption" Type="Int16" Nullable="false" />
+    <Property Name="TakeOff" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="BuyingQty" Type="Int32" Nullable="false" />
+    <Property Name="GetingValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsApplyToAboveQuantities" Type="Boolean" Nullable="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="AffectDiscount" Type="Int16" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="CouponExpire" Type="DateTime" Precision="6" />
+    <Property Name="IsCouponExpired" Type="Boolean" Nullable="false" />
+    <Property Name="PriceSchemaRange" Type="Int32" />
+    <Property Name="ReasonReActive" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Sold" Type="Int32" Nullable="false" />
+    <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="VendorId" Type="Int64" />
+    <Property Name="CouponBarCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="BarCodeNumber" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="BarCodeImage" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="IsConflict" Type="Boolean" Nullable="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_PromotionAffect" Relationship="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" FromRole="base_Promotion" ToRole="base_PromotionAffect" />
+    <NavigationProperty Name="base_PromotionSchedule" Relationship="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" FromRole="base_Promotion" ToRole="base_PromotionSchedule" />
+  </EntityType>
+  <EntityType Name="base_PromotionAffect">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PromotionId" Type="Int32" Nullable="false" />
+    <Property Name="ItemId" Type="Int64" Nullable="false" />
+    <Property Name="Price1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Price5" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Discount1" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Discount2" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Discount3" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Discount4" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Discount5" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <NavigationProperty Name="base_Promotion" Relationship="POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id" FromRole="base_PromotionAffect" ToRole="base_Promotion" />
+  </EntityType>
+  <EntityType Name="base_PromotionSchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PromotionId" Type="Int32" Nullable="false" />
+    <Property Name="EndDate" Type="DateTime" Precision="6" />
+    <Property Name="StartDate" Type="DateTime" Precision="6" />
+    <NavigationProperty Name="base_Promotion" Relationship="POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id" FromRole="base_PromotionSchedule" ToRole="base_Promotion" />
+  </EntityType>
+  <EntityType Name="base_PurchaseOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderNo" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="VendorCode" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="ShipAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="PurchasedDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="TermDiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+    <Property Name="TermNetDue" Type="Int16" Nullable="false" />
+    <Property Name="TermPaidWithinDay" Type="Int16" Nullable="false" />
+    <Property Name="PaymentTermDescription" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="PaymentDueDate" Type="DateTime" Precision="6" />
+    <Property Name="PaymentMethodId" Type="Int32" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ShipDate" Type="DateTime" Precision="6" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Freight" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="Fee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Paid" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ItemCount" Type="Int32" Nullable="false" />
+    <Property Name="QtyOrdered" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QtyDue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QtyReceived" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UnFilled" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="DateUpdate" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="CancelDate" Type="DateTime" Precision="6" />
+    <Property Name="IsFullWorkflow" Type="Boolean" Nullable="false" />
+    <Property Name="StoreCode" Type="Int32" Nullable="false" />
+    <Property Name="RecRemark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="PaymentName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsPurge" Type="Boolean" Nullable="false" />
+    <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+    <Property Name="VendorResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="POCard" Type="String" MaxLength="13" Unicode="true" FixedLength="false" />
+    <Property Name="POCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <NavigationProperty Name="base_PurchaseOrderDetail" Relationship="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" FromRole="base_PurchaseOrder" ToRole="base_PurchaseOrderDetail" />
+  </EntityType>
+  <EntityType Name="base_PurchaseOrderDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="BaseUOM" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="UOMId" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReceivedQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DueQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UnFilledQty" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="Amount" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Serial" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="LastReceived" Type="DateTime" Precision="6" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="IsFullReceived" Type="Boolean" Nullable="false" />
+    <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="OnHandQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_PurchaseOrder" Relationship="POSModel.FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_" FromRole="base_PurchaseOrderDetail" ToRole="base_PurchaseOrder" />
+    <NavigationProperty Name="base_PurchaseOrderReceive" Relationship="POSModel.FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas" FromRole="base_PurchaseOrderDetail" ToRole="base_PurchaseOrderReceive" />
+  </EntityType>
+  <EntityType Name="base_PurchaseOrderReceive">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PurchaseOrderDetailId" Type="Int64" Nullable="false" />
+    <Property Name="POResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="RecQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsReceived" Type="Boolean" Nullable="false" />
+    <Property Name="ReceiveDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_PurchaseOrderDetail" Relationship="POSModel.FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas" FromRole="base_PurchaseOrderReceive" ToRole="base_PurchaseOrderDetail" />
+  </EntityType>
+  <EntityType Name="base_QuantityAdjustment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="CostDifference" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OldQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="NewQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="AdjustmentQtyDiff" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="LoggedTime" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="IsReversed" Type="Boolean" />
+    <Property Name="StoreCode" Type="Int32" />
+    <Property Name="Resource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="Reason" Type="Int16" Nullable="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_QuantityAdjustment_base_Product" FromRole="base_QuantityAdjustment" ToRole="base_Product" />
+  </EntityType>
+  <EntityType Name="base_Reminder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Task" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Note" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Priority" Type="Int16" Nullable="false" />
+    <Property Name="Category" Type="Int16" Nullable="false" />
+    <Property Name="ResourceAssigned" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Color" Type="String" MaxLength="9" Unicode="true" FixedLength="false" />
+    <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="IsReminder" Type="Boolean" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Repeat" Type="Int16" Nullable="false" />
+    <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="base_ResourceAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="Resource" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="UserResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="LoginName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+    <Property Name="ExpiredDate" Type="DateTime" Precision="6" />
+    <Property Name="IsLocked" Type="Boolean" />
+    <Property Name="IsExpired" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="base_ResourceNote">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Note" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="Color" Type="String" MaxLength="9" Unicode="true" FixedLength="true" />
+    <Property Name="Resource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_ResourcePayment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DocumentResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="DocumentNo" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TotalPaid" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Change" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Mark" Type="String" MaxLength="2" Unicode="true" FixedLength="false" />
+    <Property Name="IsDeposit" Type="Boolean" />
+    <Property Name="TaxCode" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="TaxAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="LastRewardAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Cashier" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_ResourcePaymentDetail" Relationship="POSModel.FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa" FromRole="base_ResourcePayment" ToRole="base_ResourcePaymentDetail" />
+  </EntityType>
+  <EntityType Name="base_ResourcePaymentDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentType" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="ResourcePaymentId" Type="Int64" Nullable="false" />
+    <Property Name="PaymentMethodId" Type="Int16" Nullable="false" />
+    <Property Name="PaymentMethod" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="CardType" Type="Int16" Nullable="false" />
+    <Property Name="Paid" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Change" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Tip" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="GiftCardNo" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Reason" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Reference" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_ResourcePayment" Relationship="POSModel.FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa" FromRole="base_ResourcePaymentDetail" ToRole="base_ResourcePayment" />
+  </EntityType>
+  <EntityType Name="base_ResourcePhoto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ThumbnailPhoto" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="ThumbnailPhotoFilename" Type="String" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="LargePhoto" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="LargePhotoFilename" Type="String" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="SortId" Type="Int16" />
+    <Property Name="Resource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_ResourceReturn">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DocumentResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="DocumentNo" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="TotalRefund" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Mark" Type="String" Nullable="false" MaxLength="2" Unicode="true" FixedLength="true" />
+    <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Freight" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnFeePercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="Redeemed" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_ResourceReturnDetail" Relationship="POSModel.FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu" FromRole="base_ResourceReturn" ToRole="base_ResourceReturnDetail" />
+  </EntityType>
+  <EntityType Name="base_ResourceReturnDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ResourceReturnId" Type="Int64" Nullable="false" />
+    <Property Name="OrderDetailResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsReturned" Type="Boolean" Nullable="false" />
+    <Property Name="ReturnedDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Discount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ReturnQtyUOM" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="VAT" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="RewardRedeem" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <NavigationProperty Name="base_ResourceReturn" Relationship="POSModel.FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu" FromRole="base_ResourceReturnDetail" ToRole="base_ResourceReturn" />
+  </EntityType>
+  <EntityType Name="base_RewardManager">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StoreCode" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="PurchaseThreshold" Type="Decimal" Nullable="false" Precision="19" Scale="2" />
+    <Property Name="RewardAmount" Type="Decimal" Nullable="false" Precision="19" Scale="2" />
+    <Property Name="RewardAmtType" Type="Int32" Nullable="false" />
+    <Property Name="RewardExpiration" Type="Int32" Nullable="false" />
+    <Property Name="IsAutoEnroll" Type="Boolean" Nullable="false" />
+    <Property Name="IsPromptEnroll" Type="Boolean" Nullable="false" />
+    <Property Name="IsInformCashier" Type="Boolean" Nullable="false" />
+    <Property Name="IsRedemptionLimit" Type="Boolean" Nullable="false" />
+    <Property Name="RedemptionLimitAmount" Type="Decimal" Nullable="false" Precision="19" Scale="2" />
+    <Property Name="IsBlockRedemption" Type="Boolean" Nullable="false" />
+    <Property Name="RedemptionAfterDays" Type="Int32" Nullable="false" />
+    <Property Name="IsBlockPurchaseRedeem" Type="Boolean" Nullable="false" />
+    <Property Name="IsTrackingPeriod" Type="Boolean" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Precision="6" />
+    <Property Name="EndDate" Type="DateTime" Precision="6" />
+    <Property Name="IsNoEndDay" Type="Boolean" Nullable="false" />
+    <Property Name="TotalRewardRedeemed" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="ReasonReActive" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <NavigationProperty Name="base_GuestReward" Relationship="POSModel.FK_base_GuestReward_RewardId_base_RewardManager_Id" FromRole="base_RewardManager" ToRole="base_GuestReward" />
+  </EntityType>
+  <EntityType Name="base_SaleCommission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="SOResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="SONumber" Type="String" MaxLength="12" Unicode="true" FixedLength="false" />
+    <Property Name="SOTotal" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="SODate" Type="DateTime" Precision="6" />
+    <Property Name="SaleOrderDetailResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Attribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Size" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Quanity" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="Price" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Amount" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="ComissionPercent" Type="Decimal" Precision="5" Scale="2" />
+    <Property Name="CommissionAmount" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Sign" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="Remark" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Mark" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+  </EntityType>
+  <EntityType Name="base_SaleOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SONumber" Type="String" MaxLength="12" Unicode="true" FixedLength="false" />
+    <Property Name="OrderDate" Type="DateTime" Precision="6" />
+    <Property Name="OrderStatus" Type="Int16" Nullable="false" />
+    <Property Name="BillAddressId" Type="Int64" />
+    <Property Name="BillAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ShipAddressId" Type="Int64" />
+    <Property Name="ShipAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="PromotionCode" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="SaleRep" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="CustomerResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="PriceSchemaId" Type="Int16" Nullable="false" />
+    <Property Name="DueDate" Type="DateTime" Precision="6" />
+    <Property Name="RequestShipDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="TaxLocation" Type="Int32" Nullable="false" />
+    <Property Name="TaxCode" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="TaxAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="TaxPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="Shipping" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Paid" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="RefundedAmount" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+    <Property Name="IsMultiPayment" Type="Boolean" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="IsFullWorkflow" Type="Boolean" Nullable="false" />
+    <Property Name="QtyOrdered" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QtyDue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="QtyReceived" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UnFilled" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="BookingChanel" Type="Int16" Nullable="false" />
+    <Property Name="ShippedCount" Type="Int16" Nullable="false" />
+    <Property Name="Deposit" Type="Decimal" Precision="12" Scale="2" />
+    <Property Name="Transaction" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="TermDiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="TermNetDue" Type="Int16" Nullable="false" />
+    <Property Name="TermPaidWithinDay" Type="Int16" Nullable="false" />
+    <Property Name="PaymentTermDescription" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsTaxExemption" Type="Boolean" Nullable="false" />
+    <Property Name="TaxExemption" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="ShippedBox" Type="Int16" Nullable="false" />
+    <Property Name="PackedQty" Type="Int16" Nullable="false" />
+    <Property Name="TotalWeight" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="WeightUnit" Type="Int16" Nullable="false" />
+    <Property Name="StoreCode" Type="Int32" Nullable="false" />
+    <Property Name="IsRedeeem" Type="Boolean" Nullable="false" />
+    <Property Name="IsPurge" Type="Boolean" Nullable="false" />
+    <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+    <Property Name="RewardAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Cashier" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsConverted" Type="Boolean" Nullable="false" />
+    <Property Name="Mark" Type="String" MaxLength="2" Unicode="true" FixedLength="true" />
+    <Property Name="AssembledBy" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Shift" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="SOCard" Type="String" MaxLength="13" Unicode="true" FixedLength="false" />
+    <Property Name="SOCardImg" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="VoidReason" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="IsVoided" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="base_SaleOrderDetail" Relationship="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderDetail" />
+    <NavigationProperty Name="base_SaleOrderShip" Relationship="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrder" ToRole="base_SaleOrderShip" />
+  </EntityType>
+  <EntityType Name="base_SaleOrderDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SaleOrderId" Type="Int64" Nullable="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="TaxCode" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="PickQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DueQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UnFilled" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="RegularPrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="SalePrice" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UOMId" Type="Int32" />
+    <Property Name="UOM" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="OnHandQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="SerialTracking" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="BalanceShipped" Type="Int32" Nullable="false" />
+    <Property Name="Comment" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="TotalDiscount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="PromotionId" Type="Int32" />
+    <Property Name="IsManual" Type="Boolean" Nullable="false" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductParentId" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="base_SaleOrder" Relationship="POSModel.FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrderDetail" ToRole="base_SaleOrder" />
+  </EntityType>
+  <EntityType Name="base_SaleOrderShip">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SaleOrderId" Type="Int64" Nullable="false" />
+    <Property Name="SaleOrderResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="Weight" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+    <Property Name="TrackingNo" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsShipped" Type="Boolean" Nullable="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Carrier" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ShipDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="BoxNo" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="base_SaleOrder" Relationship="POSModel.FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id" FromRole="base_SaleOrderShip" ToRole="base_SaleOrder" />
+    <NavigationProperty Name="base_SaleOrderShipDetail" Relationship="POSModel.FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_" FromRole="base_SaleOrderShip" ToRole="base_SaleOrderShipDetail" />
+  </EntityType>
+  <EntityType Name="base_SaleOrderShipDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SaleOrderShipId" Type="Int64" />
+    <Property Name="SaleOrderShipResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="SaleOrderDetailResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="SerialTracking" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="PackedQty" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="IsPaid" Type="Boolean" Nullable="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_SaleOrderShip" Relationship="POSModel.FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_" FromRole="base_SaleOrderShipDetail" ToRole="base_SaleOrderShip" />
+  </EntityType>
+  <EntityType Name="base_SaleTaxLocation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="IsShipingTaxable" Type="Boolean" Nullable="false" />
+    <Property Name="ShippingTaxCodeId" Type="Int32" Nullable="false" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="LevelId" Type="Int16" Nullable="false" />
+    <Property Name="TaxCode" Type="String" MaxLength="3" Unicode="true" FixedLength="true" />
+    <Property Name="TaxCodeName" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="TaxPrintMark" Type="String" MaxLength="1" Unicode="true" FixedLength="true" />
+    <Property Name="TaxOption" Type="Int16" Nullable="false" />
+    <Property Name="IsPrimary" Type="Boolean" Nullable="false" />
+    <Property Name="SortIndex" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="IsTaxAfterDiscount" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="base_SaleTaxLocationOption" Relationship="POSModel.base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati" FromRole="base_SaleTaxLocation" ToRole="base_SaleTaxLocationOption" />
+  </EntityType>
+  <EntityType Name="base_SaleTaxLocationOption">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SaleTaxLocationId" Type="Int32" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" Nullable="false" />
+    <Property Name="TaxRate" Type="Int32" Nullable="false" />
+    <Property Name="TaxComponent" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="TaxAgency" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="TaxCondition" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="IsApplyAmountOver" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllowSpecificItemPriceRange" Type="Boolean" Nullable="false" />
+    <Property Name="IsAllowAmountItemPriceRange" Type="Boolean" Nullable="false" />
+    <Property Name="PriceFrom" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="PriceTo" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <NavigationProperty Name="base_SaleTaxLocation" Relationship="POSModel.base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati" FromRole="base_SaleTaxLocationOption" ToRole="base_SaleTaxLocation" />
+  </EntityType>
+  <EntityType Name="base_Store">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Street" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="City" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Password" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="base_TransferStock">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransferNo" Type="String" Nullable="false" MaxLength="12" Unicode="true" FixedLength="false" />
+    <Property Name="FromStore" Type="Int16" Nullable="false" />
+    <Property Name="ToStore" Type="Int16" Nullable="false" />
+    <Property Name="TotalQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ShipDate" Type="DateTime" Precision="6" />
+    <Property Name="Carier" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ShippingFee" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Comment" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="UserCreated" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Status" Type="Int16" Nullable="false" />
+    <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Total" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="DateApplied" Type="DateTime" Precision="6" />
+    <Property Name="UserApplied" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateReversed" Type="DateTime" Precision="6" />
+    <Property Name="UserReversed" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Shift" Type="String" MaxLength="8000" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_TransferStockDetail" Relationship="POSModel.FK_base_TransferStockDetail_TransferStockId_base_TransferStock_" FromRole="base_TransferStock" ToRole="base_TransferStockDetail" />
+  </EntityType>
+  <EntityType Name="base_TransferStockDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransferStockId" Type="Int64" Nullable="false" />
+    <Property Name="TransferStockResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ItemCode" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="ItemName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ItemAtribute" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ItemSize" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="UOMId" Type="Int32" Nullable="false" />
+    <Property Name="BaseUOM" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="SerialTracking" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="AvlQuantity" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="Resource" Type="Guid" />
+    <Property Name="ParentResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_TransferStock" Relationship="POSModel.FK_base_TransferStockDetail_TransferStockId_base_TransferStock_" FromRole="base_TransferStockDetail" ToRole="base_TransferStock" />
+  </EntityType>
+  <EntityType Name="base_UOM">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="Resource" Type="Guid" />
+    <NavigationProperty Name="base_ProductUOM" Relationship="POSModel.FK_base_ProductUOM_UOMId_base_UOM_Id" FromRole="base_UOM" ToRole="base_ProductUOM" />
+  </EntityType>
+  <EntityType Name="base_UserLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IpSource" Type="String" MaxLength="17" Unicode="true" FixedLength="false" />
+    <Property Name="ConnectedOn" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="DisConnectedOn" Type="DateTime" Precision="6" />
+    <Property Name="ResourceAccessed" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="IsDisconected" Type="Boolean" />
+    <NavigationProperty Name="base_UserLogDetail" Relationship="POSModel.FK_base_UserLogDetail_UserLogId_base_UserLog_Id" FromRole="base_UserLog" ToRole="base_UserLogDetail" />
+  </EntityType>
+  <EntityType Name="base_UserLogDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserLogId" Type="Int64" />
+    <Property Name="AccessedTime" Type="DateTime" Precision="6" />
+    <Property Name="ModuleName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ActionDescription" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_UserLog" Relationship="POSModel.FK_base_UserLogDetail_UserLogId_base_UserLog_Id" FromRole="base_UserLogDetail" ToRole="base_UserLog" />
+  </EntityType>
+  <EntityType Name="base_UserRight">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="GroupId" Type="Int16" />
+  </EntityType>
+  <EntityType Name="base_VendorProduct">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int64" Nullable="false" />
+    <Property Name="VendorId" Type="Int64" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+    <Property Name="ProductResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="VendorResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_base_VendorProduct_VendorId_base_Guest_Id" FromRole="base_VendorProduct" ToRole="base_Guest" />
+    <NavigationProperty Name="base_Product" Relationship="POSModel.FK_base_VendorProduct_ProductId_base_Product_Id" FromRole="base_VendorProduct" ToRole="base_Product" />
+  </EntityType>
+  <EntityType Name="base_VirtualFolder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParentFolderId" Type="Int32" />
+    <Property Name="FolderName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="IsActived" Type="Boolean" Nullable="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+    <NavigationProperty Name="base_Attachment" Relationship="POSModel.FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id" FromRole="base_VirtualFolder" ToRole="base_Attachment" />
+    <NavigationProperty Name="base_VirtualFolder1" Relationship="POSModel.FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId" FromRole="base_VirtualFolder" ToRole="base_VirtualFolder1" />
+    <NavigationProperty Name="base_VirtualFolder2" Relationship="POSModel.FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId" FromRole="base_VirtualFolder1" ToRole="base_VirtualFolder" />
+  </EntityType>
+  <EntityType Name="rpt_Department">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Level" Type="Int16" />
+    <Property Name="Type" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="true" />
+  </EntityType>
+  <EntityType Name="rpt_Group">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="rpt_Report" Relationship="POSModel.FK_rpt_Report_GroupId_rpt_Group_Id" FromRole="rpt_Group" ToRole="rpt_Report" />
+  </EntityType>
+  <EntityType Name="rpt_Menu">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="4" Unicode="true" FixedLength="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+    <Property Name="GroupId" Type="Int32" />
+    <NavigationProperty Name="rpt_UMPermission" Relationship="POSModel.rpt_UMPermission_MenuId_fkey" FromRole="rpt_Menu" ToRole="rpt_UMPermission" />
+  </EntityType>
+  <EntityType Name="rpt_Report">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GroupId" Type="Int32" Nullable="false" />
+    <Property Name="ParentId" Type="Int32" Nullable="false" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="4" Unicode="true" FixedLength="false" />
+    <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="FormatFile" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="IsShow" Type="Boolean" Nullable="false" />
+    <Property Name="PreProcessName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="SamplePicture" Type="Binary" MaxLength="2147483647" FixedLength="false" />
+    <Property Name="PrintTimes" Type="Int32" Nullable="false" />
+    <Property Name="LastPrintDate" Type="DateTime" Precision="6" />
+    <Property Name="LastPrintUser" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ExcelFile" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="PrinterName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="PrintCopy" Type="Int16" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="UserCreated" Type="String" MaxLength="35" Unicode="true" FixedLength="false" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <Property Name="UserUpdated" Type="String" MaxLength="35" Unicode="true" FixedLength="false" />
+    <Property Name="PaperSize" Type="Int16" Nullable="false" />
+    <Property Name="ScreenTimes" Type="Int32" Nullable="false" />
+    <Property Name="PrepProcessDescription" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="CCReport" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="rpt_Group" Relationship="POSModel.FK_rpt_Report_GroupId_rpt_Group_Id" FromRole="rpt_Report" ToRole="rpt_Group" />
+    <NavigationProperty Name="rpt_URPermission" Relationship="POSModel.rpt_URPermission_ReportId_fkey" FromRole="rpt_Report" ToRole="rpt_URPermission" />
+  </EntityType>
+  <EntityType Name="rpt_UMPermission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="MenuId" Type="Int32" Nullable="false" />
+    <Property Name="Right" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="rpt_Menu" Relationship="POSModel.rpt_UMPermission_MenuId_fkey" FromRole="rpt_UMPermission" ToRole="rpt_Menu" />
+  </EntityType>
+  <EntityType Name="rpt_URPermission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserResource" Type="String" Nullable="false" MaxLength="36" Unicode="true" FixedLength="false" />
+    <Property Name="ReportId" Type="Int32" Nullable="false" />
+    <Property Name="IsView" Type="Boolean" Nullable="false" />
+    <Property Name="IsPrint" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="rpt_Report" Relationship="POSModel.rpt_URPermission_ReportId_fkey" FromRole="rpt_URPermission" ToRole="rpt_Report" />
+  </EntityType>
+  <EntityType Name="rpt_User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="LoginName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Resource" Type="Guid" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="6" />
+    <Property Name="ExpiryDate" Type="DateTime" Precision="6" />
+    <Property Name="DepartId" Type="Int32" />
+    <Property Name="Position" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="LevelId" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tims_Holiday">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="HolidayOption" Type="Int32" Nullable="false" />
+    <Property Name="FromDate" Type="DateTime" Precision="6" />
+    <Property Name="ToDate" Type="DateTime" Precision="6" />
+    <Property Name="Month" Type="Int32" />
+    <Property Name="Day" Type="Int32" />
+    <Property Name="DayOfWeek" Type="Int32" />
+    <Property Name="WeekOfMonth" Type="Int32" />
+    <Property Name="ActiveFlag" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="CreatedById" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="6" />
+    <Property Name="ModifiedByID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tims_HolidayHistory">
+    <Key>
+      <PropertyRef Name="Date" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tims_TimeLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int64" />
+    <Property Name="WorkScheduleId" Type="Int32" />
+    <Property Name="PayrollId" Type="Int32" />
+    <Property Name="ClockIn" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="ClockOut" Type="DateTime" Precision="6" />
+    <Property Name="ManualClockInFlag" Type="Boolean" Nullable="false" />
+    <Property Name="ManualClockOutFlag" Type="Boolean" Nullable="false" />
+    <Property Name="WorkTime" Type="Single" Nullable="false" />
+    <Property Name="LunchTime" Type="Single" Nullable="false" />
+    <Property Name="OvertimeBefore" Type="Single" Nullable="false" />
+    <Property Name="Reason" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="DeductLunchTimeFlag" Type="Boolean" Nullable="false" />
+    <Property Name="LateTime" Type="Single" />
+    <Property Name="LeaveEarlyTime" Type="Single" />
+    <Property Name="ActiveFlag" Type="Boolean" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="6" />
+    <Property Name="ModifiedById" Type="Int32" />
+    <Property Name="OvertimeAfter" Type="Single" Nullable="false" />
+    <Property Name="OvertimeLunch" Type="Single" Nullable="false" />
+    <Property Name="OvertimeDayOff" Type="Single" Nullable="false" />
+    <Property Name="OvertimeOptions" Type="Int32" Nullable="false" />
+    <Property Name="GuestResource" Type="String" MaxLength="36" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_tims_TimeLog_EmployeeId_base_Guest_Id" FromRole="tims_TimeLog" ToRole="base_Guest" />
+    <NavigationProperty Name="tims_WorkSchedule" Relationship="POSModel.FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id" FromRole="tims_TimeLog" ToRole="tims_WorkSchedule" />
+    <NavigationProperty Name="tims_WorkPermission" Relationship="POSModel.tims_TimeLogPermission" FromRole="tims_TimeLog" ToRole="tims_WorkPermission" />
+  </EntityType>
+  <EntityType Name="tims_WorkPermission">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+    <Property Name="PermissionType" Type="Int32" Nullable="false" />
+    <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="Note" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="NoOfDays" Type="Int16" Nullable="false" />
+    <Property Name="HourPerDay" Type="Single" Nullable="false" />
+    <Property Name="PaidFlag" Type="Boolean" Nullable="false" />
+    <Property Name="ActiveFlag" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="CreatedById" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="6" />
+    <Property Name="ModifiedById" Type="Int32" />
+    <Property Name="OvertimeOptions" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="base_Guest" Relationship="POSModel.FK_tims_WorkPermission_EmployeeId_base_Guest_Id" FromRole="tims_WorkPermission" ToRole="base_Guest" />
+    <NavigationProperty Name="tims_TimeLog" Relationship="POSModel.tims_TimeLogPermission" FromRole="tims_WorkPermission" ToRole="tims_TimeLog" />
+  </EntityType>
+  <EntityType Name="tims_WorkSchedule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WorkScheduleName" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="WorkScheduleType" Type="Int32" Nullable="false" />
+    <Property Name="Rotate" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="CreatedById" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="6" />
+    <Property Name="ModifiedById" Type="Int32" />
+    <NavigationProperty Name="base_GuestSchedule" Relationship="POSModel.FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id" FromRole="tims_WorkSchedule" ToRole="base_GuestSchedule" />
+    <NavigationProperty Name="tims_TimeLog" Relationship="POSModel.FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id" FromRole="tims_WorkSchedule" ToRole="tims_TimeLog" />
+    <NavigationProperty Name="tims_WorkWeek" Relationship="POSModel.FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id" FromRole="tims_WorkSchedule" ToRole="tims_WorkWeek" />
+  </EntityType>
+  <EntityType Name="tims_WorkWeek">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WorkScheduleId" Type="Int32" Nullable="false" />
+    <Property Name="Week" Type="Int32" Nullable="false" />
+    <Property Name="Day" Type="Int32" Nullable="false" />
+    <Property Name="WorkIn" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="WorkOut" Type="DateTime" Nullable="false" Precision="6" />
+    <Property Name="LunchOut" Type="DateTime" Precision="6" />
+    <Property Name="LunchIn" Type="DateTime" Precision="6" />
+    <Property Name="LunchBreakFlag" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="tims_WorkSchedule" Relationship="POSModel.FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id" FromRole="tims_WorkWeek" ToRole="tims_WorkSchedule" />
+  </EntityType>
+  <Association Name="pga_exception_jexscid_fkey">
+    <End Role="pga_schedule" Type="POSModel.pga_schedule" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_exception" Type="POSModel.pga_exception" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_schedule">
+        <PropertyRef Name="jscid" />
+      </Principal>
+      <Dependent Role="pga_exception">
+        <PropertyRef Name="jexscid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_job_jobagentid_fkey">
+    <End Role="pga_jobagent" Type="POSModel.pga_jobagent" Multiplicity="0..1" />
+    <End Role="pga_job" Type="POSModel.pga_job" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_jobagent">
+        <PropertyRef Name="jagpid" />
+      </Principal>
+      <Dependent Role="pga_job">
+        <PropertyRef Name="jobagentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_job_jobjclid_fkey">
+    <End Role="pga_jobclass" Type="POSModel.pga_jobclass" Multiplicity="1" />
+    <End Role="pga_job" Type="POSModel.pga_job" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_jobclass">
+        <PropertyRef Name="jclid" />
+      </Principal>
+      <Dependent Role="pga_job">
+        <PropertyRef Name="jobjclid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_joblog_jlgjobid_fkey">
+    <End Role="pga_job" Type="POSModel.pga_job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_joblog" Type="POSModel.pga_joblog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_job">
+        <PropertyRef Name="jobid" />
+      </Principal>
+      <Dependent Role="pga_joblog">
+        <PropertyRef Name="jlgjobid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_jobstep_jstjobid_fkey">
+    <End Role="pga_job" Type="POSModel.pga_job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_jobstep" Type="POSModel.pga_jobstep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_job">
+        <PropertyRef Name="jobid" />
+      </Principal>
+      <Dependent Role="pga_jobstep">
+        <PropertyRef Name="jstjobid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_schedule_jscjobid_fkey">
+    <End Role="pga_job" Type="POSModel.pga_job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_schedule" Type="POSModel.pga_schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_job">
+        <PropertyRef Name="jobid" />
+      </Principal>
+      <Dependent Role="pga_schedule">
+        <PropertyRef Name="jscjobid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_jobsteplog_jsljlgid_fkey">
+    <End Role="pga_joblog" Type="POSModel.pga_joblog" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_jobsteplog" Type="POSModel.pga_jobsteplog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_joblog">
+        <PropertyRef Name="jlgid" />
+      </Principal>
+      <Dependent Role="pga_jobsteplog">
+        <PropertyRef Name="jsljlgid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pga_jobsteplog_jsljstid_fkey">
+    <End Role="pga_jobstep" Type="POSModel.pga_jobstep" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="pga_jobsteplog" Type="POSModel.pga_jobsteplog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pga_jobstep">
+        <PropertyRef Name="jstid" />
+      </Principal>
+      <Dependent Role="pga_jobsteplog">
+        <PropertyRef Name="jsljstid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_Attachment_VirtualFolderId_base_VirtualFolder_Id">
+    <End Role="base_VirtualFolder" Type="POSModel.base_VirtualFolder" Multiplicity="1" />
+    <End Role="base_Attachment" Type="POSModel.base_Attachment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_VirtualFolder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_Attachment">
+        <PropertyRef Name="VirtualFolderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_CostAdjustment_base_Product">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1" />
+    <End Role="base_CostAdjustment" Type="POSModel.base_CostAdjustment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_CostAdjustment">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_CounStockDetail_CountStockId_base_CountStock_id">
+    <End Role="base_CountStock" Type="POSModel.base_CountStock" Multiplicity="1" />
+    <End Role="base_CountStockDetail" Type="POSModel.base_CountStockDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_CountStock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_CountStockDetail">
+        <PropertyRef Name="CountStockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_Department_ParentId_base_Department_Id">
+    <End Role="base_Department" Type="POSModel.base_Department" Multiplicity="0..1" />
+    <End Role="base_Department1" Type="POSModel.base_Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_Department1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_Guest_ParentId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="0..1" />
+    <End Role="base_Guest1" Type="POSModel.base_Guest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_Guest1">
+        <PropertyRef Name="ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestAdditional_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestAdditional" Type="POSModel.base_GuestAdditional" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestAdditional">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestAddress_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestAddress" Type="POSModel.base_GuestAddress" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestAddress">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestFingerPrint_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestFingerPrint" Type="POSModel.base_GuestFingerPrint" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestFingerPrint">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestPaymentCard_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestPaymentCard" Type="POSModel.base_GuestPaymentCard" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestPaymentCard">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestProfile_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestProfile" Type="POSModel.base_GuestProfile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestProfile">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestReward_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestReward" Type="POSModel.base_GuestReward" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestReward">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestSchedule_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestSchedule" Type="POSModel.base_GuestSchedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestSchedule">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_MemberShip_GuestId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_MemberShip" Type="POSModel.base_MemberShip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_MemberShip">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_VendorProduct_VendorId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1" />
+    <End Role="base_VendorProduct" Type="POSModel.base_VendorProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_VendorProduct">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tims_TimeLog_EmployeeId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tims_TimeLog" Type="POSModel.tims_TimeLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tims_TimeLog">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tims_WorkPermission_EmployeeId_base_Guest_Id">
+    <End Role="base_Guest" Type="POSModel.base_Guest" Multiplicity="1" />
+    <End Role="tims_WorkPermission" Type="POSModel.tims_WorkPermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Guest">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tims_WorkPermission">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestReward_RewardId_base_RewardManager_Id">
+    <End Role="base_RewardManager" Type="POSModel.base_RewardManager" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestReward" Type="POSModel.base_GuestReward" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_RewardManager">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestReward">
+        <PropertyRef Name="RewardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_GuestSchedule_WorkScheduleId_tims_WorkSchedule_Id">
+    <End Role="tims_WorkSchedule" Type="POSModel.tims_WorkSchedule" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_GuestSchedule" Type="POSModel.base_GuestSchedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tims_WorkSchedule">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_GuestSchedule">
+        <PropertyRef Name="WorkScheduleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PricingChange_PricingManagerId_base_PricingManager_Id">
+    <End Role="base_PricingManager" Type="POSModel.base_PricingManager" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PricingChange" Type="POSModel.base_PricingChange" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_PricingManager">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PricingChange">
+        <PropertyRef Name="PricingManagerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PricingChange_ProductId_base_Product_Id">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PricingChange" Type="POSModel.base_PricingChange" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PricingChange">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ProductGroup_ProductId_base_Product_Id">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_ProductGroup" Type="POSModel.base_ProductGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ProductGroup">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ProductGroup_ProductParentId_base_Product_Id">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_ProductGroup" Type="POSModel.base_ProductGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ProductGroup">
+        <PropertyRef Name="ProductParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_QuantityAdjustment_base_Product">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1" />
+    <End Role="base_QuantityAdjustment" Type="POSModel.base_QuantityAdjustment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_QuantityAdjustment">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_VendorProduct_ProductId_base_Product_Id">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1" />
+    <End Role="base_VendorProduct" Type="POSModel.base_VendorProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_VendorProduct">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_baseProductStore_ProductId_base_Product_Id">
+    <End Role="base_Product" Type="POSModel.base_Product" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_ProductStore" Type="POSModel.base_ProductStore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ProductStore">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id">
+    <End Role="base_ProductStore" Type="POSModel.base_ProductStore" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_ProductUOM" Type="POSModel.base_ProductUOM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_ProductStore">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ProductUOM">
+        <PropertyRef Name="ProductStoreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ProductUOM_UOMId_base_UOM_Id">
+    <End Role="base_UOM" Type="POSModel.base_UOM" Multiplicity="1" />
+    <End Role="base_ProductUOM" Type="POSModel.base_ProductUOM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_UOM">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ProductUOM">
+        <PropertyRef Name="UOMId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PromotionAffect_PromotionId_base_Promotion_Id">
+    <End Role="base_Promotion" Type="POSModel.base_Promotion" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PromotionAffect" Type="POSModel.base_PromotionAffect" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Promotion">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PromotionAffect">
+        <PropertyRef Name="PromotionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PromotionSchedule_PromotionId_base_Promotion_Id">
+    <End Role="base_Promotion" Type="POSModel.base_Promotion" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PromotionSchedule" Type="POSModel.base_PromotionSchedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_Promotion">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PromotionSchedule">
+        <PropertyRef Name="PromotionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_">
+    <End Role="base_PurchaseOrder" Type="POSModel.base_PurchaseOrder" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PurchaseOrderDetail" Type="POSModel.base_PurchaseOrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_PurchaseOrder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PurchaseOrderDetail">
+        <PropertyRef Name="PurchaseOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas">
+    <End Role="base_PurchaseOrderDetail" Type="POSModel.base_PurchaseOrderDetail" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_PurchaseOrderReceive" Type="POSModel.base_PurchaseOrderReceive" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_PurchaseOrderDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_PurchaseOrderReceive">
+        <PropertyRef Name="PurchaseOrderDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa">
+    <End Role="base_ResourcePayment" Type="POSModel.base_ResourcePayment" Multiplicity="1" />
+    <End Role="base_ResourcePaymentDetail" Type="POSModel.base_ResourcePaymentDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_ResourcePayment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ResourcePaymentDetail">
+        <PropertyRef Name="ResourcePaymentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_ResourceReturnDetail_ResourceReturnId_base_ResourceRetu">
+    <End Role="base_ResourceReturn" Type="POSModel.base_ResourceReturn" Multiplicity="1" />
+    <End Role="base_ResourceReturnDetail" Type="POSModel.base_ResourceReturnDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_ResourceReturn">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_ResourceReturnDetail">
+        <PropertyRef Name="ResourceReturnId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_SaleOrderDetail_SaleOrderId_base_SaleOrder_Id">
+    <End Role="base_SaleOrder" Type="POSModel.base_SaleOrder" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_SaleOrderDetail" Type="POSModel.base_SaleOrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_SaleOrder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_SaleOrderDetail">
+        <PropertyRef Name="SaleOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_SaleOrderShip_SaleOrderId_base_SaleOrder_Id">
+    <End Role="base_SaleOrder" Type="POSModel.base_SaleOrder" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_SaleOrderShip" Type="POSModel.base_SaleOrderShip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_SaleOrder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_SaleOrderShip">
+        <PropertyRef Name="SaleOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_SaleOrderShipDetail_SaleOrderShipId_base_SaleOrderShip_">
+    <End Role="base_SaleOrderShip" Type="POSModel.base_SaleOrderShip" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_SaleOrderShipDetail" Type="POSModel.base_SaleOrderShipDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_SaleOrderShip">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_SaleOrderShipDetail">
+        <PropertyRef Name="SaleOrderShipId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="base_SaleTaxLocationOption_SaleTaxLocationId_base_SaleTaxLocati">
+    <End Role="base_SaleTaxLocation" Type="POSModel.base_SaleTaxLocation" Multiplicity="1" />
+    <End Role="base_SaleTaxLocationOption" Type="POSModel.base_SaleTaxLocationOption" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_SaleTaxLocation">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_SaleTaxLocationOption">
+        <PropertyRef Name="SaleTaxLocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_TransferStockDetail_TransferStockId_base_TransferStock_">
+    <End Role="base_TransferStock" Type="POSModel.base_TransferStock" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_TransferStockDetail" Type="POSModel.base_TransferStockDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_TransferStock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_TransferStockDetail">
+        <PropertyRef Name="TransferStockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_UserLogDetail_UserLogId_base_UserLog_Id">
+    <End Role="base_UserLog" Type="POSModel.base_UserLog" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="base_UserLogDetail" Type="POSModel.base_UserLogDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_UserLog">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_UserLogDetail">
+        <PropertyRef Name="UserLogId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_base_VirtualFolder_ParentFolderId_base_VirtualFolderId">
+    <End Role="base_VirtualFolder" Type="POSModel.base_VirtualFolder" Multiplicity="0..1" />
+    <End Role="base_VirtualFolder1" Type="POSModel.base_VirtualFolder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="base_VirtualFolder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="base_VirtualFolder1">
+        <PropertyRef Name="ParentFolderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rpt_Report_GroupId_rpt_Group_Id">
+    <End Role="rpt_Group" Type="POSModel.rpt_Group" Multiplicity="1" />
+    <End Role="rpt_Report" Type="POSModel.rpt_Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rpt_Group">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rpt_Report">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rpt_UMPermission_MenuId_fkey">
+    <End Role="rpt_Menu" Type="POSModel.rpt_Menu" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="rpt_UMPermission" Type="POSModel.rpt_UMPermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rpt_Menu">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rpt_UMPermission">
+        <PropertyRef Name="MenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rpt_URPermission_ReportId_fkey">
+    <End Role="rpt_Report" Type="POSModel.rpt_Report" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="rpt_URPermission" Type="POSModel.rpt_URPermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rpt_Report">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rpt_URPermission">
+        <PropertyRef Name="ReportId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tims_TimeLog_WorkScheduleId_tims_WorkSchedule_Id">
+    <End Role="tims_WorkSchedule" Type="POSModel.tims_WorkSchedule" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tims_TimeLog" Type="POSModel.tims_TimeLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tims_WorkSchedule">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tims_TimeLog">
+        <PropertyRef Name="WorkScheduleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tims_WorkWeek_WorkScheduleId_tims_WorkSchedule_Id">
+    <End Role="tims_WorkSchedule" Type="POSModel.tims_WorkSchedule" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tims_WorkWeek" Type="POSModel.tims_WorkWeek" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tims_WorkSchedule">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tims_WorkWeek">
+        <PropertyRef Name="WorkScheduleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tims_TimeLogPermission">
+    <End Role="tims_TimeLog" Type="POSModel.tims_TimeLog" Multiplicity="*" />
+    <End Role="tims_WorkPermission" Type="POSModel.tims_WorkPermission" Multiplicity="*" />
+  </Association>
+</Schema>

@@ -1,0 +1,161 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             x:Class="CPC.Control.DashboardItem"
+             mc:Ignorable="d"
+             x:Name="dashboardItem">
+
+    <UserControl.Resources>
+
+        <!--ButtonCloseStyle-->
+        <Style x:Key="ButtonCloseStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Width"
+                    Value="20" />
+            <Setter Property="Height"
+                    Value="20" />
+            <Setter Property="Margin"
+                    Value="0,0,3,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid"
+                              Background="#02FFFFFF">
+                            <Path x:Name="path"
+                                  Width="14"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M5.75,0.25 L9.25,0.25 9.25,5.75 14.75,5.75 14.75,9.25 9.25,9.25 9.25,14.75 5.75,14.75 5.75,9.25 0.25,9.25 0.25,5.75 5.75,5.75 z"
+                                  Fill="Black"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  StrokeThickness="0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1"
+                                                        ScaleY="1" />
+                                        <SkewTransform AngleX="0"
+                                                       AngleY="0" />
+                                        <RotateTransform Angle="-45" />
+                                        <TranslateTransform X="0"
+                                                            Y="0" />
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Cursor"
+                                        TargetName="grid"
+                                        Value="Hand" />
+                                <Setter Property="Opacity"
+                                        TargetName="path"
+                                        Value="0.8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Opacity"
+                                        TargetName="path"
+                                        Value="0.7" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Border x:Name="brdDashBoardItem"
+            Background="{DynamicResource UserControlBackground}" 
+			BorderBrush="{DynamicResource TitleBarBorder}"
+			BorderThickness="1">
+
+        <DockPanel x:Name="dkpDashBoardItem"
+                   LastChildFill="True">
+
+            <Border Height="26"
+                    x:Name="titleBar"
+                    BorderBrush="{DynamicResource TitleBarBorder}"
+                    DockPanel.Dock="Top"
+                    Background="{DynamicResource TitleBarBackground}">
+
+                <Grid x:Name="grdTopBar">
+
+                    <TextBlock HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               x:Name="txtblTitle"
+                               Margin="10,0,0,0"
+                               Style="{DynamicResource TextBlockTitleFormPopup}"
+                               Text="{Binding Title, ElementName=dashboardItem, Mode=OneWay}" />
+                    <StackPanel x:Name="stkpDashBoardItem"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,5,0"
+                                Orientation="Horizontal"
+                                Height="22">
+
+                        <Button x:Name="buttonEdit"
+                                Style="{StaticResource ButtonMiniClose}"
+                                Width="22"
+                                Height="22">
+                            <Grid x:Name="grdEdit">
+                                <Path Data="F1M2.5918,21.2852C2.2818,21.9742,2.1318,22.3062,2.1318,22.3062C2.1318,22.3062,1.9378,22.8472,2.1988,23.3812C2.3058,23.5982,2.4828,23.8102,2.7698,23.9892C2.9308,23.9452,3.1108,23.8932,3.3028,23.8442C3.8748,23.6792,4.5708,23.4732,5.2908,23.2502C7.2208,22.6592,9.2798,21.9982,9.2798,21.9982L10.9438,20.5172L22.0398,10.6182L22.8068,9.9332L23.4838,9.3322L24.3708,8.5352L24.3648,8.5312C25.5578,7.3122,24.7048,6.0642,23.4588,4.7152C22.2128,3.3612,21.0348,2.4052,19.6878,3.4602L19.6848,3.4512L18.7958,4.2402L18.1168,4.8462L17.3538,5.5272L4.5938,16.9042C3.6368,18.9662,2.9868,20.4092,2.5918,21.2852"
+                                      Height="11"
+                                      Stretch="Fill"
+                                      Width="11"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Fill="{DynamicResource TitleBar_ButtonClose_Arrow}" />
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="buttonClose"
+                                Style="{StaticResource ButtonMiniClose}"
+                                d:LayoutOverrides="Width"
+                                Height="22"
+                                Visibility="Collapsed">
+                            <Grid x:Name="grdClose">
+                                <Path Stretch="Fill"
+                                      StrokeThickness="0.5"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Data="M5.75,0.25 L9.25,0.25 9.25,5.7499999 14.75,5.7499999 14.75,9.25 9.25,9.25 9.25,14.75 5.75,14.75 5.75,9.25 0.25,9.25 0.25,5.7499999 5.75,5.7499999 z"
+                                      Width="14"
+                                      Height="14"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Fill="{DynamicResource TitleBar_ButtonClose_Arrow}">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1"
+                                                            ScaleY="1" />
+                                            <SkewTransform AngleX="0"
+                                                           AngleY="0" />
+                                            <RotateTransform Angle="-45" />
+                                            <TranslateTransform X="0"
+                                                                Y="0" />
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </Button>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+            <Grid x:Name="controlHolder" />
+
+        </DockPanel>
+
+    </Border>
+
+</UserControl>

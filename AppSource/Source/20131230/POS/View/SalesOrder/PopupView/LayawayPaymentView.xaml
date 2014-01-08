@@ -1,0 +1,272 @@
+﻿<UserControl x:Class="CPC.POS.View.LayawayPaymentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             Width="358"
+             Height="282"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid x:Name="grdLayawayPayment"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentLayawayPayment"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentLayawayPayment"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="125" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblDownPayment"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Down Payment"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="HorizontalAlignment" />
+                <cpcTextBox:TextBoxNumeric x:Name="txtDownPayment"
+                                           Grid.Column="1"
+                                           Margin="0,2,36,2"
+                                           ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                           IsReadOnly="True"
+                                           NumericStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                           Padding="2,0,2,0"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding DepositAmount,
+                                                           Mode=OneWay,
+                                                           UpdateSourceTrigger=PropertyChanged}" FontSize="13.333" FontFamily="Tahoma" Background="Black" BorderBrush="White" Foreground="#FF00FF05" />
+                <Button x:Name="btnPayment"
+                        Grid.Column="1"
+                        Width="21"
+                        Margin="0,2,10,2"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DepositCommand}">
+                    <StackPanel x:Name="stkpBtnPayment"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgPayment"
+                                   Width="16"
+                                   Height="16"
+                                   Fill="{DynamicResource Payment}" />
+                        <TextBlock x:Name="txtblPayment"
+                                   Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonTextBlock}"
+                                   Text="Payment"
+                                   TextWrapping="NoWrap"
+                                   Visibility="Collapsed" />
+                    </StackPanel>
+                </Button>
+                <TextBlock x:Name="txtblAdvancePayment"
+                           Grid.Row="1"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Advance Payment"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBoxNumeric x:Name="txtAdvancePayment"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           Margin="0,2,36,2"
+                                           IsReadOnly="True"
+                                           ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                           NumericStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                           Padding="2,0,2,0"
+                                           TextWrapping="NoWrap"
+                                           Value="{Binding AdvancePayment,
+                                                           Mode=TwoWay,
+                                                           UpdateSourceTrigger=PropertyChanged}" FontSize="13.333" FontFamily="Tahoma" Background="Black" BorderBrush="White" Foreground="#FF00FF05" />
+                <Button x:Name="btnPayment_Copy"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Width="21"
+                        Margin="0,2,10,2"
+                        HorizontalAlignment="Right"
+                        Command="{Binding PaymentCommand}">
+                    <StackPanel x:Name="stkpBtnPayment1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgPayment1"
+                                   Width="16"
+                                   Height="16"
+                                   Fill="{DynamicResource Payment}" />
+                        <TextBlock x:Name="txtblPayment1"
+                                   Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonTextBlock}"
+                                   Text="Payment"
+                                   TextWrapping="NoWrap"
+                                   Visibility="Collapsed" />
+                    </StackPanel>
+                </Button>
+                <TextBlock x:Name="txtblStartDate"
+                           Grid.Row="3"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Start Date"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblBindingStartDate"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding StartDate,
+                                          UpdateSourceTrigger=PropertyChanged,
+                                          Mode=TwoWay,
+                                          StringFormat={x:Static local:Define.DateFormat}}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblExpireDate"
+                           Grid.Row="4"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Expire Date"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblBindingExpireDate"
+                           Grid.Row="4"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding ExpireDate,
+                                          UpdateSourceTrigger=PropertyChanged,
+                                          Mode=TwoWay,
+                                          StringFormat={x:Static local:Define.DateFormat}}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblTotalAmount"
+                           Grid.Row="5"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Total Amount"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+						   <TextBox x:Name="txtTotalAmount" TextWrapping="NoWrap" Padding="2,0,2,0" Text="{Binding TotalAmount,
+                                          Mode=OneWay,
+                                          UpdateSourceTrigger=PropertyChanged,
+                                          ConverterCulture={x:Static local:Define.ConverterCulture},
+                                          StringFormat={x:Static local:Define.CurrencyFormat}}" VerticalContentAlignment="Center" Grid.Row="5" Grid.Column="1" Style="{DynamicResource TextBoxTotalAmount}" Margin="0,2,36,2" HorizontalContentAlignment="Right" IsReadOnly="True" />
+                <TextBlock x:Name="txtblOutStandingAmount"
+                           Grid.Row="6"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Outstanding Amount"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+						   <TextBox x:Name="txtOutStandingAmount" TextWrapping="NoWrap" Padding="2,0,2,0" Text="{Binding OutStandingAmount,
+                                          Mode=TwoWay,
+                                          UpdateSourceTrigger=PropertyChanged,
+                                          ConverterCulture={x:Static local:Define.ConverterCulture},
+                                          StringFormat={x:Static local:Define.CurrencyFormat}}" VerticalContentAlignment="Center" Grid.Row="6" Grid.Column="1" Style="{DynamicResource TextBoxTotalAmount}" Margin="0,2,36,2" HorizontalContentAlignment="Right" IsReadOnly="True" />
+                <TextBlock x:Name="txtblPaid"
+                           Grid.Row="7"
+                           Margin="10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Paid"
+                           TextWrapping="NoWrap"
+                           />
+						   <TextBox x:Name="txtPaid" TextWrapping="NoWrap" Padding="2,0,2,0" 
+						   Text="{Binding Paid,
+                                          Mode=TwoWay,
+                                          UpdateSourceTrigger=PropertyChanged,
+                                          ConverterCulture={x:Static local:Define.ConverterCulture},
+                                          StringFormat={x:Static local:Define.CurrencyFormat}}" VerticalContentAlignment="Center" Grid.Row="7" Grid.Column="1" Margin="0,2,36,2" FontSize="13.333" Foreground="Red" FontFamily="Tahoma" Style="{DynamicResource TextBoxTotalAmount}" d:LayoutOverrides="GridBox" HorizontalContentAlignment="Right" IsReadOnly="True" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding OkCommand}">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

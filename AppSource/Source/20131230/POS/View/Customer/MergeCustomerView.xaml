@@ -1,0 +1,177 @@
+﻿<UserControl x:Class=" CPC.POS.View.MergeCustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:comboBoxControl="clr-namespace:CPCToolkitExt.ComboBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="498"
+             Height="334"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+
+
+        <!--  ListviewStart  -->
+    </UserControl.Resources>
+    <Grid x:Name="grdMergeCustomer">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentMergeCustomer"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentMergeCustomer" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <GroupBox x:Name="gbMergeFrom" Margin="0,0,5.1,0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblMergeFrom"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="{DynamicResource Text_MergeFrom}"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdContentMergeFrom" Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <comboBoxControl:ComboBoxControl x:Name="cmbMergeFrom"
+                                                         Margin="5,2"
+                                                         VerticalAlignment="Stretch"
+                                                         DisplayMemberPath="LegalName"
+                                                         HiddenMemberPath="IsChecked"
+                                                         IsEnabled="False"
+                                                         ItemsSource="{Binding CustomerCollection,
+                                                                               Mode=OneWay}"
+                                                         SelectedItem="{Binding CustomerSource,
+                                                                                Mode=TwoWay}"
+                                                         SelectedValuePath="Id"
+                                                         Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}"
+                                                         VisibilityAddItem="Collapsed" />
+                        <TextBox x:Name="txtMergeFrom"
+                                 Grid.Row="1"
+                                 Margin="5"
+                                 VerticalContentAlignment="Top"
+                                 IsReadOnly="True"
+                                 Padding="2"
+                                 Text="{Binding CustomerSourceDetail,
+                                                Mode=OneWay}"
+                                 TextAlignment="Left"
+                                 TextWrapping="Wrap" />
+
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="gbMergeTo"
+                          Grid.Column="1"
+                          Margin="5,0,0,0">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblMergeTo"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Merge To"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdContentMergeTo" Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <comboBoxControl:ComboBoxControl x:Name="cmbMergeTo"
+                                                         Margin="5,2"
+                                                         VerticalAlignment="Stretch"
+                                                         DisplayMemberPath="LegalName"
+                                                         HiddenMemberPath="IsChecked"
+                                                         ItemsSource="{Binding CustomerCollection,
+                                                                               Mode=OneWay}"
+                                                         SelectedItem="{Binding CustomerTarget,
+                                                                                Mode=TwoWay}"
+                                                         SelectedValuePath="Id"
+                                                         Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}"
+                                                         VisibilityAddItem="Collapsed">
+                            <i:Interaction.Behaviors>
+                                <cpcBehavior:AutoFocusBehavior />
+                            </i:Interaction.Behaviors>
+
+                        </comboBoxControl:ComboBoxControl>
+                            <TextBox x:Name="txtMergeTo"
+                                 Grid.Row="1"
+                                 Margin="5"
+                                 VerticalContentAlignment="Top"
+                                 IsReadOnly="True"
+                                 Padding="2"
+                                 Text="{Binding CustomerTargetDetail,
+                                                Mode=OneWay}"
+                                 TextAlignment="Left"
+                                 TextWrapping="Wrap" />
+
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding OkCommand}">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

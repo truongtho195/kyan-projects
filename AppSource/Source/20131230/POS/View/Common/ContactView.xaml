@@ -1,0 +1,326 @@
+﻿<UserControl x:Class="CPC.POS.View.ContactView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             Width="482"
+             Height="282"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="reserseBoolToVisibilityConverter"
+                                             FalseToVisibility="Visible" />
+    </UserControl.Resources>
+    <Grid x:Name="grdContact">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentContact"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentContactInformation"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="stkpPrimary"
+                            Grid.Column="1"
+                            Margin="254,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Visibility="{Binding SelectedContact.IsPrimary, Converter={StaticResource reserseBoolToVisibilityConverter}, Mode=OneTime}"
+                            d:LayoutOverrides="Height">
+                    <TextBlock x:Name="txtblPrimary"
+                               Margin="0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="Primary"
+                               TextWrapping="NoWrap" />
+                    <CheckBox x:Name="cbPrimary"
+                              Margin="4,0,0,0"
+                              VerticalAlignment="Center"
+                              Content=""
+                              cpcBehavior:MoveFocusHelper.MoveFocus="True"
+                              IsChecked="{Binding SelectedContact.IsPrimary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <TextBlock x:Name="txtblFirstName"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="First Name"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBox x:Name="txtFirstName"
+                                    Grid.Column="1"
+                                    Width="240"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    MaxLength="20"
+                                    Padding="2,0,2,0"
+                                    Text="{Binding SelectedContact.FirstName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    TextWrapping="NoWrap">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                    </i:Interaction.Behaviors>
+                </cpcTextBox:TextBox>
+                <TextBlock x:Name="txtblInitial"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="254,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="M.I."
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBox x:Name="txtIntial"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="35"
+                                    Margin="0,2,10,2"
+                                    HorizontalAlignment="Right"
+                                    CharacterCasing="Upper"
+                                    MaxLength="1"
+                                    Padding="2,0,2,0"
+                                    Text="{Binding SelectedContact.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblLastName"
+                           Grid.Row="1"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Last Name"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBox x:Name="txtLastName"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Width="240"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    MaxLength="20"
+                                    Padding="2,0,2,0"
+                                    Text="{Binding SelectedContact.LastName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    TextWrapping="NoWrap">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                    </i:Interaction.Behaviors>
+                </cpcTextBox:TextBox>
+                <TextBlock x:Name="txtblGender"
+                           Grid.Row="2"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Gender"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="cmbGender"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          Width="130"
+                          Margin="0,2"
+                          HorizontalAlignment="Left"
+                          cpcBehavior:MoveFocusHelper.MoveFocus="True"
+                          DisplayMemberPath="Text"
+                          ItemsSource="{x:Static helper:Common.Gender}"
+                          SelectedValue="{Binding SelectedContact.PersonalInfoModel.Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Value" />
+                <TextBlock x:Name="txtblSSN"
+                           Grid.Row="3"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="SSN"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBoxSSN x:Name="txtSSN"
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       Width="130"
+                                       Margin="0,2"
+                                       HorizontalAlignment="Left"
+                                       HorizontalContentAlignment="Right"
+                                       Padding="2,0,2,0"
+                                       TextWrapping="NoWrap"
+                                       Value="{Binding SelectedContact.PersonalInfoModel.SSN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblIdentification"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           Margin="0,0,130.643,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Identification"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Width" />
+                <cpcTextBox:TextBoxIdentification x:Name="txtIdentification"
+                                                  Grid.Row="3"
+                                                  Grid.Column="1"
+                                                  Width="110"
+                                                  Margin="0,2,10,2"
+                                                  HorizontalAlignment="Right"
+                                                  HorizontalContentAlignment="Right"
+                                                  Padding="2,0,2,0"
+                                                  TextWrapping="NoWrap"
+                                                  Value="{Binding SelectedContact.PersonalInfoModel.Identification, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblIssuedState"
+                           Grid.Row="4"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Issued State"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="cmbIssuedState"
+                          Grid.Row="4"
+                          Grid.Column="1"
+                          Width="45"
+                          Margin="0,2"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Stretch"
+                          cpcBehavior:MoveFocusHelper.MoveFocus="True"
+                          DisplayMemberPath="Text"
+                          ItemsSource="{x:Static helper:Common.States}"
+                          SelectedValue="{Binding SelectedContact.PersonalInfoModel.State, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Value" />
+                <TextBlock x:Name="txtblPhone"
+                           Grid.Row="5"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Text="Phone"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBoxPhone x:Name="txtPhone"
+                                         Grid.Row="5"
+                                         Grid.Column="1"
+                                         Width="130"
+                                         Margin="0,2"
+                                         HorizontalAlignment="Left"
+                                         HorizontalContentAlignment="Right"
+                                         Padding="2,0,2,0"
+                                         TextWrapping="NoWrap"
+                                         Value="{Binding SelectedContact.Phone1, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <TextBlock x:Name="txtblCellphone"
+                           Grid.Row="5"
+                           Grid.Column="1"
+                           Margin="0,0,130.643,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Cellphone"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <cpcTextBox:TextBoxPhone x:Name="txtCellphone"
+                                         Grid.Row="5"
+                                         Grid.Column="1"
+                                         Width="110"
+                                         Height="21"
+                                         Margin="0,2,10,2"
+                                         HorizontalAlignment="Right"
+                                         HorizontalContentAlignment="Right"
+                                         Padding="2,0,2,0"
+                                         TextWrapping="NoWrap"
+                                         Value="{Binding SelectedContact.CellPhone, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                         d:LayoutOverrides="HorizontalMargin" />
+                <TextBlock x:Name="txtblEmail"
+                           Grid.Row="6"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Email"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="GridBox" />
+                <cpcTextBox:TextBoxEmail x:Name="txtEmail"
+                                         Grid.Row="6"
+                                         Grid.Column="1"
+                                         Height="21"
+                                         Margin="0,2,10,2"
+                                         Padding="2,0,2,0"
+                                         TextWrapping="NoWrap"
+                                         Value="{Binding SelectedContact.Email, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OKCommand}"
+                    Width="80"
+                    Height="28"
+                    IsDefault="True">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

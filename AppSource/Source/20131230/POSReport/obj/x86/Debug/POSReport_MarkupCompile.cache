@@ -1,0 +1,20 @@
+﻿POSReport
+
+
+winexe
+C#
+.cs
+E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POSReport\obj\x86\Debug\
+CPC.POSReport
+none
+false
+DEBUG;TRACE
+E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POSReport\App.xaml
+36247361601
+
+244-570276035
+371753866165
+Dictionary\BaseControlStyle\ButtonStyle.xaml;Dictionary\BaseControlStyle\CheckboxStyle.xaml;Dictionary\BaseControlStyle\ComboboxStyle.xaml;Dictionary\BaseControlStyle\DatagridStyle.xaml;Dictionary\BaseControlStyle\DatePickerStyle.xaml;Dictionary\BaseControlStyle\GroupBoxStyle.xaml;Dictionary\BaseControlStyle\MenuStyle.xaml;Dictionary\BaseControlStyle\PasswordBoxStyle.xaml;Dictionary\BaseControlStyle\RadioButtonStyle.xaml;Dictionary\BaseControlStyle\ScrollBarStyle.xaml;Dictionary\BaseControlStyle\TabControlStyle.xaml;Dictionary\BaseControlStyle\TextBlockStyle.xaml;Dictionary\BaseControlStyle\TextBoxStyle.xaml;Dictionary\BaseControlStyle\TreeviewStyle.xaml;Dictionary\Brushes\Blue\BlueImageResources.xaml;Dictionary\Brushes\Blue\BlueResources.xaml;Dictionary\Brushes\Grey\GreyImageResources.xaml;Dictionary\Brushes\Grey\GreyResources.xaml;Dictionary\Brushes\Red\RedImageResources.xaml;Dictionary\Brushes\Red\RedResources.xaml;View\Login\Login.xaml;View\MainView.xaml;View\ManageUser\ChangePasswordView.xaml;View\PopupForm\ChangeGroup\ChangGroupView.xaml;View\PopupForm\Report\ADOPDF\PDFView.xaml;View\PopupForm\Report\AssignAuthorizeReport\PermissionView.xaml;View\PopupForm\Report\AssignAuthorizeReport\AssignAuthorizeReport.xaml;View\PopupForm\Report\AssignAuthorizeReport\Permission.xaml;View\PopupForm\Report\AssignAuthorizeReport\UserReportAssignAuthorize.xaml;View\PopupForm\Report\CCTo\CCTo.xaml;View\PopupForm\Report\CCTo\CCToForm.xaml;View\PopupForm\Report\ReportPopup\CustomerPaymentOptional.xaml;View\PopupForm\Report\ReportPopup\PurchaseOptional.xaml;View\PopupForm\Report\ReportPopup\Optional.xaml;View\PopupForm\Report\ReportPopup\ReportOptional.xaml;View\PopupForm\Report\ReportView\ShowReportView.xaml;
+
+True
+

@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="CPC.POS.View.PickPackView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="476"
+             Height="340"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+
+        <!--  ListviewStart  -->
+        <!--  myDataGridControlRowStyle  -->
+        <Style x:Key="DataGridColorRowStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus" Value="{Binding DataContext.IsView, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Mode=OneWay, Converter={StaticResource reserseBoolConverter}}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen,
+                                                                                                                         ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical},
+                                                                                                                         Converter={x:Static DataGrid.RowDetailsScrollingConverter},
+                                                                                                                         RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <!--  Set Color for parent item  -->
+                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=1}" Value="True">
+
+                    <Setter Property="Background" Value="{DynamicResource DatagridRow_Group_Background}" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+                <!--  Set Color for Children item  -->
+                <DataTrigger Binding="{Binding ItemType, Converter={StaticResource integerToBooleanConverter}, ConverterParameter=2}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource DatagridRow_Child_Background}" />
+                </DataTrigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <!--
+            Show color in datagrid cell Quantity
+            (*): Unable focus with parent of product group
+        -->
+        <Style x:Key="DataGridCellColorStyle"
+               BasedOn="{StaticResource DataGridCellDisableStyle}"
+               TargetType="{x:Type DataGridCell}">
+            <!--  Item Is parent(Parent of productgroup)  => not change quantity  -->
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.CellFocus" Value="{Binding IsParent, Mode=OneWay, Converter={StaticResource reserseBoolConverter}}" />
+            <Setter Property="cpcBehavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="Background" Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+
+    </UserControl.Resources>
+    <Grid x:Name="grdPickPack" d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentPickPack"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentPickPack" Margin="10">
+                <cpcDataGrid:DataGridControl x:Name="dtgrdSerialNoListRight"
+                                             Margin="0,0.2,0,0"
+                                             VerticalAlignment="Stretch"
+                                             AutoGenerateColumns="False"
+                                             CanUserAddRows="False"
+                                             CanUserDeleteRows="False"
+                                             CanUserSortColumns="False"
+                                             HorizontalScrollBarVisibility="Auto"
+                                             IsReadOnly="{Binding IsView,
+                                                                  Mode=TwoWay}"
+                                             IsRollBackData="True"
+                                             ItemsSource="{Binding SaleOrderDetailCollection}"
+                                             RowStyle="{DynamicResource DataGridColorRowStyle}"
+                                             Style="{DynamicResource DatagridWithRowHeader}"
+                                             VerticalScrollBarVisibility="Auto"
+                                             VisibilityNavigationBar="Collapsed"
+                                             d:LayoutOverrides="GridBox">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:AutoFocusDatagridCellBehavior CellIndex="4" ControlName="txtPickQty" />
+                    </i:Interaction.Behaviors>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="100"
+                                            MinWidth="100"
+                                            Binding="{Binding ItemCode}"
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource C114}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Width="*"
+                                            MinWidth="100"
+                                            Binding="{Binding ItemName}"
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource C115}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="100"
+                                            MinWidth="100"
+                                            Binding="{Binding ItemAtribute}"
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource C116}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="50"
+                                            MinWidth="50"
+                                            Binding="{Binding ItemSize}"
+                                            IsReadOnly="True">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource C117}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Width="70" CellStyle="{StaticResource DataGridCellColorStyle}">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{DynamicResource C120}" />
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock x:Name="tbPickQty"
+                                               Margin="0,0,2,0"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"
+                                               Text="{Binding QtyOfPick}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <cpcTextBox:TextBoxNumeric x:Name="txtPickQty"
+                                                               HorizontalAlignment="Right"
+                                                               VerticalAlignment="Center"
+                                                               ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                               DecimalPlaces="0"
+                                                               FontWeight="Bold"
+                                                               NumericStringFormat="{}{0:N0}"
+                                                               Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                               Value="{Binding QtyOfPick,
+                                                                               Mode=TwoWay,
+                                                                               UpdateSourceTrigger=PropertyChanged}" />
+
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                </cpcDataGrid:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding OkCommand}">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}"
+                    IsCancel="True">
+                <Button.Visibility>
+                    <Binding Mode="OneWay" Path="IsView">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

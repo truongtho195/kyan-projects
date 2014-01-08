@@ -1,0 +1,266 @@
+﻿<UserControl x:Class="CPC.POS.View.CreditCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cpcTextbox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wpfControl="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             Width="365"
+             Height="259"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    <Grid x:Name="grdCreditCard"
+          Margin="0,0,2,2"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentCreditCard"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdgbCreditCard"
+                  Margin="10"
+                  d:LayoutOverrides="Height">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblCardType"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource Text_CardType}"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="cmbCardType"
+                          Grid.Column="1"
+                          Width="140"
+                          Margin="0,2"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Stretch"
+                          DisplayMemberPath="Text"
+                          ItemsSource="{x:Static helper:Common.PaymentCardTypes}"
+                          SelectedValue="{Binding SelectedPaymentCard.CardTypeId, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                          SelectedValuePath="Value"
+                          d:LayoutOverrides="HorizontalAlignment">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </ComboBox>
+                <TextBlock x:Name="txtblCardNo"
+                           Grid.Row="1"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource Text_PaymentCardNum}"
+                           TextWrapping="NoWrap" />
+                <cpcTextbox:TextBoxCardNumber x:Name="txtCardNo"
+                                              Grid.Row="1"
+                                              Grid.Column="1"
+                                              Width="210"
+                                              Margin="0,2"
+                                              HorizontalAlignment="Left"
+                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                              FontFamily="Tahoma"
+                                              FontSize="11"
+                                              IsSecurity="True"
+                                              Padding="2,0,2,0"
+                                              Value="{Binding SelectedPaymentCard.CardNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                              TextWrapping="NoWrap">
+
+                </cpcTextbox:TextBoxCardNumber>
+                <TextBlock x:Name="txtblExpDate"
+                           Grid.Row="2"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource Text_PaymentExpireDate}"
+                           TextWrapping="NoWrap" />
+                <wpfControl:MaskedTextBox x:Name="txtExpDate"
+                                          Grid.Row="2"
+                                          Grid.Column="1"
+                                          Width="87"
+                                          Margin="0,2"
+                                          HorizontalAlignment="Left"
+                                          HorizontalContentAlignment="Right"
+                                          Padding="2,0,2,0"
+                                          Style="{DynamicResource TextBoxExpDateStyle}"
+                                          Text="{Binding SelectedPaymentCard.ExpDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblCCID"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="105,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource Text_PaymentCCID}"
+                           TextWrapping="NoWrap" />
+                <wpfControl:MaskedTextBox x:Name="txtCCID"
+                                          Grid.Row="2"
+                                          Grid.Column="1"
+                                          Width="70"
+                                          Margin="140,2,0,2"
+                                          HorizontalAlignment="Left"
+                                          HorizontalContentAlignment="Right"
+                                          Padding="2,0,2,0"
+                                          Style="{DynamicResource TextBoxCCIDStyle}"
+                                          TextWrapping="NoWrap"
+                                          Value="{Binding SelectedPaymentCard.CCID, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <TextBlock x:Name="txtblName"
+                           Grid.Row="3"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C178}"
+                           TextWrapping="NoWrap" />
+                <cpcTextbox:TextBox x:Name="txtName"
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Width="210"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    Padding="2,0,2,0"
+                                    Text="{Binding SelectedPaymentCard.NameOnCard, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    TextWrapping="NoWrap">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                    </i:Interaction.Behaviors>
+                </cpcTextbox:TextBox>
+                <TextBlock x:Name="txtblBillingAddress"
+                           Grid.Row="4"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource Text_BillingAddress}"
+                           TextWrapping="NoWrap" />
+                <cpcTextbox:TextBox x:Name="txtBillingAddress"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Width="140"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    FontFamily="Tahoma"
+                                    FontSize="11"
+                                    Padding="2,0,2,0"
+                                    Text="{Binding SelectedPaymentCard.BillingAddress, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    TextWrapping="NoWrap">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                    </i:Interaction.Behaviors>
+                </cpcTextbox:TextBox>
+                <ComboBox x:Name="cmbAddress"
+                          Style="{DynamicResource AddressComboStyle}"
+                          Width="65"
+                          HorizontalAlignment="Right"
+                          BorderThickness="0"
+                          Margin="10,2"
+                          Height="21"
+                          Visibility="{Binding VisibilityAddressType}"
+                          Grid.Row="4"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding AddressTypeCollection,Mode=OneWay}"
+                          SelectedItem="{Binding AddressTypeModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                          Grid.Column="1" ItemContainerStyle="{DynamicResource ComboBoxItemAddress}" Foreground="White"/>
+                <TextBlock x:Name="txtblZipCode"
+                           Grid.Row="5"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Text="{DynamicResource Text_ZipCode}"
+                           Style="{DynamicResource TextBlockNormal}"
+                           TextWrapping="NoWrap">
+                </TextBlock>
+                <cpcTextbox:TextBoxZip x:Name="txtZipCode"
+                                       Grid.Row="5"
+                                       Grid.Column="1"
+                                       Width="70"
+                                       Margin="0,2"
+                                       HorizontalAlignment="Left"
+                                       Padding="2,0,2,0"
+                                       Value="{Binding SelectedPaymentCard.ZipCode, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                       d:LayoutOverrides="HorizontalAlignment, GridBox" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28"
+                    IsDefault="True">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

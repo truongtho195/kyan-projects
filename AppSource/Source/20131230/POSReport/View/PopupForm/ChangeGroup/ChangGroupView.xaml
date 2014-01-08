@@ -1,0 +1,96 @@
+﻿<Window x:Class="CPC.POSReport.View.ChangeGroupView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+	    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	    xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
+	    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	    xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+	    mc:Ignorable="d Anno"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        Title="ChangGroup" Width="300" Background="{x:Null}" AllowsTransparency="True" Height="183">
+    <Border x:Name="brdAssignAuthorizeReport" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource TitleBarBorder}" Background="{DynamicResource UserControlBackground}">
+        <DockPanel>
+            <Border 
+				Height="26" 
+				x:Name="BrdTopBar" 
+				BorderThickness="0" 
+                MouseLeftButtonDown="BrdTopBar_MouseLeftButtonDown"
+				BorderBrush="{DynamicResource TitleBarBorder}" 
+				CornerRadius="4.5,4.5,0,0" 
+				DockPanel.Dock="Top" Background="{DynamicResource TitleBarBackground}">
+                <Grid x:Name="grdTopBar">
+                    <TextBlock Text="Change Group" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtblAssignAuthorizeReport" Margin="10,0,0,0" Style="{DynamicResource TextBlockTitleFormPopup}"/>
+                    <Rectangle StrokeThickness="0" x:Name="TopBarLine" VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource TitleBarBorder}"/>
+                </Grid>
+            </Border>
+            <Grid x:Name="grdChangeGroup" DockPanel.Dock="Top">
+            	<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition Height="50"/>
+				</Grid.RowDefinitions>
+            	<Border x:Name="brdContentChangeGroup" Margin="15,20,15,15" Background="{DynamicResource TabControlBackground}" BorderBrush="{DynamicResource TabControlBorder}" BorderThickness="1">
+            		<Grid x:Name="grdContentChangeGroup" Margin="10">
+            			<Grid.ColumnDefinitions>
+            				<ColumnDefinition Width="87"/>
+            				<ColumnDefinition/>
+            			</Grid.ColumnDefinitions>
+            			<Grid.RowDefinitions>
+            				<RowDefinition Height="25"/>
+            				<RowDefinition Height="25"/>
+            			</Grid.RowDefinitions>
+            			<TextBlock x:Name="txtblMajorGroup" 
+            				Style="{DynamicResource ButtonTextBlock}"
+            				TextAlignment="Right"
+            				Text="Major Group" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            			<ComboBox Grid.Column="1" 
+            				x:Name="cboMajorGroup"
+            				ItemsSource="{Binding GroupReportCollection}"
+            				SelectedValuePath="Id"
+            				DisplayMemberPath="Name"
+            				SelectedItem="{Binding GroupReportModel}"
+            				Margin="0,2,10,2">
+            				<i:Interaction.Triggers>
+            					<i:EventTrigger EventName="SelectionChanged">
+            						<i:InvokeCommandAction Command="{Binding SelectedGroupReportChangeCommand}"
+            							CommandParameter="{Binding ElementName=cboMajorGroup}"/>
+            					</i:EventTrigger>
+            				</i:Interaction.Triggers>
+            			</ComboBox>
+            			<TextBlock x:Name="txtblMinnorGroup" Grid.Row="1" 
+            				VerticalAlignment="Center"
+            				TextAlignment="Right"
+            				Style="{DynamicResource ButtonTextBlock}"
+            				Text="Minnor Group" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+            			<ComboBox x:Name="cmbMinnorGroup" Grid.Row="1" Grid.Column="2"
+            				ItemsSource="{Binding ReportCollection}"
+            				SelectedValuePath="Id"
+            				DisplayMemberPath="Name"
+            				SelectedItem="{Binding ReportModel}"
+            				Margin="0,2,10,2"/>
+            		</Grid>
+            	</Border>
+            	<Rectangle Fill="{DynamicResource Spilter_Line_Background}" HorizontalAlignment="Stretch" x:Name="Line" VerticalAlignment="Top" Height="1" Grid.Row="1" Margin="2,0,2,0"/>
+            	<StackPanel VerticalAlignment="Center" Height="Auto" x:Name="stkpBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="2">
+            		<Button x:Name="btnOK" Height="28" Width="80" Command="{Binding ChangeGroupCommand}">
+            			<StackPanel HorizontalAlignment="Center" x:Name="stkpBtnOK" VerticalAlignment="Center" Orientation="Horizontal">
+            				<Rectangle x:Name="imgOK" Fill="{DynamicResource OK}" Height="20" Width="20"/>
+            				<TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="OK" TextWrapping="NoWrap" x:Name="txtblOK" Style="{DynamicResource ButtonTextBlock}"/>
+            			</StackPanel>
+            		</Button>
+            		<Button x:Name="btnCancel" Height="28" Width="80" Margin="10,0,0,0" Command="{Binding CancelChangeGroupCommand}" >
+            			<StackPanel HorizontalAlignment="Center" x:Name="stkpBtnCancel" VerticalAlignment="Center" Orientation="Horizontal">
+            				<Rectangle x:Name="imgCancel" Fill="{DynamicResource Cancel}" Height="20" Width="20"/>
+            				<TextBlock Margin="5,0,0,0" x:Name="txtblExit" VerticalAlignment="Center" Text="Cancel" TextWrapping="NoWrap" Style="{DynamicResource ButtonTextBlock}"/>
+            			</StackPanel>
+            		</Button>
+            	</StackPanel>
+            </Grid>
+        </DockPanel>
+    </Border>
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding ChangeGroupCommand}"></KeyBinding>
+    </Window.InputBindings>
+</Window>

@@ -1,0 +1,206 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Class="CPC.POS.View.PricingVendorView"
+             x:Name="pricingVendorView"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             Height="340"
+             Width="600">
+    <UserControl.Resources>
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <!--DataGridColumn-->
+        <DataTemplate x:Key="CompanyHeaderTemplate">
+            <TextBlock Text="{DynamicResource C170}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AccountHeaderTemplate">
+            <TextBlock Text="{DynamicResource C171}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CountryHeaderTemplate">
+            <TextBlock Text="{DynamicResource C172}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PhoneHeaderTemplate">
+            <TextBlock Text="{DynamicResource C173}" />
+        </DataTemplate>
+
+        <!--  DataGridCell Edit Style  -->
+        <Style x:Key="DataGridCellEnableStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="True" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  End  -->
+    </UserControl.Resources>
+    <Grid x:Name="grdPricingVendor"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentPricingVendor"
+                Margin="15,20,15,15"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                Background="{DynamicResource TabControlBackground}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentPricingVendor"
+                  Margin="10">
+                <dataGridControl:DataGridControl x:Name="dtgrdPricingVendor"
+                                                 ItemsSource="{Binding VendorCollection}"
+                                                 NumberOfItems="{Binding VendorCollection.Count}"
+                                                 AutoGenerateColumns="False"
+                                                 CanUserAddRows="False"
+                                                 CanUserDeleteRows="False"
+                                                 IsRollBackData="False"
+                                                 IsPaging="False"
+                                                 SelectedIndex="0"
+                                                 Style="{DynamicResource DatagridWithoutRowHeader}"
+                                                 VerticalAlignment="Stretch"
+                                                 BorderThickness="1,1.2,1,1">
+                    <dataGridControl:DataGridControl.Columns>
+                        <DataGridTemplateColumn CanUserSort="False"
+                                                MinWidth="25"
+                                                CellStyle="{StaticResource DataGridCellEnableStyle}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                              Padding="0" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding DataContext.IsCheckedAll,ElementName=pricingVendorView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                              Padding="0" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Account #"
+                                            Binding="{Binding GuestNo,Mode=OneWay}"
+                                            IsReadOnly="True"
+                                            Width="100" />
+                        <DataGridTextColumn Header="Company "
+                                            Binding="{Binding Company,Mode=OneWay}"
+                                            IsReadOnly="True"
+                                            Width="*" />
+                        <DataGridTextColumn Header="Country"
+                                            Binding="{Binding AddressModel.CountryId, ConverterParameter=Country, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                            IsReadOnly="True"
+                                            Width="*" />
+                        <DataGridTextColumn Header="Phone"
+                                            Binding="{Binding Phone1}"
+                                            IsReadOnly="True"
+                                            Width="*" />
+                    </dataGridControl:DataGridControl.Columns>
+                </dataGridControl:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle Fill="White"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0" />
+        <StackPanel VerticalAlignment="Center"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    x:Name="stkpBtn"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Height="28"
+                    Command="{Binding OkCommand}"
+                    Width="80">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnOK"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="{DynamicResource Button_Content_OK}"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblOK"
+                               Foreground="White"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Height="28"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Margin="10,0,0,0">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnCancel"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Fill="{DynamicResource Cancel}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               x:Name="txtblExit"
+                               VerticalAlignment="Center"
+                               Text="{DynamicResource Button_Content_Cancel}"
+                               TextWrapping="NoWrap"
+                               Foreground="White"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
+	

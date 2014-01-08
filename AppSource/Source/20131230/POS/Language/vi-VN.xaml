@@ -1,0 +1,1108 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--  HolidayView  -->
+    <sys:String x:Key="HolidayView_HolidayList">Danh sách ngày lễ Vi</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Date">Ngày Vi</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Title">Chức vụ Vi</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Description">Mô tả Vi</sys:String>
+    <sys:String x:Key="HolidayView_Holiday">Ngày lễ Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbTitle_HeaderTitle">Chức vụ Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbTitle_Title">Chức vụ Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_HeaderDate">Ngày Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbFrom">Từ Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_To">Đến Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbOn">Vào Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbOnthe">On the: Vi</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_of">của Vi</sys:String>
+    <!--  End HolidayView  -->
+
+    <!--  TimeClockManualEventEditing  -->
+    <sys:String x:Key="TimeClockManualEventEditing_gbSearch_HeaderSearch">Search Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_gbSearch_FromDate">From Date: Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_EmployeeNo">Employee # Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_FirstName">First Name Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_LastName">Last Name Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_TotalActualHours">Total Actual Hours Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_TimeClock Correction">TimeClock Correction Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_EmployeeName">Employee Name: Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_EmployeeNo">Employee #: Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_Button_AddHours">Add Hours Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_Button_RemoveHours">Remove Hours Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_From">From: Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_To">To: Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridTimeClockCorrection_Duration">Duration Vi</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridTimeClockCorrection_Overtime">Overtime Vi</sys:String>
+
+    <!--  End TimeClockManualEventEditing  -->
+
+    <!--  MessageBoxCaption  -->
+    <sys:String x:Key="ErrorCaption">Có Lỗi Vi</sys:String>
+    <sys:String x:Key="WarningCaption">Cảnh Báo Vi</sys:String>
+    <sys:String x:Key="InformationCaption">Thông Tin Vi</sys:String>
+    <sys:String x:Key="DeleteCaption">Xóa Vi</sys:String>
+    <sys:String x:Key="SaveCaption">Lưu Vi</sys:String>
+    <sys:String x:Key="POSCaption">POS Vi</sys:String>
+    <!--  End MessageBoxCaption  -->
+
+    <!--  MessageBoxText  -->
+    <sys:String x:Key="M100">Số lượng đặt phải lớn hơn hoặc bằng số lượng nhận. Vi</sys:String>
+    <sys:String x:Key="M101">Sản phẩm có tên: {0} thuộc loại không trữ trong kho. Bạn có muốn đặt sản phẩm này ? Vi</sys:String>
+    <sys:String x:Key="M102">Tồn tại sản phẩm đã được nhận, không thể xóa. Vi</sys:String>
+    <sys:String x:Key="M103">Có chắc là bạn muốn xóa những gì đã chọn ? Vi</sys:String>
+    <sys:String x:Key="M104">Sản phẩm này đã được nhận, không thể xóa. Vi</sys:String>
+    <sys:String x:Key="M105">Sản phẩm này đã được hoàn trả, không thể xóa. Vi</sys:String>
+    <sys:String x:Key="M106">Dữ liệu đã thay đổi, bạn có muốn lưu những thay đổi đó không ? Vi</sys:String>
+    <sys:String x:Key="M107">Sửa cho thẻ hiện tại hết lỗi trước khi chuyển sang thẻ khác. Vi</sys:String>
+    <sys:String x:Key="M108">Có chắc là bạn muốn nhận sản phẩm này? Vi</sys:String>
+    <sys:String x:Key="M109">Cung cấp đủ thông tin trước khi nhận sản phẩm này. Vi</sys:String>
+    <sys:String x:Key="M110">Có chắc là bạn muốn hoàn trả sản phẩm này? Vi</sys:String>
+    <sys:String x:Key="M111">Cung cấp đủ thông tin trước khi hoàn trả sản phẩm này. Vi</sys:String>
+    <sys:String x:Key="M112">Dữ liệu đã thay đổi, bạn có muốn lưu những thay đổi đó không ? Vi</sys:String>
+    <sys:String x:Key="M113">Khi bạn áp dụng việc thay đổi giá , bạn nên đóng màn hình sản phẩm. Vi</sys:String>
+    <sys:String x:Key="M114">Khi bạn áp dụng việc khôi phục giá , bạn nên đóng màn hình sản phẩm. Vi</sys:String>
+    <sys:String x:Key="M115">Loại đã thay đổi, bạn có muốn lưu lại hay không ? Vi</sys:String>
+    <sys:String x:Key="M116">Không tìm thấy thiết bị scan. Vi</sys:String>
+    <sys:String x:Key="M117">Không thể đổi tên {0}. Một thư mục với cái tên mà bạn chỉ định đã tồn tại. Vi</sys:String>
+    <sys:String x:Key="M118">Không thể đổi tên {0}. Một tập tin với cái tên mà bạn chỉ định đã tồn tại. Vi</sys:String>
+    <sys:String x:Key="M119">Chọn tiêu chí tìm kiếm Vi</sys:String>
+    <sys:String x:Key="M120">Bạn nên đóng màn hình sản phẩm trước điều chỉnh thông tin sản phẩm trong kho ! Vi</sys:String>
+    <sys:String x:Key="M121">Bạn có muốn điều chỉnh thông tin sản phẩm trong kho hay không ? Vi</sys:String>
+    <sys:String x:Key="M122">Một số sản phẩm chưa được kiểm kê. Ban có muốn hệ thống kiểm kê hay không ? Vi</sys:String>
+    <sys:String x:Key="M123">Bạn nên đóng cửa số sản phẩm trước khi chuyển kho ! Vi</sys:String>
+    <sys:String x:Key="M124">Bạn nên đóng cửa số sản phẩm trước phục hồi sản phẩm trong kho! Vi</sys:String>
+    <sys:String x:Key="M125">Số tiền hoàn trả hiện tại thì ít hơn tổng tiền hoàn trả. Vi</sys:String>
+    <sys:String x:Key="M126">Chọn đường dẫn lưu trữ hình ảnh Vi</sys:String>
+    <sys:String x:Key="M127">Chọn đường dẫn lưu trữ tệp sao lưu. Vi</sys:String>
+    <!--  PopupAttributeAndSize  -->
+    <sys:String x:Key="M128">Kích thước đã tồn tại Vi</sys:String>
+    <sys:String x:Key="M129">Thuộc tính đã tồn tại Vi</sys:String>
+    <sys:String x:Key="M130">Kích thước không được để trống Vi</sys:String>
+    <sys:String x:Key="M131">Thuộc tính không được để trống Vi</sys:String>
+    <sys:String x:Key="M132">Sao lưu đã thành công. Hệ thống sẽ đăng xuất!! Vi</sys:String>
+    <sys:String x:Key="M133">Không thể lưu trữ cơ sở dữ liệu Vi</sys:String>
+    <sys:String x:Key="M134">Dữ liệu đã khôi phục thành công. Hệ thống sẽ đăng xuất!! Vi</sys:String>
+    <sys:String x:Key="M135">Không thể khôi phục dữ liệu. Vi</sys:String>
+    <sys:String x:Key="M136">Dữ liệu đã được làm xóa trắng. Vi</sys:String>
+    <sys:String x:Key="M137">Bạn có muốn sao lưu dữ liệu không ? Vi</sys:String>
+    <sys:String x:Key="M138">Bạn có muốn khôi phục dữ liệu không ? Vi</sys:String>
+    <sys:String x:Key="M139">Bạn có muốn xóa trắng toàn bộ dữ liệu không ? Vi</sys:String>
+    <!--  TaskListReminder  -->
+    <sys:String x:Key="M140">Bạn có muốn hoàn thành tác vụ này không ? Vi</sys:String>
+
+    <!--  End MessageBoxText  -->
+
+    <!--  ErrorMessage  -->
+    <sys:String x:Key="E100">Vui lòng chọn thông tin ! Vi</sys:String>
+    <sys:String x:Key="E101">Số lượng nhận phải lớn hơn không ! Vi</sys:String>
+    <sys:String x:Key="E102">Số lượng đặt phải lớn hơn hoặc bằng số lượng nhận ! Vi</sys:String>
+    <sys:String x:Key="E103">Vui lòng nhập tên đối tượng. Vi</sys:String>
+    <sys:String x:Key="E104">Vui lòng chọn mã thuế. Vi</sys:String>
+    <sys:String x:Key="E105">Vui lòng nhập tên công ty. Vi</sys:String>
+    <sys:String x:Key="E106">Vui lòng nhập địa chỉ. Vi</sys:String>
+    <sys:String x:Key="E107">Vui lòng chọn quốc gia. Vi</sys:String>
+    <sys:String x:Key="E108">Vui lòng nhập tên thành phố Vi</sys:String>
+    <sys:String x:Key="E109">Vui lòng chọn tiểu bang. Vi</sys:String>
+    <sys:String x:Key="E110">Mã vùng định dạng sai. Vi</sys:String>
+    <sys:String x:Key="E111">Fax định dạng sai. Vi</sys:String>
+    <sys:String x:Key="E112">Điện thoại định dạng sai. Vi</sys:String>
+    <sys:String x:Key="E113">Email định dạng sai. Vi</sys:String>
+    <sys:String x:Key="E114">Mật khẩu không khớp. Vi</sys:String>
+    <!--  End ErrorMessage  -->
+
+    <!--  Button Language  -->
+    <sys:String x:Key="Button_Ok">Chấp nhận Vi</sys:String>
+    <sys:String x:Key="Button_Cancel">Quay lại Vi</sys:String>
+    <!--  End Button Language  -->
+
+    <!--  Common  -->
+    <sys:String x:Key="C100">Sản phẩm Vi</sys:String>
+    <sys:String x:Key="C101">Kỳ hạn Vi</sys:String>
+    <sys:String x:Key="C102">Ghi chú Vi</sys:String>
+    <sys:String x:Key="C103">Thành tiền Vi</sys:String>
+    <sys:String x:Key="C104">Tìm nâng cao Vi</sys:String>
+    <sys:String x:Key="C105">Ngày Trả Vi</sys:String>
+    <sys:String x:Key="C106">Thanh Toán Bằng: Vi</sys:String>
+    <sys:String x:Key="C107">Trả Vi</sys:String>
+    <sys:String x:Key="C108">Còn Lại Vi</sys:String>
+    <sys:String x:Key="C109">Trả Tất Cả Vi</sys:String>
+    <sys:String x:Key="C110">Tiền Nhận Về: Vi</sys:String>
+    <sys:String x:Key="C111">Phí Trả Hàng: Vi</sys:String>
+    <sys:String x:Key="C112">Tổng cộng Vi</sys:String>
+    <sys:String x:Key="C113">Tìm kiếm Vi</sys:String>
+    <sys:String x:Key="C114">Mã sản phẩm Vi</sys:String>
+    <sys:String x:Key="C115">Tên sản phẩm Vi</sys:String>
+    <sys:String x:Key="C116">Thuộc tính Vi</sys:String>
+    <sys:String x:Key="C117">Kích thước Vi</sys:String>
+    <sys:String x:Key="C118">Đơn vị Vi</sys:String>
+    <sys:String x:Key="C119">Giá tiền Vi</sys:String>
+    <sys:String x:Key="C120">Số lượng Vi</sys:String>
+    <sys:String x:Key="C121">Giảm giá Vi</sys:String>
+    <sys:String x:Key="C122">Thành tiền Vi</sys:String>
+    <sys:String x:Key="C123">Thanh Toán Vi</sys:String>
+    <sys:String x:Key="C124">Trả Hàng Vi</sys:String>
+    <sys:String x:Key="C125">Tạo Mới Vi</sys:String>
+    <sys:String x:Key="C126">Chỉnh Sửa Vi</sys:String>
+    <sys:String x:Key="C127">Xóa Mục Đã Chọn Vi</sys:String>
+    <sys:String x:Key="C128">Tạo Bản Sao Vi</sys:String>
+    <sys:String x:Key="C129">Sửa Serial Vi</sys:String>
+    <sys:String x:Key="C130">Ngày Trả Vi</sys:String>
+    <sys:String x:Key="C131">SL Trả Vi</sys:String>
+    <sys:String x:Key="C132">Đã Trả Vi</sys:String>
+    <sys:String x:Key="C133">Ngày Thanh Toán Nợ Vi</sys:String>
+    <sys:String x:Key="C134">Nhà PP Vi</sys:String>
+    <sys:String x:Key="C135">Từ Khóa Vi</sys:String>
+    <sys:String x:Key="C136">Đặt Hàng Vi</sys:String>
+    <sys:String x:Key="C137">Kích Hoạt Vi</sys:String>
+    <sys:String x:Key="C138">Mô Tả Vi</sys:String>
+    <sys:String x:Key="C139">Giá Chuẩn Vi</sys:String>
+    <sys:String x:Key="C140">Mới Vi</sys:String>
+    <sys:String x:Key="C141">Chỉnh Sửa Vi</sys:String>
+    <sys:String x:Key="C142">Lưu Vi</sys:String>
+    <sys:String x:Key="C143">Hủy Vi</sys:String>
+    <sys:String x:Key="C144">Mã Thuế Vi</sys:String>
+    <sys:String x:Key="C145">% Lợi Nhuận Vi</sys:String>
+    <sys:String x:Key="C146">% Tăng Giá Vi</sys:String>
+    <sys:String x:Key="C147">Nơi Nhận: Vi</sys:String>
+    <sys:String x:Key="C148">Ngày Đặt: Vi</sys:String>
+    <sys:String x:Key="C149">Ngày Nhận Vi</sys:String>
+    <sys:String x:Key="C150">Ngày Hủy Vi</sys:String>
+    <sys:String x:Key="C151">Trạng Thái Vi</sys:String>
+    <sys:String x:Key="C152">SL tồn kho Vi</sys:String>
+    <sys:String x:Key="C153">On Order vi Vi</sys:String>
+    <sys:String x:Key="C154">Hiện Có Vi</sys:String>
+    <sys:String x:Key="C155">Kho hàng Vi</sys:String>
+    <sys:String x:Key="C156">Số lượng sản phẩm Vi</sys:String>
+    <sys:String x:Key="C157">Loại giá Vi</sys:String>
+    <sys:String x:Key="C158">Giá cơ bản Vi</sys:String>
+    <sys:String x:Key="C159">Ngày tạo Vi</sys:String>
+    <sys:String x:Key="C160">Người tạo Vi</sys:String>
+    <sys:String x:Key="C161">Ngày thực hiện Vi</sys:String>
+    <sys:String x:Key="C162">Người thực hiện Vi</sys:String>
+    <sys:String x:Key="C163">Ngày phục hồi Vi</sys:String>
+    <sys:String x:Key="C164">Người phục hồi Vi</sys:String>
+    <sys:String x:Key="C165">Sản phẩm Vi</sys:String>
+    <sys:String x:Key="C166">Tất cả sản phẩm Vi</sys:String>
+    <sys:String x:Key="C167">Tất cả sản phẩm trong danh mục Vi</sys:String>
+    <sys:String x:Key="C168">Tất cả sản phẩm trong phần nhà cung cấp Vi</sys:String>
+    <sys:String x:Key="C169">Điều chỉnh Vi</sys:String>
+    <sys:String x:Key="C170">Công ty Vi</sys:String>
+    <sys:String x:Key="C171">Tài khoản Vi</sys:String>
+    <sys:String x:Key="C172">Quốc gia Vi</sys:String>
+    <sys:String x:Key="C173">Số điện thoại Vi</sys:String>
+    <sys:String x:Key="C174">Mã sản phẩm Vi</sys:String>
+    <sys:String x:Key="C175">Tên sản phẩm Vi</sys:String>
+    <sys:String x:Key="C176">Mã vạch Vi</sys:String>
+    <sys:String x:Key="C177">Xóa Vi</sys:String>
+    <sys:String x:Key="C178">Tên Vi</sys:String>
+    <sys:String x:Key="C179">Đường Vi</sys:String>
+    <sys:String x:Key="C180">Thành Phố Vi</sys:String>
+    <sys:String x:Key="C181">Bang Vi</sys:String>
+    <sys:String x:Key="C182">Mã vùng Vi</sys:String>
+    <sys:String x:Key="C183">Fax Vi</sys:String>
+    <sys:String x:Key="C184">Email Vi</sys:String>
+    <sys:String x:Key="C185">Website Vi</sys:String>
+    <sys:String x:Key="C186">Duyệt Vi</sys:String>
+    <sys:String x:Key="C187">Xóa Trắng Vi</sys:String>
+    <sys:String x:Key="C188">Mật Khẩu Vi</sys:String>
+    <sys:String x:Key="C189">Sáp nhập thông tin Vi</sys:String>
+    <sys:String x:Key="C190">Cost</sys:String>
+
+    <!--Region "Title" Extention Common  -->
+    <sys:String x:Key="Title_PaymentHistoryDetail">Payment history detail</sys:String>
+    <!--EndRegion Title -->
+
+    <!--Region "Text" Extention Common -->
+    <sys:String x:Key="Text_ViewPaymentHistory">View Payment History</sys:String>
+    <sys:String x:Key="Text_SelectedItem">Selected Item</sys:String>
+    <sys:String x:Key="Text_NewVendor">New Vendor</sys:String>
+    <sys:String x:Key="Text_NewCustomer">New Customer</sys:String>
+    <sys:String x:Key="Text_GoToVendorList">Go To Vendor List</sys:String>
+    <sys:String x:Key="Text_GoToCustomerList">Go To Customer List</sys:String>
+    <!--EndRegion Title -->
+    <!--  End Common  -->
+
+    <!--  DataGrid Language  -->
+    <sys:String x:Key="DG100">Tổng cộng : Vi</sys:String>
+    <sys:String x:Key="DG101">mẫu tin(s) . Vi</sys:String>
+    <sys:String x:Key="DG102">Vị trí hiện tại : Vi</sys:String>
+    <sys:String x:Key="DG103">Tổng số mẫu tin : {0}. Vị trí hiện tại : {1} Vi</sys:String>
+    <!--  End DataGrid Language  -->
+
+    <!--  PurchaseOrderView  -->
+    <sys:String x:Key="PO100">Đặt Hàng Vi</sys:String>
+    <sys:String x:Key="PO101">Đơn hàng # Vi</sys:String>
+    <sys:String x:Key="PO111">Ngày Thanh Toán Nợ: Vi</sys:String>
+    <sys:String x:Key="PO112">Nhận Tất Cả Vi</sys:String>
+    <sys:String x:Key="PO113">Tổng SL Đặt: Vi</sys:String>
+    <sys:String x:Key="PO114">Tổng SL Nhận: Vi</sys:String>
+    <sys:String x:Key="PO115">Đã Nhận Vi</sys:String>
+    <sys:String x:Key="PO116">Nhận Hàng Vi</sys:String>
+    <sys:String x:Key="PO117">SL Nợ Vi</sys:String>
+    <sys:String x:Key="PO118">SL Nhận Vi</sys:String>
+    <sys:String x:Key="PO119">Ngày Nhận Vi</sys:String>
+    <sys:String x:Key="PO120">Ngày Đặt Vi</sys:String>
+    <sys:String x:Key="PO121">SL Đặt Vi</sys:String>
+    <sys:String x:Key="PO122">SL Nợ Vi</sys:String>
+    <sys:String x:Key="PO123">SL Nhận Vi</sys:String>
+    <sys:String x:Key="PO124">% SL Nợ Vi</sys:String>
+    <sys:String x:Key="PO125">Số ĐĐH Vi</sys:String>
+    <sys:String x:Key="PO126">Barcode</sys:String>
+    <sys:String x:Key="PO127">Store</sys:String>
+    <sys:String x:Key="PO128">Has Return</sys:String>
+    <!--  End PurchaseOrderView  -->
+
+    <!--  DepartmentView  -->
+    <sys:String x:Key="D100">Tất Cả Thể Loại Vi</sys:String>
+    <sys:String x:Key="D101">Tất Cả Sản Phẩm Vi</sys:String>
+    <sys:String x:Key="D102">Lĩnh Vực Vi</sys:String>
+    <sys:String x:Key="D103">Tên Lĩnh Vực: Vi</sys:String>
+    <sys:String x:Key="D104">Tên Thể Loại: Vi</sys:String>
+    <sys:String x:Key="D105">Tên Nhà PP: Vi</sys:String>
+    <sys:String x:Key="D106">Tên Vi</sys:String>
+    <sys:String x:Key="D107">Tạo Mới Lĩnh Vực Vi</sys:String>
+    <sys:String x:Key="D108">Sửa Lĩnh Vực Vi</sys:String>
+    <sys:String x:Key="D109">Tạo Mới Thể Loại Vi</sys:String>
+    <sys:String x:Key="D110">Sửa Thể Loại Vi</sys:String>
+    <sys:String x:Key="D111">Tạo Mới Nhà PP Vi</sys:String>
+    <sys:String x:Key="D112">Sửa Nhà PP Vi</sys:String>
+    <sys:String x:Key="D113">Tất Cả Lĩnh Vực Vi</sys:String>
+    <!--  End DepartmentView  -->
+
+    <!--  AttachmentView  -->
+    <sys:String x:Key="A100">Quét... Vi</sys:String>
+    <sys:String x:Key="A101">Đính kèm Vi</sys:String>
+    <sys:String x:Key="A102">Mở Vi</sys:String>
+    <sys:String x:Key="A103">Mở Với... Vi</sys:String>
+    <sys:String x:Key="A104">Trong Thư Mục Vi</sys:String>
+    <!--  End AttachmentView  -->
+
+    <!--  CompanySettingView  -->
+    <sys:String x:Key="CS100">Thông Tin Cửa Hàng Vi</sys:String>
+    <sys:String x:Key="CS101">Số ĐT Vi</sys:String>
+    <sys:String x:Key="CS102">Internet Vi</sys:String>
+    <sys:String x:Key="CS103">Số Cửa Hàng Vi</sys:String>
+    <sys:String x:Key="CS104">Chọn số cửa hàng của công ty bạn. Vi</sys:String>
+    <sys:String x:Key="CS105">Đơn Vị Đo Lường Vi</sys:String>
+    <sys:String x:Key="CS106">Nhiều Đơn Vị Đo Lường Vi</sys:String>
+    <sys:String x:Key="CS107">Cho phép thiết lập nhiều đơn vị đo lường cho hàng tồn kho, không tồn kho và các sản phẩm dịch vụ khác. Vi</sys:String>
+    <sys:String x:Key="CS108">Ví dụ cho trường hợp sử dụng nhiều đơn vị đo lường: Vi</sys:String>
+    <sys:String x:Key="CS109">Giả sử một thùng nước ngọt có 24 lon. Hệ thống có thể bán theo lon hoặc theo thùng. Vi</sys:String>
+    <sys:String x:Key="CS110">I receive nails in 30 poun boxes and I sell nails in 1 and 5 pound boxes. Vi</sys:String>
+    <sys:String x:Key="CS111">Kiểu Giá Tiền Mặc Định Vi</sys:String>
+    <sys:String x:Key="CS112">Chọn loại giá sẽ được áp dụng mặc định cho hóa đơn bán hàng hay đơn đặt hàng. Vi</sys:String>
+    <sys:String x:Key="CS113">Thưởng Và Các Tùy Chọn Vi</sys:String>
+    <sys:String x:Key="CS114">Nhập tên and markdown % ( from your regulare price ) for each optional price level you would like to use. The markdowns entered are used to calculate each level's price for new items only. Vi</sys:String>
+    <sys:String x:Key="CS115">Mẹo: To mark a price level up from your regular price, enter a negative markdown ( Example: -10 ) Vi</sys:String>
+    <sys:String x:Key="CS116">Tên Giá Vi</sys:String>
+    <sys:String x:Key="CS117">Giảm giá % ( for new items ) Vi</sys:String>
+    <sys:String x:Key="CS118">Các Phương Thức Thanh Toán Vi</sys:String>
+    <sys:String x:Key="CS119">Chọn các phương thức thanh toán mà bạn chấp nhận. Vi</sys:String>
+    <sys:String x:Key="CS120">Sử dụng Vi</sys:String>
+    <sys:String x:Key="CS121">như là phương thức thanh toán mặc định cho các hóa đơn mới. Vi</sys:String>
+    <sys:String x:Key="CS122">Loại Thẻ Vi</sys:String>
+    <sys:String x:Key="CS123">Chọn các loại thẻ mà bạn chấp nhận Vi</sys:String>
+    <sys:String x:Key="CS124">Loại Thẻ Quà Tặng Vi</sys:String>
+    <sys:String x:Key="CS125">Chọn loại thẻ quà tặng mà bạn chấp nhận Vi</sys:String>
+    <sys:String x:Key="CS126">Mẹo Vi</sys:String>
+    <sys:String x:Key="CS127">Thu thập customer tips on credit, account, and gift card transactions Vi</sys:String>
+    <sys:String x:Key="CS128">Khi manally changing discount status from deactive to active, you can associate a discount reason. Vi</sys:String>
+    <sys:String x:Key="CS129">Yêu cầu phải ghi nhận lý do giảm giá. Vi</sys:String>
+    <sys:String x:Key="CS130">Cài Đặt Email Vi</sys:String>
+    <sys:String x:Key="CS131">Kết nối tới tài khoảng email at your Internet service provide ( ISP) or your organization mail server. Vi</sys:String>
+    <sys:String x:Key="CS132">ISP Server &amp; Port Vi</sys:String>
+    <sys:String x:Key="CS133">Mail Server Vi</sys:String>
+    <sys:String x:Key="CS134">Ví dụ: Mail.mailserver.com Vi</sys:String>
+    <sys:String x:Key="CS135">Mail Port Vi</sys:String>
+    <sys:String x:Key="CS136">Số Port. provide by ISP Service Provider. Vi</sys:String>
+    <sys:String x:Key="CS137">Email &amp; Mật Khẩu Vi</sys:String>
+    <sys:String x:Key="CS138">Ví dụ: Barbara@gmail.com Vi</sys:String>
+    <sys:String x:Key="CS139">Nhập lại mật khẩu Vi</sys:String>
+    <sys:String x:Key="CS140">Kiểu the Password your Internet service provider has given you. Vi</sys:String>
+    <sys:String x:Key="CS141">Allow Negative Store Vi</sys:String>
+    <sys:String x:Key="CS142">Calculate reward included tax Vi</sys:String>
+    <sys:String x:Key="CS143">Allow reward redeem less than discount Vi</sys:String>
+    <sys:String x:Key="CS144">Allow return fee Vi</sys:String>
+    <sys:String x:Key="CS145">Return fee percent Vi</sys:String>
+    <sys:String x:Key="CS146">Discount Type Vi</sys:String>
+    <sys:String x:Key="CS147">Discount Status Vi</sys:String>
+    <sys:String x:Key="CS148">Work Hours Vi</sys:String>
+    <sys:String x:Key="CS149">Timeclock Vi</sys:String>
+    <sys:String x:Key="CS150">Return Vi</sys:String>
+    <sys:String x:Key="CS151">Reward Vi</sys:String>
+    <sys:String x:Key="CS152">Login Vi</sys:String>
+    <sys:String x:Key="CS153">Security Vi</sys:String>
+    <sys:String x:Key="CS154">Currency Vi</sys:String>
+    <sys:String x:Key="CS155">Backup Vi</sys:String>
+    <sys:String x:Key="CS156">Option Vi</sys:String>
+    <sys:String x:Key="CS157">Maximum Sticky Note Vi</sys:String>
+    <sys:String x:Key="CS158">Ship Unit Vi</sys:String>
+    <sys:String x:Key="CS159">Image Path Vi</sys:String>
+    <sys:String x:Key="CS160">Language Vi</sys:String>
+    <sys:String x:Key="CS161">Allow Shift Vi</sys:String>
+    <sys:String x:Key="CS162">Cashier by User Name Vi</sys:String>
+    <sys:String x:Key="CS163">Require Promotion Code Vi</sys:String>
+    <sys:String x:Key="CS164">Keep Log Vi</sys:String>
+    <sys:String x:Key="CS165">Days Vi</sys:String>
+    <sys:String x:Key="CS166">AAAAAAAAAAA Vi</sys:String>
+    <sys:String x:Key="CS167">Symbol Vi</sys:String>
+    <sys:String x:Key="CS168">Decimal Place Vi</sys:String>
+    <sys:String x:Key="CS169">Password Format Vi</sys:String>
+    <sys:String x:Key="CS170">Allow Auto Logout Vi</sys:String>
+    <sys:String x:Key="CS171">Time Out Vi</sys:String>
+    <sys:String x:Key="CS172">Minutes Vi</sys:String>
+    <sys:String x:Key="CS173">AAAAAAAAAAA Vi</sys:String>
+    <sys:String x:Key="CS174">Backup When Exit Vi</sys:String>
+    <sys:String x:Key="CS175">Backup Every Vi</sys:String>
+    <sys:String x:Key="CS176">Days Vi</sys:String>
+    <sys:String x:Key="CS177">Keep Backup Up to Vi</sys:String>
+    <sys:String x:Key="CS178">Save Directory Vi</sys:String>
+    <!--  End CompanySettingView  -->
+
+    <!--  PricingView  -->
+    <sys:String x:Key="PR100">Tên Vi</sys:String>
+    <sys:String x:Key="PR101">Phương thức điều chỉnh Vi</sys:String>
+    <sys:String x:Key="PR102">Số tiền thay đổi Vi</sys:String>
+    <sys:String x:Key="PR103">Chi phí Vi</sys:String>
+    <sys:String x:Key="PR104">Tên: Vi</sys:String>
+    <sys:String x:Key="PR105">Set Vi</sys:String>
+    <sys:String x:Key="PR106">Phương thức Vi</sys:String>
+    <sys:String x:Key="PR107">Tên danh mục Vi</sys:String>
+    <sys:String x:Key="PR108">Lợi nhuận Vi</sys:String>
+    <sys:String x:Key="PR109">Đánh dấu Vi</sys:String>
+    <sys:String x:Key="PR110">Giá mới Vi</sys:String>
+    <sys:String x:Key="PR111">Giá hiện tại Vi</sys:String>
+    <sys:String x:Key="PR112">Chi phí thay đổi Vi</sys:String>
+    <sys:String x:Key="PR113">Giá thay đổi Vi</sys:String>
+    <sys:String x:Key="PR114">Thay đổi giá Vi</sys:String>
+    <sys:String x:Key="PR_Popup_108">Lợi nhuận % Vi</sys:String>
+    <sys:String x:Key="PR_Popup_109">Markup % Vi</sys:String>
+    <!--  ReOrderStock  -->
+    <sys:String x:Key="RO100">Đặt hàng lại Vi</sys:String>
+    <sys:String x:Key="RO101">Kho Vi</sys:String>
+    <sys:String x:Key="RO102">Số lượng đặt lại Vi</sys:String>
+    <sys:String x:Key="RO103">Reorder Point vi Vi</sys:String>
+    <!--  End ReOrderStock  -->
+    <!--  Count Sheet  -->
+    <sys:String x:Key="CS_DataGrid_Header_Location">Nơi Vi</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_Difference">Khác nhau Vi</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_OnHandQty">Số lượng còn lại Vi</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_CountedQuantity">Được tính Vi</sys:String>
+    <sys:String x:Key="CS_TextBlock_SheetNo">Sheet # Vi</sys:String>
+    <sys:String x:Key="CS_TextBlock_Status">Trạng thái Vi</sys:String>
+    <sys:String x:Key="CS_TextBlock_StartedDate">Ngày bắt đầu Vi</sys:String>
+    <sys:String x:Key="CS_TextBlock_CompletedDate">Ngày hoàn thành Vi</sys:String>
+    <!--  End Count Sheet  -->
+
+    <!--  Reward  -->
+    <sys:String x:Key="RW_TextBlock_Reward">Reward Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_PurchaseThreshold">Purchase Threshold: Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardAmount">Reward Amount: Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardExpiration">Reward Expiration: Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_ PurchaseTrackingPeriod">Purchase Tracking Period Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_StartDate">Start Date: Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_EndDate">End Date: Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_NoEndDate">No End Date Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardOption">Reward Option Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_Automatically">Automatically enroll new customers in Rewards Program Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_Prompttoenroll">Prompt to enroll when making sales to non-members Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_InformCashier">Inform cashier when sales rewards are earned Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_BlockReward">Block reward redemption for Vi</sys:String>
+    <sys:String x:Key="RW_CheckBox_Daysafter">days after earned. Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardProgramStatus">Reward Program Status Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTracking">Reward Tracking is Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTrackingOFF">OFF Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTrackingON">ON Vi</sys:String>
+    <sys:String x:Key="RW_Button_TurnTrackingON">Turn Tracking ON Vi</sys:String>
+    <sys:String x:Key="RW_Button_TurnTrackingOFF">Turn Tracking OFF Vi</sys:String>
+    <sys:String x:Key="RW_Message_Keepexisting">Do you want to keep existing customer's rewards available ? Vi</sys:String>
+    <sys:String x:Key="RW_Message_Yes">[Yes] = Keep existing customer's rewards available. Vi</sys:String>
+    <sys:String x:Key="RW_Message_No">[No]  = Discard and recalculate existing rewards.The redemption will not be allowed. Vi</sys:String>
+    <sys:String x:Key="RW_Message_Cancel">[Cancel] = Leave this message. Vi</sys:String>
+    <sys:String x:Key="RW_Message_Issued">{0} reward(s) issued. Vi</sys:String>
+
+    <!--  End Reward  -->
+    <!--  Current Stock  -->
+    <sys:String x:Key="RW_TextBlock_PartNo">Part No. Vi</sys:String>
+    <sys:String x:Key="RW_TextBlock_BarCode">Mã quét Vi</sys:String>
+    <!--  End Current Stock  -->
+    <!--  Login  -->
+    <sys:String x:Key="LG_TextBlock_UserName">Tài khoản Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_Password">Mật khẩu Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_OldPassword">Mật khẩu cũ Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_NewPassword">Mật khẩu mới Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_ConfirmNewPassword">Xác nhận mật khẩu mới Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_Language">Ngôn ngữ Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_Shift">Ca Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_RememberMe">Nhớ thông tin Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_Login">Đăng nhập Vi</sys:String>
+    <sys:String x:Key="LG_TextBlock_Exit">Thoát Vi</sys:String>
+    <!--  End Login  -->
+    <!--  UserLogView  -->
+    <sys:String x:Key="UL_Header_LoginName">Tài khoản Vi</sys:String>
+    <sys:String x:Key="UL_Header_UserName">Nhân viên Vi</sys:String>
+    <sys:String x:Key="UL_Header_IPSource">Địa chỉ IP Vi</sys:String>
+    <sys:String x:Key="UL_Header_ConnectedOn">Đã kết nối vào lúc Vi</sys:String>
+    <sys:String x:Key="UL_Header_DisConnectedOn">Mất kết nối vào lúc Vi</sys:String>
+    <sys:String x:Key="UL_Header_DisConnected">Đã ngắt kết nối Vi</sys:String>
+    <!--  End UserLogView  -->
+    <!--  UserListView  -->
+    <sys:String x:Key="UL_TextBlock_Includedlocked">Khóa tài khoản Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_User">Người dùng Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_UserInfo">Thông tin tài khoản Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_LoginName">Tài khoản Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_Department">Phòng ban Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_Position">Chức vụ Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_Security">Bảo mật Vi</sys:String>
+
+    <sys:String x:Key="UL_TextBlock_SetDefault">Mật khẩu mặc định Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_Confirm">Xác nhận Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_ExpiryDate">Ngày hết hạn Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_UserRight">Quyền sử dụng Vi</sys:String>
+    <sys:String x:Key="UL_Header_Code">Mã Vi</sys:String>
+    <sys:String x:Key="UL_Header_Name">Tên Vi</sys:String>
+    <sys:String x:Key="UL_TextBlock_Permission">Quyền hạn Vi</sys:String>
+    <sys:String x:Key="LP_TextBlock_Transaction1">Người dùng đã bị khóa. Chỉ &quot; Vi</sys:String>
+    <sys:String x:Key="LP_TextBlock_Transaction2">&quot; ngưởi quản lý mới có thể mở khóa. Vi</sys:String>
+    <!--  End User List View  -->
+
+    <!--  EmployeeView  -->
+    <sys:String x:Key="EM_TextBlock_EmployeeNo">Nhân viên # Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_FullName">Họ &amp; tên Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_EmployeeType">Loại nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_ConnectedToTime">Cho phép theo dõi giờ làm việc Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_HireDate">Ngày làm việc Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Employee">Nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeInfo">Thông tin nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_Header_TimeClock">TimeClock Vi</sys:String>
+    <sys:String x:Key="EM_Header_Credential">Quét vân tay Vi</sys:String>
+    <sys:String x:Key="EM_Header_Schedule">Giờ làm việc Vi</sys:String>
+
+    <sys:String x:Key="EM_TextBlock_LeftFingerprint">Ngòn trỏ trái Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_RightFingerprint">Ngón trỏ phải Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClickHere">Nhấn vào đây Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_WorkSchedule">Giờ làm iệc Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Options">Options Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Clock-Innotauthorized">Clock-In not authorized if employee arrives late by at least: Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Minutes">minutes. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Automaticallydeduct">Automatically deduct the lunch time in the reports when it is not registered during the assigned time. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Overtimetobalance">Uses overtime to balance those days where time was not completed. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Overtime">Overtime Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClockInhour">Before the Clock-In hour. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Lunchtime">Break/ lunch time. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClockOuthour">After the Clock-Out hour. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Holiday">Holiday or days - off. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_ConsiderOvertime">Consider overtime in reports only when it is at least: Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_MinutesADay">minutes a day. Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_FirstName">Họ nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Initial">Tên lót Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_LastName">Tên nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Company">Công ty Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_JobTitle">Chức vụ Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Email">Thư điện tử Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Website">Website Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Commission">Hoa hồng Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_PhoneNumbers">Số diện thoại Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Phone">Số diện thoại Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Cellphone">Số diện thoại Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_PersonalInfo">Thông tin cá nhân Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Gender">Giới tính Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_SSN">SSN: Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Marital">Hôn nhân Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Id">CMND: Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_DOB">Ngày sinh Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_State">Bang Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_EmergencyContact">liên lạc khẩn cấp Vi</sys:String>
+    <sys:String x:Key="EM_MenuItem_NewItem">Tạo mới Vi</sys:String>
+    <sys:String x:Key="EM_MenuItem_EditItem">Chỉnh sửa Vi</sys:String>
+    <sys:String x:Key="EM_MenuItem_DeleteItem">Xóa Vi</sys:String>
+    <sys:String x:Key="EM_TextBlock_Account">Mã tài khoản Vi</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeNo">Mã nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeType">Loại nhân viên Vi</sys:String>
+    <sys:String x:Key="EM_Header_JobTitle">Chức vụ Vi</sys:String>
+    <sys:String x:Key="DataGrid_Text_Total">Tổng cộng : Vi</sys:String>
+    <sys:String x:Key="DataGrid_Text_Item">dòng. Vi</sys:String>
+    <sys:String x:Key="DataGrid_Text_CurrentIndex">Dòng hiện tai : Vi</sys:String>
+
+    <!--  End EmployeeView  -->
+
+    <!--  region ProductView  -->
+    <!--  CheckBox  -->
+    <sys:String x:Key="PD_CategoryBrand">Loại Hàng/Nhánh Hàng Vi</sys:String>
+    <sys:String x:Key="PD_DescriptionStyleModel">Mô Tả/Kiểu Dáng Vi</sys:String>
+    <!--  MenuItem  -->
+    <sys:String x:Key="PD_SellSelectedItem">Bán SP đã chọn Vi</sys:String>
+    <sys:String x:Key="PD_ReceiveSelectedItem">Mua SP đã chọn Vi</sys:String>
+    <sys:String x:Key="PD_TransferSelectedItem">Chuyển kho SP đã chọn Vi</sys:String>
+    <!--  ColumnHeader  -->
+    <sys:String x:Key="PD_ItemType">Dạng SP Vi</sys:String>
+    <sys:String x:Key="PD_Category">Loại SP Vi</sys:String>
+    <sys:String x:Key="PD_PartNo">Số Phần Vi</sys:String>
+    <sys:String x:Key="PD_ALU">ALU vi Vi</sys:String>
+    <sys:String x:Key="PD_BaseUnit">Đơn Vị Vi</sys:String>
+    <sys:String x:Key="PD_CreationDate">Ngày Tạo Vi</sys:String>
+    <sys:String x:Key="PD_VendorCode">Mã NCC Vi</sys:String>
+    <sys:String x:Key="PD_RegPrice">Reg.Price vi Vi</sys:String>
+    <!--  TabHeader  -->
+    <sys:String x:Key="PD_ProductInfo">Thông Tin SP Vi</sys:String>
+    <sys:String x:Key="PD_Additional">Thông tin khác Vi</sys:String>
+    <sys:String x:Key="PD_VendorProduct">Nhà cung cấp Vi</sys:String>
+    <sys:String x:Key="PD_PurchaseHistory">Purchase History vi Vi</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="PD_ItemInformation">Thông Tin Sản Phẩm Vi</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure">Đơn Vị Vi</sys:String>
+    <sys:String x:Key="PD_PriceLevels">Mức Giá Vi</sys:String>
+    <sys:String x:Key="PD_Warranty">Bảo Hành Vi</sys:String>
+    <sys:String x:Key="PD_Location">Địa Điểm Vi</sys:String>
+    <sys:String x:Key="PD_OtherOptionsSetting">Thiết Lập Khác Vi</sys:String>
+    <!--  Button  -->
+    <sys:String x:Key="PD_Detail">Detail vi Vi</sys:String>
+    <sys:String x:Key="PD_ManageUOM">Quản Lý Đơn Vị Vi</sys:String>
+    <sys:String x:Key="PD_BuildItemsGroup">Build Items Group vi Vi</sys:String>
+    <sys:String x:Key="PD_Pricing">Quản Lý Giá Vi</sys:String>
+    <!--  TextBlock  -->
+    <sys:String x:Key="PD_Keyword">Từ khóa/Quét sản phẩm Vi</sys:String>
+    <sys:String x:Key="PD_ItemNo">Mã SP Vi</sys:String>
+    <sys:String x:Key="PD_Date">Ngày Tạo Vi</sys:String>
+    <sys:String x:Key="PD_Brand">Nhánh Hàng Vi</sys:String>
+    <sys:String x:Key="PD_StyleModel">Kiểu Dáng Vi</sys:String>
+    <sys:String x:Key="PD_OnHand">Số Lượng Vi</sys:String>
+    <sys:String x:Key="PD_AvailableQty">Số Lượng Có Sẵn Vi</sys:String>
+    <sys:String x:Key="PD_TypeOfUOM">Type of UOM vi Vi</sys:String>
+    <sys:String x:Key="PD_BaseUnitNumber">Giá Trị Quy Đổi Vi</sys:String>
+    <sys:String x:Key="PD_OrderCost">Giá Mua Vi</sys:String>
+    <sys:String x:Key="PD_AvgUnitCost">Giá Trung Bình Vi</sys:String>
+    <sys:String x:Key="PD_TypeOfWarranty">Loại Bảo Hành Vi</sys:String>
+    <sys:String x:Key="PD_WarrantyPeriod">Thời Gian Bảo Hành Vi</sys:String>
+    <sys:String x:Key="PD_YourLocation">Địa điểm của bạn? Vi</sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo">Tracking Serial No. vi Vi</sys:String>
+    <sys:String x:Key="PD_OpenItem">Open Item vi Vi</sys:String>
+    <sys:String x:Key="PD_Unorderable">Unorderable vi Vi</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards">Eligible for Rewards vi Vi</sys:String>
+    <sys:String x:Key="PD_LayawayItem">Layaway Item vi Vi</sys:String>
+    <sys:String x:Key="PD_SalesCommission">Sales Commission vi Vi</sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo_Description">Prompt for serial number vi Vi</sys:String>
+    <sys:String x:Key="PD_OpenItem_Description">Can change item price after putting this item on order vi Vi</sys:String>
+    <sys:String x:Key="PD_Unorderable_Description">Temporaily ignore the reorder point for this item and warn when putting it on a PO vi Vi</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards_Description">Reward Customer will earn reward when purchase this item vi Vi</sys:String>
+    <sys:String x:Key="PD_LayawayItem_Description">This item is eligible for Layaway vi Vi</sys:String>
+    <sys:String x:Key="PD_SalesCommission_Description">Commission Rate vi Vi</sys:String>
+    <sys:String x:Key="PD_SelectVendor">Chọn NCC Vi</sys:String>
+    <sys:String x:Key="PD_CoverPriceRange">Cover Price Range vi Vi</sys:String>
+    <sys:String x:Key="PD_Aisle">Aisle vi Vi</sys:String>
+    <sys:String x:Key="PD_Shell">Shell vi Vi</sys:String>
+    <sys:String x:Key="PD_Note">Note vi Vi</sys:String>
+    <!--  PopupAttributeAndSize  -->
+    <sys:String x:Key="PD_AttributeAndSize">Thuộc Tính &amp; Kích Thước Vi</sys:String>
+    <sys:String x:Key="PD_DeleteAttribute">Xóa thuộc tính Vi</sys:String>
+    <sys:String x:Key="PD_ClickToAdd">&lt;Thêm mới&gt; Vi</sys:String>
+    <sys:String x:Key="PD_DeleteSize">Xóa kích thước Vi</sys:String>
+    <!--  PopupReorderPoint  -->
+    <sys:String x:Key="PD_StoreReorderPoint">Store Reorder Point vi Vi</sys:String>
+    <!--  PopupAvailableQuantity  -->
+    <sys:String x:Key="PD_QuantityForThisItem">Số lượng của sản phẩm này Vi</sys:String>
+    <sys:String x:Key="PD_StoreQuantities">Số lượng các kho (Đơn vị chuẩn) Vi</sys:String>
+    <sys:String x:Key="PD_Type">Loại Vi</sys:String>
+    <sys:String x:Key="PD_DocNo">Mã Vi</sys:String>
+    <sys:String x:Key="PD_Qty">Số lượng Vi</sys:String>
+    <sys:String x:Key="PD_QuantityOnHand">Số lượng tồn kho Vi</sys:String>
+    <sys:String x:Key="PD_QuantityOnReserved">Số lượng mua Vi</sys:String>
+    <sys:String x:Key="PD_QuantityOnOrder">Số lượng bán Vi</sys:String>
+    <sys:String x:Key="PD_QuantityAvailable">Số lượng có sẵn Vi</sys:String>
+    <sys:String x:Key="PD_Show">Hiển thị Vi</sys:String>
+    <sys:String x:Key="PD_ViewStatus">View Status vi Vi</sys:String>
+    <sys:String x:Key="PD_QuantityByStore">Quantity by Store vi Vi</sys:String>
+    <sys:String x:Key="PD_TotalQuantity">Tổng số lượng Vi</sys:String>
+    <!--  PopupGuest  -->
+    <sys:String x:Key="PD_FirstName">Họ Vi</sys:String>
+    <sys:String x:Key="PD_Initial">Đệm Vi</sys:String>
+    <sys:String x:Key="PD_LastName">Tên Vi</sys:String>
+    <sys:String x:Key="PD_Company">Công ty Vi</sys:String>
+    <sys:String x:Key="PD_JobTitle">Chức danh Vi</sys:String>
+    <sys:String x:Key="PD_Email">Email vi Vi</sys:String>
+    <sys:String x:Key="PD_Website">Website vi Vi</sys:String>
+    <sys:String x:Key="PD_PhoneNumbers">Phone Numbers vi Vi</sys:String>
+    <sys:String x:Key="PD_Phone1">Phone 1 vi Vi</sys:String>
+    <sys:String x:Key="PD_Phone2">Phone 2 vi Vi</sys:String>
+    <sys:String x:Key="PD_Cellphone">Cellphone vi Vi</sys:String>
+    <sys:String x:Key="PD_Fax">Fax vi Vi</sys:String>
+    <sys:String x:Key="PD_Commission">Commission vi Vi</sys:String>
+    <sys:String x:Key="PD_SaleRep">Sale Rep vi Vi</sys:String>
+    <!--  PopupManagemenUOM  -->
+    <sys:String x:Key="PD_DefauftSellingUOM">Đơn vị bán mặc định Vi</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure1">Đơn vị 1 Vi</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure2">Đơn vị 2 Vi</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure3">Đơn vị 3 Vi</sys:String>
+    <sys:String x:Key="PD_AverageUnitCost">Giá trung bình Vi</sys:String>
+    <sys:String x:Key="PD_Sell">Bán Vi</sys:String>
+    <sys:String x:Key="PD_UPC">UPC vi Vi</sys:String>
+    <sys:String x:Key="PD_AlternateLookup">Alternate Lookup vi Vi</sys:String>
+    <!--  PopupPricing  -->
+    <sys:String x:Key="PD_PriceCalculation">Price Calculation vi Vi</sys:String>
+    <sys:String x:Key="PD_ShowPriceLevelFor">Show price level for vi Vi</sys:String>
+    <sys:String x:Key="PD_PriceCalculation_Description">You can change any of values below to calculate the price and the cost for this item. vi Vi</sys:String>
+    <sys:String x:Key="PD_Margin_Description">(Price - Cost) / Price vi Vi</sys:String>
+    <sys:String x:Key="PD_Markup_Description">(Price - Cost) / Cost vi Vi</sys:String>
+    <sys:String x:Key="PD_Markdown">Markdown % vi Vi</sys:String>
+    <!--  PopupUpdateOrderCost  -->
+    <sys:String x:Key="PD_NewAnOrderCost">New an order cost vi Vi</sys:String>
+    <sys:String x:Key="PD_ClearAllOrderCost">Clear all order cost and change later vi Vi</sys:String>
+    <sys:String x:Key="PD_KeepCurrentOrderCost">Keep current order cost vi Vi</sys:String>
+    <!--  PopupDuplicateItem  -->
+    <sys:String x:Key="PD_ChangeTheInformation">Change the information match to unique vi Vi</sys:String>
+    <sys:String x:Key="PD_Discard">Discard and to the existing item(s) vi Vi</sys:String>
+    <!--  endregion ProductView  -->
+
+    <!--  #Region SaleOrderView  -->
+    <sys:String x:Key="SO_TextBlock_Customer">Customer Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_BillAddress">Bill Address: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_BookingChannel">Booking Chanel: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SONum">SO #: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SODate">SO Date: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Order">Order Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Ship">Ship Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_PaymentHistory">Payment History Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Return">Return Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_PaymentTerms">Payment Terms: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_RequestShipDate">Request Ship Date: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_StoreCode">Store Code: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SalesRep">Sales Rep: Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Tax">Tax Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Shipping">Shipping Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Billing">Billing Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Home">Home Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Business">Business Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TaxLocation">Tax Location Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TaxExcemption">Tax Excemption Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_PickNPack">Pick &amp; Pack Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_PackedBoxes">Packed Boxes Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_ShippedBoxes">Shipped Boxes Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalWeight">Total Weight Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_PackedQuantity">Packed Quantity Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_BoxNum">Box # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Weights">Weights Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Carrier">Carrier Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TrackingNum">Tracking # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalAmount">Total Amount Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalPaid">Total Paid Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Change">Change Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Refunded">Refunded Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SONo">SO No. Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SaleOrderNum">Sales Order # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_RefundFee">Refund Fee Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Deposit">Deposit Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayNum">Layaway # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationNum">Quotation # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_CouponNum">Coupon # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_CardNumber">Card # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositTaken">Deposit Taken Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_RemainingTotal">Remaining Total Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Methods">Methods Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_RefNum">Ref # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_GiftCardNum">Card # Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SerialNumber">Serial Number Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Tip">Tip Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Refund">Refund Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Message_UpdatePrice">Enter the price to charged or the transaction or discard to leave the zero price Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Message_UpdateProductRegularPrice">Update product's regular price Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositUsed">Deposit Used Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositBalance">Deposit Balance Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_ProductCode">Product Code Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_ProductName">Product Name Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Category">Category Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_AttributeSize">Attribute Size Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_Barcode">Barcode Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_ALU">ALU Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_SelectedItem">Selected Item Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_GoToSOList">Go To SO List Vi</sys:String>
+    <sys:String x:Key="SO_TextBlock_NewSO">New SO Vi</sys:String>
+    <!--SO_TextBlock_TaxExemptionDisplay Using for display in datagrid SO,WO,QUote,Layaway & for search text multilanguage-->
+    <sys:String x:Key="SO_TextBlock_TaxExemptionDisplay">Tax Excemption</sys:String>
+    <sys:String x:Key="SO_TextBlock_ServiceFee">Service Fee</sys:String>
+    <sys:String x:Key="SO_TextBlock_ScanCode">Scan Code</sys:String>
+    <sys:String x:Key="SO_TextBlock_RewardRedeemed">Reward Redeemed</sys:String>
+    <sys:String x:Key="SO_TextBlock_NotAnyLayaway">Not any layaway</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayConflict">Layaway is conflict</sys:String>
+
+    <sys:String x:Key="SO_Reward_EnterIDCard">Please Enter ID Card Member Vi</sys:String>
+    <sys:String x:Key="SO_Reward_EnterRewardCode">Please Enter Reward Code Vi</sys:String>
+
+    <sys:String x:Key="TextBlock_Date">Date Vi</sys:String>
+    <sys:String x:Key="TextBlock_Cashier">Cashier Vi</sys:String>
+    <sys:String x:Key="TextBlock_Program">Program Vi</sys:String>
+    <sys:String x:Key="TextBlock_NewTotal">New Total Vi</sys:String>
+    <sys:String x:Key="TextBlock_Apply">Apply Vi</sys:String>
+    <sys:String x:Key="TextBlock_RedeemLater">Redeem Later Vi</sys:String>
+    <sys:String x:Key="TextBlock_TotalDeposit">Total Deposit Vi</sys:String>
+    <sys:String x:Key="TextBlock_TotalDicount">Total Discount Vi</sys:String>
+    <sys:String x:Key="TextBlock_LastPaid">Last Paid Vi</sys:String>
+    <sys:String x:Key="TextBlock_NewPrice">New Price Vi</sys:String>
+    <sys:String x:Key="TextBlock_Update">Update Vi</sys:String>
+    <sys:String x:Key="TextBlock_Discard">Discard Vi</sys:String>
+    <sys:String x:Key="TextBlock_AssembledBy">Assembled By Vi</sys:String>
+
+    <sys:String x:Key="SO_Message_EnrollRewardMember">This customer is not currently a member of reward program. Do you want to enroll this one? Vi</sys:String>
+    <sys:String x:Key="SO_Message_ApplyTax">Do you want to apply {0} tax Vi</sys:String>
+    <sys:String x:Key="SO_Message_NotifyPayfullUseReward">Do you want to pay fully this one? Vi</sys:String>
+    <sys:String x:Key="SO_Message_RedeemReward">Redeem Reward Vi</sys:String>
+    <sys:String x:Key="SO_Message_ReceivedReward">You are received : {0} reward(s) {1}\nExpire Date : {2} Vi</sys:String>
+    <sys:String x:Key="SO_Message_ReceivedPointReward">You are received : {0} point {1}\nExpire Date : {2} Vi</sys:String>
+    <sys:String x:Key="SO_Message_RewardAmount">Reward {0} Vi</sys:String>
+    <sys:String x:Key="SO_Message_ApplyCustomerDiscount">Do you want to apply customer discount? Vi</sys:String>
+    <sys:String x:Key="SO_Message_ItemPicked">This item is picked, can't delete ? Vi</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmShipItem">Do you want to ship this item? Vi</sys:String>
+    <sys:String x:Key="SO_Message_NotifyShouldPaidInFull">You should paid in full Vi</sys:String>
+    <sys:String x:Key="SO_Message_NotifyItemReturned">Item has been returned, can not delete this item. Vi</sys:String>
+    <sys:String x:Key="SO_Message_ViewPnPDetail">View P&amp;P Detail Vi</sys:String>
+    <sys:String x:Key="SO_Message_RewardNeverExpired">Never Vi</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsOpen">you could delete these item(s) with staus is open Vi</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsLayaway">you could delete these item(s) with staus is layaway Vi</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsWorkOrder">you could delete these item(s) with staus is workorder Vi</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsQuote">you could delete these item(s) with staus is quote Vi</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmRefundAllDeposit">Customer is desposit {0} \nDo you want to refund all? Vi</sys:String>
+    <sys:String x:Key="SO_Message_VoidBill">Do you want to void bill? Vi</sys:String>
+    <sys:String x:Key="SO_Message_LockOrder">Do you want to lock this order? Vi</sys:String>
+    <sys:String x:Key="SO_Message_UnLockOrder">Do you want to unlock this order? Vi</sys:String>
+    <sys:String x:Key="SO_Message_ConvertToOrder">Do you want to convert to Sale order? Vi</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmSendEmailToCustomer">Do you want to send mail to customer?</sys:String>
+    <sys:String x:Key="SO_Message_LayawayReceivedAll">Do you want to receive all</sys:String>
+    <sys:String x:Key="SO_Message_RewardExpired">Reward is Expired</sys:String>
+    <sys:String x:Key="SO_Message_RewardEmpty">Reward is not enough to use</sys:String>
+    <sys:String x:Key="SO_Message_RewardNotCorrect">Reward is not correct</sys:String>
+    <sys:String x:Key="SO_Message_RewardCorrect">Reward is correct</sys:String>
+    <sys:String x:Key="SO_Message_RewardNotReadyToUse">Reward is not ready to use</sys:String>
+    <sys:String x:Key="SO_Message_LW_NotSmallerMinimumPurchase">Total of layaway is not smaller than Minumum purchase {0}, need to purchase more Vi</sys:String>
+
+    <sys:String x:Key="SO_Tite_PaymentHistory">Payment History Vi</sys:String>
+    <sys:String x:Key="SO_Title_Deposit">Deposit Vi</sys:String>
+    <sys:String x:Key="SO_Title_QuotationAdvanceSearch">Quotation Advance Search Vi</sys:String>
+    <sys:String x:Key="SO_Title_QuotePaymentHistory">Quotation Payment History Vi</sys:String>
+    <sys:String x:Key="SO_Title_SearchProduct">Search Product Vi</sys:String>
+    <sys:String x:Key="SO_Title_Payment">Payment Vi</sys:String>
+    <sys:String x:Key="SO_Title_SOAdvanceSearch">Sale Order Advance Search Vi</sys:String>
+    <sys:String x:Key="SO_Title_PickPack">Pick Pack Vi</sys:String>
+    <sys:String x:Key="SO_Title_EditPickPack">Edit Pick Pack Vi</sys:String>
+    <sys:String x:Key="SO_Title_ViewPickPack">View Pick Pack Vi</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderRefund">Sale Order Refund Vi</sys:String>
+    <sys:String x:Key="SO_Title_LayawayAdvanceSearch">Layaway Advance Search Vi</sys:String>
+    <sys:String x:Key="SO_Title_LayawayPaymentHistory">Layaway Payment History Vi</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderAdvanceSearch">Work Order Advance Search Vi</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderPaymentHistory">Work Order Payment History Vi</sys:String>
+    <sys:String x:Key="SO_Title_Reason">Reason Vi</sys:String>
+    <sys:String x:Key="SO_Title_EditProduct">Edit product Vi</sys:String>
+    <sys:String x:Key="SO_Title_BillAddress">Bill Address Vi</sys:String>
+    <sys:String x:Key="SO_Title_ShippingAddress">Shipping Address Vi</sys:String>
+    <sys:String x:Key="SO_Title_AddTerm">Add Term Vi</sys:String>
+    <sys:String x:Key="SO_Title_CustomerSearch">Customer Search Vi</sys:String>
+    <sys:String x:Key="SO_Title_GiftCard">Gift Card Vi</sys:String>
+    <sys:String x:Key="SO_Title_GiftCertification">Gift Certification Vi</sys:String>
+    <sys:String x:Key="SO_Title_UpdateProductPrice">Update Product Price Vi</sys:String>
+    <sys:String x:Key="SO_Title_TrackingSerialNumber">Tracking Serial Number Vi</sys:String>
+    <sys:String x:Key="SO_Title_AddCustomer">Add Customer Vi</sys:String>
+    <sys:String x:Key="SO_Title_MultiTrackingSerial">Multi Tracking Serial Vi</sys:String>
+    <sys:String x:Key="SO_Title_VoidBill">Void Bill Vi</sys:String>
+    <sys:String x:Key="SO_Title_ServiceFeeDetail">Service Fee Detail</sys:String>
+    <!--  #EndRegion SaleOrderView  -->
+
+    <!--Begin SaleOrderSearchAdvance-->
+    <sys:String x:Key="SO_Text_Scancode">Scancode Vi</sys:String>
+    <sys:String x:Key="SO_Text_DocumentNo">Document # Vi</sys:String>
+    <sys:String x:Key="SO_Text_OrderFrom">Order From Vi</sys:String>
+    <sys:String x:Key="SO_Text_OrderTo">Order To Vi</sys:String>
+    <sys:String x:Key="SO_Text_CustomerName">Customer Name Vi</sys:String>
+    <sys:String x:Key="SO_Text_TaxCode">Tax Code Vi</sys:String>
+    <sys:String x:Key="SO_Text_Total">Total Vi</sys:String>
+    <sys:String x:Key="SO_Text_Status">Status Vi</sys:String>
+    <!--End SaleOrderSearchAdvance-->
+
+    <!--  region Promotion  -->
+    <!--  ColumnHeader  -->
+    <sys:String x:Key="PM_DiscountName">Discount Name vi Vi</sys:String>
+    <sys:String x:Key="PM_StartDate">Start Date vi Vi</sys:String>
+    <sys:String x:Key="PM_EndDate">End Date vi Vi</sys:String>
+    <sys:String x:Key="PM_CouponCode">Coupon Code vi Vi</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="PM_BarcodeImage">Scan Code Image vi Vi</sys:String>
+    <!--  TextBlock  -->
+    <sys:String x:Key="PM_Take">Take vi Vi</sys:String>
+    <sys:String x:Key="PM_PercentOff">% off vi Vi</sys:String>
+    <sys:String x:Key="PM_Off">off vi Vi</sys:String>
+    <sys:String x:Key="PM_QuantityX">Quantity (X) vi Vi</sys:String>
+    <sys:String x:Key="PM_TotalPriceY">Total Price (Y) vi Vi</sys:String>
+    <sys:String x:Key="PM_DiscountPrice">Discount Price vi Vi</sys:String>
+    <sys:String x:Key="PM_Buy">Buy vi Vi</sys:String>
+    <sys:String x:Key="PM_For">for vi Vi</sys:String>
+    <sys:String x:Key="PM_Each">each vi Vi</sys:String>
+    <sys:String x:Key="PM_ApplyToAboveQuantities">Apply the discount price to quantities above the specified amount vi Vi</sys:String>
+    <sys:String x:Key="PM_QtyX">Qty (X) vi Vi</sys:String>
+    <sys:String x:Key="PM_Percentage">Percentage (%) vi Vi</sys:String>
+    <sys:String x:Key="PM_AndGet">and get vi Vi</sys:String>
+    <sys:String x:Key="PM_PercentOffTheseItem">% off These Item vi Vi</sys:String>
+    <sys:String x:Key="PM_CouponExpiresOn">Coupon Expires on vi Vi</sys:String>
+    <sys:String x:Key="PM_ExpirationNoEndDate">Discount is only available during the specified time period vi Vi</sys:String>
+    <sys:String x:Key="PM_ProductAffect">Product Affect vi Vi</sys:String>
+    <!--  endregion Promotion  -->
+
+    <!--  TransferStock  -->
+    <sys:String x:Key="TS_Message_Product">{0} sản phẩm Vi</sys:String>
+    <sys:String x:Key="TS_Message_Products">{0} sản phẩm Vi</sys:String>
+    <sys:String x:Key="TransferMessage">Bạn có muốn chuyển {0} từ kho {1} đến {2} ? Vi</sys:String>
+    <sys:String x:Key="RevertMessage">Bạn có muốn phục hồi {0} từ kho {1} đến {2} ? Vi</sys:String>
+    <sys:String x:Key="TS_CheckBox_TransferNo">Số đơn hàng Vi</sys:String>
+    <sys:String x:Key="TS_CheckBox_DateTransfered">Ngày chuyển Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_FromStore">Từ kho Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_ToStore">Đến kho Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_TotalQty">Số lượng Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_UserCreated">Người tạo Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_DateApplied">Ngày chuyển Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_UserApplied">Người chuyển Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_DateReversed">Ngày phục hồi Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_UserReversed">Người phục hồi Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_ShipDate">Ngày chuyển Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_Freight">Phí vận chuyển Vi</sys:String>
+    <sys:String x:Key="TS_Header_AvailableQty">SL tồn kho Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_TransferStock">Chuyển kho Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_ApplyTransferStock">Apply TransferStock Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_ApplyPricing">Apply Pricing Vi</sys:String>
+    <sys:String x:Key="TS_TextBox_AdjustStock">Adjust Stock Vi</sys:String>
+    <!--  End  -->
+
+    <!--  AddressControl(Don't change their key.)  -->
+    <sys:String x:Key="AddressControl_OK">Đồng ý Vi</sys:String>
+    <sys:String x:Key="AddressControl_Cancel">Hủy Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_Address">Địa chỉ Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_AddressType">Loại địa chỉ: Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_CopyFrom">Chép từ Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_Street">Đường Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_Country">Quốc gia Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_City">Thành phố Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_State">Bang Vi</sys:String>
+    <sys:String x:Key="AddressControl_Text_Zip">Mã vùng Vi</sys:String>
+    <!--  End  -->
+    <!--  Login  -->
+    <sys:String x:Key="Login_Message_Shutdown">Chương trình sẽ tự động Vi</sys:String>
+    <sys:String x:Key="Login_Message_AccountLocked">Tài khoản này đã bị khóa . Vui lòng liên hệ với người quản trị Vi</sys:String>
+    <sys:String x:Key="Login_Message_AccountAnother">Tài khoản này đang được sử dụng bởi người khác Vi</sys:String>
+    <sys:String x:Key="Login_Message_AccountExpired">Tài khoản đã hết hạn sử dụng. Vui lòng liên hệ với người quản trị Vi</sys:String>
+    <sys:String x:Key="Login_Message_AccountVerify">Tài khoản không hợp lệ! Vui lòng nhập lại Vi</sys:String>
+    <!--  End  -->
+
+    <!--  region NoteModule  -->
+    <sys:String x:Key="N_AddSticky">Thêm ghi chú Vi</sys:String>
+    <sys:String x:Key="N_ShowStickies">Hiện ghi chú Vi</sys:String>
+    <sys:String x:Key="N_HideStickies">Ẩn ghi chú Vi</sys:String>
+    <!--  endregion NoteModule  -->
+
+    <!--  #Region SaleTax  -->
+    <sys:String x:Key="Tax_Text_SaleTaxLocationName">Sales Tax Location Name Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxLocationName">Tax Location Name Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxLocationNameUsingAll">This name will be used on all documents and report: Vi</sys:String>
+    <sys:String x:Key="Tax_Text_ShippingTaxedLocation">Choose whether or not the shipping amount for merchandise shipped to this location should be taxed Vi</sys:String>
+    <sys:String x:Key="Tax_Text_ShippingTaxedUsingTaxCode">Shipping to this location is taxable using the tax code Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCodeName">Tax Code Name Vi</sys:String>
+    <sys:String x:Key="Tax_Text_EnterTaxCodeNNameUsingAll">Enter a code and name for this tax code. This name will be used on all documents and reports. Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCode">Tax Code : Vi</sys:String>
+    <sys:String x:Key="Tax_Text_Max3Character">( max. 3 character) Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCodeMark">Tax Code Mark Vi</sys:String>
+    <sys:String x:Key="Tax_Text_PrintedMark">Printed &quot;Mark&quot; : Vi</sys:String>
+    <sys:String x:Key="Tax_Text_Max1Character">( max. 1 character) Vi</sys:String>
+    <sys:String x:Key="Tax_Text_AssignCharacter">Assign a character &quot; mark&quot; to identify items sold with this tax code. Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxOption">Tax Option Vi</sys:String>
+    <sys:String x:Key="Tax_Text_SingleTaxOption">Single - rate tax ( Same Tax Rate for All Items ) Vi</sys:String>
+    <sys:String x:Key="Tax_Text_PriceTaxOption">Price - dependent single - rate tax ( Collect tax only if Items above a certain price ) Vi</sys:String>
+    <sys:String x:Key="Tax_Text_MultiTaxOption">Multi - rate tax ( Tax at different rates ) Vi</sys:String>
+    <sys:String x:Key="Tax_Text_IncludedDiscountAmt">Included discount amount Vi</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTax">Default Tax Vi</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTaxLocationForItem">Default tax location for this item: Vi</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTaxCodeWithNew">Default tax code when creating a new category: Vi</sys:String>
+    <sys:String x:Key="Tax_Text_SaleTaxTitle">Sales Tax Code Vi</sys:String>
+    <sys:String x:Key="Tax_Text_AdditionSaleTax">Additional Sales Tax Vi</sys:String>
+    <sys:String x:Key="Tax_Text_SalesTaxRate">Sales Tax Rate Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxAgency">Tax Agency Vi</sys:String>
+    <sys:String x:Key="Tax_Text_ApplySaleTaxOverUnitPriceOrShipping">Apply sales tax only to the amount over the unit price or shipping threshold. Vi</sys:String>
+    <sys:String x:Key="Tax_Text_IfUnitPriceShipOrMoreThan">If the unit price shipping or more than Vi</sys:String>
+    <sys:String x:Key="Tax_Text_SalesTaxName">Sales Tax Name Vi</sys:String>
+    <sys:String x:Key="Tax_Text_TaxRate">Tax Rate Vi</sys:String>
+
+    <!--  this text only using on tax  -->
+    <sys:String x:Key="Tax_Text_Collect">Collect Vi</sys:String>
+    <sys:String x:Key="Tax_Text_CollectLower">collect Vi</sys:String>
+    <sys:String x:Key="Tax_Text_PaidTo">paid to Vi</sys:String>
+    <sys:String x:Key="Tax_Text_WhenPriceIs">when prices is Vi</sys:String>
+    <sys:String x:Key="Tax_Text_To">To Vi</sys:String>
+    <sys:String x:Key="Tax_Text_And">and Vi</sys:String>
+    <sys:String x:Key="Tax_Text_Above">above Vi</sys:String>
+    <sys:String x:Key="Tax_Text_under">under Vi</sys:String>
+    <sys:String x:Key="Tax_Text_MultiplesRate">Multiples Rate Vi</sys:String>
+    <sys:String x:Key="Tax_Text_NoTax">No Tax Vi</sys:String>
+
+    <sys:String x:Key="Text_Shipping">Shipping Vi</sys:String>
+    <sys:String x:Key="Text_Edit">Edit Vi</sys:String>
+    <sys:String x:Key="Text_Remove">Remove Vi</sys:String>
+    <!--  #EndRegion SaleTax  -->
+
+    <!--  #region Customer  -->
+    <sys:String x:Key="CUS_Text_AccountNum">Account # Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Name">Name Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerType">Customer Type Vi</sys:String>
+    <sys:String x:Key="CUS_Text_RewardMember">Reward Member Vi</sys:String>
+    <sys:String x:Key="CUS_Text_StartDate">Start Date Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Status">Status Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerInfo">Customer Info Vi</sys:String>
+    <sys:String x:Key="CUS_Text_PersonalInfo">Personal Info Vi</sys:String>
+    <sys:String x:Key="CUS_Text_PersonalInformation">Personal Information Vi</sys:String>
+    <sys:String x:Key="CUS_Text_IM">IM Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerNumber">Customer Number Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Additional">Additional Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Reward">Reward Vi</sys:String>
+    <sys:String x:Key="CUS_Text_SaleHistory">Sale History Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerInformation">Customer Information Vi</sys:String>
+    <sys:String x:Key="CUS_Text_MergeCustomer">Merge Customer Vi</sys:String>
+    <sys:String x:Key="CUS_Text_SOCustomer">Sale Order this customer Vi</sys:String>
+    <sys:String x:Key="CUS_Text_TotalPurchase">Total Purchase Vi</sys:String>
+    <sys:String x:Key="CUS_Text_TotalRewardsAvaliable">Total Rewards Avaliable Vi</sys:String>
+    <sys:String x:Key="CUS_Text_TotalRewardRedeemed">Total Rewards Redeemed Vi</sys:String>
+    <sys:String x:Key="CUS_Text_RewardValue">Value Vi</sys:String>
+    <sys:String x:Key="CUS_Text_AddNewGroup">Add new group Vi</sys:String>
+    <sys:String x:Key="CUS_Text_DateStamp">Date Stamp Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Remark">Remark Vi</sys:String>
+    <sys:String x:Key="CUS_Text_SaleRep">Sales Rep Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Group">Group Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Layaway">Layaway Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Payment">Payment Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CreditCardInformation">Credit Card Information Vi</sys:String>
+    <sys:String x:Key="CUS_Text_UntilTheNextRewardIsEarned">Until the next reward is earned. Vi</sys:String>
+    <sys:String x:Key="CUS_Text_OffRewardAreEarnedForEvery">off reward are earned for every Vi</sys:String>
+    <sys:String x:Key="CUS_Text_CustomField">Custom Field Vi</sys:String>
+    <sys:String x:Key="CUS_Text_LocalSaleTax">Local Sale Tax Vi</sys:String>
+    <sys:String x:Key="CUS_Text_OtherInformation">Other Information Vi</sys:String>
+    <sys:String x:Key="CUS_Text_EmergencyContact">Emergency Contact Vi</sys:String>
+    <sys:String x:Key="CUS_Text_Point">pt Vi</sys:String>
+
+    <sys:String x:Key="Text_FirstName">First Name vi Vi</sys:String>
+    <sys:String x:Key="Text_Initial">Title vi Vi</sys:String>
+    <sys:String x:Key="Text_LastName">Last Name vi Vi</sys:String>
+    <sys:String x:Key="Text_JobTitle">Job Title Vi</sys:String>
+    <sys:String x:Key="Text_Phone1">Phone 1 Vi</sys:String>
+    <sys:String x:Key="Text_Phone2">Phone 2 Vi</sys:String>
+    <sys:String x:Key="Text_Phone">Phone Vi</sys:String>
+    <sys:String x:Key="Text_PhoneNumber">Phone Numbers Vi</sys:String>
+    <sys:String x:Key="Text_Cellphone">Cellphone Vi</sys:String>
+    <sys:String x:Key="Text_FullName">Full Name Vi</sys:String>
+    <sys:String x:Key="Text_Print">Print Vi</sys:String>
+    <sys:String x:Key="Text_ContactPrimary">P Vi</sys:String>
+    <sys:String x:Key="Text_Gender">Gender Vi</sys:String>
+    <sys:String x:Key="Text_MaritalStatus">Marital Vi</sys:String>
+    <sys:String x:Key="Text_SSN">SSN Vi</sys:String>
+    <sys:String x:Key="Text_Identification">Identification Vi</sys:String>
+    <sys:String x:Key="Text_DOB">DOB Vi</sys:String>
+    <sys:String x:Key="Text_SpouseInformation">Spouse Information Vi</sys:String>
+    <sys:String x:Key="Text_Nationality">Nationality Vi</sys:String>
+    <sys:String x:Key="Text_Relationship">Relationship Vi</sys:String>
+    <sys:String x:Key="Text_TaxInformation">Tax Information vi Vi</sys:String>
+    <sys:String x:Key="Text_FedTaxID">Fed Tax ID vi Vi</sys:String>
+    <sys:String x:Key="Text_TaxLocation">Tax Location Vi</sys:String>
+    <sys:String x:Key="Text_TaxExemption">Tax Exemption Vi</sys:String>
+    <sys:String x:Key="Text_PricingLevel">Pricing Level Vi</sys:String>
+    <sys:String x:Key="Text_NoDiscount">No Discount Vi</sys:String>
+    <sys:String x:Key="Text_FixedDiscAllItem">Fixed discount on all items Vi</sys:String>
+    <sys:String x:Key="Text_MarkdownPriceLevel">Use markdown price level Vi</sys:String>
+    <sys:String x:Key="Text_SaleRepresentative">Sale Representative Vi</sys:String>
+    <sys:String x:Key="Text_CalcCommissionCus">This one will be calculate commission for this customer. Vi</sys:String>
+    <sys:String x:Key="Text_PaymentInformation">Payment Information Vi</sys:String>
+    <sys:String x:Key="Text_Add">Add Vi</sys:String>
+    <sys:String x:Key="Text_CheckAcceptanceLimit">Check Acceptance Limit Vi</sys:String>
+    <sys:String x:Key="Text_CheckLimit">Check Limit Vi</sys:String>
+    <sys:String x:Key="Text_CardType">Card Type Vi</sys:String>
+    <sys:String x:Key="Text_NewCreditCard">New credit card Vi</sys:String>
+    <sys:String x:Key="Text_PaymentCardName">Name Vi</sys:String>
+    <sys:String x:Key="Text_PaymentCardNum">Card # Vi</sys:String>
+    <sys:String x:Key="Text_PaymentExpireDate">Expire Date Vi</sys:String>
+    <sys:String x:Key="Text_PaymentCCID">CCID Vi</sys:String>
+    <sys:String x:Key="Text_PaymentSignatureDate">Signature Date Vi</sys:String>
+    <sys:String x:Key="Text_PaymentHistory">History Vi</sys:String>
+    <sys:String x:Key="Text_RewardProgramInformation">Rewards Program Information Vi</sys:String>
+    <sys:String x:Key="Text_NewIssueReward">New Issue Reward Vi</sys:String>
+    <sys:String x:Key="Text_TotalRewardEarned">Total Reward Earned Vi</sys:String>
+    <sys:String x:Key="Text_TotalAvailableRewardRedeemed">Total Available Reward Redeemed Vi</sys:String>
+    <sys:String x:Key="Text_RewardsProgramHistory">Rewards Program History Vi</sys:String>
+    <sys:String x:Key="Text_From">Từ Vi</sys:String>
+    <sys:String x:Key="Text_To">Đến Vi</sys:String>
+    <sys:String x:Key="Text_OrderNum">Order # vi Vi</sys:String>
+    <sys:String x:Key="Text_OrderTotal">Total vi Vi</sys:String>
+    <sys:String x:Key="Text_MergeFrom">Merge From Vi</sys:String>
+    <sys:String x:Key="Text_MergeTo">Merge To Vi</sys:String>
+    <sys:String x:Key="Text_IssueNewReward">Issue New Reward Vi</sys:String>
+    <sys:String x:Key="Text_DeleteReward">Delete Reward (s) Vi</sys:String>
+    <sys:String x:Key="Text_EarnedDate">Earned Date Vi</sys:String>
+    <sys:String x:Key="Text_ActiveDate">Active Date Vi</sys:String>
+    <sys:String x:Key="Text_ExpiredDate">Expired Date Vi</sys:String>
+    <sys:String x:Key="Text_BillingAddress">Billing Address Vi</sys:String>
+    <sys:String x:Key="Text_ZipCode">Zip Code</sys:String>
+
+    <sys:String x:Key="CUS_MSG_ShouldSaleOrder">You should be close Sale Order form after execute this process Vi</sys:String>
+    <sys:String x:Key="CUS_MSG_MergeCustomer">Merge Customer Vi</sys:String>
+    <sys:String x:Key="CUS_MSG_ExisedCustViewProfile">This customer has existed. Please recheck Email or Phone. Do you want to view profiles? Vi</sys:String>
+    <sys:String x:Key="CUS_MSG_ViewProfile">View Profile Vi</sys:String>
+    <sys:String x:Key="CUS_MSG_QMergeCustomer">Do you want to merge these customer Vi</sys:String>
+
+    <sys:String x:Key="CUS_Title_CreateCreditCard">Create credit card Vi</sys:String>
+    <sys:String x:Key="CUS_Title_UpdateCreditCard">Update credit card Vi</sys:String>
+    <sys:String x:Key="CUS_Title_CustomerTitle">Customer Vi</sys:String>
+
+    <!--  #Endregion Customer  -->
+
+    <!--  Backup Data  -->
+    <sys:String x:Key="Button_Backup">Sao lưu dữ liệu ngay bây giờ Vi</sys:String>
+    <sys:String x:Key="Button_Restore">Khôi phục lại dữ liệu này Vi</sys:String>
+    <sys:String x:Key="Button_SmartPOS">SmartPOS on Vi</sys:String>
+
+    <!--  region MainView  -->
+    <sys:String x:Key="Main_RealMode">Chế độ thực Vi</sys:String>
+    <sys:String x:Key="Main_PracticeMode">Chế độ thực hành Vi</sys:String>
+    <!--  endregion MainView  -->
+
+    <!--  region LayawaySetup  -->
+
+    <sys:String x:Key="LayawaySetup_Text_LayawaySetup">Layaway Setup Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Name">Name Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LayawayInformation">Layaway Information Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_StartDate">Start Date Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_EndDate">End Date Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Deposit">Deposit Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_OpenACFee">Open A/C Fee Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Term">Term Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Days">day (s) Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_CancellationFee">Cancellation Fee Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_PaymentSchedule">Payment Schedule Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_MinimumPurchase">Minimum Purchase Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LayawayFee">Layaway Fee Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LateFee">Late Fee Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_ScheduleHistory">Schedule History Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Status">Status Vi</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_OtherFee">Other Fee</sys:String>
+
+    <!--  endregion LayawaySetup  -->
+
+    <!--  region VendorView  -->
+    <!--  TextBlock  -->
+    <sys:String x:Key="VD_Group">Group vi Vi</sys:String>
+    <sys:String x:Key="VD_CreditLine">Credit Line vi Vi</sys:String>
+    <sys:String x:Key="VD_Item">Item vi Vi</sys:String>
+    <!--  TabHeader  -->
+    <sys:String x:Key="VD_VendorInfo">Vendor Info vi Vi</sys:String>
+    <sys:String x:Key="VD_ProductList">Product List vi Vi</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="VD_VendorInformation">Vendor Information vi Vi</sys:String>
+    <sys:String x:Key="VD_CustomField">Custom Field vi Vi</sys:String>
+    <!--  Button  -->
+    <sys:String x:Key="VD_DateStamp">Date Stamp vi Vi</sys:String>
+    <!--  endregion VendorView  -->
+
+    <!--  region WorkScheduleView  -->
+    <!--  TextBlock  -->
+    <sys:String x:Key="WS_WorkHourToolTip">Work time is not equal to vi</sys:String>
+    <sys:String x:Key="WS_Hours">hours vi</sys:String>
+    <sys:String x:Key="WS_WeekHourToolTip">Total hours is not equal to vi</sys:String>
+    <!--  endregion WorkScheduleView  -->
+</ResourceDictionary>

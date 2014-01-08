@@ -1,0 +1,949 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+	<!-- Resource dictionary entries should be defined here. -->
+<Style  
+			TargetType="{x:Type Button}"
+               >
+			<Setter Property="Foreground"
+				Value="{DynamicResource ButtonNormalForeground}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Width="Auto"
+							Height="Auto"
+							x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+							<Rectangle Stroke="{DynamicResource ButtonNormalBorder}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg" Fill="{DynamicResource ButtonNormalBackground}"/>
+							<!--<Rectangle Stroke="{DynamicResource ButtonNormal_IsKeyboardFocused_Border}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2"/>-->
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+								 RenderTransformOrigin="0.5,0.5" >
+								<ContentPresenter.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</ContentPresenter.RenderTransform>
+							</ContentPresenter>
+							<Rectangle
+								RadiusY="2"
+								RadiusX="2"
+								StrokeThickness="1"
+								x:Name="Light" Margin="1,1,1,11" Opacity="0.9" Fill="{DynamicResource ButtonNormalLight}" Visibility="Collapsed"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused" Value="True"/>
+							<Trigger Property="IsMouseOver"
+								Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonNormal_IsMouseOver_Background}"/>
+							</Trigger>
+							<Trigger Property="IsPressed"
+								Value="True">
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonNormal_IsPress_Background}"/>
+							</Trigger>
+							
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonNormal_IsEnable_Background}"/>
+								<Setter Property="Opacity" TargetName="grid" Value="0.6"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	<Style x:Key="ButtonTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonNormalForeground}"/>
+	</Style>
+	<!--<Style TargetType="{x:Type Button}"
+    	x:Key="ButtonSearch">
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type Button}">
+    				<Grid x:Name="grid"
+    					Background="{DynamicResource ButtonSearchBackBackground}">
+    					<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+    						RecognizesAccessKey="True"
+    						HorizontalAlignment="Stretch"
+    						VerticalAlignment="Stretch"/>
+    				</Grid>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsMouseOver"
+    						Value="True">
+    						<Setter Property="Background"
+    							TargetName="grid"
+    							Value="{DynamicResource ButtonSearchBack_IsMouseOverBackground}" />
+    					</Trigger>
+    					<Trigger Property="IsKeyboardFocused"
+    						Value="true" />
+    					<Trigger Property="IsPressed"
+    						Value="True" />
+    					<Trigger Property="IsEnabled"
+    						Value="false">
+    						<Setter Property="Foreground"
+    							Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>-->
+	<Style x:Key="ButtonBarSearch"
+           TargetType="{x:Type Button}">
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type Button}">
+    				<Grid Background="#02FFFFFF">
+    					<Border x:Name="bg"
+    						BorderThickness="0,0,1,0"
+    						Background="{DynamicResource ButtonBarSearchBackground}"
+    						CornerRadius="0"
+    						BorderBrush="{DynamicResource ButtonBarSearchBorder}" />
+    					<ContentPresenter HorizontalAlignment="Stretch"
+    						VerticalAlignment="Stretch"
+    						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+    						RecognizesAccessKey="True"/>
+    				</Grid>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsMouseOver"
+    						Value="True">
+    						<Setter Property="Background"
+    							TargetName="bg"
+    							Value="{DynamicResource ButtonBarSearch_IsMouseOver_Background}" />
+    					</Trigger>
+    					<Trigger Property="IsKeyboardFocused"
+    						Value="true" />
+    					<Trigger Property="IsPressed"
+    						Value="True">
+    						<Setter Property="Background"
+    							TargetName="bg"
+    							Value="{DynamicResource ButtonBarSearch_IsPress_Background}" />
+    					</Trigger>
+    					<Trigger Property="IsEnabled"
+    						Value="false" />
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+	<Style x:Key="ButtonBarSearchTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonBarSearchForeground}"/>
+	</Style>
+	<Style x:Key="ButtonSystem"
+			TargetType="{x:Type Button}"
+               >
+			<Setter Property="Foreground"
+				Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Width="Auto"
+							Height="Auto"
+							x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+							<Rectangle Stroke="{DynamicResource ButtonSystemBorder}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg" Opacity="0" Fill="{DynamicResource ButtonSystemBackground}"/>
+							<Rectangle Stroke="{DynamicResource ButtonSystem_IsKeyboardFocused_Border}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2" Visibility="Collapsed"/>
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+								RenderTransformOrigin="0.5,0.5" >
+								<ContentPresenter.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</ContentPresenter.RenderTransform>
+							</ContentPresenter>
+							<Rectangle
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Light" Margin="1,1,1,24" Opacity="0" Fill="{DynamicResource ButtonSystemLight}" Visibility="Visible"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused" Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Focused" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonSystem_IsKeyboardFocused_Background}"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver"
+								Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonSystem_IsMouseOver_Background}"/>
+							</Trigger>
+							<Trigger Property="IsPressed"
+								Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="RenderTransform" TargetName="contentPresenter">
+									<Setter.Value>
+										<TransformGroup>
+											<ScaleTransform/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform X="0.5" Y="0.5"/>
+										</TransformGroup>
+									</Setter.Value>
+								</Setter>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonSystem_IsPress_Background}"/>
+							</Trigger>
+							
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonSystem_IsEnable_Background}"/>
+								<Setter Property="Visibility" TargetName="Light" Value="Collapsed"/>
+								<Setter Property="Opacity" TargetName="bg" Value="0"/>
+								<Setter Property="Opacity" TargetName="grid" Value="0.5"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	<Style x:Key="ButtonSystemTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonNormalForeground}"/>
+	</Style>
+	
+	<Style x:Key="ButtonDatagrid"
+			TargetType="{x:Type Button}"
+               >
+			<Setter Property="Foreground"
+				Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Width="Auto"
+							Height="Auto"
+							x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+							<Rectangle 
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg" Opacity="1" />
+							<Rectangle
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Light" Margin="1,1,1,9" Opacity="0"  Visibility="Visible"/>
+							<Rectangle 
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused" Opacity="0" Margin="1" StrokeDashArray="2"/>
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+								RenderTransformOrigin="0.5,0.5" >
+								<ContentPresenter.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</ContentPresenter.RenderTransform>
+							</ContentPresenter>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver"
+								Value="True">
+								<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+							</Trigger>
+							<Trigger Property="IsPressed"
+								Value="True">
+								<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	<Style x:Key="ButtonDatagridTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonDatagridForeground}"/>
+	</Style>
+	<Style x:Key="ButtonImage"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="bg" Opacity="1" />
+						<Rectangle
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Light" Margin="1,1,1,9" Opacity="0"  Visibility="Visible"/>
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Focused" Opacity="0" Margin="1" StrokeDashArray="2"/>
+						<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							RenderTransformOrigin="0.5,0.5" >
+							<ContentPresenter.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+						<Trigger Property="IsPressed"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="ButtonImageTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonImageForeground}"/>
+	</Style>
+	
+	<Style
+		TargetType="{x:Type Button}"
+		x:Key="ButtonAdvanceSearch"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource ButtonAdvanceSearch_Foreground}" />
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="bg" Opacity="1" />
+						<Rectangle
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Light" Margin="1,1,1,9" Opacity="0"  Visibility="Visible"/>
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Focused" Opacity="0" Margin="1" StrokeDashArray="2"/>
+						<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							RenderTransformOrigin="0.5,0.5" >
+							<ContentPresenter.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+						<Trigger Property="IsPressed"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="FontSize" Value="11"/>
+	</Style>
+	<Style x:Key="ButtonComboboxItemRemark"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="20"
+						x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="bg" Opacity="1" Visibility="Collapsed" />
+						<Rectangle
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Light" Margin="1,1,1,9" Opacity="0"  Visibility="Collapsed"/>
+						<Rectangle 
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Focused" Opacity="0" Margin="1" StrokeDashArray="2" Visibility="Collapsed"/>
+						<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							RenderTransformOrigin="0.5,0.5" Margin="5,0,0,0" >
+							<ContentPresenter.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+						
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style x:Key="ButtonComboboxItemRemarkTextBlock" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonComboboxItemRemarkTextBlockForeground}"/>
+	</Style>
+	<Style x:Key="ButtonMiniClose"
+			TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid x:Name="grid" Background="#02FFFFFF">
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+							 />
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver"
+								Value="True">
+								<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+								<Setter Property="Opacity" TargetName="contentPresenter" Value="0.8"/>
+							</Trigger>
+							<Trigger Property="IsKeyboardFocused"
+								Value="true" />
+							<Trigger Property="IsPressed"
+								Value="True">
+								<Setter Property="Opacity" TargetName="contentPresenter" Value="0.7"/>
+							</Trigger>
+							<Trigger Property="IsEnabled"
+								Value="false">
+								<Setter Property="Foreground"
+									Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	
+	
+	
+	
+	
+	
+	
+	<Style x:Key="ButtonTitleBar"  
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource ButtonTitleBarForeground}" />
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+						<Rectangle Stroke="{DynamicResource ButtonTitleBarBorder}"
+							RadiusY="0"
+							RadiusX="0"
+							StrokeThickness="1"
+							x:Name="bg" Opacity="1" Fill="{DynamicResource ButtonTitleBarBackground}"/>
+						<Rectangle Stroke="{DynamicResource ButtonTitleBar_IsKeyboardFocused_Border}"
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2"/>
+						<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							RenderTransformOrigin="0.5,0.5" >
+							<ContentPresenter.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
+						<Rectangle
+							RadiusY="0"
+							RadiusX="0"
+							StrokeThickness="1"
+							x:Name="Light" Margin="1,1,1,11" Opacity="0.9" Fill="{DynamicResource ButtonTitleBarLight}" Visibility="Visible"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused" Value="True"/>
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+							<Setter Property="Opacity" TargetName="Light" Value="1"/>
+							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonTitleBar_IsMouseOver_Background}"/>
+						</Trigger>
+						<Trigger Property="IsPressed"
+							Value="True">
+							<Setter Property="Opacity" TargetName="bg" Value="1"/>
+							<Setter Property="RenderTransform" TargetName="contentPresenter">
+								<Setter.Value>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform X="0.5" Y="0.5"/>
+									</TransformGroup>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Opacity" TargetName="Light" Value="1"/>
+							<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonTitleBar_IsPress_Background}"/>
+						</Trigger>
+							
+						<Trigger Property="IsEnabled" Value="False"/>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style
+			x:Key="ButtonColor"
+			TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid">
+						<Rectangle
+							StrokeThickness="1"
+							x:Name="rectangle" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"/>
+						<Rectangle Stroke="#FFFFFFFF"
+							StrokeThickness="1"
+							x:Name="rectangle1" Margin="1,1,1,1" Visibility="Hidden"/>
+						<ContentPresenter HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							 />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused"
+							Value="true" />
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Visibility" TargetName="rectangle1" Value="Visible"/>
+							<Setter Property="Stroke" TargetName="rectangle" Value="#FFFF8A00"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		</Style>
+	<Visibility x:Key="ButtonPayment">Visible</Visibility>
+	<Style x:Key="ButtonKeyboard"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource ButtonKeyboardForeground}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Width="Auto"
+							Height="Auto"
+							x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+							<Rectangle Stroke="{DynamicResource ButtonKeyboardBorder}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg" Opacity="1" Fill="{DynamicResource ButtonKeyboardBackground}"/>
+							<Rectangle Stroke="{DynamicResource ButtonKeyboard_IsKeyboardFocused_Border}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2"/>
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+								 RenderTransformOrigin="0.5,0.5" >
+								<ContentPresenter.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</ContentPresenter.RenderTransform>
+							</ContentPresenter>
+							<Rectangle
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Light" Margin="1,1,1,11" Opacity="0.9" Fill="{DynamicResource ButtonKeyboardLight}" Visibility="Collapsed" d:IsHidden="True"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused" Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Focused" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsKeyboardFocused_Background}"/>
+								<Setter Property="Fill" TargetName="Light" Value="{DynamicResource ButtonKeyboardLight}"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver"
+								Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsMouseOver_Background}"/>
+							</Trigger>
+							<Trigger Property="IsPressed"
+								Value="True">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="RenderTransform" TargetName="contentPresenter">
+									<Setter.Value>
+										<TransformGroup>
+											<ScaleTransform/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform X="0.5" Y="0.5"/>
+										</TransformGroup>
+									</Setter.Value>
+								</Setter>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsPress_Background}"/>
+							</Trigger>
+							
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Opacity" TargetName="bg" Value="1"/>
+								<Setter Property="Opacity" TargetName="Light" Value="1"/>
+								<Setter Property="Fill" TargetName="bg" Value="{DynamicResource ButtonKeyboard_IsEnable_Background}"/>
+								<Setter Property="Opacity" TargetName="grid" Value="0.5"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="FontSize" Value="20"/>
+		</Style>
+	<Style x:Key="ButtonKeyboardOption"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="White" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid" RenderTransformOrigin="0.5,0.5">
+						<Rectangle Stroke="#FF414141"
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="rectangle" Fill="{TemplateBinding Background}"/>
+						<Rectangle Stroke="#FFFFFFFF"
+							RadiusY="3"
+							RadiusX="3"
+							StrokeThickness="1"
+							x:Name="rectangle1" Margin="1,1,1,1"/>
+						<ContentPresenter
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							 HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused"
+							Value="true" >
+							<Setter Property="Fill" TargetName="rectangle">
+								<Setter.Value>
+									<LinearGradientBrush EndPoint="0,1"
+										StartPoint="0,0">
+										<GradientStop Color="#FFFFBD69"
+											Offset="0" />
+										<GradientStop Color="#FFFFB75A"
+											Offset="0.0967741935483871" />
+										<GradientStop Color="#FFFFB14C"
+											Offset="0.25806451612903225" />
+										<GradientStop Color="#FFFB8C3C"
+											Offset="0.38709677419354838" />
+										<GradientStop Color="#FFFEB461"
+											Offset="0.967741935483871" />
+										<GradientStop Color="#FFFEBB67"
+											Offset="1" />
+									</LinearGradientBrush>
+								</Setter.Value>
+							</Setter>
+						</Trigger>
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Opacity" TargetName="grid" Value="0.8"/>
+						</Trigger>
+						<Trigger Property="IsPressed"
+							Value="True">
+							<Setter Property="RenderTransform" TargetName="grid">
+								<Setter.Value>
+									<TransformGroup>
+										<ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</Setter.Value>
+							</Setter>
+						</Trigger>
+						<Trigger Property="IsEnabled"
+							Value="false">
+							<Setter Property="Foreground"
+								Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+							<Setter Property="Opacity"
+								TargetName="grid"
+								Value="0.4" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+	</Style>
+	<Style x:Key="ButtonDatagridPayment"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource ButtonKeyboardForeground}" />
+			<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+			<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Grid Width="Auto"
+							Height="Auto"
+							x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+							<Rectangle Stroke="{DynamicResource ButtonDatagridPaymentBorder}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="bg" Opacity="1" Fill="{DynamicResource ButtonDatagridPaymentBackground}"/>
+							<Rectangle Stroke="{DynamicResource ButtonDatagridPayment_IsKeyboardFocused_Border}"
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Focused" Opacity="0" Margin="2" StrokeDashArray="2"/>
+							<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+								RecognizesAccessKey="True"
+								 RenderTransformOrigin="0.5,0.5" Margin="10,0,0,0" >
+								<ContentPresenter.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform/>
+									</TransformGroup>
+								</ContentPresenter.RenderTransform>
+							</ContentPresenter>
+							<Rectangle
+								RadiusY="3"
+								RadiusX="3"
+								StrokeThickness="1"
+								x:Name="Light" Margin="1,1,1,11" Opacity="0.9" Fill="{DynamicResource ButtonDatagridPaymentLight}" Visibility="Collapsed" d:IsHidden="True"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused" Value="True"/>
+							<Trigger Property="IsMouseOver"
+								Value="True"/>
+							<Trigger Property="IsPressed"
+								Value="True"/>
+							
+							<Trigger Property="IsEnabled" Value="False"/>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="FontSize" Value="20"/>
+		</Style>
+	<Style x:Key="ButtonDatagridTextBlockPayment" TargetType="{x:Type TextBlock}">
+		<Setter Property="TextWrapping" Value="NoWrap"/>
+		<Setter Property="TextTrimming" Value="None"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="Foreground" Value="{DynamicResource ButtonDatagridPaymentForeground}"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+	</Style>
+	<Visibility x:Key="Window">Visible</Visibility>
+	<Style x:Key="ButtonBarLock"
+		TargetType="{x:Type Button}"
+               >
+		<Setter Property="Foreground"
+			Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+		<Setter Property="HorizontalContentAlignment"
+			Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+			Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid Width="Auto"
+						Height="Auto"
+						x:Name="grid" Background="#02FFFFFF" Cursor="Hand">
+						<ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+							RecognizesAccessKey="True"
+							RenderTransformOrigin="0.5,0.5" >
+							<ContentPresenter.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+						<Trigger Property="IsPressed"
+							Value="True">
+							<Setter Property="Cursor" TargetName="grid" Value="Hand"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+</ResourceDictionary>

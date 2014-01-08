@@ -1,0 +1,200 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:xceedWpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:pos="clr-namespace:CPC.POS"
+             x:Class="CPC.POS.View.CustomerReminderView"
+             x:Name="UserControl"
+             mc:Ignorable="d"
+             Width="548"
+             Height="472">
+
+    <xceedWpfToolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}">
+
+        <Grid x:Name="grdCustomerReminder"
+              d:LayoutOverrides="Height">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Border x:Name="brdContentCustomerReminder"
+                    Margin="15,20,15,15"
+                    Background="{DynamicResource TabControlBackground}"
+                    BorderBrush="{DynamicResource TabControlBorder}"
+                    BorderThickness="1">
+
+                <Grid x:Name="grdgbCustomerReminder"
+                      Margin="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <cpcDataGridToolkit:DataGridControl x:Name="dtgrdCustomerReminder"
+                                                        Style="{DynamicResource DatagridWithRowHeader}"
+                                                        AutoGenerateColumns="False"
+                                                        CanUserAddRows="False"
+                                                        CanUserDeleteRows="False"
+                                                        NumberOfItems="{Binding AlarmList.Count, Mode=OneWay}"
+                                                        ItemsSource="{Binding AlarmList, Mode=OneWay}">
+                        <cpcDataGridToolkit:DataGridControl.Columns>
+
+                            <DataGridTextColumn Header="Name"
+                                                Width="150"
+                                                Binding="{Binding Name, Mode=OneWay}" />
+
+                            <DataGridTextColumn Header="DOB"
+                                                Width="70"
+                                                Binding="{Binding DOB, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
+
+                            <DataGridTextColumn Header="Company"
+                                                Width="*"
+                                                Binding="{Binding Company, Mode=OneWay}" />
+
+                            <DataGridTextColumn Header="Phone"
+                                                Width="120"
+                                                Binding="{Binding Phone, Mode=OneWay}"
+                                                Visibility="Collapsed" />
+
+                            <DataGridTextColumn Header="Email"
+                                                Width="200"
+                                                Binding="{Binding Email, Mode=OneWay}"
+                                                Visibility="Collapsed" />
+
+                            <DataGridTemplateColumn Width="25">
+
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsThreeState="False"
+                                                  HorizontalAlignment="Center"
+                                                  IsChecked="{Binding DataContext.IsCheckedAll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox HorizontalAlignment="Center"
+                                                  IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+
+                        </cpcDataGridToolkit:DataGridControl.Columns>
+                    </cpcDataGridToolkit:DataGridControl>
+
+                    <Border x:Name="BrdImage"
+                            Background="#19FFFFFF"
+                            Grid.Row="1"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource TabControlBorder}"
+                            Margin="0,10,0,0"
+                            Height="130"
+                            Visibility="{Binding ImageVisibility, Mode=OneWay}">
+
+                        <Image  Margin="10"
+                                Source="{Binding ImageFile, Mode=OneWay}">
+                            <Image.ToolTip>
+                                <Image Source="{Binding ImageFile, Mode=OneWay}" />
+                            </Image.ToolTip>
+                        </Image>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                       HorizontalAlignment="Stretch"
+                       x:Name="Line"
+                       VerticalAlignment="Top"
+                       Height="1"
+                       Grid.Row="1"
+                       Margin="2,0,2,0" />
+
+            <StackPanel VerticalAlignment="Center"
+                        Height="Auto"
+                        x:Name="stkpBtn"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Grid.Row="1">
+
+                <Button x:Name="btnTemplate"
+                        Height="28"
+                        Width="90"
+                        Command="{Binding ChooseTemplateCommand}">
+                    <StackPanel HorizontalAlignment="Center"
+                                x:Name="stkpBtnTemplate"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgTemplate"
+                                   Fill="{DynamicResource Template}"
+                                   Height="18"
+                                   Width="18" />
+                        <TextBlock Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Text="Template"
+                                   TextWrapping="NoWrap"
+                                   x:Name="txtblTemplate"
+                                   Style="{DynamicResource ButtonTextBlock}" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnSend"
+                        Height="28"
+                        Width="90"
+                        Margin="10,0,0,0"
+                        Command="{Binding SendCommand}">
+                    <StackPanel HorizontalAlignment="Center"
+                                x:Name="stkpBtnSend"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgSend"
+                                   Fill="{DynamicResource SendMail}"
+                                   Height="20"
+                                   Width="20" />
+                        <TextBlock Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Text="Send"
+                                   TextWrapping="NoWrap"
+                                   x:Name="txtblSend"
+                                   Style="{DynamicResource ButtonTextBlock}" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="btnCancel"
+                        Height="28"
+                        Width="90"
+                        Margin="10,0,0,0"
+                        Command="{Binding CancelCommand}">
+                    <StackPanel HorizontalAlignment="Center"
+                                x:Name="stkpBtnCancel"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Rectangle x:Name="imgCancel"
+                                   Fill="{DynamicResource Cancel}"
+                                   Height="20"
+                                   Width="20" />
+                        <TextBlock Margin="5,0,0,0"
+                                   x:Name="txtblExit"
+                                   VerticalAlignment="Center"
+                                   Text="Cancel"
+                                   TextWrapping="NoWrap"
+                                   Style="{DynamicResource ButtonTextBlock}" />
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+
+    </xceedWpfToolkit:BusyIndicator>
+    
+</UserControl>
+	

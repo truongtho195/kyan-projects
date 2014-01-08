@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{568987BE-7B75-45CE-9211-2E40C2C0CF07}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POSLicense</RootNamespace>
+    <AssemblyName>POSLicense</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>POS.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\POSApplicationServer\bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Mono.Security">
+      <HintPath>..\POS\bin\Debug\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.0.12.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\POS\bin\Debug\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\POSApplicationServer\bin\Debug\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Database\ADODatabase.cs" />
+    <Compile Include="Database\PgDBHelper.cs" />
+    <Compile Include="Database\POS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Database\UnitOfWork.cs" />
+    <Compile Include="Define\DefineEnum.cs" />
+    <Compile Include="Toolkit\Base\CollectionBase.cs" />
+    <Compile Include="Toolkit\Base\ModelBase.cs" />
+    <Compile Include="Toolkit\Base\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Toolkit\Base\ViewModelBase.cs" />
+    <Compile Include="Toolkit\Behavior\BindingHelper.cs" />
+    <Compile Include="Toolkit\Behavior\DataGridCellFocusHelper.cs" />
+    <Compile Include="Toolkit\Behavior\DoubleClickCommandBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\FocusBehaviour.cs" />
+    <Compile Include="Toolkit\Behavior\MoveFocusHelper.cs" />
+    <Compile Include="Toolkit\Behavior\TabItemGeneratorBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\ValidationBehavior.cs" />
+    <Compile Include="Toolkit\Behavior\WindowClosingBehavior.cs" />
+    <Compile Include="Toolkit\Command\CommandReference.cs" />
+    <Compile Include="Toolkit\Command\CommandStoryboard.cs" />
+    <Compile Include="Toolkit\Command\EventToCommand.cs" />
+    <Compile Include="Toolkit\Command\RelayCommand.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\FileDialogViewModel.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\FolderBrowse\FolderBrowserDialog.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\FolderBrowse\FolderBrowserDialogViewModel.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\FolderBrowse\IFolderBrowserDialog.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\IFileDialog.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\OpenFile\IOpenFileDialog.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\OpenFile\OpenFileDialog.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\OpenFile\OpenFileDialogViewModel.cs" />
+    <Compile Include="Toolkit\Service\FrameworkDialogs\WindowWrapper.cs" />
+    <Compile Include="Ultility\Helper\CClientSocket.cs" />
+    <Compile Include="Ultility\Helper\CServerSocket.cs" />
+    <Compile Include="Ultility\Helper\EncryptDecryptString.cs" />
+    <Compile Include="Ultility\Helper\Ini.cs" />
+    <Compile Include="Ultility\Helper\MachineUtility.cs" />
+    <Compile Include="Ultility\Helper\ProductKeyGenerator.cs" />
+    <Compile Include="ViewModel\InsertLicenseViewModel.cs" />
+    <Compile Include="View\InsertLicenseView.xaml.cs">
+      <DependentUpon>InsertLicenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Dictionary\BaseControlStyle\ButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\CheckboxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\ComboboxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\GroupBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TabControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TextBlockStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\BaseControlStyle\TextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\Brushes\GreyImageResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionary\ResourceLibrary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InsertLicenseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Database\POS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>POS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dictionary\CustomControlStyle\" />
+    <Folder Include="Model\Custom\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\POS.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="POS.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

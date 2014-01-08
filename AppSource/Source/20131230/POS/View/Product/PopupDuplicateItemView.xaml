@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupDuplicateItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="314"
+             Height="232"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}">
+    <UserControl.Resources>
+        <converter:ReserseBoolConverter x:Key="reserseBoolConverter" />
+        <s:Int32 x:Key="ItemNameMaxLength">300</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="grdDuplicateItem">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentDuplicateItem"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentDuplicateItem"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <RadioButton x:Name="cbChangetheInformation"
+                             Margin="10,0,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             Content="{DynamicResource PD_ChangeTheInformation}"
+                             GroupName="grpChangeInformation"
+                             IsChecked="{Binding IsChangeInformation}" />
+                <TextBlock x:Name="txtblDepartment"
+                           Grid.Row="1"
+                           Margin="30,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource D102}"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="txtDepartment"
+                          Grid.Row="1"
+                          Width="150"
+                          Margin="100,2,10,2"
+                          HorizontalAlignment="Left"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding DepartmentCollection, Mode=OneWay}"
+                          SelectedValue="{Binding DuplicateProduct.ProductDepartmentId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                          SelectedValuePath="Id" />
+                <TextBlock x:Name="txtblCategory"
+                           Grid.Row="2"
+                           Margin="30,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource PD_Category}"
+                           TextWrapping="NoWrap" />
+                <ComboBox x:Name="txtCategory"
+                          Grid.Row="2"
+                          Width="150"
+                          Margin="100,2,0,2"
+                          HorizontalAlignment="Left"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding CategoryCollection, Mode=OneWay}"
+                          SelectedValue="{Binding DuplicateProduct.ProductCategoryId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                          SelectedValuePath="Id" />
+                <TextBlock x:Name="txtblItem"
+                           Grid.Row="3"
+                           Margin="30,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C115}"
+                           TextWrapping="NoWrap" />
+                <textBoxControl:TextBox x:Name="txtProductName"
+                                        Grid.Row="3"
+                                        Width="150"
+                                        Margin="100,2,0,2"
+                                        HorizontalAlignment="Left"
+                                        MaxLength="{StaticResource ItemNameMaxLength}"
+                                        Padding="2,0,2,0"
+                                        Text="{Binding DuplicateProduct.ProductName, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                        TextWrapping="NoWrap">
+                    <i:Interaction.Behaviors>
+                        <behavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </textBoxControl:TextBox>
+                <RadioButton x:Name="cbDiscard"
+                             Grid.Row="4"
+                             Margin="10,0,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             Content="{DynamicResource PD_Discard}"
+                             GroupName="grpDiscard"
+                             IsChecked="{Binding IsChangeInformation, Converter={StaticResource reserseBoolConverter}}" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

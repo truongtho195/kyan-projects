@@ -1,0 +1,480 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupBuildItemGroupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:cpcAutoComplete="clr-namespace:CPCToolkitExt.AutoCompleteControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="556"
+             Height="486"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Code">
+            <TextBlock Text="{DynamicResource C174}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemName">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Size">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_RegularPrice">
+            <TextBlock Text="{DynamicResource C139}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnHandQty">
+            <TextBlock Text="{DynamicResource C152}" />
+        </DataTemplate>
+        <!--  endregion HeaderTemplate  -->
+        <Style x:Key="ListViewItemColorStyle"
+               TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOpenItem}"
+                             Value="True">
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource ForegroundGreenBrush}" />
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DataGridCellFocusStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="True" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+        </Style>
+        <s:Int32 x:Key="ItemNameMaxLength">300</s:Int32>
+        <s:Int32 x:Key="AttributeMaxLength">30</s:Int32>
+        <s:Int32 x:Key="SizeMaxLength">10</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="grdBuildItemGroup">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentBuildItemGroup"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentBuildItemGroup"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="144" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="31" />
+                    <RowDefinition Height="Auto"
+                                   MinHeight="5" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="gbItemInfo"
+                          Height="80"
+                          VerticalAlignment="Top">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblgbItemInfo"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Item Information"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdgbItemInfo"
+                          Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="0" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblCategory"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Category"
+                                   TextWrapping="NoWrap" />
+                        <TextBox x:Name="txtCategory"
+                                 Grid.Column="1"
+                                 Width="140"
+                                 Margin="0,2"
+                                 HorizontalAlignment="Left"
+                                 IsEnabled="False"
+                                 Padding="2,0,2,0"
+                                 Text="{Binding SelectedProduct.CategoryName, Mode=OneWay}" />
+                        <TextBlock x:Name="txtblAttribute"
+                                   Grid.Column="1"
+                                   Margin="180,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Attribute"
+                                   TextWrapping="NoWrap"
+                                   d:LayoutOverrides="Height" />
+                        <textBoxControl:TextBox x:Name="txtAttribute"
+                                                Grid.Column="1"
+                                                Width="140"
+                                                Margin="238,2,0,2"
+                                                HorizontalAlignment="Left"
+                                                MaxLength="{StaticResource AttributeMaxLength}"
+                                                Padding="2,0,2,0"
+                                                Text="{Binding SelectedProduct.Attribute, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock x:Name="txtblItemName"
+                                   Grid.Row="1"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Item Name"
+                                   TextWrapping="NoWrap" />
+                        <textBoxControl:TextBox x:Name="txtItemName"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Width="140"
+                                                Margin="0,2"
+                                                HorizontalAlignment="Left"
+                                                IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+                                                MaxLength="{StaticResource ItemNameMaxLength}"
+                                                Padding="2,0,2,0"
+                                                Text="{Binding SelectedProduct.ProductName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblSize"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Margin="180,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Size"
+                                   TextWrapping="NoWrap"
+                                   d:LayoutOverrides="Height" />
+                        <textBoxControl:TextBox x:Name="txtSize"
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Width="140"
+                                                Margin="238,2,0,2"
+                                                HorizontalAlignment="Left"
+                                                MaxLength="{StaticResource SizeMaxLength}"
+                                                Padding="2,0,2,0"
+                                                Text="{Binding SelectedProduct.Size, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox x:Name="gbPriceLevelsMarkdown"
+                          Height="54"
+                          Margin="0,90,0,0"
+                          VerticalAlignment="Top">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblPriceLevelsMarkdown"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Price Levels"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdPriceLevelsMarkdown"
+                          Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="0" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblRegularPrice"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Regular Price"
+                                   TextWrapping="NoWrap" />
+                        <textBoxControl:TextBoxMoney x:Name="txtRegularPrice"
+                                                     Grid.Column="1"
+                                                     Width="123"
+                                                     Margin="0,2,10,2"
+                                                     HorizontalAlignment="Left"
+                                                     HorizontalContentAlignment="Right"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     Padding="2,0,2,0"
+                                                     TextWrapping="NoWrap"
+                                                     Value="{Binding SelectedProduct.RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock x:Name="txtblAvgUnitCost"
+                                   Grid.Column="1"
+                                   Margin="170,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Avg Unit Cost"
+                                   TextWrapping="NoWrap"
+                                   d:LayoutOverrides="Height" />
+                        <textBoxControl:TextBoxMoney x:Name="txtAvgUnitCost"
+                                                     Grid.Column="1"
+                                                     Width="123"
+                                                     Margin="245,2,0,2"
+                                                     HorizontalAlignment="Left"
+                                                     HorizontalContentAlignment="Right"
+                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                     IsEnabled="False"
+                                                     Padding="2,0,2,0"
+                                                     TextWrapping="NoWrap"
+                                                     Value="{Binding SelectedProduct.AverageUnitCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </GroupBox>
+                <TextBlock x:Name="txtblSelectItem"
+                           Grid.Row="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Select Item"
+                           TextWrapping="NoWrap" />
+                <control:WatermarkTextBox x:Name="txtBarcodeProduct"
+                                          Grid.Row="2"
+                                          Height="21"
+                                          Margin="65,0,95,0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          VerticalContentAlignment="Center"
+                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                          Text="{Binding BarcodeProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          TextWrapping="NoWrap"
+                                          Watermark="Input barcode and press enter">
+                    <i:Interaction.Behaviors>
+                        <behavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                    <control:WatermarkTextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{Binding SearchProductCommand}" />
+                    </control:WatermarkTextBox.InputBindings>
+                </control:WatermarkTextBox>
+                <!--<cpcAutoComplete:AutoCompleteTextBox x:Name="txtSelectItem"
+                                                     Grid.Row="2"
+                                                     Height="21"
+                                                     Margin="65,0,95,0"
+                                                     HorizontalAlignment="Stretch"
+                                                     VerticalAlignment="Stretch"
+                                                     AutoChangeSelectedItem="False"
+                                                     FieldShow="ProductName"
+                                                     FieldSource="{Binding ProductFieldCollection}"
+                                                     FilterMode="Contains"
+                                                     IsTextCompletionEnabled="False"
+                                                     ItemsSource="{Binding ProductCollection}"
+                                                     ListViewItemStyle="{StaticResource ListViewItemColorStyle}"
+                                                     SelectedItemResult="{Binding SelectedSubProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{DynamicResource AutoCompleteWaterMarkStyle}">
+                    <cpcAutoComplete:AutoCompleteTextBox.Columns>
+                        <GridViewColumn Header="{DynamicResource C175}"
+                                        Width="150"
+                                        DisplayMemberBinding="{Binding ProductName}" />
+                        <GridViewColumn Header="{DynamicResource C116}"
+                                        Width="70"
+                                        DisplayMemberBinding="{Binding Attribute}" />
+                        <GridViewColumn Header="{DynamicResource C117}"
+                                        Width="70"
+                                        DisplayMemberBinding="{Binding Size}" />
+                        <GridViewColumn Header="{DynamicResource C119}"
+                                        Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Stretch"
+                                               Text="{Binding RegularPrice, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                               TextAlignment="Right" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </cpcAutoComplete:AutoCompleteTextBox.Columns>
+                    <i:Interaction.Behaviors>
+                        <behavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </cpcAutoComplete:AutoCompleteTextBox>-->
+                <Button x:Name="btnAdvanceSearch"
+                        Command="{Binding SearchProductAdvanceCommand}"
+                        Grid.Row="2"
+                        Width="90"
+                        Height="21"
+                        Margin="0,2"
+                        HorizontalAlignment="Right"
+                        d:LayoutOverrides="Height">
+                    <TextBlock x:Name="txtblAdvanceSearch"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource C104}"
+                               TextWrapping="NoWrap" />
+                </Button>
+                <dataGridControl:DataGridControl x:Name="dtgrdOrder"
+                                                 Grid.Row="4"
+                                                 Margin="0,0.2,0,0"
+                                                 AutoGenerateColumns="False"
+                                                 CanUserAddRows="False"
+                                                 CanUserDeleteRows="False"
+                                                 DeleteCommandParameter="{Binding SelectedItem, ElementName=dtgrdOrder}"
+                                                 DeleteItemCommand="{Binding DeleteCommand}"
+                                                 DisplayItems="{Binding NumberOfDisplayItems}"
+                                                 IsPaging="False"
+                                                 IsRollBackData="False"
+                                                 ItemsSource="{Binding SelectedProduct.ProductGroupCollection}"
+                                                 NumberOfItems="{Binding SelectedProduct.ProductGroupCollection.Count}"
+                                                 Style="{DynamicResource DatagridWithRowHeader}"
+                                                 VisibilityNavigationBar="Collapsed">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ItemName, Mode=OneWay}"
+                                            Width="*"
+                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemName}" />
+                        <!--
+                            <DataGridTextColumn Binding="{Binding ItemAttribute, Mode=OneWay}"
+                            Width="60"
+                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Attribute}" />
+                            <DataGridTextColumn Binding="{Binding ItemSize, Mode=OneWay}"
+                            Width="50"
+                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Size}" />
+                        -->
+                        <DataGridTemplateColumn Header="Quantity"
+                                                Width="55"
+                                                CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                SortMemberPath="Quantity">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Text="{Binding Quantity, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.NumericFormat}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <textBoxControl:TextBoxNumeric HorizontalContentAlignment="Right"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                   Padding="2"
+                                                                   Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="70"
+                                                HeaderTemplate="{StaticResource DataTemplate_PD_Header_RegularPrice}"
+                                                SortMemberPath="RegularPrice">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Text="{Binding RegularPrice, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="UOM"
+                                                Width="45"
+                                                CellStyle="{StaticResource DataGridCellFocusStyle}"
+                                                SortMemberPath="UOM">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UOM, Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbUOM"
+                                              DisplayMemberPath="Name"
+                                              ItemsSource="{Binding ProductUOMCollection, Mode=OneWay}"
+                                              SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="UOMId"
+                                              Style="{DynamicResource ComboBoxInsideDataGridStyle}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Amount"
+                                                Width="80"
+                                                SortMemberPath="Amount">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Text="{Binding Amount, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="On-Hand Qty"
+                                                Width="75"
+                                                SortMemberPath="OnHandQty">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Right"
+                                               Text="{Binding OnHandQty, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.NumericFormat}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </dataGridControl:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

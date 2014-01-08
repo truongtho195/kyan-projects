@@ -1,0 +1,195 @@
+﻿<UserControl x:Class="CPC.POS.View.PaymentTermView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:pos="clr-namespace:CPC.POS"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="343"
+             Height="182">
+    <UserControl.Resources>
+        <!--  MaxLengthField  -->
+        <s:Int32 x:Key="NetDueMaxLength">4</s:Int32>
+        <s:Int32 x:Key="DiscountMaxLength">2</s:Int32>
+        <s:Int32 x:Key="PaidWithinDayMaxLength">4</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="grdPaymentTerm">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentPaymentTerm"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentPaymentTerm"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="135" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblNetDueIn"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Net Due In"
+                           TextWrapping="NoWrap" />
+                <!--  TermNetDue  -->
+                <textBoxToolkit:TextBoxNumeric x:Name="txtNetDueIn"
+                                               Grid.Column="1"
+                                               Width="110"
+                                               Margin="0,2"
+                                               HorizontalAlignment="Left"
+                                               ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                               CurrencyDecimalDigits="0"
+                                               IntegerLength="{StaticResource NetDueMaxLength}"
+                                               NumericStringFormat="{}{0:N0}"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding DueDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </textBoxToolkit:TextBoxNumeric>
+                <TextBlock x:Name="txtblNetDueInDay"
+                           Grid.Column="1"
+                           Margin="120,0,10,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Days"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblDiscount"
+                           Grid.Row="1"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Discount"
+                           TextWrapping="NoWrap" />
+                <!--  TermDiscountPercent  -->
+                <textBoxToolkit:TextBoxNumeric x:Name="txtDiscount"
+                                               Grid.Row="1"
+                                               Grid.Column="1"
+                                               Width="110"
+                                               Margin="0,2"
+                                               HorizontalAlignment="Left"
+                                               ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                               CurrencyDecimalDigits="2"
+                                               IntegerLength="{StaticResource DiscountMaxLength}"
+                                               NumericStringFormat="{x:Static pos:Define.NumericFormat}"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblDiscountPercent"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="120,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="%"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblDiscountifpaidwithin"
+                           Grid.Row="2"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Discount if paid within"
+                           TextWrapping="NoWrap" />
+                <!--  TermPaidWithinDay  -->
+                <textBoxToolkit:TextBoxNumeric x:Name="txtDiscountifpaidwithin"
+                                               Grid.Row="2"
+                                               Grid.Column="1"
+                                               Width="110"
+                                               Margin="0,2"
+                                               HorizontalAlignment="Left"
+                                               ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                               CurrencyDecimalDigits="0"
+                                               IntegerLength="{StaticResource PaidWithinDayMaxLength}"
+                                               NumericStringFormat="{}{0:N0}"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding DiscountDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblDiscountifpaidwithinDays"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           Margin="120,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="Days"
+                           TextWrapping="NoWrap" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding SaveCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="OK"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="Cancel"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

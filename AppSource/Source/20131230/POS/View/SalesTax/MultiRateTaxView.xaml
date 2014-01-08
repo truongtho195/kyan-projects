@@ -1,0 +1,556 @@
+﻿<UserControl x:Class="CPC.POS.View.MultiRateTaxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:cpcTextbox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Name="UserControl"
+             Width="555"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:IntergerToVisibilityConverter x:Key="intergerToVisibilityConverter" />
+        <Style x:Key="myListBoxItemSaleTaxStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Margin"
+                    Value="0,0,0,10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <GroupBox x:Name="gbSalesTaxCode2"
+                                      Grid.Row="1">
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="txtblSalesTaxCode2"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="{Binding SaleTaxCodeHeader, Mode=OneWay}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </GroupBox.Header>
+                                <Grid x:Name="grdSalesTaxCode2"
+                                      Margin="0,4,0,0">
+                                    <!--  Edit Grid  -->
+                                    <Grid x:Name="grdShowSalesTaxCode2"
+                                          d:IsHidden="True">
+                                        <Grid.Visibility>
+                                            <Binding Path="IsEditing"
+                                                     Mode="OneWay"
+                                                     UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.Converter>
+                                                    <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Grid.Visibility>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblSalesTaxName2"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Sales Tax Name:"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextbox:TextBox x:Name="txtSalesTaxName2"
+                                                            Width="200"
+                                                            Margin="100,2,0,2"
+                                                            HorizontalAlignment="Left"
+                                                            MaxLength="30"
+                                                            Padding="2,0,2,0"
+                                                            Text="{Binding TaxComponent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            TextWrapping="NoWrap">
+                                            <i:Interaction.Behaviors>
+                                                <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                            </i:Interaction.Behaviors>
+                                        </cpcTextbox:TextBox>
+                                        <TextBlock x:Name="txtblTaxRate2"
+                                                   Margin="325,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Tax Rate:"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextbox:TextBoxNumeric x:Name="txtTaxRate2"
+                                                                   Width="60"
+                                                                   Margin="378,2,0,2"
+                                                                   HorizontalAlignment="Left"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding TaxRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <TextBlock x:Name="txtblTaxRatePercent2"
+                                                   Margin="443.28,0,10,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="%"
+                                                   TextWrapping="NoWrap" />
+                                        <TextBlock x:Name="txtblTaxAgency2"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Tax Agency:"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextbox:TextBox x:Name="txtTaxAgency2"
+                                                            Grid.Row="1"
+                                                            Width="200"
+                                                            Margin="100,2,0,2"
+                                                            HorizontalAlignment="Left"
+                                                            MaxLength="30"
+                                                            Padding="2,0,2,0"
+                                                            Text="{Binding TaxAgency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            TextWrapping="NoWrap">
+                                            <i:Interaction.Behaviors>
+                                                <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                            </i:Interaction.Behaviors>
+                                        </cpcTextbox:TextBox>
+                                        <CheckBox x:Name="cbApplySalesTaxTothespecific2"
+                                                  Grid.Row="2"
+                                                  Margin="20,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Apply Sales Tax to the specific price range:"
+                                                  IsChecked="{Binding IsAllowSpecificItemPriceRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblPriceRangeFrom2"
+                                                   Grid.Row="3"
+                                                   Margin="40,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Price Range From:"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextbox:TextBoxMoney x:Name="txtPriceRangeFrom2"
+                                                                 Grid.Row="3"
+                                                                 Width="120"
+                                                                 Margin="140,2,0,2"
+                                                                 HorizontalAlignment="Left"
+                                                                 ConverterCulture="{Binding DataContext.ConverterCulture,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                 CurrencyStringFormat="{Binding DataContext.CurrencyFormat,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                 IsEnabled="{Binding IsAllowSpecificItemPriceRange, Mode=OneWay}"
+                                                                 Padding="2,0,2,0"
+                                                                 TextWrapping="NoWrap"
+                                                                 Value="{Binding PriceFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <!--ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"-->
+                                        <TextBlock x:Name="txtblPriceRangeTo2"
+                                                   Grid.Row="3"
+                                                   Margin="305,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="to:"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextbox:TextBoxMoney x:Name="txtPriceRangeTo2"
+                                                                 Grid.Row="3"
+                                                                 Width="120"
+                                                                 Margin="328,2,0,2"
+                                                                 HorizontalAlignment="Left"
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                 IsEnabled="{Binding IsAllowSpecificItemPriceRange, Mode=OneWay}"
+                                                                 Padding="2,0,2,0"
+                                                                 TextWrapping="NoWrap"
+                                                                 Value="{Binding PriceTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                        <CheckBox x:Name="cbApplySalesTaxTotheItem2"
+                                                  Grid.Row="4"
+                                                  Margin="20,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="  Apply Sales Tax to the Item's price within this range:"
+                                                  IsChecked="{Binding IsAllowAmountItemPriceRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <CheckBox.Visibility>
+                                                <Binding Path="IsAllowSpecificItemPriceRange"
+                                                         Mode="OneWay"
+                                                         UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.Converter>
+                                                        <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </CheckBox.Visibility>
+                                        </CheckBox>
+                                        <Button x:Name="btnRemoveSalesTax2_Copy"
+                                                Command="{Binding DataContext.AcceptTaxOptionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding .}"
+                                                Grid.Row="5"
+                                                Width="80"
+                                                Height="21"
+                                                Margin="368.023,2,0,2"
+                                                HorizontalAlignment="Left">
+                                            <StackPanel x:Name="stkpBtnRemoveSalesTax1"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <Image x:Name="imgRemoveSalesTax1"
+                                                       Width="10"
+                                                       Height="Auto"
+                                                       Visibility="Collapsed" />
+                                                <TextBlock x:Name="txtblRemoveSalesTax1"
+                                                           Margin="5,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Style="{DynamicResource ButtonTextBlock}"
+                                                           Text="OK"
+                                                           TextWrapping="NoWrap" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                    <!--  Review Grid  -->
+                                    <Grid x:Name="grdReviewSalesTaxCode2">
+                                        <Grid.Visibility>
+                                            <Binding Path="IsEditing"
+                                                     Mode="OneWay"
+                                                     UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.Converter>
+                                                    <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Grid.Visibility>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="Auto"
+                                                           MinHeight="12.7066666666667" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblReviewSalesTaxName2"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource Tax_Text_SalesTaxName}"
+                                                   TextWrapping="NoWrap" />
+                                        <TextBlock x:Name="txtblBindingReviewSalesTaxName2"
+                                                   Margin="100,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{Binding TaxComponent, Mode=OneWay}"
+                                                   TextWrapping="NoWrap" />
+                                        <TextBlock x:Name="txtblReviewTaxRate2"
+                                                   Margin="300,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource Tax_Text_TaxRate}"
+                                                   TextWrapping="NoWrap" />
+                                        <StackPanel Margin="360,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <TextBlock x:Name="txtblBindingReviewTaxRate2"
+                                                       Margin="0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="{Binding TaxRate, Mode=OneWay}"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblTaxRatePercent1"
+                                                       Width="11.72"
+                                                       Margin="0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="%"
+                                                       TextWrapping="NoWrap"
+                                                       d:LayoutOverrides="HorizontalAlignment" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="txtblReviewTaxAgency2"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource Tax_Text_TaxAgency}"
+                                                   TextWrapping="NoWrap" />
+                                        <TextBlock x:Name="txtblBindingReviewTaxAgency2"
+                                                   Grid.Row="1"
+                                                   Margin="100,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{Binding TaxAgency, Mode=OneWay}"
+                                                   TextWrapping="NoWrap" />
+                                        <Grid x:Name="grdTaxCodeOptionReviewCode2"
+                                              Grid.Row="2"
+                                              Margin="10,0,0,0">
+                                            <!--  For IsAllowSpecificItemPriceRange == true (PriceFrom & PriceTo  >0)  -->
+                                            <StackPanel Grid.Row="2"
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <!--  Collect  -->
+                                                <TextBlock Style="{DynamicResource TextBlockNormal}">
+                                                    <Run Text="{DynamicResource Tax_Text_Collect}" />
+                                                    <Run Text=" " />
+                                                </TextBlock>
+                                                <!--  TaxRate %  -->
+                                                <TextBlock x:Name="tblPaidTaxRate"
+                                                           Style="{DynamicResource TextBlockNormal}">
+                                                    <Run FontWeight="Bold"
+                                                         Text="{Binding TaxRate}" /><Run FontWeight="Bold"
+                                                                                         Text="%" />
+                                                </TextBlock>
+                                                <!--  paid to "TaxAgency"  -->
+                                                <TextBlock x:Name="txtblPaidTaxAgency"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           TextWrapping="NoWrap"><Run Text=" " /><Run Text="{DynamicResource Tax_Text_PaidTo}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                      Text="{Binding TaxAgency}" />
+                                                </TextBlock>
+                                                <!--  When is "range"  -->
+                                                <StackPanel x:Name="stTaxOptionInRange"
+                                                            HorizontalAlignment="Stretch"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <StackPanel.Visibility>
+                                                        <Binding Path="IsAllowSpecificItemPriceRange"
+                                                                 Mode="OneWay"
+                                                                 UpdateSourceTrigger="PropertyChanged">
+                                                            <Binding.Converter>
+                                                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </StackPanel.Visibility>
+                                                    <TextBlock Style="{DynamicResource TextBlockNormal}">
+                                                        <Run Text=" " />
+                                                        <Run Text="{DynamicResource Tax_Text_WhenPriceIs}" />
+                                                        <Run Text=" " />
+                                                    </TextBlock>
+                                                    <!--  Pay 15% when prices is $10.00 to $15.00  -->
+                                                    <TextBlock x:Name="txtblReviewRange"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="{Binding TaxRateOption, ConverterParameter=1, Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold"
+                                                                                                                                                                                         Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_To}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                                                                                                                                                                                                                                                                    Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                    </TextBlock>
+                                                    <!--  Pay 20% when prices is $200.00 and above  -->
+                                                    <TextBlock x:Name="txtblReviewFromAbove"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="{Binding TaxRateOption, ConverterParameter=2, Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold"
+                                                                                                                                                                                         Text="{Binding PriceFrom, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" /><Run Text=" " /><Run Text="{DynamicResource Tax_Text_And}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                                                                                                                                                                                                                                                                     Text="{DynamicResource Tax_Text_Above}" />
+                                                    </TextBlock>
+                                                    <!--  Pay 10% when prices is under $50.00  -->
+                                                    <TextBlock x:Name="txtblReviewPriceToUnder"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="{Binding TaxRateOption, ConverterParameter=3, Converter={StaticResource intergerToVisibilityConverter}}"><Run FontWeight="Bold"
+                                                                                                                                                                                         Text="{DynamicResource Tax_Text_under}" /><Run Text=" " /><Run FontWeight="Bold"
+                                                                                                                                                                                                                                                        Text="{Binding PriceTo, Mode=OneWay, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="3"
+                                                    Margin="0,2,5,0"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Horizontal"
+                                                    d:LayoutOverrides="Width">
+                                            <Button x:Name="btnEditSalesTax2"
+                                                    Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}"
+                                                    Width="80"
+                                                    Height="21"
+                                                    Margin="0,0,8,0"
+                                                    HorizontalAlignment="Left">
+                                                <StackPanel x:Name="stkpBtnEditSalesTax2"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Image x:Name="imgEditSalesTax2"
+                                                           Width="10"
+                                                           Height="Auto"
+                                                           Visibility="Collapsed" />
+                                                    <TextBlock x:Name="txtblEditSalesTax2"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonTextBlock}"
+                                                               Text="{DynamicResource Text_Edit}"
+                                                               TextWrapping="NoWrap" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button x:Name="btnRemoveSalesTax2"
+                                                    Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}"
+                                                    Width="80"
+                                                    Height="21"
+                                                    Margin="0"
+                                                    HorizontalAlignment="Left">
+                                                <StackPanel x:Name="stkpBtnRemoveSalesTax2"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Image x:Name="imgRemoveSalesTax2"
+                                                           Width="10"
+                                                           Height="Auto"
+                                                           Visibility="Collapsed" />
+                                                    <TextBlock x:Name="txtblRemoveSalesTax2"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonTextBlock}"
+                                                               Text="{DynamicResource Text_Remove}"
+                                                               TextWrapping="NoWrap" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </GroupBox>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding TaxAgency}"
+                                         Value="{x:Static sys:String.Empty}">
+                                <Setter TargetName="txtblPaidTaxAgency"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="grdMultiRateTax">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentMultiRateTax"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1"
+                IsEnabled="{Binding AllowEditSaleTax, Mode=OneWay}">
+            <Grid x:Name="grdContentMultiRateTax"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"
+                                   MinHeight="4" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <ListBox x:Name="lstSaleCommison"
+                         VerticalContentAlignment="Stretch"
+                         Background="{x:Null}"
+                         BorderBrush="{x:Null}"
+                         ItemContainerStyle="{DynamicResource myListBoxItemSaleTaxStyle}"
+                         ItemsSource="{Binding SaleTaxLocationOptionCollection}"
+                         ScrollViewer.CanContentScroll="False"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                <Button x:Name="btnAdditionalSalesTax"
+                        Command="{Binding AddTaxRateOptionCommand}"
+                        Grid.Row="3"
+                        Width="160"
+                        Height="21"
+                        Margin="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                    <StackPanel x:Name="stkpBtnAdditionalSalesTax"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <Image x:Name="imgAdditionalSalesTax"
+                               Width="10"
+                               Height="Auto"
+                               Visibility="Collapsed" />
+                        <TextBlock x:Name="txtblAdditionalSalesTax"
+                                   Margin="5,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonTextBlock}"
+                                   Text="{DynamicResource Tax_Text_AdditionSaleTax}"
+                                   TextWrapping="NoWrap" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <!--  System Button  -->
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OKCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

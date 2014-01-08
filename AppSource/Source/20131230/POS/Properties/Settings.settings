@@ -1,0 +1,75 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CPC.POS.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Remember" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">REMEMBER</Value>
+    </Setting>
+    <Setting Name="Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProjectName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">POS</Value>
+    </Setting>
+    <Setting Name="PasswordTemp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">111111</Value>
+    </Setting>
+    <Setting Name="GuestNoFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyMMddHHmmss</Value>
+    </Setting>
+    <Setting Name="PurchaseOrderNoFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyMMddHHmmss</Value>
+    </Setting>
+    <Setting Name="SaleOrderNoFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyMMddHHmmss</Value>
+    </Setting>
+    <Setting Name="DefaultColorNote" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFFF00</Value>
+    </Setting>
+    <Setting Name="MaxNumberOfImages" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="MultiTaxMaxLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="ProductCodeFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">yyMMddHHmmssfff</Value>
+    </Setting>
+    <Setting Name="IntegerFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">N0</Value>
+    </Setting>
+    <Setting Name="DecimalFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">N</Value>
+    </Setting>
+    <Setting Name="MaxSerialLenght" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="NumberOfSerialDisplay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ADMIN_ACCOUNT" Type="System.String" Scope="User">
+      <Value Profile="(Default)">admin</Value>
+    </Setting>
+    <Setting Name="ADMIN_PASSWORD" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aXrrCFTdvOaYDeGLj3dmlDkBmsbXmy0yThKtMlV/6zw=</Value>
+    </Setting>
+    <Setting Name="USER_LOGOUT_RESULT" Type="System.String" Scope="User">
+      <Value Profile="(Default)">User logout result</Value>
+    </Setting>
+    <Setting Name="USER_LOGIN_RESULT" Type="System.String" Scope="User">
+      <Value Profile="(Default)">User login authenicate result</Value>
+    </Setting>
+    <Setting Name="Shift" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MOR</Value>
+    </Setting>
+    <Setting Name="StoreDefine" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="NumberOfDisplayItems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

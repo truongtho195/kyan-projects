@@ -1,0 +1,179 @@
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Runtime>
+<edmx:StorageModels>
+<Schema Namespace="POSLicenseModel.Store" Alias="Self" Provider="Npgsql" ProviderManifestToken="9.0.3" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="POSLicenseModelStoreContainer">
+    <EntitySet Name="Customer" EntityType="POSLicenseModel.Store.Customer" store:Type="Tables" Schema="public" />
+    <EntitySet Name="CustomerDetail" EntityType="POSLicenseModel.Store.CustomerDetail" store:Type="Tables" Schema="public" />
+    <AssociationSet Name="FK_CustomerDetail_CustomerId" Association="POSLicenseModel.Store.FK_CustomerDetail_CustomerId">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CustomerDetail" EntitySet="CustomerDetail" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int8" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Company" Type="varchar" MaxLength="100" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" />
+    <Property Name="Fax" Type="varchar" MaxLength="14" />
+    <Property Name="CellPhone" Type="varchar" MaxLength="14" />
+    <Property Name="Address" Type="varchar" MaxLength="300" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="ContactName" Type="varchar" MaxLength="100" />
+    <Property Name="ContactPhone" Type="varchar" MaxLength="100" />
+    <Property Name="ContactEmail" Type="varchar" MaxLength="100" />
+    <Property Name="TotalStore" Type="int2" />
+    <Property Name="UserCreated" Type="varchar" MaxLength="30" />
+    <Property Name="UserUpdated" Type="varchar" MaxLength="30" />
+    <Property Name="DateCreated" Type="timestamp" />
+    <Property Name="DateUpdated" Type="timestamp" />
+  </EntityType>
+  <EntityType Name="CustomerDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int8" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="varchar" MaxLength="20" />
+    <Property Name="StoreCode" Type="int4" />
+    <Property Name="LicenceCode" Type="varchar" MaxLength="100" />
+    <Property Name="GenDate" Type="timestamp" />
+    <Property Name="Period" Type="int4" />
+    <Property Name="IsLived" Type="bool" />
+    <Property Name="POSId" Type="varchar" MaxLength="8" />
+    <Property Name="CustomerId" Type="int8" Nullable="false" />
+    <Property Name="RequestBy" Type="varchar" MaxLength="30" />
+    <Property Name="DateCreated" Type="timestamp" />
+    <Property Name="ExpireDate" Type="int4" />
+  </EntityType>
+  <Association Name="FK_CustomerDetail_CustomerId">
+    <End Role="Customer" Type="POSLicenseModel.Store.Customer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CustomerDetail" Type="POSLicenseModel.Store.CustomerDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerDetail">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
+</edmx:StorageModels>
+<edmx:ConceptualModels>
+<Schema Namespace="POSLicenseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="POSLicenseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customer" EntityType="POSLicenseModel.Customer" />
+    <EntitySet Name="CustomerDetail" EntityType="POSLicenseModel.CustomerDetail" />
+    <AssociationSet Name="FK_CustomerDetail_CustomerId" Association="POSLicenseModel.FK_CustomerDetail_CustomerId">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CustomerDetail" EntitySet="CustomerDetail" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Company" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Fax" Type="String" MaxLength="14" Unicode="true" FixedLength="false" />
+    <Property Name="CellPhone" Type="String" MaxLength="14" Unicode="true" FixedLength="false" />
+    <Property Name="Address" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="ContactName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ContactPhone" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ContactEmail" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="TotalStore" Type="Int16" />
+    <Property Name="UserCreated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="UserUpdated" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="6" />
+    <NavigationProperty Name="CustomerDetail" Relationship="POSLicenseModel.FK_CustomerDetail_CustomerId" FromRole="Customer" ToRole="CustomerDetail" />
+  </EntityType>
+  <EntityType Name="CustomerDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApplicationId" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="StoreCode" Type="Int32" />
+    <Property Name="LicenceCode" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="GenDate" Type="DateTime" Precision="6" />
+    <Property Name="Period" Type="Int32" />
+    <Property Name="IsLived" Type="Boolean" />
+    <Property Name="POSId" Type="String" MaxLength="8" Unicode="true" FixedLength="false" />
+    <Property Name="RequestBy" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="6" />
+    <Property Name="ExpireDate" Type="Int32" />
+    <NavigationProperty Name="Customer" Relationship="POSLicenseModel.FK_CustomerDetail_CustomerId" FromRole="CustomerDetail" ToRole="Customer" />
+  </EntityType>
+  <Association Name="FK_CustomerDetail_CustomerId">
+    <End Role="Customer" Type="POSLicenseModel.Customer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CustomerDetail" Type="POSLicenseModel.CustomerDetail" Multiplicity="*" />
+  </Association>
+</Schema>
+</edmx:ConceptualModels>
+<edmx:Mappings>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="POSLicenseModelStoreContainer" CdmEntityContainer="POSLicenseEntities">
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="POSLicenseModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Company" ColumnName="Company" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+          <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+          <ScalarProperty Name="TotalStore" ColumnName="TotalStore" />
+          <ScalarProperty Name="UserCreated" ColumnName="UserCreated" />
+          <ScalarProperty Name="UserUpdated" ColumnName="UserUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerDetail">
+      <EntityTypeMapping TypeName="POSLicenseModel.CustomerDetail">
+        <MappingFragment StoreEntitySet="CustomerDetail">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="StoreCode" ColumnName="StoreCode" />
+          <ScalarProperty Name="LicenceCode" ColumnName="LicenceCode" />
+          <ScalarProperty Name="GenDate" ColumnName="GenDate" />
+          <ScalarProperty Name="Period" ColumnName="Period" />
+          <ScalarProperty Name="IsLived" ColumnName="IsLived" />
+          <ScalarProperty Name="POSId" ColumnName="POSId" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_CustomerDetail_CustomerId" TypeName="POSLicenseModel.FK_CustomerDetail_CustomerId" StoreEntitySet="CustomerDetail">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="CustomerId" />
+      </EndProperty>
+      <EndProperty Name="CustomerDetail">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
+</edmx:Mappings>
+</edmx:Runtime>
+<edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+<Connection><DesignerInfoPropertySet><DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" /></DesignerInfoPropertySet></Connection>
+<edmx:Options />
+<edmx:Diagrams />
+</edmx:Designer></edmx:Edmx>

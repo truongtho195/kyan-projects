@@ -1,0 +1,16 @@
+﻿<Application x:Class="CPC.TimeClock.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionary/Brushes/Grey/GreyResources.xaml" />
+                <ResourceDictionary Source="Dictionary/Brushes/Grey/GreyImageResources.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/ButtonStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/DatagridStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/TextBoxStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

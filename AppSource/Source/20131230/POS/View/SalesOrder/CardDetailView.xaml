@@ -1,0 +1,206 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:pos="clr-namespace:CPC.POS"
+             x:Class="CPC.POS.View.CardDetailView"
+             x:Name="UserControl"
+             mc:Ignorable="d"
+             Width="408"
+             Height="402">
+
+    <UserControl.Resources>
+
+        <Style x:Key="RightAlignmentElementStyle"
+               TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="grdCardDetail"
+          d:LayoutOverrides="Height">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="brdContentCardDetail"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+
+            <Grid x:Name="grdgbCardDetail"
+                  Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="112.14" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="0" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="Auto"
+                                   MinHeight="2" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="txtblCardNo"
+                           Text="Card #"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}" />
+
+                <textBoxToolkit:TextBox x:Name="txtCardNo"
+                                        Margin="0,2,10,2"
+                                        TextWrapping="NoWrap"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        Width="140"
+                                        IsReadOnly="True"
+                                        Text="{Binding SelectedCardManagement.CardNumber, Mode=OneTime}" />
+
+                <TextBlock x:Name="txtblRemainingAmount"
+                           Text="Remaining Amount"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           Margin="10,0"
+                           VerticalAlignment="Center"
+                           Grid.Row="1"
+                           Style="{DynamicResource TextBlockNormal}" />
+
+                <textBoxToolkit:TextBoxMoney x:Name="txtRemainingAmount"
+                                             Margin="0,2"
+                                             TextWrapping="NoWrap"
+                                             Grid.Column="1"
+                                             Grid.Row="1"
+                                             Padding="2,0,2,0"
+                                             Width="140"
+                                             HorizontalAlignment="Left"
+                                             IsReadOnly="True"
+                                             HorizontalContentAlignment="Right"
+                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                             CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
+                                             Value="{Binding SelectedCardManagement.RemainingAmount, Mode=OneTime}" />
+
+                <TextBlock x:Name="txtblPurchaseDate"
+                           Text="Purchase Date"
+                           TextWrapping="NoWrap"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Grid.Row="2" />
+
+                <textBoxToolkit:TextBox x:Name="txtPurchaseDate"
+                                        Margin="0,2"
+                                        TextWrapping="NoWrap"
+                                        Grid.Column="1"
+                                        Grid.Row="2"
+                                        Padding="2,0,2,0"
+                                        Width="140"
+                                        HorizontalAlignment="Left"
+                                        IsReadOnly="True"
+                                        Text="{Binding SelectedCardManagement.PurchaseDate, Mode=OneTime, StringFormat={x:Static pos:Define.DateFormat}}" />
+
+                <TextBlock x:Name="txtblUsageDetail"
+                           Text="Usage Detail"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           Grid.Row="5"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}" />
+
+                <cpcDataGridToolkit:DataGridControl x:Name="dtgrdUsageDetail"
+                                                    Style="{DynamicResource DatagridWithRowHeader}"
+                                                    Grid.Row="7"
+                                                    Grid.ColumnSpan="2"
+                                                    Grid.RowSpan="5"
+                                                    Margin="10,0"
+                                                    CanUserAddRows="False"
+                                                    CanUserDeleteRows="False"
+                                                    AutoGenerateColumns="False"
+                                                    NumberOfItems="{Binding SaleOrders.Count, Mode=OneWay}"
+                                                    ItemsSource="{Binding SaleOrders, Mode=OneWay}">
+                    <cpcDataGridToolkit:DataGridControl.Columns>
+
+                        <DataGridTextColumn Width="85"
+                                            Header="Invoice #"
+                                            Binding="{Binding SONumber, Mode=OneWay}" />
+
+                        <DataGridTextColumn Width="70"
+                                            Header="Date Sold"
+                                            ElementStyle="{StaticResource RightAlignmentElementStyle}"
+                                            Binding="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static pos:Define.DateFormat}}" />
+
+                        <DataGridTextColumn Width="60"
+                                            Header="Time Sold"
+                                            ElementStyle="{StaticResource RightAlignmentElementStyle}"
+                                            Binding="{Binding DateCreated, Mode=OneWay, StringFormat=\{0:t\}}" />
+
+                        <DataGridTextColumn Width="*"
+                                            Header="Amount Tendered"
+                                            ElementStyle="{StaticResource RightAlignmentElementStyle}"
+                                            Binding="{Binding AmountTendered, Mode=OneWay, StringFormat={x:Static pos:Define.CurrencyFormat}}" />
+
+                    </cpcDataGridToolkit:DataGridControl.Columns>
+                </cpcDataGridToolkit:DataGridControl>
+
+            </Grid>
+
+        </Border>
+
+        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0,2,0" />
+
+        <StackPanel VerticalAlignment="Center"
+                    Height="Auto"
+                    x:Name="stkpBtn"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+
+            <Button x:Name="btnOK"
+                    Height="28"
+                    Width="80"
+                    Command="{Binding OkCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnOK"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="OK"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblOK"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>
+	

@@ -1,0 +1,157 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" 
+	xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	mc:Ignorable="d Anno"
+	x:Class="CPC.POSReport.View.ReportPermissionView"
+    WindowStartupLocation="CenterScreen"   
+    WindowStyle="None"
+    
+	x:Name="UserControl" Width="500" Height="410" Background="{x:Null}" AllowsTransparency="True">
+
+	<Border x:Name="brdAssignAuthorizeReport" BorderThickness="1,1,1,1" CornerRadius="5,5,5,5" BorderBrush="{DynamicResource TitleBarBorder}" Background="{DynamicResource UserControlBackground}">
+
+		<DockPanel x:Name="dkpAssignAuthorizeReport" LastChildFill="True">
+			<Border 
+				Height="26" 
+				x:Name="BrdTopBar" 
+				BorderThickness="0" 
+                MouseLeftButtonDown="BrdTopBar_MouseLeftButtonDown"
+				BorderBrush="{DynamicResource TitleBarBorder}" 
+				CornerRadius="4.5,4.5,0,0"                 
+				DockPanel.Dock="Top" Background="{DynamicResource TitleBarBackground}">
+				<Grid x:Name="grdTopBar">
+					<TextBlock Text="Assign Authorize Report" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtblAssignAuthorizeReport" Margin="10,0,0,0" Style="{DynamicResource TextBlockTitleFormPopup}"/>
+					<Rectangle StrokeThickness="0" x:Name="TopBarLine" VerticalAlignment="Bottom" Height="1" Fill="{DynamicResource TitleBarBorder}"/>
+				</Grid>
+			</Border>
+
+			<Grid x:Name="grdAssignAuthorizeReport" DockPanel.Dock="Top">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition Height="50"/>
+				</Grid.RowDefinitions>
+				<Border x:Name="brdContentAssignAuthorizeReport" BorderThickness="1" Margin="15,20,15,15" Background="{DynamicResource TabControlBackground}" BorderBrush="{DynamicResource TabControlBorder}">
+					<Grid
+						x:Name="grdContentAssignAuthorizeReport"
+              Margin="10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Grid x:Name="grdgbAuthorize">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<DataGrid IsSynchronizedWithCurrentItem="True" 
+								CanUserAddRows="False"
+								CanUserDeleteRows="False"
+								ItemsSource="{Binding PermissionCollection, UpdateSourceTrigger=PropertyChanged}"
+								AutoGenerateColumns="False"
+								SelectedItem="{Binding PermissionModel}"
+								x:Name="dtgrdAuthorize" 
+								Style="{DynamicResource DatagridWithRowHeader}" 
+								SelectionMode="Single" Grid.Row="1" >
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="Login Name"
+										Binding="{Binding LoginName}"
+										IsReadOnly="True"
+										Width="*"/>
+									<DataGridTextColumn Header="User name" 
+										Binding="{Binding Name}"
+										IsReadOnly="True"
+										Width="*"/>
+                            
+									<DataGridTemplateColumn Width="50">
+										<DataGridTemplateColumn.HeaderTemplate>
+											<DataTemplate>
+												<Grid>
+													<TextBlock 
+														x:Name="cbAllView" 
+														HorizontalAlignment="Left"                                                             
+														Text="View"/>
+												</Grid>
+											</DataTemplate>
+										</DataGridTemplateColumn.HeaderTemplate>
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<CheckBox 
+													x:Name="cbView" 
+													HorizontalAlignment="Center" 
+													Margin="10,0,0,0"                                                                                                                        
+													IsChecked="{Binding IsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+													Command="{Binding DataContext.CheckIsViewCommand, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type DataGrid}, Mode=FindAncestor}}"
+													CommandParameter="{Binding ElementName=cbView}"
+															/>
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>                                   
+
+									<DataGridTemplateColumn Width="50">
+										<DataGridTemplateColumn.HeaderTemplate>
+											<DataTemplate>
+												<Grid>
+													<TextBlock 
+														x:Name="cbAllPrint" 
+														HorizontalAlignment="Center"                                                             
+														Text="Print"/>
+												</Grid>
+											</DataTemplate>
+										</DataGridTemplateColumn.HeaderTemplate>
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<CheckBox 
+													x:Name="cbPrint" 
+													HorizontalAlignment="Center" 
+													Margin="10,0,0,0"                
+													Command="{Binding DataContext.CheckIsPrintCommand, RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type DataGrid}, Mode=FindAncestor}}"
+													CommandParameter="{Binding ElementName=cbPrint}"
+													IsChecked="{Binding IsPrint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+								</DataGrid.Columns>                                    
+							</DataGrid>
+						</Grid>
+					</Grid>
+				</Border>
+				<Rectangle Fill="{DynamicResource Spilter_Line_Background}" HorizontalAlignment="Stretch" x:Name="Line" VerticalAlignment="Top" Height="1" Grid.Row="1" Margin="2,0"/>
+				<StackPanel VerticalAlignment="Center" Height="Auto" x:Name="stkpBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
+                    <Button												
+						x:Name="btnGrant" 
+                        Command="{Binding GrantAllCommand}"
+                        Height="28" Width="85">
+                        <StackPanel HorizontalAlignment="Center" x:Name="stkpBtnGrant" VerticalAlignment="Center" Orientation="Horizontal">
+                            <Rectangle x:Name="imgOK" Fill="{DynamicResource GrantAll}" Height="20" Width="20"/>
+                            <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="Grant all" TextWrapping="NoWrap" x:Name="txtblGrant" Style="{DynamicResource ButtonTextBlock}"/>
+                        </StackPanel>
+                    </Button>
+                    <Button												
+						x:Name="btnRevoke" 
+                        Command="{Binding RevokeAllCommand}"
+                        Height="28" Width="85" Margin="10,0,0,0">
+                        <StackPanel HorizontalAlignment="Center" x:Name="stkpBtnRevoke" VerticalAlignment="Center" Orientation="Horizontal">
+							<Rectangle Fill="{DynamicResource RevokeAll}" Height="20" Width="20"/>
+                            <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" Text="Revoke all" TextWrapping="NoWrap" x:Name="txtblRevoke" Style="{DynamicResource ButtonTextBlock}"/>
+						</StackPanel>
+					</Button>
+					<Button
+						x:Name="btnCancel" Height="28" 
+                        Command="{Binding CloseCommand}"
+                        Width="85" Margin="10,0,0,0" >
+						<StackPanel HorizontalAlignment="Center" x:Name="stkpBtnCancel" VerticalAlignment="Center" Orientation="Horizontal">
+							<Rectangle x:Name="imgCancel" Fill="{DynamicResource Close}" Height="20" Width="20"/>
+							<TextBlock Margin="5,0,0,0" x:Name="txtblExit" VerticalAlignment="Center" Text="Close" TextWrapping="NoWrap" Style="{DynamicResource ButtonTextBlock}"/>
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</Grid>
+		</DockPanel>
+	</Border>
+</Window>
+	

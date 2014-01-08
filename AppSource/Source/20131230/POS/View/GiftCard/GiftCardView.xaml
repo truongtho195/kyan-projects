@@ -1,0 +1,295 @@
+﻿<UserControl x:Class="CPC.POS.View.GiftCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="306"
+             Height="270"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <!--  ListviewStart  -->
+
+
+    </UserControl.Resources>
+
+    <Border x:Name="brdGiftCard"
+            Background="{DynamicResource UserControlBackground}"
+            BorderBrush="{DynamicResource TitleBarBorder}"
+            BorderThickness="1,1,1,1"
+            CornerRadius="5,5,5,5">
+
+        <DockPanel x:Name="dkpGiftCard" LastChildFill="True">
+            <Border x:Name="BrdTopBar"
+                    Height="26"
+                    Background="{DynamicResource TitleBarBackground}"
+                    BorderBrush="{DynamicResource TitleBarBorder}"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="4.5,4.5,0,0"
+                    DockPanel.Dock="Top">
+                <Grid x:Name="grdTopBar">
+                    <TextBlock x:Name="txtblGiftCard"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockTitleFormPopup}"
+                               Text="Gift Card"
+                               TextWrapping="Wrap"
+                               d:LayoutOverrides="Width, Height" />
+                    <Rectangle x:Name="TopBarLine"
+                               Height="1"
+                               VerticalAlignment="Bottom"
+                               Fill="{DynamicResource TitleBarBorder}"
+                               StrokeThickness="0" />
+                    <StackPanel x:Name="stkpCloseBtn"
+                                Height="22"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal">
+                        <Button x:Name="btnClose"
+                                Width="22"
+                                Margin="5,0,5,0"
+                                Style="{DynamicResource ButtonMiniClose}">
+                            <Grid x:Name="grdClose">
+                                <Path Width="14"
+                                      Height="14"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M5.75,0.25 L9.25,0.25 9.25,5.7499999 14.75,5.7499999 14.75,9.25 9.25,9.25 9.25,14.75 5.75,14.75 5.75,9.25 0.25,9.25 0.25,5.7499999 5.75,5.7499999 z"
+                                      Fill="{DynamicResource TitleBar_ButtonClose_Arrow}"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Stretch="Fill"
+                                      StrokeThickness="0.5">
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                                            <SkewTransform AngleX="0" AngleY="0" />
+                                            <RotateTransform Angle="-45" />
+                                            <TranslateTransform X="0" Y="0" />
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border x:Name="BrdBottomBar"
+                    Height="20"
+                    BorderBrush="#FFFFFFFF"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,4.5,4.5"
+                    d:IsHidden="True"
+                    DockPanel.Dock="Bottom"
+                    Visibility="Collapsed">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0.037" Color="#FFF7EDED" />
+                        <GradientStop Offset="0.533" Color="#FFFB4949" />
+                        <GradientStop Offset="0.207" Color="#FFAB1111" />
+                        <GradientStop Offset="0.841" Color="#FF831C1C" />
+                        <GradientStop Offset="0.967" Color="#FFF9F8F8" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid x:Name="grdBottomBar">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="154" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="txtblAllright"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Text="2010 @ All rights are Reserved"
+                               TextWrapping="Wrap"
+                               d:LayoutOverrides="Width, Height" />
+                    <TextBlock x:Name="txtblhttp"
+                               Grid.Column="1"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Text="http://www.CPC.com"
+                               TextWrapping="Wrap"
+                               d:LayoutOverrides="Width, Height" />
+                    <Rectangle x:Name="Break"
+                               Grid.Column="1"
+                               Width="2"
+                               HorizontalAlignment="Left"
+                               StrokeThickness="0">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0.105,0.5" EndPoint="0.895,0.5">
+                                <GradientStop Offset="0.5" Color="#FF6594D4" />
+                                <GradientStop Offset="0.5" Color="#FFFFFFFF" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <ResizeGrip x:Name="rzg"
+                                Grid.Column="1"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Grid x:Name="grdGiftCard" DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Border x:Name="brdContentGiftCard"
+                        Margin="15,20,15,15"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1">
+                    <Grid x:Name="grdgbGiftCard" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblItemNo"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Item #"
+                                   TextWrapping="NoWrap" />
+                        <TextBox x:Name="txtItemNo"
+                                 Grid.RowSpan="1"
+                                 Grid.Column="1"
+                                 Margin="0,2,10,2"
+                                 Padding="2,0,2,0"
+                                 Text="0"
+                                 TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblCardNo"
+                                   Grid.Row="1"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Card #"
+                                   TextWrapping="NoWrap" />
+                        <TextBox x:Name="txtCardNo"
+                                 Grid.Row="1"
+                                 Grid.RowSpan="1"
+                                 Grid.Column="1"
+                                 Margin="0,2,10,2"
+                                 Padding="2,0,2,0"
+                                 Text="0"
+                                 TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblAmount"
+                                   Grid.Row="2"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="Amount"
+                                   TextWrapping="NoWrap" />
+                        <TextBox x:Name="txtBalancetoCard"
+                                 Grid.Row="2"
+                                 Grid.RowSpan="1"
+                                 Grid.Column="1"
+                                 Height="21"
+                                 Margin="0,0,82,2"
+                                 VerticalAlignment="Bottom"
+                                 HorizontalContentAlignment="Right"
+                                 Padding="2,0,2,0"
+                                 Text="$ 50.00"
+                                 TextWrapping="NoWrap" />
+                        <Rectangle x:Name="Line1"
+                                   Grid.Row="3"
+                                   Grid.ColumnSpan="2"
+                                   Height="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center"
+                                   Fill="{DynamicResource TabControlBorder}" />
+                        <RadioButton x:Name="rbExpiredDate"
+                                     Grid.Row="4"
+                                     Margin="10,0,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Content="Expired Date" />
+                        <DatePicker x:Name="dtpExpiredDate"
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Width="132"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    TabIndex="{Binding TabIndexControl}" />
+                        <RadioButton x:Name="rbNoEndDay"
+                                     Grid.Row="6"
+                                     Margin="10,0,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Content="No End Day" />
+                    </Grid>
+                </Border>
+                <Rectangle x:Name="Line"
+                           Grid.Row="1"
+                           Height="1"
+                           Margin="2,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Top"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <StackPanel x:Name="stkpBtn"
+                            Grid.Row="1"
+                            Height="Auto"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnOK"
+                            Width="80"
+                            Height="28">
+                        <StackPanel x:Name="stkpBtnOK"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgOK"
+                                       Width="20"
+                                       Height="20"
+                                       Fill="{DynamicResource OK}" />
+                            <TextBlock x:Name="txtblOK"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonTextBlock}"
+                                       Text="OK"
+                                       TextWrapping="NoWrap" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnCancel"
+                            Width="80"
+                            Height="28"
+                            Margin="10,0,0,0">
+                        <StackPanel x:Name="stkpBtnCancel"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgCancel"
+                                       Width="20"
+                                       Height="20"
+                                       Fill="{DynamicResource Cancel}" />
+                            <TextBlock x:Name="txtblExit"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonTextBlock}"
+                                       Text="Cancel"
+                                       TextWrapping="NoWrap" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,283 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:xceedWpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             mc:Ignorable="d"
+             x:Class="CPC.POS.View.ProductSearchView"
+             x:Name="UserControl"
+             Width="700"
+             Height="500">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="grdPOSOAdvanceSearch"
+          d:LayoutOverrides="Height">
+
+        <xceedWpfToolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}">
+
+            <Border x:Name="brdContentPOSOAdvanceSearch"
+                    BorderBrush="{DynamicResource TabControlBorder}"
+                    BorderThickness="1"
+                    Margin="15,20,15,15"
+                    Background="{DynamicResource TabControlBackground}">
+
+                <Grid x:Name="grdContentPOSOAdvanceSearch"
+                      Margin="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="75.115" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid x:Name="grdSubContentPOSOAdvanceSearch">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="86" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="115" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock x:Name="txtblProductCode"
+                                   Text="Product Code"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+
+                        <textBoxToolkit:TextBox x:Name="txtProductCode"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="1"
+                                                Margin="0,2,10,2"
+                                                Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                            <i:Interaction.Behaviors>
+                                <behavior:AutoFocusBehavior />
+                            </i:Interaction.Behaviors>
+                        </textBoxToolkit:TextBox>
+
+                            <TextBlock x:Name="txtblProductName"
+                                   Text="Product Name"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Grid.Column="2"
+                                   d:LayoutOverrides="Height"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+
+                        <textBoxToolkit:TextBox x:Name="txtProductName"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="3"
+                                                Margin="0,2,10,2"
+                                                Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                        <TextBlock x:Name="txtblCategory"
+                                   Text="Category"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   Grid.Row="1" />
+
+                        <textBoxToolkit:TextBox x:Name="txtCategory"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="1"
+                                                Margin="0,2,10,2"
+                                                Grid.Row="1"
+                                                Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                        <TextBlock x:Name="txtblAttributeSize"
+                                   Text="Attribute Size"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Grid.Row="1"
+                                   Grid.Column="2"
+                                   d:LayoutOverrides="Height"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+
+                        <textBoxToolkit:TextBox x:Name="txtAttributeSize"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="3"
+                                                Margin="0,2,10,2"
+                                                Grid.Row="1"
+                                                Text="{Binding AttributeSize, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                        <TextBlock x:Name="txtblPartNo"
+                                   Text="Part #"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   Grid.Row="2" />
+
+                        <textBoxToolkit:TextBox x:Name="txtPartNo"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="1"
+                                                Margin="0,2,10,2"
+                                                Grid.Row="2"
+                                                Text="{Binding PartNumber, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                        <TextBlock x:Name="txtblBarcode"
+                                   Text="Barcode"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Grid.Row="2"
+                                   Grid.Column="2"
+                                   d:LayoutOverrides="Height"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" />
+
+                        <textBoxToolkit:TextBox x:Name="txtBarcode"
+                                                TextWrapping="NoWrap"
+                                                Padding="2,0,2,0"
+                                                Grid.Column="3"
+                                                Margin="0,2,10,2"
+                                                Grid.Row="2"
+                                                Text="{Binding Barcode, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                        <Button x:Name="btnSearch"
+                                Grid.Column="4"
+                                Margin="0,2"
+                                Command="{Binding SearchCommand}">
+                            <StackPanel HorizontalAlignment="Center"
+                                        x:Name="stkpBtnSearch"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Rectangle x:Name="imgSearch"
+                                           Fill="{DynamicResource Find}"
+                                           Height="18"
+                                           Width="18" />
+                                <TextBlock Margin="5,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="Search"
+                                           TextWrapping="NoWrap"
+                                           x:Name="txtblSearch"
+                                           Style="{DynamicResource ButtonTextBlock}" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="btnOK"
+                                Grid.Column="5"
+                                Grid.Row="1"
+                                Margin="0,2"
+                                Command="{Binding OKCommand}"
+                                CommandParameter="{Binding SelectedItems, ElementName=dtgrdPOSOAdvanceSearch}">
+                            <StackPanel HorizontalAlignment="Center"
+                                        x:Name="stkpBtnOK"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Rectangle x:Name="imgOK"
+                                           Fill="{DynamicResource OK}"
+                                           Height="18"
+                                           Width="18" />
+                                <TextBlock Margin="5,0,0,0"
+                                           x:Name="txtblOK"
+                                           VerticalAlignment="Center"
+                                           Text="Selected Item(s)"
+                                           TextWrapping="NoWrap"
+                                           Style="{DynamicResource ButtonTextBlock}" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="btnCancel"
+                                Grid.Column="5"
+                                Grid.Row="2"
+                                Margin="0,2"
+                                Command="{Binding CancelCommand}">
+                            <StackPanel HorizontalAlignment="Center"
+                                        x:Name="stkpBtnCancel"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Rectangle x:Name="imgCancel"
+                                           Fill="{DynamicResource Cancel}"
+                                           Height="18"
+                                           Width="18" />
+                                <TextBlock Margin="5,0,0,0"
+                                           x:Name="txtblExit"
+                                           VerticalAlignment="Center"
+                                           Text="Cancel"
+                                           TextWrapping="NoWrap"
+                                           Style="{DynamicResource ButtonTextBlock}" />
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+
+                    <cpcDataGridToolkit:DataGridControl x:Name="dtgrdPOSOAdvanceSearch"
+                                                        Margin="0,5.1,0,0"
+                                                        Grid.Row="2"
+                                                        VerticalAlignment="Stretch"
+                                                        HorizontalAlignment="Stretch"
+                                                        AutoGenerateColumns="False"
+                                                        SelectionMode="Extended"
+                                                        SelectionUnit="FullRow"
+                                                        IsReadOnly="True"
+                                                        Field="IsNew"
+                                                        Style="{DynamicResource DatagridWithRowHeader}"
+                                                        NumberOfItems="{Binding ProductTotal, Mode=OneWay}"
+                                                        DisplayItems="{Binding NumberOfDisplayItems, Mode=OneWay}"
+                                                        Command="{Binding LoadNextCommand}"
+                                                        ItemsSource="{Binding ProductCollection, Mode=OneWay}">
+                        <cpcDataGridToolkit:DataGridControl.Columns>
+
+                            <DataGridTextColumn Header="Code"
+                                                Width="80"
+                                                Binding="{Binding Code}" />
+
+                            <DataGridTextColumn Header="Product Name"
+                                                Width="100"
+                                                Binding="{Binding ProductName}" />
+
+                            <DataGridTextColumn Header="Description"
+                                                Width="*"
+                                                Binding="{Binding Description}" />
+
+                            <DataGridTextColumn Header="Attribute"
+                                                Width="80"
+                                                Binding="{Binding Attribute}" />
+
+                            <DataGridTextColumn Header="Size"
+                                                Width="80"
+                                                Binding="{Binding Size}" />
+
+                        </cpcDataGridToolkit:DataGridControl.Columns>
+                    </cpcDataGridToolkit:DataGridControl>
+
+                </Grid>
+
+            </Border>
+
+        </xceedWpfToolkit:BusyIndicator>
+
+    </Grid>
+
+</UserControl>
+	

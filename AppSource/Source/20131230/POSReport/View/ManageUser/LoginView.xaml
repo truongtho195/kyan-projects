@@ -1,0 +1,189 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pwdHelper="clr-namespace:CPC.POSReport.Function.Helper"
+        xmlns:behaviour="clr-namespace:CPC.POSReport.Function.Behaviour"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        mc:Ignorable="d"
+        x:Class="CPC.POSReport.View.LoginView"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Report.ico"
+        Title="Truong Giang - Log In"
+        WindowStyle="None"
+        Height="311"
+        Width="377"
+        Background="{x:Null}"
+        AllowsTransparency="True">
+    <Border CornerRadius="5,5,5,5"
+            BorderThickness="5,5,5,5"
+            BorderBrush="{DynamicResource TitleBarBorder}"
+            x:Name="brdLogin"
+            Background="{DynamicResource UserControl_Background_ReportImage}">
+        <Grid x:Name="grdLogin">
+            <Rectangle x:Name="UserControl_Background_Image"
+                       Fill="{DynamicResource UserControl_Background_Image}" />
+            <Border Margin="10,10,10,10"
+                    x:Name="brdContentLogin"
+                    BorderThickness="1,1,1,1"
+                    BorderBrush="{DynamicResource TimeClockDisplayBorder}"
+                    CornerRadius="5,5,5,5"
+                    Background="{DynamicResource TimeClockDisplayBackground}">
+                <Grid x:Name="grdContentLogin" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="124" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid HorizontalAlignment="Stretch"
+                          x:Name="grdLogoCompany">
+                        <Rectangle Stroke="White"
+                                   RadiusX="5"
+                                   RadiusY="5"
+                                   x:Name="bgInOut"
+                                   Grid.ColumnSpan="2"
+                                   Grid.RowSpan="2"
+                                   Fill="#FFFFFFFF" />
+                        <Image x:Name="imgLogo"
+                               Source="/POSReport;component/Image/Report/BannerReport.jpg"
+                               Grid.RowSpan="2"
+                               Margin="3" Stretch="Fill" />
+                    </Grid>
+                    <Grid x:Name="grdLoginPassword"
+                          Grid.Row="1"
+                          Margin="0,14,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="0" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblUsername"
+                                   Text="Login Name"
+                                   HorizontalAlignment="Left"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   VerticalAlignment="Center"
+                                   Margin="30,0,0,0" />
+                        <TextBox Width="200"
+                                 x:Name="txtLoginName"
+                                 HorizontalAlignment="Left"
+                                 VerticalContentAlignment="Center"
+                                 Padding="20,0,0,0"
+                                 Text="{Binding LoginName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                 Margin="95,2,10,2">
+                            <i:Interaction.Behaviors>
+                                <behaviour:AutoFocusBehavior />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <Rectangle x:Name="imgUser"
+                                   Fill="{DynamicResource User}"
+                                   HorizontalAlignment="Left"
+                                   Width="16"
+                                   Height="16"
+                                   d:LayoutOverrides="Height"
+                                   Margin="97,0,0,0" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Password"
+                                   x:Name="txtblPassword"
+                                   TextWrapping="NoWrap"
+                                   HorizontalAlignment="Left"
+                                   Margin="30,0,0,0"
+                                   Grid.Row="1"
+                                   Style="{DynamicResource TextBlockNormal}" />
+                        <PasswordBox x:Name="txtPassword"
+                                     Width="200"
+                                     Padding="20,0,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalContentAlignment="Center"
+                                     pwdHelper:PasswordHelper.BindPassword="true"
+                                     pwdHelper:PasswordHelper.BoundPassword="{Binding Password, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                     PasswordChar="*"
+                                     Margin="95,0,0,2"
+                                     Height="21"
+                                     VerticalAlignment="Bottom"
+                                     Grid.Row="1"
+                                     BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                     FontSize="11"
+                                     FontFamily="Times New Roman" />
+                        <Rectangle x:Name="imgPassword"
+                                   Fill="{DynamicResource Password}"
+                                   HorizontalAlignment="Left"
+                                   Margin="97,0,0,0"
+                                   Width="16"
+                                   Height="16"
+                                   Grid.Row="1" />
+                        <CheckBox Height="15"
+                                  IsChecked="{Binding IsRemember, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Content="Remember me"
+                                  VerticalAlignment="Center"
+                                  Grid.Row="2"
+                                  Margin="95,0,148,0" />
+                        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                                   HorizontalAlignment="Stretch"
+                                   x:Name="Line"
+                                   VerticalAlignment="Top"
+                                   Height="1"
+                                   Grid.Row="4"
+                                   Margin="0,10,0,0" />
+                        <StackPanel VerticalAlignment="Center"
+                                    Height="Auto"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="12"
+                                    x:Name="stkpBtn"
+                                    Orientation="Horizontal"
+                                    Margin="0">
+                            <Button x:Name="btnLogin"
+                                    Height="28"
+                                    Width="80"
+                                    IsDefault="True"
+                                    Command="{Binding LoginCommand}">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnLogin"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgLogin"
+                                               Height="20"
+                                               Width="20"
+                                               Fill="{DynamicResource Login}" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Log In"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblLogin"
+                                               Style="{DynamicResource ButtonTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnExit"
+                                    Height="28"
+                                    Width="80"
+                                    IsCancel="True"
+                                    Click="Button_Click"
+                                    Margin="10,0,0,0">
+                                <StackPanel HorizontalAlignment="Center"
+                                            x:Name="stkpBtnExit"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgExit"
+                                               Height="20"
+                                               Width="20"
+                                               Fill="{DynamicResource Exit}" />
+                                    <TextBlock Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Text="Exit"
+                                               TextWrapping="NoWrap"
+                                               x:Name="txtblExit"
+                                               Style="{DynamicResource ButtonTextBlock}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+    <Window.InputBindings>        
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding LoginCommand}"></KeyBinding>
+    </Window.InputBindings>
+</Window>

@@ -1,0 +1,2122 @@
+﻿<UserControl x:Class="CPC.POS.View.GroupPermissionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             x:Name="UserControl"
+             Width="1518"
+             Height="555"
+             Background="{DynamicResource UserControlBackground}"
+             mc:Ignorable="d Anno">
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="DataTemplateRowDetailTemplateGroupPermissionSearch">
+            <Grid x:Name="Layout"
+                  Grid.Row="1"
+                  Width="Auto"
+                  Height="226"
+                  VerticalAlignment="Top">
+                <Rectangle Fill="{DynamicResource Datagrid_RowDetailTemplate_Background1}"
+                           Stroke="{DynamicResource Datagrid_RowDetailTemplate_Border}" />
+                <DataGrid x:Name="dtgrdSubGroupPermission"
+                          Margin="10"
+                          IsSynchronizedWithCurrentItem="True"
+                          Style="{DynamicResource DatagridWithoutRowHeader}"
+                          d:LayoutOverrides="GridBox">
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Width="110"
+                                            Header=" User Name" />
+                        <DataGridTextColumn Width="110"
+                                            Header=" User Type" />
+                        <DataGridTextColumn Width="75"
+                                            Header="Status" />
+                        <DataGridTextColumn Width="*"
+                                            Header="Name" />
+                        <DataGridTextColumn Width="100"
+                                            Header="Assign Date" />
+
+                    </DataGrid.Columns>
+                    <CheckBox Width="100"
+                              Height="100"
+                              Content="CheckBox" />
+                    <CheckBox Width="100"
+                              Height="100"
+                              Content="CheckBox" />
+                    <CheckBox Width="100"
+                              Height="100"
+                              Content="CheckBox" />
+                </DataGrid>
+
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <Grid x:Name="grdGroupPermissionView">
+            <Grid x:Name="grdSearch"
+                  d:IsHidden="True">
+                <Grid.Visibility>
+                    <Binding Mode="OneWay"
+                             Path="IsSearchMode"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                        </Binding.Converter>
+                    </Binding>
+                </Grid.Visibility>
+                <Grid x:Name="grdContentSearch"
+                      Grid.Row="1"
+                      Margin="0,0,15,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,0,0"
+                              VerticalAlignment="Top">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="Search"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <cpcControl:FilterAdvanceSearch VerticalAlignment="Top"
+                                                            Visibility="Collapsed" />
+                            <Grid x:Name="grdAdvanceSearch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="stkpContentSearch"
+                                            Grid.RowSpan="4"
+                                            Orientation="Vertical">
+                                    <Grid x:Name="grdUsername"
+                                          Height="25">
+                                        <ComboBox x:Name="cmbUsername"
+                                                  Width="110"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Stretch"
+                                                  Background="{x:Null}"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  SelectedIndex="0"
+                                                  Style="{DynamicResource CmbSearchStyle}">
+                                            <ComboBoxItem Content="Permission Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Date"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtEmployeeNo1"
+                                                 Grid.RowSpan="1"
+                                                 Margin="130,2,10,2"
+                                                 BorderBrush="#FF9C9C9C"
+                                                 Padding="2,0,2,0" />
+                                    </Grid>
+                                    <Grid x:Name="grdFirstName"
+                                          Height="25">
+                                        <ComboBox x:Name="cmbFirstName"
+                                                  Width="110"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Stretch"
+                                                  Background="{x:Null}"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  SelectedIndex="1"
+                                                  Style="{DynamicResource CmbSearchStyle}">
+                                            <ComboBoxItem Content="Permission Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Date"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtEmployeeName"
+                                                 Grid.RowSpan="1"
+                                                 Margin="130,2,10,2"
+                                                 BorderBrush="#FF9C9C9C"
+                                                 Padding="2,0,2,0" />
+                                    </Grid>
+                                    <Grid x:Name="grdLastName"
+                                          Height="25"
+                                          d:IsHidden="True"
+                                          Visibility="Collapsed">
+                                        <ComboBox x:Name="cmbLastName"
+                                                  Width="110"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Stretch"
+                                                  Background="{x:Null}"
+                                                  BorderBrush="#FF9C9C9C"
+                                                  Foreground="White"
+                                                  IsEditable="True"
+                                                  SelectedIndex="2"
+                                                  Style="{DynamicResource CmbSearchStyle}">
+                                            <ComboBoxItem Content="User Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="User Type"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="First Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Last Name"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Permission"
+                                                          Foreground="Black" />
+                                            <ComboBoxItem Content="Date"
+                                                          Foreground="Black" />
+                                        </ComboBox>
+                                        <TextBox x:Name="txtLastName1"
+                                                 Grid.RowSpan="1"
+                                                 Margin="130,2,10,2"
+                                                 BorderBrush="#FF9C9C9C"
+                                                 Padding="2,0,2,0" />
+                                    </Grid>
+                                    <Button x:Name="btnClose"
+                                            Width="75"
+                                            Height="24"
+                                            Margin="0,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top">
+                                        <StackPanel x:Name="stkpBtnClose"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <Rectangle x:Name="imgClose"
+                                                       Width="15"
+                                                       Height="15"
+                                                       Fill="{DynamicResource Close}" />
+                                            <TextBlock x:Name="txtblClose"
+                                                       Margin="5,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource ButtonTextBlock}"
+                                                       Text="Close"
+                                                       TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                                <TextBlock x:Name="txtblResultAvance"
+                                           Grid.Column="1"
+                                           Margin="0,6,10,0"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"
+                                           FontWeight="Bold"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="1234"
+                                           TextWrapping="NoWrap" />
+                                <Grid x:Name="grdSearchTimeClock"
+                                      Height="21"
+                                      Margin="55,2,10,2"
+                                      d:IsHidden="True"
+                                      Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="41" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="txtSearchTimeClock"
+                                             BorderBrush="Black"
+                                             Padding="2,0,2,0"
+                                             TextWrapping="NoWrap" />
+                                    <Grid x:Name="grdSearchContentTimeClock"
+                                          Grid.Column="1"
+                                          Height="20"
+                                          Margin="5,0,0,0"
+                                          HorizontalAlignment="Left">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Button x:Name="btnFindTimeClock"
+                                                Width="20"
+                                                HorizontalAlignment="Left"
+                                                Style="{DynamicResource mySearchbtnStyle}">
+                                            <Image x:Name="imgFindTimeClock"
+                                                   Width="16"
+                                                   Height="Auto"
+                                                   Source="../../Image/Find.png" />
+                                        </Button>
+                                        <ComboBox x:Name="cmbFindTimeClock"
+                                                  Grid.Column="1"
+                                                  Width="16"
+                                                  HorizontalAlignment="Left"
+                                                  BorderThickness="0"
+                                                  Foreground="#FF000000"
+                                                  ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"
+                                                  Style="{DynamicResource SearchComboStyle}" />
+                                    </Grid>
+                                </Grid>
+                                <TextBlock x:Name="txtblStartDate1"
+                                           Grid.Row="1"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           d:IsHidden="True"
+                                           Foreground="White"
+                                           Text="From:"
+                                           TextWrapping="NoWrap"
+                                           Visibility="Collapsed" />
+                                <DatePicker x:Name="dtpStartDate"
+                                            Grid.Row="1"
+                                            Margin="55,2,10,2"
+                                            BorderBrush="Black"
+                                            d:IsHidden="True"
+                                            IsEnabled="{Binding SelectedItem.IsNew,
+                                                                ElementName=lstSearchInventory}"
+                                            SelectedDate="{Binding SelectedItem.DocumentDate,
+                                                                   ElementName=lstSearchInventory,
+                                                                   Mode=TwoWay,
+                                                                   NotifyOnValidationError=True,
+                                                                   StringFormat=\{0:d\},
+                                                                   UpdateSourceTrigger=PropertyChanged,
+                                                                   ValidatesOnDataErrors=True,
+                                                                   ValidatesOnExceptions=True}"
+                                            TabIndex="{Binding TabIndexControl}"
+                                            Text=""
+                                            Visibility="Collapsed" />
+                                <TextBlock x:Name="txtblEndDate"
+                                           Grid.Row="2"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           d:IsHidden="True"
+                                           Foreground="White"
+                                           Text="To:"
+                                           TextWrapping="NoWrap"
+                                           Visibility="Collapsed" />
+                                <DatePicker x:Name="dtpEndDate"
+                                            Grid.Row="2"
+                                            Margin="55,2,10,2"
+                                            BorderBrush="Black"
+                                            d:IsHidden="True"
+                                            IsEnabled="{Binding SelectedItem.IsNew,
+                                                                ElementName=lstSearchInventory}"
+                                            SelectedDate="{Binding SelectedItem.DocumentDate,
+                                                                   ElementName=lstSearchInventory,
+                                                                   Mode=TwoWay,
+                                                                   NotifyOnValidationError=True,
+                                                                   StringFormat=\{0:d\},
+                                                                   UpdateSourceTrigger=PropertyChanged,
+                                                                   ValidatesOnDataErrors=True,
+                                                                   ValidatesOnExceptions=True}"
+                                            TabIndex="{Binding TabIndexControl}"
+                                            Text=""
+                                            Visibility="Collapsed" />
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <DataGrid x:Name="dtgrdGroupPermission"
+                              Grid.Row="1"
+                              Margin="8,12,2,8"
+                              IsSynchronizedWithCurrentItem="True"
+                              RowDetailsTemplate="{DynamicResource DataTemplateRowDetailTemplateGroupPermissionSearch}"
+                              Style="{DynamicResource DatagridWithoutRowHeader}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="25"
+                                                Header="" />
+                            <DataGridTextColumn Width="*"
+                                                Header="Permission Name" />
+                            <DataGridTextColumn Width="*"
+                                                Header="Description" />
+
+                            <DataGridTextColumn Width="75"
+                                                Header="Status" />
+
+                        </DataGrid.Columns>
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                        <CheckBox Width="100"
+                                  Height="100"
+                                  Content="CheckBox" />
+                    </DataGrid>
+                    <Grid x:Name="dtgrdEmployeeItem2_Copy"
+                          Grid.Row="1"
+                          Margin="11,31,0,0"
+                          VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="0.502*" />
+                            <ColumnDefinition Width="0.498*" />
+                            <ColumnDefinition Width="77.652" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblStartDate_Copy37"
+                                   Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Administrators"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy1"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Backup Operators"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy2"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Network Configuration Operators"
+                                   TextWrapping="NoWrap">
+                            <Anno:AnnotationManager.Annotations>
+                                <Anno:Annotation Author="bill pho"
+                                                 AuthorInitials="Double Click vao ROW "
+                                                 Left="-146.744"
+                                                 SerialNumber="1"
+                                                 Text="Khi Double Click thi nhay qua ben phai"
+                                                 Timestamp="05/22/2012 02:52:40"
+                                                 Top="203.634" />
+                            </Anno:AnnotationManager.Annotations>
+                        </TextBlock>
+                        <TextBlock x:Name="txtblStartDate_Copy6"
+                                   Grid.Column="2"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Administrators have complete and unrestricted access to the computer"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock x:Name="txtblStartDate_Copy7"
+                                   Grid.Row="1"
+                                   Grid.Column="2"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Backup Operators can override security restrictions for the sole purpose of backing up or restoring files"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock x:Name="txtblStartDate_Copy8"
+                                   Grid.Row="2"
+                                   Grid.Column="2"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Guest have the sam access as members of the User group by default, except for the Guest account which is further restricted"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="NoWrap" />
+                        <Rectangle Grid.Row="2"
+                                   Width="7"
+                                   Height="1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Stroke="Black">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <TextBlock x:Name="txtblContactName25"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="+"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock x:Name="txtblContactName26_Copy1"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Text="+"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock x:Name="txtblStartDate_Copy54"
+                                   Grid.Column="4"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Active"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy71"
+                                   Grid.Row="1"
+                                   Grid.Column="4"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Inactive"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy72"
+                                   Grid.Row="2"
+                                   Grid.Column="4"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Pending"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy3"
+                                   Grid.Row="11"
+                                   Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Backup Works"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy4"
+                                   Grid.Row="11"
+                                   Grid.Column="2"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Test 1"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock x:Name="txtblContactName26_Copy2"
+                                   Grid.Row="11"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="+"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock x:Name="txtblStartDate_Copy5"
+                                   Grid.Row="11"
+                                   Grid.Column="4"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Active"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy10"
+                                   Grid.Row="12"
+                                   Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Backup Administrator"
+                                   TextWrapping="NoWrap" />
+                        <TextBlock x:Name="txtblStartDate_Copy11"
+                                   Grid.Row="12"
+                                   Grid.Column="2"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Test 2"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock x:Name="txtblContactName26_Copy3"
+                                   Grid.Row="12"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="+"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock x:Name="txtblStartDate_Copy12"
+                                   Grid.Row="12"
+                                   Grid.Column="4"
+                                   Margin="5,0,0,0"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource DatagridForeground}"
+                                   Text="Inactive"
+                                   TextWrapping="NoWrap" />
+                    </Grid>
+                    <Grid x:Name="Layout"
+                          Grid.Row="1"
+                          Width="Auto"
+                          Height="200"
+                          Margin="8,107,1,0"
+                          VerticalAlignment="Top">
+                        <Rectangle Stroke="Gray">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="1"
+                                                  Color="#FF454545" />
+                                    <GradientStop Offset="0.544"
+                                                  Color="#FF393939" />
+                                    <GradientStop Color="#FF393939" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <DataGrid x:Name="dtgrdSubGroupPermission"
+                                  Margin="10"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  RowDetailsTemplate="{DynamicResource DataTemplateRowDetailTemplateGroupPermissionSearch}"
+                                  Style="{DynamicResource DatagridWithoutRowHeader}">
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn Width="110"
+                                                    Header=" User Name" />
+                                <DataGridTextColumn Width="110"
+                                                    Header=" User Type" />
+                                <DataGridTextColumn Width="75"
+                                                    Header="Status" />
+                                <DataGridTextColumn Width="*"
+                                                    Header="Name" />
+                                <DataGridTextColumn Width="100"
+                                                    Header="Assign Date" />
+
+                            </DataGrid.Columns>
+                            <CheckBox Width="100"
+                                      Height="100"
+                                      Content="CheckBox" />
+                            <CheckBox Width="100"
+                                      Height="100"
+                                      Content="CheckBox" />
+                            <CheckBox Width="100"
+                                      Height="100"
+                                      Content="CheckBox" />
+                        </DataGrid>
+                        <Grid x:Name="dtgrdEmployeeItem2_Copy1"
+                              Margin="11,30,11,0"
+                              VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="109.5" />
+                                <ColumnDefinition Width="110.474" />
+                                <ColumnDefinition Width="75.041" />
+                                <ColumnDefinition Width="107.985" />
+                                <ColumnDefinition Width="107" />
+                                <ColumnDefinition Width="110" />
+                                <ColumnDefinition Width="102" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblStartDate_Copy9"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Michael 123456"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy14"
+                                       Grid.Row="1"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="John 456789"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy15"
+                                       Grid.Row="2"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Tiger 963852"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy26"
+                                       Grid.Column="1"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Employee"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy32"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Customer"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy38"
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Employee"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy16"
+                                       Grid.Column="3"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Michael Nguyen"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy17"
+                                       Grid.Row="1"
+                                       Grid.Column="3"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="John Tran"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy19"
+                                       Grid.Row="2"
+                                       Grid.Column="3"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Tiger Ly"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy39"
+                                       Grid.Column="6"
+                                       Margin="0,0,5,0"
+                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="08/29/2010"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy40"
+                                       Grid.Row="1"
+                                       Grid.Column="6"
+                                       Margin="0,0,5,0"
+                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="08/30/2010"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy41"
+                                       Grid.Row="2"
+                                       Grid.Column="6"
+                                       Margin="0,0,5,0"
+                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="08/31/2010"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy42"
+                                       Grid.Column="2"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Active"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy43"
+                                       Grid.Row="1"
+                                       Grid.Column="2"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Inactive"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="txtblStartDate_Copy44"
+                                       Grid.Row="2"
+                                       Grid.Column="2"
+                                       Margin="5,0,0,0"
+                                       HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DatagridForeground}"
+                                       Text="Pending"
+                                       TextWrapping="NoWrap" />
+                        </Grid>
+                    </Grid>
+                    <Rectangle Grid.Row="3"
+                               Height="1"
+                               Margin="0,0,-15,0"
+                               VerticalAlignment="Top"
+                               d:IsHidden="True"
+                               Fill="#FFF4F4F5"
+                               Visibility="Collapsed" />
+                </Grid>
+                <Grid x:Name="grdBtnSearchBackNext"
+                      Width="15"
+                      Height="61"
+                      Margin="0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="tglbtnSearchBack"
+                            Width="15"
+                            Margin="0"
+                            HorizontalAlignment="Right"
+                            Background="#02FFFFFF"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="1"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            Style="{DynamicResource ButtonSearch}">
+                        <Grid x:Name="grdtglbtnSearchBack1">
+                            <Path x:Name="pathBack1"
+                                  Width="7"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M9.9166667,11.666667 L6.499667,15.999667 9.9163337,19.666334"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  Stroke="White"
+                                  StrokeThickness="2.5" />
+                        </Grid>
+                    </Button>
+                    <Rectangle x:Name="Linebtn"
+                               Grid.Row="1"
+                               Height="1"
+                               VerticalAlignment="Center"
+                               Fill="White"
+                               StrokeThickness="0"
+                               Visibility="Collapsed" />
+                    <Button x:Name="tglbtnSearchNext"
+                            Grid.Row="2"
+                            Width="15"
+                            Height="30"
+                            Margin="0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="#02E4E4E4"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="1"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            Style="{DynamicResource ButtonSearch}"
+                            Visibility="Collapsed">
+                        <Grid x:Name="grdtglbtnSearchNext1">
+                            <Path x:Name="path2"
+                                  Width="7"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M9.9166667,11.666667 L6.499667,15.999667 9.9163337,19.666334"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  Stroke="White"
+                                  StrokeThickness="2.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1"
+                                                        ScaleY="1" />
+                                        <SkewTransform AngleX="0"
+                                                       AngleY="0" />
+                                        <RotateTransform Angle="180" />
+                                        <TranslateTransform X="0"
+                                                            Y="0" />
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid x:Name="grdSubGroupPermissionView"
+                  Grid.Column="1"
+                  Margin="1,0,0,0">
+                <Grid.Visibility>
+                    <Binding Mode="OneWay"
+                             Path="IsSearchMode"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                        </Binding.Converter>
+                    </Binding>
+                </Grid.Visibility>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button x:Name="btnBarSearch"
+                        Grid.RowSpan="3"
+                        Margin="0,3,0,0"
+                        BorderThickness="1"
+                        Command="{Binding DoubleClickViewCommand}"
+                        Style="{DynamicResource ButtonBarSearch}">
+                    <TextBlock x:Name="txtblShowSearch1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonBarSearchTextBlock}"
+                               Text="Search"
+                               TextWrapping="NoWrap">
+                        <TextBlock.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-90" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Button>
+                <Rectangle x:Name="grdSpliter"
+                           Grid.RowSpan="3"
+                           Grid.Column="1"
+                           Width="1"
+                           HorizontalAlignment="Left"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <StackPanel x:Name="stkpBtn"
+                            Grid.Column="1"
+                            Height="Auto"
+                            Margin="20,0,0,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnSaveNew"
+                            Width="40"
+                            Height="40"
+                            Margin="0"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnSaveNew"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgSaveNew"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource SaveNew}" />
+                            <TextBlock x:Name="txtblSaveNew"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="New"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSaveClose"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnSaveClose"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgSaveClose"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource SaveClose}" />
+                            <TextBlock x:Name="txtblSaveClose"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave"
+                            Width="40"
+                            Height="40"
+                            d:IsHidden="True"
+                            Style="{DynamicResource ButtonSystem}"
+                            Visibility="Collapsed">
+                        <StackPanel x:Name="stkpBtnSave"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgSave"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Save}" />
+                            <TextBlock x:Name="txtblSave"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnClear"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnClear"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgClear"
+                                       Width="33"
+                                       Height="33"
+                                       Fill="{DynamicResource Clear}" />
+                            <TextBlock x:Name="txtblClear"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnNote"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnNote"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgNote"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Remark}" />
+                            <TextBlock x:Name="txtblNote"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Attachment"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Rectangle x:Name="Line"
+                           Grid.Column="1"
+                           Height="1"
+                           Margin="2,0"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <TextBlock x:Name="txtblBindingPermission"
+                           Grid.Column="1"
+                           Margin="0,0,20,7"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           FontFamily="Times New Roman"
+                           FontSize="33.333"
+                           FontWeight="Bold"
+                           Style="{DynamicResource TextBlockTitleFormView}"
+                           Text="Permission"
+                           TextWrapping="NoWrap" />
+                <Grid x:Name="grdBasic"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Width="747"
+                      Height="25"
+                      Margin="0,10,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="txtblPermissionName"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="Permission Name:"
+                               TextWrapping="NoWrap" />
+                    <TextBox x:Name="txtPermissionName"
+                             Grid.Column="1"
+                             Width="420"
+                             Margin="0,2"
+                             HorizontalAlignment="Left"
+                             VerticalContentAlignment="Center"
+                             Padding="2,0,2,0"
+                             Text="Network Configuration Operators"
+                             TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblBasicStatus"
+                               Grid.Column="1"
+                               Margin="0,0,130,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="Status:"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbBasicStatus"
+                              Grid.Column="1"
+                              Width="110"
+                              Margin="0,2,10,2"
+                              HorizontalAlignment="Right"
+                              Background="#FF59FF00"
+                              FontWeight="Bold"
+                              Foreground="Black"
+                              SelectedIndex="0"
+                              Style="{DynamicResource ComboBoxStatus}">
+                        <ComboBoxItem Content="Active" />
+                        <ComboBoxItem Content="Inactive" />
+                        <ComboBoxItem Content="Pending" />
+                    </ComboBox>
+                </Grid>
+                <Grid x:Name="grdContentUserList"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      Margin="0,0,0,10">
+                    <TabControl x:Name="TabPermission"
+                                Margin="10,10,10,0">
+                        <TabItem x:Name="tabitemUsers"
+                                 Header="Users">
+                            <Grid x:Name="grdUsers">
+                                <GroupBox x:Name="gbList"
+                                          Grid.Row="2"
+                                          Margin="10">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblList"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="List"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdgbList"
+                                          Height="Auto"
+                                          Margin="0,4,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="55" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel x:Name="stkpBtnAddRemovePermission"
+                                                    Height="Auto"
+                                                    Margin="10,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <Button x:Name="btnAssignPermission"
+                                                    Width="40"
+                                                    Height="40"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource ButtonSystem}">
+                                                <Anno:AnnotationManager.Annotations>
+                                                    <Anno:Annotation Author="bill pho"
+                                                                     AuthorInitials="BUTTON ASSIGN PERMISSION "
+                                                                     Left="819"
+                                                                     SerialNumber="1"
+                                                                     Text="khi Click thi Popup Form Asign Permission, de chon nhieu 1 hay nhieu User cho Permission"
+                                                                     Timestamp="05/23/2012 10:36:53"
+                                                                     Top="351.93" />
+                                                </Anno:AnnotationManager.Annotations>
+                                                <StackPanel x:Name="stkpBtnAssignPermission"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Rectangle x:Name="imgAssignPermission"
+                                                               Width="35"
+                                                               Height="35"
+                                                               Fill="{DynamicResource AssignPermission}" />
+                                                    <TextBlock x:Name="txtblAssignPermission"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                                               Text="Assign Permission"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="Collapsed" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button x:Name="btnRemovePermission"
+                                                    Width="40"
+                                                    Height="40"
+                                                    Margin="10,0,0,0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{DynamicResource ButtonSystem}">
+                                                <StackPanel x:Name="stkpBtnRemovePermission"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Rectangle x:Name="imgRemovePermission"
+                                                               Width="35"
+                                                               Height="35"
+                                                               Fill="{DynamicResource RemovePermission}" />
+                                                    <TextBlock x:Name="txtblRemovePermission"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                                               Text="Remove Permission"
+                                                               TextWrapping="NoWrap"
+                                                               Visibility="Collapsed" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                        <DataGrid x:Name="dtgrdUsersList"
+                                                  Grid.Row="3"
+                                                  Margin="5,0,5,5"
+                                                  VerticalAlignment="Stretch"
+                                                  IsSynchronizedWithCurrentItem="True"
+                                                  Style="{DynamicResource DatagridWithoutRowHeader}">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Width="25"
+                                                                    Visibility="Collapsed">
+                                                    <DataGridTextColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox />
+                                                        </DataTemplate>
+                                                    </DataGridTextColumn.HeaderTemplate>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn Width="*"
+                                                                    Header="User Name" />
+                                                <DataGridTextColumn Width="100"
+                                                                    Header="Assign Date" />
+                                            </DataGrid.Columns>
+                                            <CheckBox HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top"
+                                                      Content="CheckBox" />
+                                            <CheckBox HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top"
+                                                      Content="CheckBox" />
+                                            <CheckBox HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top"
+                                                      Content="CheckBox" />
+                                        </DataGrid>
+                                        <Grid x:Name="dtgrdEmployeeItem2_Copy2"
+                                              Grid.Row="1"
+                                              Margin="6,21,6,0"
+                                              VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="102" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblStartDate_Copy13"
+                                                       Grid.Column="1"
+                                                       Margin="5,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Michael 123456"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblStartDate_Copy18"
+                                                       Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Margin="5,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="John 456789"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblStartDate_Copy20"
+                                                       Grid.Row="2"
+                                                       Grid.Column="1"
+                                                       Margin="5,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Tiger 963852"
+                                                       TextWrapping="NoWrap" />
+                                            <CheckBox HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <TextBlock x:Name="txtblStartDate_Copy"
+                                                       Grid.Column="2"
+                                                       Margin="0,0,5,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="08/29/2010"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblStartDate_Copy21"
+                                                       Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       Margin="0,0,5,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="08/30/2010"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblStartDate_Copy22"
+                                                       Grid.Row="2"
+                                                       Grid.Column="2"
+                                                       Margin="0,0,5,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridRightHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="08/31/2010"
+                                                       TextWrapping="NoWrap" />
+                                        </Grid>
+
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </TabItem>
+                        <TabItem x:Name="tabitemPermissionDetail"
+                                 Header="Permission Detail">
+                            <Grid x:Name="grdPermissionDetail">
+                                <GroupBox x:Name="gbPermission"
+                                          Margin="10">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblPermission"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Permission"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdgbPermission"
+                                          Margin="0,4,0,0">
+                                        <DataGrid x:Name="dtgrdPermission"
+                                                  Margin="5"
+                                                  VerticalAlignment="Stretch"
+                                                  IsSynchronizedWithCurrentItem="True"
+                                                  Style="{DynamicResource DatagridWithRowHeader}"
+                                                  VerticalScrollBarVisibility="Hidden">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Width="25"
+                                                                    Header="" />
+                                                <DataGridTextColumn Width="25"
+                                                                    Header="" />
+                                                <DataGridTextColumn Width="*"
+                                                                    Header="Program Title" />
+                                                <DataGridTextColumn Width="50"
+                                                                    Header="View" />
+                                                <DataGridTextColumn Width="50"
+                                                                    Header="New" />
+                                                <DataGridTextColumn Width="50"
+                                                                    Header="Update" />
+                                                <DataGridTextColumn Width="50"
+                                                                    Header="Delete" />
+                                                <DataGridTextColumn Width="50"
+                                                                    Header="Print" />
+                                            </DataGrid.Columns>
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                            <CheckBox Width="100"
+                                                      Height="100"
+                                                      Content="CheckBox" />
+                                        </DataGrid>
+                                        <Grid x:Name="dtgrdEmployeeItem2"
+                                              Margin="6,28,6,0"
+                                              VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="24" />
+                                                <ColumnDefinition Width="24.154" />
+                                                <ColumnDefinition Width="25.491" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="50" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                                <RowDefinition Height="25" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="txtblContactName26"
+                                                       Grid.Row="8"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName1"
+                                                       Grid.Row="9"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName2"
+                                                       Grid.Row="10"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName3"
+                                                       Grid.Row="11"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName4"
+                                                       Grid.Row="12"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName5"
+                                                       Grid.Row="13"
+                                                       Grid.Column="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       d:IsHidden="True"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <Rectangle Grid.Column="1"
+                                                       Width="7"
+                                                       Height="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Stroke="Black">
+                                                <Rectangle.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <Rectangle Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       Width="7"
+                                                       Height="1"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Stroke="Black">
+                                                <Rectangle.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </Rectangle.RenderTransform>
+                                            </Rectangle>
+                                            <TextBlock Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Employee" />
+                                            <TextBlock Grid.Row="8"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Customer" />
+                                            <TextBlock Grid.Row="9"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Vendor" />
+                                            <TextBlock Grid.Row="10"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Sales Order" />
+                                            <TextBlock Grid.Row="11"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Purchase Order" />
+                                            <TextBlock Grid.Row="12"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Inventory" />
+                                            <TextBlock Grid.Row="13"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       d:IsHidden="True"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Timeclock" />
+                                            <TextBlock Grid.Row="14"
+                                                       Grid.Column="2"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       d:IsHidden="True"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Email" />
+                                            <Rectangle Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Grid.ColumnSpan="8"
+                                                       Height="25"
+                                                       Margin="1,0,0,0"
+                                                       d:IsHidden="True"
+                                                       Fill="#FFFFD511" />
+                                            <Rectangle Grid.Column="3"
+                                                       Margin="61.993,3,3,3"
+                                                       d:IsHidden="True"
+                                                       Fill="White"
+                                                       Stroke="Red"
+                                                       StrokeThickness="2" />
+                                            <Rectangle Width="20"
+                                                       Height="20"
+                                                       Margin="3,3,1,2"
+                                                       d:IsHidden="True"
+                                                       Fill="{DynamicResource Alert}" />
+                                            <Rectangle Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Grid.ColumnSpan="2"
+                                                       Margin="2.154,3,-55.993,3"
+                                                       d:IsHidden="True"
+                                                       Fill="White"
+                                                       Stroke="Black" />
+                                            <Rectangle Grid.Row="1"
+                                                       Width="20"
+                                                       Height="20"
+                                                       Margin="2.5,2.5,1.5,2.5"
+                                                       d:IsHidden="True"
+                                                       Fill="{DynamicResource Edit}" />
+                                            <CheckBox Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="1"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="2"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="3"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="4"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="4"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="4"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="4"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="4"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="5"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="5"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="5"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="5"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="5"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="6"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="6"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="6"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="6"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="6"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="7"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="7"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="7"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="7"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="7"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="8"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="8"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="8"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="8"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="8"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="10"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="10"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="10"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="10"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="10"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="9"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="9"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="9"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="9"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="9"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="11"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="11"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="11"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="11"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="11"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="12"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="12"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="12"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="12"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="12"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="13"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      d:IsHidden="True" />
+                                            <CheckBox Grid.Row="13"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      d:IsHidden="True" />
+                                            <CheckBox Grid.Row="13"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      d:IsHidden="True" />
+                                            <CheckBox Grid.Row="13"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      d:IsHidden="True" />
+                                            <CheckBox Grid.Row="13"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      d:IsHidden="True" />
+                                            <CheckBox Grid.Row="14"
+                                                      Grid.Column="7"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="14"
+                                                      Grid.Column="8"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="14"
+                                                      Grid.Column="4"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="14"
+                                                      Grid.Column="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <CheckBox Grid.Row="14"
+                                                      Grid.Column="6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            <TextBlock x:Name="txtblTemplateAccountNo"
+                                                       Grid.Row="1"
+                                                       Grid.Column="3"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Employee Info"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblTemplateCustomerType"
+                                                       Grid.Row="5"
+                                                       Grid.Column="3"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Personal Info"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblTemplateRewardMember"
+                                                       Grid.Row="6"
+                                                       Grid.Column="3"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Salary &amp; Hire Info"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblTemplateFirstName1"
+                                                       Grid.Row="7"
+                                                       Grid.Column="3"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Additional"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblFirstName_Copy"
+                                                       Grid.Row="2"
+                                                       Grid.Column="3"
+                                                       Margin="20,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="First Name:"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblLastName_Copy"
+                                                       Grid.Row="3"
+                                                       Grid.Column="3"
+                                                       Margin="20,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Last Name:"
+                                                       TextWrapping="NoWrap" />
+                                            <TextBlock x:Name="txtblCompany_Copy"
+                                                       Grid.Row="4"
+                                                       Grid.Column="3"
+                                                       Margin="20,0,0,0"
+                                                       HorizontalAlignment="{DynamicResource DatagridLeftHorizontalAlignment}"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       Text="Company:"
+                                                       TextWrapping="NoWrap"
+                                                       Visibility="Visible" />
+                                            <TextBlock x:Name="txtblContactName26_Copy"
+                                                       Grid.Row="5"
+                                                       Grid.Column="2"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName1_Copy"
+                                                       Grid.Row="6"
+                                                       Grid.Column="2"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                            <TextBlock x:Name="txtblContactName2_Copy"
+                                                       Grid.Row="7"
+                                                       Grid.Column="2"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource DatagridForeground}"
+                                                       RenderTransformOrigin="0.5,0.5"
+                                                       Text="+"
+                                                       TextWrapping="NoWrap">
+                                                <TextBlock.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.5"
+                                                                        ScaleY="1.5" />
+                                                        <SkewTransform />
+                                                        <RotateTransform />
+                                                        <TranslateTransform />
+                                                    </TransformGroup>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
