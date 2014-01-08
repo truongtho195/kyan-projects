@@ -1,0 +1,222 @@
+﻿<UserControl x:Class="CPC.POS.View.QuantityAdjustmentHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             x:Name="UserControl"
+             Background="{DynamicResource UserControlBackground}">
+    <UserControl.Resources>
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:PermissionConverter x:Key="permissionConverter" />
+    </UserControl.Resources>
+	<UserControl.InputBindings>
+		<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+	</UserControl.InputBindings>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="grdQuantityAdjustmentHistory">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="stkpBtn"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
+                    <Button x:Name="btnRestore"
+                            Command="{Binding RestoreCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=dtgrdQuantityAdjustmentHistory}"
+                            Width="40"
+                            Height="40"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-05-04}"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnRestore"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgRestore"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Restore}" />
+                            <TextBlock x:Name="txtblRestore"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Reorder"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Rectangle x:Name="Line"
+                           Height="1"
+                           Margin="2,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource Spilter_Line_Background}"
+                           Visibility="Collapsed" />
+                <Grid x:Name="grdSearch"
+                      Grid.Row="1"
+                      Grid.RowSpan="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="85" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,10,0">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="Search"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <Grid x:Name="grdgbContentSearch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <control:WatermarkTextBox x:Name="txtKeyword"
+                                                          Margin="10,2"
+                                                          VerticalContentAlignment="Center"
+                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                                          Padding="24,0,2,0"
+                                                          TextWrapping="NoWrap"
+                                                          Watermark="{DynamicResource PD_Keyword}">
+                                    <control:WatermarkTextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding SearchCommand}"
+                                                    CommandParameter="{Binding Text, ElementName=txtKeyword}" />
+                                    </control:WatermarkTextBox.InputBindings>
+                                    <i:Interaction.Behaviors>
+                                        <behavior:AutoFocusBehavior />
+                                    </i:Interaction.Behaviors>
+                                </control:WatermarkTextBox>
+                                <Rectangle x:Name="imgFind"
+                                           Width="20"
+                                           Margin="13,3,0,3"
+                                           HorizontalAlignment="Left"
+                                           Fill="{DynamicResource Find}" />
+                                <Button x:Name="btnAdvanceSearch"
+                                        Command="{Binding PopupAdvanceSearchCommand}"
+                                        Grid.Row="1"
+                                        Width="100"
+                                        Height="20"
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Content="{DynamicResource C104}"
+                                        Style="{DynamicResource ButtonAdvanceSearch}" />
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <dataGridControl:DataGridControl x:Name="dtgrdQuantityAdjustmentHistory"
+                                                     Grid.Row="1"
+                                                     Margin="10,10.2,10,10"
+                                                     HorizontalAlignment="Stretch"
+                                                     VerticalAlignment="Stretch"
+                                                     AutoGenerateColumns="False"
+                                                     CanUserAddRows="False"
+                                                     IsPaging="False"
+                                                     IsReadOnly="True"
+                                                     IsRollBackData="False"
+                                                     ItemsSource="{Binding QuantityAdjustmentCollection}"
+                                                     NumberOfItems="{Binding TotalQuantityAdjustment}"
+                                                     Style="{DynamicResource DatagridWithRowHeader}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                <MenuItem Header="Restore"
+                                          Command="{Binding RestoreCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                          IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-05-04}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource Restore}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Date"
+                                                    Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding LoggedTime, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Store"
+                                                Binding="{Binding StoreName, Mode=OneWay}"
+                                                Width="150" />
+                            <DataGridTextColumn Header="Reason"
+                                                Binding="{Binding Reason, Mode=OneWay, ConverterParameter=AdjustmentReason, Converter={StaticResource comboxItemToTextConverter}}"
+                                                Width="200" />
+                            <DataGridTextColumn Header="Status"
+                                                Binding="{Binding Status, Mode=OneWay, ConverterParameter=AdjustmentStatus, Converter={StaticResource comboxItemToTextConverter}}"
+                                                Width="100" />
+                            <DataGridTextColumn Header="Code"
+                                                Binding="{Binding ProductModel.Code, Mode=OneWay}"
+                                                Width="85" />
+                            <DataGridTextColumn Header="Item Name"
+                                                Binding="{Binding ProductModel.ProductName, Mode=OneWay}"
+                                                Width="150" />
+                            <DataGridTextColumn Header="Attribute"
+                                                Binding="{Binding ProductModel.Attribute, Mode=OneWay}"
+                                                Width="80" />
+                            <DataGridTextColumn Header="Size"
+                                                Binding="{Binding ProductModel.Size, Mode=OneWay}"
+                                                Width="80" />
+                            <DataGridTemplateColumn Header="Old Qty"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding OldQty, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="New Qty"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Foreground="{DynamicResource ForegroundGreenBrush}"
+                                                   Text="{Binding NewQty, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Different Qty"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Foreground="{DynamicResource ForegroundRedBrush}"
+                                                   Text="{Binding AdjustmentQtyDiff, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </dataGridControl:DataGridControl>
+                </Grid>
+            </Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>

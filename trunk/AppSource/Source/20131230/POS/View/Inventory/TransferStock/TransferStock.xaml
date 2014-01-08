@@ -1,0 +1,981 @@
+﻿<UserControl x:Class="CPC.POS.View.TransferStockView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcAutoCompleteControl="clr-namespace:CPCToolkitExt.AutoCompleteControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             x:Name="transferStockView"
+             Background="White"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d Anno"
+             xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             BorderBrush="#FF484848">
+    <UserControl.Resources>
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:IntegerToBooleanConverter x:Key="reversedIntToBoolConverter"
+                                             IsReversed="True" />
+        <converter:IntegerToBooleanConverter x:Key="integerToBooleanConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"
+                                             FalseToVisibility="Visible" />
+        <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
+        <converter:StringFormatConverter x:Key="stringFormatConverter" />
+        <converter:StringPriceLevelConverter x:Key="stringPriceLevelConverter" />
+        <converter:IntToCalculationConverter x:Key="intToCalculationConverter" />
+        <converter:PermissionConverter x:Key="permissionConverter" />
+        <DataTemplate x:Key="TransferNoHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_CheckBox_TransferNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DateTransferedHeaderTemplate">
+            <TextBlock Text="{DynamicResource C159}" />
+        </DataTemplate>
+        <DataTemplate x:Key="StatusHeaderTemplate">
+            <TextBlock Text="{DynamicResource C151}" />
+        </DataTemplate>
+        <DataTemplate x:Key="FromStoreHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_FromStore}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ToStoreHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_ToStore}" />
+        </DataTemplate>
+        <DataTemplate x:Key="TotalQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_TotalQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserCreatedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserCreated}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DateAppliedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_DateApplied}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserAppliedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserApplied}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DateReversedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_DateReversed}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserReversedHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_UserReversed}" />
+        </DataTemplate>
+        <!--  Detail  -->
+        <DataTemplate x:Key="ItemCodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C114}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AttributeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="SizeHeaderTemplate">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="QtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource C120}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UOMHeaderTemplate">
+            <TextBlock Text="{DynamicResource C118}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PriceHeaderTemplate">
+            <TextBlock Text="{DynamicResource C190}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AmountHeaderTemplate">
+            <TextBlock Text="{DynamicResource C122}" />
+        </DataTemplate>
+        <DataTemplate x:Key="AvailableQtyHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_Header_AvailableQty}" />
+        </DataTemplate>
+        <DataTemplate x:Key="NewItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C125}" />
+        </DataTemplate>
+        <DataTemplate x:Key="EditItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource C126}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ApplyItemHeaderTemplate">
+            <TextBlock Text="{DynamicResource TS_TextBox_ApplyTransferStock}" />
+        </DataTemplate>
+        <!--  DataGridCell Edit Style  -->
+        <Style x:Key="DataGridCellEnableStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.SelectedTransferStock.IsEnable, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Mode=OneWay}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  End  -->
+    </UserControl.Resources>
+	<UserControl.InputBindings>
+		<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+	</UserControl.InputBindings>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="grdTransferStock">
+                <Grid x:Name="grdContentSearch"
+                      d:LayoutOverrides="GridBox">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="65" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,10,0">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="Search"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <Grid x:Name="grdgbContentSearch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="0" />
+                                </Grid.RowDefinitions>
+                                <control:WatermarkTextBox x:Name="txtKeyword"
+                                                          Margin="10,2"
+                                                          VerticalContentAlignment="Center"
+                                                          Padding="24,0,2,0"
+                                                          Text="{Binding FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          TextWrapping="NoWrap"
+                                                          Watermark="{DynamicResource C135}"
+                                                          BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}">
+                                    <i:Interaction.Behaviors>
+                                        <behavior:AutoFocusBehavior />
+                                    </i:Interaction.Behaviors>
+                                    <control:WatermarkTextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding SearchCommand}"
+                                                    CommandParameter="{Binding Path=Text, ElementName=txtKeyword}" />
+                                    </control:WatermarkTextBox.InputBindings>
+                                </control:WatermarkTextBox>
+                                <Rectangle x:Name="imgFind1"
+                                           Width="20"
+                                           Margin="13,3,0,3"
+                                           HorizontalAlignment="Left"
+                                           Fill="{DynamicResource Find}" />
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <dataGridControl:DataGridControl x:Name="dtgrdSearch"
+                                                     Command="{Binding LoadStepCommand}"
+                                                     Grid.Row="1"
+                                                     Margin="10"
+                                                     AutoGenerateColumns="False"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+                                                     behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItems, ElementName=dtgrdSearch}"
+                                                     CanUserAddRows="False"
+                                                     CanUserDeleteRows="False"
+                                                     CurrentPageIndex="{Binding CurrentPageIndex}"
+                                                     DisplayItems="{Binding NumberOfDisplayItems}"
+                                                     CurrentColumnCollection="{Binding ColumnCollection,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                                                     IsRollBackData="False"
+                                                     IsColunmHidden="True"
+                                                     SelectedIndex="{Binding SelectedIndex,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                     ItemsSource="{Binding TransferStockCollection}"
+                                                     NumberOfItems="{Binding TotalTransferStock}"
+                                                     Style="{DynamicResource DatagridWithRowHeader}">
+                        <dataGridControl:DataGridControl.ContextMenu>
+                            <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                <MenuItem Command="{Binding NewCommand}"
+                                          HeaderTemplate="{StaticResource NewItemHeaderTemplate}"
+                                          IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-05}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource NewItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding EditCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                          HeaderTemplate="{StaticResource EditItemHeaderTemplate}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource EditItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Command="{Binding TransferCommand}"
+                                          CommandParameter="{Binding Tag.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+                                          HeaderTemplate="{StaticResource ApplyItemHeaderTemplate}"
+                                          IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-06}">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource ApplyPricing}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </dataGridControl:DataGridControl.ContextMenu>
+                        <dataGridControl:DataGridControl.Columns>
+                            <DataGridTemplateColumn Width="80"
+                                                    HeaderTemplate="{StaticResource TransferNoHeaderTemplate}"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.AccountNum}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TransferNo, Mode=OneWay}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="85"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.DateCreated}"
+                                                    HeaderTemplate="{StaticResource DateTransferedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="70"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Status}"
+                                                    HeaderTemplate="{StaticResource StatusHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status, Mode=OneWay, ConverterParameter=TransferStockStatus, Converter={StaticResource comboxItemToTextConverter}}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="80"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.FromStore}"
+                                                    HeaderTemplate="{StaticResource FromStoreHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding FromStoreValue.Name, Mode=OneWay}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="80"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.ToStore}"
+                                                    HeaderTemplate="{StaticResource ToStoreHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ToStoreValue.Name, Mode=OneWay}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="80"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Quantity}"
+                                                    HeaderTemplate="{StaticResource TotalQtyHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TotalQuantity, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
+                                                   TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="90"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.UserCreated}"
+                                                    HeaderTemplate="{StaticResource UserCreatedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserCreated, Mode=OneWay}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="95"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.DateApplied}"
+                                                    HeaderTemplate="{StaticResource DateAppliedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateApplied, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="95"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.UserApplied}"
+                                                    HeaderTemplate="{StaticResource UserAppliedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserApplied, Mode=OneWay}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="95"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.DateReversed}"
+                                                    HeaderTemplate="{StaticResource DateReversedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DateReversed, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+                                                   TextAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="95"
+                                                    dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.UserReversed}"
+                                                    HeaderTemplate="{StaticResource UserReversedHeaderTemplate}"
+                                                    IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding UserReversed, Mode=OneWay}"
+                                                   TextAlignment="Left" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </dataGridControl:DataGridControl.Columns>
+                    </dataGridControl:DataGridControl>
+                </Grid>
+                <Grid x:Name="grdContentTransferStock"
+                      Grid.Column="1" d:IsHidden="True">
+                    <Grid.Visibility>
+                        <Binding Path="IsSearchMode"
+                                 Mode="OneWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                            </Binding.Converter>
+                        </Binding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnBarSearch"
+                            Command="{Binding DoubleClickViewCommand}"
+                            Background="#02DFEDFF"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="1"
+                            Style="{DynamicResource ButtonBarSearch}"
+                            d:LayoutOverrides="GridBox">
+                        <TextBlock x:Name="txtblShowSearch1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource ButtonBarSearchTextBlock}"
+                                   Text="{DynamicResource TimeClockManualEventEditing_gbSearch_HeaderSearch}"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform Angle="-90" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                    <Rectangle x:Name="grdSpliter"
+                               Grid.Column="1"
+                               Width="1"
+                               HorizontalAlignment="Left"
+                               Fill="{DynamicResource Spilter_Line_Background}" />
+                    <Grid x:Name="grdSubTransferStock"
+                          Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="stkpBtn"
+                                    Height="Auto"
+                                    Margin="20,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal">
+                            <Button x:Name="btnNew"
+                                    Command="{Binding NewCommand}"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0"
+                                    IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-05}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Visible">
+                                <StackPanel x:Name="stkpBtnNew"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgNew"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource New}" />
+                                    <TextBlock x:Name="txtblNew"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSave"
+                                    Command="{Binding SaveCommand}"
+                                    Width="40"
+                                    Height="40"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Visible">
+                                <StackPanel x:Name="stkpBtnSave"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSave"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Save}" />
+                                    <TextBlock x:Name="txtblSave"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnRestore"
+                                    Command="{Binding RevertCommand}"
+                                    Width="40"
+                                    Height="40"
+                                    IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-07}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="{Binding SelectedTransferStock.VisibilityReversed, Mode=OneWay}">
+                                <StackPanel x:Name="stkpRestore"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgRestore"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Restore}" />
+                                    <TextBlock x:Name="txtblRestore"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnApply"
+                                    Command="{Binding TransferCommand}"
+                                    Width="40"
+                                    Height="40"
+                                    IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-04-06}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="{Binding SelectedTransferStock.VisibilityApplied, Mode=OneWay}">
+                                <StackPanel x:Name="stkpApply"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgApply"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource OK}" />
+                                    <TextBlock x:Name="txtblApply"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Attachment"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Rectangle x:Name="Line"
+                                   Grid.Row="1"
+                                   Height="1"
+                                   Margin="2,0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Top"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <TextBlock x:Name="txtblBindingTransferStock"
+                                   Margin="0,0,20,7"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Style="{DynamicResource TextBlockTitleFormView}"
+                                   Text="{DynamicResource TS_TextBox_TransferStock}"
+                                   TextWrapping="NoWrap" />
+                        <Grid x:Name="grdTransferStockInformation"
+                              Grid.Row="1"
+                              Width="747"
+                              Height="25"
+                              Margin="0,10,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              IsEnabled="{Binding SelectedTransferStock.IsEnable, Mode=OneWay}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="0" />
+                                <RowDefinition Height="0" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="196" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="23" />
+                                <ColumnDefinition Width="196" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="57" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="txtblForm"
+                                       Margin="0,0,10,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="{DynamicResource HolidayView_gbDate_rbFrom}"
+                                       TextWrapping="NoWrap"
+                                       d:LayoutOverrides="GridBox" />
+                            <ComboBox x:Name="txtFrom"
+                                      Grid.Column="1"
+                                      Margin="0,2"
+                                      DisplayMemberPath="Name"
+                                      ItemsSource="{Binding FromStoreCollection}"
+                                      SelectedItem="{Binding SelectedTransferStock.FromStoreValue, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            <ComboBox x:Name="cmbTo"
+                                      Grid.Column="4"
+                                      Margin="0,2"
+                                      VerticalAlignment="Stretch"
+                                      DisplayMemberPath="Name"
+                                      ItemsSource="{Binding ToStoreCollection}"
+                                      SelectedItem="{Binding SelectedTransferStock.ToStoreValue, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            <TextBlock x:Name="txtblTo"
+                                       Grid.Column="3"
+                                       Margin="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="{DynamicResource HolidayView_gbDate_To}"
+                                       TextWrapping="NoWrap" />
+                            <TextBlock x:Name="tblShipDate"
+                                       Grid.Column="6"
+                                       Margin="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="{DynamicResource TS_TextBox_ShipDate}"
+                                       TextWrapping="NoWrap" />
+                            <DatePicker x:Name="dtpShipDate"
+                                        Grid.Column="7"
+                                        Width="90"
+                                        Margin="0,2"
+                                        HorizontalAlignment="Left"
+                                        Background="White"
+                                        SelectedDate="{Binding SelectedTransferStock.ShipDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </Grid>
+                        <Border x:Name="brdTransferStock"
+                                Grid.Row="2"
+                                Margin="10"
+                                Background="{DynamicResource TabControlBackground}"
+                                BorderBrush="{DynamicResource TabControlBorder}"
+                                BorderThickness="1">
+                            <Grid x:Name="grdContentOrder">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="Auto"
+                                                   MinHeight="5.6" />
+                                    <RowDefinition />
+                                    <RowDefinition Height="95" />
+                                </Grid.RowDefinitions>
+                                <Grid x:Name="gridSearchProduct"
+                                      Width="509"
+                                      Margin="10,4.5,0,4.5"
+                                      HorizontalAlignment="Left"
+                                      IsEnabled="{Binding SelectedTransferStock.IsEnable, Mode=OneWay}">
+                                    <TextBlock x:Name="txtblSelectItem"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource C100}"
+                                               TextWrapping="NoWrap" />
+                                    <wpfToolkit:WatermarkTextBox x:Name="txtBarcodeProduct"
+                                                                 Grid.Column="1"
+                                                                 Width="350"
+                                                                 Height="21"
+                                                                 Margin="65,0,94,0"
+                                                                 HorizontalAlignment="Left"
+                                                                 VerticalAlignment="Center"
+                                                                 VerticalContentAlignment="Center"
+                                                                 BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                                                 Text="{Binding BarcodeProduct,
+                                                                                        Mode=TwoWay,
+                                                                                        UpdateSourceTrigger=PropertyChanged}"
+                                                                 TextWrapping="NoWrap"
+                                                                 Watermark="Input barcode and press enter">
+                                        <i:Interaction.Behaviors>
+                                            <behavior:AutoFocusBehavior />
+                                        </i:Interaction.Behaviors>
+                                        <wpfToolkit:WatermarkTextBox.InputBindings>
+                                            <KeyBinding Key="Enter"
+                                                        Command="{Binding SearchProductCommand}" />
+                                        </wpfToolkit:WatermarkTextBox.InputBindings>
+                                    </wpfToolkit:WatermarkTextBox>
+                                    <!--<cpcAutoCompleteControl:AutoCompleteTextBox Height="21"
+                                                                                Margin="65,0,94,0"
+                                                                                VerticalAlignment="Center"
+                                                                                AutoChangeSelectedItem="False"
+                                                                                FieldSource="{Binding ProductFieldCollection}"
+                                                                                FilterMode="Contains"
+                                                                                IsEnabled="{Binding IsAllowChangeOrder, Mode=OneWay}"
+                                                                                IsTextCompletionEnabled="False"
+                                                                                ItemsSource="{Binding ProductCollection}"
+                                                                                SelectedItemResult="{Binding SelectedProduct, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                                                d:LayoutOverrides="GridBox"
+                                                                                Style="{DynamicResource AutoCompleteWaterMarkStyle}">
+                                        <cpcAutoCompleteControl:AutoCompleteTextBox.Columns>
+                                            <GridViewColumn Header="Code"
+                                                            Width="120"
+                                                            DisplayMemberBinding="{Binding Code}" />
+                                            <GridViewColumn Header="ProductName"
+                                                            Width="150"
+                                                            DisplayMemberBinding="{Binding ProductName}" />
+                                            <GridViewColumn Header="Attribute"
+                                                            Width="80"
+                                                            DisplayMemberBinding="{Binding Attribute}" />
+                                            <GridViewColumn Header="Size"
+                                                            Width="80"
+                                                            DisplayMemberBinding="{Binding Size}" />
+                                        </cpcAutoCompleteControl:AutoCompleteTextBox.Columns>
+                                    </cpcAutoCompleteControl:AutoCompleteTextBox>-->
+                                    <Button x:Name="btnAdvanceSearch1"
+                                            Command="{Binding SearchProductAdvanceCommand}"
+                                            Width="90"
+                                            Height="21"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            d:LayoutOverrides="Height">
+                                        <TextBlock x:Name="txtblAdvanceSearch"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource C104}"
+                                                   TextWrapping="NoWrap" />
+                                    </Button>
+                                </Grid>
+                                <dataGridControl:DataGridControl x:Name="dtgrdTransferStock"
+                                                                 Grid.Row="2"
+                                                                 Margin="10,0,10,5"
+                                                                 AutoGenerateColumns="False"
+                                                                 CanUserAddRows="False"
+                                                                 CanUserDeleteRows="False"
+                                                                 DeleteCommandParameter="{Binding SelectedItem, ElementName=dtgrdTransferStock}"
+                                                                 DeleteItemCommand="{Binding DeleteSaleOrderDetailCommand}"
+                                                                 IsPaging="False"
+                                                                 IsRollBackData="False"
+                                                                 ItemsSource="{Binding SelectedTransferStock.TransferStockDetailCollection}"
+                                                                 NumberOfItems="{Binding SelectedTransferStock.TotalQuantity}"
+                                                                 Style="{DynamicResource DatagridWithRowHeader}"
+                                                                 VisibilityNavigationBar="Collapsed">
+                                    <dataGridControl:DataGridControl.Columns>
+                                        <DataGridTemplateColumn Width="90"
+                                                                HeaderTemplate="{StaticResource ItemCodeHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ItemCode, Mode=OneWay}"
+                                                               TextAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
+                                                                HeaderTemplate="{StaticResource ItemNameHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ItemName, Mode=OneWay}"
+                                                               TextAlignment="Left" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="80"
+                                                                HeaderTemplate="{StaticResource AttributeHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ItemAtribute, Mode=OneWay}"
+                                                               TextAlignment="Left" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="80"
+                                                                HeaderTemplate="{StaticResource SizeHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ItemSize, Mode=OneWay}"
+                                                               TextAlignment="Left" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="70"
+                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
+                                                                HeaderTemplate="{StaticResource QtyHeaderTemplate}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="0,0,2,0"
+                                                               HorizontalAlignment="Right"
+                                                               Text="{Binding Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <textBoxControl:TextBoxNumeric x:Name="txtQuantity"
+                                                                                       HorizontalContentAlignment="Stretch"
+                                                                                       VerticalContentAlignment="Center"
+                                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                       NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                       Style="{DynamicResource TextBoxNumericInsideDataGridStyle}"
+                                                                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                            <i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="LostFocus">
+                                                                    <command:EventToCommand Command="{Binding DataContext.QtyChangedCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+                                                                                            CommandParameter="{Binding .}" />
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </textBoxControl:TextBoxNumeric>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="80"
+                                                                CellStyle="{StaticResource DataGridCellEnableStyle}"
+                                                                HeaderTemplate="{StaticResource UOMHeaderTemplate}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="2,0,0,0"
+                                                               Text="{Binding BaseUOM, Mode=OneWay}"
+                                                               TextAlignment="Left" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <ComboBox x:Name="cmbUnit"
+                                                                  VerticalContentAlignment="Center"
+                                                                  DisplayMemberPath="Name"
+                                                                  ItemsSource="{Binding ProductUOMCollection, Mode=OneWay}"
+                                                                  SelectedValue="{Binding UOMId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  SelectedValuePath="UOMId"
+                                                                  Style="{DynamicResource ComboBoxInsideDataGridStyle}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="70"
+                                                                HeaderTemplate="{StaticResource PriceHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Price, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
+                                                               TextAlignment="Right" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="90"
+                                                                HeaderTemplate="{StaticResource AmountHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Amount, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
+                                                               TextAlignment="Right" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="80"
+                                                                HeaderTemplate="{StaticResource AvailableQtyHeaderTemplate}"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding AvlQuantity, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}"
+                                                               TextAlignment="Right" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </dataGridControl:DataGridControl.Columns>
+                                </dataGridControl:DataGridControl>
+                                <Grid x:Name="grdTransferStockSubTotal"
+                                      Grid.Row="4"
+                                      Margin="10,0"
+                                      VerticalAlignment="Top"
+                                      IsEnabled="{Binding SelectedTransferStock.IsEnable, Mode=OneWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="125" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="130" />
+                                        <ColumnDefinition Width="117" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="35" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblRemark1"
+                                               Margin="0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource C102}"
+                                               TextWrapping="NoWrap" />
+                                    <textBoxControl:TextBox x:Name="txtRemark1"
+                                                            Grid.Row="1"
+                                                            Grid.RowSpan="2"
+                                                            Grid.ColumnSpan="3"
+                                                            Width="360"
+                                                            Margin="0,2"
+                                                            HorizontalAlignment="Left"
+                                                            MaxLength="200"
+                                                            Text="{Binding SelectedTransferStock.Comment, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                                            TextWrapping="Wrap"
+                                                            VerticalContentAlignment="Top"
+                                                            Padding="2" />
+                                    <TextBlock x:Name="txtblOTransferStockSubTotal"
+                                               Grid.Column="3"
+                                               Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource C112}"
+                                               TextWrapping="NoWrap" />
+                                    <textBoxControl:TextBoxMoney x:Name="txtTransferStockSubTotal"
+                                                                 Grid.RowSpan="1"
+                                                                 Grid.Column="4"
+                                                                 Margin="0,2"
+                                                                 HorizontalContentAlignment="Right"
+                                                                 IsReadOnly="True"
+                                                                 Padding="2,0,2,0"
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                 TextAlignment="{x:Static local:Define.TextNumberAlign}"
+                                                                 Value="{Binding SelectedTransferStock.SubTotal, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                 TextWrapping="NoWrap" />
+                                    <textBoxControl:TextBox x:Name="txtTransferStockTax"
+                                                            Grid.Row="2"
+                                                            Grid.RowSpan="1"
+                                                            Grid.Column="4"
+                                                            Margin="0,2"
+                                                            HorizontalContentAlignment="Right"
+                                                            Padding="2,0,2,0"
+                                                            Text="$10.00"
+                                                            TextWrapping="NoWrap"
+                                                            Visibility="Collapsed" />
+                                    <TextBlock x:Name="txtblFreight"
+                                               Grid.Row="1"
+                                               Grid.Column="3"
+                                               Margin="8,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource TS_TextBox_Freight}"
+                                               TextWrapping="NoWrap" />
+                                    <textBoxControl:TextBoxMoney x:Name="txtShippingHandling"
+                                                                 Grid.Row="1"
+                                                                 Grid.RowSpan="1"
+                                                                 Grid.Column="4"
+                                                                 Margin="0,2"
+                                                                 HorizontalContentAlignment="Right"
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                 Padding="2,0,2,0"
+                                                                 TextWrapping="NoWrap"
+                                                                 TextAlignment="{x:Static local:Define.TextNumberAlign}"
+                                                                 Value="{Binding SelectedTransferStock.ShippingFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock x:Name="txtblTransferStockTotal"
+                                               Grid.Row="2"
+                                               Grid.Column="3"
+                                               Margin="8,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Foreground="White"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource C103}"
+                                               TextWrapping="NoWrap" />
+                                    <textBoxControl:TextBoxMoney x:Name="txtTransferStockTotal"
+                                                                 Grid.Row="2"
+                                                                 Grid.Column="4"
+                                                                 Margin="0,2"
+                                                                 HorizontalContentAlignment="Right"
+                                                                 VerticalContentAlignment="Center"
+                                                                 IsReadOnly="True"
+                                                                 Padding="2,0,2,0"
+                                                                 Style="{DynamicResource TextBoxTotal}"
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                 Value="{Binding SelectedTransferStock.Total, Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                 TextAlignment="{x:Static local:Define.TextNumberAlign}"
+                                                                 TextWrapping="NoWrap" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>

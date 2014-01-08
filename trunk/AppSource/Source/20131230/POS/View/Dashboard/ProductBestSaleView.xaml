@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="CPC.POS.View.ProductBestSaleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
+             xmlns:helper="clr-namespace:CPC.Helper">
+
+    <Grid x:Name="gridMain">
+
+        <Grid x:Name="gridView"
+              Visibility="{Binding GridViewVisibility, Mode=OneWay}" />
+
+        <Grid x:Name="gridEdit"
+              Visibility="{Binding GridEditVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Border x:Name="brdContenEdit"
+                    Margin="15,20,15,15"
+                    Background="{DynamicResource TabControlBackground}"
+                    BorderBrush="{DynamicResource TabControlBorder}"
+                    BorderThickness="1">
+
+                <Grid x:Name="gridContentEdit"
+                      Margin="10">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="txtblSelectProducts"
+                               VerticalAlignment="Center"
+                               Text="Select products:"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Margin="10,0,0,0"
+                               Grid.ColumnSpan="2"
+                               HorizontalAlignment="Left" />
+                    <TextBlock x:Name="txtblTop"
+                               Text="Top"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Margin="10,0,0,0"
+                               Grid.Row="1"
+                               Style="{DynamicResource TextBlockNormal}" />
+                    <ComboBox x:Name="cmbTop"
+                              Width="60"
+                              ItemsSource="{Binding TopList, Mode=OneWay}"
+                              SelectedValue="{Binding Total, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              HorizontalAlignment="Left"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="0,2" />
+                    <TextBlock x:Name="txtblChartType"
+                               Text="Chart Type"
+                               VerticalAlignment="Center"
+                               Margin="10,0,0,0"
+                               Grid.Row="2"
+                               Style="{DynamicResource TextBlockNormal}"
+                               HorizontalAlignment="Left" />
+                    <ComboBox x:Name="cmbChartType"
+                              Width="120"
+                              ItemsSource="{x:Static helper:Common.ChartType}"
+                              DisplayMemberPath="Text"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding ChartTypeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              HorizontalAlignment="Left"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              Margin="0,2" />
+
+                </Grid>
+
+            </Border>
+            <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                       HorizontalAlignment="Stretch"
+                       x:Name="Line"
+                       VerticalAlignment="Top"
+                       Height="1"
+                       Grid.Row="1"
+                       Margin="2,0,2,0" />
+            <Button x:Name="buttonOK"
+                    Width="80"
+                    Command="{Binding OKCommand}"
+                    HorizontalAlignment="Center"
+                    Height="28"
+                    VerticalAlignment="Center"
+                    Grid.Row="1">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnOK"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="OK"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblOK"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

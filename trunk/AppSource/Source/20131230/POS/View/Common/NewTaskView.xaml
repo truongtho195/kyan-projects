@@ -1,0 +1,320 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:xceedWpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:t="clr-namespace:TimePicker;assembly=TimePicker"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:c="clr-namespace:CPC.Converter"
+             x:Class="CPC.POS.View.NewTaskView"
+             x:Name="UserControl"
+             mc:Ignorable="d"
+             Width="453"
+             Height="372">
+
+    <UserControl.Resources>
+
+        <c:StringToGuidConverter x:Key="StringToGuidConverter" />
+        <c:NullToDefaultValueConverter x:Key="NullToDefaultValueConverterWithRequired"
+                                       RequiredGreaterOrEqualCurrentDate="True" />
+
+    </UserControl.Resources>
+
+    <Grid x:Name="grdNewTask"
+          d:LayoutOverrides="Height">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="brdContentNewTask"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+
+            <Grid x:Name="grdgbNewTask"
+                  Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="65" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition />
+                    <RowDefinition Height="64.5" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="txtblDueDate"
+                           Text="Due Date"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}" />
+                <DatePicker x:Name="dtpDueDate"
+                            VerticalAlignment="Center"
+                            Margin="0,2,10,2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Width="120"
+                            SelectedDate="{Binding Reminder.DueDate, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblAssignTo"
+                           Text="Assign To"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           Margin="150,0,0,0"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Grid.Column="1" />
+                <ComboBox VerticalAlignment="Stretch"
+                          Margin="206,2,0,2"
+                          x:Name="cmbAssignTo"
+                          HorizontalAlignment="Left"
+                          Width="120"
+                          Grid.Column="1"
+                          ItemsSource="{Binding UserList, Mode=OneWay}"
+                          DisplayMemberPath="LegalName"
+                          SelectedValuePath="Resource"
+                          SelectedValue="{Binding Reminder.ResourceAssigned, Converter={StaticResource StringToGuidConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblPriority"
+                           Text="Priority"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}" />
+                <ComboBox VerticalAlignment="Stretch"
+                          Margin="0,2"
+                          x:Name="cmbPriority"
+                          HorizontalAlignment="Left"
+                          Width="120"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          ItemsSource="{x:Static helper:Common.PriorityList}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding Reminder.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblCategory"
+                           Text="Category"
+                           TextWrapping="NoWrap"
+                           Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Margin="150,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Grid.Column="1"
+                           d:LayoutOverrides="Width"
+                           HorizontalAlignment="Left" />
+                <ComboBox VerticalAlignment="Stretch"
+                          Margin="206,2,0,2"
+                          x:Name="cmbCategory"
+                          HorizontalAlignment="Left"
+                          Width="120"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          ItemsSource="{x:Static helper:Common.ReminderCategories}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding Reminder.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock x:Name="txtblColorTag"
+                           Text="Color Tag"
+                           TextWrapping="NoWrap"
+                           Grid.Row="2"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           d:LayoutOverrides="Width, GridBox"
+                           HorizontalAlignment="Left" />
+                <xceedWpfToolkit:ColorPicker VerticalAlignment="Stretch"
+                                             Margin="0,2"
+                                             x:Name="cmbColorTag"
+                                             HorizontalAlignment="Left"
+                                             Width="120"
+                                             Grid.Column="1"
+                                             Grid.Row="2"
+                                             SelectedColor="{Binding Reminder.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock x:Name="txtblTask"
+                           Text="Task"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Grid.Row="3" />
+
+                <textBoxToolkit:TextBox x:Name="txtTask"
+                                        TextWrapping="NoWrap"
+                                        Margin="0,2,10,2"
+                                        Grid.Column="1"
+                                        Padding="2,0,2,0"
+                                        Text="{Binding Reminder.Task, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                        Grid.Row="3" />
+
+                <TextBlock x:Name="txtblNote"
+                           Text="Note"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Grid.Row="4" />
+
+                <textBoxToolkit:TextBox x:Name="txtNote"
+                                        Margin="0,2,10,2"
+                                        TextWrapping="Wrap"
+                                        Grid.Column="1"
+                                        Grid.RowSpan="2"
+                                        Grid.Row="4"
+                                        VerticalContentAlignment="Top"
+                                        AcceptsReturn="True"
+                                        Text="{Binding Reminder.Note, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                <GroupBox x:Name="gbReminder"
+                          Grid.Row="6"
+                          Grid.ColumnSpan="2"
+                          Margin="0,5">
+                    <GroupBox.Header>
+                        <StackPanel x:Name="stkpReminder"
+                                    Orientation="Horizontal">
+                            <CheckBox x:Name="cbReminder"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      FontWeight="Bold"
+                                      IsChecked="{Binding Reminder.IsReminder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock x:Name="txtblSaleRepresentative"
+                                       Text="Reminder"
+                                       TextWrapping="NoWrap"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       d:LayoutOverrides="Width" />
+                        </StackPanel>
+                    </GroupBox.Header>
+                    <Grid x:Name="grdContentReminder"
+                          Margin="0,4,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="txtblTime"
+                                   Text="Time"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="5,0,0,0"
+                                   Style="{DynamicResource TextBlockNormal}" />
+
+                        <DatePicker x:Name="cmbRepeat"
+                                    HorizontalAlignment="Left"
+                                    Width="90"
+                                    Margin="59,2,0,2"
+                                    IsEnabled="{Binding IsChecked, ElementName=cbReminder, Mode=OneWay}"
+                                    SelectedDate="{Binding Reminder.OnDate, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <t:TimePickerControl  HorizontalAlignment="Left"
+                                              Margin="154,2,0,2"
+                                              Width="50"
+                                              IsFormat12Hour="False"
+                                              IsSelectTimeMode="True"
+                                              IsDisplayDayOfWeek="False"
+                                              IsEnabled="{Binding IsChecked, ElementName=cbReminder, Mode=OneWay}"
+                                              RealTime="{Binding Reminder.OnTime, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                              BorderThickness="1"
+                                              FontFamily="Tahoma"
+                                              FontSize="11" />
+                        <!--<TextBlock x:Name="txtblRepeat"
+                                   Text="Repeat"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,146,0"
+                                   Style="{DynamicResource TextBlockNormal}" />
+                        <ComboBox x:Name="cmbRepeat"
+                                  HorizontalAlignment="Right"
+                                  Width="120"
+                                  Margin="0,2,5,2"
+                                  IsEnabled="{Binding IsChecked, Mode=OneWay, ElementName=cbReminder}"
+                                  ItemsSource="{x:Static helper:Common.ReminderRepeatList}"
+                                  DisplayMemberPath="Text"
+                                  SelectedValuePath="Value"
+                                  SelectedValue="{Binding Reminder.Repeat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                    </Grid>
+                </GroupBox>
+
+            </Grid>
+
+        </Border>
+
+        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0,2,0" />
+
+        <StackPanel VerticalAlignment="Center"
+                    Height="Auto"
+                    x:Name="stkpBtn"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+
+            <Button x:Name="btnOK"
+                    Height="28"
+                    Width="80"
+                    Command="{Binding SaveCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnOK"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="OK"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblOK"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnCancel"
+                    Height="28"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnCancel"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Fill="{DynamicResource Cancel}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               x:Name="txtblExit"
+                               VerticalAlignment="Center"
+                               Text="Cancel"
+                               TextWrapping="NoWrap"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>
+	

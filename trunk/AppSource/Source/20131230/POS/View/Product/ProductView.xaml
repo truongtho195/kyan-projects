@@ -1,0 +1,3546 @@
+﻿<UserControl x:Class="CPC.POS.View.ProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:comboBoxControl="clr-namespace:CPCToolkitExt.ComboBoxControl;assembly=CPCToolkitExt"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:cpcTabControl="clr-namespace:CPCToolkitExt.OtherControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Background="{DynamicResource UserControlBackground}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!--  region Converter  -->
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+        <converter:IntegerToBooleanConverter x:Key="reversedIntToBoolConverter"
+                                             IsReversed="True" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:EnumToCollapsedConverter x:Key="enumToCollapsedConverter" />
+        <converter:StringFormatConverter x:Key="stringFormatConverter" />
+        <converter:PermissionConverter x:Key="permissionConverter" />
+        <!--  endregion Converter  -->
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Code">
+            <TextBlock Text="{DynamicResource C174}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemType">
+            <TextBlock Text="{DynamicResource PD_ItemType}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Category">
+            <TextBlock Text="{DynamicResource PD_Category}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Vendor">
+            <TextBlock Text="{DynamicResource C134}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemName">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Description">
+            <TextBlock Text="{DynamicResource C138}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Size">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Barcode">
+            <TextBlock Text="{DynamicResource C176}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_PartNo">
+            <TextBlock Text="{DynamicResource PD_PartNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ALU">
+            <TextBlock Text="{DynamicResource PD_ALU}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_BaseUOM">
+            <TextBlock Text="{DynamicResource PD_BaseUnit}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_TaxCode">
+            <TextBlock Text="{DynamicResource C144}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_RegularPrice">
+            <TextBlock Text="{DynamicResource C139}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnHandQty">
+            <TextBlock Text="{DynamicResource C152}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnOrder">
+            <TextBlock Text="{DynamicResource C153}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_CreationDate">
+            <TextBlock Text="{DynamicResource PD_CreationDate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_VendorCode">
+            <TextBlock Text="{DynamicResource PD_VendorCode}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Phone">
+            <TextBlock Text="{DynamicResource C173}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Email">
+            <TextBlock Text="{DynamicResource C184}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Price">
+            <TextBlock Text="{DynamicResource C119}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_ProductInfo">
+            <TextBlock Text="{DynamicResource PD_ProductInfo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_Additional">
+            <TextBlock Text="{DynamicResource PD_Additional}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_TabHeader_VendorProduct">
+            <TextBlock Text="{DynamicResource PD_VendorProduct}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OrderNum">
+            <TextBlock Text="{DynamicResource Text_OrderNum}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OrderDate">
+            <TextBlock Text="{DynamicResource C148}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Status">
+            <TextBlock Text="{DynamicResource C151}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Total">
+            <TextBlock Text="{DynamicResource Text_OrderTotal}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Paid">
+            <TextBlock Text="{DynamicResource C107}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Balance">
+            <TextBlock Text="{DynamicResource C108}" />
+        </DataTemplate>
+        <!--  endregion HeaderTemplate  -->
+        <Style x:Key="DataGridCellFocusStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus" Value="{Binding DataContext.AllowAccessPermission, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource" Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+        </Style>
+        <s:Int32 x:Key="AccountNumberMaxLength">15</s:Int32>
+        <s:Int32 x:Key="ItemNameMaxLength">300</s:Int32>
+        <s:Int32 x:Key="BarcodeMaxLength">20</s:Int32>
+        <s:Int32 x:Key="PartNoMaxLength">20</s:Int32>
+        <s:Int32 x:Key="StyleModelMaxLength">30</s:Int32>
+        <s:Int32 x:Key="AttributeMaxLength">30</s:Int32>
+        <s:Int32 x:Key="SizeMaxLength">10</s:Int32>
+        <s:Int32 x:Key="ItemDescriptionMaxLength">2000</s:Int32>
+        <s:Int32 x:Key="BaseUnitNumberMaxLength">4</s:Int32>
+        <s:Int32 x:Key="WarrantyPeriodMaxLength">4</s:Int32>
+        <s:Int32 x:Key="AisleMaxLength">50</s:Int32>
+        <s:Int32 x:Key="ShellMaxLength">50</s:Int32>
+        <s:Int32 x:Key="LocationMaxLength">200</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+        	<Grid x:Name="grdProduct" Height="Auto" Width="Auto">
+        		<Grid x:Name="grdSearch">
+        			<Grid.Visibility>
+        				<Binding Path="IsSearchMode"
+        					Mode="OneWay"
+        					UpdateSourceTrigger="PropertyChanged">
+        					<Binding.Converter>
+        						<converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+        					</Binding.Converter>
+        				</Binding>
+        			</Grid.Visibility>
+        			<Grid.RowDefinitions>
+        				<RowDefinition Height="85" />
+        				<RowDefinition />
+        			</Grid.RowDefinitions>
+        			<GroupBox x:Name="gbSearch"
+        				Margin="10,10,10,0">
+        				<GroupBox.Header>
+        					<TextBlock x:Name="txtblSearch"
+        						Style="{DynamicResource GroupboxTextBlock}"
+        						Text="{DynamicResource C113}"
+        						TextWrapping="NoWrap" />
+        				</GroupBox.Header>
+        				<Grid x:Name="grdgbSearch"
+        					Margin="0,4,0,0">
+        					<Grid x:Name="grdgbContentSearch">
+        						<Grid.RowDefinitions>
+        							<RowDefinition Height="25" />
+        							<RowDefinition Height="25" />
+        							<RowDefinition Height="Auto" />
+        						</Grid.RowDefinitions>
+        						<control:WatermarkTextBox x:Name="txtKeyword"
+        							Margin="10,2"
+        							VerticalContentAlignment="Center"
+        							BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+        							Padding="24,0,2,0"
+        							TextWrapping="NoWrap"
+        							Watermark="{DynamicResource PD_Keyword}">
+        							<control:WatermarkTextBox.InputBindings>
+        								<KeyBinding Key="Enter"
+        									Command="{Binding SearchCommand}"
+        									CommandParameter="{Binding Text, ElementName=txtKeyword}" />
+        							</control:WatermarkTextBox.InputBindings>
+        							<i:Interaction.Behaviors>
+        								<behavior:AutoFocusBehavior />
+        							</i:Interaction.Behaviors>
+        						</control:WatermarkTextBox>
+        						<Rectangle x:Name="imgFind"
+        							Width="20"
+        							Margin="13,3,0,3"
+        							HorizontalAlignment="Left"
+        							Fill="{DynamicResource Find}" />
+        						<Button x:Name="btnAdvanceSearch"
+        							Command="{Binding PopupAdvanceSearchCommand}"
+        							Grid.Row="1"
+        							Width="100"
+        							Height="20"
+        							Margin="10,0,0,0"
+        							HorizontalAlignment="Left"
+        							VerticalAlignment="Center"
+        							Content="{DynamicResource C104}"
+        							Style="{DynamicResource ButtonAdvanceSearch}" />
+        					</Grid>
+        				</Grid>
+        			</GroupBox>
+        			<dataGridControl:DataGridControl x:Name="dtgrdProductDirectory"
+        				Command="{Binding LoadStepCommand}"
+        				Grid.Row="1"
+        				Margin="10,10.2,10,10"
+        				HorizontalAlignment="Stretch"
+        				VerticalAlignment="Stretch"
+        				AutoGenerateColumns="False"
+        				behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding DoubleClickViewCommand}"
+        				behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdProductDirectory}"
+        				CanUserAddRows="False"
+        				CurrentColumnCollection="{Binding ColumnCollection, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+        				DisplayItems="{Binding NumberOfDisplayItems}"
+        				IsColunmHidden="True"
+        				IsPaging="True"
+        				IsReadOnly="True"
+        				IsRollBackData="False"
+        				ItemsSource="{Binding ProductCollection}"
+        				NumberOfItems="{Binding TotalProducts}"
+        				SelectionMode="Extended"
+        				Style="{DynamicResource DatagridWithRowHeader}">
+        				<dataGridControl:DataGridControl.ContextMenu>
+        					<ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+        						<MenuItem Header="{DynamicResource C125}"
+        							Command="{Binding NewCommand}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource NewItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<MenuItem Header="{DynamicResource C126}"
+        							Command="{Binding EditCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource EditItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<MenuItem Header="{DynamicResource C127}"
+        							Command="{Binding DeletesCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource DeleteItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<MenuItem Header="{DynamicResource C128}"
+        							Command="{Binding DuplicateCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}"
+        							IsEnabled="{Binding AllowAddProduct, Mode=OneWay}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource DuplicateItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<Separator Background="{DynamicResource ContextMenuBorder}" />
+        						<MenuItem Header="{DynamicResource PD_SellSelectedItem}"
+        							Command="{Binding SellCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource SellSelectedItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<MenuItem Header="{DynamicResource PD_ReceiveSelectedItem}"
+        							Command="{Binding ReceiveCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource ReceiveSelectedItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        						<MenuItem Header="{DynamicResource PD_TransferSelectedItem}"
+        							Command="{Binding TransferCommand}"
+        							CommandParameter="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        							<MenuItem.Icon>
+        								<Rectangle Width="16"
+        									Height="16"
+        									Fill="{DynamicResource TransferSelectedItem}"
+        									Stretch="Fill" />
+        							</MenuItem.Icon>
+        						</MenuItem>
+        					</ContextMenu>
+        				</dataGridControl:DataGridControl.ContextMenu>
+        				<dataGridControl:DataGridControl.Columns>
+        					<DataGridTextColumn Binding="{Binding Code, Mode=OneWay}"
+        						Width="100"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Code}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Code}" />
+        					<DataGridTextColumn Binding="{Binding ItemTypeItem.Text, Mode=OneWay}"
+        						Width="100"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Type}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemType}" />
+        					<DataGridTextColumn Binding="{Binding CategoryName, Mode=OneWay}"
+        						Width="130"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Category}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Category}" />
+        					<DataGridTextColumn Binding="{Binding VendorName, Mode=OneWay}"
+        						Width="150"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Vendor}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Vendor}" />
+        					<DataGridTextColumn Binding="{Binding ProductName, Mode=OneWay}"
+        						Width="150"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.ItemName}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_ItemName}" />
+        					<DataGridTextColumn Binding="{Binding Description, Mode=OneWay}"
+        						Width="250"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Description}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Description}" />
+        					<DataGridTextColumn Binding="{Binding Attribute, Mode=OneWay}"
+        						Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Attribute}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Attribute}" />
+        					<DataGridTextColumn Binding="{Binding Size, Mode=OneWay}"
+        						Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Size}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Size}" />
+        					<DataGridTextColumn Binding="{Binding Barcode, Mode=OneWay}"
+        						Width="100"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.Barcode}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_Barcode}" />
+        					<DataGridTextColumn Binding="{Binding ALU, Mode=OneWay}"
+        						Width="100"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.ALU}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_ALU}" />
+        					<DataGridTextColumn Binding="{Binding UOMName, Mode=OneWay}"
+        						Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.UOM}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_BaseUOM}" />
+        					<DataGridTextColumn Binding="{Binding TaxCode, Mode=OneWay}"
+        						Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.TaxCode}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_TaxCode}" />
+        					<DataGridTemplateColumn Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.RegularPrice}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_RegularPrice}"
+        						SortMemberPath="RegularPrice">
+        						<DataGridTemplateColumn.CellTemplate>
+        							<DataTemplate>
+        								<TextBlock HorizontalAlignment="Right"
+        									Text="{Binding RegularPrice, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        							</DataTemplate>
+        						</DataGridTemplateColumn.CellTemplate>
+        					</DataGridTemplateColumn>
+        					<DataGridTemplateColumn Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.QuantityOnHand}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_OnHandQty}"
+        						SortMemberPath="QuantityOnHand">
+        						<DataGridTemplateColumn.CellTemplate>
+        							<DataTemplate>
+        								<TextBlock HorizontalAlignment="Right"
+        									Text="{Binding QuantityOnHand, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}}" />
+        							</DataTemplate>
+        						</DataGridTemplateColumn.CellTemplate>
+        					</DataGridTemplateColumn>
+        					<DataGridTemplateColumn Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.QuantityOnOrder}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_OnOrder}"
+        						SortMemberPath="QuantityOnOrder">
+        						<DataGridTemplateColumn.CellTemplate>
+        							<DataTemplate>
+        								<TextBlock HorizontalAlignment="Right"
+        									Text="{Binding QuantityOnOrder, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.NumericFormat}}" />
+        							</DataTemplate>
+        						</DataGridTemplateColumn.CellTemplate>
+        					</DataGridTemplateColumn>
+        					<DataGridTemplateColumn Width="80"
+        						dataGridControl:DataGridColumnExtensions.Name="{x:Static local:SearchOptions.DateCreated}"
+        						HeaderTemplate="{StaticResource DataTemplate_PD_Header_CreationDate}"
+        						SortMemberPath="DateCreated">
+        						<DataGridTemplateColumn.CellTemplate>
+        							<DataTemplate>
+        								<TextBlock HorizontalAlignment="Center"
+        									Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+        							</DataTemplate>
+        						</DataGridTemplateColumn.CellTemplate>
+        					</DataGridTemplateColumn>
+        				</dataGridControl:DataGridControl.Columns>
+        			</dataGridControl:DataGridControl>
+        		</Grid>
+        		<Grid x:Name="grdContentProduct1"
+        			Grid.Column="1">
+        			<Grid.Visibility>
+        				<Binding Path="IsSearchMode"
+        					Mode="OneWay"
+        					UpdateSourceTrigger="PropertyChanged">
+        					<Binding.Converter>
+        						<converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+        					</Binding.Converter>
+        				</Binding>
+        			</Grid.Visibility>
+        			<Grid.ColumnDefinitions>
+        				<ColumnDefinition Width="22" />
+        				<ColumnDefinition />
+        			</Grid.ColumnDefinitions>
+        			<Button x:Name="btnBarSearch"
+        				Command="{Binding DoubleClickViewCommand}"
+        				SnapsToDevicePixels="True"
+        				Style="{DynamicResource ButtonBarSearchStyle}">
+        				<TextBlock x:Name="txtblShowSearch1"
+        					HorizontalAlignment="Center"
+        					VerticalAlignment="Center"
+        					FontSize="12"
+        					FontWeight="Bold"
+        					Style="{DynamicResource ButtonBarSearchTextBlock}"
+        					Text="{DynamicResource C113}"
+        					TextWrapping="NoWrap">
+        					<TextBlock.LayoutTransform>
+        						<TransformGroup>
+        							<ScaleTransform />
+        							<SkewTransform />
+        							<RotateTransform Angle="-90" />
+        							<TranslateTransform />
+        						</TransformGroup>
+        					</TextBlock.LayoutTransform>
+        				</TextBlock>
+        			</Button>
+        			<Rectangle x:Name="grdSpliter"
+        				Grid.Column="1"
+        				Width="1"
+        				HorizontalAlignment="Left"
+        				Fill="{DynamicResource Spilter_Line_Background}" />
+        			<Grid x:Name="grdSubProduct"
+        				Grid.Column="1">
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="60" />
+        					<RowDefinition Height="65" />
+        					<RowDefinition />
+        				</Grid.RowDefinitions>
+        				<StackPanel x:Name="stkpBtn"
+        					Height="Auto"
+        					Margin="20,0,0,5"
+        					HorizontalAlignment="Left"
+        					VerticalAlignment="Bottom"
+        					Orientation="Horizontal">
+        					<Button x:Name="btnNew"
+        						Command="{Binding NewCommand}"
+        						Width="40"
+        						Height="40"
+        						Style="{DynamicResource ButtonSystem}"
+        						Visibility="Visible">
+        						<StackPanel x:Name="stkpBtnNew"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center">
+        							<Rectangle x:Name="imgNew"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource New}" />
+        							<TextBlock x:Name="txtblNew"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="New"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        					<Button x:Name="btnSave"
+        						Command="{Binding SaveCommand}"
+        						Width="40"
+        						Height="40"
+        						Style="{DynamicResource ButtonSystem}"
+        						Visibility="Visible">
+        						<StackPanel x:Name="stkpBtnSave"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center"
+        							Orientation="Horizontal">
+        							<Rectangle x:Name="imgSave"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource Save}" />
+        							<TextBlock x:Name="txtblSave"
+        								Margin="5,0,0,0"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="Save"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        					<Button x:Name="btnDelete"
+        						Command="{Binding DeleteCommand}"
+        						Width="40"
+        						Height="40"
+        						FontSize="12"
+        						Style="{DynamicResource ButtonSystem}">
+        						<StackPanel x:Name="stkpBtnDelete"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center">
+        							<Rectangle x:Name="imgDelete"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource Delete}" />
+        							<TextBlock x:Name="txtblDelete"
+        								Margin="5,0,0,0"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="Close"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        					<Button x:Name="btnPrint"
+        						Width="40"
+        						Height="40"
+        						FontSize="12"
+        						Style="{DynamicResource ButtonSystem}">
+        						<StackPanel x:Name="stkpBtnPrint"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center">
+        							<Rectangle x:Name="imgPrint"
+        								Width="30"
+        								Height="30"
+        								Fill="{DynamicResource Print}" />
+        							<TextBlock x:Name="txtblPrint"
+        								Margin="5,0,0,0"
+        								VerticalAlignment="Center"
+        								Style="{DynamicResource ButtonSystemTextBlock}"
+        								Text="Print"
+        								TextWrapping="NoWrap"
+        								Visibility="Collapsed" />
+        						</StackPanel>
+        					</Button>
+        					<Grid x:Name="grdRemark"
+        						Width="40"
+        						Height="40">
+        						<ComboBox x:Name="cmbStick"
+        							Grid.ColumnSpan="2"
+        							SelectedIndex="0"
+        							Style="{DynamicResource RemarkComboboxStyle}">
+        							<ComboBoxItem>
+        								<Button Command="{Binding StickyManagementViewModel.NewCommand}"
+        									Width="75"
+        									Height="20"
+        									Content="{Binding StickyManagementViewModel.AddStickyText}"
+        									Style="{DynamicResource ButtonComboboxItemRemark}" />
+        							</ComboBoxItem>
+        							<ComboBoxItem Visibility="{Binding StickyManagementViewModel.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}">
+        								<Button Command="{Binding StickyManagementViewModel.ShowOrHiddenCommand}"
+        									Width="75"
+        									Height="20"
+        									Content="{Binding StickyManagementViewModel.ShowOrHiddenStickyText, Mode=OneWay}"
+        									Style="{DynamicResource ButtonComboboxItemRemark}" />
+        							</ComboBoxItem>
+        						</ComboBox>
+        						<Button x:Name="btnRemark1"
+        							Width="40"
+        							Height="40"
+        							IsHitTestVisible="False"
+        							Style="{DynamicResource ButtonSystem}"
+        							Visibility="Visible">
+        							<StackPanel x:Name="stkpBtnRemark"
+        								HorizontalAlignment="Center"
+        								VerticalAlignment="Center">
+        								<Rectangle x:Name="imgRemark1"
+        									Width="30"
+        									Height="30"
+        									Fill="{DynamicResource Remark}" />
+        								<TextBlock VerticalAlignment="Center"
+        									Style="{DynamicResource ButtonSystemTextBlock}"
+        									Text="Remark"
+        									TextWrapping="NoWrap"
+        									Visibility="Collapsed" />
+        							</StackPanel>
+        						</Button>
+        						<TextBox x:Name="txtbBindingRemark"
+        							HorizontalAlignment="Center"
+        							VerticalAlignment="Center"
+        							IsReadOnly="True"
+        							Style="{DynamicResource TextBoxRemark}"
+        							Text="{Binding StickyManagementViewModel.ResourceNoteCollection.Count, Mode=OneWay}"
+        							TextWrapping="Wrap"
+        							Visibility="{Binding StickyManagementViewModel.ResourceNoteCollection.Count, ConverterParameter=0, Converter={StaticResource enumToCollapsedConverter}}" />
+        					</Grid>
+        				</StackPanel>
+        				<Rectangle x:Name="Line"
+        					Grid.Row="1"
+        					Height="1"
+        					Margin="2,0"
+        					HorizontalAlignment="Stretch"
+        					VerticalAlignment="Top"
+        					Fill="{DynamicResource Spilter_Line_Background}" />
+        				<TextBlock x:Name="txtblBindingProduct"
+        					Margin="0,0,20,7"
+        					HorizontalAlignment="Right"
+        					VerticalAlignment="Bottom"
+        					FontFamily="Times New Roman"
+        					Style="{DynamicResource TextBlockTitleFormView}"
+        					Text="{DynamicResource C165}"
+        					TextWrapping="NoWrap" />
+        				<Grid x:Name="grdBasic"
+        					Grid.Row="1"
+        					Width="747"
+        					Margin="0,10,0,0"
+        					HorizontalAlignment="Left">
+        					<Grid.ColumnDefinitions>
+        						<ColumnDefinition Width="80" />
+        						<ColumnDefinition Width="140" />
+        						<ColumnDefinition Width="*" />
+        						<ColumnDefinition Width="61" />
+        						<ColumnDefinition Width="137" />
+        						<ColumnDefinition Width="*" />
+        						<ColumnDefinition Width="33" />
+        						<ColumnDefinition Width="130.491" />
+        					</Grid.ColumnDefinitions>
+        					<Grid.RowDefinitions>
+        						<RowDefinition Height="25" />
+        						<RowDefinition Height="25" />
+        					</Grid.RowDefinitions>
+        					<TextBlock x:Name="txtblItemNo"
+        						Margin="10,0,0,0"
+        						HorizontalAlignment="Left"
+        						VerticalAlignment="Center"
+        						Style="{DynamicResource TextBlockNormal}"
+        						Text="{DynamicResource PD_ItemNo}"
+        						TextWrapping="NoWrap" />
+        					<textBoxControl:TextBox x:Name="txtblBindingAccountNo"
+        						Grid.Column="1"
+        						Width="140"
+        						Height="21"
+        						Margin="0,2"
+        						HorizontalAlignment="Left"
+        						FontFamily="Tahoma"
+        						FontSize="12"
+        						FontWeight="Bold"
+        						Foreground="#FFFD7E00"
+        						IsEnabled="{Binding IsManualGenerate, Mode=OneWay}"
+        						MaxLength="{StaticResource AccountNumberMaxLength}"
+        						Text="{Binding SelectedProduct.Code, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        						TextWrapping="NoWrap" />
+        					<TextBlock x:Name="txtblItemType"
+        						Grid.Column="3"
+        						Margin="0"
+        						HorizontalAlignment="Left"
+        						VerticalAlignment="Center"
+        						Style="{DynamicResource TextBlockNormal}"
+        						Text="{DynamicResource PD_ItemType}"
+        						TextWrapping="NoWrap" />
+        					<ComboBox x:Name="cmbItemType"
+        						Grid.Column="4"
+        						Margin="0,2"
+        						VerticalAlignment="Stretch"
+        						DisplayMemberPath="Text"
+        						IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        						ItemsSource="{Binding ItemTypeList}"
+        						SelectedValue="{Binding SelectedProduct.ItemTypeId}"
+        						SelectedValuePath="Value" />
+        					<TextBlock x:Name="txtblStartDate"
+        						Grid.Column="6"
+        						Margin="0"
+        						HorizontalAlignment="Left"
+        						VerticalAlignment="Center"
+        						Style="{DynamicResource TextBlockNormal}"
+        						Text="{DynamicResource PD_Date}"
+        						TextWrapping="NoWrap" />
+        					<DatePicker x:Name="dtpStartDate"
+        						Grid.Column="7"
+        						Width="90"
+        						Margin="0,2"
+        						HorizontalAlignment="Left"
+        						IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        						SelectedDate="{Binding SelectedProduct.DateCreated}" />
+        					<TextBlock x:Name="txtblDepartment"
+        						Grid.Row="1"
+        						Margin="10,0,0,0"
+        						HorizontalAlignment="Left"
+        						VerticalAlignment="Center"
+        						Style="{DynamicResource TextBlockNormal}"
+        						Text="{DynamicResource D102}"
+        						TextWrapping="NoWrap" />
+        					<AdornerDecorator x:Name="adrDepartment"
+        						Grid.Row="1"
+        						Grid.Column="1"
+        						Width="140"
+        						HorizontalAlignment="Left">
+        						<comboBoxControl:ComboBoxControl x:Name="cmbItemDepartment"
+        							Height="21"
+        							Margin="0,2"
+        							AddItemCommand="{Binding PopupDepartmentCommand}"
+        							AddItemCommandParameter="{x:Static local:ProductDeparmentLevel.Department}"
+        							AutoHiddenItem="False"
+        							DisplayMemberPath="Name"
+        							IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        							ItemsSource="{Binding DepartmentCollection, Mode=OneWay}"
+        							SelectedValue="{Binding SelectedProduct.ProductDepartmentId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+        							SelectedValuePath="Id"
+        							Style="{DynamicResource ComboBoxControlStyle}"
+        							VisibilityAddItem="{Binding AllowAccessPermission, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+        					</AdornerDecorator>
+        					<TextBlock x:Name="txtblCategory"
+        						Grid.Row="1"
+        						Grid.Column="3"
+        						Margin="0"
+        						HorizontalAlignment="Left"
+        						VerticalAlignment="Center"
+        						Style="{DynamicResource TextBlockNormal}"
+        						Text="{DynamicResource PD_Category}"
+        						TextWrapping="NoWrap" />
+        					<comboBoxControl:ComboBoxControl x:Name="cmbItemCategory"
+        						Grid.Row="1"
+        						Grid.Column="4"
+        						Margin="0,2"
+        						VerticalAlignment="Stretch"
+        						AddItemCommand="{Binding PopupDepartmentCommand}"
+        						AddItemCommandParameter="{x:Static local:ProductDeparmentLevel.Category}"
+        						AutoHiddenItem="False"
+        						DisplayMemberPath="Name"
+        						IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        						ItemsSource="{Binding CategoryCollection, Mode=OneWay}"
+        						SelectedValue="{Binding SelectedProduct.ProductCategoryId, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+        						SelectedValuePath="Id"
+        						Style="{DynamicResource ComboBoxControlStyle}"
+        						VisibilityAddItem="{Binding AllowAddDepartment, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+        				</Grid>
+        				<Grid x:Name="grdContentProduct"
+        					Grid.Row="2"
+        					Margin="0,0,0,10">
+        					<cpcTabControl:CPCTabControl x:Name="TabProduct"
+        						Margin="10,10,10,0"
+        						DataChanged="{Binding SelectedProduct}"
+        						IsValid="{Binding IsValidTab, Mode=OneWayToSource}"
+        						SelectedIndex="{Binding SelectedTabIndex, Mode=OneWayToSource}">
+        						<cpcTabControl:CPCTabItemControl x:Name="tabitemProductInfo"
+        							HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_ProductInfo}"
+        							IsCheckError="True">
+        							<Grid x:Name="grdProductInfo">
+        								<cpcControl:ImageList Width="160"
+        									Height="140"
+        									Margin="546,20,0,0"
+        									HorizontalAlignment="Left"
+        									VerticalAlignment="Top"
+        									BorderBrush="White"
+        									BorderThickness="1"
+        									DisplayMemberPath="ImagePath"
+        									IsEnabled="{Binding AllowAddProductImage, Mode=OneWay}"
+        									ItemsSource="{Binding SelectedProduct.PhotoCollection}"
+        									MaxNumberOfImages="{Binding MaxNumberOfImages}" />
+        								<Grid x:Name="grdOther">
+        									<Grid.Visibility>
+        										<Binding Path="IsInsuranceItemType"
+        											Mode="OneWay"
+        											UpdateSourceTrigger="PropertyChanged">
+        											<Binding.Converter>
+        												<converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+        											</Binding.Converter>
+        										</Binding>
+        									</Grid.Visibility>
+        									<Grid.RowDefinitions>
+        										<RowDefinition Height="*" />
+        										<RowDefinition Height="180" />
+        									</Grid.RowDefinitions>
+        									<GroupBox x:Name="gbItemInformation"
+        										Width="525"
+        										Margin="10,10,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblItemSearch1"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_ItemInformation}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdItem"
+        											Margin="0,4,0,0">
+        											<Grid.ColumnDefinitions>
+        												<ColumnDefinition Width="85" />
+        												<ColumnDefinition />
+        											</Grid.ColumnDefinitions>
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="*" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblItemName1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C115}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtItemName1"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												behavior:AutoFocusBehavior.IsFocused="{Binding FocusDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource ItemNameMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.ProductName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        												TextWrapping="NoWrap">
+        												<i:Interaction.Behaviors>
+        													<behavior:AutoFocusBehavior />
+        												</i:Interaction.Behaviors>
+        											</textBoxControl:TextBox>
+        											<TextBlock x:Name="txtblVendor1"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C134}"
+        												TextWrapping="NoWrap" />
+        											<comboBoxControl:ComboBoxControl x:Name="cmbVendor1"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												AddItemCommand="{Binding PopupVendorCommand}"
+        												AutoHiddenItem="False"
+        												DisplayMemberPath="Company"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding VendorCollection}"
+        												SelectedItem="{Binding SelectedVendor, Mode=OneWayToSource}"
+        												SelectedValue="{Binding SelectedProduct.VendorId, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        												SelectedValuePath="Id"
+        												Style="{DynamicResource ComboBoxControlStyle}"
+        												VisibilityAddItem="{Binding AllowAddVendor, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+        											<TextBlock x:Name="txtblBarcode1"
+        												Grid.Row="1"
+        												Margin="10,5.861,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C176}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtBarcode1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="140"
+        												Height="21"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource BarcodeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap" />
+        											<TextBlock x:Name="txtblPartNo1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												d:IsHidden="True"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_PartNo}"
+        												TextWrapping="NoWrap"
+        												Visibility="Collapsed" />
+        											<textBoxControl:TextBox x:Name="txtPartNo1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												d:IsHidden="True"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource PartNoMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap"
+        												Visibility="Collapsed" />
+        											<TextBlock x:Name="txtblALU1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_ALU}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtALU1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource BarcodeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.ALU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap" />
+        											<TextBlock x:Name="txtblBrand1"
+        												Grid.Row="2"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_Brand}"
+        												TextWrapping="NoWrap" />
+        											<comboBoxControl:ComboBoxControl x:Name="cmbItemBrand1"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												AddItemCommand="{Binding PopupDepartmentCommand}"
+        												AddItemCommandParameter="{x:Static local:ProductDeparmentLevel.Brand}"
+        												AutoHiddenItem="False"
+        												DisplayMemberPath="Name"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding BrandCollection, Mode=OneWay}"
+        												SelectedValue="{Binding SelectedProduct.ProductBrandId}"
+        												SelectedValuePath="Id"
+        												Style="{DynamicResource ComboBoxControlStyle}"
+        												VisibilityAddItem="{Binding AllowAccessPermission, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+        											<TextBlock x:Name="txtblStyleModel1"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_StyleModel}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtStyleModel1"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource StyleModelMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.StyleModel, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap" />
+        											<TextBlock x:Name="txtblAttribute1"
+        												Grid.Row="3"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C116}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtAttribute1"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource AttributeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.Attribute, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblSize1"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C117}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtSize1"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource SizeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.Size, UpdateSourceTrigger=PropertyChanged}" />
+        											<Button x:Name="btnAdd1"
+        												Command="{Binding PopupAttributeAndSizeCommand}"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Width="30"
+        												Margin="0,2,10,2"
+        												HorizontalAlignment="Right"
+        												FontSize="12">
+        												<Rectangle x:Name="imgAdd1"
+        													Width="15"
+        													Height="15"
+        													Fill="{DynamicResource Add}" />
+        											</Button>
+        											<TextBlock x:Name="txtblItemDescription1"
+        												Grid.Row="4"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C138}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtItemDescription1"
+        												Grid.Row="4"
+        												Grid.RowSpan="2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												VerticalContentAlignment="Top"
+        												AcceptsReturn="True"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource ItemDescriptionMaxLength}"
+        												Padding="2,0,2,0"
+        												ScrollViewer.VerticalScrollBarVisibility="Auto"
+        												Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="Wrap" />
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbQuantity"
+        										Grid.Row="1"
+        										Width="190"
+        										Margin="10,5,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblQuantity"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource C120}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdContentQuantity"
+        											Margin="0,4,0,0">
+        											<Grid.ColumnDefinitions>
+        												<ColumnDefinition Width="88" />
+        												<ColumnDefinition />
+        											</Grid.ColumnDefinitions>
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="22" />
+        												<RowDefinition Height="25" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblOnHand"
+        												Grid.Row="0"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_OnHand}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtOnHand"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												IsEnabled="{Binding AllowEditQuantity, Mode=OneWay}"
+        												NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        												Padding="2"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.OnHandStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblReorderPoint"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource RO103}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtReorderPoint"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,2,35,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												IsEnabled="{Binding IsEditOnHandQuantity, Mode=OneWay}"
+        												NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.CompanyReOrderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<Button x:Name="btnReorderPointByStore"
+        												Command="{Binding PopupReorderPointCommand}"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="21"
+        												Height="21"
+        												Margin="0,2,10,2"
+        												HorizontalAlignment="Right"
+        												FontSize="12"
+        												IsEnabled="{Binding IsStockableItemType, Mode=OneWay}">
+        												<StackPanel x:Name="stkpBtnReorderPointByStore"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Orientation="Horizontal">
+        													<Rectangle x:Name="imgReorderPointByStore"
+        														Width="16"
+        														Height="16"
+        														Fill="{DynamicResource Config}" />
+        													<TextBlock x:Name="txtblReorderPointByStore"
+        														Margin="0"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource ButtonTextBlock}"
+        														Text="Reorder Point By Store"
+        														TextWrapping="NoWrap"
+        														Visibility="Collapsed" />
+        												</StackPanel>
+        											</Button>
+        											<TextBlock x:Name="txtblAvailable1"
+        												Grid.Row="2"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C154}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtAvailable"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												IsEnabled="False"
+        												NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.ProductStoreDefault.QuantityAvailable, Mode=OneWay}" />
+        											<Button x:Name="btnViewDetail"
+        												Command="{Binding PopupAvailableCommand}"
+        												Grid.Row="5"
+        												Grid.ColumnSpan="2"
+        												Height="21"
+        												Margin="10,0"
+        												VerticalAlignment="Bottom"
+        												FontSize="12"
+        												IsEnabled="{Binding IsStockableItemType, Mode=OneWay}">
+        												<StackPanel x:Name="stkpBtnViewDetail"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Orientation="Horizontal">
+        													<Rectangle x:Name="imgViewDetail"
+        														Width="17"
+        														Height="17"
+        														Fill="{DynamicResource View}" />
+        													<TextBlock x:Name="txtblViewDetail"
+        														Margin="5,0,0,0"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource ButtonTextBlock}"
+        														Text="{DynamicResource PD_Detail}"
+        														TextWrapping="NoWrap" />
+        												</StackPanel>
+        											</Button>
+        										</Grid>
+        									</GroupBox>
+        									<Grid x:Name="grdUnitBuild"
+        										Grid.Row="1"
+        										Width="279"
+        										Margin="210,5,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox x:Name="gbUnitOfMessure"
+        											VerticalAlignment="Top">
+        											<GroupBox.Header>
+        												<TextBlock x:Name="txtblUnitOfMessure"
+        													Style="{DynamicResource GroupboxTextBlock}"
+        													Text="{DynamicResource PD_UnitOfMeasure}"
+        													TextWrapping="NoWrap" />
+        											</GroupBox.Header>
+        											<Grid x:Name="grdUnitOfMessure">
+        												<Grid.RowDefinitions>
+        													<RowDefinition Height="25" />
+        													<RowDefinition />
+        												</Grid.RowDefinitions>
+        												<TextBlock x:Name="txtblBaseUnit"
+        													Margin="10,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource TextBlockNormal}"
+        													Text="{DynamicResource PD_BaseUnit}"
+        													TextWrapping="NoWrap" />
+        												<comboBoxControl:ComboBoxControl x:Name="cmbBaseUnit"
+        													Margin="75,2,10,2"
+        													VerticalAlignment="Stretch"
+        													AddItemCommand="{Binding PopupUOMCommand}"
+        													AddItemCommandParameter="0"
+        													DisplayMemberPath="Text"
+        													HiddenMemberPath="IsChecked"
+        													IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        													ItemsSource="{Binding UOMList, Mode=OneWay}"
+        													SelectedValue="{Binding SelectedProduct.BaseUOMId, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+        													SelectedValuePath="Value"
+        													Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}" />
+        												<Grid x:Name="grdContentUnitOfMessure"
+        													Grid.Row="2">
+        													<Grid.Visibility>
+        														<Binding Path="AllowMutilUOM"
+        															Mode="OneWay"
+        															UpdateSourceTrigger="PropertyChanged">
+        															<Binding.Converter>
+        																<converter:BoolToVisibilityConverter />
+        															</Binding.Converter>
+        														</Binding>
+        													</Grid.Visibility>
+        													<Grid.RowDefinitions>
+        														<RowDefinition Height="7" />
+        														<RowDefinition Height="20" />
+        														<RowDefinition Height="25" />
+        														<RowDefinition Height="25" />
+        														<RowDefinition Height="25" />
+        														<RowDefinition Height="25" />
+        													</Grid.RowDefinitions>
+        													<Rectangle x:Name="LineUnitOfMessure"
+        														Height="1"
+        														Margin="0"
+        														HorizontalAlignment="Stretch"
+        														VerticalAlignment="Center"
+        														Fill="{DynamicResource GroupboxBorder}" />
+        													<TextBlock x:Name="txtblTypeofUOM"
+        														Grid.Row="1"
+        														Margin="10,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="{DynamicResource PD_TypeOfUOM}"
+        														TextWrapping="NoWrap" />
+        													<TextBlock x:Name="txtblNoBaseUnit"
+        														Grid.Row="1"
+        														Margin="80.313,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="{DynamicResource PD_BaseUnitNumber}"
+        														TextWrapping="NoWrap" />
+        													<TextBlock x:Name="txtblRegularPrice"
+        														Grid.Row="1"
+        														Margin="174.038,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="{DynamicResource C139}"
+        														TextWrapping="NoWrap" />
+        													<comboBoxControl:ComboBoxControl Grid.Row="2"
+        														Width="64"
+        														Margin="10,2,0,2"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Stretch"
+        														AddItemCommand="{Binding PopupUOMCommand}"
+        														AddItemCommandParameter="1"
+        														DisplayMemberPath="Text"
+        														HiddenMemberPath="IsChecked"
+        														IsEnabled="{Binding AllowEditProductUOM, Mode=OneWay}"
+        														ItemsSource="{Binding UOMList, Mode=OneWay}"
+        														SelectedValue="{Binding SelectedProduct.ProductUOMCollection[0].UOMId, Mode=TwoWay}"
+        														SelectedValuePath="Value"
+        														Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}" />
+        													<textBoxControl:TextBoxNumeric Grid.Row="2"
+        														Width="58"
+        														Margin="80,2,0,2"
+        														HorizontalAlignment="Left"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[0].AllowEditProductUOMDetail, Mode=OneWay}"
+        														IntegerLength="{StaticResource BaseUnitNumberMaxLength}"
+        														NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[0].BaseUnitNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        													<TextBlock Grid.Row="2"
+        														Margin="143,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="="
+        														TextWrapping="NoWrap"
+        														d:LayoutOverrides="Height" />
+        													<textBoxControl:TextBoxMoney Grid.Row="2"
+        														Width="102"
+        														Margin="0,2,10,2"
+        														HorizontalAlignment="Right"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[0].AllowEditProductUOMDetail, Mode=OneWay}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[0].RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        													<comboBoxControl:ComboBoxControl Grid.Row="3"
+        														Width="64"
+        														Margin="10,2,0,2"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Stretch"
+        														AddItemCommand="{Binding PopupUOMCommand}"
+        														AddItemCommandParameter="2"
+        														DisplayMemberPath="Text"
+        														HiddenMemberPath="IsChecked"
+        														IsEnabled="{Binding AllowEditProductUOM, Mode=OneWay}"
+        														ItemsSource="{Binding UOMList, Mode=OneWay}"
+        														SelectedValue="{Binding SelectedProduct.ProductUOMCollection[1].UOMId, Mode=TwoWay}"
+        														SelectedValuePath="Value"
+        														Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}" />
+        													<textBoxControl:TextBoxNumeric Grid.Row="3"
+        														Width="58"
+        														Margin="80,2,0,2"
+        														HorizontalAlignment="Left"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[1].AllowEditProductUOMDetail, Mode=OneWay}"
+        														IntegerLength="{StaticResource BaseUnitNumberMaxLength}"
+        														NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[1].BaseUnitNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        													<TextBlock Grid.Row="3"
+        														Margin="143,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="="
+        														TextWrapping="NoWrap"
+        														d:LayoutOverrides="Height" />
+        													<textBoxControl:TextBoxMoney Grid.Row="3"
+        														Width="102"
+        														Margin="0,2,10,2"
+        														HorizontalAlignment="Right"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[1].AllowEditProductUOMDetail, Mode=OneWay}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[1].RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        													<comboBoxControl:ComboBoxControl Grid.Row="4"
+        														Width="64"
+        														Margin="10,2,0,2"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Stretch"
+        														AddItemCommand="{Binding PopupUOMCommand}"
+        														AddItemCommandParameter="3"
+        														DisplayMemberPath="Text"
+        														HiddenMemberPath="IsChecked"
+        														IsEnabled="{Binding AllowEditProductUOM, Mode=OneWay}"
+        														ItemsSource="{Binding UOMList, Mode=OneWay}"
+        														SelectedValue="{Binding SelectedProduct.ProductUOMCollection[2].UOMId, Mode=TwoWay}"
+        														SelectedValuePath="Value"
+        														Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}" />
+        													<textBoxControl:TextBoxNumeric Grid.Row="4"
+        														Width="58"
+        														Margin="80,2,0,2"
+        														HorizontalAlignment="Left"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[2].AllowEditProductUOMDetail, Mode=OneWay}"
+        														IntegerLength="{StaticResource BaseUnitNumberMaxLength}"
+        														NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[2].BaseUnitNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        													<TextBlock Grid.Row="4"
+        														Margin="143,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource TextBlockNormal}"
+        														Text="="
+        														TextWrapping="NoWrap"
+        														d:LayoutOverrides="Height" />
+        													<textBoxControl:TextBoxMoney Grid.Row="4"
+        														Width="102"
+        														Margin="0,2,10,2"
+        														HorizontalAlignment="Right"
+        														ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        														IsEnabled="{Binding SelectedProduct.ProductUOMCollection[2].AllowEditProductUOMDetail, Mode=OneWay}"
+        														Padding="2,0,2,0"
+        														TextWrapping="NoWrap"
+        														Value="{Binding SelectedProduct.ProductUOMCollection[2].RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        													<Button x:Name="btnQuickSetup"
+        														Command="{Binding PopupManageUOMCommand}"
+        														Grid.Row="5"
+        														Margin="10,2"
+        														FontSize="12">
+        														<StackPanel x:Name="stkpBtnQuickSetup"
+        															HorizontalAlignment="Center"
+        															VerticalAlignment="Center"
+        															Orientation="Horizontal">
+        															<Rectangle x:Name="imgQuickSetup"
+        																Width="19"
+        																Height="19"
+        																Fill="{DynamicResource SetUp}" />
+        															<TextBlock x:Name="txtblQuickSetup"
+        																Margin="5,0,0,0"
+        																VerticalAlignment="Center"
+        																Style="{DynamicResource ButtonTextBlock}"
+        																Text="{DynamicResource PD_ManageUOM}"
+        																TextWrapping="NoWrap" />
+        														</StackPanel>
+        													</Button>
+        												</Grid>
+        											</Grid>
+        										</GroupBox>
+        										<Button x:Name="btnBuildItemsGroup"
+        											Command="{Binding BuildItemsGroupCommand}"
+        											Height="32"
+        											Margin="0,0,0,7"
+        											VerticalAlignment="Bottom"
+        											d:IsHidden="True"
+        											FontSize="12"
+        											Visibility="{Binding IsGroupItemType, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}">
+        											<StackPanel x:Name="stkpBtnBuildItemsGroup"
+        												HorizontalAlignment="Center"
+        												VerticalAlignment="Center"
+        												Orientation="Horizontal">
+        												<Rectangle x:Name="imgBuildItemsGroup"
+        													Width="25"
+        													Height="25"
+        													Fill="{DynamicResource BuildItemGroup}"
+        													d:LayoutOverrides="Margin" />
+        												<TextBlock x:Name="txtblBuildItemsGroup"
+        													Margin="5,0,0,0"
+        													VerticalAlignment="Center"
+        													FontSize="13.333"
+        													Foreground="#FFFDFF00"
+        													Style="{DynamicResource ButtonTextBlock}"
+        													Text="{DynamicResource PD_BuildItemsGroup}"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</Button>
+        									</Grid>
+        									<GroupBox x:Name="gbPriceLevelsMarkdown1"
+        										Grid.Row="1"
+        										Width="210"
+        										Margin="498,5,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblPriceLevelsMarkdown1"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_PriceLevels}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdPriceLevelsMarkdown1"
+        											Margin="0,4,0,0">
+        											<Grid.ColumnDefinitions>
+        												<ColumnDefinition Width="87" />
+        												<ColumnDefinition />
+        											</Grid.ColumnDefinitions>
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="22" />
+        												<RowDefinition Height="25" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblRegularPrice3"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C139}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtRegularPrice2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditPrice, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditPrice, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblOrderCost1"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_OrderCost}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtOrderCost1"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditCost, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditCost, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.OrderCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblAvgUnitCost1"
+        												Grid.Row="2"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_AvgUnitCost}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtAvgUnitCost1"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditCost, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditCost, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.AverageUnitCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblTaxCode1"
+        												Grid.Row="3"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C144}"
+        												TextWrapping="NoWrap" />
+        											<ComboBox x:Name="cmbTaxCode1"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												VerticalAlignment="Stretch"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding SaleTaxLocationList, Mode=OneWay}"
+        												SelectedValue="{Binding SelectedProduct.TaxCode}" />
+        											<Button x:Name="btnPricing1"
+        												Command="{Binding PopupPricingCommand}"
+        												Grid.Row="5"
+        												Grid.ColumnSpan="2"
+        												Height="21"
+        												Margin="10,0"
+        												VerticalAlignment="Bottom"
+        												FontSize="12">
+        												<StackPanel x:Name="stkpBtnPricing1"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Orientation="Horizontal">
+        													<Rectangle x:Name="imgPricing1"
+        														Width="17"
+        														Height="17"
+        														Fill="{DynamicResource Pricing}" />
+        													<TextBlock x:Name="txtblPricing1"
+        														Margin="5,0,0,0"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource ButtonTextBlock}"
+        														Text="{DynamicResource PD_Pricing}"
+        														TextWrapping="NoWrap" />
+        												</StackPanel>
+        											</Button>
+        										</Grid>
+        									</GroupBox>
+        								</Grid>
+        								<Grid x:Name="grdInsurance"
+        									d:IsHidden="True">
+        									<Grid.Visibility>
+        										<Binding Path="IsInsuranceItemType"
+        											Mode="OneWay"
+        											UpdateSourceTrigger="PropertyChanged">
+        											<Binding.Converter>
+        												<converter:BoolToVisibilityConverter />
+        											</Binding.Converter>
+        										</Binding>
+        									</Grid.Visibility>
+        									<Grid.RowDefinitions>
+        										<RowDefinition Height="*" />
+        										<RowDefinition Height="180" />
+        									</Grid.RowDefinitions>
+        									<GroupBox x:Name="gbItemInformation1"
+        										Width="525"
+        										Margin="10,10,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblItemSearch"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_ItemInformation}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdItem1"
+        											Margin="0,4,0,0">
+        											<Grid.ColumnDefinitions>
+        												<ColumnDefinition Width="85" />
+        												<ColumnDefinition />
+        											</Grid.ColumnDefinitions>
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="*" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblItemName"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C115}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtItemName"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												behavior:AutoFocusBehavior.IsFocused="{Binding FocusDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource ItemNameMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.ProductName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        												TextWrapping="NoWrap">
+        												<i:Interaction.Behaviors>
+        													<behavior:AutoFocusBehavior />
+        												</i:Interaction.Behaviors>
+        											</textBoxControl:TextBox>
+        											<TextBlock x:Name="txtblVendor"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C134}"
+        												TextWrapping="NoWrap" />
+        											<comboBoxControl:ComboBoxControl x:Name="cmbVendor"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												AddItemCommand="{Binding PopupVendorCommand}"
+        												AutoHiddenItem="False"
+        												DisplayMemberPath="Company"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding VendorCollection}"
+        												SelectedItem="{Binding SelectedVendor, Mode=OneWayToSource}"
+        												SelectedValue="{Binding SelectedProduct.VendorId, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+        												SelectedValuePath="Id"
+        												Style="{DynamicResource ComboBoxControlStyle}"
+        												VisibilityAddItem="{Binding AllowAddVendor, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+        											<TextBlock x:Name="txtblBarcode"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C176}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtBarcode"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="140"
+        												Height="21"
+        												Margin="0,2"
+        												HorizontalAlignment="Left"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource BarcodeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.Barcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap" />
+        											<TextBlock x:Name="txtblALU2"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,0,200,0"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_ALU}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtALU"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Width="140"
+        												Margin="0,2,45,2"
+        												HorizontalAlignment="Right"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource BarcodeMaxLength}"
+        												Padding="2,0,2,0"
+        												Text="{Binding SelectedProduct.ALU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="NoWrap" />
+        											<TextBlock x:Name="txtblItemDescription"
+        												Grid.Row="4"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C138}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBox x:Name="txtItemDescription"
+        												Grid.Row="4"
+        												Grid.RowSpan="2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												VerticalContentAlignment="Top"
+        												AcceptsReturn="True"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												MaxLength="{StaticResource ItemDescriptionMaxLength}"
+        												Padding="2,0,2,0"
+        												ScrollViewer.VerticalScrollBarVisibility="Auto"
+        												Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+        												TextWrapping="Wrap" />
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbCoverPriceRange"
+        										Grid.Row="1"
+        										Width="250"
+        										Height="80"
+        										Margin="10,5,0,0"
+        										HorizontalAlignment="Left"
+        										VerticalAlignment="Top">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblCoverPriceRange"
+        												FontSize="14"
+        												FontWeight="Bold"
+        												Text="{DynamicResource PD_CoverPriceRange}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdContentCoverPriceRange"
+        											Margin="0,4,0,0">
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblCoverRangeFrom"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource Text_From}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtCoverRangeFrom"
+        												Margin="45,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.IPriceFrom, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        											<TextBlock x:Name="txtblCoverRangeTo"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource Text_To}"
+        												TextWrapping="NoWrap"
+        												d:LayoutOverrides="HorizontalAlignment, Height" />
+        											<textBoxControl:TextBoxMoney x:Name="txtCoverRangeTo"
+        												Grid.Row="1"
+        												Margin="45,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.IPriceTo, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbWarranty"
+        										Grid.Row="1"
+        										Width="250"
+        										Height="85"
+        										Margin="10,95,0,0"
+        										HorizontalAlignment="Left"
+        										VerticalAlignment="Top">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblWarranty"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_Warranty}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdWarranty"
+        											Margin="0,4,0,0">
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblTypeofWarranty"
+        												Grid.Row="0"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_TypeOfWarranty}"
+        												TextWrapping="NoWrap" />
+        											<comboBoxControl:ComboBoxControl x:Name="cmbTypeofWarrantyInsurance"
+        												Margin="105,2,10,2"
+        												VerticalAlignment="Stretch"
+        												AddItemCommand="{Binding PopupAddNewWarrantyCommand}"
+        												AutoHiddenItem="False"
+        												DisplayMemberPath="Text"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding WarrantyTypeAll}"
+        												SelectedValue="{Binding SelectedProduct.WarrantyType}"
+        												SelectedValuePath="Value"
+        												Style="{DynamicResource ComboBoxControlStyle}" />
+        											<TextBlock x:Name="txtblWarrantyPeriod"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_WarrantyPeriod}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtWarrantyPeriod"
+        												Grid.Row="1"
+        												Width="48"
+        												Margin="105,2,0,2"
+        												HorizontalAlignment="Left"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyDecimalDigits="0"
+        												IntegerLength="{StaticResource WarrantyPeriodMaxLength}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												NumericStringFormat="{}{0:N0}"
+        												Padding="2,0,2,0"
+        												Value="{Binding SelectedProduct.WarrantyNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        											<ComboBox x:Name="cmbWarrantyPeriod"
+        												Grid.Row="1"
+        												Width="70"
+        												Margin="0,2,10,2"
+        												HorizontalAlignment="Right"
+        												VerticalAlignment="Stretch"
+        												DisplayMemberPath="Text"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{x:Static helper:Common.WarrantyPeriodTypeAll}"
+        												SelectedValue="{Binding SelectedProduct.WarrantyPeriod}"
+        												SelectedValuePath="Value" />
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbUnitOfMessure1"
+        										Grid.Row="1"
+        										Width="215"
+        										Height="81"
+        										Margin="271,4,0,0"
+        										HorizontalAlignment="Left"
+        										VerticalAlignment="Top"
+        										d:LayoutOverrides="GridBox">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblUnitOfMessure1"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_UnitOfMeasure}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdUnitOfMessure2">
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="0" />
+        												<RowDefinition Height="0" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblBaseUOM1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_BaseUnit}"
+        												TextWrapping="NoWrap" />
+        											<comboBoxControl:ComboBoxControl x:Name="cmbBaseUOM1"
+        												Margin="75,2,10,2"
+        												VerticalAlignment="Stretch"
+        												AddItemCommand="{Binding PopupUOMCommand}"
+        												AddItemCommandParameter="0"
+        												DisplayMemberPath="Text"
+        												HiddenMemberPath="IsChecked"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding UOMList, Mode=OneWay}"
+        												SelectedValue="{Binding SelectedProduct.BaseUOMId, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+        												SelectedValuePath="Value"
+        												Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}" />
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbInsuranceCommission"
+        										Grid.Row="1"
+        										Width="215"
+        										Height="85"
+        										Margin="271,95,0,0"
+        										HorizontalAlignment="Left"
+        										VerticalAlignment="Top"
+        										d:LayoutOverrides="HorizontalAlignment">
+        										<GroupBox.Header>
+        											<StackPanel x:Name="stkpInsuranceCommission"
+        												Orientation="Horizontal">
+        												<CheckBox x:Name="cbInsuranceCommission"
+        													VerticalAlignment="Center"
+        													IsChecked="{Binding SelectedProduct.IsAllowCommission}"
+        													IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        												<TextBlock x:Name="txtblInsuranceCommission"
+        													FontSize="14"
+        													FontWeight="Bold"
+        													Text="{DynamicResource PD_Commission}"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</GroupBox.Header>
+        										<Grid x:Name="grdInsuranceCommission"
+        											Height="25"
+        											Margin="0,4,0,0"
+        											VerticalAlignment="Top"
+        											IsEnabled="{Binding SelectedProduct.IsAllowCommission}">
+        											<TextBlock x:Name="txtblInsuranceCommissionPercent"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Text="{DynamicResource PD_Commission}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtInsuranceCommissionPercent"
+        												Grid.Column="1"
+        												Width="65"
+        												Margin="78,2,0,2"
+        												HorizontalAlignment="Left"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.ComissionPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<ComboBox x:Name="cmblInsuranceCommissionPercent"
+        												Width="45"
+        												Margin="0,2,10,2"
+        												HorizontalAlignment="Right"
+        												SelectedIndex="{Binding SelectedProduct.CommissionUnit}">
+        												<ComboBoxItem Content="%" />
+        												<ComboBoxItem Content="{Binding CurrencySymbol}" />
+        											</ComboBox>
+        										</Grid>
+        									</GroupBox>
+        									<GroupBox x:Name="gbPriceLevelsMarkdown"
+        										Grid.Row="1"
+        										Width="210"
+        										Margin="498,5,0,0"
+        										HorizontalAlignment="Left">
+        										<GroupBox.Header>
+        											<TextBlock x:Name="txtblPriceLevelsMarkdown"
+        												Style="{DynamicResource GroupboxTextBlock}"
+        												Text="{DynamicResource PD_PriceLevels}"
+        												TextWrapping="NoWrap" />
+        										</GroupBox.Header>
+        										<Grid x:Name="grdPriceLevelsMarkdown"
+        											Margin="0,4,0,0">
+        											<Grid.ColumnDefinitions>
+        												<ColumnDefinition Width="87" />
+        												<ColumnDefinition />
+        											</Grid.ColumnDefinitions>
+        											<Grid.RowDefinitions>
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="25" />
+        												<RowDefinition Height="22" />
+        												<RowDefinition Height="25" />
+        											</Grid.RowDefinitions>
+        											<TextBlock x:Name="txtblRegularPrice1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C139}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtRegularPrice1"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditPrice, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditPrice, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.RegularPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblOrderCost"
+        												Grid.Row="1"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_OrderCost}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtOrderCost"
+        												Grid.Row="1"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditCost, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditCost, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.OrderCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblAvgUnitCost"
+        												Grid.Row="2"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource PD_AvgUnitCost}"
+        												TextWrapping="NoWrap" />
+        											<textBoxControl:TextBoxMoney x:Name="txtAvgUnitCost"
+        												Grid.Row="2"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        												IsEnabled="{Binding AllowEditCost, Mode=OneWay}"
+        												IsPermission="{Binding AllowEditCost, Mode=OneWay}"
+        												Padding="2,0,2,0"
+        												Style="{DynamicResource TextBoxMoneyWithPermissionStyle}"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.AverageUnitCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblTaxCode"
+        												Grid.Row="3"
+        												Margin="10,0,0,0"
+        												HorizontalAlignment="Left"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="{DynamicResource C144}"
+        												TextWrapping="NoWrap" />
+        											<ComboBox x:Name="cmbTaxCode"
+        												Grid.Row="3"
+        												Grid.Column="1"
+        												Margin="0,2,10,2"
+        												VerticalAlignment="Stretch"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        												ItemsSource="{Binding SaleTaxLocationList, Mode=OneWay}"
+        												SelectedValue="{Binding SelectedProduct.TaxCode}" />
+        											<Button x:Name="btnPricing"
+        												Command="{Binding PopupPricingCommand}"
+        												Grid.Row="5"
+        												Grid.ColumnSpan="2"
+        												Height="21"
+        												Margin="10,2"
+        												FontSize="12">
+        												<StackPanel x:Name="stkpBtnPricing"
+        													HorizontalAlignment="Center"
+        													VerticalAlignment="Center"
+        													Orientation="Horizontal">
+        													<Rectangle x:Name="imgPricing"
+        														Width="17"
+        														Height="17"
+        														Fill="{DynamicResource Pricing}" />
+        													<TextBlock x:Name="txtblPricing"
+        														Margin="5,0,0,0"
+        														VerticalAlignment="Center"
+        														Style="{DynamicResource ButtonTextBlock}"
+        														Text="{DynamicResource PD_Pricing}"
+        														TextWrapping="NoWrap" />
+        												</StackPanel>
+        											</Button>
+        										</Grid>
+        									</GroupBox>
+        								</Grid>
+        							</Grid>
+        						</cpcTabControl:CPCTabItemControl>
+        						<cpcTabControl:CPCTabItemControl x:Name="tabitemAdditionalInfo"
+        							HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_Additional}"
+        							IsCheckError="True">
+        							<Grid x:Name="grdContentAdditionalInfo">
+        								<Grid.RowDefinitions>
+        									<RowDefinition Height="120" />
+        									<RowDefinition />
+        								</Grid.RowDefinitions>
+        								<GroupBox x:Name="gbLocation"
+        									Margin="10,10,10,0">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblLocation"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="{DynamicResource PD_Location}"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdLocation"
+        										Margin="0,4,0,0">
+        										<Grid.ColumnDefinitions>
+        											<ColumnDefinition Width="42" />
+        											<ColumnDefinition />
+        										</Grid.ColumnDefinitions>
+        										<Grid.RowDefinitions>
+        											<RowDefinition Height="25" />
+        											<RowDefinition />
+        										</Grid.RowDefinitions>
+        										<TextBlock x:Name="txtblAisle"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_Aisle}"
+        											TextWrapping="NoWrap" />
+        										<textBoxControl:TextBox x:Name="txtAisle"
+        											Grid.Column="1"
+        											Width="240"
+        											Height="21"
+        											Margin="0,2"
+        											HorizontalAlignment="Left"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        											MaxLength="{StaticResource AisleMaxLength}"
+        											Padding="2,0,2,0"
+        											Text="{Binding SelectedProduct.Aisle, UpdateSourceTrigger=PropertyChanged}"
+        											TextWrapping="NoWrap">
+        											<i:Interaction.Behaviors>
+        												<behavior:AutoFocusBehavior />
+        											</i:Interaction.Behaviors>
+        										</textBoxControl:TextBox>
+        										<TextBlock x:Name="txtblShell"
+        											Grid.Row="0"
+        											Grid.Column="1"
+        											Margin="361,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_Shell}"
+        											TextWrapping="NoWrap" />
+        										<textBoxControl:TextBox x:Name="txtShell"
+        											Grid.Column="1"
+        											Width="240"
+        											Height="21"
+        											Margin="393,2,10,2"
+        											HorizontalAlignment="Left"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        											MaxLength="{StaticResource ShellMaxLength}"
+        											Padding="2,0,2,0"
+        											Text="{Binding SelectedProduct.Shell, UpdateSourceTrigger=PropertyChanged}"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblNote"
+        											Grid.Row="1"
+        											Margin="10,4,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Top"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_Note}"
+        											TextWrapping="NoWrap" />
+        										<textBoxControl:TextBox x:Name="txtLocation"
+        											Grid.Row="1"
+        											Grid.Column="1"
+        											Width="633"
+        											Margin="0,2,10,5"
+        											HorizontalAlignment="Left"
+        											VerticalContentAlignment="Top"
+        											AcceptsReturn="True"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        											MaxLength="{StaticResource LocationMaxLength}"
+        											ScrollViewer.VerticalScrollBarVisibility="Auto"
+        											Text="{Binding SelectedProduct.Location, UpdateSourceTrigger=PropertyChanged}"
+        											TextWrapping="Wrap" />
+        									</Grid>
+        								</GroupBox>
+        								<GroupBox x:Name="gbOtherOptionSetting"
+        									Grid.Row="1"
+        									Margin="10">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblOtherOptionSetting"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="{DynamicResource PD_OtherOptionsSetting}"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdMiscellaneousSettings"
+        										Margin="0,3,0,0">
+        										<Grid.RowDefinitions>
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        										</Grid.RowDefinitions>
+        										<TextBlock x:Name="txtblTrackingSerialNo"
+        											Grid.Row="0"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_TrackingSerialNo}"
+        											TextWrapping="NoWrap" />
+        										<CheckBox x:Name="chkTrackingSerialNo"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="{DynamicResource PD_TrackingSerialNo_Description}"
+        											IsChecked="{Binding SelectedProduct.IsSerialTracking}"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        										<TextBlock x:Name="txtblOpenItem"
+        											Grid.Row="1"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_OpenItem}"
+        											TextWrapping="NoWrap" />
+        										<CheckBox x:Name="chkOpenItem"
+        											Grid.Row="1"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="{DynamicResource PD_OpenItem_Description}"
+        											IsChecked="{Binding SelectedProduct.IsOpenItem}"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        										<TextBlock x:Name="txtblUnorderable"
+        											Grid.Row="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_Unorderable}"
+        											TextWrapping="NoWrap" />
+        										<CheckBox x:Name="chkUnorderable"
+        											Grid.Row="2"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="{DynamicResource PD_Unorderable_Description}"
+        											IsChecked="{Binding SelectedProduct.IsUnOrderAble}"
+        											IsEnabled="{Binding AllowAccessUnOrderAble, Mode=OneWay}" />
+        										<TextBlock x:Name="txtblCommission"
+        											Grid.Row="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Eligible for Commission"
+        											TextWrapping="NoWrap"
+        											Visibility="Collapsed" />
+        										<CheckBox x:Name="cbcommission"
+        											Grid.Row="2"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Include sales of this item when calculating commission"
+        											Visibility="Collapsed" />
+        										<TextBlock x:Name="txtblRewards"
+        											Grid.Row="3"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_EligibleForRewards}"
+        											TextWrapping="NoWrap" />
+        										<CheckBox x:Name="chkEligibleForRewards"
+        											Grid.Row="3"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="{DynamicResource PD_EligibleForRewards_Description}"
+        											IsChecked="{Binding SelectedProduct.IsEligibleForReward}"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        										<TextBlock x:Name="txtblItemAttach"
+        											Grid.Row="4"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Item Attach"
+        											TextWrapping="NoWrap"
+        											Visibility="Collapsed" />
+        										<CheckBox x:Name="cbBillofMaterial"
+        											Grid.Row="4"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Items Attach Tab are included on a sales of this Item."
+        											Visibility="Collapsed" />
+        										<TextBlock x:Name="txtblItemAttach1"
+        											Grid.Row="5"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Prompt for Insurance"
+        											TextWrapping="NoWrap"
+        											Visibility="Collapsed" />
+        										<CheckBox x:Name="cbBillofMaterial1"
+        											Grid.Row="5"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="Prompt for Insurance when selling this item"
+        											Visibility="Collapsed" />
+        										<TextBlock x:Name="txtblLayaway1"
+        											Grid.Row="4"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_LayawayItem}"
+        											TextWrapping="NoWrap" />
+        										<CheckBox x:Name="cbLayawayItem"
+        											Grid.Row="4"
+        											Margin="142,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Content="{DynamicResource PD_LayawayItem_Description}"
+        											IsChecked="{Binding SelectedProduct.IsLayaway}"
+        											IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        										<TextBlock x:Name="txtblSalesCommision"
+        											Grid.Row="5"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="{DynamicResource PD_SalesCommission}"
+        											TextWrapping="NoWrap" />
+        										<StackPanel x:Name="stkpCommission"
+        											Grid.Row="5"
+        											Margin="142,2,0,2"
+        											HorizontalAlignment="Left"
+        											Orientation="Horizontal">
+        											<CheckBox x:Name="cbCommission"
+        												VerticalAlignment="Center"
+        												Content="{DynamicResource PD_SalesCommission_Description}"
+        												IsChecked="{Binding SelectedProduct.IsAllowCommission}"
+        												IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}" />
+        											<textBoxControl:TextBoxNumeric x:Name="txtCommission"
+        												Width="50"
+        												Margin="5,0,0,0"
+        												ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        												IsEnabled="{Binding SelectedProduct.IsAllowCommission}"
+        												NumericStringFormat="{x:Static local:Define.NumericFormat}"
+        												Padding="2,0,2,0"
+        												TextWrapping="NoWrap"
+        												Value="{Binding SelectedProduct.ComissionPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        											<TextBlock x:Name="txtblSalesCommision1"
+        												Margin="5,0,0,0"
+        												VerticalAlignment="Center"
+        												Style="{DynamicResource TextBlockNormal}"
+        												Text="%"
+        												TextWrapping="NoWrap" />
+        										</StackPanel>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</cpcTabControl:CPCTabItemControl>
+        						<TabItem x:Name="tabitemVendorProduct"
+        							HeaderTemplate="{StaticResource DataTemplate_PD_TabHeader_VendorProduct}">
+        							<Grid x:Name="grdgbConentVendorProduct"
+        								Margin="0,5,0,0"
+        								d:LayoutOverrides="Width">
+        								<Grid.RowDefinitions>
+        									<RowDefinition Height="25" />
+        									<RowDefinition Height="Auto" />
+        									<RowDefinition />
+        								</Grid.RowDefinitions>
+        								<TextBlock x:Name="txtblSelectVendor"
+        									Margin="10,0,0,0"
+        									HorizontalAlignment="Left"
+        									VerticalAlignment="Center"
+        									Style="{DynamicResource TextBlockNormal}"
+        									Text="{DynamicResource PD_SelectVendor}"
+        									TextWrapping="NoWrap"
+        									d:LayoutOverrides="HorizontalAlignment" />
+        								<comboBoxControl:ComboBoxControl x:Name="cmbSelectVendor"
+        									Width="175"
+        									Height="21"
+        									Margin="90,0,0,0"
+        									HorizontalAlignment="Left"
+        									AddItemCommand="{Binding PopupVendorCommand}"
+        									AddItemCommandParameter="Vendor"
+        									AutoVisibleItem="False"
+        									DisplayMemberPath="Company"
+        									HiddenMemberPath="IsChecked"
+        									IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+        									ItemsSource="{Binding ProductVendorCollection}"
+        									SelectedItem="{Binding SelectedVendorProduct}"
+        									SelectedValuePath="Id"
+        									Style="{DynamicResource ComboBoxControl_CheckedItemIsHiddenStyle}"
+        									VisibilityAddItem="{Binding AllowAddVendor, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}">
+        									<i:Interaction.Behaviors>
+        										<behavior:AutoFocusBehavior />
+        									</i:Interaction.Behaviors>
+        								</comboBoxControl:ComboBoxControl>
+        								<dataGridControl:DataGridControl x:Name="dtgrdProductVendor"
+        									Grid.Row="2"
+        									Margin="5,5.6,5,5"
+        									AutoGenerateColumns="False"
+        									CanUserAddRows="False"
+        									CanUserDeleteRows="False"
+        									DeleteCommandParameter="{Binding SelectedItem, ElementName=dtgrdProductVendor}"
+        									DeleteItemCommand="{Binding DeleteVendorCommand}"
+        									DisplayItems="{Binding NumberOfDisplayItems}"
+        									IsPaging="False"
+        									IsRollBackData="False"
+        									ItemsSource="{Binding SelectedProduct.VendorProductCollection}"
+        									NumberOfItems="{Binding SelectedProduct.VendorProductCollection.Count}"
+        									Style="{DynamicResource DatagridWithRowHeader}">
+        									<dataGridControl:DataGridControl.ContextMenu>
+        										<ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+        											<MenuItem Header="View Item"
+        												Command="{Binding ViewVendorDetailCommand}"
+        												CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        												<MenuItem.Icon>
+        													<Rectangle Width="16"
+        														Height="16"
+        														Fill="{DynamicResource View}"
+        														Stretch="Fill" />
+        												</MenuItem.Icon>
+        											</MenuItem>
+        											<MenuItem Header="Delete Item"
+        												Command="{Binding DeleteVendorCommand}"
+        												CommandParameter="{Binding Tag.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}">
+        												<MenuItem.Icon>
+        													<Rectangle Width="16"
+        														Height="16"
+        														Fill="{DynamicResource DeleteItem}"
+        														Stretch="Fill" />
+        												</MenuItem.Icon>
+        											</MenuItem>
+        										</ContextMenu>
+        									</dataGridControl:DataGridControl.ContextMenu>
+        									<dataGridControl:DataGridControl.Columns>
+        										<DataGridTextColumn Binding="{Binding VendorCode, Mode=OneWay}"
+        											Width="100"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_VendorCode}" />
+        										<DataGridTextColumn Binding="{Binding Company, Mode=OneWay}"
+        											Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Vendor}" />
+        										<DataGridTextColumn Binding="{Binding Phone, ConverterParameter=Phone, Converter={StaticResource stringFormatConverter}, Mode=OneWay}"
+        											Width="120"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Phone}" />
+        										<DataGridTextColumn Binding="{Binding Email, Mode=OneWay}"
+        											Width="150"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Email}" />
+        										<DataGridTemplateColumn Width="80"
+        											CellStyle="{StaticResource DataGridCellFocusStyle}"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Price}"
+        											SortMemberPath="Price">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Price, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        											<DataGridTemplateColumn.CellEditingTemplate>
+        												<DataTemplate>
+        													<textBoxControl:TextBoxMoney ConverterCulture="{x:Static local:Define.ConverterCulture}"
+        														CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+        														Style="{DynamicResource TextBoxMoneyInsideDataGridStyle}"
+        														TextWrapping="NoWrap"
+        														Value="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellEditingTemplate>
+        										</DataGridTemplateColumn>
+        									</dataGridControl:DataGridControl.Columns>
+        								</dataGridControl:DataGridControl>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemSOHistory"
+        							Header="{DynamicResource CUS_Text_SaleHistory}">
+        							<TabItem.Visibility>
+        								<Binding Path="SelectedProduct.IsNew"
+        									Mode="OneWay">
+        									<Binding.Converter>
+        										<converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+        									</Binding.Converter>
+        								</Binding>
+        							</TabItem.Visibility>
+        							<Grid x:Name="grdContentSOHistory">
+        								<Grid.RowDefinitions>
+        									<RowDefinition Height="Auto" />
+        									<RowDefinition />
+        									<RowDefinition Height="25" />
+        									<RowDefinition Height="5" />
+        								</Grid.RowDefinitions>
+        								<dataGridControl:DataGridControl x:Name="dtgrdSOHistory"
+        									Grid.Row="1"
+        									Margin="5,5,5,0"
+        									AutoGenerateColumns="False"
+        									CanUserAddRows="False"
+        									IsPaging="False"
+        									IsReadOnly="True"
+        									IsRollBackData="False"
+        									ItemsSource="{Binding SelectedProduct.SaleOrderCollection}"
+        									NumberOfItems="{Binding SelectedProduct.SaleOrderCollection.Count}"
+        									Style="{DynamicResource DatagridWithRowHeader}"
+        									VisibilityNavigationBar="Collapsed">
+        									<dataGridControl:DataGridControl.Columns>
+        										<DataGridTextColumn Binding="{Binding SONumber, Mode=OneWay}"
+        											Width="80"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_OrderNum}" />
+        										<DataGridTextColumn Binding="{Binding OrderDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+        											Width="70"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_OrderDate}" />
+        										<DataGridTextColumn Binding="{Binding OrderStatus, ConverterParameter=StatusSO, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+        											Width="100"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Status}" />
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Total}"
+        											SortMemberPath="Total">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Paid}"
+        											SortMemberPath="Paid">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Balance}"
+        											SortMemberPath="Balance">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        									</dataGridControl:DataGridControl.Columns>
+        								</dataGridControl:DataGridControl>
+        								<Grid x:Name="grdDatagridBottomSOHistory"
+        									Grid.Row="2"
+        									Height="25"
+        									Margin="5,0"
+        									VerticalAlignment="Bottom">
+        									<Grid.ColumnDefinitions>
+        										<ColumnDefinition Width="25" />
+        										<ColumnDefinition Width="{Binding Columns[0].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[1].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[2].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[3].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[4].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[5].ActualWidth, ElementName=dtgrdSOHistory}" />
+        										<ColumnDefinition Width="*" />
+        									</Grid.ColumnDefinitions>
+        									<Border x:Name="brdPOHistoryBackground"
+        										Grid.ColumnSpan="8"
+        										Background="{DynamicResource DatagridBottomBackground}"
+        										BorderBrush="{DynamicResource DatagridBottomBorder}"
+        										BorderThickness="1,0,1,1"
+        										d:LayoutOverrides="GridBox" />
+        									<TextBlock x:Name="txtblBindingTotal"
+        										Grid.Column="4"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalSaleOrder.Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        									<TextBlock x:Name="txtblBindingPaid"
+        										Grid.Column="5"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalSaleOrder.Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        									<TextBlock x:Name="txtblBindingBalance"
+        										Grid.Column="6"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalSaleOrder.Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        								</Grid>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemPOHistory"
+        							Header="{DynamicResource PD_PurchaseHistory}">
+        							<TabItem.Visibility>
+        								<Binding Path="SelectedProduct.IsNew"
+        									Mode="OneWay">
+        									<Binding.Converter>
+        										<converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+        									</Binding.Converter>
+        								</Binding>
+        							</TabItem.Visibility>
+        							<Grid x:Name="grdContentPOHistory">
+        								<Grid.RowDefinitions>
+        									<RowDefinition Height="Auto" />
+        									<RowDefinition />
+        									<RowDefinition Height="25" />
+        									<RowDefinition Height="5" />
+        								</Grid.RowDefinitions>
+        								<dataGridControl:DataGridControl x:Name="dtgrdPOHistory"
+        									Grid.Row="1"
+        									Margin="5,5,5,0"
+        									AutoGenerateColumns="False"
+        									CanUserAddRows="False"
+        									IsPaging="False"
+        									IsReadOnly="True"
+        									IsRollBackData="False"
+        									ItemsSource="{Binding SelectedProduct.PurchaseOrderCollection}"
+        									NumberOfItems="{Binding SelectedProduct.PurchaseOrderCollection.Count}"
+        									Style="{DynamicResource DatagridWithRowHeader}"
+        									VisibilityNavigationBar="Collapsed">
+        									<dataGridControl:DataGridControl.Columns>
+        										<DataGridTextColumn Binding="{Binding PurchaseOrderNo, Mode=OneWay}"
+        											Width="80"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_OrderNum}" />
+        										<DataGridTextColumn Binding="{Binding PurchasedDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}"
+        											Width="70"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_OrderDate}" />
+        										<DataGridTextColumn Binding="{Binding Status, ConverterParameter=StatusSO, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+        											Width="100"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Status}" />
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Total}"
+        											SortMemberPath="Total">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Paid}"
+        											SortMemberPath="Paid">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        										<DataGridTemplateColumn Width="*"
+        											HeaderTemplate="{StaticResource DataTemplate_PD_Header_Balance}"
+        											SortMemberPath="Balance">
+        											<DataGridTemplateColumn.CellTemplate>
+        												<DataTemplate>
+        													<TextBlock HorizontalAlignment="Right"
+        														Text="{Binding Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}" />
+        												</DataTemplate>
+        											</DataGridTemplateColumn.CellTemplate>
+        										</DataGridTemplateColumn>
+        									</dataGridControl:DataGridControl.Columns>
+        								</dataGridControl:DataGridControl>
+        								<Grid x:Name="grdDatagridBottomPOHistory"
+        									Grid.Row="2"
+        									Height="25"
+        									Margin="5,0"
+        									VerticalAlignment="Bottom">
+        									<Grid.ColumnDefinitions>
+        										<ColumnDefinition Width="25" />
+        										<ColumnDefinition Width="{Binding Columns[0].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[1].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[2].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[3].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[4].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="{Binding Columns[5].ActualWidth, ElementName=dtgrdPOHistory}" />
+        										<ColumnDefinition Width="*" />
+        									</Grid.ColumnDefinitions>
+        									<Border x:Name="brdPOHistoryBackground1"
+        										Grid.ColumnSpan="8"
+        										Background="{DynamicResource DatagridBottomBackground}"
+        										BorderBrush="{DynamicResource DatagridBottomBorder}"
+        										BorderThickness="1,0,1,1"
+        										d:LayoutOverrides="GridBox" />
+        									<TextBlock x:Name="txtblBindingTotal1"
+        										Grid.Column="4"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalPurchaseOrder.Total, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        									<TextBlock x:Name="txtblBindingPaid1"
+        										Grid.Column="5"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalPurchaseOrder.Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        									<TextBlock x:Name="txtblBindingBalance1"
+        										Grid.Column="6"
+        										Margin="0,0,3,0"
+        										HorizontalAlignment="Right"
+        										VerticalAlignment="Center"
+        										Style="{DynamicResource TextBlockDatagridBottomTotal}"
+        										Text="{Binding TotalPurchaseOrder.Balance, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}"
+        										TextWrapping="NoWrap" />
+        								</Grid>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemItemAttach"
+        							Header="Items Attach"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentItemAttach">
+        								<GroupBox x:Name="gbItemAttach"
+        									Margin="10">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblgbItemAttach"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Item Attach"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdAttach"
+        										Margin="0,4,0,0">
+        										<Grid.RowDefinitions>
+        											<RowDefinition />
+        											<RowDefinition Height="25" />
+        										</Grid.RowDefinitions>
+        										<dataGridControl:DataGridControl x:Name="dtgrdAttach"
+        											Margin="5"
+        											VerticalAlignment="Stretch"
+        											IsSynchronizedWithCurrentItem="True"
+        											Style="{DynamicResource DatagridWithRowHeader}">
+        											<dataGridControl:DataGridControl.Columns>
+        												<DataGridTextColumn Header="Item Code"
+        													Width="120" />
+        												<DataGridTextColumn Header="Item Type"
+        													Width="110" />
+        												<DataGridTextColumn Header="Description"
+        													Width="*" />
+        												<DataGridTextColumn Header="Qty"
+        													Width="60" />
+        												<DataGridTextColumn Header="Price"
+        													Width="120" />
+        											</dataGridControl:DataGridControl.Columns>
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        										</dataGridControl:DataGridControl>
+        										<TextBlock x:Name="txtblSubAmount"
+        											Grid.Row="1"
+        											Margin="0,0,130,0"
+        											HorizontalAlignment="Right"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Sub-Total:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtSubAmount"
+        											Grid.Row="1"
+        											Grid.RowSpan="1"
+        											Width="120"
+        											Height="21"
+        											Margin="0,2,5,2"
+        											HorizontalAlignment="Right"
+        											VerticalAlignment="Top"
+        											HorizontalContentAlignment="Right"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemIngredient"
+        							Header="Ingredient"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentIngredient">
+        								<GroupBox x:Name="gbIngredient"
+        									Margin="10">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblgbIngredient"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Ingredient"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdIngredient"
+        										Margin="0,4,0,0">
+        										<dataGridControl:DataGridControl x:Name="dtgrdIngredient"
+        											Margin="5"
+        											VerticalAlignment="Stretch"
+        											IsSynchronizedWithCurrentItem="True"
+        											Style="{DynamicResource DatagridWithRowHeader}">
+        											<dataGridControl:DataGridControl.Columns>
+        												<DataGridTextColumn Header="Item Code"
+        													Width="120" />
+        												<DataGridTextColumn Header="Description"
+        													Width="*" />
+        												<DataGridTextColumn Header="Qty"
+        													Width="70" />
+        												<DataGridTextColumn Header="Ingredient UoM"
+        													Width="100" />
+        												<DataGridTextColumn Header="Price"
+        													Width="120" />
+        											</dataGridControl:DataGridControl.Columns>
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        										</dataGridControl:DataGridControl>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemInsurance"
+        							Header="Insurance"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentInsurance">
+        								<GroupBox x:Name="gbInsurance"
+        									Grid.Row="1"
+        									Margin="10">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblInsurance"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Insurance"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdgbInsurance"
+        										Margin="0,4,0,0">
+        										<dataGridControl:DataGridControl x:Name="dtgrdItemInsurance"
+        											Margin="5"
+        											IsSynchronizedWithCurrentItem="True"
+        											Style="{DynamicResource DatagridWithRowHeader}">
+        											<dataGridControl:DataGridControl.Columns>
+        												<DataGridTextColumn Header="Items Code"
+        													Width="120" />
+        												<DataGridTextColumn Header="Description"
+        													Width="*" />
+        												<DataGridTextColumn Header="Price"
+        													Width="120" />
+        											</dataGridControl:DataGridControl.Columns>
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        											<CheckBox HorizontalAlignment="Left"
+        												VerticalAlignment="Top"
+        												Content="CheckBox" />
+        										</dataGridControl:DataGridControl>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemOrderHistory"
+        							Header="Order History"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentOrderHistory">
+        								<GroupBox x:Name="gbOrderHistory"
+        									Margin="10">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblOrderHistory"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Order History"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grbgbOrderHistory"
+        										Margin="0,4,0,0">
+        										<Grid.RowDefinitions>
+        											<RowDefinition Height="25" />
+        											<RowDefinition />
+        										</Grid.RowDefinitions>
+        										<TextBlock x:Name="txtblFrom"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="From:"
+        											TextWrapping="NoWrap" />
+        										<DatePicker x:Name="dtpFrom"
+        											Width="110"
+        											Margin="55,2,0,2"
+        											HorizontalAlignment="Left" />
+        										<TextBlock x:Name="txtblTo"
+        											Margin="190,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="To:"
+        											TextWrapping="NoWrap" />
+        										<DatePicker x:Name="dtpTo"
+        											Width="110"
+        											Margin="220,2,0,2"
+        											HorizontalAlignment="Left" />
+        										<Button x:Name="btnExecute"
+        											Width="80"
+        											Margin="335,2,0,2"
+        											HorizontalAlignment="Left"
+        											FontSize="12">
+        											<StackPanel x:Name="stkpBtnExecute"
+        												HorizontalAlignment="Center"
+        												VerticalAlignment="Center"
+        												Orientation="Horizontal">
+        												<Rectangle x:Name="imgExecute"
+        													Width="17"
+        													Height="17"
+        													Fill="{DynamicResource OK}"
+        													StrokeThickness="0" />
+        												<TextBlock x:Name="txtblExecute"
+        													Margin="5,0,0,0"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource ButtonTextBlock}"
+        													Text="Execute"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</Button>
+        										<dataGridControl:DataGridControl x:Name="dtgrdOrderHistory"
+        											Grid.Row="1"
+        											Margin="5"
+        											IsSynchronizedWithCurrentItem="True"
+        											Style="{DynamicResource DatagridWithoutRowHeader}">
+        											<dataGridControl:DataGridControl.Columns>
+        												<DataGridTextColumn Header="Type"
+        													Width="100" />
+        												<DataGridTextColumn Header="Order #"
+        													Width="100" />
+        												<DataGridTextColumn Header="Customer/ Vendor Name"
+        													Width="*"
+        													MinWidth="200" />
+        												<DataGridTextColumn Header="Qty"
+        													Width="70" />
+        												<DataGridTextColumn Header="Unit Price"
+        													Width="110" />
+        												<DataGridTextColumn Header="Order Date"
+        													Width="90" />
+        												<DataGridTextColumn Header="Order Status"
+        													Width="85" />
+        												<DataGridTextColumn Header="Order Total"
+        													Width="85" />
+        												<DataGridTextColumn Header="Sub-Total"
+        													Width="85" />
+        											</dataGridControl:DataGridControl.Columns>
+        											<CheckBox Margin="0,0,0,10.516"
+        												HorizontalAlignment="Left"
+        												Content="CheckBox" />
+        											<CheckBox Margin="0,0,0,10.516"
+        												HorizontalAlignment="Left"
+        												Content="CheckBox" />
+        											<CheckBox Margin="0,0,0,10.516"
+        												HorizontalAlignment="Left"
+        												Content="CheckBox" />
+        										</dataGridControl:DataGridControl>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemCustom"
+        							Header="Custom"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentCustom">
+        								<GroupBox x:Name="gbCustomField"
+        									Height="190"
+        									Margin="10"
+        									VerticalAlignment="Top">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblCustomField"
+        											Style="{DynamicResource GroupboxTextBlock}"
+        											Text="Custom Field"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdgbContentCustomField"
+        										Margin="0,4,0,0">
+        										<Grid.RowDefinitions>
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="30" />
+        										</Grid.RowDefinitions>
+        										<Grid.ColumnDefinitions>
+        											<ColumnDefinition Width="110" />
+        											<ColumnDefinition Width="0.5*" />
+        											<ColumnDefinition Width="110" />
+        											<ColumnDefinition Width="0.5*" />
+        										</Grid.ColumnDefinitions>
+        										<TextBlock x:Name="txtblCustom1"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 1:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom1"
+        											Grid.Column="1"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom2"
+        											Grid.Row="1"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 2:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom2"
+        											Grid.Row="1"
+        											Grid.Column="1"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom3"
+        											Grid.Row="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 3:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom3"
+        											Grid.Row="2"
+        											Grid.Column="1"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom4"
+        											Grid.Row="3"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 4:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom4"
+        											Grid.Row="3"
+        											Grid.Column="1"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom5"
+        											Grid.Column="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 5:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom5"
+        											Grid.Column="4"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom6"
+        											Grid.Row="1"
+        											Grid.Column="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 6:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom6"
+        											Grid.Row="1"
+        											Grid.Column="4"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom7"
+        											Grid.Row="2"
+        											Grid.Column="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 7:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom7"
+        											Grid.Row="2"
+        											Grid.Column="4"
+        											Margin="0,2,30,2"
+        											FontSize="12"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<TextBlock x:Name="txtblCustom8"
+        											Grid.Row="3"
+        											Grid.Column="2"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Style="{DynamicResource TextBlockNormal}"
+        											Text="Custom 8:"
+        											TextWrapping="NoWrap" />
+        										<TextBox x:Name="txtCustom8"
+        											Grid.Row="3"
+        											Grid.Column="4"
+        											Margin="0,2,30,2"
+        											Padding="2,0,2,0"
+        											TextWrapping="NoWrap" />
+        										<Rectangle x:Name="LineCusomField"
+        											Grid.Row="4"
+        											Grid.ColumnSpan="4"
+        											Height="1"
+        											Margin="10,0"
+        											HorizontalAlignment="Stretch"
+        											VerticalAlignment="Center"
+        											Fill="{DynamicResource GroupboxBorder}" />
+        										<Button x:Name="btnDefineField"
+        											Grid.Row="7"
+        											Grid.ColumnSpan="4"
+        											Width="140"
+        											HorizontalAlignment="Center"
+        											FontSize="12">
+        											<StackPanel x:Name="stkpBtnDefineField"
+        												HorizontalAlignment="Center"
+        												VerticalAlignment="Center"
+        												Orientation="Horizontal">
+        												<Image x:Name="imgDefineField"
+        													Width="15"
+        													Visibility="Collapsed" />
+        												<TextBlock x:Name="txtblDefineField"
+        													Margin="0"
+        													VerticalAlignment="Center"
+        													Style="{DynamicResource ButtonTextBlock}"
+        													Text="Define Field"
+        													TextWrapping="NoWrap" />
+        											</StackPanel>
+        										</Button>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemWeb"
+        							Header="Web"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentWeb">
+        								<TabControl x:Name="TabWeb"
+        									Margin="10"
+        									TabStripPlacement="Bottom">
+        									<TabItem x:Name="tabitemOverview"
+        										Header="Overview">
+        										<Grid x:Name="grdContentOverview">
+        											<dataGridControl:DataGridControl x:Name="dtgrdOverview"
+        												Margin="5"
+        												IsSynchronizedWithCurrentItem="True"
+        												Style="{DynamicResource DatagridWithRowHeader}">
+        												<dataGridControl:DataGridControl.Columns>
+        													<DataGridTextColumn Header="What's Included"
+        														Width="*" />
+        													<DataGridTextColumn Header="Specifications"
+        														Width="*" />
+        													<DataGridTextColumn Header="Product Features"
+        														Width="*" />
+        												</dataGridControl:DataGridControl.Columns>
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        											</dataGridControl:DataGridControl>
+        										</Grid>
+        									</TabItem>
+        									<TabItem x:Name="tabitemSpecifications"
+        										Header="Specifications">
+        										<Grid x:Name="grdContentSpecifications">
+        											<dataGridControl:DataGridControl x:Name="dtgrdSpecifications"
+        												Margin="5"
+        												IsSynchronizedWithCurrentItem="True"
+        												Style="{DynamicResource DatagridWithRowHeader}">
+        												<dataGridControl:DataGridControl.Columns>
+        													<DataGridTextColumn Header="Category"
+        														Width="100" />
+        													<DataGridTextColumn Header="Specs"
+        														Width="100" />
+        													<DataGridTextColumn Header="Details"
+        														Width="*" />
+        													<DataGridTextColumn Header="Description"
+        														Width="*" />
+        												</dataGridControl:DataGridControl.Columns>
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        											</dataGridControl:DataGridControl>
+        										</Grid>
+        									</TabItem>
+        									<TabItem x:Name="tabitemAccessoriesSuggested"
+        										Header="Accessories &amp; Suggested">
+        										<Grid x:Name="grdContentAccessoriesSuggested">
+        											<dataGridControl:DataGridControl x:Name="dtgrdAccessoriesSuggested"
+        												Margin="5"
+        												IsSynchronizedWithCurrentItem="True"
+        												Style="{DynamicResource DatagridWithRowHeader}">
+        												<dataGridControl:DataGridControl.Columns>
+        													<DataGridTextColumn Header=""
+        														Width="100" />
+        													<DataGridTextColumn Header="Details"
+        														Width="*" />
+        													<DataGridTextColumn Header="Price"
+        														Width="70" />
+        												</dataGridControl:DataGridControl.Columns>
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        												<CheckBox HorizontalAlignment="Left"
+        													VerticalAlignment="Top"
+        													Content="CheckBox" />
+        											</dataGridControl:DataGridControl>
+        										</Grid>
+        									</TabItem>
+        									<TabItem x:Name="tabitemReturnPolicy"
+        										Header="Return Policy">
+        										<Grid x:Name="grdContentReturnPolicy">
+        											<TextBox x:Name="txtItemReturnPolicy"
+        												Margin="10"
+        												VerticalContentAlignment="Top"
+        												Text="Only defective exchanges for identical item within 30 days of purchase permitted on this product. After 30 days, please contact the manufacturer at: 1.800.788.2878   .Only defective exchanges for identical item within 30 days of purchase permitted on this product. All returned products will be thoroughly inspected and a determination will be made if eligibility and conforming requirements are met. Please verify the product you are returning meets the below guidelines and qualifies for return to avoid any delay in, or denial of, processing your return. If a non-conforming product is accepted for return CircuitCity.com reserves the right to charge a restocking fee up to 25% at CircuitCity.com's sole discretion. Return processing may take up to 5 business days from the time your product is received."
+        												TextWrapping="Wrap" />
+        										</Grid>
+        									</TabItem>
+        								</TabControl>
+        							</Grid>
+        						</TabItem>
+        						<TabItem x:Name="tabitemUOM"
+        							Header="UOM"
+        							Visibility="Collapsed">
+        							<Grid x:Name="grdContentUOM">
+        								<GroupBox x:Name="gbStandardUnitOfMeasure"
+        									Margin="10"
+        									BorderBrush="#FFEA4016">
+        									<GroupBox.Header>
+        										<TextBlock x:Name="txtblExtraInfoUnitofMeasure1"
+        											FontSize="14"
+        											FontWeight="Bold"
+        											Foreground="White"
+        											Text="Standard Unit of Measure"
+        											TextWrapping="NoWrap" />
+        									</GroupBox.Header>
+        									<Grid x:Name="grdContentStandardUnitOfMeasure"
+        										Margin="0,4,0,0">
+        										<Grid.RowDefinitions>
+        											<RowDefinition Height="25" />
+        											<RowDefinition Height="*" />
+        											<RowDefinition Height="100" />
+        										</Grid.RowDefinitions>
+        										<TextBlock x:Name="txtblStandardUoM1"
+        											Grid.Row="0"
+        											Margin="10,0,0,0"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Center"
+        											Foreground="White"
+        											Text="Standard UoM:"
+        											TextWrapping="NoWrap" />
+        										<ComboBox x:Name="cmbStandardUoM1"
+        											Grid.Column="1"
+        											Width="100"
+        											Margin="115,2,0,2"
+        											HorizontalAlignment="Left"
+        											VerticalAlignment="Stretch"
+        											BorderBrush="Black"
+        											SelectedIndex="3">
+        											<ComboBoxItem x:Name="cmbItemStandardEach1"
+        												Content="each" />
+        											<ComboBoxItem x:Name="cmbItemStandardPc1"
+        												Content="pc" />
+        											<ComboBoxItem x:Name="cmbItemStandardCase1"
+        												Content="case" />
+        											<ComboBoxItem x:Name="cmbItemStandardPack1"
+        												Content="pack" />
+        										</ComboBox>
+        										<GroupBox x:Name="gbSalesUOM"
+        											Grid.Row="1"
+        											Margin="10,10,10,0"
+        											BorderBrush="#FFEA4016">
+        											<GroupBox.Header>
+        												<TextBlock x:Name="txtblSalesUOM"
+        													FontSize="14"
+        													FontWeight="Bold"
+        													Foreground="White"
+        													Text="Sales UOM"
+        													TextWrapping="NoWrap" />
+        											</GroupBox.Header>
+        											<Grid x:Name="grdSalesUOM"
+        												Margin="0,4,0,0">
+        												<dataGridControl:DataGridControl x:Name="dtgrdSalesUOM"
+        													Margin="5">
+        													<dataGridControl:DataGridControl.Columns>
+        														<DataGridTextColumn Header="Sales UoM"
+        															Width="100" />
+        														<DataGridTextColumn Header="Conversion"
+        															Width="100" />
+        														<DataGridTextColumn Header="Barcode"
+        															Width="*" />
+        													</dataGridControl:DataGridControl.Columns>
+        													<CheckBox HorizontalAlignment="Left"
+        														VerticalAlignment="Top"
+        														Content="CheckBox" />
+        													<CheckBox HorizontalAlignment="Left"
+        														VerticalAlignment="Top"
+        														Content="CheckBox" />
+        													<CheckBox HorizontalAlignment="Left"
+        														VerticalAlignment="Top"
+        														Content="CheckBox" />
+        													<CheckBox HorizontalAlignment="Left"
+        														VerticalAlignment="Top"
+        														Content="CheckBox" />
+        												</dataGridControl:DataGridControl>
+        												<Grid Margin="31,25,7,5">
+        													<Grid.ColumnDefinitions>
+        														<ColumnDefinition Width="0.163*" />
+        														<ColumnDefinition Width="0.163*" />
+        														<ColumnDefinition Width="0.674*" />
+        													</Grid.ColumnDefinitions>
+        													<Grid.RowDefinitions>
+        														<RowDefinition Height="30" />
+        														<RowDefinition Height="30" />
+        														<RowDefinition Height="30" />
+        														<RowDefinition Height="30" />
+        													</Grid.RowDefinitions>
+        													<ComboBox x:Name="cmbSalesUoM_Copy"
+        														BorderBrush="{x:Null}"
+        														SelectedIndex="1">
+        														<ComboBoxItem x:Name="cmbItemSalesEach1"
+        															Content="each" />
+        														<ComboBoxItem x:Name="cmbItemSalesPc1"
+        															Content="pc" />
+        														<ComboBoxItem x:Name="cmbItemSalesCase1"
+        															Content="case" />
+        														<ComboBoxItem x:Name="cmbItemSalesPack1"
+        															Content="pack" />
+        													</ComboBox>
+        													<TextBlock Grid.Column="1"
+        														Margin="5,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Foreground="Black"
+        														Text="20/ Pack"
+        														TextWrapping="Wrap" />
+        													<TextBlock Grid.Column="2"
+        														Margin="5,0,0,0"
+        														HorizontalAlignment="Left"
+        														VerticalAlignment="Center"
+        														Foreground="Black"
+        														Text="8935015202762"
+        														TextWrapping="Wrap" />
+        												</Grid>
+        											</Grid>
+        										</GroupBox>
+        										<GroupBox x:Name="gbPurchaseOrderUOM"
+        											Grid.Row="2"
+        											Width="325"
+        											Margin="10"
+        											HorizontalAlignment="Left"
+        											BorderBrush="#FFEA4016">
+        											<GroupBox.Header>
+        												<TextBlock x:Name="txtblPurchaseOrderUOM"
+        													FontSize="14"
+        													FontWeight="Bold"
+        													Foreground="White"
+        													Text="PO UOM"
+        													TextWrapping="NoWrap" />
+        											</GroupBox.Header>
+        											<Grid x:Name="grdPurchaseOrderUOM"
+        												Margin="0,4,0,0">
+        												<Grid.RowDefinitions>
+        													<RowDefinition Height="25" />
+        													<RowDefinition Height="25" />
+        												</Grid.RowDefinitions>
+        												<Grid.ColumnDefinitions>
+        													<ColumnDefinition Width="100" />
+        													<ColumnDefinition />
+        												</Grid.ColumnDefinitions>
+        												<TextBlock x:Name="txtblPurchasingUoM3"
+        													Margin="10,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="Purchase UoM:"
+        													TextWrapping="NoWrap" />
+        												<ComboBox x:Name="cmbPurchasingUoM1"
+        													Grid.Column="1"
+        													Width="100"
+        													Margin="0,2"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Stretch"
+        													BorderBrush="Black"
+        													SelectedIndex="1">
+        													<ComboBoxItem x:Name="cmbItemPurchasingEach1"
+        														Content="each" />
+        													<ComboBoxItem x:Name="cmbItemPurchasingPc1"
+        														Content="pc" />
+        													<ComboBoxItem x:Name="cmbItemPurchasingCase1"
+        														Content="case" />
+        													<ComboBoxItem x:Name="cmbItemPurchasingPack1"
+        														Content="pack" />
+        												</ComboBox>
+        												<TextBlock x:Name="txtblPurchasingConversion1"
+        													Grid.Row="1"
+        													Margin="10,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="Conversion:"
+        													TextWrapping="NoWrap" />
+        												<TextBox x:Name="txtPurchasingConversion1"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Width="50"
+        													Margin="0,2"
+        													HorizontalAlignment="Left"
+        													HorizontalContentAlignment="Right"
+        													BorderBrush="Black"
+        													Padding="2,0,2,0" />
+        												<TextBlock x:Name="txtblPurchasingConversionEC1"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Margin="60,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="pcs. ="
+        													TextWrapping="NoWrap" />
+        												<TextBox x:Name="txtPurchasingConversionEC1"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Width="50"
+        													Margin="105,2,0,2"
+        													HorizontalAlignment="Left"
+        													HorizontalContentAlignment="Right"
+        													BorderBrush="Black"
+        													Padding="2,0,2,0" />
+        												<TextBlock x:Name="txtblPurchasingConversionPacks1"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Margin="166,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="pack"
+        													TextWrapping="NoWrap" />
+        											</Grid>
+        										</GroupBox>
+        										<GroupBox x:Name="gbIngredienUOM"
+        											Grid.Row="2"
+        											Width="325"
+        											Margin="10"
+        											HorizontalAlignment="Right"
+        											BorderBrush="#FFEA4016">
+        											<GroupBox.Header>
+        												<TextBlock x:Name="txtblIngredienUOM"
+        													FontSize="14"
+        													FontWeight="Bold"
+        													Foreground="White"
+        													Text="Ingredien UOM"
+        													TextWrapping="NoWrap" />
+        											</GroupBox.Header>
+        											<Grid x:Name="grdIngredienUOM"
+        												Margin="0,4,0,0">
+        												<Grid.RowDefinitions>
+        													<RowDefinition Height="25" />
+        													<RowDefinition Height="25" />
+        												</Grid.RowDefinitions>
+        												<Grid.ColumnDefinitions>
+        													<ColumnDefinition Width="100" />
+        													<ColumnDefinition />
+        												</Grid.ColumnDefinitions>
+        												<TextBlock x:Name="txtblIngredientUoM_Copy"
+        													Margin="10,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="Ingredient UoM:"
+        													TextWrapping="NoWrap" />
+        												<ComboBox x:Name="cmbIngredientUoM_Copy"
+        													Grid.Column="1"
+        													Width="100"
+        													Height="21"
+        													Margin="0,2"
+        													HorizontalAlignment="Left"
+        													BorderBrush="Black"
+        													SelectedIndex="1">
+        													<ComboBoxItem Content="Ounce" />
+        													<ComboBoxItem Content="Spoon" />
+        												</ComboBox>
+        												<TextBlock x:Name="txtblIngredientConversion_Copy"
+        													Grid.Row="6"
+        													Margin="10,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="Conversion:"
+        													TextWrapping="NoWrap" />
+        												<TextBox x:Name="txtIngredientConversion_Copy"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Width="50"
+        													Height="21"
+        													Margin="0,2"
+        													HorizontalAlignment="Left"
+        													HorizontalContentAlignment="Right"
+        													BorderBrush="Black"
+        													Padding="2,0,2,0" />
+        												<TextBlock x:Name="txtblIngredientConversionEC_Copy"
+        													Grid.Row="6"
+        													Grid.Column="1"
+        													Margin="60,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="pcs. ="
+        													TextWrapping="NoWrap" />
+        												<TextBox x:Name="txtIngredientConversionEC_Copy"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Width="50"
+        													Height="21"
+        													Margin="105,2,0,2"
+        													HorizontalAlignment="Left"
+        													HorizontalContentAlignment="Right"
+        													BorderBrush="Black"
+        													Padding="2,0,2,0" />
+        												<TextBlock x:Name="txtblIngredientConversionPacks_Copy"
+        													Grid.Row="1"
+        													Grid.Column="1"
+        													Margin="166,0,0,0"
+        													HorizontalAlignment="Left"
+        													VerticalAlignment="Center"
+        													Foreground="White"
+        													Text="pack"
+        													TextWrapping="NoWrap" />
+        											</Grid>
+        										</GroupBox>
+        									</Grid>
+        								</GroupBox>
+        							</Grid>
+        						</TabItem>
+        					</cpcTabControl:CPCTabControl>
+        				</Grid>
+        			</Grid>
+        		</Grid>
+        	</Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>

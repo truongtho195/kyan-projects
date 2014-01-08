@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Visibility x:Key="HorizontalAlignment">Visible</Visibility>
+    <!-- Resource dictionary entries should be defined here. -->
+    <HorizontalAlignment x:Key="DatagridRightHorizontalAlignment">Right</HorizontalAlignment>
+    <HorizontalAlignment x:Key="DatagridCenterHorizontalAlignment">Center</HorizontalAlignment>
+    <HorizontalAlignment x:Key="DatagridLeftHorizontalAlignment">Left</HorizontalAlignment>
+    <Visibility x:Key="VerticaltalAlignment">Visible</Visibility>
+    <VerticalAlignment x:Key="DatagridTopVerticalAlignment">Top</VerticalAlignment>
+    <VerticalAlignment x:Key="DatagridCenterVerticalAlignment">Center</VerticalAlignment>
+    <VerticalAlignment x:Key="DatagridBottomVerticalAlignment">Bottom</VerticalAlignment>
+</ResourceDictionary>

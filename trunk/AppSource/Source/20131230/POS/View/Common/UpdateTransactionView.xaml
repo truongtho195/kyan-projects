@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="CPC.POS.View.UpdateTransactionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             Width="480"
+             Height="301.107"
+             mc:Ignorable="d">
+    <UserControl.Resources />
+    <Grid x:Name="grdUpdateTransaction"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentUpdateTransaction"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdgbItemInformation"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="69.107" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="txtblCategory"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource PD_Category}"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblBindingCategory"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding SelectedProductModel.CategoryName}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="GridBox" />
+                <TextBlock x:Name="txtblVendor"
+                           Grid.Row="1"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C134}"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblBindingVendor"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding SelectedProductModel.VendorName, Mode=OneWay}"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblDescription"
+                           Grid.Row="2"
+                           Margin="10,14.9,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C138}"
+                           TextWrapping="NoWrap" />
+                <Border x:Name="brdDescription"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Margin="0,2,10,2"
+                        Background="White"
+                        BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                        BorderThickness="1">
+                    <ScrollViewer x:Name="slDescription"
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="txtblBindingDescription"
+                                   Margin="5"
+                                   Foreground="Black"
+                                   Style="{DynamicResource TextBlockNormal}"
+                                   Text="{Binding SelectedProductModel.Description, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
+                    </ScrollViewer>
+                </Border>
+                <TextBlock x:Name="txtblAttribute"
+                           Grid.Column="2"
+                           Margin="0,0,10,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C116}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblBindingAttribute"
+                           Grid.Column="3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding SelectedProductModel.Attribute, Mode=OneWay}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblSize"
+                           Grid.Row="1"
+                           Grid.Column="2"
+                           Margin="0,0,10,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource C117}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblBindingSize"
+                           Grid.Row="1"
+                           Grid.Column="3"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{Binding SelectedProductModel.Size, Mode=OneWay}"
+                           TextWrapping="NoWrap"
+                           d:LayoutOverrides="Height" />
+                <TextBlock x:Name="txtblEnter"
+                           Grid.Row="3"
+                           Grid.ColumnSpan="4"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource SO_TextBlock_Message_UpdatePrice}"
+                           TextWrapping="NoWrap" />
+                <TextBlock x:Name="txtblNewPrice"
+                           Grid.Row="4"
+                           Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           Style="{DynamicResource TextBlockNormal}"
+                           Text="{DynamicResource TextBlock_NewPrice}"
+                           TextWrapping="NoWrap" />
+                <cpcTextBox:TextBoxMoney x:Name="txtNewPrice"
+                                         Grid.Row="4"
+                                         Grid.Column="1"
+                                         Width="100"
+                                         Margin="0,2"
+                                         HorizontalAlignment="Left"
+                                         HorizontalContentAlignment="Right"
+                                         ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                         CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                         Padding="2,0,2,0"
+                                         TextWrapping="NoWrap"
+                                         Value="{Binding NewPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Behaviors>
+                        <cpcBehavior:AutoFocusBehavior />
+                    </i:Interaction.Behaviors>
+                </cpcTextBox:TextBoxMoney>
+                    <CheckBox x:Name="cbUpdate"
+                          Grid.Row="6"
+                          Grid.ColumnSpan="2"
+                          Margin="10,0,0,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Content="{DynamicResource SO_TextBlock_Message_UpdateProductRegularPrice}"
+                          IsChecked="{Binding IsUpdateProductPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          d:LayoutOverrides="Width, Height" />
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnUpdate"
+                    Command="{Binding UpdateCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnUpdate"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgUpdate"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Update}" />
+                    <TextBlock x:Name="txtblUpdate"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource TextBlock_Update}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnDiscard"
+                    Command="{Binding DiscardCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnDiscard"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgDiscard"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource TextBlock_Discard}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

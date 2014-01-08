@@ -1,0 +1,26 @@
+﻿<Application x:Class="POSApplicationServer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="View\ApplicationServer.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--Load Brushes-->
+                <ResourceDictionary Source="Dictionary/Brushes/GreyImageResources.xaml" />
+
+                <!--Custom Control Style-->
+
+
+                <!--Base Control Style-->
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/ButtonStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/CheckboxStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/ComboboxStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/GroupBoxStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/TabControlStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Dictionary/BaseControlStyle/TextBoxStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </Application.Resources>
+</Application>

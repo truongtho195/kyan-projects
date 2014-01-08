@@ -1,0 +1,51 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
+	<!-- Resource dictionary entries should be defined here. -->
+	<Style  TargetType="{x:Type RadioButton}">
+		<Setter Property="Foreground" Value="{DynamicResource ChechboxRadiobutton_Foreground}"/>
+		
+		
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RadioButton}">
+					<BulletDecorator Background="Transparent">
+						<BulletDecorator.Bullet>
+							<Grid HorizontalAlignment="Left" Height="13" VerticalAlignment="Top" Width="13">
+								<Ellipse x:Name="bg" Stroke="{DynamicResource ChechboxRadiobutton_Border}" Fill="{DynamicResource ChechboxRadiobutton_Background}"/>
+								<Ellipse x:Name="CheckIcon" Width="5" Height="5" Fill="{DynamicResource ChechboxRadiobuttonCheckIcon_Background}" Visibility="Collapsed"/>
+							</Grid>
+						</BulletDecorator.Bullet>
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+					</BulletDecorator>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Stroke" TargetName="bg" Value="#FFFF7F00"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter Property="Visibility" TargetName="CheckIcon" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="Padding" Value="5,0,0,0"/>
+	</Style>
+	<Style x:Key="CheckRadioFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	
+	
+</ResourceDictionary>

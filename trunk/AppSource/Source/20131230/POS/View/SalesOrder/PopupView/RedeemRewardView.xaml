@@ -1,0 +1,297 @@
+﻿<UserControl x:Class="CPC.POS.View.RedeemRewardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:CPC_Converter="clr-namespace:CPC.Converter"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             x:Name="UserControl"
+             Width="420"
+             Height="370"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+
+        <!--  ListviewStart  -->
+
+        <!--  #Region Style  -->
+        <Style x:Key="ButtonRowDetailDataTemplateOrder"
+               TargetType="{x:Type Button}">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid"
+                              Width="Auto"
+                              Height="Auto"
+                              Background="#02FFFFFF">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused"
+                                     Value="true" />
+                            <Trigger Property="IsMouseOver"
+                                     Value="True" />
+                            <Trigger Property="IsPressed"
+                                     Value="True" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                <Setter TargetName="grid"
+                                        Property="Opacity"
+                                        Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  #Region DataTemplate  -->
+        <DataTemplate x:Key="RowDetailRedeemRewardDataTemplate">
+            <Grid x:Name="grdTemplateCustomer"
+                  Height="Auto"
+                  MinHeight="21"
+                  Width="Auto"
+                  Margin="0"
+                  Background="#FFFFF2F2">
+                <TextBlock x:Name="txtRequire"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Foreground="Red"
+                           TextWrapping="Wrap"
+                           Text="{Binding RequireReward,
+                                          Mode=OneWay,
+                                          UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </DataTemplate>
+        <Style x:Key="DataGridControlRowDetailStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen,
+                                                                                                                         ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical},
+                                                                                                                         Converter={x:Static DataGrid.RowDetailsScrollingConverter},
+                                                                                                                         RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                    <DataGridDetailsPresenter.Visibility>
+                                        <Binding Mode="OneWay"
+                                                 Path="IsAccepted">
+                                            <Binding.Converter>
+                                                <CPC_Converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </DataGridDetailsPresenter.Visibility>
+                                </DataGridDetailsPresenter>
+
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="DGR_Border"
+                                     Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="DGR_Border"
+                                        Property="Background"
+                                        Value="{DynamicResource DatagridRow_IsMouseOver_Background}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+
+
+
+
+
+
+    </UserControl.Resources>
+    <Grid x:Name="grdRedeemReward"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentRedeemReward"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentRedeemReward"
+                  Margin="10">
+            	<Grid.RowDefinitions>
+            		<RowDefinition Height="Auto" MinHeight="1"/>
+            		<RowDefinition/>
+            	</Grid.RowDefinitions>
+                <cpcDataGrid:DataGridControl x:Name="dtgrdSerialNoListRight"
+                                             VerticalAlignment="Stretch"
+                                             AutoGenerateColumns="False"
+                                             CanUserAddRows="False"
+                                             CanUserDeleteRows="False"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ItemsSource="{Binding GuestRewardCollection}"
+                                             RowDetailsTemplate="{DynamicResource RowDetailRedeemRewardDataTemplate}"
+                                             RowDetailsVisibilityMode="Visible"
+                                             RowStyle="{StaticResource DataGridControlRowDetailStyle}"
+                                             SelectedItem="{Binding SelectedReward,
+                                                                    Mode=TwoWay,
+                                                                    UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{DynamicResource DatagridWithoutRowHeader}"
+                                             VisibilityNavigationBar="Collapsed" Grid.Row="2" Margin="0,0.2,0,0" SnapsToDevicePixels="True">
+                    <cpcDataGrid:DataGridControl.Columns>
+                        <DataGridTemplateColumn MinWidth="20"
+                                                Header="#">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <RadioButton x:Name="rdChoice"
+                                                 Width="16"
+                                                 GroupName="Reward"
+                                                 IsChecked="{Binding IsChecked,
+                                                                     Mode=TwoWay,
+                                                                     UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsAccepted,
+                                                                     Mode=OneWay}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*"
+                                            MinWidth="120"
+                                            Binding="{Binding RewardName}"
+                                            
+                                            IsReadOnly="True">
+                        	<DataGridTextColumn.Header>
+                        		<TextBlock Text="{DynamicResource TextBlock_Program}"                 	/>
+							</DataGridTextColumn.Header>             
+											</DataGridTextColumn>
+                        <DataGridTextColumn Width="120"
+                                            Binding="{Binding TotalRewardDisplay}"
+                                            
+                                            IsReadOnly="True">
+                        	<DataGridTextColumn.Header>
+                        		<TextBlock Text="{DynamicResource TextBlock_NewTotal}"                 	/>
+							</DataGridTextColumn.Header>             
+											</DataGridTextColumn>
+                    </cpcDataGrid:DataGridControl.Columns>
+                </cpcDataGrid:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnApply"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding ApplyCommand}">
+                <StackPanel x:Name="stkpBtnApply"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgApply"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblApply"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource TextBlock_Apply}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnRedeemLater"
+                    Width="100"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding RedeemCommand}">
+                <StackPanel x:Name="stkpBtnRedeemLater"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgRedeemLater"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Later}" />
+                    <TextBlock x:Name="txtblRedeem"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource TextBlock_RedeemLater}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="CPC.POS.View.POSOPaymentHistoryDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             Width="498"
+             Height="376"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="NumberTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="grdPOSOPaymentHistoryDetail"
+          d:LayoutOverrides="Height">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentPOSOPaymentHistoryDetail"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdDatagridTotalPayment"
+                  Margin="10,10.2,10,10">
+                <cpcDataGrid:DataGridControl x:Name="dtgrdPayment"
+                                             AutoGenerateColumns="False"
+                                             CanUserAddRows="False"
+                                             CanUserDeleteRows="False"
+                                             GridLinesVisibility="All"
+                                             IsReadOnly="True"
+                                             IsSynchronizedWithCurrentItem="True"
+                                             NumberOfItems="{Binding Totals}"
+                                             ItemsSource="{Binding PaymentDetailCollection}"
+                                             RowHeight="30"
+                                             Style="{DynamicResource DatagridWithRowHeader}">
+                    <cpcDataGrid:DataGridControl.Columns>
+                        <DataGridTemplateColumn Width="120" Header="Method" CellStyle="{DynamicResource DataGridCellDisablePayment}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="btnCash"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            Style="{DynamicResource ButtonDatagridPayment}">
+                                        <StackPanel x:Name="stkpCash"
+                                                    Orientation="Horizontal">
+                                            <Rectangle x:Name="imgCash"
+                                                       Width="28"
+                                                       Height="28">
+                                                <Rectangle.Fill>
+                                                    <Binding 
+                                                             Mode="OneWay"
+                                                             Path=".">
+                                                        <!--  Payment methods  -->
+                                                        <Binding.Converter>
+                                                            <converter:PaymentButtonIconConverter />
+                                                        </Binding.Converter>
+                                                    </Binding>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <TextBlock x:Name="txtblCash"
+                                                       Margin="5,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource ButtonDatagridTextBlockPayment}"
+                                                       Text="{Binding PaymentMethod}"
+                                                       TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Width="*"
+                                            ElementStyle="{StaticResource NumberTextBlock}"
+                                            Binding="{Binding Paid, ConverterCulture={x:Static local:Define.ConverterCulture}, Mode=OneWay, StringFormat={x:Static local:Define.CurrencyFormat}}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource SO_TextBlock_TotalAmount}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="*"
+                                            ElementStyle="{StaticResource NumberTextBlock}"
+                                            Binding="{Binding Tip, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.CurrencyFormat}}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource SO_TextBlock_Tip}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="100"
+                                            Binding="{Binding Reference, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource SO_TextBlock_RefNum}" />
+                            </DataGridTextColumn.Header>
+                        </DataGridTextColumn>
+                    </cpcDataGrid:DataGridControl.Columns>
+                </cpcDataGrid:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Height="1"
+                   Margin="2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Bottom"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Width="80"
+                    Height="28"
+                    Command="{Binding OkCommand}">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

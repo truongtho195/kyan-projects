@@ -1,0 +1,1117 @@
+﻿<UserControl x:Class="CPC.POS.View.AttachmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cmd="clr-namespace:CPC.Toolkit.Command"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:model="clr-namespace:CPC.POS.Model"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:xceedToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             Background="{DynamicResource UserControlBackground}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:PermissionConverter x:Key="permissionConverter" />
+        <!--  Const  -->
+        <sys:Int32 x:Key="FileNameMaxLength">250</sys:Int32>
+        <sys:Int32 x:Key="FolderNameMaxLength">50</sys:Int32>
+        <!--  File's Images  -->
+        <BitmapImage x:Key="FileImage"
+                     UriSource="/Image\FileImages\FileImage.png" />
+        <sys:String x:Key="JpgExtension">.jpg</sys:String>
+        <BitmapImage x:Key="JpgImage"
+                     UriSource="/Image\FileImages\JpgImage.png" />
+        <sys:String x:Key="JpegExtension">.jpeg</sys:String>
+        <BitmapImage x:Key="JpegImage"
+                     UriSource="/Image\FileImages\JpgImage.png" />
+        <sys:String x:Key="BmpExtension">.bmp</sys:String>
+        <BitmapImage x:Key="BmpImage"
+                     UriSource="/Image\FileImages\BmpImage.png" />
+        <sys:String x:Key="GifExtension">.Gif</sys:String>
+        <BitmapImage x:Key="GifImage"
+                     UriSource="/Image\FileImages\GifImage.png" />
+        <sys:String x:Key="PngExtension">.png</sys:String>
+        <BitmapImage x:Key="PngImage"
+                     UriSource="/Image\FileImages\PngImage.png" />
+        <sys:String x:Key="TifExtension">.tif</sys:String>
+        <BitmapImage x:Key="TifImage"
+                     UriSource="/Image\FileImages\TifImage.png" />
+        <sys:String x:Key="TiffExtension">.tiff</sys:String>
+        <BitmapImage x:Key="TiffImage"
+                     UriSource="/Image\FileImages\TifImage.png" />
+        <sys:String x:Key="DocExtension">.doc</sys:String>
+        <BitmapImage x:Key="DocImage"
+                     UriSource="/Image\FileImages\DocImage.png" />
+        <sys:String x:Key="DocxExtension">.docx</sys:String>
+        <BitmapImage x:Key="DocxImage"
+                     UriSource="/Image\FileImages\DocImage.png" />
+        <sys:String x:Key="PptExtension">.ppt</sys:String>
+        <BitmapImage x:Key="PptImage"
+                     UriSource="/Image\FileImages\PptImage.png" />
+        <sys:String x:Key="PptxExtension">.pptx</sys:String>
+        <BitmapImage x:Key="PptxImage"
+                     UriSource="/Image\FileImages\PptImage.png" />
+        <sys:String x:Key="XlsExtension">.xls</sys:String>
+        <BitmapImage x:Key="XlsImage"
+                     UriSource="/Image\FileImages\XlsImage.png" />
+        <sys:String x:Key="XlsxExtension">.xlsx</sys:String>
+        <BitmapImage x:Key="XlsxImage"
+                     UriSource="/Image\FileImages\XlsImage.png" />
+        <sys:String x:Key="PdfExtension">.pdf</sys:String>
+        <BitmapImage x:Key="PdfImage"
+                     UriSource="/Image\FileImages\PdfImage.png" />
+        <sys:String x:Key="RtfExtension">.rtf</sys:String>
+        <BitmapImage x:Key="RtfImage"
+                     UriSource="/Image\FileImages\FileImage.png" />
+        <sys:String x:Key="TxtExtension">.txt</sys:String>
+        <BitmapImage x:Key="TxtImage"
+                     UriSource="/Image\FileImages\TxtImage.png" />
+        <sys:String x:Key="RarExtension">.rar</sys:String>
+        <BitmapImage x:Key="RarImage"
+                     UriSource="/Image\FileImages\CompressImage.png" />
+        <sys:String x:Key="ZipExtension">.zip</sys:String>
+        <BitmapImage x:Key="ZipImage"
+                     UriSource="/Image\FileImages\CompressImage.png" />
+        <!--  FileDataGridRowStyle  -->
+        <ContextMenu x:Key="FileDataGridRowContextMenu">
+            <MenuItem Header="{DynamicResource A102}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cmd:EventToCommand Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource A103}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <cmd:EventToCommand Command="{Binding DataContext.OpenFileWithCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </MenuItem>
+        </ContextMenu>
+        <!--  HierarchicalDataTemplate  -->
+        <HierarchicalDataTemplate DataType="{x:Type model:base_VirtualFolderModel}"
+                                  ItemsSource="{Binding FolderCollection, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           Fill="{DynamicResource CloseFolder}" />
+                <TextBlock Margin="3,0,0,0"
+                           Text="{Binding FolderName, Mode=OneWay}"
+                           Style="{DynamicResource TreeviewItemTextBlock}" />
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+        <!--  FolderTreeviewItemStyle  -->
+        <Style x:Key="FolderTreeviewItemStyle"
+               TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Left" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="1,0,0,0" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource TreeViewItemFocusVisual}" />
+            <Setter Property="IsExpanded"
+                    Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  MinWidth="19" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ToggleButton x:Name="Expander"
+                                          Width="Auto"
+                                          Height="Auto"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          ClickMode="Press"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{StaticResource ExpandCollapseToggleStyle}" />
+                            <Border x:Name="Bd"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="true">
+                                <Grid>
+                                    <ContentPresenter x:Name="PART_Header"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      ContentSource="Header"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    <TextBox x:Name="textBoxFolderName"
+                                             Width="Auto"
+                                             Height="Auto"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             VerticalContentAlignment="Center"
+                                             IsVisibleChanged="TextBoxIsVisibleChanged"
+                                             Loaded="TextBoxLoaded"
+                                             MaxLength="{StaticResource FolderNameMaxLength}"
+                                             Text="{Binding Header.FolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}}"
+                                             TextWrapping="NoWrap"
+                                             Visibility="Collapsed"
+                                             FontSize="11"
+                                             FontFamily="Tahoma">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Enter"
+                                                        Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                            <KeyBinding Key="Esc"
+                                                        Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                        </TextBox.InputBindings>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="LostFocus">
+                                                <cmd:EventToCommand Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                </Grid>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded"
+                                     Value="false">
+                                <Setter TargetName="ItemsHost"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="HasItems"
+                                     Value="false">
+                                <Setter TargetName="Expander"
+                                        Property="Visibility"
+                                        Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsEdit}"
+                                         Value="true">
+                                <Setter TargetName="PART_Header"
+                                        Property="Visibility"
+                                        Value="Hidden" />
+                                <Setter TargetName="textBoxFolderName"
+                                        Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="FontFamily"
+                    Value="Tahoma" />
+            <Style.Triggers>
+                <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
+                         Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  FileDataGridRowStyle  -->
+        <Style x:Key="FileDataGridRowStyle"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="{Binding DataContext.AllowEditDocument, RelativeSource={RelativeSource AncestorType=DataGrid, Mode=FindAncestor}, Mode=OneWay}" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Mode=Self}}" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{x:Null}" />
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource FileDataGridRowContextMenu}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                          Visibility="{TemplateBinding DetailsVisibility}" />
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="DGR_Border"
+                                     Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="DGR_Border"
+                                        Property="Background"
+                                        Value="{DynamicResource DatagridRow_IsMouseOver_Background}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="FileCollectionCheckBoxHeaderTemplate">
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding Path=SelectedItem.IsCheckedAllFiles, ElementName=tvAttachment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource C178}"
+                       FontSize="11"
+                       FontFamily="Tahoma" />
+        </DataTemplate>
+        <DataTemplate x:Key="CreatedDateHeaderTemplate">
+            <TextBlock Text="{DynamicResource C159}"
+                       FontSize="11"
+                       FontFamily="Tahoma" />
+        </DataTemplate>
+        <DataTemplate x:Key="InFolderHeaderTemplate">
+            <TextBlock Text="{DynamicResource A104}"
+                       FontSize="11"
+                       FontFamily="Tahoma" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="grdAttachmentScannerSearch">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <Grid x:Name="grdAttachment">
+            <!--  Search  -->
+            <Grid x:Name="grdSearchAttachment"
+                  d:IsHidden="True">
+                <Grid.Visibility>
+                    <Binding Path="IsSearchMode"
+                             Mode="OneWay">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                        </Binding.Converter>
+                    </Binding>
+                </Grid.Visibility>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="22" />
+                </Grid.ColumnDefinitions>
+                <!--  Search  -->
+                <Grid x:Name="grdContentSearch"
+                      Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="87" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--  Control Search  -->
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,0,0">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblSearch"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="{DynamicResource C113}"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <xceedToolkit:WatermarkTextBox x:Name="txtSearch"
+                                                           Margin="10,2"
+                                                           VerticalContentAlignment="Center"
+                                                           KeyDown="WatermarkTextBoxKeyDown"
+                                                           Padding="20,0,2,0"
+                                                           Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                           TextWrapping="NoWrap"
+                                                           Watermark="{DynamicResource C135}" />
+                            <Rectangle x:Name="imgFind"
+                                       Width="20"
+                                       Margin="13,3,0,3"
+                                       HorizontalAlignment="Left"
+                                       Fill="{DynamicResource Find}" />
+                            <CheckBox Grid.Row="1"
+                                      Margin="10,5,0,0"
+                                      Content="  File name"
+                                      IsChecked="True"
+                                      IsEnabled="False" />
+                        </Grid>
+                    </GroupBox>
+                    <!--  Attachment DataGrid  -->
+                    <cpcDataGridToolkit:DataGridControl x:Name="dtgrdItemAttachSearch"
+                                                        Command="{Binding GetSearchResultCommand}"
+                                                        Grid.Row="1"
+                                                        Margin="10,10.2,0,10"
+                                                        AutoGenerateColumns="False"
+                                                        behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding OpenFileCommand}"
+                                                        behavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=Self}}"
+                                                        DisplayItems="{Binding NumberOfDisplayItems, Mode=OneWay}"
+                                                        Field="IsNew"
+                                                        IsReadOnly="True"
+                                                        ItemsSource="{Binding SearchResultCollection, Mode=OneWay}"
+                                                        NumberOfItems="{Binding FileSearchTotal, Mode=OneWay}"
+                                                        RowStyle="{StaticResource FileDataGridRowStyle}"
+                                                        Style="{DynamicResource DatagridWithRowHeader}">
+                        <cpcDataGridToolkit:DataGridControl.Columns>
+                            <DataGridTemplateColumn Width="300"
+                                                    HeaderTemplate="{StaticResource NameHeaderTemplate}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image x:Name="imageFile"
+                                                   Width="16"
+                                                   Height="16"
+                                                   VerticalAlignment="Center"
+                                                   Source="{StaticResource FileImage}" />
+                                            <TextBlock Margin="2,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding FileName, Mode=OneWay}" />
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource JpgExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource JpgImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource JpegExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource JpegImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource BmpExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource BmpImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource GifExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource GifImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource PngExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource PngImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource TifExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource TifImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource TiffExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource TiffImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource DocExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource DocImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource DocxExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource DocxImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource PptExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource PptImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource PptxExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource PptxImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource XlsExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource XlsImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource XlsxExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource XlsxImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource PdfExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource PdfImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource RtfExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource RtfImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource TxtExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource TxtImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource RarExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource RarImage}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                         Value="{StaticResource ZipExtension}">
+                                                <Setter TargetName="imageFile"
+                                                        Property="Source"
+                                                        Value="{StaticResource ZipImage}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding ParentFolder.FolderName, Mode=OneWay}"
+                                                Width="300"
+                                                HeaderTemplate="{StaticResource InFolderHeaderTemplate}" />
+                            <DataGridTemplateColumn Width="*"
+                                                    HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Right"
+                                                   Text="{Binding DateCreated, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </cpcDataGridToolkit:DataGridControl.Columns>
+                    </cpcDataGridToolkit:DataGridControl>
+                </Grid>
+                <Grid x:Name="grdBtnSearchBackNext"
+                      Grid.Column="1"
+                      Height="61"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="tglbtnSearchBack"
+                            Command="{Binding OpenOrCloseSearchCommand}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            Style="{DynamicResource ButtonSearch}">
+                        <Grid x:Name="grdtglbtnSearchBack1">
+                            <Path x:Name="pathBack1"
+                                  Width="7"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M9.9166667,11.666667 L6.499667,15.999667 9.9163337,19.666334"
+                                  RenderTransformOrigin="0.5,0.5"
+                                  Stretch="Fill"
+                                  Stroke="White"
+                                  StrokeThickness="2.5" />
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Grid>
+            <!--  Attachment  -->
+            <Grid x:Name="grdSubAttachment"
+                  Grid.Column="1">
+                <Grid.Visibility>
+                    <Binding Path="IsSearchMode"
+                             Mode="OneWay">
+                        <Binding.Converter>
+                            <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                        </Binding.Converter>
+                    </Binding>
+                </Grid.Visibility>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button x:Name="btnBarSearch"
+                        Command="{Binding OpenOrCloseSearchCommand}"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True"
+                        Style="{DynamicResource ButtonBarSearch}">
+                    <TextBlock x:Name="txtblShowSearch1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonBarSearchTextBlock}"
+                               Text="Search"
+                               TextWrapping="NoWrap">
+                        <TextBlock.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-90" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Button>
+                <Rectangle x:Name="grdSpliter"
+                           Grid.Column="1"
+                           Width="1"
+                           HorizontalAlignment="Left"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <!--  Attachment  -->
+                <Border x:Name="brdSubAttachment"
+                        Grid.Column="1"
+                        Margin="10"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1">
+                    <Grid x:Name="grdContentAttachment">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!--  TreeView Attachment  -->
+                        <Grid x:Name="grdLookIn"
+                              Margin="10,10,10,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!--  New Folder, Edit Folder, Delete Folder  -->
+                            <StackPanel x:Name="stkpBtnNewEditDeleteFolder"
+                                        Height="Auto"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Button x:Name="btnNewFolder"
+                                        Command="{Binding CreateFolderCommand}"
+                                        Width="60"
+                                        Height="20"
+                                        IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=CF100-01-06}">
+                                    <StackPanel x:Name="stkpBtnNewFolder"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgNewFolder"
+                                                   Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource AddFolder}" />
+                                        <TextBlock x:Name="txtblNewFolder"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource C140}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnEditFolder"
+                                        Command="{Binding EditFolderCommand}"
+                                        Width="60"
+                                        Height="20"
+                                        Margin="10,0,0,0"
+                                        IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=CF100-01-02}">
+                                    <StackPanel x:Name="stkpEditFolder"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgEditFolder"
+                                                   Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource EditFolder}" />
+                                        <TextBlock x:Name="txtblEditFolder"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource C141}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnDeleteFolder"
+                                        Command="{Binding DeleteFolderCommand}"
+                                        Width="60"
+                                        Height="20"
+                                        Margin="10,0,0,0"
+                                        IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=CF100-01-01}">
+                                    <StackPanel x:Name="stkpDeleteFolder"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgDeleteFolder"
+                                                   Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource DeleteFolder}" />
+                                        <TextBlock x:Name="txtblDeleteFolder"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource C177}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <!--  TreeView Attachment  -->
+                            <TreeView x:Name="tvAttachment"
+                                      Grid.Row="1"
+                                      ItemContainerStyle="{StaticResource FolderTreeviewItemStyle}"
+                                      ItemsSource="{Binding FolderCollection, Mode=OneWay}">
+                                <TreeView.InputBindings>
+                                    <KeyBinding Key="F2"
+                                                Command="{Binding DataContext.EditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                </TreeView.InputBindings>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <cmd:EventToCommand Command="{Binding SelectedItemChangedCommand}"
+                                                            CommandParameter="{Binding ElementName=tvAttachment}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TreeView>
+                        </Grid>
+                        <Rectangle x:Name="LineSpliter"
+                                   Width="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Right"
+                                   Fill="{DynamicResource Spilter_Line_Background}"
+                                   d:LayoutOverrides="GridBox" />
+                        <!--  DataGrid Attachment  -->
+                        <Grid x:Name="grdDatagrid"
+                              Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!--  Scan, Attach, Delete  -->
+                            <StackPanel x:Name="stkpBtnPopup"
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Orientation="Horizontal">
+                                <Button x:Name="btnScanPopup"
+                                        Command="{Binding ScanCommand}"
+                                        Width="80"
+                                        Height="28"
+                                        IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=CF100-01-03}">
+                                    <StackPanel x:Name="stkpBtnScanPopup"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgScanPopup"
+                                                   Width="18"
+                                                   Height="18"
+                                                   Fill="{DynamicResource Scan}" />
+                                        <TextBlock x:Name="txtblScanPopup"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource A100}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnAttachPopup"
+                                        Command="{Binding ImportFilesCommand}"
+                                        Width="80"
+                                        Height="28"
+                                        Margin="10,0,0,0">
+                                    <StackPanel x:Name="stkpBtnAttachPopup"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgAttachPopup"
+                                                   Width="19"
+                                                   Height="19"
+                                                   Fill="{DynamicResource Attachment}" />
+                                        <TextBlock x:Name="txtblAttachPopup"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource A101}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnDeletePopup"
+                                        Command="{Binding DeleteFilesCommand}"
+                                        Width="80"
+                                        Height="28"
+                                        Margin="10,0,0,0"
+                                        IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=CF100-01-04}">
+                                    <StackPanel x:Name="stkpBtnDeletePopup"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Orientation="Horizontal">
+                                        <Rectangle x:Name="imgDeletePopup"
+                                                   Width="19"
+                                                   Height="19"
+                                                   Fill="{DynamicResource Delete}" />
+                                        <TextBlock x:Name="txtblDeletePopup"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource ButtonTextBlock}"
+                                                   Text="{DynamicResource C177}"
+                                                   TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <cpcDataGridToolkit:DataGridControl x:Name="dtgrdItemAttach"
+                                                                Command="{Binding GetFilesCommand}"
+                                                                Grid.Row="1"
+                                                                Margin="10,10.2,10,10"
+                                                                AutoGenerateColumns="False"
+                                                                CanUserAddRows="False"
+                                                                CanUserDeleteRows="False"
+                                                                DisplayItems="{Binding NumberOfDisplayItems, Mode=OneWay}"
+                                                                Field="IsNew"
+                                                                ItemsSource="{Binding SelectedItem.FileCollection, Mode=OneWay, ElementName=tvAttachment}"
+                                                                NumberOfItems="{Binding SelectedItem.FileTotal, Mode=OneWay, ElementName=tvAttachment}"
+                                                                RowStyle="{StaticResource FileDataGridRowStyle}"
+                                                                Style="{DynamicResource DatagridWithRowHeader}">
+                                <cpcDataGridToolkit:DataGridControl.Columns>
+                                    <DataGridTemplateColumn Width="40"
+                                                            HeaderTemplate="{StaticResource FileCollectionCheckBoxHeaderTemplate}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="250"
+                                                            HeaderTemplate="{StaticResource NameHeaderTemplate}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image x:Name="imageFile"
+                                                           Width="16"
+                                                           Height="16"
+                                                           VerticalAlignment="Center"
+                                                           Source="{StaticResource FileImage}" />
+                                                    <TextBlock Margin="2,0,0,0"
+                                                               VerticalAlignment="Center"
+                                                               Text="{Binding FileName, Mode=OneWay}" />
+                                                </StackPanel>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource JpgExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource JpgImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource JpegExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource JpegImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource BmpExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource BmpImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource GifExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource GifImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PngExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PngImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TifExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TifImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TiffExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TiffImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource DocExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource DocImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource DocxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource DocxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PptExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PptImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PptxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PptxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource XlsExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource XlsImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource XlsxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource XlsxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PdfExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PdfImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource RtfExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource RtfImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TxtExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TxtImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource RarExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource RarImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource ZipExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource ZipImage}" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image x:Name="imageFile"
+                                                           Width="16"
+                                                           Height="16"
+                                                           VerticalAlignment="Center"
+                                                           Source="{StaticResource FileImage}" />
+                                                    <textBoxToolkit:TextBox Margin="2,0,0,0"
+                                                                            VerticalAlignment="Center"
+                                                                            Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                            MaxLength="{StaticResource FileNameMaxLength}"
+                                                                            Text="{Binding FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource JpgExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource JpgImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource JpegExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource JpegImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource BmpExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource BmpImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource GifExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource GifImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PngExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PngImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TifExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TifImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TiffExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TiffImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource DocExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource DocImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource DocxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource DocxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PptExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PptImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PptxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PptxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource XlsExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource XlsImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource XlsxExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource XlsxImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource PdfExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource PdfImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource RtfExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource RtfImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource TxtExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource TxtImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource RarExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource RarImage}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FileExtension, Mode=OneWay}"
+                                                                 Value="{StaticResource ZipExtension}">
+                                                        <Setter TargetName="imageFile"
+                                                                Property="Source"
+                                                                Value="{StaticResource ZipImage}" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                            IsReadOnly="True"
+                                                            HeaderTemplate="{StaticResource CreatedDateHeaderTemplate}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Right"
+                                                           Text="{Binding DateCreated, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </cpcDataGridToolkit:DataGridControl.Columns>
+                            </cpcDataGridToolkit:DataGridControl>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

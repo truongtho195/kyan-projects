@@ -1,0 +1,484 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:textBoxToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:pos="clr-namespace:CPC.POS"
+             x:Class="CPC.POS.View.CashInView"
+             mc:Ignorable="d"
+             x:Name="UserControl"
+             Height="570"
+             Width="548">
+
+    <UserControl.Resources>
+
+        <Style x:Key="CashInListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Focusable"
+                    Value="False" />
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin"
+                                     Value="True">
+                                <Setter Property="IsSelected"
+                                        Value="True" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="grdCashIn">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="brdContentCashIn"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+
+            <Grid x:Name="grdContentCashIn"
+                  Margin="10">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="txtblCashInfor"
+                           Text="Cash In for"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           Style="{DynamicResource TextBlockNormal}"
+                           d:LayoutOverrides="HorizontalAlignment" />
+
+                <!--CashierResource-->
+                <textBoxToolkit:TextBox x:Name="txtCashInfor"
+                                        Margin="74,2,0,2"
+                                        TextWrapping="NoWrap"
+                                        HorizontalAlignment="Left"
+                                        Width="140"
+                                        IsReadOnly="True"
+                                        Text="{Binding CashFlowModel.CashierName, Mode=OneWay}"
+                                        Foreground="{DynamicResource TextBlockBasicForeground}"
+                                        FontSize="12"
+                                        FontFamily="Tahoma"
+                                        FontWeight="Bold" />
+
+                <Border x:Name="brdSubContentCashIn"
+                        BorderThickness="1"
+                        Background="{DynamicResource TabControlBackground}"
+                        Grid.Row="3"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        Margin="0,10,0,0">
+
+                    <Grid x:Name="grdSubContentCashIn"
+                          Margin="10">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="313" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid x:Name="grdCashTotal"
+                              Margin="0,0,10,0">
+
+                            <!--Other Cash Total-->
+                            <!--Cash List-->
+                            <GroupBox x:Name="gbCash"
+                                      d:LayoutOverrides="GridBox"
+                                      VerticalAlignment="Top"
+                                      Height="309">
+                                <GroupBox.Header>
+                                    <TextBlock x:Name="txtblCash"
+                                               Text="Cash"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource GroupboxTextBlock}" />
+                                </GroupBox.Header>
+                                <Grid x:Name="grdContentCash"
+                                      Margin="0,4,0,0">
+
+                                    <ListBox x:Name="lbCash"
+                                             BorderBrush="{x:Null}"
+                                             BorderThickness="0"
+                                             Background="{x:Null}"
+                                             ItemContainerStyle="{DynamicResource CashInListBoxItemStyle}"
+                                             ItemsSource="{Binding CashCollection, Mode=OneWay}"
+                                             KeyboardNavigation.TabNavigation="Continue"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+                                        <ListBox.ItemTemplate>
+
+                                            <DataTemplate>
+
+                                                <Grid x:Name="grdCashIn"
+                                                      Height="25">
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="60" />
+                                                        <ColumnDefinition Width="25" />
+                                                        <ColumnDefinition Width="40" />
+                                                        <ColumnDefinition Width="25" />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock x:Name="txtblSymbol"
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Left"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="10,0,0,0"
+                                                               Text="{x:Static pos:Define.CurrencySymbol}" />
+
+                                                    <TextBlock x:Name="txtbl100"
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Left"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="22,0,0,0"
+                                                               Text="{Binding Value, Mode=OneWay}" />
+
+                                                    <TextBlock Text="x"
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0"
+                                                               Grid.Column="1" />
+
+                                                    <textBoxToolkit:TextBoxNumeric Margin="0,2"
+                                                                                   TextWrapping="NoWrap"
+                                                                                   Grid.Column="2"
+                                                                                   Padding="2,0,2,0"
+                                                                                   CurrencyDecimalDigits="0"
+                                                                                   ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                   NumericStringFormat="{}{0:N0}"
+                                                                                   Value="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                        <i:Interaction.Behaviors>
+                                                            <behavior:OneAutoFocusBehavior />
+                                                        </i:Interaction.Behaviors>
+                                                    </textBoxToolkit:TextBoxNumeric>
+
+                                                    <TextBlock Text="="
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Center"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0"
+                                                               Grid.Column="3" />
+
+                                                    <textBoxToolkit:TextBoxMoney Margin="0,2,10,2"
+                                                                                 TextWrapping="NoWrap"
+                                                                                 Grid.Column="4"
+                                                                                 IsReadOnly="True"
+                                                                                 ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                                 CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
+                                                                                 Focusable="False"
+                                                                                 Value="{Binding Total, Mode=OneWay}" />
+
+                                                </Grid>
+
+                                            </DataTemplate>
+
+                                        </ListBox.ItemTemplate>
+
+                                    </ListBox>
+
+                                </Grid>
+                            </GroupBox>
+
+                            <!--Other Cash Total-->
+                            <Border x:Name="brdOtherCashTotal"
+                                    VerticalAlignment="Top"
+                                    BorderThickness="1"
+                                    Background="{DynamicResource GroupboxBackground}"
+                                    BorderBrush="{DynamicResource GroupboxBorder}"
+                                    Margin="0,319,0,0">
+
+                                <Grid x:Name="grdOtherCashTotal"
+                                      Margin="5">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="92" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                        <RowDefinition Height="0" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock x:Name="txtblOtherCashTotal"
+                                               Text="Other Cash Total"
+                                               TextWrapping="NoWrap"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0" />
+
+                                    <textBoxToolkit:TextBoxMoney x:Name="txtOtherCashTotal"
+                                                                 Margin="0,2,10,2"
+                                                                 TextWrapping="NoWrap"
+                                                                 Grid.Column="1"
+                                                                 Width="131"
+                                                                 ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
+                                                                 Value="{Binding CashFlowModel.OpenOtherCashTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                 HorizontalAlignment="Right"
+                                                                 FontWeight="Bold" />
+
+                                </Grid>
+
+                            </Border>
+
+                            <!--Cash Total-->
+                            <Grid x:Name="grdTotal"
+                                  Width="145"
+                                  HorizontalAlignment="Right"
+                                  Height="40"
+                                  VerticalAlignment="Bottom">
+
+                                <textBoxToolkit:TextBoxMoney x:Name="txtCashTotal"
+                                                             BorderThickness="2"
+                                                             VerticalContentAlignment="Bottom"
+                                                             FontWeight="Bold"
+                                                             IsReadOnly="True"
+                                                             ConverterCulture="{x:Static pos:Define.ConverterCulture}"
+                                                             CurrencyStringFormat="{x:Static pos:Define.CurrencyFormat}"
+                                                             Value="{Binding CashFlowModel.OpenCashTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Background="Black"
+                                                             BorderBrush="White"
+                                                             Foreground="#FF00FF10"
+                                                             FontSize="13.333"
+                                                             FontFamily="Tahoma" />
+
+                                <TextBlock x:Name="txtblCashTotal"
+                                           Text="Cash Total"
+                                           TextWrapping="NoWrap"
+                                           FontFamily="Tahoma"
+                                           HorizontalAlignment="Left"
+                                           Margin="5,5,0,0"
+                                           Style="{DynamicResource TextBlockPayment}"
+                                           d:LayoutOverrides="Height, GridBox"
+                                           VerticalAlignment="Top" />
+
+                            </Grid>
+
+                        </Grid>
+
+                        <Rectangle x:Name="CashDrawer"
+                                   Fill="{DynamicResource Spilter_Line_Background}"
+                                   HorizontalAlignment="Left"
+                                   Width="1"
+                                   Grid.Column="1"
+                                   Margin="0,-10" />
+
+                        <!--Cash Drawer-->
+                        <GroupBox x:Name="gbDrawer"
+                                  d:LayoutOverrides="GridBox"
+                                  Grid.Column="2"
+                                  Margin="10,0,0,0">
+
+                            <GroupBox.Header>
+
+                                <TextBlock x:Name="txtblDrawer"
+                                           Text="Cash Drawer"
+                                           TextWrapping="NoWrap"
+                                           Style="{DynamicResource GroupboxTextBlock}" />
+
+                            </GroupBox.Header>
+
+                            <!--Drawer List-->
+                            <Grid x:Name="grdContentDrawer"
+                                  Margin="0,4,0,0">
+
+                                <ListBox x:Name="lbDrawer"
+                                         Grid.RowSpan="11"
+                                         Grid.ColumnSpan="3"
+                                         BorderBrush="{x:Null}"
+                                         BorderThickness="0"
+                                         Background="{x:Null}"
+                                         ItemContainerStyle="{DynamicResource CashInListBoxItemStyle}"
+                                         ItemsSource="{Binding DrawerCollection, Mode=OneWay}">
+
+                                    <ListBox.ItemTemplate>
+
+                                        <DataTemplate>
+
+                                            <Grid x:Name="grdCashDrawer"
+                                                  Height="25">
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="70" />
+                                                    <ColumnDefinition Width="40" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel x:Name="stkpDrawer"
+                                                            Orientation="Horizontal"
+                                                            d:LayoutOverrides="Height"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            Margin="10,0,0,0">
+                                                    <TextBlock x:Name="txtblDrawer"
+                                                               TextWrapping="NoWrap"
+                                                               HorizontalAlignment="Left"
+                                                               Style="{DynamicResource TextBlockNormal}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,0,5,0"
+                                                               Text="{Binding Text, Mode=OneWay}" />
+                                                </StackPanel>
+
+                                                <RadioButton Grid.Column="1"
+                                                             HorizontalAlignment="Stretch"
+                                                             VerticalAlignment="Stretch"
+                                                             Margin="0"
+                                                             GroupName="DrawerGroup"
+                                                             IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{DynamicResource RadioButtonONOFF}"
+                                                             Height="21" />
+                                            </Grid>
+
+                                        </DataTemplate>
+
+                                    </ListBox.ItemTemplate>
+
+                                </ListBox>
+
+                            </Grid>
+
+                        </GroupBox>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+
+        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0" />
+
+        <StackPanel VerticalAlignment="Center"
+                    Height="Auto"
+                    x:Name="stkpBtn"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+
+            <Button x:Name="btnPrint"
+                    Height="28"
+                    Width="80"
+                    Margin="0">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnPrint"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgPrint"
+                               Fill="{DynamicResource Print}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="Print"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblPrint"
+                               Foreground="White"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnOK"
+                    Height="28"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Command="{Binding SaveCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnOK"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Fill="{DynamicResource OK}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="OK"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblOK"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnCancel"
+                    Height="28"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnCancel"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Fill="{DynamicResource Cancel}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               x:Name="txtblExit"
+                               VerticalAlignment="Center"
+                               Text="Cancel"
+                               TextWrapping="NoWrap"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>
+	

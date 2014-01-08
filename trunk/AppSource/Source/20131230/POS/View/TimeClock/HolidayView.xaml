@@ -1,0 +1,428 @@
+﻿<UserControl x:Class="CPC.POS.View.HolidayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="holidayView"
+             Background="{DynamicResource UserControlBackground}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!--  region Converter  -->
+        <converter:RadioButtonToBoolConverter x:Key="radioButtonToBoolConverter" />
+        <converter:IntegerFormatConverter x:Key="integerFormatConverter" />
+        <converter:IntergerToVisibilityConverter x:Key="intergerToVisibilityConverter" />
+        <!--  endregion Converter  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Date">
+            <TextBlock Text="{DynamicResource PD_Date}" />
+        </DataTemplate>
+    </UserControl.Resources>
+	 <UserControl.InputBindings>
+		<KeyBinding Command="{Binding HelpCommand}"
+		                    Gesture="F1" />
+		</UserControl.InputBindings>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <control:BusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="grdSubHolidayList">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="stkpBtn"
+                            Height="Auto"
+                            Margin="20,0,0,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnNew"
+                            Command="{Binding NewCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnNew"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgNew"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource New}" />
+                            <TextBlock x:Name="txtblNew"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="New"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSave"
+                            Command="{Binding SaveCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnSave"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgSave"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Save}" />
+                            <TextBlock x:Name="txtblSave"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnDelete"
+                            Command="{Binding DeleteCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnDelete"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Rectangle x:Name="imgDelete"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Delete}" />
+                            <TextBlock x:Name="txtblDelete"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Close"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock x:Name="txtblBindingHoliday"
+                           Grid.Column="1"
+                           Margin="0,0,20,7"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Style="{DynamicResource TextBlockTitleFormView}"
+                           Text="{DynamicResource HolidayView_Holiday}"
+                           TextWrapping="NoWrap" />
+                <Rectangle x:Name="Line"
+                           Grid.Column="1"
+                           Height="1"
+                           Margin="2,0"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <Border x:Name="brdContentCreateHoliday"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="10"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1">
+                    <Grid x:Name="grdContentCreateHoliday"
+                          Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="53" />
+                            <RowDefinition Height="110" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <GroupBox x:Name="gbTitle"
+                                  IsEnabled="{Binding IsEditHoliday, Mode=OneWay}">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblTitle"
+                                           Style="{DynamicResource GroupboxTextBlock}"
+                                           Text="{DynamicResource HolidayView_gbTitle_HeaderTitle}"
+                                           TextWrapping="NoWrap" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdTitle"
+                                  Height="25"
+                                  Margin="0,4,0,0"
+                                  VerticalAlignment="Top">
+                                <TextBlock x:Name="txtblTitle1"
+                                           Grid.Row="6"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource HolidayView_gbTitle_Title}"
+                                           TextWrapping="NoWrap" />
+                                <textBoxControl:TextBox x:Name="txtName"
+                                                        Height="21"
+                                                        Margin="44,0,10,0"
+                                                        MaxLength="100"
+                                                        Padding="2,0,2,0"
+                                                        Text="{Binding SelectedHoliday.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                        TextWrapping="NoWrap">
+                                    <i:Interaction.Behaviors>
+                                        <behavior:AutoFocusBehavior />
+                                    </i:Interaction.Behaviors>
+                                </textBoxControl:TextBox>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox x:Name="gbDate"
+                                  Grid.Row="1"
+                                  Margin="0,10,0,0"
+                                  IsEnabled="{Binding IsEditHoliday, Mode=OneWay}">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblDate"
+                                           Foreground="{DynamicResource GroupboxHeaderForeground}"
+                                           Style="{DynamicResource GroupboxTextBlock}"
+                                           Text="{DynamicResource HolidayView_gbDate_HeaderDate}"
+                                           TextWrapping="NoWrap" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdContentDate">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="0" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="0" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <StackPanel x:Name="stkpForm"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            Orientation="Horizontal">
+                                    <TextBlock x:Name="txtblFrom"
+                                               VerticalAlignment="Center"
+                                               d:IsHidden="True"
+                                               TextWrapping="Wrap" />
+                                    <RadioButton x:Name="rbFrom"
+                                                 Width="51"
+                                                 Margin="10,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Content="{DynamicResource HolidayView_gbDate_rbFrom}"
+                                                 Foreground="White"
+                                                 GroupName="grDate2"
+                                                 IsChecked="{Binding SelectedHoliday.HolidayOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ConverterParameter=2, Converter={StaticResource radioButtonToBoolConverter}}" />
+                                    <DatePicker x:Name="dtpFrom"
+                                                Width="90"
+                                                Height="21"
+                                                Margin="10,0,0,0"
+                                                HorizontalAlignment="Left"
+                                                IsEnabled="{Binding IsChecked, ElementName=rbFrom}"
+                                                SelectedDate="{Binding SelectedHoliday.FromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                    <TextBlock x:Name="txtblTo"
+                                               Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource HolidayView_gbDate_To}"
+                                               TextWrapping="Wrap" Width="12.3966666666667" />
+                                    <DatePicker x:Name="dtpTo"
+                                                Width="90"
+                                                Margin="10,0,0,0"
+                                                IsEnabled="{Binding IsChecked, ElementName=rbFrom}"
+                                                SelectedDate="{Binding SelectedHoliday.ToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                                </StackPanel>
+                                <StackPanel x:Name="stkpThe"
+                                            Grid.Row="2"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            Orientation="Horizontal">
+                                    <RadioButton x:Name="rbOn"
+                                                 Width="51"
+                                                 Margin="10,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Content="{DynamicResource HolidayView_gbDate_rbOn}"
+                                                 Foreground="White"
+                                                 GroupName="grDate0"
+                                                 IsChecked="{Binding SelectedHoliday.HolidayOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ConverterParameter=0, Converter={StaticResource radioButtonToBoolConverter}, ValidatesOnDataErrors=True}" />
+                                    <textBoxControl:TextBoxNumeric x:Name="txtMonth1"
+                                    	Width="90"
+                                    	Height="21"
+                                    	Margin="10,0,0,0"
+                                    	HorizontalAlignment="Left"
+                                    	VerticalAlignment="Top"
+                                    	BorderThickness="1"
+                                        ConverterCulture="{x:Static local:Define.ConverterCulture}"                           
+                                    	IntegerLength="2"
+                                    	IsEnabled="{Binding IsChecked, ElementName=rbOn}"
+                                    	NumericStringFormat="{}{0:N0}"
+                                    	Padding="2,0,2,0"
+                                    	Value="{Binding SelectedHoliday.Day, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    	TextWrapping="NoWrap" />
+                                    <TextBlock x:Name="txtblOf"
+                                               Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Text="of"
+                                               TextWrapping="NoWrap" Style="{DynamicResource TextBlockNormal}" Width="12.3966666666667" />
+                                    <ComboBox x:Name="cmbOn"
+                                              Width="90"
+                                              Height="21"
+                                              Margin="10,0,0,0"
+                                              VerticalAlignment="Top"
+                                              DisplayMemberPath="Text"
+                                              IsEnabled="{Binding IsChecked, ElementName=rbOn}"
+                                              ItemsSource="{x:Static helper:Common.Months}"
+                                              SelectedValue="{Binding SelectedHoliday.Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                              SelectedValuePath="ObjValue" />
+                                    <TextBlock x:Name="txtblMonth1"
+                                               Margin="5,0,10,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Foreground="White"
+                                               Text="month (s)"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                                <StackPanel x:Name="stkpOnthe"
+                                            Grid.Row="4"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            Orientation="Horizontal">
+                                    <RadioButton x:Name="rbOnthe"
+                                                 Width="51"
+                                                 Margin="10,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Content="{DynamicResource HolidayView_gbDate_rbOnthe}"
+                                                 Foreground="White"
+                                                 GroupName="grDate1"
+                                                 IsChecked="{Binding SelectedHoliday.HolidayOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ConverterParameter=1, Converter={StaticResource radioButtonToBoolConverter}}" />
+                                    <ComboBox x:Name="cmbOnthe1"
+                                              Width="90"
+                                              Height="21"
+                                              Margin="10,0,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              DisplayMemberPath="Text"
+                                              IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                              ItemsSource="{x:Static helper:Common.DaysOfWeek}"
+                                              SelectedValue="{Binding SelectedHoliday.DayOfWeek, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                              SelectedValuePath="ObjValue" />
+                                    <TextBlock x:Name="txtblof1"
+                                    	Margin="10,0,0,0"
+                                    	HorizontalAlignment="Left"
+                                    	VerticalAlignment="Center"
+                                    	Style="{DynamicResource TextBlockNormal}"
+                                    	Text="{DynamicResource HolidayView_gbDate_of}"
+                                    	TextWrapping="NoWrap" Width="12.3966666666667" />
+                                    <ComboBox x:Name="cmbOnthe"
+                                              Width="90"
+                                              Height="21"
+                                              Margin="10,0,0,0"
+                                              VerticalAlignment="Top"
+                                              DisplayMemberPath="Text"
+                                              IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                              ItemsSource="{x:Static helper:Common.WeeksOfMonth}"
+                                              SelectedValue="{Binding SelectedHoliday.WeekOfMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                              SelectedValuePath="ObjValue" />
+                                    <TextBlock x:Name="txtblof"
+                                               Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Text="{DynamicResource HolidayView_gbDate_of}"
+                                               TextWrapping="NoWrap" />
+                                    <ComboBox x:Name="cmbOnthe2"
+                                              Width="90"
+                                              Height="21"
+                                              Margin="10,0,0,0"
+                                              DisplayMemberPath="Text"
+                                              IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                              ItemsSource="{x:Static helper:Common.Months}"
+                                              SelectedValue="{Binding SelectedHoliday.Month1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                              SelectedValuePath="ObjValue" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <Grid x:Name="grdHoliday"
+                              Grid.Row="2"
+                              Margin="0,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <dataGridControl:DataGridControl x:Name="dtgrdHoliday"
+                                                             Grid.Row="1"
+                                                             Margin="0,0.2,0,0"
+                                                             HorizontalAlignment="Stretch"
+                                                             AutoGenerateColumns="False"
+                                                             CanUserAddRows="False"
+                                                             DisplayItems="{Binding NumberOfDisplayItems}"
+                                                             IsReadOnly="True"
+                                                             IsRollBackData="False"
+                                                             ItemsSource="{Binding HolidayCollection}"
+                                                             NumberOfItems="{Binding HolidayCollection.Count}"
+                                                             SelectedItem="{Binding SelectedItemHoliday, Mode=OneWay}"
+                                                             Style="{DynamicResource DatagridWithRowHeader}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <command:EventToCommand Command="{Binding DoubleClickViewCommand}"
+                                                                CommandParameter="{Binding SelectedItem, ElementName=dtgrdHoliday}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <dataGridControl:DataGridControl.Columns>
+                                    <DataGridTemplateColumn Width="70"
+                                                            HeaderTemplate="{StaticResource DataTemplate_PD_Header_Date}"
+                                                            SortMemberPath="DateCreated">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Center"
+                                                           Text="{Binding DateCreated, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Title"
+                                                        Binding="{Binding Title, Mode=OneWay}"
+                                                        Width="250" />
+                                    <DataGridTemplateColumn Header="Description"
+                                                            Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Visibility="{Binding HolidayOption, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=2}">
+                                                        <Run Text="{DynamicResource HolidayView_gbDate_rbFrom}" />
+                                                        <Run Text="{Binding FromDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                                        <Run Text="{DynamicResource HolidayView_gbDate_To}" />
+                                                        <Run Text="{Binding ToDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}" />
+                                                    </TextBlock>
+                                                    <TextBlock Visibility="{Binding HolidayOption, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=0}">
+                                                        <Run Text="{DynamicResource HolidayView_gbDate_rbOn}" />
+                                                        <Run Text="{Binding MonthItem.Text, Mode=OneWay}" />
+                                                        <Run Text="{Binding Day, Mode=OneWay}" />
+                                                    </TextBlock>
+                                                    <TextBlock Visibility="{Binding HolidayOption, Mode=OneWay, Converter={StaticResource intergerToVisibilityConverter}, ConverterParameter=1}">
+                                                        <Run Text="{DynamicResource HolidayView_gbDate_rbOnthe}" />
+                                                        <Run Text="{Binding WeekOfMonthItem.Text, Mode=OneWay}" />
+                                                        <Run Text="{Binding DayOfWeekItem.Text, Mode=OneWay}" />
+                                                        <Run Text="{DynamicResource HolidayView_gbDate_of}" />
+                                                        <Run Text="{Binding Month1Item.Text, Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="25">
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding DataContext.IsCheckedAll, ElementName=holidayView}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </dataGridControl:DataGridControl.Columns>
+                            </dataGridControl:DataGridControl>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </control:BusyIndicator>
+    </Grid>
+</UserControl>

@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <!--Load Brushes-->
+        <ResourceDictionary Source="Brushes/GreyImageResources.xaml" />
+        
+        <!--Custom Control Style-->
+        
+        
+        <!--Base Control Style-->
+        <ResourceDictionary Source="BaseControlStyle/ButtonStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/CheckboxStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/ComboboxStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/GroupBoxStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/TabControlStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/TextBlockStyle.xaml" />
+        <ResourceDictionary Source="BaseControlStyle/TextBoxStyle.xaml" />
+        
+        <!--Custom Control Style-->
+        
+        <!--NamedStyle-->
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

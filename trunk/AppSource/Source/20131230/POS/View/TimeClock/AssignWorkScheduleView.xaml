@@ -1,0 +1,339 @@
+﻿<UserControl x:Class="CPC.POS.View.AssignWorkScheduleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:control="clr-namespace:CPC.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="assignWorkScheduleView"
+             Width="770"
+             Height="500"
+             Background="{x:Null}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}">
+    <UserControl.Resources>
+        <ResourceDictionary />
+    </UserControl.Resources>
+    <Grid x:Name="grdAssignWorkSchedule">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentAssignWorkSchedule"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentAssignWorkSchedule"
+                  Width="Auto"
+                  Height="Auto"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="gbScheduleDate">
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblScheduleDate"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="Schedule Date"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+                    <Grid x:Name="grdScheduleDate"
+                          Height="25"
+                          Margin="0,4,0,0"
+                          VerticalAlignment="Top">
+                        <StackPanel x:Name="stkStartDate"
+                                    Grid.Row="2"
+                                    Orientation="Horizontal">
+                            <TextBlock x:Name="txtblStartDate"
+                                       Margin="10,0,5,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="Select the start date for this schedule" />
+                            <DatePicker x:Name="dtpStartDate"
+                                        Width="90"
+                                        Margin="0,2"
+                                        SelectedDate="{Binding StartDate, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" />
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <Grid x:Name="grdEmployeeListAssigned"
+                      Grid.Row="1"
+                      Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox x:Name="gbEmployeeList">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblEmployeeList"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="Employee List"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdEmployeeList"
+                              Margin="0,4,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"
+                                               MinHeight="10.707" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <dataGridControl:DataGridControl x:Name="dtgrdLeftEmployeeList"
+                                                             Grid.Row="1"
+                                                             Margin="10,0.2,10,10"
+                                                             AutoGenerateColumns="False"
+                                                             CanUserAddRows="False"
+                                                             DataFilterResult="{Binding LeftFilterResult, Mode=OneWayToSource}"
+                                                             DisplayItems="{Binding NumberOfDisplayItems}"
+                                                             IsFilterDataColunm="True"
+                                                             IsReadOnly="True"
+                                                             IsRollBackData="False"
+                                                             ItemsSource="{Binding LeftEmployeeCollection}"
+                                                             NumberOfItems="{Binding TotalLeft}"
+                                                             Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                                             VirtualizingStackPanel.IsVirtualizing="True"
+                                                             VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                <dataGridControl:DataGridControl.Columns>
+                                    <DataGridTextColumn Header="Full Name"
+                                                        Binding="{Binding LegalName, Mode=OneWay}"
+                                                        Width="*"
+                                                        dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                        dataGridControl:DataGridColumnExtensions.FieldName="LegalName"
+                                                        dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                        dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                                    <DataGridTemplateColumn Width="25"
+                                                            dataGridControl:DataGridColumnExtensions.IsFilter="False">
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding DataContext.IsCheckedAllLeft, ElementName=assignWorkScheduleView}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </dataGridControl:DataGridControl.Columns>
+                            </dataGridControl:DataGridControl>
+                        </Grid>
+                    </GroupBox>
+                    <StackPanel x:Name="stkpbtnEmployeeList"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Vertical">
+                        <Button x:Name="btnNext"
+                                Command="{Binding MoveCommand}"
+                                CommandParameter="{Binding SelectedItems, ElementName=dtgrdLeftEmployeeList}"
+                                Width="25"
+                                Height="25"
+                                Style="{DynamicResource ButtonSystem}">
+                            <Rectangle x:Name="imgNext"
+                                       Width="15"
+                                       Height="15"
+                                       Fill="{DynamicResource PlayArrow}"
+                                       StrokeThickness="0" />
+                        </Button>
+                        <Button x:Name="btnBack"
+                                Command="{Binding BackCommand}"
+                                CommandParameter="{Binding SelectedItems, ElementName=dtgrdRightEmployeeList}"
+                                Width="25"
+                                Height="25"
+                                Style="{DynamicResource ButtonSystem}">
+                            <Rectangle x:Name="imgBack"
+                                       Width="15"
+                                       Height="15"
+                                       Fill="{DynamicResource RevisePlayArrow}"
+                                       StrokeThickness="0" />
+                        </Button>
+                    </StackPanel>
+                    <GroupBox x:Name="gbEmployeeAssigned"
+                              Grid.Column="2">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="txtblEmployeeAssigned"
+                                       Style="{DynamicResource GroupboxTextBlock}"
+                                       Text="Employee Assigned"
+                                       TextWrapping="NoWrap" />
+                        </GroupBox.Header>
+                        <Grid x:Name="grdgbEmployeeAssigned"
+                              Margin="0,4,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"
+                                               MinHeight="10.707" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <dataGridControl:DataGridControl x:Name="dtgrdRightEmployeeList"
+                                                             Grid.Row="1"
+                                                             Margin="10,0.2,10,10"
+                                                             AutoGenerateColumns="False"
+                                                             CanUserAddRows="False"
+                                                             DataFilterResult="{Binding RightFilterResult, Mode=OneWayToSource}"
+                                                             DisplayItems="{Binding NumberOfDisplayItems}"
+                                                             IsFilterDataColunm="True"
+                                                             IsReadOnly="True"
+                                                             IsRollBackData="False"
+                                                             ItemsSource="{Binding RightEmployeeCollection}"
+                                                             NumberOfItems="{Binding TotalRight}"
+                                                             Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                                             VirtualizingStackPanel.IsVirtualizing="True"
+                                                             VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                <dataGridControl:DataGridControl.Columns>
+                                    <DataGridTextColumn Header="Full Name"
+                                                        Binding="{Binding LegalName, Mode=OneWay}"
+                                                        Width="*"
+                                                        dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                        dataGridControl:DataGridColumnExtensions.FieldName="LegalName"
+                                                        dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                        dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                                    <DataGridTextColumn Header="Start Date"
+                                                        Binding="{Binding EmployeeScheduleModel.StartDate, Mode=OneWay}"
+                                                        Width="70"
+                                                        dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                        dataGridControl:DataGridColumnExtensions.FieldName="EmployeeScheduleModel.StartDate"
+                                                        dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                        dataGridControl:DataGridColumnExtensions.FilterLevel="1"
+                                                        dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                                    <DataGridTemplateColumn Width="25"
+                                                            dataGridControl:DataGridColumnExtensions.IsFilter="False">
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding DataContext.IsCheckedAllRight, ElementName=assignWorkScheduleView}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </dataGridControl:DataGridControl.Columns>
+                            </dataGridControl:DataGridControl>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+                <StackPanel x:Name="stkpBtnAddRemoveUser"
+                            Height="Auto"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Visibility="Collapsed">
+                    <Button x:Name="btnAddUser"
+                            Width="40"
+                            Height="40"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnAddUser"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgAssignPermission"
+                                       Width="35"
+                                       Height="35"
+                                       Fill="{DynamicResource AddUser}" />
+                            <TextBlock x:Name="txtblAddUser"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Assign Permission"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnRemoveUser"
+                            Width="40"
+                            Height="40"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnRemoveUser"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgRemoveUser"
+                                       Width="35"
+                                       Height="35"
+                                       Fill="{DynamicResource RemoveUser}" />
+                            <TextBlock x:Name="txtblRemoveUser"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="White"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Remove Permission"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="White" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28"
+                    IsDefault="True">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,83 @@
+﻿<Window x:Class="CPC.Control.PopupContainer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:CPC.Control"
+        xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:layout="clr-namespace:CPC.Toolkit.Layout"
+        xmlns:command="clr-namespace:CPC.Toolkit.Command"
+        xmlns:local="clr-namespace:CPC.POS"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Service="clr-namespace:CPC.Service"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="Tims POS"
+        AllowsTransparency="True"
+        xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        Service:DialogService.IsRegisteredView="True"
+        cpcBehavior:WindowClosingBehavior.Closing="{Binding ClosingCommand}"
+        mc:Ignorable="d">
+    
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <command:EventToCommand Command="{Binding ClosingCommand}" PassEventArgsToCommand="true" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
+    <Window.Resources>
+        <!--  ResizeThumbStyle  -->
+        <Style x:Key="ResizeThumbStyle"
+               TargetType="{x:Type layout:ResizeThumb}">
+            <Setter Property="Stylus.IsPressAndHoldEnabled"
+                    Value="false" />
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type layout:ResizeThumb}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Border x:Name="brdConfiguration"
+                BorderBrush="{DynamicResource TitleBarBorder}"
+                BorderThickness="1,1,1,1"
+                CornerRadius="5,5,0,0">
+            <DockPanel x:Name="dkpConfiguration"
+                       LastChildFill="True">
+                <Border x:Name="BrdTopBar"
+                        Height="26"
+                        Background="{DynamicResource TitleBarBackground}"
+                        BorderThickness="0"
+                        CornerRadius="4.5,4.5,0,0"
+                        DockPanel.Dock="Top">
+                    <Grid x:Name="grdTopBar">
+                        <TextBlock x:Name="txtblConfiguration"
+                                   Margin="10,0,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+								   Style="{DynamicResource TextBlockTitleFormPopup}"
+                                   Text="{Binding Title, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                   TextWrapping="Wrap"
+                                   d:LayoutOverrides="Width, Height" />
+                        <control:SystemButton x:Name="systemButtons"
+                                              Height="24"
+                                              HorizontalAlignment="Right"
+                                              VerticalAlignment="Top"
+                                              ItemHeight="18"
+                                              ItemWidth="18" />
+                    </Grid>
+                </Border>
+                <Grid x:Name="grdContent"
+                      Background="{DynamicResource UserControlBackground}" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

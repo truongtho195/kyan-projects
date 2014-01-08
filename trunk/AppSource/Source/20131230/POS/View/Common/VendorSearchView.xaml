@@ -1,0 +1,303 @@
+﻿<UserControl x:Class="CPC.POS.View.VendorSearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:c="clr-namespace:CPC.Converter"
+             xmlns:cpcDataGridToolkit="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xceedWpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             Width="698"
+             Height="472"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <c:ComboxItemToTextConverter x:Key="ComboxItemToTextConverter" />
+    </UserControl.Resources>
+
+    <Grid x:Name="grdVendorSearch" d:LayoutOverrides="Height">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="brdContentVendorSearch"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+
+            <Grid x:Name="grdContentVendorSearch" d:LayoutOverrides="GridBox">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="65" />
+                    <RowDefinition Height="Auto" MinHeight="10" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <GroupBox x:Name="gbSearch" Margin="10,10,10,0">
+
+                    <GroupBox.Header>
+                        <TextBlock x:Name="txtblSearch"
+                                   Style="{DynamicResource GroupboxTextBlock}"
+                                   Text="{DynamicResource C113}"
+                                   TextWrapping="NoWrap" />
+                    </GroupBox.Header>
+
+                    <Grid x:Name="grdgbSearch" Margin="0,4,0,0">
+
+                        <Grid x:Name="grdgbContentSearch">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="0" />
+                            </Grid.RowDefinitions>
+
+                            <xceedWpfToolkit:WatermarkTextBox x:Name="txtKeyword"
+                                                              Margin="10,2"
+                                                              VerticalContentAlignment="Center"
+                                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                                              Padding="20,0,2,0"
+                                                              Text="{Binding Key,
+                                                                             Mode=TwoWay,
+                                                                             UpdateSourceTrigger=PropertyChanged}"
+                                                              TextWrapping="NoWrap"
+                                                              Watermark="{DynamicResource C135}">
+                                <xceedWpfToolkit:WatermarkTextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                                </xceedWpfToolkit:WatermarkTextBox.InputBindings>
+                            </xceedWpfToolkit:WatermarkTextBox>
+
+                            <Rectangle Width="20"
+                                       Margin="13,3,0,3"
+                                       HorizontalAlignment="Left"
+                                       Fill="{DynamicResource Find}" />
+
+                        </Grid>
+
+                    </Grid>
+
+                </GroupBox>
+
+                <cpcDataGridToolkit:DataGridControl x:Name="dtgrdVendorSearch"
+                                                    Grid.Row="3"
+                                                    Margin="10,0.2,10,10"
+                                                    VerticalAlignment="Stretch"
+                                                    AutoGenerateColumns="False"
+                                                    behavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding SelectCommand}"
+                                                    CanUserAddRows="False"
+                                                    CanUserDeleteRows="False"
+                                                    IsReadOnly="True"
+                                                    ItemsSource="{Binding VendorCollection,
+                                                                          Mode=OneWay}"
+                                                    NumberOfItems="{Binding Total,
+                                                                            Mode=OneWay}"
+                                                    SelectedItem="{Binding SelectedVendor,
+                                                                           Mode=TwoWay,
+                                                                           UpdateSourceTrigger=PropertyChanged}"
+                                                    SelectionMode="Single"
+                                                    Style="{DynamicResource DatagridWithRowHeader}">
+                    <cpcDataGridToolkit:DataGridControl.Columns>
+                        <DataGridTextColumn Width="85" Binding="{Binding GuestNo}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource CUS_Text_AccountNum}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="100" Binding="{Binding IsActived, ConverterParameter=Status, Converter={StaticResource ComboxItemToTextConverter}, Mode=OneWay}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource CUS_Text_Status}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding Company}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource C170}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding FirstName}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource Text_FirstName}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding LastName}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource Text_LastName}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding GroupName}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource CUS_Text_Group}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding AddressModel.City, Mode=OneWay}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource C180}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="150" Binding="{Binding AddressModel.CountryId, ConverterParameter=Country, Converter={StaticResource ComboxItemToTextConverter}, Mode=OneWay}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource C172}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="120" Binding="{Binding Phone1}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <!--  Header="Phone"  -->
+                                    <TextBlock Text="{DynamicResource C173}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="120" Binding="{Binding CellPhone}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <!--  Header="Cellphone"  -->
+                                    <TextBlock Text="{DynamicResource Text_Cellphone}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="200" Binding="{Binding Email}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{DynamicResource C184}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Width="200" Binding="{Binding Website}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <!--  Header="Website"  -->
+                                    <TextBlock Text="{DynamicResource C185}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                    </cpcDataGridToolkit:DataGridControl.Columns>
+                </cpcDataGridToolkit:DataGridControl>
+
+            </Grid>
+
+        </Border>
+
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+
+            <Button x:Name="btnNewVendor"
+                    Width="135"
+                    Height="28"
+                    Command="{Binding AddVendorCommand}">
+                <StackPanel x:Name="stkpBtnNewVendor"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgNewVendor"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Vendor}" />
+                    <TextBlock x:Name="txtblNewVendor"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Text_NewVendor}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnGoToVendorList"
+                    Width="135"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding OpenVendorViewCommand}">
+                <StackPanel x:Name="stkpBtnGoToVendorList"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgGoToVendorList"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource VendorList}" />
+                    <TextBlock x:Name="txtblGoToVendorList"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Text_GoToVendorList}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnSelectedItem"
+                    Width="135"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding SelectCommand}">
+                <StackPanel x:Name="stkpBtnSelectedItem"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgSelectedItem"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblSelectedItem"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Text_SelectedItem}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnCancel"
+                    Width="135"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

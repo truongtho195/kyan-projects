@@ -1,0 +1,1308 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:CPC.Converter">
+    <!--  Resource dictionary entries should be defined here.  -->
+    <!--ButtonFocusVisual-->
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="3"
+                               SnapsToDevicePixels="true"
+                               Stroke="Black"
+                               StrokeDashArray="1 2"
+                               StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--ButtonUpDownStyle-->
+    <Style x:Key="ButtonUpDownStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto">
+                        <Rectangle x:Name="rectangle"
+                                   RadiusX="1"
+                                   RadiusY="1"
+                                   Stroke="#FF000000"
+                                   StrokeThickness="0.5">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="0"
+                                                  Color="#E5F6F6F6" />
+                                    <GradientStop Offset="1"
+                                                  Color="#FFD7D7D7" />
+                                    <GradientStop Offset="0.455"
+                                                  Color="#E5F4F4F4" />
+                                    <GradientStop Offset="0.536"
+                                                  Color="#FFC9C9C9" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush SpreadMethod="Reflect"
+                                                         StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0.2"
+                                                      Color="#FFFFF5CB" />
+                                        <GradientStop Offset="0.6"
+                                                      Color="#FFFFE290" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFFDB76" />
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFF8D5" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto"
+                          Background="#02FFFFFF"
+                          Cursor="Hand">
+                        <Rectangle x:Name="bg"
+                                   Fill="{DynamicResource ButtonNormalBackground}"
+                                   Opacity="1"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonNormalBorder}"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="Focused"
+                                   Margin="2"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonNormal_IsKeyboardFocused_Border}"
+                                   StrokeDashArray="2"
+                                   StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <Rectangle x:Name="Light"
+                                   Margin="1,1,1,11"
+                                   Fill="{DynamicResource ButtonNormalLight}"
+                                   Opacity="0.9"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   StrokeThickness="1"
+                                   Visibility="Visible" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Focused"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsKeyboardFocused_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormalLight}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsMouseOver_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="contentPresenter"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform X="0.5"
+                                                            Y="0.5" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsPress_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsEnable_Background}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping"
+                Value="NoWrap" />
+        <Setter Property="TextTrimming"
+                Value="None" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ButtonNormalForeground}" />
+    </Style>
+    <Style x:Key="ButtonSearch"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Background="{DynamicResource ButtonSearchBackBackground}">
+                        <ContentPresenter HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="grid"
+                                    Property="Background"
+                                    Value="{DynamicResource ButtonSearchBack_IsMouseOverBackground}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsPressed"
+                                 Value="True" />
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonBarSearch"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="#02FFFFFF">
+                        <Border x:Name="bg"
+                                Background="{DynamicResource ButtonBarSearchBackground}"
+                                BorderBrush="{DynamicResource ButtonBarSearchBorder}"
+                                BorderThickness="0,1,1,1"
+                                CornerRadius="3" />
+                        <ContentPresenter HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Background"
+                                    Value="{DynamicResource ButtonBarSearch_IsMouseOver_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Background"
+                                    Value="{DynamicResource ButtonBarSearch_IsPress_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false" />
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonBarSearchTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping"
+                Value="NoWrap" />
+        <Setter Property="TextTrimming"
+                Value="None" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ButtonBarSearchForeground}" />
+    </Style>
+    <Style x:Key="ButtonSystem"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto"
+                          Background="#02FFFFFF"
+                          Cursor="Hand">
+                        <Rectangle x:Name="bg"
+                                   Fill="{DynamicResource ButtonSystemBackground}"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonSystemBorder}"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="Focused"
+                                   Margin="2"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonSystem_IsKeyboardFocused_Border}"
+                                   StrokeDashArray="2"
+                                   StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <Rectangle x:Name="Light"
+                                   Margin="1,1,1,24"
+                                   Fill="{DynamicResource ButtonSystemLight}"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   StrokeThickness="1"
+                                   Visibility="Visible" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Focused"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonSystem_IsKeyboardFocused_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonSystem_IsMouseOver_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="contentPresenter"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform X="0.5"
+                                                            Y="0.5" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonSystem_IsPress_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonSystem_IsEnable_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Visibility"
+                                    Value="Collapsed" />
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="0" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonSystemTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping"
+                Value="NoWrap" />
+        <Setter Property="TextTrimming"
+                Value="None" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource ButtonNormalForeground}" />
+    </Style>
+    <Style x:Key="ButtonDatagrid"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto"
+                          Background="#02FFFFFF"
+                          Cursor="Hand">
+                        <Rectangle x:Name="bg"
+                                   Fill="{DynamicResource ButtonDatagridBackground}"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonDatagridBorder}"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="Light"
+                                   Margin="1,1,1,9"
+                                   Fill="{DynamicResource ButtonDatagridLight}"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   StrokeThickness="1"
+                                   Visibility="Visible" />
+                        <Rectangle x:Name="Focused"
+                                   Margin="1"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonDatagrid_IsKeyboardFocused_Border}"
+                                   StrokeDashArray="2"
+                                   StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Focused"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonDatagrid_IsKeyboardFocused_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonDatagrid_IsMouseOver_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="contentPresenter"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform X="0.5"
+                                                            Y="0.5" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonDatagrid_IsPress_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonDatagrid_IsEnable_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="0" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ButtonDatagridForeground}" />
+            </Trigger>
+            <Trigger Property="IsFocused"
+                     Value="True">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource ButtonDatagridForeground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ButtonDatagridTextBlock"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping"
+                Value="NoWrap" />
+        <Setter Property="TextTrimming"
+                Value="None" />
+        <Setter Property="FontSize"
+                Value="11" />
+    </Style>
+    <Style x:Key="ButtonMiniClose"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Background="#02FFFFFF">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          RecognizesAccessKey="True"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="grid"
+                                    Property="Cursor"
+                                    Value="Hand" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.8" />
+                            <Setter TargetName="contentPresenter"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="0.9"
+                                                        ScaleY="0.9" />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonColor"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto">
+                        <Rectangle x:Name="rectangle"
+                                   Fill="{TemplateBinding Background}"
+                                   Stroke="{TemplateBinding BorderBrush}"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="rectangle1"
+                                   Margin="1,1,1,1"
+                                   Stroke="#FFFFFFFF"
+                                   StrokeThickness="1"
+                                   Visibility="Hidden" />
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rectangle1"
+                                    Property="Visibility"
+                                    Value="Visible" />
+                            <Setter TargetName="rectangle"
+                                    Property="Stroke"
+                                    Value="#FFFF8A00" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonKeyboard"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto">
+                        <Rectangle x:Name="rectangle"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FF414141"
+                                   StrokeThickness="1">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="0.003"
+                                                  Color="#FFFFBCBC" />
+                                    <GradientStop Offset="0.26"
+                                                  Color="#FF972418" />
+                                    <GradientStop Offset="0.772"
+                                                  Color="#FF561C08" />
+                                    <GradientStop Offset="1"
+                                                  Color="#FFBC7171" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle x:Name="rectangle1"
+                                   Margin="1,1,1,1"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FFFFFFFF"
+                                   StrokeThickness="1" />
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush SpreadMethod="Reflect"
+                                                         StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0.2"
+                                                      Color="#FFFFF5CB" />
+                                        <GradientStop Offset="0.6"
+                                                      Color="#FFFFE290" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFFDB76" />
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFF8D5" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="FontSize"
+                Value="20" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
+    </Style>
+    <Style x:Key="ButtonKeyboardOption"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto">
+                        <Rectangle x:Name="rectangle"
+                                   Fill="{TemplateBinding Background}"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FF414141"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="rectangle1"
+                                   Margin="1,1,1,1"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FFFFFFFF"
+                                   StrokeThickness="1" />
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush SpreadMethod="Reflect"
+                                                         StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0.2"
+                                                      Color="#FFFFF5CB" />
+                                        <GradientStop Offset="0.6"
+                                                      Color="#FFFFE290" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFFDB76" />
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFF8D5" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
+    </Style>
+    <Style x:Key="ButtonDatagridPayment"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto">
+                        <Rectangle x:Name="rectangle"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FF414141"
+                                   StrokeThickness="1">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="0"
+                                                  Color="#FFFFBCBC" />
+                                    <GradientStop Offset="0.26"
+                                                  Color="#FF972418" />
+                                    <GradientStop Offset="0.772"
+                                                  Color="#FF561C08" />
+                                    <GradientStop Offset="1"
+                                                  Color="#FFBC7171" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle x:Name="rectangle1"
+                                   Margin="1,1,1,1"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="#FFFFFFFF"
+                                   StrokeThickness="1" />
+                        <ContentPresenter Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="true">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush SpreadMethod="Reflect"
+                                                         StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0.2"
+                                                      Color="#FFFFF5CB" />
+                                        <GradientStop Offset="0.6"
+                                                      Color="#FFFFE290" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFFDB76" />
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFF8D5" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="rectangle"
+                                    Property="Fill">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0"
+                                                         EndPoint="0,1">
+                                        <GradientStop Offset="0"
+                                                      Color="#FFFFBD69" />
+                                        <GradientStop Offset="0.0967741935483871"
+                                                      Color="#FFFFB75A" />
+                                        <GradientStop Offset="0.25806451612903225"
+                                                      Color="#FFFFB14C" />
+                                        <GradientStop Offset="0.38709677419354838"
+                                                      Color="#FFFB8C3C" />
+                                        <GradientStop Offset="0.967741935483871"
+                                                      Color="#FFFEB461" />
+                                        <GradientStop Offset="1"
+                                                      Color="#FFFEBB67" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonDatagridTextBlockPayment"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping"
+                Value="NoWrap" />
+        <Setter Property="TextTrimming"
+                Value="None" />
+        <Setter Property="FontSize"
+                Value="13" />
+    </Style>
+    <Style x:Key="Container_ButtonCloseStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="grid"
+                          Width="Auto"
+                          Height="Auto"
+                          Background="#02FFFFFF"
+                          Cursor="Hand">
+                        <Rectangle x:Name="bg"
+                                   Fill="{DynamicResource Close}"
+                                   Opacity="1"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonNormalBorder}"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="Focused"
+                                   Margin="2"
+                                   Opacity="0"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   Stroke="{DynamicResource ButtonNormal_IsKeyboardFocused_Border}"
+                                   StrokeDashArray="2"
+                                   StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
+                        <Rectangle x:Name="Light"
+                                   Margin="1"
+                                   Opacity="0.9"
+                                   RadiusX="3"
+                                   RadiusY="3"
+                                   StrokeThickness="1"
+                                   Visibility="Visible" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Focused"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsKeyboardFocused_Background}" />
+                            <Setter TargetName="Light"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormalLight}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsMouseOver_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="contentPresenter"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform X="0.5"
+                                                            Y="0.5" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsPress_Background}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="bg"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="Light"
+                                    Property="Opacity"
+                                    Value="1" />
+                            <Setter TargetName="bg"
+                                    Property="Fill"
+                                    Value="{DynamicResource ButtonNormal_IsEnable_Background}" />
+                            <Setter TargetName="grid"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--PlusMinusToggleButtomStyle-->
+    <Style x:Key="PlusMinusToggleButtonStyle"
+           TargetType="{x:Type ToggleButton}">
+        <Setter Property="FocusVisualStyle"
+                Value="{StaticResource ButtonFocusVisual}" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <TextBlock Grid.Row="1"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="#FF1E4CCE"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Text="+"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                            <TextBlock.Visibility>
+                                <Binding Path="IsChecked"
+                                         RelativeSource="{RelativeSource TemplatedParent}">
+                                    <Binding.Converter>
+                                        <local:BoolToVisibilityConverter FalseToVisibility="Visible" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+                        <TextBlock Grid.Row="1"
+                                   HorizontalAlignment="{DynamicResource DatagridCenterHorizontalAlignment}"
+                                   VerticalAlignment="Center"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="#FF1E4CCE"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Text="-"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1.5"
+                                                    ScaleY="1.5" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                            <TextBlock.Visibility>
+                                <Binding Path="IsChecked"
+                                         RelativeSource="{RelativeSource TemplatedParent}">
+                                    <Binding.Converter>
+                                        <local:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

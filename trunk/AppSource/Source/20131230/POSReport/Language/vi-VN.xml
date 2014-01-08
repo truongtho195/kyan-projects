@@ -1,0 +1,1737 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<comboes>
+  <combo key="EmployeeTypes">
+    <item>
+      <value>1</value>
+      <name>Employee</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>In-House</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Salesman</name>
+    </item>
+  </combo>
+  <combo key="CommissionTypes">
+    <item>
+      <value>1</value>
+      <name>Commission</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Override</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Split</name>
+    </item>
+  </combo>
+  <combo key="SalaryTypes">
+    <item>
+      <value>1</value>
+      <name>Salary</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Vacation</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Overtime</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Holiday</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Bonus</name>
+    </item>
+  </combo>
+  <combo key="PayrollTypes">
+    <item>
+      <value>1</value>
+      <name>Hourly</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Weekly</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Monthly</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Annually</name>
+    </item>
+  </combo>
+  <combo key="AddressTypes">
+    <item>
+      <value>0</value>
+      <name>Home</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Business</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Billing</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Shipping</name>
+    </item>
+  </combo>
+  <combo key="Gender">
+    <item>
+      <value>1</value>
+      <name>Female</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Male</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Other</name>
+    </item>
+  </combo>
+  <combo key="MaritalStatus">
+    <item>
+      <value>0</value>
+      <name>Single</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Married</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Divorce</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Separate</name>
+    </item>
+  </combo>
+  <combo key="PermissionTypes">
+    <item>
+      <value>1</value>
+      <name>Permission for arriving late</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Non-Inventory</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Services</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Insurance</name>
+    </item>
+    <item>
+      <value>16</value>
+      <name>Customize</name>
+    </item>
+    <item>
+      <value>32</value>
+      <name>Combo Deal</name>
+    </item>
+    <item>
+      <value>64</value>
+      <name>Combo Deal</name>
+    </item>
+    <item>
+      <value>128</value>
+      <name>Combo Deal</name>
+    </item>
+    <item>
+      <value>256</value>
+      <name>Combo Deal</name>
+    </item>
+    <item>
+      <value>512</value>
+      <name>Combo Deal</name>
+    </item>
+    <item>
+      <value>1024</value>
+      <name>Combo Deal</name>
+    </item>
+  </combo>
+  <combo key="WeeksOfMonth">
+    <item>
+      <value>1</value>
+      <name>First</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Second</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Third</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Fourth</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Last</name>
+    </item>
+  </combo>
+  <combo key="Months">
+    <item>
+      <value>1</value>
+      <name>January</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>February</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>March</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>April</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>May</name>
+    </item>
+    <item>
+      <value>6</value>
+      <name>June</name>
+    </item>
+    <item>
+      <value>7</value>
+      <name>July</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>August</name>
+    </item>
+    <item>
+      <value>9</value>
+      <name>September</name>
+    </item>
+    <item>
+      <value>10</value>
+      <name>October</name>
+    </item>
+    <item>
+      <value>11</value>
+      <name>November</name>
+    </item>
+    <item>
+      <value>12</value>
+      <name>December</name>
+    </item>
+  </combo>
+  <combo key="DaysOfWeek">
+    <item>
+      <value>1</value>
+      <name>Day</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>WeekDay</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Weekend Day</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Sunday</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Monday</name>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Tuesday</name>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Wednesday</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Thursday</name>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Friday</name>
+    </item>
+    <item>
+      <value>10</value>
+      <name>Saturday</name>
+    </item>
+  </combo>
+  <combo key="Modules">
+    <item>
+      <value>0</value>
+      <name>Employee</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Customer</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Vendor</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Product</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Purchase Order</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Sales Order</name>
+    </item>
+  </combo>
+  <combo key="TransactionTypes">
+    <item>
+      <value>0</value>
+      <name>Sales Order</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Purchase Order</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Work Order</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Transfer Stock</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Count sheet</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Adjust Stock</name>
+    </item>
+  </combo>
+  <combo key="LengthOfInsuranceTypes">
+    <item>
+      <value>D</value>
+      <name>Days</name>
+    </item>
+    <item>
+      <value>W</value>
+      <name>Weeks</name>
+    </item>
+    <item>
+      <value>M</value>
+      <name>Months</name>
+    </item>
+    <item>
+      <value>Y</value>
+      <name>Years</name>
+    </item>
+  </combo>
+  <combo key="ProductCommissionTypes">
+    <item>
+      <value>1</value>
+      <name>%</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>$</name>
+    </item>
+  </combo>
+  <combo key="ScheduleTypes">
+    <item>
+      <value>1</value>
+      <name>Fixed</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Variables</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Rotate</name>
+    </item>
+  </combo>
+  <combo key="GroupPermissionTypes">
+    <item>
+      <value>0</value>
+      <name>Inactive</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Pending</name>
+    </item>
+  </combo>
+  <combo key="WorkPermissionTypes">
+    <item>
+      <value>1</value>
+      <name>Permission for arriving late</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Permission for leaving early</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Absence</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Sick Leave</name>
+    </item>
+    <item>
+      <value>16</value>
+      <name>Vacations</name>
+    </item>
+    <item>
+      <value>32</value>
+      <name>Disciplinary Leave</name>
+    </item>
+    <item>
+      <value>64</value>
+      <name>Before the Clock-in Hour</name>
+    </item>
+    <item>
+      <value>128</value>
+      <name>Break/Lunch Time</name>
+    </item>
+    <item>
+      <value>256</value>
+      <name>After the Clock-in Hour</name>
+    </item>
+    <item>
+      <value>512</value>
+      <name>Holiday or days-off</name>
+    </item>
+  </combo>
+  <combo key="OvertimeTypes">
+    <item>
+      <value>1</value>
+      <name>Before the Clock-in Hour</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Break/Lunch Time</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>After the Clock-in Hour</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Holiday or days-off</name>
+    </item>
+  </combo>
+  <combo key="PayEvents">
+    <item>
+      <value>0</value>
+      <name>Select</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Paid</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Unpaid</name>
+    </item>
+  </combo>
+  <status key="GroupPermissionStatuses">
+    <item>
+      <value>0</value>
+      <name>Inactive</name>
+      <backcolor>Red</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+      <backcolor>Green</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Pending</name>
+      <backcolor>Yellow</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </status>
+  <status key="EmployeeStatuses">
+    <item>
+      <value>0</value>
+      <name>Inactive</name>
+      <backcolor>Red</backcolor>
+      <forecolor>White</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+      <backcolor>Green</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Pending</name>
+      <backcolor>Yellow</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </status>
+  <status key="CreditStatuses">
+    <item>
+      <value>0</value>
+      <name>Excellent</name>
+      <backcolor></backcolor>
+      <forecolor></forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Good</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Average</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Poor</name>
+    </item>
+  </status>
+  <status key="ProductStatuses">
+    <item>
+      <value>0</value>
+      <name>Inactive</name>
+      <backcolor>Red</backcolor>
+      <forecolor>White</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+      <backcolor>Green</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </status>
+  <combo key="ScheduleStatuses">
+    <item>
+      <value>0</value>
+      <name>Inactive</name>
+      <backcolor>Red</backcolor>
+      <forecolor>White</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+      <backcolor>Green</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Pending</name>
+      <backcolor>Yellow</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </combo>
+  <combo key="country">
+    <item>
+      <value>0</value>
+      <name>None</name>
+      <symbol></symbol>
+    </item>
+    <item>
+      <value>1</value>
+      <name>USA</name>
+      <symbol>US</symbol>
+      <hasstate>true</hasstate>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Vietnam</name>
+      <symbol>VN</symbol>
+    </item>
+    <item>
+      <value>3</value>
+      <name>China</name>
+      <symbol>CN</symbol>
+      <hasstate>true</hasstate>
+    </item>
+  </combo>
+  <combo key="state">
+    <!-- 50 States -->
+    <item>
+      <value>0</value>
+      <name>None</name>
+      <symbol></symbol>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Alabama</name>
+      <symbol>AL</symbol>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Alaska</name>
+      <symbol>AK</symbol>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Arizona</name>
+      <symbol>AZ</symbol>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Arkansas</name>
+      <symbol>AR</symbol>
+    </item>
+    <item>
+      <value>5</value>
+      <name>California</name>
+      <symbol>CA</symbol>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Colorado</name>
+      <symbol>CO</symbol>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Connecticut</name>
+      <symbol>CT</symbol>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Delaware</name>
+      <symbol>DE</symbol>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Florida</name>
+      <symbol>FL</symbol>
+    </item>
+    <item>
+      <value>10</value>
+      <name>Georgia</name>
+      <symbol>GA</symbol>
+    </item>
+    <item>
+      <value>11</value>
+      <name>Hawaii</name>
+      <symbol>HI</symbol>
+    </item>
+    <item>
+      <value>12</value>
+      <name>Idaho</name>
+      <symbol>ID</symbol>
+    </item>
+    <item>
+      <value>13</value>
+      <name>Illinois</name>
+      <symbol>IL</symbol>
+    </item>
+    <item>
+      <value>14</value>
+      <name>Indiana</name>
+      <symbol>IN</symbol>
+    </item>
+    <item>
+      <value>15</value>
+      <name>Iowa</name>
+      <symbol>IA</symbol>
+    </item>
+    <item>
+      <value>16</value>
+      <name>Kansas</name>
+      <symbol>KS</symbol>
+    </item>
+    <item>
+      <value>17</value>
+      <name>Kentucky</name>
+      <symbol>KY</symbol>
+    </item>
+    <item>
+      <value>18</value>
+      <name>Louisiana</name>
+      <symbol>LA</symbol>
+    </item>
+    <item>
+      <value>19</value>
+      <name>Maine</name>
+      <symbol>ME</symbol>
+    </item>
+    <item>
+      <value>20</value>
+      <name>Maryland</name>
+      <symbol>MD</symbol>
+    </item>
+    <item>
+      <value>21</value>
+      <name>Massachusetts</name>
+      <symbol>MA</symbol>
+    </item>
+    <item>
+      <value>22</value>
+      <name>Michigan</name>
+      <symbol>MI</symbol>
+    </item>
+    <item>
+      <value>23</value>
+      <name>Minnesota</name>
+      <symbol>MN</symbol>
+    </item>
+    <item>
+      <value>24</value>
+      <name>Mississippi</name>
+      <symbol>MS</symbol>
+    </item>
+    <item>
+      <value>25</value>
+      <name>Missouri</name>
+      <symbol>MO</symbol>
+    </item>
+    <item>
+      <value>26</value>
+      <name>Montana</name>
+      <symbol>MT</symbol>
+    </item>
+    <item>
+      <value>27</value>
+      <name>Nebraska</name>
+      <symbol>NE</symbol>
+    </item>
+    <item>
+      <value>28</value>
+      <name>Nevada</name>
+      <symbol>NV</symbol>
+    </item>
+    <item>
+      <value>29</value>
+      <name>New Hampshire</name>
+      <symbol>NH</symbol>
+    </item>
+    <item>
+      <value>30</value>
+      <name>New Jersey</name>
+      <symbol>NJ</symbol>
+    </item>
+    <item>
+      <value>31</value>
+      <name>New Mexico</name>
+      <symbol>NM</symbol>
+    </item>
+    <item>
+      <value>32</value>
+      <name>New York</name>
+      <symbol>NY</symbol>
+    </item>
+    <item>
+      <value>33</value>
+      <name>North Carolina</name>
+      <symbol>NC</symbol>
+    </item>
+    <item>
+      <value>34</value>
+      <name>North Dakota</name>
+      <symbol>ND</symbol>
+    </item>
+    <item>
+      <value>35</value>
+      <name>Ohio</name>
+      <symbol>OH</symbol>
+    </item>
+    <item>
+      <value>36</value>
+      <name>Oklahoma</name>
+      <symbol>OK</symbol>
+    </item>
+    <item>
+      <value>37</value>
+      <name>Oregon</name>
+      <symbol>OR</symbol>
+    </item>
+    <item>
+      <value>38</value>
+      <name>Pennsylvania</name>
+      <symbol>PA</symbol>
+    </item>
+    <item>
+      <value>39</value>
+      <name>Rhode Island</name>
+      <symbol>RI</symbol>
+    </item>
+    <item>
+      <value>40</value>
+      <name>South Carolina</name>
+      <symbol>SC</symbol>
+    </item>
+    <item>
+      <value>41</value>
+      <name>South Dakota</name>
+      <symbol>SD</symbol>
+    </item>
+    <item>
+      <value>42</value>
+      <name>Tennessee</name>
+      <symbol>TN</symbol>
+    </item>
+    <item>
+      <value>43</value>
+      <name>Texas</name>
+      <symbol>TX</symbol>
+    </item>
+    <item>
+      <value>44</value>
+      <name>Utah</name>
+      <symbol>UT</symbol>
+    </item>
+    <item>
+      <value>45</value>
+      <name>Vermont</name>
+      <symbol>VT</symbol>
+    </item>
+    <item>
+      <value>46</value>
+      <name>Virginia</name>
+      <symbol>VA</symbol>
+    </item>
+    <item>
+      <value>47</value>
+      <name>Washington</name>
+      <symbol>WA</symbol>
+    </item>
+    <item>
+      <value>48</value>
+      <name>West Virginia</name>
+      <symbol>WV</symbol>
+    </item>
+    <item>
+      <value>49</value>
+      <name>Wisconsin</name>
+      <symbol>WI</symbol>
+    </item>
+    <item>
+      <value>50</value>
+      <name>Wyoming</name>
+      <symbol>WY</symbol>
+    </item>
+  </combo>
+  <combo key="groupofdrop">
+    <item>
+      <value>1</value>
+      <name>Job Title</name>
+      <tab>1</tab>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Department</name>
+      <tab>1</tab>
+    </item>
+  </combo>
+  <report key="AnalysisReports">
+    <item>
+      <value>1</value>
+      <name>General attendance report</name>
+      <groupen>Report</groupen>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Absences report</name>
+      <groupen>Report</groupen>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Late arrival and Early Clock-Outs</name>
+      <groupen>Report</groupen>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Attendances</name>
+      <groupen>Summary</groupen>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Late arrival instances</name>
+      <groupen>Summary</groupen>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Early Clock-Outs instances</name>
+      <groupen>Summary</groupen>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Permission, Vacation and Disciplinary Leaves</name>
+      <groupen>Summary</groupen>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Time worked summary (counting absences) report</name>
+      <groupen>Summary</groupen>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Time worked summary (not counting absences) report</name>
+      <groupen>Summary</groupen>
+    </item>
+  </report>
+
+
+  <!--Dynamic Data-->
+  <combo key="UserTypes">
+    <item>
+      <value>E</value>
+      <name>Employee</name>
+    </item>
+    <item>
+      <value>C</value>
+      <name>Customer</name>
+    </item>
+    <item>
+      <value>V</value>
+      <name>Vendor</name>
+    </item>
+    <item>
+      <value>O</value>
+      <name>Contact</name>
+    </item>
+  </combo>
+  <combo key="ItemTypes">
+    <item>
+      <value>1</value>
+      <visible>1</visible>
+      <name>Stockable</name>
+    </item>
+    <item>
+      <value>2</value>
+      <visible>1</visible>
+      <name>Non-Stocked</name>
+    </item>
+    <item>
+      <value>3</value>
+      <visible>1</visible>
+      <name>Services</name>
+    </item>
+    <item>
+      <value>4</value>
+      <visible>1</visible>
+      <name>Component</name>
+    </item>
+    <item>
+      <value>5</value>
+      <visible>1</visible>
+      <name>Combo</name>
+    </item>
+  </combo>
+  <combo key="CustomerType">
+    <item>
+      <value>1</value>
+      <name>Individual</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Retailer</name>
+    </item>
+  </combo>
+  <combo key="MemberType">
+    <item>
+      <value>N</value>
+      <name>None Member</name>
+    </item>
+    <item>
+      <value>P</value>
+      <name>Platinum</name>
+    </item>
+    <item>
+      <value>G</value>
+      <name>Gold</name>
+    </item>
+    <item>
+      <value>S</value>
+      <name>Silver</name>
+    </item>
+    <item>
+      <value>B</value>
+      <name>bronze</name>
+    </item>
+  </combo>
+  <combo key="PriceSchemas">
+    <item>
+      <value>1</value>
+      <markDown>15</markDown>
+      <currency>USD</currency>
+      <name>Regular Price</name>
+    </item>
+    <item>
+      <value>2</value>
+      <markDown>20</markDown>
+      <currency>USD</currency>
+      <name>Sale Price</name>
+    </item>
+    <item>
+      <value>4</value>
+      <markDown>10</markDown>
+      <currency>USD</currency>
+      <name>Wholesale Price</name>
+    </item>
+    <item>
+      <value>8</value>
+      <markDown>10</markDown>
+      <currency>USD</currency>
+      <name>Employee</name>
+    </item>
+    <item>
+      <value>16</value>
+      <markDown>10</markDown>
+      <currency>USD</currency>
+      <name>Custom Price</name>
+    </item>
+  </combo>
+  <combo key="StatusBasic">
+    <item>
+      <value>0</value>
+      <name></name>
+      <backcolor>Red</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Active</name>
+      <backcolor>Green</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Deactive</name>
+      <backcolor>Red</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </combo>
+  <status key="JobPosition">
+    <item>
+      <value>0</value>
+      <name></name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Sale Executive</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>IT</name>
+    </item>
+  </status>
+  <combo key="JobTitles">
+    <item>
+      <value>0</value>
+      <name>None</name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Sale Executive</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>IT</name>
+    </item>
+  </combo>
+  <combo key="PaymentCardType">
+    <item>
+      <value>1</value>
+      <name>Visa</name>
+      <symbol>Visa</symbol>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Master Card</name>
+      <symbol>Master</symbol>
+    </item>
+    <item>
+      <value>4</value>
+      <name>American Express</name>
+      <symbol>AMEX</symbol>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Discover</name>
+      <symbol>Discover</symbol>
+    </item>
+    <item>
+      <value>16</value>
+      <name>Diners Club</name>
+      <symbol>DinerClub</symbol>
+    </item>
+  </combo>
+  <combo key="PaymentMethods">
+    <item>
+      <value>1</value>
+      <default>1</default>
+      <name>Cash</name>
+      <symbol>Payment</symbol>
+      <islocked>false</islocked>
+    </item>
+    <item>
+      <value>2</value>
+      <default>0</default>
+      <name>Cheque</name>
+      <symbol>Check</symbol>
+      <islocked>false</islocked>
+    </item>
+    <item>
+      <value>4</value>
+      <default>0</default>
+      <name>Credit Card</name>
+      <symbol>Credit</symbol>
+      <islocked>false</islocked>
+    </item>
+    <item>
+      <value>8</value>
+      <default>0</default>
+      <name>Debit / ATM Card</name>
+      <symbol>ATM</symbol>
+      <islocked>false</islocked>
+    </item>
+    <item>
+      <value>16</value>
+      <default>0</default>
+      <name>Deposit</name>
+      <symbol></symbol>
+      <islocked>true</islocked>
+    </item>
+    <item>
+      <value>32</value>
+      <default>0</default>
+      <name>Account</name>
+      <symbol>ChargeOnAccount</symbol>
+      <islocked>false</islocked>
+    </item>
+    <item>
+      <value>64</value>
+      <default>0</default>
+      <name>Gift Card</name>
+      <symbol>GiftCard</symbol>
+      <islocked>false</islocked>
+    </item>
+  </combo>
+  <combo key="GiftCardType">
+    <item>
+      <value>1</value>
+      <default>0</default>
+      <name>Gift Card</name>
+      <symbol>GiftCard</symbol>
+    </item>
+    <item>
+      <value>2</value>
+      <default>0</default>
+      <name>Gift Certificate</name>
+      <symbol>GiftCertificate</symbol>
+    </item>
+  </combo>
+  <status key="PromotionStatuses">
+    <item>
+      <value>0</value>
+      <name>Deactived</name>
+      <backcolor>White</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Actived</name>
+      <backcolor>White</backcolor>
+      <forecolor>Black</forecolor>
+    </item>
+  </status>
+  <combo key="PromotionTypes">
+    <item>
+      <value>0</value>
+      <name></name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>% off</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>$ off</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Buy X for $Y</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Buy X and get Y % off</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Coupon</name>
+    </item>
+  </combo>
+  <combo key="TakeOffOptions">
+    <item>
+      <value>1</value>
+      <name>% off</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>$ off</name>
+    </item>
+  </combo>
+  <combo key="ScanMethods">
+    <item>
+      <value>1</value>
+      <name>UPCA</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>EAN13 </name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Code128</name>
+    </item>
+  </combo>
+  <combo key="BookingChannel">
+    <item>
+      <value>1</value>
+      <!--Commission-->
+      <flag>False</flag>
+      <name>Walk-in</name>
+    </item>
+    <item>
+      <value>2</value>
+      <!--Commission-->
+      <flag>True</flag>
+      <name>Website</name>
+    </item>
+    <item>
+      <value>3</value>
+      <!--Commission-->
+      <flag>False</flag>
+      <name>Email</name>
+
+    </item>
+    <item>
+      <value>4</value>
+      <!--Commission-->
+      <flag>False</flag>
+      <name>Phone</name>
+    </item>
+  </combo>
+  <combo key="ShipUnit">
+    <item>
+      <value>1</value>
+      <name>Tons</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>LBs</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Kgs</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Grs</name>
+    </item>
+  </combo>
+  <combo key="SaleStatus">
+    <item>
+      <value>1</value>
+      <name>Tạo mới</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Đang nhận hàng</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Đã nhận đủ</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Lập hóa đơn</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Hủy</name>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Đã thanh toán</name>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Trích dẫn</name>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Layaway</name>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Close</name>
+    </item>
+    
+  </combo>
+  <combo key="PurchaseStatus">
+    <item>
+      <value>1</value>
+      <name>Mo</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>InProgress</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Fully Received</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Paid In Full</name>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Closed</name>
+    </item>
+  </combo>
+  <combo key="AvailableQuantity">
+    <item>
+      <value>1</value>
+      <name>All Orders</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Sale Orders</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Purchase Orders</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Pending Orders</name>
+    </item>
+  </combo>
+  <combo key="StockStatus">
+    <item>
+      <value>1</value>
+      <name>Available</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>On Hand</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>On Reserved</name>
+    </item>
+  </combo>
+  <combo key="Language">
+    <item>
+      <value>1</value>
+      <code>VI</code>
+      <culture>vi-VN</culture>
+      <name>Tiếng Việt</name>
+    </item>
+    <item>
+      <value>2</value>
+      <code>EN</code>
+      <culture>en-US</culture>
+      <name>Tiếng Anh</name>
+    </item>
+    <item>
+      <value>3</value>
+      <code>ZH</code>
+      <culture>zh-CN</culture>
+      <name>Trung Quốc</name>
+    </item>
+  </combo>
+  <combo key="Currency">
+    <item>
+      <code>CNY</code>
+      <symbol>元</symbol>
+      <culture>zh-CN</culture>
+      <name>Chinese Yuan Renminbi  (元)</name>
+    </item>
+    <item>
+      <code>THB</code>
+      <symbol>฿</symbol>
+      <culture>th-TH</culture>
+      <name>Thai Baht (฿)</name>
+    </item>
+    <item>
+      <code>USD</code>
+      <symbol>$</symbol>
+      <culture>en-US</culture>
+      <name>US Dollar  ($)</name>
+    </item>
+    <item>
+      <code>VND</code>
+      <symbol>₫</symbol>
+      <culture>vi-VN</culture>
+      <name>Vietnamese Dong (₫)</name>
+    </item>
+  </combo>
+  <combo key="Shift">
+    <item>
+      <value>1</value>
+      <code>MOR</code>
+      <name>Morning</name>
+    </item>
+    <item>
+      <value>1</value>
+      <code>AFT</code>
+      <name>Afternoon</name>
+    </item>
+    <item>
+      <value>3</value>
+      <code>NGT</code>
+      <name>Night</name>
+    </item>
+  </combo>
+  <combo key="RewardAmount">
+    <item>
+      <value>1</value>
+      <name>$ off</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>% off</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Point</name>
+    </item>
+  </combo>
+  <combo key="RewardStatus">
+    <item>
+      <value>1</value>
+      <name>Available</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Remove</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Redeemed</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Pending</name>
+    </item>
+  </combo>
+  <combo key="RewardExpiration">
+    <item>
+      <value>0</value>
+      <name>None</name>
+      <detail>0</detail>
+    </item>
+    <item>
+      <value>1</value>
+      <name>15 days</name>
+      <detail>15</detail>
+    </item>
+    <item>
+      <value>2</value>
+      <name>30 days</name>
+      <detail>30</detail>
+    </item>
+    <item>
+      <value>3</value>
+      <name>60 days</name>
+      <detail>60</detail>
+    </item>
+    <item>
+      <value>4</value>
+      <name>90 days</name>
+      <detail>90</detail>
+    </item>
+    <item>
+      <value>5</value>
+      <name>1 year</name>
+      <detail>365</detail>
+    </item>
+  </combo>
+  <combo key="WarrantyType">
+    <item>
+      <value>0</value>
+      <name></name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Manufactory</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Extention</name>
+    </item>
+  </combo>
+  <combo key="WarrantyPeriodType">
+    <item>
+      <value>0</value>
+      <name></name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Day</name>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Week</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Month</name>
+    </item>
+    <item>
+      <value>12</value>
+      <name>Years</name>
+    </item>
+  </combo>
+  <combo key="ProductCard">
+    <item>
+      <name>Gift Card</name>
+    </item>
+  </combo>
+  <combo key="BasePriceType">
+    <item>
+      <value>0</value>
+      <name></name>
+    </item>
+    <item>
+      <value>1</value>
+      <name>Cost</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Price</name>
+    </item>
+  </combo>
+  <combo key="PricingStatus">
+    <item>
+      <value>1</value>
+      <name>Pending</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Applied</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Restored</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Reversed</name>
+    </item>
+  </combo>
+  <combo key="TransferStockStatus">
+    <item>
+      <value>1</value>
+      <name>Pending</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Applied</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Reversed</name>
+    </item>
+  </combo>
+  <combo key="PricingAdjustmentType">
+    <item>
+      <value>1</value>
+      <name>Plus</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Subtract</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Multiple</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Divide</name>
+    </item>
+  </combo>
+  <combo key="CountStockStatus">
+    <item>
+      <value>1</value>
+      <name>Open</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Processing</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Completed</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Cancelled</name>
+    </item>
+  </combo>
+  <combo key="AdjustmentStatus">
+    <item>
+      <value>1</value>
+      <name>Normal</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Reversing</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Reversed</name>
+    </item>
+  </combo>
+  <combo key="AdjustmentReason">
+    <item>
+      <value>1</value>
+      <name>Item Edited</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Reverse</name>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Counted Stock</name>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Transfered Stock</name>
+    </item>
+  </combo>
+  <combo key="ItemSetting">
+    <item>
+      <value>1</value>
+      <name>Tổng Quát</name>
+      <settingPart>General</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Thông Tin Cửa Hàng</name>
+      <settingPart>StoreInfo</settingPart>
+      <parentId>1</parentId>
+    </item>
+    <item>
+      <value>3</value>
+      <name>Tồn Kho</name>
+      <settingPart>Inventory</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>4</value>
+      <name>Đơn Vị Đo Lường</name>
+      <settingPart>UnitOfMeasure</settingPart>
+      <parentId>3</parentId>
+    </item>
+    <item>
+      <value>5</value>
+      <name>Thiết Lập Email</name>
+      <settingPart>Email</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>6</value>
+      <name>Cửa Hàng</name>
+      <settingPart>MultiStore</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>7</value>
+      <name>Danh Sách Cửa Hàng</name>
+      <settingPart>StoreCodes</settingPart>
+      <parentId>6</parentId>
+    </item>
+    <item>
+      <value>8</value>
+      <name>Giá</name>
+      <settingPart>Pricing</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>9</value>
+      <name>Bán Hàng</name>
+      <settingPart>Sales</settingPart>
+      <parentId>0</parentId>
+    </item>
+    <item>
+      <value>10</value>
+      <name>Giảm Giá</name>
+      <settingPart>Discount</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>11</value>
+      <name>Thưởng</name>
+      <settingPart>Reward</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>12</value>
+      <name>Trả Hàng</name>
+      <settingPart>Return</settingPart>
+      <parentId>9</parentId>
+    </item>
+    <item>
+      <value>13</value>
+      <name>Đồng Hồ</name>
+      <settingPart>TimeClock</settingPart>
+      <parentId>0</parentId>
+    </item>
+  </combo>
+  <combo key="ProductOrderBy">
+    <item>
+      <value>1</value>
+      <name>Total Profit</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>On-Hand Quantity</name>
+    </item>
+  </combo>
+  <combo key="ProductOrderDirection">
+    <item>
+      <value>1</value>
+      <name>Highest</name>
+    </item>
+    <item>
+      <value>2</value>
+      <name>Lowest</name>
+    </item>
+  </combo>
+  <!--End Dynamic Data-->
+  <!--Label Resource-->
+  <!--End Label Resource-->
+</comboes>

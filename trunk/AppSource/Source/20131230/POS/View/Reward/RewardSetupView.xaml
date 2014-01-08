@@ -1,0 +1,1581 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcTextBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:CPCToolkitExt_DataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             x:Class="CPC.POS.View.RewardSetupView"
+             x:Name="rewardSetupView"
+             MinWidth="770"
+             MinHeight="530"
+             Background="{DynamicResource UserControlBackground}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d"
+             Width="Auto">
+    <UserControl.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <converter:ShortToBooleanConverter x:Key="shortToBooleanConverter" />
+        <converter:EnumToBoolConverter x:Key="enumToBoolConverter" />
+		<converter:EnumToBoolConverter x:Key="schedulenumToBoolConverter" />
+        <converter:EnumToBoolConverter x:Key="enumMOptionToBoolConverter" />
+        <converter:EnumToBoolConverter x:Key="enumYOptionToBoolConverter" />
+        <converter:IntergerToVisibilityConverter x:Key="intergerToVisibilityConverter" />
+        <converter:IntergerToVisibilityConverter FalseToVisibility="Visible"
+                                                 x:Key="cutOffTypeVisibilityConverter" />
+        <converter:IntegerToBooleanConverter IsReversed="True"
+                                             x:Key="integerToBooleanConverter" />
+        <Style x:Key="ListBoxItemRewardSetup"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                                     Value="true" />
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="Selector.IsSelectionActive"
+                                               Value="false" />
+                                </MultiTrigger.Conditions>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--  region HeaderTemplate  -->
+        <DataTemplate x:Key="DataTemplate_PD_Header_Code">
+            <TextBlock Text="{DynamicResource C174}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemType">
+            <TextBlock Text="{DynamicResource PD_ItemType}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Category">
+            <TextBlock Text="{DynamicResource PD_Category}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Vendor">
+            <TextBlock Text="{DynamicResource C134}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ItemName">
+            <TextBlock Text="{DynamicResource C115}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Description">
+            <TextBlock Text="{DynamicResource C138}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Attribute">
+            <TextBlock Text="{DynamicResource C116}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Size">
+            <TextBlock Text="{DynamicResource C117}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_Barcode">
+            <TextBlock Text="{DynamicResource C176}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_PartNo">
+            <TextBlock Text="{DynamicResource PD_PartNo}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_ALU">
+            <TextBlock Text="{DynamicResource PD_ALU}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_BaseUOM">
+            <TextBlock Text="{DynamicResource PD_BaseUnit}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_TaxCode">
+            <TextBlock Text="{DynamicResource C144}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_RegularPrice">
+            <TextBlock Text="{DynamicResource C139}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnHandQty">
+            <TextBlock Text="{DynamicResource C152}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_OnOrder">
+            <TextBlock Text="{DynamicResource C153}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_PD_Header_CreationDate">
+            <TextBlock Text="{DynamicResource PD_CreationDate}" />
+        </DataTemplate>
+        <!--DatagridBasic-->
+        <Style TargetType="{x:Type CPCToolkitExt_DataGridControl:DataGridControl}">
+            <Setter Property="RowHeight"
+                    Value="25" />
+            <Setter Property="ColumnHeaderHeight"
+                    Value="28" />
+            <Setter Property="SelectionMode"
+                    Value="Single" />
+            <Setter Property="NumberOfColumnsDisplayed"
+                    Value="10" />
+            <Setter Property="ColumnHeaderStyle"
+                    Value="{DynamicResource DataGridColumnHeaderBasicStyle}" />
+            <Setter Property="CellStyle"
+                    Value="{DynamicResource myDataGridCellStyle}" />
+            <Setter Property="RowStyle"
+                    Value="{DynamicResource myDataGridControlRowStyle}" />
+            <Setter Property="BorderBrush"
+                    Value="{DynamicResource DatagridBorderBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="RowDetailsVisibilityMode"
+                    Value="VisibleWhenSelected" />
+            <Setter Property="ScrollViewer.CanContentScroll"
+                    Value="True" />
+            <Setter Property="AutoGenerateColumns"
+                    Value="True" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="IsTextSearchEnabled"
+                    Value="False" />
+            <Setter Property="Background"
+                    Value="{DynamicResource DatagridBackground}" />
+            <Setter Property="AlternationCount"
+                    Value="1" />
+            <Setter Property="HorizontalGridLinesBrush"
+                    Value="{DynamicResource DatagridHorizontal_VerticalGridLinesBrush}" />
+            <Setter Property="EnableColumnVirtualization"
+                    Value="False" />
+            <Setter Property="IsManipulationEnabled"
+                    Value="False" />
+            <Setter Property="VerticalGridLinesBrush"
+                    Value="{DynamicResource DatagridHorizontal_VerticalGridLinesBrush}" />
+            <Setter Property="AlternatingRowBackground"
+                    Value="{DynamicResource DatagridAlternatingRowbackground}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource DatagridForeground}" />
+            <Setter Property="NavigationBarBrush"
+                    Value="{DynamicResource DatagridColumnHeaderBackground}" />
+            <Setter Property="NavigationBarHeight"
+                    Value="25" />
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="FontFamily"
+                    Value="Tahoma" />
+            <Style.Triggers>
+                <Trigger Property="IsGrouping"
+                         Value="True">
+                    <Setter Property="ScrollViewer.CanContentScroll"
+                            Value="False" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+	 <UserControl.InputBindings>
+<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+</UserControl.InputBindings>
+    <Grid x:Name="GridLayout">
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
+        <Grid x:Name="grdRewardSetup">
+            <Grid x:Name="grdContentLayawaySetup"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="stkpBtn"
+                            Margin="20,0,0,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                    <Button x:Name="btnSave"
+                            Command="{Binding SaveCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnSave"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgSave"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Save}" />
+                            <TextBlock x:Name="txtblSave"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnCancel"
+                            Command="{Binding CancelCommand}"
+                            Width="40"
+                            Height="40"
+                            Style="{DynamicResource ButtonSystem}">
+                        <StackPanel x:Name="stkpBtnCancel"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgCancel"
+                                       Width="30"
+                                       Height="30"
+                                       Fill="{DynamicResource Cancel}" />
+                            <TextBlock x:Name="txtblCancel"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonSystemTextBlock}"
+                                       Text="Save"
+                                       TextWrapping="NoWrap"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Rectangle x:Name="Line"
+                           Grid.Row="1"
+                           Height="1"
+                           Margin="2,0,2,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Top"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
+                <Grid x:Name="grdBasic"
+                      Grid.Row="1"
+                      Width="747"
+                      HorizontalAlignment="Left"
+                      Margin="0,10,0,0"
+                      VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtblDiscountName"
+                               Text="Name"
+                               TextWrapping="NoWrap"
+                               Margin="10,0,0,0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Style="{DynamicResource TextBlockNormal}" />
+                    <cpcTextBoxControl:TextBox x:Name="txtName"
+                                               Margin="50,2,0,2"
+                                               MaxLength="100"
+                                               TextWrapping="NoWrap"
+                                               Padding="2,0,2,0"
+                                               Background="#FFF8F49A"
+                                               Width="321"
+                                               Text="{Binding RewardManagerModel.Name, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                               HorizontalAlignment="Left"
+                                               d:LayoutOverrides="HorizontalAlignment" />
+                    <TextBlock x:Name="txtblStatus"
+                               Text="Status"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Margin="534,0,0,0"
+                               Style="{DynamicResource TextBlockNormal}" />
+                    <ComboBox VerticalAlignment="Stretch"
+                              Margin="575,2,0,2"
+                              x:Name="cmbStatus"
+                              HorizontalAlignment="Left"
+                              Width="90"
+                              ItemsSource="{x:Static helper:Common.StatusBasic}"
+                              DisplayMemberPath="Text"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding RewardManagerModel.Status}" />
+                </Grid>
+                <Border x:Name="brdSubRewardSetup"
+                        Grid.Row="2"
+                        Margin="10"
+                        Background="{DynamicResource TabControlBackground}"
+                        BorderBrush="{DynamicResource TabControlBorder}"
+                        BorderThickness="1">
+
+                    <Grid x:Name="grdReward"
+                          Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="52" />
+                            <RowDefinition Height="287" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <GroupBox x:Name="gbProgrammeSchedule"
+                                  Margin="0"
+                                  Width="728"
+                                  HorizontalAlignment="Left">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblProgrammeSchedule"
+                                           Text="Program Schedule"
+                                           TextWrapping="NoWrap"
+                                           Style="{DynamicResource GroupboxTextBlock}" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdProgrammeSchedule"
+                                  Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="0" />
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblStartDate"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource RW_TextBlock_StartDate}"
+                                           TextWrapping="Wrap" />
+                                <DatePicker x:Name="dtpStartDate"
+                                            Width="90"
+                                            Height="21"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            SelectedDate="{Binding RewardManagerModel.StartDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            TabIndex="{Binding TabIndexControl}"
+                                            Grid.Column="1" />
+                                <TextBlock x:Name="txtblEndDate"
+                                           Margin="130,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource RW_TextBlock_EndDate}"
+                                           TextWrapping="Wrap"
+                                           Grid.Column="1" />
+                                <Grid Width="90"
+                                      Height="21"
+                                      Margin="185,2,0,2"
+                                      HorizontalAlignment="Left"
+                                      Grid.Column="1">
+                                    <DatePicker x:Name="dtpEnd1"
+                                                IsEnabled="{Binding RewardManagerModel.IsEnabledEnadDate,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedDate="{Binding RewardManagerModel.EndDate, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                        <!--<DatePicker.Style>
+                                            <Style BasedOn="{StaticResource {x:Type DatePicker}}"
+                                                   TargetType="{x:Type DatePicker}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RewardManagerModel.IsNoEndDay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Value="False">
+                                                        <Setter Property="IsEnabled"
+                                                                Value="True " />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RewardManagerModel.IsNoEndDay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Value="True">
+                                                        <Setter Property="IsEnabled"
+                                                                Value="False " />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DatePicker.Style>-->
+                                    </DatePicker>
+                                </Grid>
+                                <CheckBox x:Name="cbNoEndDate"
+                                          Margin="300,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding RewardManagerModel.CutOffType, ConverterParameter=2, Converter={StaticResource cutOffTypeVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Content="{DynamicResource RW_CheckBox_NoEndDate}"
+                                          IsChecked="{Binding RewardManagerModel.IsNoEndDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Grid.Column="1" />
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox x:Name="gbProgrammeSetup"
+                                  Width="315"
+                                  HorizontalAlignment="Left"
+                                  IsEnabled="{Binding RewardManagerModel.IsActived, Mode=OneWay}"
+                                  Margin="0,10,0,0"
+                                  Grid.RowSpan="1"
+                                  Grid.Column="0"
+                                  Grid.Row="1">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblProgrammeSetup"
+                                           Text="Program Setup"
+                                           TextWrapping="NoWrap"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Style="{DynamicResource GroupboxTextBlock}" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdProgrammeSetup">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="txtblProgrammgeType"
+                                           Text="Program Type"
+                                           TextWrapping="NoWrap"
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Style="{DynamicResource TextBlockNormal}" />
+                                <ComboBox Margin="115,2,10,2"
+                                          x:Name="cmbProgrammgeType"
+                                          SelectedIndex="{Binding RewardManagerModel.RewardType}">
+                                    <ComboBoxItem Content="Standard" />
+                                    <ComboBoxItem Content="Tier" />
+                                </ComboBox>
+                                <TextBlock x:Name="txtblProgramCriteria"
+                                           Text="Program Criteria"
+                                           TextWrapping="NoWrap"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Left"
+                                           Grid.Row="1"
+                                           VerticalAlignment="Center"
+                                           Margin="0"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           d:LayoutOverrides="HorizontalAlignment, GridBox" />
+                                <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                           HorizontalAlignment="Stretch"
+                                           x:Name="LineRewardProgram"
+                                           VerticalAlignment="Center"
+                                           Height="1"
+                                           Grid.Row="1"
+                                           Margin="105,0,10,0"
+                                           Grid.Column="1" />
+                                <TextBlock x:Name="txtblPurchaseThreshold"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource RW_TextBlock_PurchaseThreshold}"
+                                           TextWrapping="NoWrap"
+                                           Grid.Row="2" />
+                                <cpcTextBoxControl:TextBoxMoney x:Name="txtPurchaseThreshold"
+                                                                Width="Auto"
+                                                                Margin="115,2,10,2"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Right"
+                                                                ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                Padding="2,0,2,0"
+                                                                TextWrapping="NoWrap"
+                                                                Value="{Binding RewardManagerModel.PurchaseThreshold, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                Grid.Row="2">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="LostFocus">
+                                            <command:EventToCommand Command="{Binding PurchaseThresholdChanged}"
+                                                                    CommandParameter="{Binding .}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </cpcTextBoxControl:TextBoxMoney>
+                                <TextBlock x:Name="txtblRewardAmount"
+                                           Grid.Row="3"
+                                           Margin="10,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource RW_TextBlock_RewardAmount}"
+                                           TextWrapping="Wrap" />
+                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtRewardAmount"
+                                                                  Grid.Row="3"
+                                                                  Width="93"
+                                                                  Margin="115,2,0,2"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Stretch"
+                                                                  HorizontalContentAlignment="Right"
+                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                  CurrencyDecimalDigits="2"
+                                                                  IntegerLength="19"
+                                                                  Padding="2,0,2,0"
+                                                                  TextWrapping="NoWrap"
+                                                                  Value="{Binding RewardManagerModel.RewardAmount, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <ComboBox x:Name="cmbRewardAmount"
+                                          Grid.Row="3"
+                                          Width="76.294"
+                                          Margin="0,2,10,2"
+                                          HorizontalAlignment="Right"
+                                          DisplayMemberPath="Text"
+                                          SelectedValuePath="IntValue"
+                                          ItemsSource="{Binding RewardAmountTypes}"
+                                          SelectedValue="{Binding RewardManagerModel.RewardAmtType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}" />
+                                <Grid x:Name="grdMembershipRewardAmountLevel"
+                                      Visibility="{Binding RewardManagerModel.RewardType, ConverterParameter=1, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.Row="4"
+                                      Grid.RowSpan="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="txtblMembershipRewardAmountLevel"
+                                               Text="Membership Reward Amount Level"
+                                               TextWrapping="NoWrap"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Left"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="HorizontalAlignment, Height, GridBox"
+                                               VerticalAlignment="Center" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LineMembershipRewardAmountLevel"
+                                               VerticalAlignment="Center"
+                                               Height="1"
+                                               Margin="203,0,10,0" />
+                                    <ListBox x:Name="lbSetup"
+                                             BorderBrush="{x:Null}"
+                                             BorderThickness="0"
+                                             Background="{x:Null}"
+                                             ItemContainerStyle="{DynamicResource ListBoxItemRewardSetup}"
+                                             Margin="0"
+                                             Grid.RowSpan="1"
+                                             Grid.Row="1">
+                                        <ListBoxItem Visibility="{Binding MemberTypes[0].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[0].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="0" />
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblMarkup"
+                                                           Text="Markup (%)"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Grid.Column="2"
+                                                           Margin="0"
+                                                           Visibility="Collapsed"
+                                                           d:IsHidden="True" />
+                                                <TextBlock x:Name="txtblBronze"
+                                                           Text="{Binding MemberTypes[0].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="1"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L1Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Padding="2,0,2,0"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L1Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Visibility="{Binding MemberTypes[1].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[1].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblBronze1"
+                                                           Text="{Binding MemberTypes[1].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward1"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="1"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L2Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup1"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L2Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Padding="2,0,2,0"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Visibility="{Binding MemberTypes[2].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[2].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblBronze2"
+                                                           Text="{Binding MemberTypes[2].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward2"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L3Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Grid.Column="1"
+                                                                                  Padding="2,0,2,0"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup2"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L3Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Visibility="{Binding MemberTypes[3].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[3].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblBronze3"
+                                                           Text="{Binding MemberTypes[3].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward3"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="1"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L4Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup3"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L4Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Visibility="{Binding MemberTypes[4].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[4].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblBronze4"
+                                                           Text="{Binding MemberTypes[4].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward4"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L5Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Grid.Column="1"
+                                                                                  Padding="2,0,2,0"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup4"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L5Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Visibility="{Binding MemberTypes[5].Islocked, Converter={StaticResource booleanToVisibilityConverter}, Mode=OneWay}"
+                                                     IsEnabled="{Binding MemberTypes[5].Islocked, Mode=OneWay}">
+                                            <Grid Margin="0"
+                                                  d:LayoutOverrides="Width"
+                                                  Grid.Row="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="25" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="115" />
+                                                    <ColumnDefinition Width="102" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="txtblBronze5"
+                                                           Text="{Binding MemberTypes[5].Text}"
+                                                           TextWrapping="NoWrap"
+                                                           HorizontalAlignment="Left"
+                                                           Style="{DynamicResource TextBlockNormal}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0,0,0"
+                                                           Grid.Row="1" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtTierReward5"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="1"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L6Amount, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  Padding="2,0,2,0"
+                                                                                  Grid.Row="1"
+                                                                                  Grid.ColumnSpan="2" />
+                                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtMarkup5"
+                                                                                  Margin="0,2,10,2"
+                                                                                  TextWrapping="NoWrap"
+                                                                                  Grid.Column="2"
+                                                                                  Padding="2,0,2,0"
+                                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                                  CurrencyDecimalDigits="2"
+                                                                                  Value="{Binding DataContext.RewardManagerModel.L6Markup, Mode=TwoWay, NotifyOnValidationError=True, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                                                  Grid.Row="1"
+                                                                                  Visibility="Collapsed" />
+                                            </Grid>
+                                        </ListBoxItem>
+                                    </ListBox>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox x:Name="gbRewardCouponCutOff"
+                                  VerticalAlignment="Top"
+                                  Margin="330,10,0,0"
+                                  Width="398"
+                                  HorizontalAlignment="Left"
+                                  Grid.Row="1"
+                                  Height="277">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblRewardCouponCutOff"
+                                           Text="Coupon Cut-off"
+                                           TextWrapping="NoWrap"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Style="{DynamicResource GroupboxTextBlock}" />
+                            </GroupBox.Header>
+                            <Grid Width="Auto"
+                                  x:Name="grdRewardCouponCutOff"
+                                  Margin="0,4,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Selection"
+                                           TextWrapping="Wrap"
+                                           x:Name="txtbCutOffSelection"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           Style="{DynamicResource TextBlockNormal}" />
+                                <ComboBox Margin="68,2,0,2"
+                                          x:Name="cmbCutOffSelection"
+                                          HorizontalAlignment="Left"
+                                          Width="117"
+                                          SelectedValue="{Binding RewardManagerModel.CutOffType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="Text"
+                                          ItemsSource="{Binding CutOffTypes}"
+                                          Height="21" />
+                                <Grid Width="Auto"
+                                      Height="Auto"
+                                      Visibility="{Binding RewardManagerModel.CutOffType, ConverterParameter=2, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      x:Name="grdWeeklyMonthlyYearly"
+                                      Grid.RowSpan="1"
+                                      Grid.Row="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="86" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid x:Name="grdRdnbtn"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="0" />
+                                        </Grid.RowDefinitions>
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="Weekly"
+                                                     x:Name="rbWeekly"
+                                                     VerticalAlignment="Center"
+                                                     IsChecked="{Binding RewardManagerModel.CutOffScheduleType, ConverterParameter=Weekly, Converter={StaticResource shortToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Margin="10,0,0,0" />
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="Monthly"
+                                                     x:Name="rbMonthly"
+                                                     VerticalAlignment="Center"
+                                                     Grid.Row="1"
+                                                     IsChecked="{Binding RewardManagerModel.CutOffScheduleType, ConverterParameter=Monthly, Converter={StaticResource shortToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Margin="10,0,0,0" />
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="Yearly"
+                                                     IsChecked="{Binding RewardManagerModel.CutOffScheduleType, ConverterParameter=Yearly, Converter={StaticResource shortToBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     x:Name="rbYearly"
+                                                     VerticalAlignment="Center"
+                                                     Grid.Row="2"
+                                                     Margin="10,0,0,0" />
+                                    </Grid>
+                                    <Rectangle HorizontalAlignment="Right"
+                                               VerticalAlignment="Stretch"
+                                               Width="1"
+                                               Height="Auto"
+                                               x:Name="Line1"
+                                               Fill="{DynamicResource GroupboxBorder}"
+                                               Grid.Row="1" />
+                                    <Grid HorizontalAlignment="Stretch"
+                                          x:Name="grdWeekly"
+                                          VerticalAlignment="Top"
+                                          Grid.Column="1"
+                                          Margin="10,0,0,0"
+                                          Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=rbWeekly}"
+                                          Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="85" />
+                                            <ColumnDefinition Width="85" />
+                                            <ColumnDefinition Width="141" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel x:Name="stkpRecur"
+                                                    Grid.ColumnSpan="3"
+                                                    Orientation="Horizontal"
+                                                    d:LayoutOverrides="Width"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="10,0,0,0">
+                                            <TextBlock Text="Recur every"
+                                                       x:Name="txtblRecur"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       TextWrapping="NoWrap"
+                                                       Style="{DynamicResource TextBlockNormal}" />
+                                            <cpcTextBoxControl:TextBoxNumeric x:Name="txtWeeklyNumber"
+                                                                              TextWrapping="NoWrap"
+                                                                              VerticalAlignment="Stretch"
+                                                                              Padding="2,0,2,0"
+                                                                              Width="50"
+                                                                              ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                              NumericStringFormat="{}{0:N0}"
+                                                                              CurrencyDecimalDigits="0"
+                                                                              IntegerLength="4"
+                                                                              Value="{Binding RewardManagerModel.WeeklyNumber}"
+                                                                              HorizontalAlignment="Left"
+                                                                              HorizontalContentAlignment="Right"
+                                                                              Height="21"
+                                                                              Margin="5,0" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Text="week(s) on:"
+                                                       x:Name="txtblweek"
+                                                       HorizontalAlignment="Left"
+                                                       TextWrapping="NoWrap"
+                                                       Style="{DynamicResource TextBlockNormal}" />
+                                        </StackPanel>
+                                        <CheckBox x:Name="cbMonday"
+                                                  Content="Monday"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="1"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Monday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left" />
+                                        <CheckBox x:Name="cbTuesday"
+                                                  Content="Tuesday"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="1"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Tuesday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  Grid.Column="1" />
+                                        <CheckBox x:Name="cbWednesday"
+                                                  Content="Wednesday"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="1"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Wednesday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  Grid.Column="2" />
+                                        <CheckBox x:Name="cbThursday"
+                                                  Content="Thursday"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="2"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Thursday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left" />
+                                        <CheckBox x:Name="cbFriday"
+                                                  Content="Friday"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="2"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Friday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left"
+                                                  Grid.Column="1" />
+                                        <CheckBox x:Name="cbSaturday"
+                                                  Content="Saturday"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Row="2"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Saturday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  Grid.Column="2" />
+                                        <CheckBox x:Name="cbSunday"
+                                                  VerticalAlignment="Center"
+                                                  Content="Sunday"
+                                                  Grid.Row="3"
+                                                  IsChecked="{Binding RewardManagerModel.WeeklyOnDay, ConverterParameter={x:Static local:WeeklySchedule.Sunday}, Converter={StaticResource enumToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left" />
+                                    </Grid>
+                                   <!--Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=rbMonthly}"-->
+								    <Grid HorizontalAlignment="Stretch"
+                                          Margin="10,0,0,0"
+										  Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=rbMonthly}"
+                                          x:Name="grdMonthly"
+                                          VerticalAlignment="Top"
+                                          Height="Auto"
+                                          Grid.Column="1"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="Day"
+                                                     x:Name="rbDay"
+                                                     IsChecked="{Binding RewardManagerModel.MOption,Mode=TwoWay, ConverterParameter=Weekly, Converter={StaticResource shortToBooleanConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                     VerticalAlignment="Center" />
+                                        <cpcTextBoxControl:TextBoxNumeric x:Name="txtDay"
+                                                                          TextWrapping="NoWrap"
+                                                                          Margin="50,2,0,2"
+                                                                          IsEnabled="{Binding IsChecked, ElementName=rbDay}"
+                                                                          VerticalAlignment="Stretch"
+                                                                          Padding="2,0,2,0"
+                                                                          Height="Auto"
+                                                                          Grid.Row="0"
+                                                                          ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                          NumericStringFormat="{}{0:N0}"
+                                                                          CurrencyDecimalDigits="0"
+                                                                          IntegerLength="5"
+                                                                          Value="{Binding RewardManagerModel.MonthlyDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                          HorizontalAlignment="Left"
+                                                                          Width="50" />
+                                        <TextBlock Text="of every"
+                                                   x:Name="txtblEvery"
+                                                   Grid.Row="0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Margin="110,0,0,0"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}" />
+                                        <cpcTextBoxControl:TextBoxNumeric x:Name="txtMonth"
+                                                                          TextWrapping="NoWrap"
+                                                                          Margin="160,2,0,2"
+                                                                          VerticalAlignment="Stretch"
+                                                                          Padding="2,0,2,0"
+                                                                          HorizontalAlignment="Left"
+                                                                          Width="45"
+                                                                          IsEnabled="{Binding IsChecked, ElementName=rbDay}"
+                                                                          ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                          NumericStringFormat="{}{0:N0}"
+                                                                          CurrencyDecimalDigits="0"
+                                                                          IntegerLength="5"
+                                                                          Value="{Binding RewardManagerModel.MonthlyEveryMonth,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                          Height="Auto"
+                                                                          Grid.Row="0" />
+                                        <TextBlock Text="month (s)"
+                                                   TextWrapping="NoWrap"
+                                                   x:Name="txtblMonth"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="210,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Grid.Row="0"
+                                                   Style="{DynamicResource TextBlockNormal}" />
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="The"
+                                                     x:Name="rbMonthlyThe"
+                                                     IsChecked="{Binding RewardManagerModel.MOption, ConverterParameter=Monthly, Converter={StaticResource shortToBooleanConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     VerticalAlignment="Center"
+                                                     Grid.Row="6" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="50,2,0,2"
+                                                  x:Name="cmbFirst"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbMonthlyThe}"
+                                                  HorizontalAlignment="Left"
+                                                  Width="65"
+                                                  Grid.Row="1"
+                                                  SelectedIndex="0"
+                                                  SelectedValuePath="Value"
+                                                  DisplayMemberPath="Text"
+                                                  SelectedValue="{Binding RewardManagerModel.MSequence,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  ItemsSource="{x:Static helper:Common.WeeksOfMonth}" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="120,2,0,2"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbMonthlyThe}"
+                                                  x:Name="cmbMonday"
+                                                  HorizontalAlignment="Left"
+                                                  Width="85"
+                                                  Grid.Row="1"
+                                                  SelectedIndex="0"
+                                                  SelectedValue="{Binding RewardManagerModel.MSequenceOnDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Value"
+                                                  DisplayMemberPath="Text"
+                                                  ItemsSource="{x:Static helper:Common.DaysOfWeek}" />
+                                        <TextBlock Text="of every"
+                                                   x:Name="txtblOf"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="210,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Grid.Row="2"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   d:LayoutOverrides="GridBox" />
+                                        <cpcTextBoxControl:TextBoxNumeric x:Name="txtMonth1"
+                                                                          TextWrapping="NoWrap"
+                                                                          Margin="0,2,10,2"
+                                                                          VerticalAlignment="Stretch"
+                                                                          Padding="2,0,2,0"
+                                                                          Height="Auto"
+                                                                          Grid.Row="1"
+                                                                          IsEnabled="{Binding IsChecked, ElementName=rbMonthlyThe}"
+                                                                          ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                          NumericStringFormat="{}{0:N0}"
+                                                                          CurrencyDecimalDigits="0"
+                                                                          IntegerLength="5"
+                                                                          Value="{Binding RewardManagerModel.MSequenceOnMonth,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                          HorizontalAlignment="Right"
+                                                                          Width="30" />
+                                        <TextBlock Text="month (s)"
+                                                   TextWrapping="NoWrap"
+                                                   x:Name="txtblMonth1"
+                                                   HorizontalAlignment="Left"
+                                                   Grid.Row="1"
+                                                   VerticalAlignment="Center"
+                                                   Margin="316,0,0,0"
+                                                   Style="{DynamicResource TextBlockNormal}" />
+                                    </Grid>
+                                    <!-- Visibility="{Binding IsChecked,ElementName=rbMonthly,Converter={StaticResource booleanToVisibilityConverter}}"
+											 Visibility="{Binding IsChecked,ElementName=rbYearly,Converter={StaticResource booleanToVisibilityConverter}}"
+-->
+                                    <Grid HorizontalAlignment="Stretch"
+                                          Margin="10,0,0,0"
+                                          x:Name="grdYearly"
+										   Visibility="{Binding IsChecked, Converter={StaticResource booleanToVisibilityConverter}, ElementName=rbYearly}"
+                                          VerticalAlignment="Top"
+                                          Height="Auto"
+                                          Grid.Column="1"
+                                          Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="On"
+                                                     x:Name="rbOn"
+                                                     IsChecked="{Binding RewardManagerModel.YOption, ConverterParameter=Weekly, Converter={StaticResource shortToBooleanConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     VerticalAlignment="Center"
+                                                     Grid.Row="1" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="63,2,0,2"
+                                                  x:Name="cmbOn"
+                                                  HorizontalAlignment="Left"
+                                                  Width="85"
+                                                  Grid.Row="1"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbOn}"
+                                                  SelectedValue="{Binding RewardManagerModel.YearlyOnDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Value"
+                                                  DisplayMemberPath="Text"
+                                                  ItemsSource="{x:Static helper:Common.Months}"
+                                                  SelectedIndex="0" />
+                                        <cpcTextBoxControl:TextBoxNumeric x:Name="txtOn"
+                                                                          IsEnabled="{Binding IsChecked, ElementName=rbOn}"
+                                                                          TextWrapping="NoWrap"
+                                                                          Margin="153,2,0,2"
+                                                                          VerticalAlignment="Stretch"
+                                                                          Padding="2,0,2,0"
+                                                                          HorizontalAlignment="Left"
+                                                                          Width="50"
+                                                                          Height="Auto"
+                                                                          Grid.Row="1"
+                                                                          ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                          NumericStringFormat="{}{0:N0}"
+                                                                          CurrencyDecimalDigits="0"
+                                                                          IntegerLength="5"
+                                                                          Value="{Binding RewardManagerModel.YearlyDateOnDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                          HorizontalContentAlignment="Right" />
+                                        <RadioButton HorizontalAlignment="Left"
+                                                     Content="On the"
+                                                     x:Name="rbOnthe"
+                                                     IsChecked="{Binding RewardManagerModel.YOption, ConverterParameter=Monthly, Converter={StaticResource shortToBooleanConverter},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     VerticalAlignment="Center"
+                                                     Grid.Row="6" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="63,2,0,2"
+                                                  x:Name="cmbOnthe"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                                  HorizontalAlignment="Left"
+                                                  Width="60"
+                                                  Grid.Row="2"
+                                                  SelectedIndex="0"
+                                                  SelectedValue="{Binding RewardManagerModel.YSequence,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Value"
+                                                  DisplayMemberPath="Text"
+                                                  ItemsSource="{x:Static helper:Common.WeeksOfMonth}" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="127,2,0,2"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                                  x:Name="cmbDaysOfWeek"
+                                                  HorizontalAlignment="Left"
+                                                  Width="90"
+                                                  Grid.Row="2"
+                                                  SelectedValue="{Binding RewardManagerModel.YSequenceOnDay,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedIndex="0"
+                                                  SelectedValuePath="Value"
+                                                  DisplayMemberPath="Text"
+                                                  ItemsSource="{x:Static helper:Common.DaysOfWeek}" />
+                                        <TextBlock Text="of"
+                                                   x:Name="txtblof"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="220,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Grid.Row="2"
+                                                   TextWrapping="NoWrap"
+                                                   Style="{DynamicResource TextBlockNormal}" />
+                                        <ComboBox VerticalAlignment="Stretch"
+                                                  Margin="0,2,10,2"
+                                                  x:Name="cmbOnthe2"
+                                                  HorizontalAlignment="Right"
+                                                  Width="45"
+                                                  Grid.Row="2"
+                                                  IsEnabled="{Binding IsChecked, ElementName=rbOnthe}"
+                                                  SelectedValue="{Binding RewardManagerModel.YSequenceOnMonth,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="ObjValue"
+                                                  DisplayMemberPath="Symbol"
+                                                  ItemsSource="{x:Static helper:Common.Months}" />
+                                    </Grid>
+                                    <TextBlock Text="Cut-off Schedule"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtbCutOffSchedule"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,-16.274,0"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               FontWeight="Bold"
+                                               d:LayoutOverrides="Width" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LineCutOffSchedule"
+                                               VerticalAlignment="Center"
+                                               Height="1"
+                                               Margin="27,0,2,0"
+                                               Grid.Column="1"
+                                               d:LayoutOverrides="GridBox" />
+                                </Grid>
+                                <Grid x:Name="grdPointConverter"
+                                      Visibility="{Binding RewardManagerModel.RewardAmtType, ConverterParameter=3, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.Row="2"
+                                      Grid.RowSpan="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Point Converter"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtbPointConveter"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               FontWeight="Bold"
+                                               d:LayoutOverrides="GridBox" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LinePointConveter"
+                                               VerticalAlignment="Center"
+                                               Height="1"
+                                               Margin="108,0,2,0"
+                                               d:LayoutOverrides="GridBox" />
+                                    <TextBlock Text="Points"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtblPoints"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Grid.Row="2"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Margin="10,0"
+                                               d:LayoutOverrides="GridBox" />
+                                    <cpcTextBoxControl:TextBoxNumeric x:Name="txtEqual"
+                                                                      TextWrapping="NoWrap"
+                                                                      Margin="65,0,0,0"
+                                                                      Padding="2,0,2,0"
+                                                                      Width="117"
+                                                                      HorizontalAlignment="Left"
+                                                                      ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                      NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                      CurrencyDecimalDigits="0"
+                                                                      IntegerLength="8"
+                                                                      Value="{Binding RewardManagerModel.PointConverter,ValidatesOnDataErrors=True,NotifyOnValidationError=True,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                                      Height="21"
+                                                                      Grid.Row="1"
+                                                                      d:LayoutOverrides="VerticalAlignment" />
+                                    <TextBlock Text="="
+                                               TextWrapping="Wrap"
+                                               x:Name="txtblEqual"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="196,0,0,0"
+                                               Grid.Row="2"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               d:LayoutOverrides="GridBox" />
+                                    <cpcTextBoxControl:TextBoxNumeric x:Name="txtDollar"
+                                                                      TextWrapping="NoWrap"
+                                                                      Margin="215,0,0,0"
+                                                                      Padding="2,0,2,0"
+                                                                      Width="128"
+                                                                      HorizontalAlignment="Left"
+                                                                      ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                      NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                      CurrencyDecimalDigits="2"
+                                                                      IntegerLength="10"
+                                                                      Value="{Binding RewardManagerModel.DollarConverter,ValidatesOnDataErrors=True,NotifyOnValidationError=True,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                                                      Height="21"
+                                                                      d:LayoutOverrides="HorizontalAlignment"
+                                                                      Grid.Row="1" />
+                                    <TextBlock Text="Dollar"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtblDollar"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Grid.Row="2"
+                                               Margin="0,0,10,0"
+                                               d:LayoutOverrides="GridBox" />
+                                </Grid>
+                                <Grid HorizontalAlignment="Stretch"
+                                      x:Name="grdCashOrPoint"
+                                      Height="Auto"
+                                      Grid.Row="1"
+                                      Visibility="{Binding RewardManagerModel.CutOffType, ConverterParameter=3, Converter={StaticResource intergerToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="25" />
+                                        <RowDefinition Height="0" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Criteria"
+                                               TextWrapping="Wrap"
+                                               x:Name="txtbCriteria"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               FontWeight="Bold" />
+                                    <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                               HorizontalAlignment="Stretch"
+                                               x:Name="LineCriteria"
+                                               VerticalAlignment="Center"
+                                               Height="1"
+                                               Margin="62,0,2,0" />
+                                    <TextBlock Text="Threshold"
+                                               x:Name="txtblThreshold"
+                                               HorizontalAlignment="Left"
+                                               Margin="10,0,0,0"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="NoWrap"
+                                               Style="{DynamicResource TextBlockNormal}"
+                                               Grid.Row="1" />
+                                    <cpcTextBoxControl:TextBoxNumeric x:Name="txtThresholdCash"
+                                                                      TextWrapping="NoWrap"
+                                                                      Margin="68,2,0,2"
+                                                                      VerticalAlignment="Stretch"
+                                                                      Padding="2,0,2,0"
+                                                                      HorizontalAlignment="Left"
+                                                                      Width="117"
+                                                                      Visibility="{Binding RewardManagerModel.CashVisibility,Mode=OneWay}"
+                                                                      ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                      NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                      CurrencyDecimalDigits="2"
+                                                                      IntegerLength="10"
+                                                                      Value="{Binding RewardManagerModel.CutOffCash,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                                                      Height="Auto"
+                                                                      Grid.Row="1" />
+                                    <cpcTextBoxControl:TextBoxNumeric x:Name="txtThresholdPoint"
+                                                                      TextWrapping="NoWrap"
+                                                                      Margin="68,2,0,2"
+                                                                      VerticalAlignment="Stretch"
+                                                                      Padding="2,0,2,0"
+                                                                      HorizontalAlignment="Left"
+                                                                      Width="117"
+                                                                      Visibility="{Binding RewardManagerModel.PointVisibility,Mode=OneWay}"
+                                                                      ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                      NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                      CurrencyDecimalDigits="0"
+                                                                      IntegerLength="9"
+                                                                      Value="{Binding RewardManagerModel.CutOffPoint,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                                                      Height="Auto"
+                                                                      Grid.Row="1" d:IsHidden="True">
+                                    </cpcTextBoxControl:TextBoxNumeric>
+                                    <ComboBox VerticalAlignment="Stretch"
+                                              Margin="190,2,10,2"
+                                              x:Name="cmbCashOrPoint"
+                                              HorizontalAlignment="Left"
+                                              Width="55"
+                                              DisplayMemberPath="Text"
+                                              SelectedValuePath="IntValue"
+                                              IsEnabled="{Binding RewardManagerModel.RewardAmtType, Mode=OneWay,Converter={StaticResource integerToBooleanConverter},ConverterParameter=1}"
+                                              SelectedValue="{Binding RewardManagerModel.CutOffPointType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnValidationError=True,ValidatesOnDataErrors=True}"
+                                              ItemsSource="{Binding CutOffPointTypes}"
+                                              Grid.Row="1">
+                                    </ComboBox>
+                                </Grid>
+                                <TextBlock Text="Reward Coupon Expire"
+                                           TextWrapping="Wrap"
+                                           x:Name="txtbRewardCouponExpire"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Grid.Row="3"
+                                           FontWeight="Bold" />
+                                <Rectangle Fill="{DynamicResource GroupboxBorder}"
+                                           HorizontalAlignment="Stretch"
+                                           x:Name="LineRewardCouponExpire1"
+                                           VerticalAlignment="Center"
+                                           Height="1"
+                                           Grid.Row="3"
+                                           Margin="150,0,2,0"
+                                           d:LayoutOverrides="GridBox" />
+                                <TextBlock Text="Expiration"
+                                           TextWrapping="Wrap"
+                                           x:Name="txtblExpiration"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           Grid.Row="4"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           d:LayoutOverrides="GridBox" />
+                                <ComboBox Margin="68,0,0,0"
+                                          x:Name="cmbExpiration"
+                                          HorizontalAlignment="Left"
+                                          Width="117"
+                                          DisplayMemberPath="Text"
+                                          ItemsSource="{x:Static helper:Common.RewardExpirationTypes}"
+                                          SelectedIndex="0"
+                                          SelectedValue="{Binding RewardManagerModel.RewardExpiration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValuePath="ObjValue"
+                                          Grid.Row="4"
+                                          Height="21"
+                                          d:LayoutOverrides="HorizontalAlignment, Height" />
+                                <TextBlock Text="from the issue date"
+                                           TextWrapping="Wrap"
+                                           x:Name="txtblDay"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="196,0,0,0"
+                                           Grid.Row="9"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           d:LayoutOverrides="GridBox" />
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox x:Name="gbRewardOption"
+                                  Grid.Row="2"
+                                  Margin="0,10,0,0"
+                                  IsEnabled="{Binding RewardManagerModel.IsActived, Mode=OneWay}"
+                                  Width="728"
+                                  d:LayoutOverrides="GridBox"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top">
+                            <GroupBox.Header>
+                                <TextBlock x:Name="txtblRewardOption"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Style="{DynamicResource GroupboxTextBlock}"
+                                           Text="{DynamicResource RW_TextBlock_RewardOption}"
+                                           TextWrapping="NoWrap" />
+                            </GroupBox.Header>
+                            <Grid x:Name="grdRewardOption"
+                                  Margin="0,5,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <CheckBox x:Name="cbAutomaticall"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{DynamicResource RW_CheckBox_Automatically}"
+                                          IsChecked="{Binding RewardManagerModel.IsAutoEnroll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox x:Name="cbPrompt"
+                                          Grid.Row="1"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{DynamicResource RW_CheckBox_Prompttoenroll}"
+                                          IsChecked="{Binding RewardManagerModel.IsPromptEnroll, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox x:Name="cbInform"
+                                          Grid.Row="2"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{DynamicResource RW_CheckBox_InformCashier}"
+                                          IsChecked="{Binding RewardManagerModel.IsInformCashier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox x:Name="cbReward"
+                                          Grid.Row="3"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="  Reward redemption Limit"
+                                          IsChecked="{Binding RewardManagerModel.IsRedemptionLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Visibility="Collapsed" />
+                                <cpcTextBoxControl:TextBoxMoney x:Name="txtReward"
+                                                                Grid.Row="3"
+                                                                Width="120"
+                                                                Margin="180,2,0,2"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Right"
+                                                                IsEnabled="{Binding RewardManagerModel.IsRedemptionLimit, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Padding="2,0,2,0"
+                                                                TextWrapping="NoWrap"
+                                                                Visibility="Collapsed"
+                                                                Value="{Binding RewardManagerModel.RedemptionLimitAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox x:Name="cbBlock"
+                                          Grid.Row="3"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{DynamicResource RW_CheckBox_BlockReward}"
+                                          IsChecked="{Binding RewardManagerModel.IsBlockRedemption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <cpcTextBoxControl:TextBoxNumeric x:Name="txtBlock"
+                                                                  Grid.Row="3"
+                                                                  Width="40"
+                                                                  Margin="190,2,0,2"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Stretch"
+                                                                  HorizontalContentAlignment="Right"
+                                                                  ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                  IntegerLength="4"
+                                                                  IsEnabled="{Binding RewardManagerModel.IsBlockRedemption, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                  Padding="2,0,2,0"
+                                                                  TextWrapping="NoWrap"
+                                                                  Value="{Binding RewardManagerModel.RedemptionAfterDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock x:Name="txtbDaysAfter"
+                                           Grid.Row="3"
+                                           Margin="235,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource TextBlockNormal}"
+                                           Text="{DynamicResource RW_CheckBox_Daysafter}"
+                                           TextWrapping="Wrap" />
+                                <CheckBox x:Name="cbBlockRewardEearn"
+                                          Grid.Row="4"
+                                          Margin="10,0,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="Block reward earn with purchase redeem"
+                                          IsChecked="{Binding RewardManagerModel.IsBlockPurchaseRedeem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Visibility="Collapsed" />
+                            </Grid>
+
+                        </GroupBox>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

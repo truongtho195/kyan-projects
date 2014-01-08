@@ -1,0 +1,980 @@
+﻿<UserControl x:Class="CPC.POS.View.LayawaySetupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcBehavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:cpcControl="clr-namespace:CPC.Control"
+             xmlns:cpcDataGrid="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:cpcTextBox="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:timePicker="clr-namespace:TimePicker;assembly=TimePicker"
+             xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             Width="Auto"
+             Height="Auto"
+             Background="{DynamicResource UserControlBackground}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid,
+                                                       Mode=OneWayToSource}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <!--  #Region "Converter"  -->
+        <converter:DiscountRateToIntegerConverter x:Key="discountRateToIntegerConverter" />
+        <converter:BoolToVisibilityConverter x:Key="CollapsedWhenFalseConverter" FalseToVisibility="Collapsed" />
+        <converter:BoolToVisibilityConverter x:Key="VisibleWhenFalseConverter" FalseToVisibility="Visible" />
+        <!--  #EndRegion " "  -->
+
+        <Style x:Key="NumberTextBlock" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="LayawaysDatagridRowStyle"
+               BasedOn="{StaticResource {x:Type DataGridRow}}"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Style>
+
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}" Gesture="F1" />
+    </UserControl.InputBindings>
+    <wpfToolkit:BusyIndicator IsBusy="{Binding IsBusy, Mode=OneWay}">
+        <Grid x:Name="GridLayout">
+            <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+            <Grid x:Name="grdLayawaySetup">
+                <Grid x:Name="grdSearch"
+                      Margin="0"
+                      d:IsHidden="True"
+                      Visibility="{Binding IsSearchMode,
+                                           Converter={StaticResource CollapsedWhenFalseConverter},
+                                           Mode=OneWay}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <cpcDataGrid:DataGridControl x:Name="dtgrdLayaways"
+                                                 Grid.Row="1"
+                                                 Margin="10,10.2,10,10"
+                                                 AutoGenerateColumns="False"
+                                                 CanUserAddRows="False"
+                                                 CanUserDeleteRows="False"
+                                                 cpcBehavior:DataGridHiddenColunmHelper.ColunmIndex="0"
+                                                 cpcBehavior:DataGridHiddenColunmHelper.IsHiddenColunm="{Binding IsHiddenWarming,
+                                                                                                                 Mode=OneWay}"
+                                                 cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding CloseSearchComponentCommand}"
+                                                 DataFilterResult="{Binding FilterEmployeeCollection,
+                                                                            Mode=OneWayToSource,
+                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                 IsColunmHidden="True"
+                                                 IsFilterDataColunm="False"
+                                                 IsReadOnly="True"
+                                                 IsRollBackData="False"
+                                                 ItemsSource="{Binding LayawayCollection}"
+                                                 NumberOfItems="{Binding TotalLayaway}"
+                                                 Style="{DynamicResource DatagridWithRowHeader}"
+                                                 d:LayoutOverrides="GridBox">
+                        <cpcDataGrid:DataGridControl.ContextMenu>
+                            <ContextMenu Tag="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                <MenuItem Command="{Binding NewCommand}"
+                                          Header="New Item">
+                                    <MenuItem.Icon>
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource NewItem}"
+                                                   Stretch="Fill" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </cpcDataGrid:DataGridControl.ContextMenu>
+
+                        <!--
+                            RowStyle="{StaticResource LayawaysDatagridRowStyle}"
+                            SelectedItem="{Binding SelectedLayaway,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            
+                            cpcBehavior:DoubleClickCommandBehavior.CanDoubleClickOnChild="False"
+                            cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommand="{Binding SelectedItemCommand}"
+                            cpcBehavior:DoubleClickCommandBehavior.DoubleClickCommandParameter="{Binding SelectedItem, ElementName=dtgrdLayaways}"
+                        -->
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <command:EventToCommand Command="{Binding SelectedItemCommand}" CommandParameter="{Binding ., ElementName=dtgrdLayaways}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <cpcDataGrid:DataGridControl.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True" SortMemberPath="IsConflict">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Rectangle x:Name="recActiveTemplete"
+                                                   Width="16"
+                                                   Height="16"
+                                                   Fill="{DynamicResource Warning}"
+                                                   Stretch="Fill"
+                                                   Visibility="Collapsed">
+                                            <Rectangle.ToolTip>
+                                                <ToolTip Background="Transparent" BorderBrush="Transparent">
+                                                    <Border x:Name="brdRewardTooltip"
+                                                            Grid.Row="2"
+                                                            Width="300"
+                                                            HorizontalAlignment="Stretch"
+                                                            Background="{DynamicResource UserControlBackground}"
+                                                            BorderBrush="{DynamicResource TitleBarBorder}"
+                                                            BorderThickness="1,1,1,1"
+                                                            CornerRadius="5,5,5,5">
+                                                        <TextBlock Margin="5"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Center"
+                                                                   Style="{DynamicResource TextBlockNormal}"
+                                                                   Text="One or more items on the discount are listed or other active discount. The discount defined may not be applied."
+                                                                   TextWrapping="Wrap" />
+                                                    </Border>
+                                                </ToolTip>
+                                            </Rectangle.ToolTip>
+                                        </Rectangle>
+
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsConflict}" Value="True">
+                                                <Setter TargetName="recActiveTemplete" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="150" Binding="{Binding Name}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_Name}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Width="100" Binding="{Binding StatusItem.Text}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_Status}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Width="150">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Minimum Deposit" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DepositAmount, StringFormat={x:Static local:Define.CurrencyFormat}, ConverterCulture={x:Static local:Define.ConverterCulture}}" />
+                                            <TextBlock Text=" Or " />
+                                            <TextBlock Text="{Binding DepositPercent, ConverterCulture={x:Static local:Define.ConverterCulture}, StringFormat={x:Static local:Define.DecimalFormat}}" />
+                                            <TextBlock Text="%" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="100">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Payment Term" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding PaymentTerm, Mode=OneWay}" />
+                                            <TextBlock Text=" " />
+                                            <TextBlock Text="{Binding PaymentScheduleName, Mode=OneWay}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_LayawayFee}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding LayawayFee}" />
+                                            <TextBlock Text=" " />
+                                            <TextBlock Text="{Binding LayawayFeeUnit, Converter={StaticResource discountRateToIntegerConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="75"
+                                                Binding="{Binding OpenACFee,
+                                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                                ElementStyle="{StaticResource NumberTextBlock}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_OpenACFee}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Width="90">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_CancellationFee}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding CancellationFee}" />
+                                            <TextBlock Text=" " />
+                                            <TextBlock Text="{Binding CancellationUnit, Converter={StaticResource discountRateToIntegerConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="100"
+                                                Binding="{Binding MinimumPurchase,
+                                                                  ConverterCulture={x:Static local:Define.ConverterCulture},
+                                                                  StringFormat={x:Static local:Define.CurrencyFormat}}"
+                                                ElementStyle="{StaticResource NumberTextBlock}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_MinimumPurchase}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Other Fee" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding OtherFee}" />
+                                            <TextBlock Text=" " />
+                                            <TextBlock Text="{Binding OtherFeeUnit, Converter={StaticResource discountRateToIntegerConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Width="70" Binding="{Binding StartDate, Mode=OneWay, StringFormat={x:Static local:Define.DateFormat}}">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_StartDate}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Width="70"
+                                                Binding="{Binding EndDate,
+                                                                  Mode=OneWay,
+                                                                  StringFormat={x:Static local:Define.DateFormat}}"
+                                                Header="End Date">
+                                <DataGridTextColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource LayawaySetup_Text_EndDate}" />
+                                    </DataTemplate>
+                                </DataGridTextColumn.HeaderTemplate>
+                            </DataGridTextColumn>
+                        </cpcDataGrid:DataGridControl.Columns>
+                    </cpcDataGrid:DataGridControl>
+                </Grid>
+                <Grid x:Name="grdContentLayawaySetup1" Visibility="{Binding IsSearchMode, Converter={StaticResource VisibleWhenFalseConverter}, Mode=OneWay}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle x:Name="grdSpliter"
+                               Grid.Column="1"
+                               Width="1"
+                               HorizontalAlignment="Left"
+                               Fill="{DynamicResource Spilter_Line_Background}"
+                               Visibility="Collapsed" />
+                    <Button x:Name="btnBarSearch"
+                            BorderThickness="1"
+                            Command="{Binding OpenSearchComponentCommand}"
+                            Style="{DynamicResource ButtonBarSearch}">
+                        <TextBlock x:Name="txtblShowSearch1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Style="{DynamicResource ButtonBarSearchTextBlock}"
+                                   Text="Search"
+                                   TextWrapping="NoWrap">
+                            <TextBlock.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform Angle="-90" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                    <Grid x:Name="grdContentLayawaySetup"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="1"
+                          d:LayoutOverrides="Height">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="stkpBtn"
+                                    Height="Auto"
+                                    Margin="20,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal">
+                            <Button x:Name="btnNew"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0"
+                                    Command="{Binding NewCommand}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Visible">
+                                <StackPanel x:Name="stkpBtnNew"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgNew"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource New}" />
+                                    <TextBlock x:Name="txtblNew"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="New"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnSave"
+                                    Width="40"
+                                    Height="40"
+                                    Command="{Binding SaveCommand}"
+                                    Style="{DynamicResource ButtonSystem}"
+                                    Visibility="Visible">
+                                <StackPanel x:Name="stkpBtnSave"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <Rectangle x:Name="imgSave"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Save}" />
+                                    <TextBlock x:Name="txtblSave"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Save"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnDelete"
+                                    Width="40"
+                                    Height="40"
+                                    Command="{Binding DeleteCommand}"
+                                    Style="{DynamicResource ButtonSystem}">
+                                <StackPanel x:Name="stkpBtnDelete"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Rectangle x:Name="imgDelete"
+                                               Width="30"
+                                               Height="30"
+                                               Fill="{DynamicResource Delete}" />
+                                    <TextBlock x:Name="txtblDelete"
+                                               Margin="5,0,0,0"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource ButtonSystemTextBlock}"
+                                               Text="Close"
+                                               TextWrapping="NoWrap"
+                                               Visibility="Collapsed" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Rectangle x:Name="Line"
+                                   Grid.Row="1"
+                                   Height="1"
+                                   Margin="2,0,2,0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Top"
+                                   Fill="{DynamicResource Spilter_Line_Background}" />
+                        <TextBlock x:Name="txtblBindingLayawaySetup"
+                                   Margin="0,0,20,7"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   FontFamily="Times New Roman"
+                                   Style="{DynamicResource TextBlockTitleFormView}"
+                                   Text="{DynamicResource LayawaySetup_Text_LayawaySetup}"
+                                   TextWrapping="NoWrap" />
+                        <Grid x:Name="grdBasic"
+                              Grid.Row="1"
+                              Width="747"
+                              Margin="0,10,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblDiscountName"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="{DynamicResource LayawaySetup_Text_Name}"
+                                       TextWrapping="NoWrap" />
+                            <cpcTextBox:TextBox x:Name="txtName"
+                                                Width="336"
+                                                Margin="50,2,0,2"
+                                                HorizontalAlignment="Left"
+                                                Background="#FFF8F49A"
+                                                MaxLength="100"
+                                                Padding="2,0,2,0"
+                                                Text="{Binding SelectedLayaway.Name,
+                                                               Mode=TwoWay,
+                                                               NotifyOnValidationError=True,
+                                                               UpdateSourceTrigger=PropertyChanged,
+                                                               ValidatesOnDataErrors=True}"
+                                                TextWrapping="NoWrap">
+                                <i:Interaction.Behaviors>
+                                    <cpcBehavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                                    <cpcBehavior:AutoFocusBehavior />
+                                </i:Interaction.Behaviors>
+                            </cpcTextBox:TextBox>
+                            <TextBlock x:Name="txtblStatus"
+                                       Margin="530,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource TextBlockNormal}"
+                                       Text="{DynamicResource LayawaySetup_Text_Status}"
+                                       TextWrapping="NoWrap" />
+                            <ComboBox x:Name="cmbStatus"
+                                      Width="90"
+                                      Margin="575,2,0,2"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Stretch"
+                                      DisplayMemberPath="Text"
+                                      IsHitTestVisible="True"
+                                      ItemsSource="{x:Static helper:Common.StatusBasic}"
+                                      SelectedValue="{Binding Status,
+                                                              Mode=TwoWay,
+                                                              UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedValuePath="Value" />
+                        </Grid>
+                        <Border x:Name="brdLayawaySetup"
+                                Grid.Row="2"
+                                Margin="10"
+                                Background="{DynamicResource TabControlBackground}"
+                                BorderBrush="{DynamicResource TabControlBorder}"
+                                BorderThickness="1">
+                            <Grid x:Name="grdLayawaySetup1">
+                                <GroupBox x:Name="gbProgramSchedule"
+                                          Width="360"
+                                          Height="77"
+                                          Margin="10,10,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblProgramSchedule"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Program Schedule"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdProgramSchedule" Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="129" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblStartDate"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_StartDate}"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                        <DatePicker x:Name="dtpStartDate"
+                                                    Grid.Column="1"
+                                                    Margin="0,2,10,2"
+                                                    SelectedDate="{Binding SelectedLayaway.StartDate,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True}" />
+                                        <TextBlock x:Name="txtblEndDate"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_EndDate}"
+                                                   TextWrapping="NoWrap" />
+                                        <DatePicker x:Name="dtpEndDate"
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="0,2,10,2"
+                                                    SelectedDate="{Binding SelectedLayaway.EndDate,
+                                                                           Mode=TwoWay,
+                                                                           NotifyOnValidationError=True,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True}" />
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbProgramRequirement"
+                                          Width="360"
+                                          Height="202"
+                                          Margin="10,97,0,10"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblProgramRequirement"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Program Requirement"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdProgramRequirement" Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="129" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblOpenACFee"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_OpenACFee}"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="GridBox" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtOpenACFee"
+                                                                   Grid.Row="0"
+                                                                   Grid.Column="1"
+                                                                   Width="Auto"
+                                                                   Margin="0,2,10,2"
+                                                                   HorizontalAlignment="Stretch"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.OpenACFee,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock x:Name="txtblMinimumPurchase"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_MinimumPurchase}"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="GridBox" />
+                                        <cpcTextBox:TextBoxMoney x:Name="txtMinimumPurchase"
+                                                                 Grid.Row="1"
+                                                                 Grid.Column="1"
+                                                                 Width="Auto"
+                                                                 Margin="0,2,10,2"
+                                                                 HorizontalAlignment="Stretch"
+                                                                 ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                 CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                 Padding="2,0,2,0"
+                                                                 TextWrapping="NoWrap"
+                                                                 Value="{Binding SelectedLayaway.MinimumPurchase,
+                                                                                 Mode=TwoWay,
+                                                                                 UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox x:Name="cbBalancePayoffBy"
+                                                  Grid.Row="2"
+                                                  Margin="10,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="Balance Pay-off By"
+                                                  IsChecked="{Binding SelectedLayaway.IsPayOff,
+                                                                      Mode=TwoWay,
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="Width, Height" />
+                                        <DatePicker x:Name="dtpBalancePayoffBy"
+                                                    Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Margin="0,2,10,2"
+                                                    IsEnabled="{Binding SelectedLayaway.IsPayOff,
+                                                                        Mode=OneWay}"
+                                                    SelectedDate="{Binding SelectedLayaway.PayOffBy,
+                                                                           Mode=TwoWay,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True,
+                                                                           ValidatesOnExceptions=True,
+                                                                           NotifyOnValidationError=True}" />
+                                        <CheckBox x:Name="cbPickupBy"
+                                                  Grid.Row="3"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="Pick-up By"
+                                                  IsChecked="{Binding SelectedLayaway.IsPickup,
+                                                                      Mode=TwoWay,
+                                                                      UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="Width, Height" />
+                                        <DatePicker x:Name="dtpPickupBy"
+                                                    Grid.Row="3"
+                                                    Grid.Column="1"
+                                                    Margin="0,2,10,2"
+                                                    IsEnabled="{Binding SelectedLayaway.IsPickup,
+                                                                        Mode=OneWay}"
+                                                    SelectedDate="{Binding SelectedLayaway.PickupBy,
+                                                                           Mode=TwoWay,
+                                                                           UpdateSourceTrigger=PropertyChanged,
+                                                                           ValidatesOnDataErrors=True,
+                                                                           ValidatesOnExceptions=True,
+                                                                           NotifyOnValidationError=True}" />
+                                        <TextBlock x:Name="txtblDownPayment"
+                                                   Grid.Row="4"
+                                                   Margin="5,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Down Payment"
+                                                   TextWrapping="NoWrap" />
+                                        <Rectangle x:Name="LineMiniumDeposite"
+                                                   Grid.Row="4"
+                                                   Grid.Column="1"
+                                                   Height="1"
+                                                   Margin="-21,0,5,0"
+                                                   HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Center"
+                                                   Fill="{DynamicResource GroupboxBorder}" />
+                                        <StackPanel x:Name="stkpMiniumDeposite"
+                                                    Grid.Row="5"
+                                                    Grid.Column="1"
+                                                    Margin="0,2"
+                                                    HorizontalAlignment="Left"
+                                                    Orientation="Horizontal">
+                                            <cpcTextBox:TextBoxMoney x:Name="txtDollar"
+                                                                     Width="79"
+                                                                     ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                     CurrencyStringFormat="{x:Static local:Define.CurrencyFormat}"
+                                                                     Padding="2,0,2,0"
+                                                                     TextWrapping="NoWrap"
+                                                                     Value="{Binding SelectedLayaway.DepositAmount,
+                                                                                     Mode=TwoWay,
+                                                                                     UpdateSourceTrigger=PropertyChanged,
+                                                                                     ValidatesOnDataErrors=True,
+                                                                                     ValidatesOnExceptions=True,
+                                                                                     NotifyOnValidationError=True}" />
+                                            <TextBlock x:Name="txtblDollar"
+                                                       Margin="5,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="or"
+                                                       TextWrapping="NoWrap" />
+                                            <cpcTextBox:TextBoxNumeric x:Name="txtPercent"
+                                                                       Width="74"
+                                                                       ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                       CurrencyDecimalDigits="2"
+                                                                       IntegerLength="2"
+                                                                       Padding="2,0,2,0"
+                                                                       TextWrapping="NoWrap"
+                                                                       Value="{Binding SelectedLayaway.DepositPercent,
+                                                                                       Mode=TwoWay,
+                                                                                       UpdateSourceTrigger=PropertyChanged,
+                                                                                       ValidatesOnDataErrors=True,
+                                                                                       ValidatesOnExceptions=True,
+                                                                                       NotifyOnValidationError=True}" />
+                                            <TextBlock x:Name="txtblPercent"
+                                                       Margin="5,0,0,0"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Center"
+                                                       Style="{DynamicResource TextBlockNormal}"
+                                                       Text="%"
+                                                       TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                        <Rectangle x:Name="imgBullet"
+                                                   Grid.Row="6"
+                                                   Grid.Column="2"
+                                                   Width="10"
+                                                   Height="10"
+                                                   Margin="0"
+                                                   HorizontalAlignment="Left"
+                                                   Fill="{DynamicResource BulletCharater}" />
+                                        <TextBlock x:Name="txtblDollarOrPercentage"
+                                                   Grid.Row="6"
+                                                   Grid.Column="2"
+                                                   Margin="15,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextBlockScheduleTitle_Foreground}"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Dollar or percentage, whichever is higher"
+                                                   TextWrapping="NoWrap" />
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbServiceFee"
+                                          Width="346"
+                                          Height="127"
+                                          Margin="380,10,10,10"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblServiceFee"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Service Fee"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdServiceFee" Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="142" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblCancellationFee"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_CancellationFee}"
+                                                   TextWrapping="NoWrap" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtCancellationFee"
+                                                                   Grid.Row="0"
+                                                                   Grid.Column="1"
+                                                                   Width="130"
+                                                                   Margin="0,2"
+                                                                   HorizontalAlignment="Left"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.CancellationFee,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox x:Name="cmbCancellationFee"
+                                                  Grid.Row="0"
+                                                  Grid.Column="1"
+                                                  Width="40"
+                                                  Margin="134,2,0,2"
+                                                  HorizontalAlignment="Left"
+                                                  SelectedIndex="{Binding SelectedLayaway.CancellationUnit,
+                                                                          Mode=TwoWay,
+                                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                  UseLayoutRounding="True">
+                                            <ComboBoxItem x:Name="cmbItemApplyPercent2" Content="%" />
+                                            <ComboBoxItem x:Name="cmbItemApplyDollar2" Content="{Binding CurrencySymbol, Source={x:Static local:Define.CONFIGURATION}}" />
+
+                                        </ComboBox>
+                                        <TextBlock x:Name="txtblOtherFee"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Other Fee"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="GridBox" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtOtherFee"
+                                                                   Grid.Row="1"
+                                                                   Grid.Column="1"
+                                                                   Width="130"
+                                                                   Margin="0,2"
+                                                                   HorizontalAlignment="Left"
+                                                                   HorizontalContentAlignment="Right"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.OtherFee,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox x:Name="cmbOtherFee"
+                                                  Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Width="40"
+                                                  Margin="134,2,0,2"
+                                                  HorizontalAlignment="Left"
+                                                  SelectedIndex="{Binding SelectedLayaway.OtherFeeUnit,
+                                                                          Mode=TwoWay,
+                                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                  UseLayoutRounding="True">
+                                            <ComboBoxItem x:Name="cmbItemApplyPercent3" Content="%" />
+                                            <ComboBoxItem x:Name="cmbItemApplyDollar3" Content="{Binding CurrencySymbol, Source={x:Static local:Define.CONFIGURATION}}" />
+                                        </ComboBox>
+                                        <TextBlock x:Name="txtblLayawayFee"
+                                                   Grid.Row="2"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="{DynamicResource LayawaySetup_Text_LayawayFee}"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="Width, GridBox" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtLayawayFee"
+                                                                   Grid.Row="2"
+                                                                   Grid.Column="1"
+                                                                   Width="Auto"
+                                                                   Height="21"
+                                                                   Margin="0,0,62,0"
+                                                                   HorizontalAlignment="Stretch"
+                                                                   VerticalAlignment="Center"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   NumericStringFormat="{x:Static local:Define.NumericFormat}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.LayawayFee,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox x:Name="cmbLayawayFee"
+                                                  Grid.Row="2"
+                                                  Grid.Column="1"
+                                                  Width="40"
+                                                  Height="21"
+                                                  Margin="134,2,0,2"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Stretch"
+                                                  SelectedIndex="{Binding SelectedLayaway.LayawayFeeUnit,
+                                                                          Mode=TwoWay,
+                                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                  UseLayoutRounding="True">
+
+                                            <ComboBoxItem x:Name="cmbItemApplyPercent4" Content="%" />
+                                            <ComboBoxItem x:Name="cmbItemApplyDollar4" Content="{Binding CurrencySymbol, Source={x:Static local:Define.CONFIGURATION}}" />
+
+                                        </ComboBox>
+                                        <CheckBox x:Name="cbNoCancelFeeWithin"
+                                                  Grid.Row="3"
+                                                  Margin="10,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="No Cancel Fee Within"
+                                                  IsChecked="{Binding SelectedLayaway.IsNoCancelFee,
+                                                                      Mode=TwoWay,
+                                                                      UpdateSourceTrigger=PropertyChanged}" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtNoCancelFeeWithin"
+                                                                   Grid.Row="3"
+                                                                   Grid.Column="1"
+                                                                   Width="50"
+                                                                   Margin="0,2"
+                                                                   HorizontalAlignment="Left"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   CurrencyDecimalDigits="0"
+                                                                   IsEnabled="{Binding SelectedLayaway.IsNoCancelFee,
+                                                                                       Mode=OneWay}"
+                                                                   NumericStringFormat="{}{0:N0}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.CancelWithinDay,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged,
+                                                                                   ValidatesOnDataErrors=True,
+                                                                                   ValidatesOnExceptions=True,
+                                                                                   NotifyOnValidationError=True}" />
+                                        <TextBlock x:Name="txtblNoCancelFeeWithin"
+                                                   Grid.Row="3"
+                                                   Grid.Column="1"
+                                                   Margin="55,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Days"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="HorizontalAlignment" />
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbPaymentPlan"
+                                          Width="346"
+                                          Height="152"
+                                          Margin="380,147,0,0"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblPaymentPlan"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="Payment Plan"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdPaymentPlan" Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="142" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblBillingFrequency"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Billing Frequency"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="Width, GridBox" />
+                                        <ComboBox x:Name="cmbBillingFrequency"
+                                                  Grid.Column="1"
+                                                  Width="174"
+                                                  Margin="0,2"
+                                                  HorizontalAlignment="Left"
+                                                  DisplayMemberPath="Text"
+                                                  ItemsSource="{x:Static helper:Common.PaymentSchedule}"
+                                                  SelectedValue="{Binding SelectedLayaway.PaymentPeriod,
+                                                                          Mode=TwoWay,
+                                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Value"
+                                                  UseLayoutRounding="True" />
+                                        <TextBlock x:Name="txtblLengthOf"
+                                                   Grid.Row="1"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="Length of Layaway"
+                                                   TextWrapping="NoWrap"
+                                                   d:LayoutOverrides="GridBox" />
+                                        <cpcTextBox:TextBoxNumeric x:Name="txtLengthOf"
+                                                                   Grid.Row="1"
+                                                                   Grid.Column="1"
+                                                                   Width="50"
+                                                                   Margin="0,2"
+                                                                   HorizontalAlignment="Left"
+                                                                   ConverterCulture="{x:Static local:Define.ConverterCulture}"
+                                                                   CurrencyDecimalDigits="0"
+                                                                   NumericStringFormat="{}{0:N0}"
+                                                                   Padding="2,0,2,0"
+                                                                   TextWrapping="NoWrap"
+                                                                   Value="{Binding SelectedLayaway.PaymentTerm,
+                                                                                   Mode=TwoWay,
+                                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </wpfToolkit:BusyIndicator>
+</UserControl>

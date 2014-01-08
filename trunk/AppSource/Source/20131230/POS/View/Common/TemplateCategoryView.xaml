@@ -1,0 +1,465 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:CPC.Toolkit.Command"
+             xmlns:model="clr-namespace:CPC.POS.Model"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             x:Class="CPC.POS.View.TemplateCategoryView"
+             x:Name="UserControl"
+             mc:Ignorable="d"
+             Width="573"
+             Height="496">
+
+    <UserControl.Resources>
+
+        <sys:Int32 x:Key="FolderNameMaxLength">50</sys:Int32>
+
+        <!--TreeViewItemContextMenu-->
+        <ContextMenu x:Key="FolderContextMenu">
+            <MenuItem Header="New"
+                      Command="{Binding DataContext.CreateFolderCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                <MenuItem.Icon>
+                    <Rectangle Width="16"
+                               Height="16"
+                               Fill="{DynamicResource NewItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Edit"
+                      Command="{Binding DataContext.EditFolderCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                <MenuItem.Icon>
+                    <Rectangle Width="16"
+                               Height="16"
+                               Fill="{DynamicResource EditItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Delete"
+                      Command="{Binding DataContext.DeleteFolderCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+                <MenuItem.Icon>
+                    <Rectangle Width="16"
+                               Height="16"
+                               Fill="{DynamicResource DeleteItem}"
+                               Stretch="Fill" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
+        <!--  HierarchicalDataTemplate  -->
+        <HierarchicalDataTemplate DataType="{x:Type model:base_VirtualFolderModel}"
+                                  ItemsSource="{Binding FolderCollection, Mode=OneWay}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle x:Name="ImageRec"
+                           Width="12"
+                           Height="12"
+                           Fill="{DynamicResource CloseFolder}" />
+                <TextBlock Margin="3,0,0,0"
+                           Text="{Binding FolderName, Mode=OneWay}"
+                           Style="{DynamicResource TreeviewItemTextBlock}" />
+            </StackPanel>
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeViewItem}, Mode=OneWay}"
+                             Value="True">
+                    <Setter TargetName="ImageRec"
+                            Property="Fill"
+                            Value="{DynamicResource OK}" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+
+        <!--  FolderTreeViewItemStyle  -->
+        <Style x:Key="FolderTreeviewItemStyle"
+               TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Left" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="1,0,0,0" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{StaticResource TreeViewItemFocusVisual}" />
+            <Setter Property="ContextMenu"
+                    Value="{StaticResource FolderContextMenu}" />
+            <Setter Property="IsExpanded"
+                    Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="IsSelected"
+                    Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  MinWidth="19" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ToggleButton x:Name="Expander"
+                                          Width="Auto"
+                                          Height="Auto"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          ClickMode="Press"
+                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{StaticResource ExpandCollapseToggleStyle}" />
+                            <Border x:Name="Bd"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="true">
+                                <Grid>
+                                    <ContentPresenter x:Name="PART_Header"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      ContentSource="Header"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    <TextBox x:Name="textBoxFolderName"
+                                             Width="Auto"
+                                             Height="Auto"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             VerticalContentAlignment="Center"
+                                             IsVisibleChanged="TextBoxIsVisibleChanged"
+                                             Loaded="TextBoxLoaded"
+                                             MaxLength="{StaticResource FolderNameMaxLength}"
+                                             Text="{Binding Header.FolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}}"
+                                             TextWrapping="NoWrap"
+                                             Visibility="Collapsed"
+                                             FontSize="11"
+                                             FontFamily="Tahoma">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Enter"
+                                                        Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                            <KeyBinding Key="Esc"
+                                                        Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                        </TextBox.InputBindings>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="LostFocus">
+                                                <cmd:EventToCommand Command="{Binding DataContext.EndEditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                </Grid>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2"
+                                            VerticalAlignment="Center" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded"
+                                     Value="false">
+                                <Setter TargetName="ItemsHost"
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="HasItems"
+                                     Value="false">
+                                <Setter TargetName="Expander"
+                                        Property="Visibility"
+                                        Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsEdit}"
+                                         Value="true">
+                                <Setter TargetName="PART_Header"
+                                        Property="Visibility"
+                                        Value="Hidden" />
+                                <Setter TargetName="textBoxFolderName"
+                                        Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize"
+                    Value="11" />
+            <Setter Property="FontFamily"
+                    Value="Tahoma" />
+            <EventSetter Event="MouseRightButtonDown"
+                         Handler="TreeviewItemMouseRightButtonDown" />
+            <Style.Triggers>
+                <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
+                         Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--ImageListBoxItemStyle-->
+        <Style x:Key="ImageListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding"
+                    Value="2,0,0,0" />
+            <Setter Property="helper:ControlHelper.DoubleClickCommand"
+                    Value="{Binding DataContext.SelectImageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" />
+            <Setter Property="helper:ControlHelper.DoubleClickCommandParameter"
+                    Value="{Binding SelectedItem, ElementName=lstImage, Mode=OneWay}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Cursor"
+                                        TargetName="Bd"
+                                        Value="Hand" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter Property="Cursor"
+                                        TargetName="Bd"
+                                        Value="Hand" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected"
+                                               Value="true" />
+                                    <Condition Property="Selector.IsSelectionActive"
+                                               Value="false" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background"
+                                        TargetName="Bd"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="grdTemplateCategory"
+          d:LayoutOverrides="Height">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="brdContentTemplateCategory"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}">
+
+            <Grid x:Name="grdContentImage">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TreeView x:Name="tvCategory"
+                          Margin="10"
+                          ItemContainerStyle="{StaticResource FolderTreeviewItemStyle}"
+                          ItemsSource="{Binding FolderCollection, Mode=OneWay}">
+                    <TreeView.InputBindings>
+                        <KeyBinding Key="F2"
+                                    Command="{Binding DataContext.EditFolderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+                    </TreeView.InputBindings>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <cmd:EventToCommand Command="{Binding SelectedItemChangedCommand}"
+                                                CommandParameter="{Binding ElementName=tvCategory}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TreeView>
+
+                <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                           HorizontalAlignment="Right"
+                           x:Name="LineSpliter"
+                           Margin="0"
+                           Visibility="Visible"
+                           Width="1" />
+
+                <Grid x:Name="grdDisplayImage"
+                      Grid.Column="1"
+                      Background="#19FFFFFF">
+
+                    <ListBox x:Name="lstImage"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemContainerStyle="{StaticResource ImageListBoxItemStyle}"
+                             ItemsSource="{Binding SelectedFolder.FileCollection, Mode=OneWay}"
+                             BorderThickness="0">
+
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True"
+                                           Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:Name="grdImage"
+                                      Height="Auto"
+                                      Margin="5,5,0,0"
+                                      Width="Auto">
+                                    <Border x:Name="brdImage"
+                                            Height="81"
+                                            Width="81"
+                                            BorderBrush="#33FFFFFF"
+                                            BorderThickness="1"
+                                            Padding="5"
+                                            Background="#19FFFFFF">
+                                        <Image Stretch="UniformToFill"
+                                               Source="{Binding FilePath, Mode=OneWay}">
+                                            <Image.ToolTip>
+                                                <Image Source="{Binding FilePath, Mode=OneWay}" />
+                                            </Image.ToolTip>
+                                        </Image>
+                                    </Border>
+                                    <CheckBox HorizontalAlignment="Right"
+                                              IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              VerticalAlignment="Top"
+                                              Margin="0,6,6,0"
+                                              Padding="0" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+        <Rectangle Fill="{DynamicResource Spilter_Line_Background}"
+                   HorizontalAlignment="Stretch"
+                   x:Name="Line"
+                   VerticalAlignment="Top"
+                   Height="1"
+                   Grid.Row="1"
+                   Margin="2,0,2,0" />
+
+        <StackPanel VerticalAlignment="Center"
+                    Height="Auto"
+                    x:Name="stkpBtn"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1">
+
+            <Button x:Name="btnAttach"
+                    Height="28"
+                    Width="80"
+                    Margin="0"
+                    Command="{Binding ImportFilesCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnAttach"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgAttach"
+                               Fill="{DynamicResource Attachment}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="Attach"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblAttach"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnDelete"
+                    Height="28"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Command="{Binding DeleteFilesCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnDelete"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgDelete1"
+                               Fill="{DynamicResource Delete}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="Delete"
+                               TextWrapping="NoWrap"
+                               x:Name="txtblDelete"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="btnCancel"
+                    Height="28"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Command="{Binding CancelCommand}">
+                <StackPanel HorizontalAlignment="Center"
+                            x:Name="stkpBtnCancel"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Fill="{DynamicResource Cancel}"
+                               Height="20"
+                               Width="20" />
+                    <TextBlock Margin="5,0,0,0"
+                               x:Name="txtblExit"
+                               VerticalAlignment="Center"
+                               Text="Cancel"
+                               TextWrapping="NoWrap"
+                               Style="{DynamicResource ButtonTextBlock}" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>
+	

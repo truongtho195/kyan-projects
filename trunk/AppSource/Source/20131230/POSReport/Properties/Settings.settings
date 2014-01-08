@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CPC.POSReport.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="IsRemember" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LoginName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AdminUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">admin</Value>
+    </Setting>
+    <Setting Name="AdminPwd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aXrrCFTdvOaYDeGLj3dmlDkBmsbXmy0yThKtMlV/6zw=</Value>
+    </Setting>
+    <Setting Name="EmailAccount" Type="System.String" Scope="User">
+      <Value Profile="(Default)">testreport@newsmartpos.com</Value>
+    </Setting>
+    <Setting Name="EmailPwd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">+dH0mbhJybkdhMJu4S0sxQ==</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

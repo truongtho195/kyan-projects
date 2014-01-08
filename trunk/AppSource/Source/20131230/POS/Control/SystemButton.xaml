@@ -1,0 +1,298 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
+             mc:Ignorable="d"
+             x:Class="CPC.Control.SystemButton"
+             x:Name="systemButton">
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="btnMinimize"
+                Cursor="Hand">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="FocusVisualStyle">
+                        <Setter.Value>
+                            <Style>
+                                <Setter Property="Control.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border>
+                                                <Rectangle Stroke="Black"
+                                                           StrokeDashArray="1 2"
+                                                           StrokeThickness="1"
+                                                           Margin="4"
+                                                           SnapsToDevicePixels="true" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background"
+                            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                    <!--<Setter Property="BorderBrush"
+        				Value="{x:Static Microsoft_Windows_Themes:ClassicBorderDecorator.ClassicBorderBrush}" />-->
+                    <Setter Property="BorderThickness"
+                            Value="3" />
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="Padding"
+                            Value="0,0,1,1" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid x:Name="grid"
+                                      Background="#02FFFFFF">
+                                    <Rectangle x:Name="rectangle"
+                                               RadiusX="0"
+                                               RadiusY="0"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,5"
+                                               VerticalAlignment="Bottom"
+                                               Width="8"
+                                               Height="2"
+                                               Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="true">
+                                        <Setter Property="Opacity"
+                                                TargetName="grid"
+                                                Value="0.7" />
+                                    </Trigger>
+                                    <Trigger Property="IsDefaulted"
+                                             Value="true" />
+                                    <Trigger Property="IsPressed"
+                                             Value="true" />
+                                    <Trigger Property="ToggleButton.IsChecked"
+                                             Value="true" />
+                                    <Trigger Property="IsEnabled"
+                                             Value="false">
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        <ToggleButton x:Name="btnMaximize"
+                      Grid.Column="1"
+                      d:LayoutOverrides="Width"
+                      Cursor="Hand">
+            <ToggleButton.Style>
+                <Style TargetType="{x:Type ToggleButton}">
+                    <Setter Property="FocusVisualStyle">
+                        <Setter.Value>
+                            <Style>
+                                <Setter Property="Control.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border>
+                                                <Rectangle Stroke="Black"
+                                                           StrokeDashArray="1 2"
+                                                           StrokeThickness="1"
+                                                           Margin="4"
+                                                           SnapsToDevicePixels="true" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background"
+                            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                    <!--<Setter Property="BorderBrush"
+        				Value="{x:Static Microsoft_Windows_Themes:ClassicBorderDecorator.ClassicBorderBrush}" />-->
+                    <Setter Property="BorderThickness"
+                            Value="3" />
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="Padding"
+                            Value="0,0,1,1" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                <Grid Background="#02FFFFFF">
+                                    <Path x:Name="path"
+                                          Stretch="Fill"
+                                          Stroke="{x:Null}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Width="12"
+                                          Height="12"
+                                          Data="M3,7 L3,17 17,17 17,7 z M0.99999994,0 L19,0 C19.552284,0 20,0.44771525 20,0.99999994 L20,19 C20,19.552284 19.552284,20 19,20 L0.99999994,20 C0.44771525,20 0,19.552284 0,19 L0,0.99999994 C0,0.44771525 0.44771525,0 0.99999994,0 z"
+                                          Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" />
+                                    <Path x:Name="pathHover"
+                                          Stretch="Fill"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Width="12"
+                                          Height="12"
+                                          Data="M3,7 L3,17 17,17 17,7 z M0.99999994,0 L19,0 C19.552284,0 20,0.44771525 20,0.99999994 L20,19 C20,19.552284 19.552284,20 19,20 L0.99999994,20 C0.44771525,20 0,19.552284 0,19 L0,0.99999994 C0,0.44771525 0.44771525,0 0.99999994,0 z"
+                                          Visibility="Hidden"
+                                          Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" />
+                                    <Path x:Name="pathRestore"
+                                          Stretch="Fill"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Width="Auto"
+                                          Height="Auto"
+                                          Visibility="Hidden"
+                                          Data="M1.5000001,7.4699998 L1.5000001,12.47 8.4999998,12.47 8.4999998,7.4699998 z M0.49999988,3.97 L9.4999998,3.97 C9.7761419,3.97 9.9999998,4.1938577 9.9999998,4.4699998 L9.9999998,13.47 C9.9999998,13.746142 9.7761419,13.97 9.4999998,13.97 L0.49999988,13.97 C0.22385764,13.97 0,13.746142 0,13.47 L0,4.4699998 C0,4.1938577 0.22385764,3.97 0.49999988,3.97 z M2.6156999,0 L11.5023,0 C11.774963,-8.8817842E-16 11.996,0.22385763 11.996,0.5 L11.996,9.5 C11.996,9.7761421 11.774963,10 11.5023,10 L10.514899,10 10.514899,8.5 10.514899,3.5 3.6030998,3.5 2.122,3.5 2.122,0.5 C2.122,0.22385763 2.343037,-8.8817842E-16 2.6156999,0 z"
+                                          Margin="4"
+                                          Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" />
+                                    <Path x:Name="pathRestoreHover"
+                                          Stretch="Fill"
+                                          HorizontalAlignment="Center"
+                                          Margin="4"
+                                          VerticalAlignment="Center"
+                                          Width="Auto"
+                                          Height="Auto"
+                                          Visibility="Hidden"
+                                          Data="M1.5000001,7.4699998 L1.5000001,12.47 8.4999998,12.47 8.4999998,7.4699998 z M0.49999988,3.97 L9.4999998,3.97 C9.7761419,3.97 9.9999998,4.1938577 9.9999998,4.4699998 L9.9999998,13.47 C9.9999998,13.746142 9.7761419,13.97 9.4999998,13.97 L0.49999988,13.97 C0.22385764,13.97 0,13.746142 0,13.47 L0,4.4699998 C0,4.1938577 0.22385764,3.97 0.49999988,3.97 z M2.6156999,0 L11.5023,0 C11.774963,-8.8817842E-16 11.996,0.22385763 11.996,0.5 L11.996,9.5 C11.996,9.7761421 11.774963,10 11.5023,10 L10.514899,10 10.514899,8.5 10.514899,3.5 3.6030998,3.5 2.122,3.5 2.122,0.5 C2.122,0.22385763 2.343037,-8.8817842E-16 2.6156999,0 z"
+                                          Fill="{DynamicResource TitleBar_ToggleBtnMiniMaxi_Arrow}" />
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver"
+                                                       Value="True" />
+                                            <Condition Property="IsChecked"
+                                                       Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Visibility"
+                                                TargetName="pathRestoreHover"
+                                                Value="Visible" />
+                                        <Setter Property="Opacity"
+                                                TargetName="pathRestoreHover"
+                                                Value="0.7" />
+                                    </MultiTrigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver"
+                                                       Value="False" />
+                                            <Condition Property="IsChecked"
+                                                       Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Visibility"
+                                                TargetName="pathRestore"
+                                                Value="Visible" />
+                                    </MultiTrigger>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="true">
+                                        <Setter Property="Visibility"
+                                                TargetName="pathHover"
+                                                Value="Visible" />
+                                        <Setter Property="Visibility"
+                                                TargetName="path"
+                                                Value="Visible" />
+                                        <Setter Property="Opacity"
+                                                TargetName="pathHover"
+                                                Value="0.5" />
+                                        <Setter Property="Opacity"
+                                                TargetName="path"
+                                                Value="0.5" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed"
+                                             Value="true" />
+                                    <Trigger Property="IsChecked"
+                                             Value="true">
+                                        <Setter Property="Visibility"
+                                                TargetName="path"
+                                                Value="Hidden" />
+                                        <Setter Property="Visibility"
+                                                TargetName="pathHover"
+                                                Value="Hidden" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled"
+                                             Value="false">
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+        <Button x:Name="btnClose"
+                Grid.Column="2"
+                Cursor="Hand">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1"
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFFFFFF"
+                                              Offset="0" />
+                                <GradientStop Color="#FFF0F0EA"
+                                              Offset="0.9" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush"
+                            Value="#FF003C74" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="VerticalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid x:Name="grid"
+                                      Width="Auto"
+                                      Height="Auto"
+                                      Background="#02000000">
+                                    <Border BorderThickness="2,2,2,2"
+                                            CornerRadius="1,1,1,1"
+                                            Opacity="1">
+                                        <Path x:Name="path"
+                                              Fill="{x:Null}"
+                                              Stretch="Fill"
+                                              StrokeThickness="2.5"
+                                              Data="M1.5,1.5 L13.5,13.5 M1.5,13.5 L13.5,1.5"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Width="12"
+                                              Height="12"
+                                              Stroke="{DynamicResource TitleBar_ButtonClose_Arrow}" />
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Opacity"
+                                                TargetName="grid"
+                                                Value="0.7" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused"
+                                             Value="true" />
+                                    <Trigger Property="IsEnabled"
+                                             Value="false" />
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackPanel>
+</UserControl>

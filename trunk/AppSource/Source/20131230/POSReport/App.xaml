@@ -1,0 +1,36 @@
+﻿<Application x:Class="POSReport.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
+		StartupUri="View/ManageUser/LoginView.xaml">
+
+    <Application.Resources>
+         
+    	<ResourceDictionary>
+    		<ResourceDictionary.MergedDictionaries>
+    			<ResourceDictionary Source="Dictionary/Brushes/Grey/GreyImageResources.xaml"/>
+    			<ResourceDictionary Source="Dictionary/Brushes/Grey/GreyResources.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/ButtonStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/CheckboxStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/ComboboxStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/DatagridStyle.xaml"/>                
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/GroupBoxStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/RadioButtonStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/ScrollBarStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/TabControlStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/TextBlockStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/TextBoxStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/TreeviewStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/DatePickerStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/MenuStyle.xaml"/>
+    			<ResourceDictionary Source="Dictionary/BaseControlStyle/PasswordBoxStyle.xaml"/>
+    		</ResourceDictionary.MergedDictionaries>
+    	</ResourceDictionary>
+         
+    </Application.Resources>
+</Application>
+<!--
+	StartupUri="View/PopupForm/Report/ADOPDF/PDFView.xaml">
+    StartupUri="View/Login/Login.xaml">
+	StartupUri="View/MainView.xaml">  
+    StartupUri="View/ManageUser/ManageUser.xaml">
+    -->

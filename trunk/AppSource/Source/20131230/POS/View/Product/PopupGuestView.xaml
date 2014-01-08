@@ -1,0 +1,475 @@
+﻿<UserControl x:Class="CPC.POS.View.PopupGuestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:addressToolkit="clr-namespace:CPCToolkitExt.AddressControl;assembly=CPCToolkitExt"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:CPC.POS"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             x:Name="UserControl"
+             Width="583"
+             Height="500">
+    <UserControl.Resources>
+        <!--  MaxLengthField  -->
+        <s:Int32 x:Key="FirstNameMaxLength">20</s:Int32>
+        <s:Int32 x:Key="MiddleNameMaxLength">1</s:Int32>
+        <s:Int32 x:Key="LastNameMaxLength">20</s:Int32>
+        <s:Int32 x:Key="CompanyMaxLength">100</s:Int32>
+        <s:Int32 x:Key="EmailMaxLength">30</s:Int32>
+        <s:Int32 x:Key="WebsiteMaxLength">30</s:Int32>
+        <s:Int32 x:Key="RemarkMaxLength">1000</s:Int32>
+        <s:Int32 x:Key="IMMaxLength">50</s:Int32>
+    </UserControl.Resources>
+    <Grid x:Name="grdVendor">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentVendor"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdDeptCateBrandStyleModel"
+                  Margin="10">
+                <Grid x:Name="grdContentVendorInfo">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtblFirstName"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_FirstName}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtFirstName"
+                                            Grid.Column="1"
+                                            Width="135"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            MaxLength="{StaticResource FirstNameMaxLength}"
+                                            Padding="2,0,2,0"
+                                            Text="{Binding NewItem.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                            TextWrapping="NoWrap">
+                        <i:Interaction.Behaviors>
+                            <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                            <behavior:AutoFocusBehavior />
+                        </i:Interaction.Behaviors>
+                    </textBoxControl:TextBox>
+                    <TextBlock x:Name="txtblLastName"
+                               Grid.Column="1"
+                               Margin="150,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_LastName}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtLastName"
+                                            Grid.Column="1"
+                                            Width="135"
+                                            Margin="210,2,0,2"
+                                            HorizontalAlignment="Left"
+                                            MaxLength="{StaticResource LastNameMaxLength}"
+                                            Padding="2,0,2,0"
+                                            Text="{Binding NewItem.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                            TextWrapping="NoWrap">
+                        <i:Interaction.Behaviors>
+                            <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                        </i:Interaction.Behaviors>
+                    </textBoxControl:TextBox>
+                    <TextBlock x:Name="txtblTitle"
+                               Grid.Column="1"
+                               Margin="0,0,67,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource Text_Initial}"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="txtTitle"
+                              Grid.Column="1"
+                              Width="50"
+                              Margin="0,2,10,2"
+                              HorizontalAlignment="Right"
+                              DisplayMemberPath="Text"
+                              ItemsSource="{x:Static helper:Common.Title}"
+                              SelectedValue="{Binding NewItem.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="ObjValue"
+                              Text="M" />
+                    <TextBlock x:Name="txtblCompany"
+                               Grid.Row="1"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Company}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtCompany"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="0,2,10,2"
+                                            MaxLength="{StaticResource CompanyMaxLength}"
+                                            Text="{Binding NewItem.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                            TextWrapping="NoWrap">
+                        <i:Interaction.Behaviors>
+                            <behavior:CharacterCasingBehavior CharacterCasingType="Title" />
+                        </i:Interaction.Behaviors>
+                    </textBoxControl:TextBox>
+                    <addressToolkit:Address Grid.Row="2"
+                                            Grid.RowSpan="2"
+                                            Grid.ColumnSpan="3"
+                                            Margin="10,2"
+                                            AddressTypeWidth="75"
+                                            BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
+                                            ContentAddressWidth="*"
+                                            DisplayDatabyAddressTypeID="0"
+                                            DisplayMemderPathComboBoxCountry="Text"
+                                            DisplayMemderPathComboBoxState="{x:Static local:Define.StateDisplayMemberPath}"
+                                            IsValidationError="True"
+                                            ItemSourceAddressType="{Binding AddressTypeCollection}"
+                                            ItemsSource="{Binding NewItem.AddressControlCollection}"
+                                            ItemsSourceCountry="{x:Static helper:Common.Countries}"
+                                            ItemsSourceState="{x:Static helper:Common.States}"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            SelectedValuePathComboBoxCountry="Value"
+                                            SelectedValuePathComboBoxState="Value"
+                                            Validation.ErrorTemplate="{StaticResource DataErrorTemplate}" />
+                    <TextBlock x:Name="txtblWebsite"
+                               Grid.Row="4"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Website}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtWebsite"
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            Width="160"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            MaxLength="{StaticResource WebsiteMaxLength}"
+                                            Padding="2,0,2,0"
+                                            Text="{Binding NewItem.Website, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                            TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblGroup"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               Margin="236.506,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource VD_Group}"
+                               TextWrapping="NoWrap" />
+                    <ComboBox x:Name="cmbGroup"
+                              Grid.Row="4"
+                              Grid.Column="1"
+                              Width="160"
+                              Margin="0,2,10,2"
+                              HorizontalAlignment="Right"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding GuestGroupCollection}"
+                              SelectedValue="{Binding NewItem.GroupResource}"
+                              SelectedValuePath="Resource" />
+                    <TextBlock x:Name="txtblPhoneNumber"
+                               Grid.Row="5"
+                               Margin="0,0,0,3.723"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontWeight="Bold"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_PhoneNumbers}"
+                               TextWrapping="NoWrap" Grid.ColumnSpan="2" />
+                    <Rectangle x:Name="LinePhoneNumber"
+                               Grid.Row="5"
+                               Grid.Column="1"
+                               Height="1"
+                               Margin="10,0,10,9.862"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Bottom"
+                               Fill="{DynamicResource GroupboxBorder}" />
+                    <TextBlock x:Name="txtblPhone1"
+                               Grid.Row="6"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Phone1}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBoxPhone x:Name="txtPhone1"
+                                                 Grid.Row="6"
+                                                 Grid.Column="1"
+                                                 Width="160"
+                                                 Margin="0,2"
+                                                 HorizontalAlignment="Left"
+                                                 HorizontalContentAlignment="Left"
+                                                 Padding="2,0,2,0"
+                                                 TextWrapping="NoWrap"
+                                                 Value="{Binding NewItem.Phone1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+                    <TextBlock x:Name="txtblPhone2"
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               Margin="226.466,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Phone2}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBoxPhone x:Name="txtPhone2"
+                                                 Grid.Row="6"
+                                                 Grid.Column="1"
+                                                 Width="160"
+                                                 Margin="0,2,10,2"
+                                                 HorizontalAlignment="Right"
+                                                 HorizontalContentAlignment="Left"
+                                                 Padding="2,0,2,0"
+                                                 TextWrapping="NoWrap"
+                                                 Value="{Binding NewItem.Phone2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock x:Name="txtblCellphone"
+                               Grid.Row="7"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Cellphone}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBoxPhone x:Name="txtCellphone"
+                                                 Grid.Row="7"
+                                                 Grid.Column="1"
+                                                 Width="160"
+                                                 Margin="0,2"
+                                                 HorizontalAlignment="Left"
+                                                 HorizontalContentAlignment="Left"
+                                                 Padding="2,0,2,0"
+                                                 TextWrapping="NoWrap"
+                                                 Value="{Binding NewItem.CellPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock x:Name="txtblFax"
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               Margin="249.043,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Fax}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBoxFax x:Name="txtFax"
+                                               Grid.Row="7"
+                                               Grid.Column="1"
+                                               Width="160"
+                                               Margin="0,2,10,2"
+                                               HorizontalAlignment="Right"
+                                               HorizontalContentAlignment="Left"
+                                               Padding="2,0,2,0"
+                                               TextWrapping="NoWrap"
+                                               Value="{Binding NewItem.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock x:Name="txtblEmail"
+                               Grid.Row="8"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Email}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtEmail"
+                                            Grid.Row="8"
+                                            Grid.Column="1"
+                                            Width="160"
+                                            Margin="0,2,10,2"
+                                            HorizontalAlignment="Left"
+                                            MaxLength="{StaticResource EmailMaxLength}"
+                                            Padding="2,0,2,0"
+                                            Text="{Binding NewItem.Email, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                            TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblFax1"
+                               Grid.Row="8"
+                               Grid.Column="1"
+                               Margin="0,0,180,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource CUS_Text_IM}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtIM"
+                                            Grid.Row="8"
+                                            Grid.Column="1"
+                                            Width="160"
+                                            Margin="0,2,10,2"
+                                            HorizontalAlignment="Right"
+                                            Padding="2,0,2,0"
+                                            MaxLength="{StaticResource IMMaxLength}"
+                                            Text="{Binding NewItem.IM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            TextWrapping="NoWrap" />
+                    <TextBlock x:Name="txtblCommission"
+                               Grid.Row="9"
+                               Margin="0,8,0,3.723"
+                               HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_Commission}"
+                               TextWrapping="NoWrap"
+                               Visibility="{Binding CommissionVisibility, Mode=OneWay}" />
+                    <Rectangle x:Name="LineCommission"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               Height="1"
+                               Margin="-5,0,10,9.862"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Bottom"
+                               Fill="{DynamicResource GroupboxBorder}"
+                               Visibility="{Binding CommissionVisibility, Mode=OneWay}" />
+                    <TextBlock x:Name="txtblSaleRepresentative"
+                               Grid.Row="10"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource PD_SaleRep}"
+                               TextWrapping="NoWrap"
+                               Visibility="{Binding CommissionVisibility, Mode=OneWay}" />
+                    <ComboBox x:Name="txtSaleRepresentative"
+                              Grid.Row="10"
+                              Grid.Column="1"
+                              Width="135"
+                              Height="21"
+                              Margin="0,1.998,0,2"
+                              HorizontalAlignment="Left"
+                              DisplayMemberPath="LegalName"
+                              ItemsSource="{Binding EmployeeCollection, Mode=OneWay}"
+                              SelectedValue="{Binding NewItem.SaleRepId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Id"
+                              Visibility="{Binding CommissionVisibility, Mode=OneWay}" />
+                    <TextBlock x:Name="txtblRemark2"
+                               Grid.Row="11"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource TextBlockNormal}"
+                               Text="{DynamicResource C102}"
+                               TextWrapping="NoWrap" />
+                    <textBoxControl:TextBox x:Name="txtRemark"
+                                            Grid.Row="11"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Margin="0,2,10,5"
+                                            VerticalContentAlignment="Top"
+                                            AcceptsReturn="True"
+                                            MaxLength="{StaticResource RemarkMaxLength}"
+                                            Padding="2"
+                                            Text="{Binding NewItem.Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            TextWrapping="Wrap"
+                                            VerticalScrollBarVisibility="Auto" />
+                    <Button x:Name="btnDateStamp"
+                            Command="{Binding InsertDateStampCommand}"
+                            CommandParameter="{Binding ElementName=txtRemark}"
+                            Grid.Row="13"
+                            Grid.Column="1"
+                            Width="100"
+                            Height="21"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        <StackPanel x:Name="stkpBtnDateStamp"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <Rectangle x:Name="imgDateStamp"
+                                       Width="15"
+                                       Height="15"
+                                       Fill="{DynamicResource Stamp}" />
+                            <TextBlock x:Name="txtblDateStamp"
+                                       Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource ButtonTextBlock}"
+                                       Text="{DynamicResource VD_DateStamp}"
+                                       TextWrapping="NoWrap" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="{DynamicResource Spilter_Line_Background}" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding SaveCommand}"
+                    Width="80"
+                    Height="28">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource CheckMark}" />
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}"
+                               Visibility="Collapsed" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
