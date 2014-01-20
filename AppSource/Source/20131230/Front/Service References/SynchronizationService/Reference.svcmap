@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cfe309dd-1b97-44b9-8033-fdb60c9b5257" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://cpcvnc10.cpcvn.com/SyncService/Service.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="8bb50278-2a9d-43b6-9be5-fca9cac4f36d" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?xsd=xsd4" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="cbc17c07-536f-4af1-8e1e-ed55f83372cf" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="4f08730f-7e96-4245-b4e5-aa8adf244021" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?disco" />
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="5c8a28e6-324f-498a-a7a7-c11d6abfea64" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?wsdl" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="a956af0c-1cbd-4094-87dc-92c8f4d4cd97" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="ee2b2d0f-47e8-46e8-9ae5-1d9246d0f241" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?xsd=xsd3" />
+    <MetadataFile FileName="Service4.xsd" MetadataType="Schema" ID="82ddbb78-41cc-45b7-9aad-995a4194f197" SourceId="1" SourceUrl="http://cpcvnc10.cpcvn.com/SyncService/Service.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

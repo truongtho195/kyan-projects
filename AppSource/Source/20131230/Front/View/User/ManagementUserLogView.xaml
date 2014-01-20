@@ -1,0 +1,131 @@
+﻿<Window x:Class="CPC.POS.View.ManagementUserLogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ManagementUserLogView"
+        x:Name="managementUserLogView"
+        xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+        MinHeight="300"
+        MinWidth="300"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+        ShowInTaskbar="False">
+    <Window.Resources>
+        <DataTemplate x:Key="LoginNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_LoginName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_UserName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="IPSourceHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_IPSource}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ConnectedOnHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_ConnectedOn}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DisConnectedOnHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_DisConnectedOn}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DisConnectedHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_DisConnected}" />
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <dataGridControl:DataGridControl x:Name="dtgrdUsers"
+                                         AutoGenerateColumns="False"
+                                         CanUserAddRows="False"
+                                         CanUserDeleteRows="False"
+                                         IsFilterDataColunm="True"
+                                         Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                         ItemsSource="{Binding UserLogCollection}"
+                                         SelectedItem="{Binding SelectedItemUserLog}"
+                                         NumberOfItems="{Binding TotalUsers}"
+                                         DisplayItems="30"
+                                         Command="{Binding LoadStepCommand}"
+                                         IsRollBackData="False"
+                                         CurrentPageIndex="{Binding CurrentPageIndex,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                                         VisibilityAddItem="Collapsed">
+            <dataGridControl:DataGridControl.Columns>
+                <DataGridTextColumn HeaderTemplate="{StaticResource LoginNameHeaderTemplate}"
+                                    Binding="{Binding LoginName}"
+                                    IsReadOnly="True"
+                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                    dataGridControl:DataGridColumnExtensions.FieldName="LoginName"
+                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                    Width="150" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource UserNameHeaderTemplate}"
+                                    Binding="{Binding UserName}"
+                                    IsReadOnly="True"
+                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                    dataGridControl:DataGridColumnExtensions.FieldName="UserName"
+                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                    Width="150" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource IPSourceHeaderTemplate}"
+                                    Binding="{Binding IpSource}"
+                                    IsReadOnly="True"
+                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                    dataGridControl:DataGridColumnExtensions.FieldName="IpSource"
+                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                    Width="150" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource ConnectedOnHeaderTemplate}"
+                                    Binding="{Binding ConnectedOn}"
+                                    IsReadOnly="True"
+                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                    dataGridControl:DataGridColumnExtensions.FieldName="ConnectedOn"
+                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                    Width="150" />
+                <DataGridTextColumn HeaderTemplate="{StaticResource DisConnectedOnHeaderTemplate}"
+                                    Binding="{Binding DisConnectedOn}"
+                                    IsReadOnly="True"
+                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                    dataGridControl:DataGridColumnExtensions.FieldName="DisConnectedOn"
+                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                    Width="150" />
+                <DataGridTemplateColumn HeaderTemplate="{StaticResource DisConnectedHeaderTemplate}"
+                                        IsReadOnly="True"
+                                        SortMemberPath="IsDisconected"
+                                        dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                        dataGridControl:DataGridColumnExtensions.FieldName="IsDisconected"
+                                        dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                        dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                        Width="*"
+                                        MinWidth="40">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Stretch"
+                                      Command="{Binding DataContext.ConnectedCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window},AncestorLevel=1}}"
+                                      IsChecked="{Binding IsDisconected}"
+                                      CommandParameter="{Binding .}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked"
+                                                     Value="True">
+                                                <Setter Property="ToolTip"
+                                                        Value="DisConnected"></Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked"
+                                                     Value="False">
+                                                <Setter Property="ToolTip"
+                                                        Value="Connecting"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </dataGridControl:DataGridControl.Columns>
+        </dataGridControl:DataGridControl>
+    </Grid>
+</Window>

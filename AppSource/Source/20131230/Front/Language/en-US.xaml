@@ -1,0 +1,1132 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--  HolidayView  -->
+    <sys:String x:Key="HolidayView_HolidayList">Holiday List</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Date">Date</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Title">Title</sys:String>
+    <sys:String x:Key="HolidayView_DatagridDate_Description">Description</sys:String>
+    <sys:String x:Key="HolidayView_Holiday">Holiday</sys:String>
+    <sys:String x:Key="HolidayView_gbTitle_HeaderTitle">Title</sys:String>
+    <sys:String x:Key="HolidayView_gbTitle_Title">Title</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_HeaderDate">Date</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbFrom">From</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_To">To</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbOn">On</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_rbOnthe">On the</sys:String>
+    <sys:String x:Key="HolidayView_gbDate_of">of</sys:String>
+    <!--  End HolidayView  -->
+
+    <!--  TimeClockManualEventEditing  -->
+    <sys:String x:Key="TimeClockManualEventEditing_gbSearch_HeaderSearch">Search</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_gbSearch_FromDate">From Date</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_EmployeeNo">Employee #</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_FirstName">First Name</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_LastName">Last Name</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridEmployeeName_TotalActualHours">Total Actual Hours</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_TimeClock Correction">TimeClock Correction</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_EmployeeName">Employee Name</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_EmployeeNo">Employee #</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_Button_AddHours">Add Hours</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_Button_RemoveHours">Remove Hours</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_From">From</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_To">To</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridTimeClockCorrection_Duration">Duration</sys:String>
+    <sys:String x:Key="TimeClockManualEventEditing_DatagridTimeClockCorrection_Overtime">Overtime</sys:String>
+
+    <!--  End TimeClockManualEventEditing  -->
+
+    <!--  MessageBoxCaption  -->
+    <sys:String x:Key="ErrorCaption">Error</sys:String>
+    <sys:String x:Key="WarningCaption">Warning</sys:String>
+    <sys:String x:Key="InformationCaption">Information</sys:String>
+    <sys:String x:Key="DeleteCaption">Delete item(s)</sys:String>
+    <sys:String x:Key="SaveCaption">Save</sys:String>
+    <sys:String x:Key="POSCaption">POS</sys:String>
+    <!--  End MessageBoxCaption  -->
+
+    <!--  Message Box Content  -->
+    <sys:String x:Key="M100">Order quantity must greater than or equal receive quantity !</sys:String>
+    <sys:String x:Key="M101">Product name &quot;{0}&quot; is marked  as 'Unorderable' in inventory.\nAre you sure you want to add this item ?</sys:String>
+    <sys:String x:Key="M102">Selected item has been received !.</sys:String>
+    <sys:String x:Key="M103">Do you want to delete item(s) ?</sys:String>
+    <sys:String x:Key="M104">Item has been received in this purchase order.</sys:String>
+    <sys:String x:Key="M105">Item has been returned in this purchase order.</sys:String>
+    <sys:String x:Key="M106">Some data has been changed. Do you want to save ?</sys:String>
+    <sys:String x:Key="M107">Fix error in current tab item, pls !</sys:String>
+    <sys:String x:Key="M108">Do you want to you received selected item(s) ?</sys:String>
+    <sys:String x:Key="M109">Fix error(s) before receive selected item(s) !</sys:String>
+    <sys:String x:Key="M110">Do you want to return selected item(s) ?</sys:String>
+    <sys:String x:Key="M111">Fix error(s) before return selected item(s) !</sys:String>
+    <sys:String x:Key="M112">Some data has changed. Do you want to save ?</sys:String>
+    <sys:String x:Key="M113">You should close product view before apply to change pricing !</sys:String>
+    <sys:String x:Key="M114">You should close product view before apply to retore pricing !</sys:String>
+    <sys:String x:Key="M115">Categories have been edited, do you want to save ?</sys:String>
+    <sys:String x:Key="M116">Scanner device not found!</sys:String>
+    <sys:String x:Key="M117">Cannot rename {0}. A folder with the name you specified already exists.</sys:String>
+    <sys:String x:Key="M118">Cannot rename {0}. A file with the name you specified already exists.</sys:String>
+    <sys:String x:Key="M119">Search Option is required.</sys:String>
+    <sys:String x:Key="M120">You should close product view before apply to adjust product(s) in store(s) !</sys:String>
+    <sys:String x:Key="M121">Do you want to adjust numbers of product(s) in store(s) ?</sys:String>
+    <sys:String x:Key="M122">The products aren't counted.Do you want that application will count them ?</sys:String>
+    <sys:String x:Key="M123">You should close product view before apply to transfer product(s) in store(s) !</sys:String>
+    <sys:String x:Key="M124">You should close product view before apply to revert product(s) in store(s) !</sys:String>
+    <sys:String x:Key="M125">Current total refund is less than reality total refund.</sys:String>
+    <sys:String x:Key="M126">Select folder used for save images.</sys:String>
+    <sys:String x:Key="M127">Select folder used for save backup files.</sys:String>
+    <!--  PopupAttributeAndSize  -->
+    <sys:String x:Key="M128">Size is existed</sys:String>
+    <sys:String x:Key="M129">Attribute is existed</sys:String>
+    <sys:String x:Key="M130">Size is required</sys:String>
+    <sys:String x:Key="M131">Attribute is required</sys:String>
+    <sys:String x:Key="M132">Backup database successfully processed.System will execute logout.</sys:String>
+    <sys:String x:Key="M133">Database could not be backed up.</sys:String>
+    <sys:String x:Key="M134">Restore database successfully processed.System will execute logout.</sys:String>
+    <sys:String x:Key="M135">Database could not be restored.</sys:String>
+    <sys:String x:Key="M136">Clearing data is successful.System will execute logout.</sys:String>
+    <sys:String x:Key="M137">Do you want to backup this database ?</sys:String>
+    <sys:String x:Key="M138">Do you want to restore this database ?</sys:String>
+    <sys:String x:Key="M139">Do you want to clear all data in the database ?</sys:String>
+    <!--  TaskListReminder  -->
+    <sys:String x:Key="M140">Are you sure you want to complete item(s)?</sys:String>
+
+    <!--  End MessageBoxText  -->
+
+    <!--  ErrorMessage  -->
+    <sys:String x:Key="E100">Please select an item(s).</sys:String>
+    <sys:String x:Key="E101">Received quantity must greater than zero.</sys:String>
+    <sys:String x:Key="E102">Order quantity must greater than or equal receive quantity.</sys:String>
+    <sys:String x:Key="E103">Name is required.</sys:String>
+    <sys:String x:Key="E104">Tax code is required.</sys:String>
+    <sys:String x:Key="E105">Company's name is required.</sys:String>
+    <sys:String x:Key="E106">Address is required.</sys:String>
+    <sys:String x:Key="E107">Required select country.</sys:String>
+    <sys:String x:Key="E108">City is required.</sys:String>
+    <sys:String x:Key="E109">Required select state.</sys:String>
+    <sys:String x:Key="E110">Zip is wrong format.</sys:String>
+    <sys:String x:Key="E111">Fax is wrong format.</sys:String>
+    <sys:String x:Key="E112">Phone is wrong format.</sys:String>
+    <sys:String x:Key="E113">Email is wrong format.</sys:String>
+    <sys:String x:Key="E114">Inexact password.</sys:String>
+    <!--  End ErrorMessage  -->
+
+    <!--  Button Language  -->
+    <sys:String x:Key="Button_Ok">OK</sys:String>
+    <sys:String x:Key="Button_Cancel">Cancel</sys:String>
+    <!--  End Button Language  -->
+
+    <!--  Common Language  -->
+    <sys:String x:Key="C100">Select Item</sys:String>
+    <sys:String x:Key="C101">Term</sys:String>
+    <sys:String x:Key="C102">Remark</sys:String>
+    <sys:String x:Key="C103">Total</sys:String>
+    <sys:String x:Key="C104">Advance Search</sys:String>
+    <sys:String x:Key="C105">Date Paid</sys:String>
+    <sys:String x:Key="C106">Payment Method</sys:String>
+    <sys:String x:Key="C107">Paid</sys:String>
+    <sys:String x:Key="C108">Balance</sys:String>
+    <sys:String x:Key="C109">Return All</sys:String>
+    <sys:String x:Key="C110">Refund</sys:String>
+    <sys:String x:Key="C111">Return Fee</sys:String>
+    <sys:String x:Key="C112">Sub-Total</sys:String>
+    <sys:String x:Key="C113">Search</sys:String>
+    <sys:String x:Key="C114">Item Code</sys:String>
+    <sys:String x:Key="C115">Item Name</sys:String>
+    <sys:String x:Key="C116">Attribute</sys:String>
+    <sys:String x:Key="C117">Size</sys:String>
+    <sys:String x:Key="C118">UOM</sys:String>
+    <sys:String x:Key="C119">Price</sys:String>
+    <sys:String x:Key="C120">Quantity</sys:String>
+    <sys:String x:Key="C121">Discount</sys:String>
+    <sys:String x:Key="C122">Amount</sys:String>
+    <sys:String x:Key="C123">Payment History</sys:String>
+    <sys:String x:Key="C124">Return</sys:String>
+    <sys:String x:Key="C125">New Item</sys:String>
+    <sys:String x:Key="C126">Edit Item</sys:String>
+    <sys:String x:Key="C127">Delete Item(s)</sys:String>
+    <sys:String x:Key="C128">Duplicate Item</sys:String>
+    <sys:String x:Key="C129">Serial Tracking Detail</sys:String>
+    <sys:String x:Key="C130">Return Date</sys:String>
+    <sys:String x:Key="C131">Returned Qty</sys:String>
+    <sys:String x:Key="C132">Returned</sys:String>
+    <sys:String x:Key="C133">Due Date</sys:String>
+    <sys:String x:Key="C134">Vendor</sys:String>
+    <sys:String x:Key="C135">Keyword</sys:String>
+    <sys:String x:Key="C136">Order</sys:String>
+    <sys:String x:Key="C137">Active</sys:String>
+    <sys:String x:Key="C138">Description</sys:String>
+    <sys:String x:Key="C139">Regular Price</sys:String>
+    <sys:String x:Key="C140">New</sys:String>
+    <sys:String x:Key="C141">Edit</sys:String>
+    <sys:String x:Key="C142">Save</sys:String>
+    <sys:String x:Key="C143">Cancel</sys:String>
+    <sys:String x:Key="C144">Tax Code</sys:String>
+    <sys:String x:Key="C145">Margin %</sys:String>
+    <sys:String x:Key="C146">Markup %</sys:String>
+    <sys:String x:Key="C147">Ship Address</sys:String>
+    <sys:String x:Key="C148">Order Date</sys:String>
+    <sys:String x:Key="C149">Ship Date</sys:String>
+    <sys:String x:Key="C150">Cancel Date</sys:String>
+    <sys:String x:Key="C151">Status</sys:String>
+    <sys:String x:Key="C152">On-Hand Qty</sys:String>
+    <sys:String x:Key="C153">On Order</sys:String>
+    <sys:String x:Key="C154">Available</sys:String>
+    <sys:String x:Key="C155">Store</sys:String>
+    <sys:String x:Key="C156">Item Count</sys:String>
+    <sys:String x:Key="C157">Price Level</sys:String>
+    <sys:String x:Key="C158">Base Price</sys:String>
+    <sys:String x:Key="C159">Date Created</sys:String>
+    <sys:String x:Key="C160">User Created</sys:String>
+    <sys:String x:Key="C161">Date Applied</sys:String>
+    <sys:String x:Key="C162">User Applied</sys:String>
+    <sys:String x:Key="C163">Date Restored</sys:String>
+    <sys:String x:Key="C164">User Restored</sys:String>
+    <sys:String x:Key="C165">Product</sys:String>
+    <sys:String x:Key="C166">All Item</sys:String>
+    <sys:String x:Key="C167">All Items In Category</sys:String>
+    <sys:String x:Key="C168">All Items In Vendor</sys:String>
+    <sys:String x:Key="C169">Custom</sys:String>
+    <sys:String x:Key="C170">Company</sys:String>
+    <sys:String x:Key="C171">Account</sys:String>
+    <sys:String x:Key="C172">Country</sys:String>
+    <sys:String x:Key="C173">Phone</sys:String>
+    <sys:String x:Key="C174">Code</sys:String>
+    <sys:String x:Key="C175">Product Name</sys:String>
+    <sys:String x:Key="C176">Scan Code</sys:String>
+    <sys:String x:Key="C177">Delete</sys:String>
+    <sys:String x:Key="C178">Name</sys:String>
+    <sys:String x:Key="C179">Street</sys:String>
+    <sys:String x:Key="C180">City</sys:String>
+    <sys:String x:Key="C181">State</sys:String>
+    <sys:String x:Key="C182">Zip</sys:String>
+    <sys:String x:Key="C183">Fax</sys:String>
+    <sys:String x:Key="C184">Email</sys:String>
+    <sys:String x:Key="C185">Website</sys:String>
+    <sys:String x:Key="C186">Browse</sys:String>
+    <sys:String x:Key="C187">Clear</sys:String>
+    <sys:String x:Key="C188">Password</sys:String>
+    <sys:String x:Key="C189">Merge Item</sys:String>
+    <sys:String x:Key="C190">Cost</sys:String>
+    <sys:String x:Key="C191">Address</sys:String>
+    <!--Region "Title" Extention Common  -->
+    <sys:String x:Key="Title_PaymentHistoryDetail">Payment history detail</sys:String>
+    <!--EndRegion Title -->
+
+    <!--Region "Text" Extention Common -->
+    <sys:String x:Key="Text_ViewPaymentHistory">View Payment History</sys:String>
+    <sys:String x:Key="Text_SelectedItem">Selected Item</sys:String>
+    <sys:String x:Key="Text_NewVendor">New Vendor</sys:String>
+    <sys:String x:Key="Text_NewCustomer">New Customer</sys:String>
+    <sys:String x:Key="Text_GoToVendorList">Go To Vendor List</sys:String>
+    <sys:String x:Key="Text_GoToCustomerList">Go To Customer List</sys:String>
+    
+    <!--EndRegion Title -->
+
+    <!--  End Common Language  -->
+
+    <!--  Datagrid Language  -->
+    <sys:String x:Key="DG100">Total </sys:String>
+    <sys:String x:Key="DG101">item(s).</sys:String>
+    <sys:String x:Key="DG102">Current Index </sys:String>
+    <sys:String x:Key="DG103">Total : {0} items . Current Index : {1}</sys:String>
+    <!--  End Datagrid Language  -->
+
+    <!--  PurchaseOrderView  -->
+    <sys:String x:Key="PO100">Purchase Order</sys:String>
+    <sys:String x:Key="PO101">PO #</sys:String>
+    <sys:String x:Key="PO111">Payment Due Date</sys:String>
+    <sys:String x:Key="PO112">Receive All</sys:String>
+    <sys:String x:Key="PO113">Total Ordered</sys:String>
+    <sys:String x:Key="PO114">Total Received</sys:String>
+    <sys:String x:Key="PO115">Received</sys:String>
+    <sys:String x:Key="PO116">Receive</sys:String>
+    <sys:String x:Key="PO117">Due Qty</sys:String>
+    <sys:String x:Key="PO118">Received Qty</sys:String>
+    <sys:String x:Key="PO119">Received Date</sys:String>
+    <sys:String x:Key="PO120">PO Date</sys:String>
+    <sys:String x:Key="PO121">Qty Ordered</sys:String>
+    <sys:String x:Key="PO122">Qty Due</sys:String>
+    <sys:String x:Key="PO123">Qty Receive</sys:String>
+    <sys:String x:Key="PO124">Unfilled %</sys:String>
+    <sys:String x:Key="PO125">PO No</sys:String>
+    <sys:String x:Key="PO126">Scan Code</sys:String>
+    <sys:String x:Key="PO127">Store</sys:String>
+    <sys:String x:Key="PO128">Has Return</sys:String>
+    <!--  End PurchaseOrderView  -->
+
+    <!--  DepartmentView  -->
+    <sys:String x:Key="D100">All Categories</sys:String>
+    <sys:String x:Key="D101">All Items</sys:String>
+    <sys:String x:Key="D102">Department</sys:String>
+    <sys:String x:Key="D103">Dept Name</sys:String>
+    <sys:String x:Key="D104">Category Name</sys:String>
+    <sys:String x:Key="D105">Brand Name</sys:String>
+    <sys:String x:Key="D106">Name</sys:String>
+    <sys:String x:Key="D107">Creates New Department</sys:String>
+    <sys:String x:Key="D108">Edit Department</sys:String>
+    <sys:String x:Key="D109">Creates New Category</sys:String>
+    <sys:String x:Key="D110">Edit Category</sys:String>
+    <sys:String x:Key="D111">Creates New Brand</sys:String>
+    <sys:String x:Key="D112">Edit Brand</sys:String>
+    <sys:String x:Key="D113">All Departments</sys:String>
+    <!--  End DepartmentView  -->
+
+    <!--  AttachmentView  -->
+    <sys:String x:Key="A100">Scan...</sys:String>
+    <sys:String x:Key="A101">Attach</sys:String>
+    <sys:String x:Key="A102">Open</sys:String>
+    <sys:String x:Key="A103">Open With...</sys:String>
+    <sys:String x:Key="A104">In Folder</sys:String>
+    <!--  End AttachmentView  -->
+
+    <!--  CompanySettingView  -->
+    <sys:String x:Key="CS100">Store Information</sys:String>
+    <sys:String x:Key="CS101">Phone Numbers</sys:String>
+    <sys:String x:Key="CS102">Internet</sys:String>
+    <sys:String x:Key="CS103">Number of Store</sys:String>
+    <sys:String x:Key="CS104">Select the number of stores in your company</sys:String>
+    <sys:String x:Key="CS105">Unit Of Measure</sys:String>
+    <sys:String x:Key="CS106">Multiple Units Of Measure</sys:String>
+    <sys:String x:Key="CS107">Allow set up multiple UOM for inventory, non-inventory and se service items.</sys:String>
+    <sys:String x:Key="CS108">Examples of mutilple units of measure</sys:String>
+    <sys:String x:Key="CS109">I order dog food in cases of 24 cans. I sell dog food by the individual can and by the case.</sys:String>
+    <sys:String x:Key="CS110">I receive nails in 30 poun boxes and I sell nails in 1 and 5 pound boxes.</sys:String>
+    <sys:String x:Key="CS111">Default Price</sys:String>
+    <sys:String x:Key="CS112">Select the price level that should be used by default on new sales receipts and customer orders.</sys:String>
+    <sys:String x:Key="CS113">Price Level</sys:String>
+    <sys:String x:Key="CS114">Enter a name and markdown % ( from your regulare price ) for each optional price level you would like to use. The markdowns entered are used to calculate each level's price for new items only.</sys:String>
+    <sys:String x:Key="CS115">Tip: To mark a price level up from your regular price, enter a negative markdown ( Example: -10 )</sys:String>
+    <sys:String x:Key="CS116">Price Level Name</sys:String>
+    <sys:String x:Key="CS117">Markdown % ( for new items )</sys:String>
+    <sys:String x:Key="CS118">Payment Methods</sys:String>
+    <sys:String x:Key="CS119">Select the payment methods you accept.</sys:String>
+    <sys:String x:Key="CS120">Use</sys:String>
+    <sys:String x:Key="CS121">Default payment method</sys:String>
+    <sys:String x:Key="CS122">Card Type</sys:String>
+    <sys:String x:Key="CS123">Select the credit cards you accept</sys:String>
+    <sys:String x:Key="CS124">Gift Card Type</sys:String>
+    <sys:String x:Key="CS125">Select the gift cards you accept</sys:String>
+    <sys:String x:Key="CS126">Tips</sys:String>
+    <sys:String x:Key="CS127">Collect customer tips on credit, account, and gift card transactions</sys:String>
+    <sys:String x:Key="CS128">When manally changing discount status from deactive to active, you can associate a discount reason.</sys:String>
+    <sys:String x:Key="CS129">Require a discount reason for manal discounts</sys:String>
+    <sys:String x:Key="CS130">Outgoing Email Setup</sys:String>
+    <sys:String x:Key="CS131">Connect to e-mail account at your Internet service provide ( ISP) or your organization mail server.</sys:String>
+    <sys:String x:Key="CS132">ISP Server &amp; Port</sys:String>
+    <sys:String x:Key="CS133">Mail Server</sys:String>
+    <sys:String x:Key="CS134">Examle: Mail.mailserver.com</sys:String>
+    <sys:String x:Key="CS135">Mail Port</sys:String>
+    <sys:String x:Key="CS136">Port No. provide by ISP Service Provider.</sys:String>
+    <sys:String x:Key="CS137">Email &amp; Password</sys:String>
+    <sys:String x:Key="CS138">Example: Barbara@gmail.com</sys:String>
+    <sys:String x:Key="CS139">Retype Password</sys:String>
+    <sys:String x:Key="CS140">Type the Password your Internet service provider has given you.</sys:String>
+    <sys:String x:Key="CS141">Allow Negative Store</sys:String>
+    <sys:String x:Key="CS142">Calculate reward included tax</sys:String>
+    <sys:String x:Key="CS143">Allow reward redeem less than discount</sys:String>
+    <sys:String x:Key="CS144">Allow return fee</sys:String>
+    <sys:String x:Key="CS145">Return fee percent</sys:String>
+    <sys:String x:Key="CS146">Discount Type</sys:String>
+    <sys:String x:Key="CS147">Discount Status</sys:String>
+    <sys:String x:Key="CS148">Work Hours</sys:String>
+    <sys:String x:Key="CS149">Timeclock</sys:String>
+    <sys:String x:Key="CS150">Return</sys:String>
+    <sys:String x:Key="CS151">Reward</sys:String>
+    <sys:String x:Key="CS152">Login</sys:String>
+    <sys:String x:Key="CS153">Security</sys:String>
+    <sys:String x:Key="CS154">Currency</sys:String>
+    <sys:String x:Key="CS155">Backup</sys:String>
+    <sys:String x:Key="CS156">Option</sys:String>
+    <sys:String x:Key="CS157">Maximum Sticky Note</sys:String>
+    <sys:String x:Key="CS158">Ship Unit</sys:String>
+    <sys:String x:Key="CS159">Image Path</sys:String>
+    <sys:String x:Key="CS160">Language</sys:String>
+    <sys:String x:Key="CS161">Shift Management</sys:String>
+    <sys:String x:Key="CS162">Default cashier by user login</sys:String>
+    <sys:String x:Key="CS163">Authorize member code</sys:String>
+    <sys:String x:Key="CS164">Keep Log</sys:String>
+    <sys:String x:Key="CS165">Days</sys:String>
+    <sys:String x:Key="CS166">AAAAAAAAAAA</sys:String>
+    <sys:String x:Key="CS167">Symbol</sys:String>
+    <sys:String x:Key="CS168">Decimal Place</sys:String>
+    <sys:String x:Key="CS169">Password Format</sys:String>
+    <sys:String x:Key="CS170">Log cashier automatically out</sys:String>
+    <sys:String x:Key="CS171">After an idle period of</sys:String>
+    <sys:String x:Key="CS172">Minutes</sys:String>
+    <sys:String x:Key="CS173">AAAAAAAAAAA</sys:String>
+    <sys:String x:Key="CS174">Backup When Exit</sys:String>
+    <sys:String x:Key="CS175">Backup Every</sys:String>
+    <sys:String x:Key="CS176">Days</sys:String>
+    <sys:String x:Key="CS177">Keep Backup Up to</sys:String>
+    <sys:String x:Key="CS178">Save Directory</sys:String>
+    <!--  End CompanySettingView  -->
+
+    <!--  region PricingView  -->
+    <sys:String x:Key="PR100">Name</sys:String>
+    <sys:String x:Key="PR101">Adjustment Method</sys:String>
+    <sys:String x:Key="PR102">Amount Change</sys:String>
+    <sys:String x:Key="PR103">Cost</sys:String>
+    <sys:String x:Key="PR104">Name</sys:String>
+    <sys:String x:Key="PR105">Set</sys:String>
+    <sys:String x:Key="PR106">Adjustment</sys:String>
+    <sys:String x:Key="PR107">Category Name</sys:String>
+    <sys:String x:Key="PR108">Margin</sys:String>
+    <sys:String x:Key="PR109">Markup</sys:String>
+    <sys:String x:Key="PR110">New Price</sys:String>
+    <sys:String x:Key="PR111">Current Price</sys:String>
+    <sys:String x:Key="PR112">Cost Change</sys:String>
+    <sys:String x:Key="PR113">Price Change</sys:String>
+    <sys:String x:Key="PR114">Pricing</sys:String>
+    <sys:String x:Key="PR_Popup_108">Margin %</sys:String>
+    <sys:String x:Key="PR_Popup_109">Markup %</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCategory">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByVendor">Select products to apply to this pricing</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCustom">Select products to apply to this pricing</sys:String>
+    <!--  endregion PricingView  -->
+    <!--  ReOrderStockView  -->
+    <sys:String x:Key="RO100">ReOrder</sys:String>
+    <sys:String x:Key="RO101">ReOrderStock</sys:String>
+    <sys:String x:Key="RO102">Reorder Qty</sys:String>
+    <sys:String x:Key="RO103">Reorder Point</sys:String>
+
+    <!--  End ReOrderStock  -->
+    <!--  Count Sheet  -->
+    <sys:String x:Key="CS_DataGrid_Header_Location">Location</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_Difference">Difference</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_OnHandQty">On-Hand Qty</sys:String>
+    <sys:String x:Key="CS_DataGrid_Header_CountedQuantity">Counted</sys:String>
+    <sys:String x:Key="CS_TextBlock_SheetNo">Sheet #</sys:String>
+    <sys:String x:Key="CS_TextBlock_Status">Status</sys:String>
+    <sys:String x:Key="CS_TextBlock_StartedDate">Started Date</sys:String>
+    <sys:String x:Key="CS_TextBlock_CompletedDate">Completed Date</sys:String>
+    <!--  End Count Sheet  -->
+
+    <!--  Reward  -->
+    <sys:String x:Key="RW_TextBlock_Reward">Reward</sys:String>
+    <sys:String x:Key="RW_TextBlock_PurchaseThreshold">Purchase Threshold</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardAmount">Reward Amount</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardExpiration">Reward Expiration</sys:String>
+    <sys:String x:Key="RW_CheckBox_ PurchaseTrackingPeriod">Purchase Tracking Period</sys:String>
+    <sys:String x:Key="RW_TextBlock_StartDate">Start Date</sys:String>
+    <sys:String x:Key="RW_TextBlock_EndDate">End Date</sys:String>
+    <sys:String x:Key="RW_CheckBox_NoEndDate">No End Date</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardOption">Reward Option</sys:String>
+    <sys:String x:Key="RW_CheckBox_Automatically">Automatically enroll new customers in Rewards Program</sys:String>
+    <sys:String x:Key="RW_CheckBox_Prompttoenroll">Prompt to enroll when making sales to non-members</sys:String>
+    <sys:String x:Key="RW_CheckBox_InformCashier">Inform cashier when sales rewards are earned</sys:String>
+    <sys:String x:Key="RW_CheckBox_BlockReward">Block reward redemption for</sys:String>
+    <sys:String x:Key="RW_CheckBox_Daysafter">days after earned.</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardProgramStatus">Reward Program Status</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTracking">Reward Tracking is</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTrackingOFF">OFF</sys:String>
+    <sys:String x:Key="RW_TextBlock_RewardTrackingON">ON</sys:String>
+    <sys:String x:Key="RW_Button_TurnTrackingON">Turn Tracking ON</sys:String>
+    <sys:String x:Key="RW_Button_TurnTrackingOFF">Turn Tracking OFF</sys:String>
+    <sys:String x:Key="RW_Message_Keepexisting">Do you want to keep existing customer's rewards available ?</sys:String>
+    <sys:String x:Key="RW_Message_Yes">[Yes] = Keep existing customer's rewards available.</sys:String>
+    <sys:String x:Key="RW_Message_No">[No]  = Discard and recalculate existing rewards.The redemption will not be allowed.</sys:String>
+    <sys:String x:Key="RW_Message_Cancel">[Cancel] = Leave this message.</sys:String>
+    <sys:String x:Key="RW_Message_Issued">{0} reward(s) issued.</sys:String>
+
+    <!--  End Reward  -->
+    <!--  Current Stock  -->
+    <sys:String x:Key="RW_TextBlock_PartNo">Part No.</sys:String>
+    <sys:String x:Key="RW_TextBlock_BarCode">Scan Code</sys:String>
+    <sys:String x:Key="RW_TextBlock_ALU">ALU</sys:String>
+    <!--  End Current Stock  -->
+    <!--  Login  -->
+    <sys:String x:Key="LG_TextBlock_UserName">User Name</sys:String>
+    <sys:String x:Key="LG_TextBlock_Password">Password</sys:String>
+    <sys:String x:Key="LG_TextBlock_OldPassword">Old Password</sys:String>
+    <sys:String x:Key="LG_TextBlock_NewPassword">New Password</sys:String>
+    <sys:String x:Key="LG_TextBlock_ConfirmNewPassword">Confirm New Password</sys:String>
+    <sys:String x:Key="LG_TextBlock_Language">Language</sys:String>
+    <sys:String x:Key="LG_TextBlock_Shift">Shift</sys:String>
+    <sys:String x:Key="LG_TextBlock_RememberMe">Remember Me</sys:String>
+    <sys:String x:Key="LG_TextBlock_Login">Login</sys:String>
+    <sys:String x:Key="LG_TextBlock_Exit">Exit</sys:String>
+    <!--  End Login  -->
+    <!--  UserLogView  -->
+    <sys:String x:Key="UL_Header_LoginName">Login Name</sys:String>
+    <sys:String x:Key="UL_Header_UserName">User Name</sys:String>
+    <sys:String x:Key="UL_Header_IPSource">IP Source</sys:String>
+    <sys:String x:Key="UL_Header_ConnectedOn">Connected On</sys:String>
+    <sys:String x:Key="UL_Header_DisConnectedOn">DisConnected On</sys:String>
+    <sys:String x:Key="UL_Header_DisConnected">DisConnected</sys:String>
+    <!--  End UserLogView  -->
+    <!--  UserListView  -->
+    <sys:String x:Key="UL_TextBlock_Includedlocked">Included locked accounts</sys:String>
+    <sys:String x:Key="UL_TextBlock_User">User</sys:String>
+    <sys:String x:Key="UL_TextBlock_UserInfo">User Info</sys:String>
+    <sys:String x:Key="UL_TextBlock_LoginName">Login Name</sys:String>
+    <sys:String x:Key="UL_TextBlock_Department">Department</sys:String>
+    <sys:String x:Key="UL_TextBlock_Position">Position</sys:String>
+    <sys:String x:Key="UL_TextBlock_Security">Security</sys:String>
+
+    <sys:String x:Key="UL_TextBlock_SetDefault">Set Default</sys:String>
+    <sys:String x:Key="UL_TextBlock_Confirm">Confirm</sys:String>
+    <sys:String x:Key="UL_TextBlock_ExpiryDate">Expiry Date</sys:String>
+    <sys:String x:Key="UL_TextBlock_UserRight">User Rights</sys:String>
+    <sys:String x:Key="UL_Header_Code">Code</sys:String>
+    <sys:String x:Key="UL_Header_Name">Name</sys:String>
+    <sys:String x:Key="UL_TextBlock_Permission">User Permission</sys:String>
+    <sys:String x:Key="LP_TextBlock_Transaction1">This transaction is in use and has been locked. Only &quot;</sys:String>
+    <sys:String x:Key="LP_TextBlock_Transaction2">&quot; or an administrator can unlock.</sys:String>
+    <!--  End User List View  -->
+
+    <!--  EmployeeView  -->
+    <sys:String x:Key="EM_TextBlock_EmployeeNo">Employee #</sys:String>
+    <sys:String x:Key="EM_TextBlock_FullName">Full Name</sys:String>
+    <sys:String x:Key="EM_TextBlock_EmployeeType">Employee Type</sys:String>
+    <sys:String x:Key="EM_TextBlock_ConnectedToTime">Connected To Time Clock System</sys:String>
+    <sys:String x:Key="EM_TextBlock_HireDate">Hire Date</sys:String>
+    <sys:String x:Key="EM_TextBlock_Sales Rep">Sales Rep</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeInfo">Employee Info</sys:String>
+    <sys:String x:Key="EM_Header_TimeClock">TimeClock</sys:String>
+    <sys:String x:Key="EM_Header_Credential">Credential</sys:String>
+    <sys:String x:Key="EM_Header_Schedule">Schedule</sys:String>
+
+    <sys:String x:Key="EM_TextBlock_LeftFingerprint">Left Fingerprint</sys:String>
+    <sys:String x:Key="EM_TextBlock_RightFingerprint">Right Fingerprint</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClickHere">Click Here</sys:String>
+    <sys:String x:Key="EM_TextBlock_WorkSchedule">Work Schedule</sys:String>
+    <sys:String x:Key="EM_TextBlock_Options">Options</sys:String>
+    <sys:String x:Key="EM_TextBlock_Clock-Innotauthorized">Clock-In not authorized if employee arrives late by at least</sys:String>
+    <sys:String x:Key="EM_TextBlock_Minutes">minutes.</sys:String>
+    <sys:String x:Key="EM_TextBlock_Automaticallydeduct">Automatically deduct the lunch time in the reports when it is not registered during the assigned time.</sys:String>
+    <sys:String x:Key="EM_TextBlock_Overtimetobalance">Uses overtime to balance those days where time was not completed.</sys:String>
+    <sys:String x:Key="EM_TextBlock_Overtime">Overtime</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClockInhour">Before the Clock-In hour.</sys:String>
+    <sys:String x:Key="EM_TextBlock_Lunchtime">Break/ lunch time.</sys:String>
+    <sys:String x:Key="EM_TextBlock_ClockOuthour">After the Clock-Out hour.</sys:String>
+    <sys:String x:Key="EM_TextBlock_Holiday">Holiday or days - off.</sys:String>
+    <sys:String x:Key="EM_TextBlock_ConsiderOvertime">Consider overtime in reports only when it is at least</sys:String>
+    <sys:String x:Key="EM_TextBlock_MinutesADay">minutes a day.</sys:String>
+    <sys:String x:Key="EM_TextBlock_FirstName">First Name</sys:String>
+    <sys:String x:Key="EM_TextBlock_Initial">Title</sys:String>
+    <sys:String x:Key="EM_TextBlock_LastName">Last Name</sys:String>
+    <sys:String x:Key="EM_TextBlock_Company">Company</sys:String>
+    <sys:String x:Key="EM_TextBlock_JobTitle">Job Title</sys:String>
+    <sys:String x:Key="EM_TextBlock_Email">Email</sys:String>
+    <sys:String x:Key="EM_TextBlock_Website">Website</sys:String>
+    <sys:String x:Key="EM_TextBlock_Commission">Commission</sys:String>
+    <sys:String x:Key="EM_TextBlock_PhoneNumbers">Phone Numbers</sys:String>
+    <sys:String x:Key="EM_TextBlock_Phone">Phone</sys:String>
+    <sys:String x:Key="EM_TextBlock_Cellphone">Cellphone</sys:String>
+    <sys:String x:Key="EM_TextBlock_PersonalInfo">Personal Info</sys:String>
+    <sys:String x:Key="EM_TextBlock_Gender">Gender</sys:String>
+    <sys:String x:Key="EM_TextBlock_SSN">SSN</sys:String>
+    <sys:String x:Key="EM_TextBlock_Marital">Marital</sys:String>
+    <sys:String x:Key="EM_TextBlock_Id">ID</sys:String>
+    <sys:String x:Key="EM_TextBlock_DOB">DOB</sys:String>
+    <sys:String x:Key="EM_TextBlock_State">State</sys:String>
+    <sys:String x:Key="EM_TextBlock_EmergencyContact">Emergency Contact</sys:String>
+    
+    
+    <sys:String x:Key="EM_TextBlock_Account">Account #</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeNo">Employee #</sys:String>
+    <sys:String x:Key="EM_Header_EmployeeType">Employee Type</sys:String>
+    <sys:String x:Key="EM_Header_JobTitle">Job Title</sys:String>
+    <sys:String x:Key="DataGrid_Text_Total">Total </sys:String>
+    <sys:String x:Key="DataGrid_Text_Item">item(s) .</sys:String>
+    <sys:String x:Key="DataGrid_Text_CurrentIndex">Current Index </sys:String>
+
+    <!--  End EmployeeView  -->
+
+    <!--  region ProductView  -->
+    <!--  CheckBox  -->
+    <sys:String x:Key="PD_CategoryBrand">Category/Brand</sys:String>
+    <sys:String x:Key="PD_DescriptionStyleModel">Description/StyleModel</sys:String>
+    <!--  MenuItem  -->
+    <sys:String x:Key="PD_SellSelectedItem">Sell Selected Item(s)</sys:String>
+    <sys:String x:Key="PD_ReceiveSelectedItem">Receive Selected Item(s)</sys:String>
+    <sys:String x:Key="PD_TransferSelectedItem">Transfer Selected Item(s)</sys:String>
+    <!--  ColumnHeader  -->
+    <sys:String x:Key="PD_ItemType">Item Type</sys:String>
+    <sys:String x:Key="PD_Category">Category</sys:String>
+    <sys:String x:Key="PD_PartNo">Part #</sys:String>
+    <sys:String x:Key="PD_ALU">ALU</sys:String>
+    <sys:String x:Key="PD_BaseUnit">Base Unit</sys:String>
+    <sys:String x:Key="PD_CreationDate">Creation Date</sys:String>
+    <sys:String x:Key="PD_VendorCode">Vendor Code</sys:String>
+    <sys:String x:Key="PD_RegPrice">Reg.Price</sys:String>
+    <!--  TabHeader  -->
+    <sys:String x:Key="PD_ProductInfo">Product Info</sys:String>
+    <sys:String x:Key="PD_Additional">Additional</sys:String>
+    <sys:String x:Key="PD_VendorProduct">Vendor List</sys:String>
+    <sys:String x:Key="PD_PurchaseHistory">Purchase History</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="PD_ItemInformation">Item Information</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure">Unit Of Measure</sys:String>
+    <sys:String x:Key="PD_PriceLevels">Price Levels</sys:String>
+    <sys:String x:Key="PD_Warranty">Warranty</sys:String>
+    <sys:String x:Key="PD_Location">Location</sys:String>
+    <sys:String x:Key="PD_OtherOptionsSetting">Other Options Setting</sys:String>
+    <!--  Button  -->
+    <sys:String x:Key="PD_Detail">Detail</sys:String>
+    <sys:String x:Key="PD_ManageUOM">Quick Set Up</sys:String>
+    <sys:String x:Key="PD_BuildItemsGroup">Build Items Group</sys:String>
+    <sys:String x:Key="PD_Pricing">Pricing</sys:String>
+    <!--  TextBlock  -->
+    <sys:String x:Key="PD_Keyword">Keyword/Scan item</sys:String>
+    <sys:String x:Key="PD_ItemNo">Item #</sys:String>
+    <sys:String x:Key="PD_Date">Date</sys:String>
+    <sys:String x:Key="PD_Brand">Brand</sys:String>
+    <sys:String x:Key="PD_StyleModel">Style/Model</sys:String>
+    <sys:String x:Key="PD_OnHand">On-Hand</sys:String>
+    <sys:String x:Key="PD_AvailableQty">Available Qty</sys:String>
+    <sys:String x:Key="PD_TypeOfUOM">Type of UOM</sys:String>
+    <sys:String x:Key="PD_BaseUnitNumber"># Base Unit</sys:String>
+    <sys:String x:Key="PD_OrderCost">Order Cost</sys:String>
+    <sys:String x:Key="PD_AvgUnitCost">Avg Unit Cost</sys:String>
+    <sys:String x:Key="PD_TypeOfWarranty">Type of Warranty</sys:String>
+    <sys:String x:Key="PD_WarrantyPeriod">Warranty Period</sys:String>
+    <sys:String x:Key="PD_YourLocation">What is your location?</sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo">Tracking Serial No.</sys:String>
+    <sys:String x:Key="PD_OpenItem">Open Item</sys:String>
+    <sys:String x:Key="PD_Unorderable">Unorderable</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards">Eligible for Rewards</sys:String>
+    <sys:String x:Key="PD_LayawayItem">Layaway Item</sys:String>
+    <sys:String x:Key="PD_SalesCommission">Sales Commission</sys:String>
+    <sys:String x:Key="PD_TrackingSerialNo_Description">Prompt for serial number</sys:String>
+    <sys:String x:Key="PD_OpenItem_Description">Can change item price after putting this item on order</sys:String>
+    <sys:String x:Key="PD_Unorderable_Description">Temporaily ignore the reorder point for this item and warn when putting it on a PO</sys:String>
+    <sys:String x:Key="PD_EligibleForRewards_Description">Reward Customer will earn reward when purchase this item</sys:String>
+    <sys:String x:Key="PD_LayawayItem_Description">This item is eligible for Layaway</sys:String>
+    <sys:String x:Key="PD_SalesCommission_Description">Commission Rate</sys:String>
+    <sys:String x:Key="PD_SelectVendor">Select Vendor</sys:String>
+    <sys:String x:Key="PD_CoverPriceRange">Cover Price Range</sys:String>
+    <sys:String x:Key="PD_Aisle">Aisle</sys:String>
+    <sys:String x:Key="PD_Shell">Shell</sys:String>
+    <sys:String x:Key="PD_Note">Note</sys:String>
+    <!--  PopupAttributeAndSize  -->
+    <sys:String x:Key="PD_AttributeAndSize">Attribute &amp; Size</sys:String>
+    <sys:String x:Key="PD_DeleteAttribute">Delete this attribute</sys:String>
+    <sys:String x:Key="PD_ClickToAdd">&lt;Click to add&gt;</sys:String>
+    <sys:String x:Key="PD_DeleteSize">Delete this size</sys:String>
+    <!--  PopupReorderPoint  -->
+    <sys:String x:Key="PD_StoreReorderPoint">Store Reorder Point</sys:String>
+    <!--  PopupAvailableQuantity  -->
+    <sys:String x:Key="PD_QuantityForThisItem">Quantity for this Item</sys:String>
+    <sys:String x:Key="PD_StoreQuantities">Store Quantities (Base Unit)</sys:String>
+    <sys:String x:Key="PD_Type">Type</sys:String>
+    <sys:String x:Key="PD_DocNo">Doc #</sys:String>
+    <sys:String x:Key="PD_Qty">Qty</sys:String>
+    <sys:String x:Key="PD_QuantityOnHand">Quantity On Hand</sys:String>
+    <sys:String x:Key="PD_QuantityOnReserved">Quantity On Reserved</sys:String>
+    <sys:String x:Key="PD_QuantityOnOrder">Quantity On Order</sys:String>
+    <sys:String x:Key="PD_QuantityAvailable">Quantity Available</sys:String>
+    <sys:String x:Key="PD_Show">Show</sys:String>
+    <sys:String x:Key="PD_ViewStatus">View Status</sys:String>
+    <sys:String x:Key="PD_QuantityByStore">Quantity by Store</sys:String>
+    <sys:String x:Key="PD_TotalQuantity">Total Quantity</sys:String>
+    <!--  PopupGuest  -->
+    <sys:String x:Key="PD_FirstName">First Name</sys:String>
+    <sys:String x:Key="PD_Initial">M.I.</sys:String>
+    <sys:String x:Key="PD_LastName">Last Name</sys:String>
+    <sys:String x:Key="PD_Company">Company</sys:String>
+    <sys:String x:Key="PD_JobTitle">Job Title</sys:String>
+    <sys:String x:Key="PD_Email">Email</sys:String>
+    <sys:String x:Key="PD_Website">Website</sys:String>
+    <sys:String x:Key="PD_PhoneNumbers">Phone Numbers</sys:String>
+    <sys:String x:Key="PD_Phone1">Phone 1</sys:String>
+    <sys:String x:Key="PD_Phone2">Phone 2</sys:String>
+    <sys:String x:Key="PD_Cellphone">Cellphone</sys:String>
+    <sys:String x:Key="PD_Fax">Fax</sys:String>
+    <sys:String x:Key="PD_Commission">Commission</sys:String>
+    <sys:String x:Key="PD_SaleRep">Sale Rep</sys:String>
+    <!--  PopupManagemenUOM  -->
+    <sys:String x:Key="PD_DefauftSellingUOM">Defauft Selling UOM</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure1">Unit Of Measure 1</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure2">Unit Of Measure 2</sys:String>
+    <sys:String x:Key="PD_UnitOfMeasure3">Unit Of Measure 3</sys:String>
+    <sys:String x:Key="PD_AverageUnitCost">Average Unit Cost</sys:String>
+    <sys:String x:Key="PD_Sell">Sell</sys:String>
+    <sys:String x:Key="PD_UPC">UPC</sys:String>
+    <sys:String x:Key="PD_AlternateLookup">Alternate Lookup</sys:String>
+    <!--  PopupPricing  -->
+    <sys:String x:Key="PD_PriceCalculation">Price Calculation</sys:String>
+    <sys:String x:Key="PD_ShowPriceLevelFor">Show price level for</sys:String>
+    <sys:String x:Key="PD_PriceCalculation_Description">You can change any of values below to calculate the price and the cost for this item.</sys:String>
+    <sys:String x:Key="PD_Margin_Description">(Price - Cost) / Price</sys:String>
+    <sys:String x:Key="PD_Markup_Description">(Price - Cost) / Cost</sys:String>
+    <sys:String x:Key="PD_Markdown">Markdown %</sys:String>
+    <!--  PopupUpdateOrderCost  -->
+    <sys:String x:Key="PD_NewAnOrderCost">New an order cost</sys:String>
+    <sys:String x:Key="PD_ClearAllOrderCost">Clear all order cost and change later</sys:String>
+    <sys:String x:Key="PD_KeepCurrentOrderCost">Keep current order cost</sys:String>
+    <!--  PopupDuplicateItem  -->
+    <sys:String x:Key="PD_ChangeTheInformation">Change the information match to unique</sys:String>
+    <sys:String x:Key="PD_Discard">Discard and to the existing item(s)</sys:String>
+    <!--  endregion ProductView  -->
+
+    <!--  #Region SaleOrderView  -->
+    <sys:String x:Key="SO_TextBlock_Customer">Customer</sys:String>
+    <sys:String x:Key="SO_TextBlock_BillAddress">Bill Address</sys:String>
+    <sys:String x:Key="SO_TextBlock_BookingChannel">Booking Chanel</sys:String>
+    <sys:String x:Key="SO_TextBlock_SONum">SO #</sys:String>
+    <sys:String x:Key="SO_TextBlock_SODate">SO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_Order">Order</sys:String>
+    <sys:String x:Key="SO_TextBlock_Ship">Ship</sys:String>
+    <sys:String x:Key="SO_TextBlock_PaymentHistory">Payment History</sys:String>
+    <sys:String x:Key="SO_TextBlock_Return">Return</sys:String>
+    <sys:String x:Key="SO_TextBlock_PaymentTerms">Payment Terms</sys:String>
+    <sys:String x:Key="SO_TextBlock_RequestShipDate">Request Ship Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_StoreCode">Store Code</sys:String>
+    <sys:String x:Key="SO_TextBlock_SalesRep">Sales Rep</sys:String>
+    <sys:String x:Key="SO_TextBlock_Tax">Tax</sys:String>
+    <sys:String x:Key="SO_TextBlock_Shipping">Shipping</sys:String>
+    <sys:String x:Key="SO_TextBlock_Billing">Billing</sys:String>
+    <sys:String x:Key="SO_TextBlock_Home">Home</sys:String>
+    <sys:String x:Key="SO_TextBlock_Business">Business</sys:String>
+    <sys:String x:Key="SO_TextBlock_TaxLocation">Tax Location</sys:String>
+    <sys:String x:Key="SO_TextBlock_TaxExcemption">Tax Excemption</sys:String>
+    <sys:String x:Key="SO_TextBlock_PickNPack">Pick &amp; Pack</sys:String>
+    <sys:String x:Key="SO_TextBlock_PackedBoxes">Packed Boxes</sys:String>
+    <sys:String x:Key="SO_TextBlock_ShippedBoxes">Shipped Boxes</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalWeight">Total Weight</sys:String>
+    <sys:String x:Key="SO_TextBlock_PackedQuantity">Packed Quantity</sys:String>
+    <sys:String x:Key="SO_TextBlock_BoxNum">Box #</sys:String>
+    <sys:String x:Key="SO_TextBlock_Weights">Weights</sys:String>
+    <sys:String x:Key="SO_TextBlock_Carrier">Carrier</sys:String>
+    <sys:String x:Key="SO_TextBlock_TrackingNum">Tracking #</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalAmount">Total Amount</sys:String>
+    <sys:String x:Key="SO_TextBlock_TotalPaid">Total Paid</sys:String>
+    <sys:String x:Key="SO_TextBlock_Change">Change</sys:String>
+    <sys:String x:Key="SO_TextBlock_Refunded">Refunded</sys:String>
+    <sys:String x:Key="SO_TextBlock_SONo">SO No.</sys:String>
+    <sys:String x:Key="SO_TextBlock_SaleOrderNum">Sales Order #</sys:String>
+    <sys:String x:Key="SO_TextBlock_RefundFee">Refund Fee</sys:String>
+    <sys:String x:Key="SO_TextBlock_Deposit">Deposit</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayNum">Layaway #</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationNum">Quotation #</sys:String>
+    <sys:String x:Key="SO_TextBlock_CouponNum">Coupon #</sys:String>
+    <sys:String x:Key="SO_TextBlock_CardNumber">Card #</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositTaken">Deposit Taken</sys:String>
+    <sys:String x:Key="SO_TextBlock_RemainingTotal">Remaining Total</sys:String>
+    <sys:String x:Key="SO_TextBlock_Methods">Methods</sys:String>
+    <sys:String x:Key="SO_TextBlock_RefNum">Ref #</sys:String>
+    <sys:String x:Key="SO_TextBlock_GiftCardNum">Card #</sys:String>
+    <sys:String x:Key="SO_TextBlock_SerialNumber">Serial Number</sys:String>
+    <sys:String x:Key="SO_TextBlock_Tip">Tip</sys:String>
+    <sys:String x:Key="SO_TextBlock_Refund">Refund</sys:String>
+    <sys:String x:Key="SO_TextBlock_Message_UpdatePrice">Enter the price to charged or the transaction or discard to leave the zero price</sys:String>
+    <sys:String x:Key="SO_TextBlock_Message_UpdateProductRegularPrice">Update product's regular price</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositUsed">Deposit Used</sys:String>
+    <sys:String x:Key="SO_TextBlock_DepositBalance">Deposit Balance</sys:String>
+    <sys:String x:Key="SO_TextBlock_ProductCode">Product Code</sys:String>
+    <sys:String x:Key="SO_TextBlock_ProductName">Product Name</sys:String>
+    <sys:String x:Key="SO_TextBlock_Category">Category</sys:String>
+    <sys:String x:Key="SO_TextBlock_AttributeSize">Attribute Size</sys:String>
+    <sys:String x:Key="SO_TextBlock_Barcode">Scan Code</sys:String>
+    <sys:String x:Key="SO_TextBlock_ALU">ALU</sys:String>
+    <sys:String x:Key="SO_TextBlock_SelectedItem">Selected Item</sys:String>
+    <sys:String x:Key="SO_TextBlock_GoToSOList">Go To SO List</sys:String>
+    <sys:String x:Key="SO_TextBlock_NewSO">New SO</sys:String>
+    <!--SO_TextBlock_TaxExemptionDisplay Using for display in datagrid SO,WO,QUote,Layaway & for search text multilanguage-->
+    <sys:String x:Key="SO_TextBlock_TaxExemptionDisplay">Tax Excemption</sys:String>
+    <sys:String x:Key="SO_TextBlock_ServiceFee">Service Fee</sys:String>
+    <sys:String x:Key="SO_TextBlock_ScanCode">Scan Code</sys:String>
+    <sys:String x:Key="SO_TextBlock_RewardRedeemed">Reward Redeemed</sys:String>
+    <sys:String x:Key="SO_TextBlock_NotAnyLayaway">Not any layaway</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayConflict">Layaway is conflict</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationDate">QO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationNumber">QO #</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayDate">LW Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayNumber">LW #</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderDate">WO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderNum">WO #</sys:String>
+    
+    
+
+    <sys:String x:Key="SO_Reward_EnterIDCard">Please Enter ID Card Member</sys:String>
+    <sys:String x:Key="SO_Reward_EnterRewardCode">Please Enter Reward Code</sys:String>
+
+    <sys:String x:Key="TextBlock_Date">Date</sys:String>
+    <sys:String x:Key="TextBlock_Cashier">Cashier</sys:String>
+    <sys:String x:Key="TextBlock_Program">Program</sys:String>
+    <sys:String x:Key="TextBlock_NewTotal">New Total</sys:String>
+    <sys:String x:Key="TextBlock_Apply">Apply</sys:String>
+    <sys:String x:Key="TextBlock_RedeemLater">Redeem Later</sys:String>
+    <sys:String x:Key="TextBlock_TotalDeposit">Total Deposit</sys:String>
+    <sys:String x:Key="TextBlock_TotalDicount">Total Discount</sys:String>
+    <sys:String x:Key="TextBlock_LastPaid">Last Paid</sys:String>
+    <sys:String x:Key="TextBlock_NewPrice">New Price</sys:String>
+    <sys:String x:Key="TextBlock_Update">Update</sys:String>
+    <sys:String x:Key="TextBlock_Discard">Discard</sys:String>
+    <sys:String x:Key="TextBlock_AssembledBy">Assembled By</sys:String>
+
+    <sys:String x:Key="SO_Message_EnrollRewardMember">This customer is not currently a member of reward program. Do you want to enroll this one?</sys:String>
+    <sys:String x:Key="SO_Message_ApplyTax">Do you want to apply {0} tax</sys:String>
+    <sys:String x:Key="SO_Message_NotifyPayfullUseReward">Do you want to pay fully this one?</sys:String>
+    <sys:String x:Key="SO_Message_RedeemReward">Redeem Reward</sys:String>
+    <sys:String x:Key="SO_Message_ReceivedReward">You are received : {0} reward(s) {1}\nExpire Date : {2}</sys:String>
+    <sys:String x:Key="SO_Message_ReceivedPointReward">You are received : {0} reward(s), {1} point \nExpire Date : {2}</sys:String>
+    <sys:String x:Key="SO_Message_RewardAmount">Reward {0}</sys:String>
+    <sys:String x:Key="SO_Message_ApplyCustomerDiscount">Do you want to apply customer discount?</sys:String>
+    <sys:String x:Key="SO_Message_ItemPicked">This item is picked, can't delete ?</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmShipItem">Do you want to ship this item?</sys:String>
+    <sys:String x:Key="SO_Message_NotifyShouldPaidInFull">You should paid in full</sys:String>
+    <sys:String x:Key="SO_Message_NotifyItemReturned">Item has been returned, can not delete this item.</sys:String>
+    <sys:String x:Key="SO_Message_ViewPnPDetail">View P&amp;P Detail</sys:String>
+    <sys:String x:Key="SO_Message_RewardNeverExpired">Never</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsOpen">you could delete these item(s) with staus is open</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsLayaway">you could delete these item(s) with staus is layaway</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsWorkOrder">you could delete these item(s) with staus is workorder</sys:String>
+    <sys:String x:Key="SO_Message_CouldDeleteItemIsQuote">you could delete these item(s) with staus is quote</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmRefundAllDeposit">Customer is desposit {0} \nDo you want to refund all?</sys:String>
+    <sys:String x:Key="SO_Message_SearchOptionRequired">Search Option is required</sys:String>
+    <sys:String x:Key="SO_Message_VoidBill">Do you want to void bill?</sys:String>
+    <sys:String x:Key="SO_Message_LockOrder">Do you want to lock this order?</sys:String>
+    <sys:String x:Key="SO_Message_UnLockOrder">Do you want to unlock this order?</sys:String>
+    <sys:String x:Key="SO_Message_ConvertToOrder">Do you want to convert to Sale order?</sys:String>
+    <sys:String x:Key="SO_Message_ConfirmSendEmailToCustomer">Do you want to send mail to customer?</sys:String>
+    <sys:String x:Key="SO_Message_LayawayReceivedAll">Do you want to receive all</sys:String>
+    <sys:String x:Key="SO_Message_RewardExpired">Reward is Expired</sys:String>
+    <sys:String x:Key="SO_Message_RewardEmpty">Reward is not enough to use</sys:String>
+    <sys:String x:Key="SO_Message_RewardNotCorrect">Reward is not correct</sys:String>
+    <sys:String x:Key="SO_Message_RewardCorrect">Reward is correct</sys:String>
+    <sys:String x:Key="SO_Message_RewardNotReadyToUse">Reward is not ready to use</sys:String>
+    <sys:String x:Key="SO_Message_LW_NotSmallerMinimumPurchase">Total of layaway is not smaller than Minumum purchase {0}, need to purchase more</sys:String>
+
+    <sys:String x:Key="SO_Tite_PaymentHistory">Payment History</sys:String>
+    <sys:String x:Key="SO_Title_Deposit">Deposit</sys:String>
+    <sys:String x:Key="SO_Title_QuotationAdvanceSearch">Quotation Advance Search</sys:String>
+    <sys:String x:Key="SO_Title_QuotePaymentHistory">Quotation Payment History</sys:String>
+    <sys:String x:Key="SO_Title_SearchProduct">Search Product</sys:String>
+    <sys:String x:Key="SO_Title_Payment">Payment</sys:String>
+    <sys:String x:Key="SO_Title_SOAdvanceSearch">Sale Order Advance Search</sys:String>
+    <sys:String x:Key="SO_Title_PickPack">Pick Pack</sys:String>
+    <sys:String x:Key="SO_Title_EditPickPack">Edit Pick Pack</sys:String>
+    <sys:String x:Key="SO_Title_ViewPickPack">View Pick Pack</sys:String>
+    <sys:String x:Key="SO_Title_SaleOrderRefund">Sale Order Refund</sys:String>
+    <sys:String x:Key="SO_Title_LayawayAdvanceSearch">Layaway Advance Search</sys:String>
+    <sys:String x:Key="SO_Title_LayawayPaymentHistory">Layaway Payment History</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderAdvanceSearch">Work Order Advance Search</sys:String>
+    <sys:String x:Key="SO_Title_WorkOrderPaymentHistory">Work Order Payment History</sys:String>
+    <sys:String x:Key="SO_Title_Reason">Reason</sys:String>
+    <sys:String x:Key="SO_Title_EditProduct">Edit product</sys:String>
+    <sys:String x:Key="SO_Title_BillAddress">Bill Address</sys:String>
+    <sys:String x:Key="SO_Title_ShippingAddress">Shipping Address</sys:String>
+    <sys:String x:Key="SO_Title_AddTerm">Add Term</sys:String>
+    <sys:String x:Key="SO_Title_CustomerSearch">Customer Search</sys:String>
+    <sys:String x:Key="SO_Title_GiftCard">Gift Card</sys:String>
+    <sys:String x:Key="SO_Title_GiftCertification">Gift Certification</sys:String>
+    <sys:String x:Key="SO_Title_UpdateProductPrice">Update Product Price</sys:String>
+    <sys:String x:Key="SO_Title_TrackingSerialNumber">Tracking Serial Number</sys:String>
+    <sys:String x:Key="SO_Title_AddCustomer">Add Customer</sys:String>
+    <sys:String x:Key="SO_Title_MultiTrackingSerial">Multi Tracking Serial</sys:String>
+    <sys:String x:Key="SO_Title_VoidBill">Void Bill</sys:String>
+    <sys:String x:Key="SO_Title_ServiceFeeDetail">Service Fee Detail</sys:String>
+    <sys:String x:Key="SO_Title_PaymentHistoryDetail">Payment history detail</sys:String>
+
+    
+
+    <!--  #EndRegion SaleOrderView  -->
+    
+    <!--#Region SaleOrderSearchAdvance-->
+    <sys:String x:Key="SO_Text_Scancode">Scan Code</sys:String>
+    <sys:String x:Key="SO_Text_DocumentNo">Document #</sys:String>
+    <sys:String x:Key="SO_Text_OrderFrom">Order From</sys:String>
+    <sys:String x:Key="SO_Text_OrderTo">Order To</sys:String>
+    <sys:String x:Key="SO_Text_CustomerName">Customer Name</sys:String>
+    <sys:String x:Key="SO_Text_TaxCode">Tax Code</sys:String>
+    <sys:String x:Key="SO_Text_Total">Total</sys:String>
+    <sys:String x:Key="SO_Text_Status">Status</sys:String>
+    <!--EndRegion SaleOrderSearchAdvance-->
+
+
+    <!--  region Promotion  -->
+    <!--  ColumnHeader  -->
+    <sys:String x:Key="PM_DiscountName">Discount Name</sys:String>
+    <sys:String x:Key="PM_StartDate">Start Date</sys:String>
+    <sys:String x:Key="PM_EndDate">End Date</sys:String>
+    <sys:String x:Key="PM_CouponCode">Coupon Code</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="PM_BarcodeImage">Scan Code Image</sys:String>
+    <!--  TextBlock  -->
+    <sys:String x:Key="PM_Take">Take</sys:String>
+    <sys:String x:Key="PM_PercentOff">% off</sys:String>
+    <sys:String x:Key="PM_Off">off</sys:String>
+    <sys:String x:Key="PM_QuantityX">Quantity (X)</sys:String>
+    <sys:String x:Key="PM_TotalPriceY">Total Price (Y)</sys:String>
+    <sys:String x:Key="PM_DiscountPrice">Discount Price</sys:String>
+    <sys:String x:Key="PM_Buy">Buy</sys:String>
+    <sys:String x:Key="PM_For">for</sys:String>
+    <sys:String x:Key="PM_Each">each</sys:String>
+    <sys:String x:Key="PM_ApplyToAboveQuantities">Apply the discount price to quantities above the specified amount</sys:String>
+    <sys:String x:Key="PM_QtyX">Qty (X)</sys:String>
+    <sys:String x:Key="PM_Percentage">Percentage (%)</sys:String>
+    <sys:String x:Key="PM_AndGet">and get</sys:String>
+    <sys:String x:Key="PM_PercentOffTheseItem">% off These Item</sys:String>
+    <sys:String x:Key="PM_CouponExpiresOn">Coupon Expires on</sys:String>
+    <sys:String x:Key="PM_ExpirationNoEndDate">Discount is only available during the specified time period</sys:String>
+    <sys:String x:Key="PM_ProductAffect">Product Affect</sys:String>
+    <!--  endregion Promotion  -->
+
+    <!--  TransferStock  -->
+    <sys:String x:Key="TS_Message_Product">{0} product</sys:String>
+    <sys:String x:Key="TS_Message_Products">{0} products</sys:String>
+    <sys:String x:Key="TransferMessage">Do you want to transfer {0} from {1} to {2} ?</sys:String>
+    <sys:String x:Key="RevertMessage">Do you want to revert {0} from {1} to {2} ?</sys:String>
+    <sys:String x:Key="TS_CheckBox_TransferNo">Transfer No.</sys:String>
+    <sys:String x:Key="TS_CheckBox_DateTransfered">Date Transfered</sys:String>
+    <sys:String x:Key="TS_TextBox_FromStore">From Store</sys:String>
+    <sys:String x:Key="TS_TextBox_ToStore">To Store</sys:String>
+    <sys:String x:Key="TS_TextBox_TotalQty">Total Qty</sys:String>
+    <sys:String x:Key="TS_TextBox_UserCreated">User Created</sys:String>
+    <sys:String x:Key="TS_TextBox_DateApplied">Date Applied</sys:String>
+    <sys:String x:Key="TS_TextBox_UserApplied">User Applied</sys:String>
+    <sys:String x:Key="TS_TextBox_DateReversed">Date Reversed</sys:String>
+    <sys:String x:Key="TS_TextBox_UserReversed">User Reversed</sys:String>
+    <sys:String x:Key="TS_TextBox_ShipDate">Ship Date</sys:String>
+    <sys:String x:Key="TS_TextBox_Freight">Freight</sys:String>
+    <sys:String x:Key="TS_Header_AvailableQty">Available Qty</sys:String>
+    <sys:String x:Key="TS_TextBox_TransferStock">Transfer Stock</sys:String>
+    <sys:String x:Key="TS_TextBox_ApplyTransferStock">Apply TransferStock</sys:String>
+    <sys:String x:Key="TS_TextBox_ApplyPricing">Apply Pricing</sys:String>
+    <sys:String x:Key="TS_TextBox_AdjustStock">Adjust Stock</sys:String>
+    <!--  End  -->
+
+    <!--  AddressControl(Don't change their key.)  -->
+    <sys:String x:Key="AddressControl_OK">OK</sys:String>
+    <sys:String x:Key="AddressControl_Cancel">Cancel</sys:String>
+    <sys:String x:Key="AddressControl_Text_Address">Address</sys:String>
+    <sys:String x:Key="AddressControl_Text_AddressType">Address Type</sys:String>
+    <sys:String x:Key="AddressControl_Text_CopyFrom">Copy From</sys:String>
+    <sys:String x:Key="AddressControl_Text_Street">Street</sys:String>
+    <sys:String x:Key="AddressControl_Text_Country">Country</sys:String>
+    <sys:String x:Key="AddressControl_Text_City">City</sys:String>
+    <sys:String x:Key="AddressControl_Text_State">State</sys:String>
+    <sys:String x:Key="AddressControl_Text_Zip">Zip</sys:String>
+    <!--  End  -->
+    <!--  Login  -->
+    <sys:String x:Key="Login_Message_Shutdown">The application will shutdown.</sys:String>
+    <sys:String x:Key="Login_Message_AccountLocked">This account is locked . Please contact to admin to unlock this account.</sys:String>
+    <sys:String x:Key="Login_Message_AccountAnother">This account is being used by another user.</sys:String>
+    <sys:String x:Key="Login_Message_AccountExpired">This account expired . Please contact to admin to reset this account.</sys:String>
+    <sys:String x:Key="Login_Message_AccountVerify">Could not verify this account . Please try again.</sys:String>
+    <!--  End  -->
+
+    <!--  region NoteModule  -->
+    <sys:String x:Key="N_AddSticky">Add sticky</sys:String>
+    <sys:String x:Key="N_ShowStickies">Show stickies</sys:String>
+    <sys:String x:Key="N_HideStickies">Hide stickies</sys:String>
+    <!--  endregion NoteModule  -->
+
+    <!--  #Region SaleTax  -->
+    <sys:String x:Key="Tax_Text_SaleTaxLocationName">Sales Tax Location Name</sys:String>
+    <sys:String x:Key="Tax_Text_TaxLocationName">Tax Location Name</sys:String>
+    <sys:String x:Key="Tax_Text_TaxLocationNameUsingAll">This name will be used on all documents and report</sys:String>
+    <sys:String x:Key="Tax_Text_ShippingTaxedLocation">Choose whether or not the shipping amount for merchandise shipped to this location should be taxed</sys:String>
+    <sys:String x:Key="Tax_Text_ShippingTaxedUsingTaxCode">Shipping to this location is taxable using the tax code</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCodeName">Tax Code Name</sys:String>
+    <sys:String x:Key="Tax_Text_EnterTaxCodeNNameUsingAll">Enter a code and name for this tax code. This name will be used on all documents and reports.</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCode">Tax Code</sys:String>
+    <sys:String x:Key="Tax_Text_Max3Character">( max. 3 character)</sys:String>
+    <sys:String x:Key="Tax_Text_TaxCodeMark">Tax Code Mark</sys:String>
+    <sys:String x:Key="Tax_Text_PrintedMark">Printed &quot;Mark&quot;</sys:String>
+    <sys:String x:Key="Tax_Text_Max1Character">( max. 1 character)</sys:String>
+    <sys:String x:Key="Tax_Text_AssignCharacter">Assign a character &quot; mark&quot; to identify items sold with this tax code.</sys:String>
+    <sys:String x:Key="Tax_Text_TaxOption">Tax Option</sys:String>
+    <sys:String x:Key="Tax_Text_SingleTaxOption">Single - rate tax ( Same Tax Rate for All Items )</sys:String>
+    <sys:String x:Key="Tax_Text_PriceTaxOption">Price - dependent single - rate tax ( Collect tax only if Items above a certain price )</sys:String>
+    <sys:String x:Key="Tax_Text_MultiTaxOption">Multi - rate tax ( Tax at different rates )</sys:String>
+    <sys:String x:Key="Tax_Text_IncludedDiscountAmt">Included discount amount</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTax">Default Tax</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTaxLocationForItem">Default tax location for this item</sys:String>
+    <sys:String x:Key="Tax_Text_DefaultTaxCodeWithNew">Default tax code when creating a new category</sys:String>
+    <sys:String x:Key="Tax_Text_SaleTaxTitle">Sales Tax</sys:String>
+    <sys:String x:Key="Tax_Text_AdditionSaleTax">Additional Sales Tax</sys:String>
+    <sys:String x:Key="Tax_Text_SalesTaxRate">Sales Tax Rate</sys:String>
+    <sys:String x:Key="Tax_Text_TaxAgency">Tax Agency</sys:String>
+    <sys:String x:Key="Tax_Text_ApplySaleTaxOverUnitPriceOrShipping">Apply sales tax only to the amount over the unit price or shipping threshold.</sys:String>
+    <sys:String x:Key="Tax_Text_IfUnitPriceShipOrMoreThan">If the unit price shipping or more than</sys:String>
+    <sys:String x:Key="Tax_Text_SalesTaxName">Sales Tax Name</sys:String>
+    <sys:String x:Key="Tax_Text_TaxRate">Tax Rate</sys:String>
+
+    <!--  this text only using on tax  -->
+    <sys:String x:Key="Tax_Text_Collect">Collect</sys:String>
+    <sys:String x:Key="Tax_Text_CollectLower">collect</sys:String>
+    <sys:String x:Key="Tax_Text_PaidTo">paid to</sys:String>
+    <sys:String x:Key="Tax_Text_WhenPriceIs">when prices is</sys:String>
+    <sys:String x:Key="Tax_Text_To">To</sys:String>
+    <sys:String x:Key="Tax_Text_And">and</sys:String>
+    <sys:String x:Key="Tax_Text_Above">above</sys:String>
+    <sys:String x:Key="Tax_Text_under">under</sys:String>
+    <sys:String x:Key="Tax_Text_MultiplesRate">Multiples Rate</sys:String>
+    <sys:String x:Key="Tax_Text_NoTax">No Tax</sys:String>
+
+    <sys:String x:Key="Text_Shipping">Shipping</sys:String>
+    <sys:String x:Key="Text_Edit">Edit</sys:String>
+    <sys:String x:Key="Text_Remove">Remove</sys:String>
+    <!--  #EndRegion SaleTax  -->
+
+    <!--  #region Customer  -->
+    <sys:String x:Key="CUS_Text_AccountNum">Account #</sys:String>
+    <sys:String x:Key="CUS_Text_Name">Name</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerType">Customer Type</sys:String>
+    <sys:String x:Key="CUS_Text_RewardMember">Reward Member</sys:String>
+    <sys:String x:Key="CUS_Text_StartDate">Start Date</sys:String>
+    <sys:String x:Key="CUS_Text_Status">Status</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerInfo">Customer Info</sys:String>
+    <sys:String x:Key="CUS_Text_PersonalInfo">Personal Info</sys:String>
+    <sys:String x:Key="CUS_Text_PersonalInformation">Personal Information</sys:String>
+    <sys:String x:Key="CUS_Text_IM">IM</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerNumber">Customer Number</sys:String>
+    <sys:String x:Key="CUS_Text_Additional">Additional</sys:String>
+    <sys:String x:Key="CUS_Text_Reward">Reward</sys:String>
+    <sys:String x:Key="CUS_Text_SaleHistory">Sale History</sys:String>
+    <sys:String x:Key="CUS_Text_CustomerInformation">Customer Information</sys:String>
+    <sys:String x:Key="CUS_Text_MergeCustomer">Merge Customer</sys:String>
+    <sys:String x:Key="CUS_Text_SOCustomer">Make A Sale Order</sys:String>
+    <sys:String x:Key="CUS_Text_TotalPurchase">Total Purchase</sys:String>
+    <sys:String x:Key="CUS_Text_TotalRewardsAvaliable">Total Rewards Avaliable</sys:String>
+    <sys:String x:Key="CUS_Text_TotalRewardRedeemed">Total Rewards Redeemed</sys:String>
+    <sys:String x:Key="CUS_Text_RewardValue">Value</sys:String>
+    <sys:String x:Key="CUS_Text_AddNewGroup">Add New Group</sys:String>
+    <sys:String x:Key="CUS_Text_DateStamp">Date Stamp</sys:String>
+    <sys:String x:Key="CUS_Text_Remark">Remark</sys:String>
+    <sys:String x:Key="CUS_Text_SaleRep">Sales Rep</sys:String>
+    <sys:String x:Key="CUS_Text_Group">Group</sys:String>
+    <sys:String x:Key="CUS_Text_Layaway">Layaway</sys:String>
+    <sys:String x:Key="CUS_Text_Payment">Payment</sys:String>
+    <sys:String x:Key="CUS_Text_CreditCardInformation">Credit Card Information</sys:String>
+    <sys:String x:Key="CUS_Text_UntilTheNextRewardIsEarned">Until the next reward is earned.</sys:String>
+    <sys:String x:Key="CUS_Text_OffRewardAreEarnedForEvery">off reward are earned for every</sys:String>
+    <sys:String x:Key="CUS_Text_CustomField">Custom Field</sys:String>
+    <sys:String x:Key="CUS_Text_LocalSaleTax">Local Sale Tax</sys:String>
+    <sys:String x:Key="CUS_Text_OtherInformation">Other Information</sys:String>
+    <sys:String x:Key="CUS_Text_EmergencyContact">Emergency Contact</sys:String>
+    <sys:String x:Key="CUS_Text_Point">pt</sys:String>
+
+    <sys:String x:Key="Text_FirstName">First Name</sys:String>
+    <sys:String x:Key="Text_Initial">Title</sys:String>
+    <sys:String x:Key="Text_LastName">Last Name</sys:String>
+    <sys:String x:Key="Text_JobTitle">Job Title</sys:String>
+    <sys:String x:Key="Text_Phone1">Phone 1</sys:String>
+    <sys:String x:Key="Text_Phone2">Phone 2</sys:String>
+    <sys:String x:Key="Text_Phone">Phone</sys:String>
+    <sys:String x:Key="Text_PhoneNumber">Phone Numbers</sys:String>
+    <sys:String x:Key="Text_Cellphone">Cellphone</sys:String>
+    <sys:String x:Key="Text_FullName">Full Name</sys:String>
+    <sys:String x:Key="Text_Print">Print</sys:String>
+    <sys:String x:Key="Text_ContactPrimary">P</sys:String>
+    <sys:String x:Key="Text_Gender">Gender</sys:String>
+    <sys:String x:Key="Text_MaritalStatus">Marital</sys:String>
+    <sys:String x:Key="Text_SSN">SSN</sys:String>
+    <sys:String x:Key="Text_Identification">ID</sys:String>
+    <sys:String x:Key="Text_DOB">DOB</sys:String>
+    <sys:String x:Key="Text_SpouseInformation">Spouse Information</sys:String>
+    <sys:String x:Key="Text_Nationality">Nationality</sys:String>
+    <sys:String x:Key="Text_Relationship">Relationship</sys:String>
+    <sys:String x:Key="Text_TaxInformation">Tax Information</sys:String>
+    <sys:String x:Key="Text_FedTaxID">Fed Tax ID</sys:String>
+    <sys:String x:Key="Text_TaxLocation">Tax Location</sys:String>
+    <sys:String x:Key="Text_TaxExemption">Tax Exemption</sys:String>
+    <sys:String x:Key="Text_PricingLevel">Pricing Level</sys:String>
+    <sys:String x:Key="Text_NoDiscount">No Discount</sys:String>
+    <sys:String x:Key="Text_FixedDiscAllItem">Fixed discount on all items</sys:String>
+    <sys:String x:Key="Text_MarkdownPriceLevel">Use markdown price level</sys:String>
+    <sys:String x:Key="Text_SaleRepresentative">Sale Representative</sys:String>
+    <sys:String x:Key="Text_CalcCommissionCus">This one will be calculate commission for this customer.</sys:String>
+    <sys:String x:Key="Text_PaymentInformation">Payment Information</sys:String>
+    <sys:String x:Key="Text_Add">Add</sys:String>
+    <sys:String x:Key="Text_CheckAcceptanceLimit">Check Acceptance Limit</sys:String>
+    <sys:String x:Key="Text_CheckLimit">Check Limit</sys:String>
+    <sys:String x:Key="Text_CardType">Card Type</sys:String>
+    <sys:String x:Key="Text_NewCreditCard">New credit card</sys:String>
+    <sys:String x:Key="Text_PaymentCardName">Name</sys:String>
+    <sys:String x:Key="Text_PaymentCardNum">Card #</sys:String>
+    <sys:String x:Key="Text_PaymentExpireDate">Expire Date</sys:String>
+    <sys:String x:Key="Text_PaymentCCID">CCID</sys:String>
+    <sys:String x:Key="Text_PaymentSignatureDate">Signature Date</sys:String>
+    <sys:String x:Key="Text_PaymentHistory">History</sys:String>
+    <sys:String x:Key="Text_RewardProgramInformation">Rewards Program Information</sys:String>
+    <sys:String x:Key="Text_NewIssueReward">New Issue Reward</sys:String>
+    <sys:String x:Key="Text_TotalRewardEarned">Total Reward Earned</sys:String>
+    <sys:String x:Key="Text_TotalAvailableRewardRedeemed">Total Available Reward Redeemed</sys:String>
+    <sys:String x:Key="Text_RewardsProgramHistory">Rewards Program History</sys:String>
+    <sys:String x:Key="Text_From">From</sys:String>
+    <sys:String x:Key="Text_To">To</sys:String>
+    <sys:String x:Key="Text_OrderNum">Order #</sys:String>
+    <sys:String x:Key="Text_OrderTotal">Total</sys:String>
+    <sys:String x:Key="Text_MergeFrom">Merge From</sys:String>
+    <sys:String x:Key="Text_MergeTo">Merge To</sys:String>
+    <sys:String x:Key="Text_IssueNewReward">Issue New Reward</sys:String>
+    <sys:String x:Key="Text_DeleteReward">Delete Reward (s)</sys:String>
+    <sys:String x:Key="Text_EarnedDate">Earned Date</sys:String>
+    <sys:String x:Key="Text_ActiveDate">Active Date</sys:String>
+    <sys:String x:Key="Text_ExpiredDate">Expired Date</sys:String>
+    <sys:String x:Key="Text_BillingAddress">Billing Address</sys:String>
+    <sys:String x:Key="Text_ZipCode">Zip Code</sys:String>
+
+    <sys:String x:Key="CUS_MSG_ShouldSaleOrder">You should be close Sale Order form after execute this process</sys:String>
+    <sys:String x:Key="CUS_MSG_MergeCustomer">Merge Customer</sys:String>
+    <sys:String x:Key="CUS_MSG_ExisedCustViewProfile">This customer has existed. Please recheck Email or Phone. Do you want to view profiles?</sys:String>
+    <sys:String x:Key="CUS_MSG_ViewProfile">View Profile</sys:String>
+    <sys:String x:Key="CUS_MSG_QMergeCustomer">Do you want to merge these customer</sys:String>
+
+    <sys:String x:Key="CUS_Title_CreateCreditCard">Create credit card</sys:String>
+    <sys:String x:Key="CUS_Title_UpdateCreditCard">Update credit card</sys:String>
+    <sys:String x:Key="CUS_Title_CustomerTitle">Customer</sys:String>
+	<sys:String x:Key="CUS_Save_Current_Item">Save Current Item</sys:String>
+	<sys:String x:Key="CUS_Delete_Current_Item">Delete Current Item</sys:String>
+	<sys:String x:Key="CUS_Print_Current_Item">Print Current Item</sys:String>
+    <!--  #Endregion Customer  -->
+
+    <!--  Backup Data  -->
+    <sys:String x:Key="Button_Backup">Backup Data Now</sys:String>
+    <sys:String x:Key="Button_Restore">Restore This Backup</sys:String>
+    <sys:String x:Key="Button_SmartPOS">SmartPOS on</sys:String>
+
+    <!--  region MainView  -->
+    <sys:String x:Key="Main_RealMode">REAL MODE</sys:String>
+    <sys:String x:Key="Main_PracticeMode">PRACTICE MODE</sys:String>
+    <!--  endregion MainView  -->
+
+    <!--  region LayawaySetup  -->
+
+    <sys:String x:Key="LayawaySetup_Text_LayawaySetup">Layaway Setup</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Name">Name</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LayawayInformation">Layaway Information</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_StartDate">Start Date</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_EndDate">End Date</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Deposit">Deposit</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_OpenACFee">Open A/C Fee</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Term">Term</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Days">day (s)</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_CancellationFee">Cancellation Fee</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_PaymentSchedule">Payment Schedule</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_MinimumPurchase">Minimum Purchase</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LayawayFee">Layaway Fee</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_LateFee">Late Fee</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_ScheduleHistory">Schedule History</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_Status">Status</sys:String>
+    <sys:String x:Key="LayawaySetup_Text_OtherFee">Other Fee</sys:String>
+   
+
+    <!--  endregion LayawaySetup  -->
+
+    <!--  region VendorView  -->
+    <!--  TextBlock  -->
+    <sys:String x:Key="VD_Group">Group</sys:String>
+    <sys:String x:Key="VD_CreditLine">Credit Line</sys:String>
+    <sys:String x:Key="VD_Item">Item</sys:String>
+    <!--  TabHeader  -->
+    <sys:String x:Key="VD_VendorInfo">Vendor Info</sys:String>
+    <sys:String x:Key="VD_ProductList">Product List</sys:String>
+    <!--  GroupHeader  -->
+    <sys:String x:Key="VD_VendorInformation">Vendor Information</sys:String>
+    <sys:String x:Key="VD_CustomField">Custom Field</sys:String>
+    <!--  Button  -->
+    <sys:String x:Key="VD_DateStamp">Date Stamp</sys:String>
+    <!--  endregion VendorView  -->
+
+    <!--  region WorkScheduleView  -->
+    <!--  TextBlock  -->
+    <sys:String x:Key="WS_WorkHourToolTip">Work time is not equal to</sys:String>
+    <sys:String x:Key="WS_Hours">hours</sys:String>
+    <sys:String x:Key="WS_WeekHourToolTip">Total hours is not equal to</sys:String>
+    <!--  endregion WorkScheduleView  -->
+</ResourceDictionary>

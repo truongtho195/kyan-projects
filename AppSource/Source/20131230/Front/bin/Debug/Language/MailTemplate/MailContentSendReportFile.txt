@@ -1,0 +1,3 @@
+﻿Dear {UserName}
+Please view the attached receipt.
+Thank you for your shipping - We appreciate it very much.

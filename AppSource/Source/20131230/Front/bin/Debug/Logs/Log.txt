@@ -1,0 +1,351 @@
+
+[Begin Session - {CPCVN\Kyan nguyen}]
+[End Session-01-08-2014 11:43:00.465]
+
+[Begin Session- [01-08-2014 11:45:11.593]-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:45:11.593]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:46:09.633]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:48:31.563]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 13:20:21.375]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 13:22:55.429]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[ERROR] 01-08-2014 13:30:58.395 - [9] Message: Could not find a part of the path 'D:\'.. Source: mscorlib [App]
+[End Session- [01-08-2014 13:26:55.172]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 14:50:47.555]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 16:37:47.645]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[ERROR] 01-10-2014 10:19:38.458 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaleOrderFullPaymentProcess() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 4050 [App]
+[End Session- [01-10-2014 10:18:20.078]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-10-2014 11:37:56.782]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-10-2014 13:23:12.807]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 10:15:09.747]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 10:23:02.821]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 10:33:14.572 - [10] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.View.SalesOrderFrontHandView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\View\Front\SalesOrderFrontHandView.xaml.cs:line 39
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 270 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 10:38:43.940 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.View.SalesOrderFrontHandView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\View\Front\SalesOrderFrontHandView.xaml.cs:line 39
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 270 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 14:54:06.639 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:54:06.732 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:54:06.748 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:55:41.467 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:55:41.482 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:55:41.514 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:55:49.014 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:55:49.029 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:55:49.060 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:56:07.092 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:56:08.560 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:56:08.592 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 14:58:21.935 - [9] System.ArgumentException: Cannot set Owner property to itself.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
+[ERROR] 01-13-2014 14:59:13.732 - [9] System.InvalidOperationException: Sequence contains more than one matching element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at CPC.Service.DialogService.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 370
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 15:09:58.482 - [9] System.ArgumentException: Viewmodel is not referenced by any registered View.
+   at CPC.Service.DialogService.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 373
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:41:12.580]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:50:57.239]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:52:31.271]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:53:50.662]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:55:38.288]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:14:55.522]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:31:12.897]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:47:41.000]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:15:35.633]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:17:26.320]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:19:48.586]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:39:03.539]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:40:58.851]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:44:45.789]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 10:13:53.653]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-14-2014 10:49:56.187 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+[ERROR] 01-14-2014 10:50:00.890 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+[ERROR] 01-14-2014 10:50:07.593 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 10:56:03.178]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-14-2014 11:10:44.548 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 132 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:11:57.018]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:14:19.645]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:16:20.819]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:21:37.965]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:24:37.811]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:30:32.909]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:32:42.142]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:37:56.547]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:58:25.237]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:59:51.191]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:26:14.470]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:28:58.504]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:45:31.921]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 16:31:28.568]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 17:41:50.708]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 17:42:46.646]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 17:44:34.225]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:05:48.957]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:19:23.572]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:25:13.643]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:59:02.527]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 11:06:10.546]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 17:28:39.910]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 17:36:36.900]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 17:38:53.527]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 17:50:56.880]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 18:03:20.202]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 18:05:45.579]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 18:06:36.704]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 09:44:24.526]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 09:53:05.967]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 10:01:51.359]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 10:09:30.536]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 10:12:18.733]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 10:21:10.918]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 10:29:53.332]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 11:40:16.734]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 11:58:48.702]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 13:25:02.845]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:17:52.781 - [10] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.OnScreenKeyboard..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\OnScreenKeyboard.xaml.cs:line 26
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 861
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\App.xaml.cs:line 212 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:19:44.158 - [9] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.OnScreenKeyboard..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\OnScreenKeyboard.xaml.cs:line 26
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 861
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\App.xaml.cs:line 212 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:23:01.082 - [9] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.KeyboardView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\KeyboardView.xaml.cs:line 36
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 75 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:24:00.770 - [9] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.KeyboardView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\KeyboardView.xaml.cs:line 36
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 75 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:24:57.084 - [9] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.KeyboardView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\KeyboardView.xaml.cs:line 36
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 75 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-16-2014 15:27:35.961 - [9] System.InvalidOperationException: Cannot set Owner property to a Window that has not been shown previously.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Control.KeyboardView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\Control\OnScreenKeyboard\KeyboardView.xaml.cs:line 36
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS.Front\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 75 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 15:37:51.906]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 15:46:28.069]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 15:49:00.399]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 16:49:30.262]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-16-2014 16:53:11.374]]
