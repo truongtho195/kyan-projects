@@ -1,0 +1,963 @@
+﻿<ResourceDictionary x:Class="CPC.POS.Dictionary.TextBoxControlStyle"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+                    xmlns:control="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                    xmlns:cpcControl="clr-namespace:CPC.Control"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:local="clr-namespace:CPC.POS"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    xmlns:textBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+                    mc:Ignorable="d">
+    <!--  TextBox Base Style  -->
+    <Style TargetType="{x:Type textBoxControl:TextBox}">
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="IsScrollToHome"
+                Value="True" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusingBrush"
+                Value="#FFFFF500" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsInsideControl"
+                                 Value="True">
+                            <Setter Property="FocusManager.FocusedElement"
+                                    Value="{Binding RelativeSource={RelativeSource Self}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}" />
+                            <Setter TargetName="Bd"
+                                    Property="BorderThickness"
+                                    Value="1" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                                <Condition Property="IsInsideControl"
+                                           Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Height"
+                                    Value="25" />
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="Transparent" />
+                            <Setter TargetName="Bd"
+                                    Property="BorderThickness"
+                                    Value="0" />
+
+                        </MultiTrigger>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="BorderBrush"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+        <Setter Property="FontSize"
+                Value="11" />
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxName}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxEmail}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxDecimal}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxNumber}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxNumeric}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="IsScrollToHome"
+                Value="False" />
+        <Setter Property="CurrencyDecimalDigits"
+                Value="{x:Static local:Define.NumericDecimalDigits}" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="TextLength"
+                Value="10" />
+        <Setter Property="IsScrollToHome"
+                Value="False" />
+        <Setter Property="CurrencyDecimalDigits"
+                Value="{x:Static local:Define.DecimalPlaces}" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:DelayTextBox}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxAlphaNumeric}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxWithResetValue}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxPercent}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxCustomBase}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxCardNumber}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxPhone}">
+        <Setter Property="MaxLength"
+                Value="20"></Setter>
+    </Style>
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxPhone}}"
+           TargetType="{x:Type textBoxControl:TextBoxPhone}"
+           x:Key="TextBoxCellPhoneStyle">
+        <Setter Property="MaxLength"
+                Value="14"></Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxIdentification}">
+        <Setter Property="IsSecurity"
+                Value="True"></Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxSSN}">
+        <Setter Property="IsSecurity"
+                Value="True"></Setter>
+    </Style>
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxZip}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxFax}" />
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBoxCustomBase}}"
+           TargetType="{x:Type textBoxControl:TextBoxTaxID}" />
+
+    <Style x:Key="TextBoxInAnotherControlStyle"
+           TargetType="{x:Type textBoxControl:TextBox}">
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusingBrush"
+                Value="#FFFFF500" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="BorderBrush"
+                Value="#FF6B6B6B" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused"
+                                           Value="True" />
+                                <Condition Property="IsReadOnly"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}" />
+                        </MultiTrigger>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="BorderBrush"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type cpcControl:NumericTextBox}" />
+
+    <!--  Edit  -->
+    <Style x:Key="TextBoxInsideDataGridStyle"
+           TargetType="{x:Type textBoxControl:TextBox}">
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusingBrush"
+                Value="{x:Null}" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="BorderBrush"
+                Value="{x:Null}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Height"
+                Value="25" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="FocusManager.FocusedElement"
+                Value="{Binding RelativeSource={RelativeSource Self}}" />
+        <Setter Property="IsSelectedAll"
+                Value="False" />
+        <Setter Property="behavior:MoveFocusHelper.Focused"
+                Value="{Binding IsFocused, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBox}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="BorderBrush"
+                                    Value="#FFFF0000" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TextBoxNumberInsideDataGridStyle"
+           BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxNumber}">
+        <Setter Property="TextAlignment"
+                Value="Right" />
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+    </Style>
+
+    <Style x:Key="TextBoxNumericInsideDataGridStyle"
+           BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxNumeric}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="TextAlignment"
+                Value="Right" />
+        <Setter Property="CurrencyDecimalDigits"
+                Value="{x:Static local:Define.DecimalPlaces}" />
+    </Style>
+
+    <Style x:Key="TextBoxMoneyInsideDataGridStyle"
+           BasedOn="{StaticResource TextBoxInsideDataGridStyle}"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="TextAlignment"
+                Value="Right" />
+        <Setter Property="TextLength"
+                Value="10" />
+        <Setter Property="CurrencyDecimalDigits"
+                Value="{x:Static local:Define.DecimalPlaces}" />
+    </Style>
+
+    <!--  Mark TextBox Base Style  -->
+    <Style TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="BorderBrush"
+                Value="#FF6B6B6B" />
+        <Setter Property="Validation.ErrorTemplate"
+                Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type control:MaskedTextBox}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="#FFFFF500" />
+                        </Trigger>
+                        <Trigger Property="Validation.HasError"
+                                 Value="True">
+                            <Setter TargetName="Bd"
+                                    Property="BorderBrush"
+                                    Value="#FFFF0000" />
+                            <!--  #FFFF0000  -->
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="behavior:MoveFocusHelper.MoveFocus"
+                Value="True" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxPhoneStyle  -->
+    <Style x:Key="TextBoxPhoneStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="(000) 000-0000 - 999999" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+
+        <!--
+            <Setter Property="i:Interaction.Behaviors">
+            <Setter.Value>
+            <behavior:MaskVisibilityBehavior/>
+            </Setter.Value>
+            </Setter>
+        -->
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxPhoneExtStyle  -->
+    <Style x:Key="TextBoxPhoneExtStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="999999" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxCellphoneStyle  -->
+    <Style x:Key="TextBoxCellphoneStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="000-000-0000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxFaxStyle  -->
+    <Style x:Key="TextBoxFaxStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="000-000-0000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxTaxIDStyle  -->
+    <Style x:Key="TextBoxSaleTaxNoStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="00-0000000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxTaxIDStyle  -->
+    <Style x:Key="TextBoxTaxIDStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="00-0000000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxMoneyStyle  -->
+    <Style x:Key="TextBoxMoneyStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="$###,###,##0.00" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:Decimal}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxSsnStyle  -->
+    <Style x:Key="TextBoxSsnStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="000-00-0000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxIdentificationStyle  -->
+    <Style x:Key="TextBoxIdentificationStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="L0000000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxPercentStyle  -->
+    <Style x:Key="TextBoxPercentStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="##0.00 %" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:Decimal}" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxCCID Style  -->
+    <Style x:Key="TextBoxCCIDStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="9999" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxExpDate Style  -->
+    <Style x:Key="TextBoxExpDateStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="99/0000" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+    </Style>
+    <!--  End  -->
+
+    <!--  TextBoxZip Style  -->
+    <Style x:Key="TextBoxZipStyle"
+           BasedOn="{StaticResource {x:Type control:MaskedTextBox}}"
+           TargetType="{x:Type control:MaskedTextBox}">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="IncludeLiteralsInValue"
+                Value="False" />
+        <Setter Property="Mask"
+                Value="00000-9999" />
+        <Setter Property="Padding"
+                Value="2,0" />
+        <Setter Property="ValueDataType"
+                Value="{x:Type s:String}" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource TextBoxCanlendarComboboxBorderBrush}" />
+    </Style>
+
+    <!--  TextBoxMoney Permission  -->
+    <ControlTemplate x:Key="TextBoxMoneyPermissionTemplate"
+                     TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Border x:Name="Bd"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="true">
+            <Grid>
+                <ScrollViewer x:Name="PART_ContentHost"
+                              VerticalAlignment="Center"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                              d:LayoutOverrides="Width, Height" />
+                <TextBlock x:Name="tblePermission"
+                           Margin="0,5,0,0"
+                           VerticalAlignment="Center"
+                           FontSize="11"
+                           FontFamily="Tahoma"
+                           Text="******"
+                           TextWrapping="NoWrap"
+                           Visibility="Collapsed" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsPermission"
+                     Value="False">
+                <Setter TargetName="PART_ContentHost"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                <Setter TargetName="tblePermission"
+                        Property="Visibility"
+                        Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsInsideControl"
+                     Value="True">
+                <Setter Property="FocusManager.FocusedElement"
+                        Value="{Binding RelativeSource={RelativeSource Self}}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsFocused"
+                               Value="True" />
+                    <Condition Property="IsReadOnly"
+                               Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="Bd"
+                        Property="Background"
+                        Value="{Binding FocusingBrush, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type textBoxControl:TextBox}}}" />
+                <Setter TargetName="Bd"
+                        Property="BorderThickness"
+                        Value="1" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsFocused"
+                               Value="True" />
+                    <Condition Property="IsReadOnly"
+                               Value="False" />
+                    <Condition Property="IsInsideControl"
+                               Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Height"
+                        Value="25" />
+                <Setter TargetName="Bd"
+                        Property="Background"
+                        Value="Transparent" />
+                <Setter TargetName="Bd"
+                        Property="BorderThickness"
+                        Value="0" />
+
+            </MultiTrigger>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter TargetName="Bd"
+                        Property="BorderBrush"
+                        Value="#FFFF0000" />
+            </Trigger>
+            <Trigger Property="IsEnabled"
+                     Value="false">
+                <Setter TargetName="Bd"
+                        Property="Background"
+                        Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                <Setter Property="Foreground"
+                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="TextBoxMoneyWithPermissionStyle"
+           BasedOn="{StaticResource {x:Type textBoxControl:TextBox}}"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="TextLength"
+                Value="10" />
+        <Setter Property="CurrencyDecimalDigits"
+                Value="{x:Static local:Define.DecimalPlaces}" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+        <Setter Property="Template"
+                Value="{StaticResource TextBoxMoneyPermissionTemplate}" />
+    </Style>
+
+    <Style x:Key="TextBoxTotal"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Setter Property="IsSelectedAll"
+                Value="True" />
+        <Setter Property="BorderBrush"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="#FF00FF05" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBoxMoney}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize"
+                Value="18" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Background"
+                Value="Black" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+    </Style>
+
+    <Style x:Key="TextBoxPayment"
+           TargetType="{x:Type textBoxControl:TextBoxMoney}">
+        <Setter Property="Background"
+                Value="Black" />
+        <Setter Property="BorderBrush"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="#FF00FF10" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="Padding"
+                Value="2,0,2,2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type textBoxControl:TextBoxMoney}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize"
+                Value="22" />
+        <Setter Property="FontFamily"
+                Value="Tahoma" />
+        <Setter Property="FontWeight"
+                Value="Normal" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Right" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Bottom" />
+        <Setter Property="BorderThickness"
+                Value="5" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+    </Style>
+
+    <Style x:Key="TextBoxTotalStyle"
+           TargetType="{x:Type TextBox}">
+        <Setter Property="BorderBrush"
+                Value="White" />
+        <Setter Property="Foreground"
+                Value="#FF00FF05" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="Padding"
+                Value="2" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter TargetName="Bd"
+                                    Property="Background"
+                                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize"
+                Value="18" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Background"
+                Value="Black" />
+        <EventSetter Event="Loaded"
+                     Handler="TextBoxLoaded" />
+    </Style>
+</ResourceDictionary>

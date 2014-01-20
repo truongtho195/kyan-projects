@@ -1,0 +1,622 @@
+﻿<UserControl x:Class="CPC.POS.View.UserListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:cpcTextBoxControl="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:helper="clr-namespace:CPC.Helper"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpfControl="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="UserControl"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             Background="{DynamicResource UserControlBackground}"
+             helper:ValidationHelper.IsEnabled="True"
+             helper:ValidationHelper.IsValid="{Binding IsValid, Mode=OneWayToSource}"
+             mc:Ignorable="d Anno">
+    <UserControl.Resources>
+        <sys:Int32 x:Key="PasswordMaxLength">20</sys:Int32>
+        <converter:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converter:ComboxItemToTextConverter x:Key="comboxItemToTextConverter" />
+        <converter:PermissionConverter x:Key="permissionConverter" />
+        <Style x:Key="myEditDataGridRowStyle"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="ToolTip"
+                    Value="{Binding RowToolTip, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                <DataGridCellsPresenter Grid.Column="1"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <DataGridDetailsPresenter Grid.Row="1"
+                                                          Grid.Column="1"
+                                                          Visibility="{TemplateBinding DetailsVisibility}">
+                                    <SelectiveScrollingGrid.SelectiveScrollingOrientation>
+                                        <Binding Path="AreRowDetailsFrozen"
+                                                 RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}">
+                                            <Binding.ConverterParameter>
+                                                <SelectiveScrollingOrientation>Vertical</SelectiveScrollingOrientation>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </SelectiveScrollingGrid.SelectiveScrollingOrientation>
+                                </DataGridDetailsPresenter>
+                                <DataGridRowHeader Grid.RowSpan="2"
+                                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                   Style="{DynamicResource DataGridRowHeaderStyle}" />
+                            </SelectiveScrollingGrid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="DGR_Border"
+                                     Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="DGR_Border"
+                                        Property="Background"
+                                        Value="{DynamicResource DatagridRow_IsMouseOver_Background}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush"
+                    Value="#FF766E6E" />
+            <Setter Property="Visibility"
+                    Value="{Binding Visibility}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource DatagridBackground}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RowToolTip, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type dataGridControl:DataGridControl}}}"
+                             Value="">
+                    <Setter Property="ToolTip"
+                            Value="{x:Null}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="LoginNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_LoginName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UserNameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_UserName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CodeHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_Code}" />
+        </DataTemplate>
+        <DataTemplate x:Key="NameHeaderTemplate">
+            <TextBlock Text="{DynamicResource UL_Header_Name}" />
+        </DataTemplate>
+        <!--  DataGridCell Edit Style  -->
+        <Style x:Key="DataGridCellEnableStyle"
+               BasedOn="{StaticResource {x:Type DataGridCell}}"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="behavior:DataGridCellFocusHelper.CellFocus"
+                    Value="True" />
+            <Setter Property="behavior:DataGridCellFocusHelper.ItemSource"
+                    Value="{Binding ., RelativeSource={RelativeSource Self}}" />
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,1" />
+            <Setter Property="FocusVisualStyle"
+                    Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              OverridesDefaultStyle="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background"
+                    Value="#03FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Null}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource DatagridCell_IsSelected_Foreground}" />
+                    <Setter Property="Background"
+                            Value="{DynamicResource DatagridCell_IsSelected_Background}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--  End  -->
+    </UserControl.Resources>
+	 <UserControl.InputBindings>
+<KeyBinding Command="{Binding HelpCommand}"
+                    Gesture="F1" />
+</UserControl.InputBindings>
+    <wpfControl:BusyIndicator IsBusy="{Binding IsBusy}">
+        <Grid x:Name="GridLayout">
+            <Rectangle x:Name="UserControl_Background_Image"
+                       Fill="{DynamicResource UserControl_Background_Image}" />
+            <Grid x:Name="grdUserList">
+                <Grid x:Name="grdSubUserList"
+                      d:LayoutOverrides="GridBox">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="stkpBtn"
+                                Height="Auto"
+                                Margin="20,0,0,5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal">
+                        <Button x:Name="btnSave"
+                                Command="{Binding SaveCommand}"
+                                Width="40"
+                                Height="40"
+                                Style="{DynamicResource ButtonSystem}" ToolTip="Save Current Item">
+                            <StackPanel x:Name="stkpBtnSave"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Rectangle x:Name="imgSave"
+                                           Width="30"
+                                           Height="30"
+                                           Fill="{DynamicResource Save}" />
+                                <TextBlock x:Name="txtblSave"
+                                           Margin="5,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource ButtonSystemTextBlock}"
+                                           Text="Save"
+                                           TextWrapping="NoWrap"
+                                           Visibility="Collapsed" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnDelete"
+                                Command="{Binding DeleteCommand}"
+                                Width="40"
+                                Height="40"
+                                IsEnabled="{Binding ., ConverterParameter=CF100-03-02, Converter={StaticResource permissionConverter}}"
+                                Style="{DynamicResource ButtonSystem}" ToolTip="Delete Current Item">
+                            <StackPanel x:Name="stkpBtnDelete"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <Rectangle x:Name="imgDelete"
+                                           Width="30"
+                                           Height="30"
+                                           Fill="{DynamicResource Delete}" />
+                                <TextBlock x:Name="txtblDelete"
+                                           Margin="5,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource ButtonSystemTextBlock}"
+                                           Text="Close"
+                                           TextWrapping="NoWrap"
+                                           Visibility="Collapsed" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Rectangle x:Name="Line"
+                               Height="1"
+                               Margin="2,0"
+                               VerticalAlignment="Bottom"
+                               Fill="{DynamicResource Spilter_Line_Background}" />
+                    <TextBlock x:Name="txtblBindingUserPermission"
+                               Margin="0,0,20,7"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               FontFamily="Times New Roman"
+                               FontSize="33.333"
+                               FontWeight="Bold"
+                               Style="{DynamicResource TextBlockTitleFormView}"
+                               Text="{DynamicResource UL_TextBlock_Permission}"
+                               TextWrapping="NoWrap" />
+                    <Border x:Name="brdUserPermissions"
+                            Grid.Row="2"
+                            Height="Auto"
+                            Margin="10"
+                            Background="{DynamicResource TabControlBackground}"
+                            BorderBrush="{DynamicResource TabControlBorder}"
+                            BorderThickness="1">
+                        <Grid x:Name="grdUserPermissions"
+                              Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="285" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid x:Name="grdUserAndUserInfo">
+                                <GroupBox x:Name="gbUser"
+                                          Margin="0">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblUser"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="{DynamicResource UL_TextBlock_User}"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdContentUser"
+                                          Margin="0,4,0,0"
+                                          d:LayoutOverrides="GridBox">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="Auto"
+                                                           MinHeight="5.707" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <CheckBox x:Name="cbIncluded"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Content="{DynamicResource UL_TextBlock_Includedlocked}"
+                                                  IsChecked="{Binding IsIncludeAccountLocked, UpdateSourceTrigger=PropertyChanged}"
+                                                  d:LayoutOverrides="HorizontalAlignment" />
+                                        <dataGridControl:DataGridControl x:Name="dtgrdUsers"
+                                                                         Command="{Binding LoadStepCommand}"
+                                                                         Grid.Row="2"
+                                                                         Margin="5,0,5,5"
+                                                                         AutoGenerateColumns="False"
+                                                                         CanUserAddRows="False"
+                                                                         CanUserDeleteRows="False"
+                                                                         CurrentPageIndex="{Binding CurrentPageIndex}"
+                                                                         DisplayItems="{Binding NumberOfDisplayItems}"
+                                                                         IsFilterDataColunm="True"
+                                                                         IsLockFilter="{Binding SelectedItemUser.IsDirty, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                         IsRollBackData="False"
+                                                                         IsSynchronizedWithCurrentItem="True"
+                                                                         ItemsSource="{Binding UserCollection}"
+                                                                         NumberOfItems="{Binding TotalUsers}"
+                                                                         RowStyle="{StaticResource myEditDataGridRowStyle}"
+                                                                         SelectedIndex="0"
+                                                                         SelectionMode="Single"
+                                                                         SelectedItem="{Binding SelectedItemUser}"
+                                                                         Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                                                         VisibilityAddItem="Collapsed"
+                                                                         VisibilityNavigationBar="Collapsed">
+                                            <dataGridControl:DataGridControl.Columns>
+                                                <DataGridTextColumn Binding="{Binding UserName}"
+                                                                    Width="110"
+                                                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                                    dataGridControl:DataGridColumnExtensions.FieldName="UserName"
+                                                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                                                    HeaderTemplate="{StaticResource UserNameHeaderTemplate}"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Binding="{Binding LoginName}"
+                                                                    Width="*"
+                                                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                                    dataGridControl:DataGridColumnExtensions.FieldName="LoginName"
+                                                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                                                    HeaderTemplate="{StaticResource LoginNameHeaderTemplate}"
+                                                                    IsReadOnly="True" />
+                                            </dataGridControl:DataGridControl.Columns>
+                                        </dataGridControl:DataGridControl>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                            <Grid x:Name="grdUserSecurityRight"
+                                  Grid.Column="1"
+                                  Margin="10,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="126.26" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <GroupBox x:Name="gbUserInfo"
+                                	Margin="0" VerticalAlignment="Bottom" d:LayoutOverrides="GridBox" HorizontalAlignment="Left" Width="208">
+                                	<GroupBox.Header>
+                                		<TextBlock x:Name="txtblUserInfo"
+                                			FontWeight="Bold"
+                                			Style="{DynamicResource GroupboxTextBlock}"
+                                			Text="{DynamicResource UL_TextBlock_UserInfo}"
+                                			TextWrapping="NoWrap" />
+                                	</GroupBox.Header>
+                                	<Grid x:Name="grdContentUserInfo"
+                                		Margin="0,4,0,0"
+                                		d:LayoutOverrides="GridBox">
+                                		<Grid.ColumnDefinitions>
+                                			<ColumnDefinition Width="85" />
+                                			<ColumnDefinition />
+                                		</Grid.ColumnDefinitions>
+                                		<Grid.RowDefinitions>
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                		</Grid.RowDefinitions>
+                                		<TextBlock x:Name="txtblUsername"
+                                			Margin="10,0,0,5.861"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Bottom"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource LG_TextBlock_UserName}"
+                                			TextWrapping="NoWrap" />
+                                		<cpcTextBoxControl:TextBox x:Name="txtUsername"
+                                			Grid.Column="1"
+                                			Margin="0,2,10,2"
+                                			IsEnabled="False"
+                                			Padding="2,0,2,0"
+                                			Text="{Binding SelectedItemUser.UserName, Mode=OneWay}"
+                                			TextWrapping="NoWrap" />
+                                		<TextBlock x:Name="txtblLogin"
+                                			Grid.Row="1"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource UL_TextBlock_LoginName}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<cpcTextBoxControl:TextBox x:Name="txtLogin"
+                                			Grid.Row="1"
+                                			Grid.Column="1"
+                                			Margin="0,2,10,2"
+                                			IsEnabled="{Binding IsEnableUserRight}"
+                                			Padding="2,0,2,0"
+                                			Text="{Binding SelectedItemUser.LoginName, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                			TextWrapping="NoWrap" />
+                                		<TextBlock x:Name="txtblDepartment"
+                                			Grid.Row="2"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource UL_TextBlock_Department}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<cpcTextBoxControl:TextBox x:Name="txtDepartment"
+                                			Grid.Row="2"
+                                			Grid.Column="1"
+                                			Margin="0,2,10,2"
+                                			IsEnabled="False"
+                                			Padding="2,0,2,0"
+                                			Text="{Binding SelectedItemUser.Department, Mode=TwoWay}"
+                                			TextWrapping="NoWrap" />
+                                		<TextBlock x:Name="txtblPosition"
+                                			Grid.Row="3"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource UL_TextBlock_Position}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<cpcTextBoxControl:TextBox x:Name="txtPosition"
+                                			Grid.Row="3"
+                                			Grid.Column="1"
+                                			Margin="0,2,10,2"
+                                			IsEnabled="False"
+                                			Padding="2,0,2,0"
+                                			Text="{Binding SelectedItemUser.PositionId, ConverterParameter=JobTitle, Converter={StaticResource comboxItemToTextConverter}, Mode=OneWay}"
+                                			TextWrapping="NoWrap" />
+                                	</Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbSecurity" Width="219" HorizontalAlignment="Left" Margin="214,0,0,0">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblSecurity"
+                                                   Style="{DynamicResource GroupboxTextBlock}"
+                                                   Text="{DynamicResource UL_TextBlock_Security}"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                	<Grid x:Name="grdContentSecurity"
+                                		Margin="0,4,0,0"
+                                		IsEnabled="{Binding IsEnableUserRight}"
+                                		d:LayoutOverrides="GridBox">
+                                		<Grid.ColumnDefinitions>
+                                			<ColumnDefinition Width="80"/>
+                                			<ColumnDefinition />
+                                		</Grid.ColumnDefinitions>
+                                		<Grid.RowDefinitions>
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                			<RowDefinition Height="25" />
+                                		</Grid.RowDefinitions>
+                                		<Grid>
+                                			<Grid.Style>
+                                				<Style TargetType="{x:Type Grid}">
+                                					<Style.Triggers>
+                                						<DataTrigger Binding="{Binding SelectedItemUser}"
+                                							Value="{x:Null}">
+                                							<Setter Property="Visibility"
+                                								Value="Collapsed" />
+                                						</DataTrigger>
+                                					</Style.Triggers>
+                                				</Style>
+                                			</Grid.Style>
+                                			<CheckBox x:Name="cbIslock"
+                                				Margin="10,0,0,0"
+                                				HorizontalAlignment="Left"
+                                				VerticalAlignment="Center"
+                                				Content="Islock"
+                                				IsChecked="{Binding SelectedItemUser.IsCheckLocked}"
+                                				IsEnabled="{Binding ., ConverterParameter=CF100-03-03, Converter={StaticResource permissionConverter}}"
+                                				Visibility="{Binding SelectedItemUser.IsLocked, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}" />
+                                		</Grid>
+                                		<CheckBox x:Name="cbSetDefault"
+                                			Margin="0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Content="{DynamicResource UL_TextBlock_SetDefault}"
+                                			IsChecked="{Binding IsSetDefault}"
+                                			IsThreeState="False"
+                                			d:LayoutOverrides="Width" Grid.Column="1" />
+                                		<TextBlock x:Name="txtblExpiryDate"
+                                			Grid.Row="1"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource UL_TextBlock_ExpiryDate}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<DatePicker x:Name="dtpExpiryDate"
+                                			Grid.Row="1"
+                                			Grid.Column="1"
+                                			Margin="0,2,10,2"
+                                			HorizontalAlignment="Left"
+                                			SelectedDate="{Binding SelectedItemUser.ExpiredDate, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged}"
+                                			TabIndex="{Binding TabIndexControl}" Width="121" />
+                                		<TextBlock x:Name="txtblPassword"
+                                			Grid.Row="2"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource LG_TextBlock_Password}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<PasswordBox x:Name="psPassword"
+                                			Grid.Row="2"
+                                			Grid.Column="1"
+                                			Width="121"
+                                			Margin="0,2,10,2"
+                                			HorizontalAlignment="Left"
+                                			helper:PasswordHelper.BindPassword="True"
+                                			helper:PasswordHelper.BoundPassword="{Binding SelectedItemUser.ClonePassword, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                			IsEnabled="{Binding SelectedItemUser.IsEnablePassword, Mode=OneWay}"
+                                			MaxLength="{StaticResource PasswordMaxLength}" />
+                                		<TextBlock x:Name="txtblConfirm"
+                                			Grid.Row="3"
+                                			Margin="10,0,0,0"
+                                			HorizontalAlignment="Left"
+                                			VerticalAlignment="Center"
+                                			Style="{DynamicResource TextBlockNormal}"
+                                			Text="{DynamicResource UL_TextBlock_Confirm}"
+                                			TextWrapping="NoWrap"
+                                			d:LayoutOverrides="Width" />
+                                		<PasswordBox x:Name="psConfirm"
+                                			Grid.Row="3"
+                                			Grid.Column="1"
+                                			Width="121"
+                                			Margin="0,2,10,2"
+                                			HorizontalAlignment="Left"
+                                			helper:PasswordHelper.BindPassword="True"
+                                			helper:PasswordHelper.BoundPassword="{Binding SelectedItemUser.ConfirmPassword, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
+                                			IsEnabled="{Binding SelectedItemUser.IsEnablePassword, Mode=OneWay}"
+                                			MaxLength="{StaticResource PasswordMaxLength}" />
+                                	</Grid>
+                                </GroupBox>
+                                <GroupBox x:Name="gbUserRight"
+                                          Grid.Row="1"
+                                          Margin="0,10,0,0"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch">
+                                    <GroupBox.Header>
+                                        <TextBlock x:Name="txtblUserRight"
+                                                   FontSize="13.5"
+                                                   FontWeight="Bold"
+                                                   Style="{DynamicResource TextBlockValidationStyle}"
+                                                   Tag="{Binding IsCheckedAll, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"
+                                                   Text="{DynamicResource UL_TextBlock_UserRight}"
+                                                   TextWrapping="NoWrap" />
+                                    </GroupBox.Header>
+                                    <Grid x:Name="grdContentUserRight"
+                                          Margin="0,4,0,0"
+                                          d:LayoutOverrides="GridBox">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25" />
+                                            <RowDefinition Height="Auto"
+                                                           MinHeight="5.5" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock x:Name="txtblView"
+                                                   Margin="10,0,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Style="{DynamicResource TextBlockNormal}"
+                                                   Text="View"
+                                                   TextWrapping="NoWrap" />
+                                        <ComboBox x:Name="cmbView"
+                                                  Grid.Column="1"
+                                                  Width="120"
+                                                  Margin="45,2,0,2"
+                                                  HorizontalAlignment="Left"
+                                                  DisplayMemberPath="Text"
+                                                  IsEnabled="{Binding IsEnableUserRight}"
+                                                  ItemsSource="{x:Static helper:Common.GroupRight}"
+                                                  SelectedValue="{Binding SelectedGroupRight}"
+                                                  SelectedValuePath="Value" />
+                                        <dataGridControl:DataGridControl x:Name="dtgrdUserRight"
+                                                                         Grid.Row="2"
+                                                                         Margin="5,0,5,5"
+                                                                         AutoGenerateColumns="False"
+                                                                         CanUserAddRows="False"
+                                                                         CanUserDeleteRows="False"
+                                                                         IsEnabled="{Binding IsEnableUserRight}"
+                                                                         IsRollBackData="False"
+                                                                         ItemsSource="{Binding UserRightCollection}"
+                                                                         NumberOfItems="{Binding TotalUserRights}"
+                                                                         Style="{DynamicResource DatagridWithRowHeader}"
+                                                                         VisibilityAddItem="Collapsed">
+                                            <dataGridControl:DataGridControl.Columns>
+                                                <DataGridTextColumn Binding="{Binding Code}"
+                                                                    MinWidth="110"
+                                                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                                    dataGridControl:DataGridColumnExtensions.FieldName="Code"
+                                                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                                                    HeaderTemplate="{StaticResource CodeHeaderTemplate}"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTextColumn Binding="{Binding Name}"
+                                                                    Width="*"
+                                                                    dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                                                    dataGridControl:DataGridColumnExtensions.FieldName="Name"
+                                                                    dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                                                    dataGridControl:DataGridColumnExtensions.IsFilter="True"
+                                                                    HeaderTemplate="{StaticResource NameHeaderTemplate}"
+                                                                    IsReadOnly="True" />
+                                                <DataGridTemplateColumn CanUserSort="False"
+                                                                        CellStyle="{StaticResource DataGridCellEnableStyle}"
+                                                                        dataGridControl:DataGridColumnExtensions.IsFilter="False"
+                                                                        MinWidth="25">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                      Padding="0" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding DataContext.IsCheckedAll,ElementName=UserControl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                      Padding="0" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.HeaderTemplate>
+                                                </DataGridTemplateColumn>
+                                            </dataGridControl:DataGridControl.Columns>
+                                        </dataGridControl:DataGridControl>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </wpfControl:BusyIndicator>
+</UserControl>

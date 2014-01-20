@@ -1,0 +1,167 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:control="clr-namespace:CPC.Control"
+                    xmlns:converter="clr-namespace:CPC.Converter"
+                    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <converter:VisibilityConverter x:Key="visibilityConverter"></converter:VisibilityConverter>
+    <Style x:Key="myDataGridRowValidationStyle"
+           TargetType="{x:Type DataGridRow}">
+        <Setter Property="Tag"
+                Value="{Binding IsEditing,RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridCell}}}"></Setter>
+        <Setter Property="Template"
+                Value="{DynamicResource myDataGridRowControlTemplate}" />
+    </Style>
+    <ControlTemplate x:Key="myDataGridRowControlTemplate"
+                     TargetType="{x:Type DataGridRow}">
+        <Border x:Name="DGR_Border"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                SnapsToDevicePixels="True">
+            <SelectiveScrollingGrid>
+                <SelectiveScrollingGrid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </SelectiveScrollingGrid.ColumnDefinitions>
+                <SelectiveScrollingGrid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </SelectiveScrollingGrid.RowDefinitions>
+                <DataGridCellsPresenter Grid.Column="1"
+                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <DataGridDetailsPresenter Grid.Column="1"
+                                          Grid.Row="1"
+                                          Visibility="{TemplateBinding DetailsVisibility}">
+                    <SelectiveScrollingGrid.SelectiveScrollingOrientation>
+                        <Binding Path="AreRowDetailsFrozen"
+                                 RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}">
+                            <Binding.ConverterParameter>
+                                <SelectiveScrollingOrientation>Vertical</SelectiveScrollingOrientation>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </SelectiveScrollingGrid.SelectiveScrollingOrientation>
+                </DataGridDetailsPresenter>
+                <DataGridRowHeader Grid.RowSpan="2"
+                                   SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                   Style="{DynamicResource myDataGridRowHeaderValidationStyle}">
+                    <DataGridRowHeader.Visibility>
+                        <Binding Path="HeadersVisibility"
+                                 RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}">
+                            <Binding.ConverterParameter>
+                                <DataGridHeadersVisibility>Row</DataGridHeadersVisibility>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </DataGridRowHeader.Visibility>
+                </DataGridRowHeader>
+            </SelectiveScrollingGrid>
+        </Border>
+    </ControlTemplate>
+    <Style x:Key="myDataGridRowHeaderValidationStyle"
+           TargetType="{x:Type DataGridRowHeader}"
+           BasedOn="{StaticResource {x:Type DataGridRowHeader}}"
+           >
+        <Setter Property="Template"
+                Value="{DynamicResource myDataGridRowHeaderValidationControlTemplate}" />
+    </Style>
+    <ControlTemplate x:Key="myDataGridRowHeaderValidationControlTemplate"
+                     TargetType="{x:Type DataGridRowHeader}">
+        <Grid>
+            <Microsoft_Windows_Themes:DataGridHeaderBorder BorderBrush="{TemplateBinding BorderBrush}"
+                                                           BorderThickness="{TemplateBinding BorderThickness}"
+                                                           Background="{TemplateBinding Background}"
+                                                           IsPressed="{TemplateBinding IsPressed}"
+                                                           IsHovered="{TemplateBinding IsMouseOver}"
+                                                           IsSelected="{TemplateBinding IsRowSelected}"
+                                                           Orientation="Horizontal"
+                                                           Padding="{TemplateBinding Padding}"
+                                                           SeparatorBrush="{TemplateBinding SeparatorBrush}"
+                                                           SeparatorVisibility="{TemplateBinding SeparatorVisibility}"
+                                                           ThemeColor="NormalColor">
+                <StackPanel Orientation="Horizontal">
+                    <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      VerticalAlignment="Center" />
+                    <Image x:Name="imgValidation"
+                           Width="17"
+                           Source="/Image/delete.ico"
+                           Height="17"
+                           Stretch="UniformToFill">
+                        <Image.Visibility>
+                            <Binding Path="(Validation.HasError)"
+                                     RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type control:DataGridRowExt}}">
+                                <Binding.Converter>
+                                    <BooleanToVisibilityConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </Image.Visibility>
+                    </Image>
+                    <Image x:Name="imgEdit"
+                           Width="16"
+                           Source="/Image/new.ico"
+                           Height="16"
+                           Stretch="Fill">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityConverter}">
+                                <Binding Path="(Validation.HasError)"
+                                         RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type control:DataGridRowExt}}">
+                                    <Binding.Converter>
+                                        <BooleanToVisibilityConverter />
+                                    </Binding.Converter>
+                                </Binding>
+                                <Binding Path="IsDirty"
+                                         />
+                                <!--RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type converter:DataGridRowExt}}"-->
+                            </MultiBinding>
+                        </Image.Visibility>
+                    </Image>
+                </StackPanel>
+            </Microsoft_Windows_Themes:DataGridHeaderBorder>
+            <Thumb x:Name="PART_TopHeaderGripper"
+                   VerticalAlignment="Top">
+                <Thumb.Style>
+                    <Style TargetType="{x:Type Thumb}">
+                        <Setter Property="Height"
+                                Value="8" />
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                        <Setter Property="Cursor"
+                                Value="SizeNS" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            Padding="{TemplateBinding Padding}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Thumb.Style>
+            </Thumb>
+            <Thumb x:Name="PART_BottomHeaderGripper"
+                   VerticalAlignment="Bottom">
+                <Thumb.Style>
+                    <Style TargetType="{x:Type Thumb}">
+                        <Setter Property="Height"
+                                Value="8" />
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                        <Setter Property="Cursor"
+                                Value="SizeNS" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            Padding="{TemplateBinding Padding}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Thumb.Style>
+            </Thumb>
+        </Grid>
+    </ControlTemplate>
+    <!-- Resource dictionary entries should be defined here. -->
+</ResourceDictionary>

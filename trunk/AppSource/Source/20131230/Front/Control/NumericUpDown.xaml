@@ -1,0 +1,86 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="CPC.Control.NumericUpDown"
+             x:Name="UserControl"
+             d:DesignWidth="640"
+             d:DesignHeight="480"
+             Height="20">
+    <Border Width="Auto"
+            Height="Auto"
+            BorderThickness="1,1,1,1"
+            BorderBrush="#FF808080"
+            Background="#FFFFFFFF"
+            x:Name="brdNumeriUpDown">
+        <Grid x:Name="grdNumeriUpDown">
+            <TextBox x:Name="txtNumericUpDown"
+                     HorizontalAlignment="Stretch"
+                     TextWrapping="NoWrap"
+                     d:LayoutOverrides="GridBox"
+                     Padding="2,0,2,0"
+                     BorderThickness="0,0,0,0" />
+            <!--Style="{DynamicResource mybtnNumeriUpDown}"-->
+            <Button 
+                    FontSize="12"
+                    x:Name="btnUp"
+                    Width="12.926"
+                    HorizontalAlignment="Right"
+                    Height="9"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,0"
+					Style="{DynamicResource ButtonNumeriUpDown}">
+                <Path Fill="#FF000000"
+                      Stretch="Fill"
+                      Stroke="{x:Null}"
+                      Data="M2.8730677,4.2603637 L7.9153961,4.2636125 5.3706362,7.3848035 z"
+                      Width="5.042"
+                      Height="4"
+                      RenderTransformOrigin="0.5,0.5"
+                      x:Name="Up">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"
+                                            ScaleY="1" />
+                            <SkewTransform AngleX="0"
+                                           AngleY="0" />
+                            <RotateTransform Angle="180" />
+                            <TranslateTransform X="0"
+                                                Y="0" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+            <Button Style="{DynamicResource ButtonNumeriUpDown}"
+                    FontSize="12"
+                    x:Name="btnDown"
+                    Width="12.926"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Bottom"
+                    Height="9">
+                <Path Fill="#FF000000"
+                      Stretch="Fill"
+                      Stroke="{x:Null}"
+                      Data="M2.8730677,4.2603637 L7.9153961,4.2636125 5.3706362,7.3848035 z"
+                      Width="5.042"
+                      Height="4"
+                      RenderTransformOrigin="0.5,0.5"
+                      x:Name="Down">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"
+                                            ScaleY="1" />
+                            <SkewTransform AngleX="0"
+                                           AngleY="0" />
+                            <RotateTransform Angle="360" />
+                            <TranslateTransform X="0"
+                                                Y="0" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>

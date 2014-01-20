@@ -1,0 +1,204 @@
+﻿<Window x:Class="CPC.Control.KeyboardView"
+        Title="Wosk - Laptop"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:winforms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:local="clr-namespace:Wosk"
+        Height="200"
+        Width="522"
+        Loaded="TransparentWindow_Loaded"
+        Topmost="True"
+        MouseLeftButtonDown="Button_MouseLeftButtonDown"
+        ResizeMode="CanResizeWithGrip"
+        Background="#adde"
+        Closed="TransparentWindow_Closed"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        MinHeight="32"
+        MinWidth="116">
+
+
+    <Window.Resources>
+        <local:WoskViewModel x:Key="virtualKeyboard" />
+        <!-- used for reference to code-behind member, probably better way exists -->
+
+        <Style TargetType="{x:Type Button}"
+               x:Name="Key">
+            <Setter Property="Focusable"
+                    Value="false" />
+            <Setter Property="Background"
+                    Value="#ceee" />
+            <Setter Property="FontWeight"
+                    Value="Medium" />
+            <!--<Setter Property="FontSize" Value="15" />-->
+            <!--<Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />-->
+
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                BorderThickness="1"
+                Padding="4,2" 
+                BorderBrush="DarkGray" 
+                CornerRadius="3" 
+                Background="{TemplateBinding Background}">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+
+
+            <Style.Triggers>
+                <!--<EventTrigger RoutedEvent="MouseEnter" >
+                    <RemoveStoryboard></RemoveStoryboard>
+                </EventTrigger>-->
+                <Trigger Property="IsMouseOver"
+                         Value="true">
+                    <Setter Property="Background"
+                            Value="#ffff" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}"
+               x:Key="ShiftKey"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={StaticResource virtualKeyboard}, Path=Shift}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="#88ABCDFF" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}"
+               x:Key="CtrlKey"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={StaticResource virtualKeyboard}, Path=Ctrl}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="#88ABCDFF" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}"
+               x:Key="AltKey"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={StaticResource virtualKeyboard}, Path=Alt}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="#88ABCDFF" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}"
+               x:Key="WinKey"
+               BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={StaticResource virtualKeyboard}, Path=Win}"
+                             Value="True">
+                    <Setter Property="Background"
+                            Value="#88ABCDFF" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <ObjectDataProvider MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}"
+                            x:Key="EnumKeys">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="winforms:Keys" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <BitmapImage x:Key="MinimizeIcon"
+                     UriSource="Media/ArrangeWindowsMinimize.png" />
+        <BitmapImage x:Key="DockIcon"
+                     UriSource="Media/ArrangeWindowsDockBottom.png" />
+        <BitmapImage x:Key="MaximizeIcon"
+                     UriSource="Media/AppWindow.png" />
+        <BitmapImage x:Key="SettingsIcon"
+                     UriSource="Media/Settings.png" />
+
+
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Top"
+                    Height="32"
+                    FlowDirection="LeftToRight"
+                    HorizontalAlignment="Right">
+            <Menu FontSize="24"
+                  Name="menu1">
+                <MenuItem ToolTip="Menu">
+                    <MenuItem.Header>
+                        <Image Source="{StaticResource SettingsIcon}" />
+                    </MenuItem.Header>
+                    <MenuItem Header="Layout"
+                              Click="LayoutMenu_Click">
+                        <MenuItem Header="LaptopKeyboard.xaml" />
+                        <MenuItem Header="HexagonKeyboard.xaml" />
+                        <MenuItem Header="IPhoneKeyboard.xaml" />
+                        <MenuItem Header="NumericKeypad.xaml" />
+                    </MenuItem>
+                    <!--<MenuItem Header="Hide Panel" Click="MenuItem_Click"></MenuItem>-->
+                    <!--<MenuItem Header="Options" Click="MenuItem_Click"></MenuItem>-->
+                    <MenuItem Header="Exit"
+                              Click="MenuItem_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <Separator Width="10"
+                       Visibility="Hidden"></Separator>
+            <Button x:Name="btnMinimize"
+                    Background="AliceBlue"
+                    Click="btnMinimize_Click">
+                <Image Source="{StaticResource MinimizeIcon}" />
+            </Button>
+            <Separator Width="10"
+                       Visibility="Hidden"></Separator>
+            <Button x:Name="btnDock"
+                    Background="AliceBlue"
+                    Click="btnDock_Click">
+                <Image Source="{StaticResource DockIcon}" />
+            </Button>
+            <Separator Width="10"
+                       Visibility="Hidden"></Separator>
+            <Button x:Name="btnMaximize"
+                    Background="AliceBlue"
+                    Click="btnMaximize_Click">
+                <Image Source="{StaticResource MaximizeIcon}" />
+            </Button>
+        </StackPanel>
+        <Viewbox Stretch="Fill"
+                 DockPanel.Dock="Bottom">
+            <ContentControl x:Name="pnlMain"
+                            Visibility="Visible">
+                <ContentControl.Style>
+                    <Style TargetType="{x:Type ContentControl}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ContentControl}">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+
+                </ContentControl.Style>
+            </ContentControl>
+        </Viewbox>
+    </DockPanel>
+</Window>
+
