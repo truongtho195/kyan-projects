@@ -1,0 +1,237 @@
+﻿<UserControl x:Class="CPC.POS.View.EmployeesListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Anno="http://schemas.microsoft.com/expression/blend/extensions/annotations/2008"
+             xmlns:behavior="clr-namespace:CPC.Toolkit.Behavior"
+             xmlns:command="clr-namespace:CPC.Toolkit.Command"
+             xmlns:control="clr-namespace:CPC.Control"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dataGridControl="clr-namespace:CPCToolkitExt.DataGridControl;assembly=CPCToolkitExt"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wpfToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+             x:Name="employeeListView"
+             Width="770"
+             Height="500"
+             Background="{x:Null}"
+             mc:Ignorable="d Anno">
+    <Grid x:Name="grdEmployeesList">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Border x:Name="brdContentEmployeesList"
+                Margin="15,20,15,15"
+                Background="{DynamicResource TabControlBackground}"
+                BorderBrush="{DynamicResource TabControlBorder}"
+                BorderThickness="1">
+            <Grid x:Name="grdContentEmployeesList"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <dataGridControl:DataGridControl x:Name="dtgrdLeftEmployeeList"
+                                                 Grid.Row="1"
+                                                 Margin="0,0.2,10,0"
+                                                 AutoGenerateColumns="False"
+                                                 CanUserAddRows="False"
+                                                 DataFilterResult="{Binding LeftFilterResult, Mode=OneWayToSource}"
+                                                 DisplayItems="{Binding NumberOfDisplayItems}"
+                                                 IsFilterDataColunm="True"
+                                                 IsPaging="False"
+                                                 IsReadOnly="True"
+                                                 IsRollBackData="False"
+                                                 ItemsSource="{Binding LeftEmployeeCollection, Mode=TwoWay}"
+                                                 NumberOfItems="{Binding TotalLeft}"
+                                                 Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                                 VirtualizingStackPanel.IsVirtualizing="True"
+                                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
+                    <dataGridControl:DataGridControl.Columns>
+                        <DataGridTextColumn Header="Employee #"
+                                            Binding="{Binding GuestNo}"
+                                            Width="90"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="GuestNo"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTextColumn Header="First Name"
+                                            Binding="{Binding FirstName}"
+                                            Width="*"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="FirstName"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTextColumn Header="Last Name"
+                                            Binding="{Binding LastName}"
+                                            Width="*"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="LastName"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTemplateColumn Width="25"
+                                                dataGridControl:DataGridColumnExtensions.IsFilter="False">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding DataContext.IsCheckedAllLeft, ElementName=employeeListView}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </dataGridControl:DataGridControl.Columns>
+                </dataGridControl:DataGridControl>
+                <StackPanel x:Name="stkpbtnEmployeeList"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <Button x:Name="btnNext"
+                            Command="{Binding MoveCommand}"
+                            CommandParameter="{Binding SelectedItems, ElementName=dtgrdLeftEmployeeList}"
+                            Width="25"
+                            Height="25"
+                            Margin="0,0,0,0"
+                            Style="{DynamicResource ButtonSystem}">
+                        <Rectangle x:Name="imgNext"
+                                   Width="15"
+                                   Height="15"
+                                   Fill="{DynamicResource PlayArrow}"
+                                   StrokeThickness="0" />
+                    </Button>
+                    <Button x:Name="btnBack"
+                            Command="{Binding BackCommand}"
+                            CommandParameter="{Binding SelectedItems, ElementName=dtgrdRightEmployeeList}"
+                            Width="25"
+                            Height="25"
+                            Style="{DynamicResource ButtonSystem}">
+                        <Rectangle x:Name="imgBack"
+                                   Width="15"
+                                   Height="15"
+                                   Fill="{DynamicResource RevisePlayArrow}"
+                                   StrokeThickness="0" />
+                    </Button>
+                </StackPanel>
+                <dataGridControl:DataGridControl x:Name="dtgrdRightEmployeeList"
+                                                 Grid.Row="1"
+                                                 Grid.Column="2"
+                                                 Margin="10,0.2,0,0"
+                                                 AutoGenerateColumns="False"
+                                                 CanUserAddRows="False"
+                                                 DataFilterResult="{Binding RightFilterResult, Mode=OneWayToSource}"
+                                                 DisplayItems="{Binding NumberOfDisplayItems}"
+                                                 IsFilterDataColunm="True"
+                                                 IsReadOnly="True"
+                                                 IsRollBackData="False"
+                                                 ItemsSource="{Binding RightEmployeeCollection}"
+                                                 NumberOfItems="{Binding TotalRight}"
+                                                 Style="{DynamicResource DataGridFilterWithRowHeaderStyle}"
+                                                 VirtualizingStackPanel.IsVirtualizing="True"
+                                                 VirtualizingStackPanel.VirtualizationMode="Recycling">
+                    <dataGridControl:DataGridControl.Columns>
+                        <DataGridTextColumn Header="Employee #"
+                                            Binding="{Binding GuestNo}"
+                                            Width="90"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="GuestNo"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTextColumn Header="First Name"
+                                            Binding="{Binding FirstName}"
+                                            Width="*"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="FirstName"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTextColumn Header="Last Name"
+                                            Binding="{Binding LastName}"
+                                            Width="*"
+                                            dataGridControl:DataGridColumnExtensions.DisplayType="TextBox"
+                                            dataGridControl:DataGridColumnExtensions.FieldName="LastName"
+                                            dataGridControl:DataGridColumnExtensions.FilterType="Text"
+                                            dataGridControl:DataGridColumnExtensions.IsFilter="True" />
+                        <DataGridTemplateColumn Width="25"
+                                                dataGridControl:DataGridColumnExtensions.IsFilter="False">
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding DataContext.IsCheckedAllRight, ElementName=employeeListView}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </dataGridControl:DataGridControl.Columns>
+                </dataGridControl:DataGridControl>
+            </Grid>
+        </Border>
+        <Rectangle x:Name="Line"
+                   Grid.Row="1"
+                   Height="1"
+                   Margin="2,0,2,0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Top"
+                   Fill="White" />
+        <StackPanel x:Name="stkpBtn"
+                    Grid.Row="1"
+                    Height="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button x:Name="btnOK"
+                    Command="{Binding OkCommand}"
+                    Width="80"
+                    Height="28"
+                    IsDefault="True">
+                <StackPanel x:Name="stkpBtnOK"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgOK"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource OK}" />
+                    <TextBlock x:Name="txtblOK"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Ok}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="btnCancel"
+                    Command="{Binding CancelCommand}"
+                    Width="80"
+                    Height="28"
+                    Margin="10,0,0,0"
+                    IsCancel="True">
+                <StackPanel x:Name="stkpBtnCancel"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <Rectangle x:Name="imgCancel"
+                               Width="20"
+                               Height="20"
+                               Fill="{DynamicResource Cancel}" />
+                    <TextBlock x:Name="txtblExit"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource ButtonTextBlock}"
+                               Text="{DynamicResource Button_Cancel}"
+                               TextWrapping="NoWrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

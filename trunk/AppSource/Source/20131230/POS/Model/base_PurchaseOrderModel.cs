@@ -49,11 +49,7 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_PurchaseOrder base_PurchaseOrder
-        {
-            get;
-            private set;
-        }
+        public base_PurchaseOrder base_PurchaseOrder { get; private set; }
 
         #endregion
 
@@ -66,10 +62,7 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get
-            {
-                return this._id;
-            }
+            get { return this._id; }
             set
             {
                 if (this._id != value)
@@ -89,10 +82,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string PurchaseOrderNo
         {
-            get
-            {
-                return this._purchaseOrderNo;
-            }
+            get { return this._purchaseOrderNo; }
             set
             {
                 if (this._purchaseOrderNo != value)
@@ -112,10 +102,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string VendorCode
         {
-            get
-            {
-                return this._vendorCode;
-            }
+            get { return this._vendorCode; }
             set
             {
                 if (this._vendorCode != value)
@@ -135,10 +122,7 @@ namespace CPC.POS.Model
         /// </summary>
         public short Status
         {
-            get
-            {
-                return this._status;
-            }
+            get { return this._status; }
             set
             {
                 if (this._status != value)
@@ -158,10 +142,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string ShipAddress
         {
-            get
-            {
-                return this._shipAddress;
-            }
+            get { return this._shipAddress; }
             set
             {
                 if (this._shipAddress != value)
@@ -181,10 +162,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.DateTime PurchasedDate
         {
-            get
-            {
-                return this._purchasedDate;
-            }
+            get { return this._purchasedDate; }
             set
             {
                 if (this._purchasedDate != value)
@@ -204,10 +182,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TermDiscountPercent
         {
-            get
-            {
-                return this._termDiscountPercent;
-            }
+            get { return this._termDiscountPercent; }
             set
             {
                 if (this._termDiscountPercent != value)
@@ -227,10 +202,7 @@ namespace CPC.POS.Model
         /// </summary>
         public short TermNetDue
         {
-            get
-            {
-                return this._termNetDue;
-            }
+            get { return this._termNetDue; }
             set
             {
                 if (this._termNetDue != value)
@@ -250,10 +222,7 @@ namespace CPC.POS.Model
         /// </summary>
         public short TermPaidWithinDay
         {
-            get
-            {
-                return this._termPaidWithinDay;
-            }
+            get { return this._termPaidWithinDay; }
             set
             {
                 if (this._termPaidWithinDay != value)
@@ -273,10 +242,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string PaymentTermDescription
         {
-            get
-            {
-                return this._paymentTermDescription;
-            }
+            get { return this._paymentTermDescription; }
             set
             {
                 if (this._paymentTermDescription != value)
@@ -296,10 +262,7 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> PaymentDueDate
         {
-            get
-            {
-                return this._paymentDueDate;
-            }
+            get { return this._paymentDueDate; }
             set
             {
                 if (this._paymentDueDate != value)
@@ -319,10 +282,7 @@ namespace CPC.POS.Model
         /// </summary>
         public int PaymentMethodId
         {
-            get
-            {
-                return this._paymentMethodId;
-            }
+            get { return this._paymentMethodId; }
             set
             {
                 if (this._paymentMethodId != value)
@@ -342,10 +302,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Remark
         {
-            get
-            {
-                return this._remark;
-            }
+            get { return this._remark; }
             set
             {
                 if (this._remark != value)
@@ -365,10 +322,7 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> ShipDate
         {
-            get
-            {
-                return this._shipDate;
-            }
+            get { return this._shipDate; }
             set
             {
                 if (this._shipDate != value)
@@ -388,10 +342,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal SubTotal
         {
-            get
-            {
-                return this._subTotal;
-            }
+            get { return this._subTotal; }
             set
             {
                 if (this._subTotal != value)
@@ -411,10 +362,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountPercent
         {
-            get
-            {
-                return this._discountPercent;
-            }
+            get { return this._discountPercent; }
             set
             {
                 if (this._discountPercent != value)
@@ -434,10 +382,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountAmount
         {
-            get
-            {
-                return this._discountAmount;
-            }
+            get { return this._discountAmount; }
             set
             {
                 if (this._discountAmount != value)
@@ -457,10 +402,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Freight
         {
-            get
-            {
-                return this._freight;
-            }
+            get { return this._freight; }
             set
             {
                 if (this._freight != value)
@@ -480,10 +422,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Fee
         {
-            get
-            {
-                return this._fee;
-            }
+            get { return this._fee; }
             set
             {
                 if (this._fee != value)
@@ -503,10 +442,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Total
         {
-            get
-            {
-                return this._total;
-            }
+            get { return this._total; }
             set
             {
                 if (this._total != value)
@@ -526,10 +462,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Paid
         {
-            get
-            {
-                return this._paid;
-            }
+            get { return this._paid; }
             set
             {
                 if (this._paid != value)
@@ -549,10 +482,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Balance
         {
-            get
-            {
-                return this._balance;
-            }
+            get { return this._balance; }
             set
             {
                 if (this._balance != value)
@@ -572,10 +502,7 @@ namespace CPC.POS.Model
         /// </summary>
         public int ItemCount
         {
-            get
-            {
-                return this._itemCount;
-            }
+            get { return this._itemCount; }
             set
             {
                 if (this._itemCount != value)
@@ -595,10 +522,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal QtyOrdered
         {
-            get
-            {
-                return this._qtyOrdered;
-            }
+            get { return this._qtyOrdered; }
             set
             {
                 if (this._qtyOrdered != value)
@@ -618,10 +542,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal QtyDue
         {
-            get
-            {
-                return this._qtyDue;
-            }
+            get { return this._qtyDue; }
             set
             {
                 if (this._qtyDue != value)
@@ -641,10 +562,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal QtyReceived
         {
-            get
-            {
-                return this._qtyReceived;
-            }
+            get { return this._qtyReceived; }
             set
             {
                 if (this._qtyReceived != value)
@@ -664,10 +582,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal UnFilled
         {
-            get
-            {
-                return this._unFilled;
-            }
+            get { return this._unFilled; }
             set
             {
                 if (this._unFilled != value)
@@ -687,10 +602,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get
-            {
-                return this._userCreated;
-            }
+            get { return this._userCreated; }
             set
             {
                 if (this._userCreated != value)
@@ -710,10 +622,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.DateTime DateCreated
         {
-            get
-            {
-                return this._dateCreated;
-            }
+            get { return this._dateCreated; }
             set
             {
                 if (this._dateCreated != value)
@@ -733,10 +642,7 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> DateUpdate
         {
-            get
-            {
-                return this._dateUpdate;
-            }
+            get { return this._dateUpdate; }
             set
             {
                 if (this._dateUpdate != value)
@@ -756,10 +662,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserUpdated
         {
-            get
-            {
-                return this._userUpdated;
-            }
+            get { return this._userUpdated; }
             set
             {
                 if (this._userUpdated != value)
@@ -779,10 +682,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.Guid Resource
         {
-            get
-            {
-                return this._resource;
-            }
+            get { return this._resource; }
             set
             {
                 if (this._resource != value)
@@ -802,10 +702,7 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<System.DateTime> CancelDate
         {
-            get
-            {
-                return this._cancelDate;
-            }
+            get { return this._cancelDate; }
             set
             {
                 if (this._cancelDate != value)
@@ -825,10 +722,7 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsFullWorkflow
         {
-            get
-            {
-                return this._isFullWorkflow;
-            }
+            get { return this._isFullWorkflow; }
             set
             {
                 if (this._isFullWorkflow != value)
@@ -848,10 +742,7 @@ namespace CPC.POS.Model
         /// </summary>
         public int StoreCode
         {
-            get
-            {
-                return this._storeCode;
-            }
+            get { return this._storeCode; }
             set
             {
                 if (this._storeCode != value)
@@ -871,10 +762,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string RecRemark
         {
-            get
-            {
-                return this._recRemark;
-            }
+            get { return this._recRemark; }
             set
             {
                 if (this._recRemark != value)
@@ -894,10 +782,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string PaymentName
         {
-            get
-            {
-                return this._paymentName;
-            }
+            get { return this._paymentName; }
             set
             {
                 if (this._paymentName != value)
@@ -917,10 +802,7 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsPurge
         {
-            get
-            {
-                return this._isPurge;
-            }
+            get { return this._isPurge; }
             set
             {
                 if (this._isPurge != value)
@@ -940,10 +822,7 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsLocked
         {
-            get
-            {
-                return this._isLocked;
-            }
+            get { return this._isLocked; }
             set
             {
                 if (this._isLocked != value)
@@ -963,10 +842,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string VendorResource
         {
-            get
-            {
-                return this._vendorResource;
-            }
+            get { return this._vendorResource; }
             set
             {
                 if (this._vendorResource != value)
@@ -986,10 +862,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Shift
         {
-            get
-            {
-                return this._shift;
-            }
+            get { return this._shift; }
             set
             {
                 if (this._shift != value)
@@ -1009,10 +882,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string POCard
         {
-            get
-            {
-                return this._pOCard;
-            }
+            get { return this._pOCard; }
             set
             {
                 if (this._pOCard != value)
@@ -1032,10 +902,7 @@ namespace CPC.POS.Model
         /// </summary>
         public byte[] POCardImg
         {
-            get
-            {
-                return this._pOCardImg;
-            }
+            get { return this._pOCardImg; }
             set
             {
                 if (this._pOCardImg != value)
@@ -1055,10 +922,7 @@ namespace CPC.POS.Model
         /// </summary>
         public bool IsReturned
         {
-            get
-            {
-                return this._isReturned;
-            }
+            get { return this._isReturned; }
             set
             {
                 if (this._isReturned != value)
@@ -1078,10 +942,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TaxAmount
         {
-            get
-            {
-                return this._taxAmount;
-            }
+            get { return this._taxAmount; }
             set
             {
                 if (this._taxAmount != value)

@@ -49,11 +49,7 @@ namespace CPC.POS.Model
 
         #region Entity Properties
 
-        public base_ResourcePayment base_ResourcePayment
-        {
-            get;
-            private set;
-        }
+        public base_ResourcePayment base_ResourcePayment { get; private set; }
 
         #endregion
 
@@ -66,10 +62,7 @@ namespace CPC.POS.Model
         /// </summary>
         public long Id
         {
-            get
-            {
-                return this._id;
-            }
+            get { return this._id; }
             set
             {
                 if (this._id != value)
@@ -89,10 +82,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string DocumentResource
         {
-            get
-            {
-                return this._documentResource;
-            }
+            get { return this._documentResource; }
             set
             {
                 if (this._documentResource != value)
@@ -112,10 +102,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string DocumentNo
         {
-            get
-            {
-                return this._documentNo;
-            }
+            get { return this._documentNo; }
             set
             {
                 if (this._documentNo != value)
@@ -135,10 +122,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TotalAmount
         {
-            get
-            {
-                return this._totalAmount;
-            }
+            get { return this._totalAmount; }
             set
             {
                 if (this._totalAmount != value)
@@ -158,10 +142,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TotalPaid
         {
-            get
-            {
-                return this._totalPaid;
-            }
+            get { return this._totalPaid; }
             set
             {
                 if (this._totalPaid != value)
@@ -181,10 +162,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Balance
         {
-            get
-            {
-                return this._balance;
-            }
+            get { return this._balance; }
             set
             {
                 if (this._balance != value)
@@ -204,10 +182,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal Change
         {
-            get
-            {
-                return this._change;
-            }
+            get { return this._change; }
             set
             {
                 if (this._change != value)
@@ -227,10 +202,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.DateTime DateCreated
         {
-            get
-            {
-                return this._dateCreated;
-            }
+            get { return this._dateCreated; }
             set
             {
                 if (this._dateCreated != value)
@@ -250,10 +222,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string UserCreated
         {
-            get
-            {
-                return this._userCreated;
-            }
+            get { return this._userCreated; }
             set
             {
                 if (this._userCreated != value)
@@ -273,10 +242,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Remark
         {
-            get
-            {
-                return this._remark;
-            }
+            get { return this._remark; }
             set
             {
                 if (this._remark != value)
@@ -296,10 +262,7 @@ namespace CPC.POS.Model
         /// </summary>
         public System.Guid Resource
         {
-            get
-            {
-                return this._resource;
-            }
+            get { return this._resource; }
             set
             {
                 if (this._resource != value)
@@ -319,10 +282,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal SubTotal
         {
-            get
-            {
-                return this._subTotal;
-            }
+            get { return this._subTotal; }
             set
             {
                 if (this._subTotal != value)
@@ -342,10 +302,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountPercent
         {
-            get
-            {
-                return this._discountPercent;
-            }
+            get { return this._discountPercent; }
             set
             {
                 if (this._discountPercent != value)
@@ -365,10 +322,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal DiscountAmount
         {
-            get
-            {
-                return this._discountAmount;
-            }
+            get { return this._discountAmount; }
             set
             {
                 if (this._discountAmount != value)
@@ -388,10 +342,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Mark
         {
-            get
-            {
-                return this._mark;
-            }
+            get { return this._mark; }
             set
             {
                 if (this._mark != value)
@@ -411,10 +362,7 @@ namespace CPC.POS.Model
         /// </summary>
         public Nullable<bool> IsDeposit
         {
-            get
-            {
-                return this._isDeposit;
-            }
+            get { return this._isDeposit; }
             set
             {
                 if (this._isDeposit != value)
@@ -434,10 +382,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string TaxCode
         {
-            get
-            {
-                return this._taxCode;
-            }
+            get { return this._taxCode; }
             set
             {
                 if (this._taxCode != value)
@@ -457,10 +402,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal TaxAmount
         {
-            get
-            {
-                return this._taxAmount;
-            }
+            get { return this._taxAmount; }
             set
             {
                 if (this._taxAmount != value)
@@ -480,10 +422,7 @@ namespace CPC.POS.Model
         /// </summary>
         public decimal LastRewardAmount
         {
-            get
-            {
-                return this._lastRewardAmount;
-            }
+            get { return this._lastRewardAmount; }
             set
             {
                 if (this._lastRewardAmount != value)
@@ -503,10 +442,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Cashier
         {
-            get
-            {
-                return this._cashier;
-            }
+            get { return this._cashier; }
             set
             {
                 if (this._cashier != value)
@@ -526,10 +462,7 @@ namespace CPC.POS.Model
         /// </summary>
         public string Shift
         {
-            get
-            {
-                return this._shift;
-            }
+            get { return this._shift; }
             set
             {
                 if (this._shift != value)

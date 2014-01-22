@@ -336,7 +336,7 @@
                                     Margin="0"
                                     Command="{Binding NewCommand}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="New Item">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -357,7 +357,7 @@
                                     Height="40"
                                     Command="{Binding SaveCommand}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="Save Current Item">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -379,7 +379,7 @@
                                     Width="40"
                                     Height="40"
                                     Command="{Binding DeleteCommand}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}" ToolTip="Delete Current Item">
                                 <StackPanel x:Name="stkpBtnDelete"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">

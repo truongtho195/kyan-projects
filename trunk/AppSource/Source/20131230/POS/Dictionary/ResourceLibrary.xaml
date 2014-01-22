@@ -35,6 +35,7 @@
         <ResourceDictionary Source="NamedStyle/ComboBoxControlStyle.xaml" />
         <ResourceDictionary Source="NamedStyle/AutoCompleteControlStyle.xaml" />
         <ResourceDictionary Source="BaseControlStyle/ListBoxStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyle/ToolTipStyle.xaml"/>
         <!--<ResourceDictionary Source="CustomControlStyle/DataGridValidationStyle.xaml" />-->
         <!--<ResourceDictionary Source="Control\ImageList\Themes\Generic.xaml" />-->
         

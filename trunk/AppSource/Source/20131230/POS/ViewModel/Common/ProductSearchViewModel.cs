@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Windows;
 using System.Windows.Input;
 using CPC.Helper;
 using CPC.POS.Database;
@@ -59,6 +58,7 @@ namespace CPC.POS.ViewModel
 
         public ProductSearchViewModel(bool isIncludeCoupon = true, bool isIncludeGroupType = true, bool isIncludeServiceType = true, bool isIncludeInsuranceType = true, bool? isIncludeLayaway = null, bool? isIncludeOpenItem = null, int storeCode = -1)
         {
+
             _backgroundWorker.WorkerReportsProgress = true;
             _backgroundWorker.DoWork += new DoWorkEventHandler(WorkerDoWork);
             _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
@@ -107,6 +107,7 @@ namespace CPC.POS.ViewModel
                 }
             }
         }
+
 
         #endregion
 
@@ -258,7 +259,7 @@ namespace CPC.POS.ViewModel
 
         #region ProductCollection
 
-        private CollectionBase<base_ProductModel> _productCollection;
+        private CollectionBase<base_ProductModel> _productCollection = new CollectionBase<base_ProductModel>();
         /// <summary>
         /// Gets ProductCollection.
         /// </summary>
@@ -326,6 +327,9 @@ namespace CPC.POS.ViewModel
         }
 
         #endregion
+
+
+
 
         #endregion
 
@@ -492,6 +496,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SearchProduct()
         {
+            // Initialize ProductCollection.
+            ProductCollection.Clear();
+            //Reset Counter
+            ProductTotal = 0;
+
+            CreatePredicate("SearchProduct");
+
+            //Search Coupon First
+            if (_isIncludeCoupon)
+            {
+                IQueryable<base_ProductModel> productOutSideList = _productCollectionOutSide.AsQueryable().Where(_predicateModel);
+                _productOutSideCount = productOutSideList.Count();
+                foreach (base_ProductModel productExt in productOutSideList)
+                {
+                    _productCollection.Add(productExt);
+                }
+                _productOutSideCount = productOutSideList.Count();
+                ProductTotal = _productOutSideCount;
+            }
             _backgroundWorker.RunWorkerAsync("SearchProduct");
         }
 
@@ -519,100 +542,15 @@ namespace CPC.POS.ViewModel
             try
             {
                 base_ProductRepository productRepository = new base_ProductRepository();
-                base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
-                int storeCode = Define.StoreCode;
-                short groupType = (short)ItemTypes.Group;
-                short serviceType = (short)ItemTypes.Services;
-                short insuranceType = (short)ItemTypes.Insurance;
 
-                if (argument == "SearchProduct")
-                {
-                    _predicate = PredicateBuilder.True<base_Product>();
-                    _predicateModel = PredicateBuilder.True<base_ProductModel>();
-                    _predicate = _predicate.And(x => x.IsPurge != true);
-                    if (!_isIncludeGroupType)
-                    {
-                        _predicate = _predicate.And(x => x.ItemTypeId != groupType);
-                    }
-                    if (!_isIncludeServiceType)
-                    {
-                        _predicate = _predicate.And(x => x.ItemTypeId != serviceType);
-                    }
-                    if (!_isIncludeInsuranceType)
-                    {
-                        _predicate = _predicate.And(x => x.ItemTypeId != insuranceType);
-                    }
-                    if (_isIncludeLayaway.HasValue && _isIncludeLayaway.Value)
-                    {
-                        _predicate = _predicate.And(x => x.IsLayaway == _isIncludeLayaway.Value);
-                    }
-                    if (_isIncludeOpenItem.HasValue)
-                    {
-                        _predicate = _predicate.And(x => x.IsOpenItem == _isIncludeOpenItem.Value);
-                    }
-                    if (_storeCode == -1)
-                    {
-                        // Gets with Define.StoreCode.
-                        if (storeCode != 0)
-                        {
-                            _predicate = _predicate.And(x => x.base_ProductStore.Any(y => y.StoreCode == storeCode));
-                        }
-                    }
-                    else
-                    {
-                        // Gets with parameter StoreCode.
-                        _predicate = _predicate.And(x => x.base_ProductStore.Any(y => y.StoreCode == _storeCode));
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(_code))
-                    {
-                        _predicate = _predicate.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
-                        _predicateModel = _predicateModel.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
-                    }
-                    if (!string.IsNullOrWhiteSpace(_productName))
-                    {
-                        _predicate = _predicate.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
-                        _predicateModel = _predicateModel.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
-                    }
-                    if (!string.IsNullOrWhiteSpace(_category))
-                    {
-                        short categoryID = (short)ProductDeparmentLevel.Category;
-
-                        IEnumerable<int> depIdList = departmentRepository.GetAll(x =>
-                            x.LevelId == categoryID && x.Name != null && x.Name.ToLower().Contains(_category.ToLower())).Select(x => x.Id);
-                        _predicate = _predicate.And(x => depIdList.Contains(x.ProductCategoryId));
-                        _predicateModel = _predicateModel.And(x => depIdList.Contains(x.ProductCategoryId));
-                    }
-                    if (!string.IsNullOrWhiteSpace(_attributeSize))
-                    {
-                        _predicate = _predicate.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
-                            (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
-                        _predicateModel = _predicateModel.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
-                            (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
-                    }
-                    if (!string.IsNullOrWhiteSpace(_partNumber))
-                    {
-                        _predicate = _predicate.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
-                        _predicateModel = _predicateModel.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
-                    }
-                    if (!string.IsNullOrWhiteSpace(_barcode))
-                    {
-                        _predicate = _predicate.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
-                        _predicateModel = _predicateModel.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
-                    }
-
-                    // Initialize ProductCollection.
-                    ProductCollection = new CollectionBase<base_ProductModel>();
-                    _productOutSideCount = 0;
-                    ProductTotal = productRepository.GetIQueryable(_predicate).Count();
-                }
+                ProductTotal = productRepository.GetIQueryable(_predicate).Count();
 
                 IList<base_Product> products = productRepository.GetRange(_productCollection.Count - _productOutSideCount, NumberOfDisplayItems, _productColumnSort, _predicate);
                 foreach (base_Product product in products)
                 {
                     if (productRepository.Refresh(product) != null)
                     {
-                        _backgroundWorker.ReportProgress(0, product);
+                        _backgroundWorker.ReportProgress(0, new base_ProductModel(product));
                     }
                 }
             }
@@ -631,11 +569,11 @@ namespace CPC.POS.ViewModel
         /// Gets a product.
         /// </summary>
         /// <param name="product">product to gets.</param>
-        private void GetProduct(base_Product product)
+        private void GetProduct(base_ProductModel productModel)
         {
-            if (_productCollection.FirstOrDefault(x => x.Id == product.Id) == null)
+            if (!_productCollection.Any(x => x.Resource == productModel.Resource))
             {
-                _productCollection.Add(new base_ProductModel(product));
+                _productCollection.Add(productModel);
             }
         }
 
@@ -667,6 +605,98 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        /// <summary>
+        /// Create Predicate for search condition
+        /// </summary>
+        /// <param name="argument"></param>
+        private void CreatePredicate(string argument)
+        {
+            base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
+            int storeCode = Define.StoreCode;
+            short groupType = (short)ItemTypes.Group;
+            short serviceType = (short)ItemTypes.Services;
+            short insuranceType = (short)ItemTypes.Insurance;
+
+            if (argument == "SearchProduct")
+            {
+                _predicate = PredicateBuilder.True<base_Product>();
+                _predicateModel = PredicateBuilder.True<base_ProductModel>();
+                _predicate = _predicate.And(x => x.IsPurge != true);
+                if (!_isIncludeGroupType)
+                {
+                    _predicate = _predicate.And(x => x.ItemTypeId != groupType);
+                }
+                if (!_isIncludeServiceType)
+                {
+                    _predicate = _predicate.And(x => x.ItemTypeId != serviceType);
+                }
+                if (!_isIncludeInsuranceType)
+                {
+                    _predicate = _predicate.And(x => x.ItemTypeId != insuranceType);
+                }
+                if (_isIncludeLayaway.HasValue && _isIncludeLayaway.Value)
+                {
+                    _predicate = _predicate.And(x => x.IsLayaway == _isIncludeLayaway.Value);
+                }
+                if (_isIncludeOpenItem.HasValue)
+                {
+                    _predicate = _predicate.And(x => x.IsOpenItem == _isIncludeOpenItem.Value);
+                }
+                if (_storeCode == -1)
+                {
+                    // Gets with Define.StoreCode.
+                    if (storeCode != 0)
+                    {
+                        _predicate = _predicate.And(x => x.base_ProductStore.Any(y => y.StoreCode == storeCode));
+                    }
+                }
+                else
+                {
+                    // Gets with parameter StoreCode.
+                    _predicate = _predicate.And(x => x.base_ProductStore.Any(y => y.StoreCode == _storeCode));
+                }
+
+                if (!string.IsNullOrWhiteSpace(_code))
+                {
+                    _predicate = _predicate.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
+                    _predicateModel = _predicateModel.And(x => x.Code != null && x.Code.ToLower().Contains(_code.ToLower()));
+                }
+                if (!string.IsNullOrWhiteSpace(_productName))
+                {
+                    _predicate = _predicate.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
+                    _predicateModel = _predicateModel.And(x => x.ProductName != null && x.ProductName.ToLower().Contains(_productName.ToLower()));
+                }
+                if (!string.IsNullOrWhiteSpace(_category))
+                {
+                    short categoryID = (short)ProductDeparmentLevel.Category;
+
+                    IEnumerable<int> depIdList = departmentRepository.GetAll(x =>
+                        x.LevelId == categoryID && x.Name != null && x.Name.ToLower().Contains(_category.ToLower())).Select(x => x.Id);
+                    _predicate = _predicate.And(x => depIdList.Contains(x.ProductCategoryId));
+                    _predicateModel = _predicateModel.And(x => depIdList.Contains(x.ProductCategoryId));
+                }
+                if (!string.IsNullOrWhiteSpace(_attributeSize))
+                {
+                    _predicate = _predicate.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
+                        (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
+                    _predicateModel = _predicateModel.And(x => (x.Attribute != null && x.Attribute.ToLower().Contains(_attributeSize.ToLower())) ||
+                        (x.Size != null && x.Size.ToLower().Contains(_attributeSize.ToLower())));
+                }
+                if (!string.IsNullOrWhiteSpace(_partNumber))
+                {
+                    _predicate = _predicate.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
+                    _predicateModel = _predicateModel.And(x => x.PartNumber != null && x.PartNumber.ToLower().Contains(_partNumber.ToLower()));
+                }
+                if (!string.IsNullOrWhiteSpace(_barcode))
+                {
+                    _predicate = _predicate.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
+                    _predicateModel = _predicateModel.And(x => x.Barcode != null && x.Barcode.ToLower().Contains(_barcode.ToLower()));
+                }
+
+
+            }
+        }
+
         #endregion
 
         #region Events
@@ -678,27 +708,19 @@ namespace CPC.POS.ViewModel
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
             IsBusy = true;
+
             e.Result = e.Argument.ToString();
+
             GetProducts(e.Argument.ToString());
         }
 
         private void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            GetProduct(e.UserState as base_Product);
+            GetProduct(e.UserState as base_ProductModel);
         }
 
         private void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (_isIncludeCoupon && e.Result.ToString() == "SearchProduct")
-            {
-                IQueryable<base_ProductModel> productOutSideList = _productCollectionOutSide.AsQueryable().Where(_predicateModel);
-                _productOutSideCount = productOutSideList.Count();
-                ProductTotal += _productOutSideCount;
-                foreach (base_ProductModel product in productOutSideList)
-                {
-                    _productCollection.Add(product);
-                }
-            }
 
             IsBusy = false;
         }

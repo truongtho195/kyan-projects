@@ -254,32 +254,40 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnOpenPaymentCardViewCommandExecute(object param)
         {
-            if (SelectedPaymentDetail != null && !SelectedPaymentDetail.EnableRow)//is Card
+            try
             {
-                if (SelectedPaymentDetail.PaymentMethodId == (short)PaymentMethod.CreditCard)
+                if (SelectedPaymentDetail != null && !SelectedPaymentDetail.EnableRow)//is Card
                 {
-                    decimal balance = Balance - PaymentMethodCollection.Where(x => x.CardType == 0).Sum(x => x.Paid);
-                    LayawayPaymentCardViewModel paymentCardViewModel = new LayawayPaymentCardViewModel(balance, SelectedPaymentDetail, PaymentMethodModel);
-                    bool? result = _dialogService.ShowDialog<LayawayPaymentCardView>(_ownerViewModel, paymentCardViewModel, "Credit Card");
-                    if (result == true)
+                    if (SelectedPaymentDetail.PaymentMethodId == (short)PaymentMethod.CreditCard)
                     {
-                        SelectedPaymentDetail.Paid = paymentCardViewModel.PaymentDetailMethod.Paid;
-                        SelectedPaymentDetail.Reference = paymentCardViewModel.PaymentDetailMethod.Reference;
+                        decimal balance = Balance - PaymentMethodCollection.Where(x => x.CardType == 0).Sum(x => x.Paid);
+                        LayawayPaymentCardViewModel paymentCardViewModel = new LayawayPaymentCardViewModel(balance, SelectedPaymentDetail, PaymentMethodModel);
+                        bool? result = _dialogService.ShowDialog<LayawayPaymentCardView>(_ownerViewModel, paymentCardViewModel, "Credit Card");
+                        if (result == true)
+                        {
+                            SelectedPaymentDetail.Paid = paymentCardViewModel.PaymentDetailMethod.Paid;
+                            SelectedPaymentDetail.Reference = paymentCardViewModel.PaymentDetailMethod.Reference;
+                        }
                     }
-                }
-                else
-                {
-                    string title = SelectedPaymentDetail.PaymentMethodId == (short)PaymentMethod.GiftCard ? "Gift Card" : "Gift Certification";
+                    else
+                    {
+                        string title = SelectedPaymentDetail.PaymentMethodId == (short)PaymentMethod.GiftCard ? "Gift Card" : "Gift Certification";
 
-                    CardPaymentViewModel cardPaymentViewModel = new CardPaymentViewModel(SelectedPaymentDetail, PaymentMethodModel);
-                    bool? result = _dialogService.ShowDialog<CardPaymentView>(_ownerViewModel, cardPaymentViewModel, title);
-                    if (result == true)
-                    {
-                        SelectedPaymentDetail.CouponCardModel = cardPaymentViewModel.PaymentMethodModel.CouponCardModel;
-                        SelectedPaymentDetail.Paid = cardPaymentViewModel.PaymentMethodModel.Paid;
-                        SelectedPaymentDetail.Reference = cardPaymentViewModel.PaymentMethodModel.Reference;
+                        CardPaymentViewModel cardPaymentViewModel = new CardPaymentViewModel(SelectedPaymentDetail, PaymentMethodModel);
+                        bool? result = _dialogService.ShowDialog<CardPaymentView>(_ownerViewModel, cardPaymentViewModel, title);
+                        if (result == true)
+                        {
+                            SelectedPaymentDetail.CouponCardModel = cardPaymentViewModel.PaymentMethodModel.CouponCardModel;
+                            SelectedPaymentDetail.Paid = cardPaymentViewModel.PaymentMethodModel.Paid;
+                            SelectedPaymentDetail.Reference = cardPaymentViewModel.PaymentMethodModel.Reference;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -308,21 +316,29 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnFillMoneyCommandExecute(object param)
         {
-            decimal _remainTotal = 0;
-
-            if (SelectedPaymentDetail != null && SelectedPaymentDetail.Paid == 0)
+            try
             {
-                if (_minimumDeposit > 0)
-                    _remainTotal = _minimumDeposit - PaymentMethodCollection.Where(x => x != SelectedPaymentDetail).Sum(x => x.Paid);
-                else
-                    _remainTotal = Balance - PaymentMethodCollection.Where(x => x != SelectedPaymentDetail).Sum(x => x.Paid);
+                decimal _remainTotal = 0;
 
-                App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (SelectedPaymentDetail != null && SelectedPaymentDetail.Paid == 0)
                 {
-                    int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 2;
-                    SelectedPaymentDetail.Paid = _remainTotal > 0 ? Math.Round(_remainTotal, decimalPlace) : 0;
+                    if (_minimumDeposit > 0)
+                        _remainTotal = _minimumDeposit - PaymentMethodCollection.Where(x => x != SelectedPaymentDetail).Sum(x => x.Paid);
+                    else
+                        _remainTotal = Balance - PaymentMethodCollection.Where(x => x != SelectedPaymentDetail).Sum(x => x.Paid);
 
-                }), System.Windows.Threading.DispatcherPriority.Normal);
+                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 2;
+                        SelectedPaymentDetail.Paid = _remainTotal > 0 ? Math.Round(_remainTotal, decimalPlace) : 0;
+
+                    }), System.Windows.Threading.DispatcherPriority.Normal);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion

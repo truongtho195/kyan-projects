@@ -54,8 +54,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("POSModel", "FK_baseProductStore_ProductId_base_Product_Id", "base_Product", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Product), "base_ProductStore", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ProductStore), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_ProductUOM_ProductStoreId_base_ProductStore_Id", "base_ProductStore", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(CPC.POS.Database.base_ProductStore), "base_ProductUOM", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ProductUOM), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_ProductUOM_UOMId_base_UOM_Id", "base_UOM", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_UOM), "base_ProductUOM", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ProductUOM), true)]
-[assembly: EdmRelationshipAttribute("POSModel", "FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Promotion), "base_PromotionAffect", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PromotionAffect), true)]
-[assembly: EdmRelationshipAttribute("POSModel", "FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_Promotion), "base_PromotionSchedule", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PromotionSchedule), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_PurchaseOrderDetail_PurchaseOrderId_base_PurchaseOrder_", "base_PurchaseOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_PurchaseOrder), "base_PurchaseOrderDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PurchaseOrderDetail), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_PurchaseOrderReceive_PurchaseOrderDetailId_base_Purchas", "base_PurchaseOrderDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_PurchaseOrderDetail), "base_PurchaseOrderReceive", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_PurchaseOrderReceive), true)]
 [assembly: EdmRelationshipAttribute("POSModel", "FK_base_ResourcePaymentDetail_ResourcePaymentId_base_ResourcePa", "base_ResourcePayment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CPC.POS.Database.base_ResourcePayment), "base_ResourcePaymentDetail", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CPC.POS.Database.base_ResourcePaymentDetail), true)]
@@ -761,38 +759,6 @@ namespace CPC.POS.Database
             }
         }
         private ObjectSet<base_Promotion> _base_Promotion;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<base_PromotionAffect> base_PromotionAffect
-        {
-            get
-            {
-                if ((_base_PromotionAffect == null))
-                {
-                    _base_PromotionAffect = base.CreateObjectSet<base_PromotionAffect>("base_PromotionAffect");
-                }
-                return _base_PromotionAffect;
-            }
-        }
-        private ObjectSet<base_PromotionAffect> _base_PromotionAffect;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<base_PromotionSchedule> base_PromotionSchedule
-        {
-            get
-            {
-                if ((_base_PromotionSchedule == null))
-                {
-                    _base_PromotionSchedule = base.CreateObjectSet<base_PromotionSchedule>("base_PromotionSchedule");
-                }
-                return _base_PromotionSchedule;
-            }
-        }
-        private ObjectSet<base_PromotionSchedule> _base_PromotionSchedule;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1739,22 +1705,6 @@ namespace CPC.POS.Database
         public void AddTobase_Promotion(base_Promotion base_Promotion)
         {
             base.AddObject("base_Promotion", base_Promotion);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the base_PromotionAffect EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTobase_PromotionAffect(base_PromotionAffect base_PromotionAffect)
-        {
-            base.AddObject("base_PromotionAffect", base_PromotionAffect);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the base_PromotionSchedule EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTobase_PromotionSchedule(base_PromotionSchedule base_PromotionSchedule)
-        {
-            base.AddObject("base_PromotionSchedule", base_PromotionSchedule);
         }
     
         /// <summary>
@@ -4401,7 +4351,8 @@ namespace CPC.POS.Database
         /// <param name="weekHour">Initial value of the WeekHour property.</param>
         /// <param name="refundVoucherThresHold">Initial value of the RefundVoucherThresHold property.</param>
         /// <param name="sysDate">Initial value of the SysDate property.</param>
-        public static base_Configuration Createbase_Configuration(global::System.Int32 defautlDiscountScheduleTime, global::System.Int16 defaultDiscountType, global::System.Int16 defaultDiscountStatus, global::System.Decimal tipPercent, global::System.Int16 workHour, global::System.Int32 id, global::System.Boolean isAllowShift, global::System.Boolean isRewardOnTax, global::System.Boolean isRewardOnMultiPayment, global::System.Boolean isIncludeReturnFee, global::System.Decimal returnFeePercent, global::System.Boolean isRewardLessThanDiscount, global::System.Boolean isCalRewardAfterRedeem, global::System.Boolean isRewardOnRetailer, global::System.Int16 negativeNumber, global::System.Int16 textNumberAlign, global::System.Boolean isAUPPG, global::System.Boolean isStateCode, global::System.Boolean isManualGenerate, global::System.Boolean isAllowFirstCap, global::System.Boolean isSendEmailCustomer, global::System.Boolean isAllowAntiExemptionTax, global::System.Boolean isManualPriceCalculation, global::System.Boolean isAllowPayMultiReward, global::System.Boolean isSumCashReward, global::System.Boolean isAllwayCommision, global::System.Int16 reminderDay, global::System.Int32 weekHour, global::System.Decimal refundVoucherThresHold, global::System.DateTime sysDate)
+        /// <param name="isAutoSearch">Initial value of the IsAutoSearch property.</param>
+        public static base_Configuration Createbase_Configuration(global::System.Int32 defautlDiscountScheduleTime, global::System.Int16 defaultDiscountType, global::System.Int16 defaultDiscountStatus, global::System.Decimal tipPercent, global::System.Int16 workHour, global::System.Int32 id, global::System.Boolean isAllowShift, global::System.Boolean isRewardOnTax, global::System.Boolean isRewardOnMultiPayment, global::System.Boolean isIncludeReturnFee, global::System.Decimal returnFeePercent, global::System.Boolean isRewardLessThanDiscount, global::System.Boolean isCalRewardAfterRedeem, global::System.Boolean isRewardOnRetailer, global::System.Int16 negativeNumber, global::System.Int16 textNumberAlign, global::System.Boolean isAUPPG, global::System.Boolean isStateCode, global::System.Boolean isManualGenerate, global::System.Boolean isAllowFirstCap, global::System.Boolean isSendEmailCustomer, global::System.Boolean isAllowAntiExemptionTax, global::System.Boolean isManualPriceCalculation, global::System.Boolean isAllowPayMultiReward, global::System.Boolean isSumCashReward, global::System.Boolean isAllwayCommision, global::System.Int16 reminderDay, global::System.Int32 weekHour, global::System.Decimal refundVoucherThresHold, global::System.DateTime sysDate, global::System.Boolean isAutoSearch)
         {
             base_Configuration base_Configuration = new base_Configuration();
             base_Configuration.DefautlDiscountScheduleTime = defautlDiscountScheduleTime;
@@ -4434,6 +4385,7 @@ namespace CPC.POS.Database
             base_Configuration.WeekHour = weekHour;
             base_Configuration.RefundVoucherThresHold = refundVoucherThresHold;
             base_Configuration.SysDate = sysDate;
+            base_Configuration.IsAutoSearch = isAutoSearch;
             return base_Configuration;
         }
 
@@ -6722,6 +6674,30 @@ namespace CPC.POS.Database
         private global::System.DateTime _SysDate;
         partial void OnSysDateChanging(global::System.DateTime value);
         partial void OnSysDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsAutoSearch
+        {
+            get
+            {
+                return _IsAutoSearch;
+            }
+            set
+            {
+                OnIsAutoSearchChanging(value);
+                ReportPropertyChanging("IsAutoSearch");
+                _IsAutoSearch = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsAutoSearch");
+                OnIsAutoSearchChanged();
+            }
+        }
+        private global::System.Boolean _IsAutoSearch;
+        partial void OnIsAutoSearchChanging(global::System.Boolean value);
+        partial void OnIsAutoSearchChanged();
 
         #endregion
     
@@ -11320,7 +11296,8 @@ namespace CPC.POS.Database
         /// <param name="dateCreated">Initial value of the DateCreated property.</param>
         /// <param name="dateUpdated">Initial value of the DateUpdated property.</param>
         /// <param name="isDefault">Initial value of the IsDefault property.</param>
-        public static base_GuestAddress Createbase_GuestAddress(global::System.Int32 id, global::System.Int64 guestId, global::System.Int32 addressTypeId, global::System.String city, global::System.Int32 stateProvinceId, global::System.Int32 countryId, global::System.DateTime dateCreated, global::System.DateTime dateUpdated, global::System.Boolean isDefault)
+        /// <param name="resource">Initial value of the Resource property.</param>
+        public static base_GuestAddress Createbase_GuestAddress(global::System.Int32 id, global::System.Int64 guestId, global::System.Int32 addressTypeId, global::System.String city, global::System.Int32 stateProvinceId, global::System.Int32 countryId, global::System.DateTime dateCreated, global::System.DateTime dateUpdated, global::System.Boolean isDefault, global::System.Guid resource)
         {
             base_GuestAddress base_GuestAddress = new base_GuestAddress();
             base_GuestAddress.Id = id;
@@ -11332,6 +11309,7 @@ namespace CPC.POS.Database
             base_GuestAddress.DateCreated = dateCreated;
             base_GuestAddress.DateUpdated = dateUpdated;
             base_GuestAddress.IsDefault = isDefault;
+            base_GuestAddress.Resource = resource;
             return base_GuestAddress;
         }
 
@@ -11700,6 +11678,30 @@ namespace CPC.POS.Database
         private global::System.String _GuestResource;
         partial void OnGuestResourceChanging(global::System.String value);
         partial void OnGuestResourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Resource
+        {
+            get
+            {
+                return _Resource;
+            }
+            set
+            {
+                OnResourceChanging(value);
+                ReportPropertyChanging("Resource");
+                _Resource = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Resource");
+                OnResourceChanged();
+            }
+        }
+        private global::System.Guid _Resource;
+        partial void OnResourceChanging(global::System.Guid value);
+        partial void OnResourceChanged();
 
         #endregion
     
@@ -12579,12 +12581,14 @@ namespace CPC.POS.Database
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="sTitle">Initial value of the STitle property.</param>
         /// <param name="eTitle">Initial value of the ETitle property.</param>
-        public static base_GuestProfile Createbase_GuestProfile(global::System.Int64 id, global::System.Int16 sTitle, global::System.Int16 eTitle)
+        /// <param name="resource">Initial value of the Resource property.</param>
+        public static base_GuestProfile Createbase_GuestProfile(global::System.Int64 id, global::System.Int16 sTitle, global::System.Int16 eTitle, global::System.Guid resource)
         {
             base_GuestProfile base_GuestProfile = new base_GuestProfile();
             base_GuestProfile.Id = id;
             base_GuestProfile.STitle = sTitle;
             base_GuestProfile.ETitle = eTitle;
+            base_GuestProfile.Resource = resource;
             return base_GuestProfile;
         }
 
@@ -13433,6 +13437,30 @@ namespace CPC.POS.Database
         private global::System.String _GuestResource;
         partial void OnGuestResourceChanging(global::System.String value);
         partial void OnGuestResourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Resource
+        {
+            get
+            {
+                return _Resource;
+            }
+            set
+            {
+                OnResourceChanging(value);
+                ReportPropertyChanging("Resource");
+                _Resource = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Resource");
+                OnResourceChanged();
+            }
+        }
+        private global::System.Guid _Resource;
+        partial void OnResourceChanging(global::System.Guid value);
+        partial void OnResourceChanged();
 
         #endregion
     
@@ -21034,7 +21062,6 @@ namespace CPC.POS.Database
         /// <param name="getingValue">Initial value of the GetingValue property.</param>
         /// <param name="isApplyToAboveQuantities">Initial value of the IsApplyToAboveQuantities property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        /// <param name="affectDiscount">Initial value of the AffectDiscount property.</param>
         /// <param name="dateCreated">Initial value of the DateCreated property.</param>
         /// <param name="userCreated">Initial value of the UserCreated property.</param>
         /// <param name="dateUpdated">Initial value of the DateUpdated property.</param>
@@ -21043,7 +21070,7 @@ namespace CPC.POS.Database
         /// <param name="sold">Initial value of the Sold property.</param>
         /// <param name="totalPrice">Initial value of the TotalPrice property.</param>
         /// <param name="isConflict">Initial value of the IsConflict property.</param>
-        public static base_Promotion Createbase_Promotion(global::System.Int32 id, global::System.String name, global::System.String description, global::System.Int16 promotionTypeId, global::System.Int16 takeOffOption, global::System.Decimal takeOff, global::System.Int32 buyingQty, global::System.Decimal getingValue, global::System.Boolean isApplyToAboveQuantities, global::System.Int16 status, global::System.Int16 affectDiscount, global::System.DateTime dateCreated, global::System.String userCreated, global::System.DateTime dateUpdated, global::System.Guid resource, global::System.Boolean isCouponExpired, global::System.Int32 sold, global::System.Decimal totalPrice, global::System.Boolean isConflict)
+        public static base_Promotion Createbase_Promotion(global::System.Int32 id, global::System.String name, global::System.String description, global::System.Int16 promotionTypeId, global::System.Int16 takeOffOption, global::System.Decimal takeOff, global::System.Int32 buyingQty, global::System.Decimal getingValue, global::System.Boolean isApplyToAboveQuantities, global::System.Int16 status, global::System.DateTime dateCreated, global::System.String userCreated, global::System.DateTime dateUpdated, global::System.Guid resource, global::System.Boolean isCouponExpired, global::System.Int32 sold, global::System.Decimal totalPrice, global::System.Boolean isConflict)
         {
             base_Promotion base_Promotion = new base_Promotion();
             base_Promotion.Id = id;
@@ -21056,7 +21083,6 @@ namespace CPC.POS.Database
             base_Promotion.GetingValue = getingValue;
             base_Promotion.IsApplyToAboveQuantities = isApplyToAboveQuantities;
             base_Promotion.Status = status;
-            base_Promotion.AffectDiscount = affectDiscount;
             base_Promotion.DateCreated = dateCreated;
             base_Promotion.UserCreated = userCreated;
             base_Promotion.DateUpdated = dateUpdated;
@@ -21313,30 +21339,6 @@ namespace CPC.POS.Database
         private global::System.Int16 _Status;
         partial void OnStatusChanging(global::System.Int16 value);
         partial void OnStatusChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int16 AffectDiscount
-        {
-            get
-            {
-                return _AffectDiscount;
-            }
-            set
-            {
-                OnAffectDiscountChanging(value);
-                ReportPropertyChanging("AffectDiscount");
-                _AffectDiscount = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AffectDiscount");
-                OnAffectDiscountChanged();
-            }
-        }
-        private global::System.Int16 _AffectDiscount;
-        partial void OnAffectDiscountChanging(global::System.Int16 value);
-        partial void OnAffectDiscountChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -21631,30 +21633,6 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int64> VendorId
-        {
-            get
-            {
-                return _VendorId;
-            }
-            set
-            {
-                OnVendorIdChanging(value);
-                ReportPropertyChanging("VendorId");
-                _VendorId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("VendorId");
-                OnVendorIdChanged();
-            }
-        }
-        private Nullable<global::System.Int64> _VendorId;
-        partial void OnVendorIdChanging(Nullable<global::System.Int64> value);
-        partial void OnVendorIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String CouponBarCode
         {
             get
@@ -21769,566 +21747,6 @@ namespace CPC.POS.Database
         private global::System.String _Shift;
         partial void OnShiftChanging(global::System.String value);
         partial void OnShiftChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_PromotionAffect")]
-        public EntityCollection<base_PromotionAffect> base_PromotionAffect
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<base_PromotionAffect>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_PromotionAffect");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<base_PromotionAffect>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_PromotionAffect", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_PromotionSchedule")]
-        public EntityCollection<base_PromotionSchedule> base_PromotionSchedule
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<base_PromotionSchedule>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_PromotionSchedule");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<base_PromotionSchedule>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_PromotionSchedule", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="base_PromotionAffect")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class base_PromotionAffect : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new base_PromotionAffect object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="promotionId">Initial value of the PromotionId property.</param>
-        /// <param name="itemId">Initial value of the ItemId property.</param>
-        /// <param name="price1">Initial value of the Price1 property.</param>
-        /// <param name="price2">Initial value of the Price2 property.</param>
-        /// <param name="price3">Initial value of the Price3 property.</param>
-        /// <param name="price4">Initial value of the Price4 property.</param>
-        /// <param name="price5">Initial value of the Price5 property.</param>
-        /// <param name="discount1">Initial value of the Discount1 property.</param>
-        /// <param name="discount2">Initial value of the Discount2 property.</param>
-        /// <param name="discount3">Initial value of the Discount3 property.</param>
-        /// <param name="discount4">Initial value of the Discount4 property.</param>
-        /// <param name="discount5">Initial value of the Discount5 property.</param>
-        public static base_PromotionAffect Createbase_PromotionAffect(global::System.Int32 id, global::System.Int32 promotionId, global::System.Int64 itemId, global::System.Decimal price1, global::System.Decimal price2, global::System.Decimal price3, global::System.Decimal price4, global::System.Decimal price5, global::System.Decimal discount1, global::System.Decimal discount2, global::System.Decimal discount3, global::System.Decimal discount4, global::System.Decimal discount5)
-        {
-            base_PromotionAffect base_PromotionAffect = new base_PromotionAffect();
-            base_PromotionAffect.Id = id;
-            base_PromotionAffect.PromotionId = promotionId;
-            base_PromotionAffect.ItemId = itemId;
-            base_PromotionAffect.Price1 = price1;
-            base_PromotionAffect.Price2 = price2;
-            base_PromotionAffect.Price3 = price3;
-            base_PromotionAffect.Price4 = price4;
-            base_PromotionAffect.Price5 = price5;
-            base_PromotionAffect.Discount1 = discount1;
-            base_PromotionAffect.Discount2 = discount2;
-            base_PromotionAffect.Discount3 = discount3;
-            base_PromotionAffect.Discount4 = discount4;
-            base_PromotionAffect.Discount5 = discount5;
-            return base_PromotionAffect;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 PromotionId
-        {
-            get
-            {
-                return _PromotionId;
-            }
-            set
-            {
-                OnPromotionIdChanging(value);
-                ReportPropertyChanging("PromotionId");
-                _PromotionId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("PromotionId");
-                OnPromotionIdChanged();
-            }
-        }
-        private global::System.Int32 _PromotionId;
-        partial void OnPromotionIdChanging(global::System.Int32 value);
-        partial void OnPromotionIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 ItemId
-        {
-            get
-            {
-                return _ItemId;
-            }
-            set
-            {
-                OnItemIdChanging(value);
-                ReportPropertyChanging("ItemId");
-                _ItemId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ItemId");
-                OnItemIdChanged();
-            }
-        }
-        private global::System.Int64 _ItemId;
-        partial void OnItemIdChanging(global::System.Int64 value);
-        partial void OnItemIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Price1
-        {
-            get
-            {
-                return _Price1;
-            }
-            set
-            {
-                OnPrice1Changing(value);
-                ReportPropertyChanging("Price1");
-                _Price1 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Price1");
-                OnPrice1Changed();
-            }
-        }
-        private global::System.Decimal _Price1;
-        partial void OnPrice1Changing(global::System.Decimal value);
-        partial void OnPrice1Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Price2
-        {
-            get
-            {
-                return _Price2;
-            }
-            set
-            {
-                OnPrice2Changing(value);
-                ReportPropertyChanging("Price2");
-                _Price2 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Price2");
-                OnPrice2Changed();
-            }
-        }
-        private global::System.Decimal _Price2;
-        partial void OnPrice2Changing(global::System.Decimal value);
-        partial void OnPrice2Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Price3
-        {
-            get
-            {
-                return _Price3;
-            }
-            set
-            {
-                OnPrice3Changing(value);
-                ReportPropertyChanging("Price3");
-                _Price3 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Price3");
-                OnPrice3Changed();
-            }
-        }
-        private global::System.Decimal _Price3;
-        partial void OnPrice3Changing(global::System.Decimal value);
-        partial void OnPrice3Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Price4
-        {
-            get
-            {
-                return _Price4;
-            }
-            set
-            {
-                OnPrice4Changing(value);
-                ReportPropertyChanging("Price4");
-                _Price4 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Price4");
-                OnPrice4Changed();
-            }
-        }
-        private global::System.Decimal _Price4;
-        partial void OnPrice4Changing(global::System.Decimal value);
-        partial void OnPrice4Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Price5
-        {
-            get
-            {
-                return _Price5;
-            }
-            set
-            {
-                OnPrice5Changing(value);
-                ReportPropertyChanging("Price5");
-                _Price5 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Price5");
-                OnPrice5Changed();
-            }
-        }
-        private global::System.Decimal _Price5;
-        partial void OnPrice5Changing(global::System.Decimal value);
-        partial void OnPrice5Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Discount1
-        {
-            get
-            {
-                return _Discount1;
-            }
-            set
-            {
-                OnDiscount1Changing(value);
-                ReportPropertyChanging("Discount1");
-                _Discount1 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Discount1");
-                OnDiscount1Changed();
-            }
-        }
-        private global::System.Decimal _Discount1;
-        partial void OnDiscount1Changing(global::System.Decimal value);
-        partial void OnDiscount1Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Discount2
-        {
-            get
-            {
-                return _Discount2;
-            }
-            set
-            {
-                OnDiscount2Changing(value);
-                ReportPropertyChanging("Discount2");
-                _Discount2 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Discount2");
-                OnDiscount2Changed();
-            }
-        }
-        private global::System.Decimal _Discount2;
-        partial void OnDiscount2Changing(global::System.Decimal value);
-        partial void OnDiscount2Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Discount3
-        {
-            get
-            {
-                return _Discount3;
-            }
-            set
-            {
-                OnDiscount3Changing(value);
-                ReportPropertyChanging("Discount3");
-                _Discount3 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Discount3");
-                OnDiscount3Changed();
-            }
-        }
-        private global::System.Decimal _Discount3;
-        partial void OnDiscount3Changing(global::System.Decimal value);
-        partial void OnDiscount3Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Discount4
-        {
-            get
-            {
-                return _Discount4;
-            }
-            set
-            {
-                OnDiscount4Changing(value);
-                ReportPropertyChanging("Discount4");
-                _Discount4 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Discount4");
-                OnDiscount4Changed();
-            }
-        }
-        private global::System.Decimal _Discount4;
-        partial void OnDiscount4Changing(global::System.Decimal value);
-        partial void OnDiscount4Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal Discount5
-        {
-            get
-            {
-                return _Discount5;
-            }
-            set
-            {
-                OnDiscount5Changing(value);
-                ReportPropertyChanging("Discount5");
-                _Discount5 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Discount5");
-                OnDiscount5Changed();
-            }
-        }
-        private global::System.Decimal _Discount5;
-        partial void OnDiscount5Changing(global::System.Decimal value);
-        partial void OnDiscount5Changed();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion")]
-        public base_Promotion base_Promotion
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<base_Promotion> base_PromotionReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<base_Promotion>("POSModel.FK_base_PromotionAffect_PromotionId_base_Promotion_Id", "base_Promotion", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="POSModel", Name="base_PromotionSchedule")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class base_PromotionSchedule : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new base_PromotionSchedule object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="promotionId">Initial value of the PromotionId property.</param>
-        public static base_PromotionSchedule Createbase_PromotionSchedule(global::System.Int32 id, global::System.Int32 promotionId)
-        {
-            base_PromotionSchedule base_PromotionSchedule = new base_PromotionSchedule();
-            base_PromotionSchedule.Id = id;
-            base_PromotionSchedule.PromotionId = promotionId;
-            return base_PromotionSchedule;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 PromotionId
-        {
-            get
-            {
-                return _PromotionId;
-            }
-            set
-            {
-                OnPromotionIdChanging(value);
-                ReportPropertyChanging("PromotionId");
-                _PromotionId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("PromotionId");
-                OnPromotionIdChanged();
-            }
-        }
-        private global::System.Int32 _PromotionId;
-        partial void OnPromotionIdChanging(global::System.Int32 value);
-        partial void OnPromotionIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> EndDate
-        {
-            get
-            {
-                return _EndDate;
-            }
-            set
-            {
-                OnEndDateChanging(value);
-                ReportPropertyChanging("EndDate");
-                _EndDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("EndDate");
-                OnEndDateChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _EndDate;
-        partial void OnEndDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnEndDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -22353,50 +21771,33 @@ namespace CPC.POS.Database
         private Nullable<global::System.DateTime> _StartDate;
         partial void OnStartDateChanging(Nullable<global::System.DateTime> value);
         partial void OnStartDateChanged();
-
-        #endregion
-    
-        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("POSModel", "FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion")]
-        public base_Promotion base_Promotion
+        public Nullable<global::System.DateTime> EndDate
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion").Value;
+                return _EndDate;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion").Value = value;
+                OnEndDateChanging(value);
+                ReportPropertyChanging("EndDate");
+                _EndDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EndDate");
+                OnEndDateChanged();
             }
         }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<base_Promotion> base_PromotionReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<base_Promotion>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<base_Promotion>("POSModel.FK_base_PromotionSchedule_PromotionId_base_Promotion_Id", "base_Promotion", value);
-                }
-            }
-        }
+        private Nullable<global::System.DateTime> _EndDate;
+        partial void OnEndDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnEndDateChanged();
 
         #endregion
+    
     }
     
     /// <summary>
@@ -41829,10 +41230,8 @@ namespace CPC.POS.Database
         /// <param name="hourPerDay">Initial value of the HourPerDay property.</param>
         /// <param name="paidFlag">Initial value of the PaidFlag property.</param>
         /// <param name="activeFlag">Initial value of the ActiveFlag property.</param>
-        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
-        /// <param name="createdById">Initial value of the CreatedById property.</param>
         /// <param name="overtimeOptions">Initial value of the OvertimeOptions property.</param>
-        public static tims_WorkPermission Createtims_WorkPermission(global::System.Int32 id, global::System.Int64 employeeId, global::System.Int32 permissionType, global::System.DateTime fromDate, global::System.DateTime toDate, global::System.Int16 noOfDays, global::System.Single hourPerDay, global::System.Boolean paidFlag, global::System.Boolean activeFlag, global::System.DateTime createdDate, global::System.Int32 createdById, global::System.Int32 overtimeOptions)
+        public static tims_WorkPermission Createtims_WorkPermission(global::System.Int32 id, global::System.Int64 employeeId, global::System.Int32 permissionType, global::System.DateTime fromDate, global::System.DateTime toDate, global::System.Int16 noOfDays, global::System.Single hourPerDay, global::System.Boolean paidFlag, global::System.Boolean activeFlag, global::System.Int32 overtimeOptions)
         {
             tims_WorkPermission tims_WorkPermission = new tims_WorkPermission();
             tims_WorkPermission.Id = id;
@@ -41844,8 +41243,6 @@ namespace CPC.POS.Database
             tims_WorkPermission.HourPerDay = hourPerDay;
             tims_WorkPermission.PaidFlag = paidFlag;
             tims_WorkPermission.ActiveFlag = activeFlag;
-            tims_WorkPermission.CreatedDate = createdDate;
-            tims_WorkPermission.CreatedById = createdById;
             tims_WorkPermission.OvertimeOptions = overtimeOptions;
             return tims_WorkPermission;
         }
@@ -42101,102 +41498,6 @@ namespace CPC.POS.Database
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime CreatedDate
-        {
-            get
-            {
-                return _CreatedDate;
-            }
-            set
-            {
-                OnCreatedDateChanging(value);
-                ReportPropertyChanging("CreatedDate");
-                _CreatedDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreatedDate");
-                OnCreatedDateChanged();
-            }
-        }
-        private global::System.DateTime _CreatedDate;
-        partial void OnCreatedDateChanging(global::System.DateTime value);
-        partial void OnCreatedDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CreatedById
-        {
-            get
-            {
-                return _CreatedById;
-            }
-            set
-            {
-                OnCreatedByIdChanging(value);
-                ReportPropertyChanging("CreatedById");
-                _CreatedById = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CreatedById");
-                OnCreatedByIdChanged();
-            }
-        }
-        private global::System.Int32 _CreatedById;
-        partial void OnCreatedByIdChanging(global::System.Int32 value);
-        partial void OnCreatedByIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> ModifiedDate
-        {
-            get
-            {
-                return _ModifiedDate;
-            }
-            set
-            {
-                OnModifiedDateChanging(value);
-                ReportPropertyChanging("ModifiedDate");
-                _ModifiedDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ModifiedDate");
-                OnModifiedDateChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _ModifiedDate;
-        partial void OnModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnModifiedDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> ModifiedById
-        {
-            get
-            {
-                return _ModifiedById;
-            }
-            set
-            {
-                OnModifiedByIdChanging(value);
-                ReportPropertyChanging("ModifiedById");
-                _ModifiedById = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ModifiedById");
-                OnModifiedByIdChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _ModifiedById;
-        partial void OnModifiedByIdChanging(Nullable<global::System.Int32> value);
-        partial void OnModifiedByIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.Int32 OvertimeOptions
         {
             get
@@ -42215,6 +41516,102 @@ namespace CPC.POS.Database
         private global::System.Int32 _OvertimeOptions;
         partial void OnOvertimeOptionsChanging(global::System.Int32 value);
         partial void OnOvertimeOptionsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserCreated
+        {
+            get
+            {
+                return _UserCreated;
+            }
+            set
+            {
+                OnUserCreatedChanging(value);
+                ReportPropertyChanging("UserCreated");
+                _UserCreated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserCreated");
+                OnUserCreatedChanged();
+            }
+        }
+        private global::System.String _UserCreated;
+        partial void OnUserCreatedChanging(global::System.String value);
+        partial void OnUserCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateCreated
+        {
+            get
+            {
+                return _DateCreated;
+            }
+            set
+            {
+                OnDateCreatedChanging(value);
+                ReportPropertyChanging("DateCreated");
+                _DateCreated = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateCreated");
+                OnDateCreatedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateCreated;
+        partial void OnDateCreatedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserUpdated
+        {
+            get
+            {
+                return _UserUpdated;
+            }
+            set
+            {
+                OnUserUpdatedChanging(value);
+                ReportPropertyChanging("UserUpdated");
+                _UserUpdated = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserUpdated");
+                OnUserUpdatedChanged();
+            }
+        }
+        private global::System.String _UserUpdated;
+        partial void OnUserUpdatedChanging(global::System.String value);
+        partial void OnUserUpdatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateUpdated
+        {
+            get
+            {
+                return _DateUpdated;
+            }
+            set
+            {
+                OnDateUpdatedChanging(value);
+                ReportPropertyChanging("DateUpdated");
+                _DateUpdated = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateUpdated");
+                OnDateUpdatedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateUpdated;
+        partial void OnDateUpdatedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateUpdatedChanged();
 
         #endregion
     

@@ -1,889 +1,256 @@
 
 [Begin Session - {CPCVN\Kyan nguyen}]
-[ERROR] 12-09-2013 13:56:17.297 - [8] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.Model.base_SaleTaxLocationModel.ToModel() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Model\base_SaleTaxLocationModel.cs:line 386
-   at CPC.POS.Model.base_SaleTaxLocationModel..ctor(base_SaleTaxLocation base_saletaxlocation, Boolean isRaiseProperties) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Model\base_SaleTaxLocationModel.cs:line 42
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2149
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2119
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 485
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 204 [App]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[ERROR] 12-09-2013 16:11:21.780 - [10] System.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.OrderViewModel.UpdateCustomer(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\OrderViewModel.cs:line 3016
-   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2726 [App]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-10-2013 10:56:23.016 - [10] Message: An error occurred while updating the entries. See the inner exception for details.. Source: System.Data.Entity. [App]
-[ERROR] 12-10-2013 10:56:23.047 - [10] Npgsql.NpgsqlException:
-numeric field overflow
-Severity: ERROR
-Code: 22003
-   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
-   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
-   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
-   at Npgsql.ForwardsOnlyDataReader.NextResult()
-   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
-   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
-   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
-   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
-   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter) [App]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-18-2013 09:59:13.880 - [9] Message: An error occurred while executing the command definition. See the inner exception for details.. Source: System.Data.Entity. [App]
-[ERROR] 12-18-2013 09:59:13.914 - [9] Npgsql.NpgsqlException:
-operator does not exist: character varying = uuid
-Severity: ERROR
-Code: 42883
-Hint: No operator matches the given name and argument type(s). You might need to add explicit type casts.
-   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__0.MoveNext()
-   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject(Boolean cleanup)
-   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
-   at Npgsql.ForwardsOnlyDataReader.NextResultInternal()
-   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean preparedStatement, NpgsqlRowDescription rowDescription)
-   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
-   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior cb)
-   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
-   at System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-18-2013 10:12:56.149 - [9] System.NotSupportedException: Unable to create a constant value of type 'System.Object'. Only primitive types ('such as Int32, String, and Guid') are supported in this context.
-   at System.Data.Objects.ELinq.ExpressionConverter.ConstantTranslator.TypedTranslate(ExpressionConverter parent, ConstantExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.Convert()
-   at System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
-   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
-   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
-   at CPC.POS.Database.UnitOfWork.Get[T](Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Database\UnitOfWork.cs:line 105
-   at CPC.POS.Repository.base_ProductRepository.Get(Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 92
-   at CPC.POS.Repository.base_ProductRepository.Get(String resource) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 295
-   at CPC.POS.Repository.base_ProductRepository.UpdateQuantityOnCustomer(String productResource, Int32 storeCode, Decimal quantity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 624
-   at CPC.POS.Repository.base_SaleOrderRepository.UpdateCustomerQuantity(base_SaleOrderDetailModel saleOrderDetailModel, Int32 storeCode, Decimal productQuantity, Boolean Inscrease) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleOrderRepository.cs:line 1455
-   at CPC.POS.ViewModel.SalesOrderViewModel.InsertSaleOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2364
-   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2722 [App]
-[ERROR] 12-18-2013 10:13:38.106 - [9] System.NotSupportedException: Unable to create a constant value of type 'System.Object'. Only primitive types ('such as Int32, String, and Guid') are supported in this context.
-   at System.Data.Objects.ELinq.ExpressionConverter.ConstantTranslator.TypedTranslate(ExpressionConverter parent, ConstantExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.Convert()
-   at System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
-   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
-   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
-   at CPC.POS.Database.UnitOfWork.Get[T](Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Database\UnitOfWork.cs:line 105
-   at CPC.POS.Repository.base_ProductRepository.Get(Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 92
-   at CPC.POS.Repository.base_ProductRepository.Get(String resource) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 295
-   at CPC.POS.Repository.base_ProductRepository.UpdateQuantityOnCustomer(String productResource, Int32 storeCode, Decimal quantity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 624
-   at CPC.POS.Repository.base_SaleOrderRepository.UpdateCustomerQuantity(base_SaleOrderDetailModel saleOrderDetailModel, Int32 storeCode, Decimal productQuantity, Boolean Inscrease) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleOrderRepository.cs:line 1455
-   at CPC.POS.ViewModel.SalesOrderViewModel.InsertSaleOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2364
-   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2722 [App]
-[ERROR] 12-18-2013 10:13:46.623 - [9] System.NotSupportedException: Unable to create a constant value of type 'System.Object'. Only primitive types ('such as Int32, String, and Guid') are supported in this context.
-   at System.Data.Objects.ELinq.ExpressionConverter.ConstantTranslator.TypedTranslate(ExpressionConverter parent, ConstantExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.Convert()
-   at System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
-   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
-   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
-   at CPC.POS.Database.UnitOfWork.Get[T](Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Database\UnitOfWork.cs:line 105
-   at CPC.POS.Repository.base_ProductRepository.Get(Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 92
-   at CPC.POS.Repository.base_ProductRepository.Get(String resource) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 295
-   at CPC.POS.Repository.base_ProductRepository.UpdateQuantityOnCustomer(String productResource, Int32 storeCode, Decimal quantity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 624
-   at CPC.POS.Repository.base_SaleOrderRepository.UpdateCustomerQuantity(base_SaleOrderDetailModel saleOrderDetailModel, Int32 storeCode, Decimal productQuantity, Boolean Inscrease) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleOrderRepository.cs:line 1455
-   at CPC.POS.ViewModel.SalesOrderViewModel.InsertSaleOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2364
-   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2722 [App]
-[ERROR] 12-18-2013 10:14:27.071 - [9] System.NotSupportedException: Unable to create a constant value of type 'System.Object'. Only primitive types ('such as Int32, String, and Guid') are supported in this context.
-   at System.Data.Objects.ELinq.ExpressionConverter.ConstantTranslator.TypedTranslate(ExpressionConverter parent, ConstantExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.EqualsTranslator.TypedTranslate(ExpressionConverter parent, BinaryExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateLambda(LambdaExpression lambda, DbExpression input, DbExpressionBinding& binding)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.OneLambdaTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, DbExpression& source, DbExpressionBinding& sourceBinding, DbExpression& lambda)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.FirstPredicateTranslatorBase.Translate(ExpressionConverter parent, MethodCallExpression call)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.SequenceMethodTranslator.Translate(ExpressionConverter parent, MethodCallExpression call, SequenceMethod sequenceMethod)
-   at System.Data.Objects.ELinq.ExpressionConverter.MethodCallTranslator.TypedTranslate(ExpressionConverter parent, MethodCallExpression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TypedTranslator`1.Translate(ExpressionConverter parent, Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.TranslateExpression(Expression linq)
-   at System.Data.Objects.ELinq.ExpressionConverter.Convert()
-   at System.Data.Objects.ELinq.ELinqQueryState.GetExecutionPlan(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
-   at System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
-   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.<GetElementFunction>b__1[TResult](IEnumerable`1 sequence)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
-   at System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
-   at System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
-   at CPC.POS.Database.UnitOfWork.Get[T](Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Database\UnitOfWork.cs:line 105
-   at CPC.POS.Repository.base_ProductRepository.Get(Expression`1 expression) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 92
-   at CPC.POS.Repository.base_ProductRepository.Get(String resource) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 295
-   at CPC.POS.Repository.base_ProductRepository.UpdateQuantityOnCustomer(String productResource, Int32 storeCode, Decimal quantity) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_ProductRepository.cs:line 624
-   at CPC.POS.Repository.base_SaleOrderRepository.UpdateCustomerQuantity(base_SaleOrderDetailModel saleOrderDetailModel, Int32 storeCode, Decimal productQuantity, Boolean Inscrease) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleOrderRepository.cs:line 1455
-   at CPC.POS.ViewModel.SalesOrderViewModel.InsertSaleOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2364
-   at CPC.POS.ViewModel.SalesOrderViewModel.SaveSalesOrder(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 2722 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:13:47.738 - [9] Message: The changes to the database were committed successfully, but an error occurred while updating the object context. The ObjectContext might be in an inconsistent state. Inner exception message: AcceptChanges cannot continue because the object's key values conflict with another object in the ObjectStateManager. Make sure that the key values are unique before calling AcceptChanges.. Source: System.Data.Entity [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:20:22.846 - [10] OpenMainWindowViewSystem.Exception: Initial Sale Tax Error
-   at CPC.POS.Repository.base_SaleTaxLocationRepository.CreateDefaulSaleTaxLocation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleTaxLocationRepository.cs:line 337
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2212
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2169
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:22:04.486 - [10] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2214
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2169
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:26:27.547 - [9] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2214
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2169
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:26:47.359 - [8] OpenLoginViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.LoginViewModel.<.ctor>b__0(ComboItem x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
+[End Session-01-08-2014 11:43:00.465]
+
+[Begin Session- [01-08-2014 11:45:11.593]-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:45:11.593]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:46:09.633]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 11:48:31.563]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 13:20:21.375]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 13:22:55.429]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[ERROR] 01-08-2014 13:30:58.395 - [9] Message: Could not find a part of the path 'D:\'.. Source: mscorlib [App]
+[End Session- [01-08-2014 13:26:55.172]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 14:50:47.555]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-08-2014 16:37:47.645]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[ERROR] 01-10-2014 10:19:38.458 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderViewModel.SaleOrderFullPaymentProcess() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\SalesOrderViewModel.cs:line 4050 [App]
+[End Session- [01-10-2014 10:18:20.078]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-10-2014 11:37:56.782]]
+
+[Begin Session-{CPCVN\Kyan nguyen}]
+[End Session- [01-10-2014 13:23:12.807]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 10:15:09.747]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 10:23:02.821]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 10:33:14.572 - [10] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.View.SalesOrderFrontHandView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\View\Front\SalesOrderFrontHandView.xaml.cs:line 39
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 270 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 10:38:43.940 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.View.SalesOrderFrontHandView..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\View\Front\SalesOrderFrontHandView.xaml.cs:line 39
+   at CPC.POS.App.OpenFrontEndView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 270 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 14:54:06.639 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:54:06.732 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:54:06.748 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:55:41.467 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:55:41.482 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:55:41.514 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:55:49.014 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:55:49.029 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:55:49.060 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+[ERROR] 01-13-2014 14:56:07.092 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 622 [App]
+[ERROR] 01-13-2014 14:56:08.560 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.AddNewSaleOrderDetail(base_ProductModel productModel, String ParentResource, base_ProductModel productParentItem) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 643
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 735 [App]
+[ERROR] 01-13-2014 14:56:08.592 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.SaleOrderDetailProcess(base_ProductModel productModel, Boolean showSerialPopup, String ParentResource, base_ProductModel productParentModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 809
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.ProductInputProcess(base_ProductModel productModel, Boolean showSerialPopup) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 709 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 14:58:21.935 - [9] System.ArgumentException: Cannot set Owner property to itself.
+   at System.Windows.Window.set_Owner(Window value)
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
+[ERROR] 01-13-2014 14:59:13.732 - [9] System.InvalidOperationException: Sequence contains more than one matching element
    at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
-   at CPC.POS.ViewModel.LoginViewModel..ctor(Window loginView) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
-   at CPC.POS.App.<OpenLoginView>b__3(Object , RoutedEventArgs ) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 181
-   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
-   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
-   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
-   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs e)
-   at System.Windows.BroadcastEventHelper.BroadcastEvent(DependencyObject root, RoutedEvent routedEvent)
-   at System.Windows.BroadcastEventHelper.BroadcastLoadedEvent(Object root)
-   at MS.Internal.LoadedOrUnloadedOperation.DoWork()
-   at System.Windows.Media.MediaContext.FireLoadedPendingCallbacks()
-   at System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
-   at System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.Resize(ICompositionTarget resizedCompositionTarget)
-   at System.Windows.Interop.HwndTarget.OnResize()
-   at System.Windows.Interop.HwndTarget.HandleMessage(WindowMessage msg, IntPtr wparam, IntPtr lparam)
-   at System.Windows.Interop.HwndSource.HwndTargetFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
-   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
-   at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
-   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.DefWndProcWrapper(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, Int32 x, Int32 y, Int32 cx, Int32 cy, Int32 flags)
-   at System.Windows.Interop.HwndSource.Resize(Size newSize)
-   at System.Windows.Interop.HwndSource.OnLayoutUpdated(Object obj, EventArgs args)
-   at System.Windows.ContextLayoutManager.fireLayoutUpdateEvent()
-   at System.Windows.ContextLayoutManager.UpdateLayout()
-   at System.Windows.UIElement.UpdateLayout()
-   at System.Windows.Interop.HwndSource.SetLayoutSize()
-   at System.Windows.Interop.HwndSource.set_RootVisualInternal(Visual value)
-   at System.Windows.Interop.HwndSource.set_RootVisual(Visual value)
-   at System.Windows.Window.SetRootVisual()
-   at System.Windows.Window.SetRootVisualAndUpdateSTC()
-   at System.Windows.Window.SetupInitialState(Double requestedTop, Double requestedLeft, Double requestedWidth, Double requestedHeight)
-   at System.Windows.Window.CreateSourceWindow(Boolean duringShow)
-   at System.Windows.Window.CreateSourceWindowDuringShow()
-   at System.Windows.Window.SafeCreateWindowDuringShow()
-   at System.Windows.Window.ShowHelper(Object booleanBox)
-   at System.Windows.Window.Show()
-   at System.Windows.Window.ShowDialog()
-   at CPC.POS.App.OpenLoginView(Boolean ISUpdateOldUser) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 183 [App]
+   at CPC.Service.DialogService.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 370
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
 
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:27:27.281 - [8] OpenLoginViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.LoginViewModel.<.ctor>b__0(ComboItem x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-13-2014 15:09:58.482 - [9] System.ArgumentException: Viewmodel is not referenced by any registered View.
+   at CPC.Service.DialogService.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 373
+   at CPC.Service.DialogService.ShowDialog(Object ownerViewModel, Object viewModel, Type dialogType, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 305
+   at CPC.Service.DialogService.ShowDialog[T](Object ownerViewModel, Object viewModel, String title) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Service\DialogService.cs:line 143
+   at CPC.POS.ViewModel.SalesOrderFrontHandViewModel.UpdateProductPrice(base_ProductModel productModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Front\SalesOrderFrontHandViewModel.cs:line 1366 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:41:12.580]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:50:57.239]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:52:31.271]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:53:50.662]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 15:55:38.288]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:14:55.522]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:31:12.897]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 16:47:41.000]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:15:35.633]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:17:26.320]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:19:48.586]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:39:03.539]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:40:58.851]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-13-2014 17:44:45.789]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 10:13:53.653]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-14-2014 10:49:56.187 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+[ERROR] 01-14-2014 10:50:00.890 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+[ERROR] 01-14-2014 10:50:07.593 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 152 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 10:56:03.178]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-14-2014 11:10:44.548 - [9] System.ArgumentNullException: Value cannot be null.
+Parameter name: dependencyObject
+   at System.Windows.Window.GetWindow(DependencyObject dependencyObject)
+   at CPC.Toolkit.Base.ViewModelBase.FindOwnerWindow(Object viewModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Toolkit\Base\ViewModelBase.cs:line 205
+   at CPC.POS.ViewModel.LockScreenViewModel.OnLoginCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\LockScreenViewModel.cs:line 132 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:11:57.018]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:14:19.645]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:16:20.819]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:21:37.965]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:24:37.811]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:30:32.909]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:32:42.142]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:37:56.547]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:58:25.237]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 11:59:51.191]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:26:14.470]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:28:58.504]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-14-2014 13:45:31.921]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:27:12.731]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-15-2014 10:29:34.415 - [10] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.<>c__DisplayClass44.<GetSaleTax>b__41(base_SaleTaxLocationModel x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
    at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
-   at CPC.POS.ViewModel.LoginViewModel..ctor(Window loginView) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
-   at CPC.POS.App.<OpenLoginView>b__3(Object , RoutedEventArgs ) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 181
-   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
-   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
-   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
-   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs e)
-   at System.Windows.BroadcastEventHelper.BroadcastEvent(DependencyObject root, RoutedEvent routedEvent)
-   at System.Windows.BroadcastEventHelper.BroadcastLoadedEvent(Object root)
-   at MS.Internal.LoadedOrUnloadedOperation.DoWork()
-   at System.Windows.Media.MediaContext.FireLoadedPendingCallbacks()
-   at System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
-   at System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.Resize(ICompositionTarget resizedCompositionTarget)
-   at System.Windows.Interop.HwndTarget.OnResize()
-   at System.Windows.Interop.HwndTarget.HandleMessage(WindowMessage msg, IntPtr wparam, IntPtr lparam)
-   at System.Windows.Interop.HwndSource.HwndTargetFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
-   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
-   at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
-   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.DefWndProcWrapper(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, Int32 x, Int32 y, Int32 cx, Int32 cy, Int32 flags)
-   at System.Windows.Interop.HwndSource.Resize(Size newSize)
-   at System.Windows.Interop.HwndSource.OnLayoutUpdated(Object obj, EventArgs args)
-   at System.Windows.ContextLayoutManager.fireLayoutUpdateEvent()
-   at System.Windows.ContextLayoutManager.UpdateLayout()
-   at System.Windows.UIElement.UpdateLayout()
-   at System.Windows.Interop.HwndSource.SetLayoutSize()
-   at System.Windows.Interop.HwndSource.set_RootVisualInternal(Visual value)
-   at System.Windows.Interop.HwndSource.set_RootVisual(Visual value)
-   at System.Windows.Window.SetRootVisual()
-   at System.Windows.Window.SetRootVisualAndUpdateSTC()
-   at System.Windows.Window.SetupInitialState(Double requestedTop, Double requestedLeft, Double requestedWidth, Double requestedHeight)
-   at System.Windows.Window.CreateSourceWindow(Boolean duringShow)
-   at System.Windows.Window.CreateSourceWindowDuringShow()
-   at System.Windows.Window.SafeCreateWindowDuringShow()
-   at System.Windows.Window.ShowHelper(Object booleanBox)
-   at System.Windows.Window.Show()
-   at System.Windows.Window.ShowDialog()
-   at CPC.POS.App.OpenLoginView(Boolean ISUpdateOldUser) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 183 [App]
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.GetSaleTax(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.SetSaleOrderToModel(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 691 [App]
 
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-23-2013 14:27:47.281 - [10] OpenLoginViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.LoginViewModel.<.ctor>b__0(ComboItem x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-15-2014 10:34:28.445 - [10] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.<>c__DisplayClass44.<GetSaleTax>b__41(base_SaleTaxLocationModel x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
    at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
-   at CPC.POS.ViewModel.LoginViewModel..ctor(Window loginView) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Security\User\LoginViewModel.cs:line 343
-   at CPC.POS.App.<OpenLoginView>b__3(Object , RoutedEventArgs ) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 181
-   at System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
-   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
-   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
-   at System.Windows.UIElement.RaiseEvent(RoutedEventArgs e)
-   at System.Windows.BroadcastEventHelper.BroadcastEvent(DependencyObject root, RoutedEvent routedEvent)
-   at System.Windows.BroadcastEventHelper.BroadcastLoadedEvent(Object root)
-   at MS.Internal.LoadedOrUnloadedOperation.DoWork()
-   at System.Windows.Media.MediaContext.FireLoadedPendingCallbacks()
-   at System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
-   at System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
-   at System.Windows.Media.MediaContext.Resize(ICompositionTarget resizedCompositionTarget)
-   at System.Windows.Interop.HwndTarget.OnResize()
-   at System.Windows.Interop.HwndTarget.HandleMessage(WindowMessage msg, IntPtr wparam, IntPtr lparam)
-   at System.Windows.Interop.HwndSource.HwndTargetFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
-   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
-   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
-   at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
-   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.DefWndProcWrapper(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.CallWindowProc(IntPtr wndProc, IntPtr hWnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
-   at MS.Win32.UnsafeNativeMethods.SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter, Int32 x, Int32 y, Int32 cx, Int32 cy, Int32 flags)
-   at System.Windows.Interop.HwndSource.Resize(Size newSize)
-   at System.Windows.Interop.HwndSource.OnLayoutUpdated(Object obj, EventArgs args)
-   at System.Windows.ContextLayoutManager.fireLayoutUpdateEvent()
-   at System.Windows.ContextLayoutManager.UpdateLayout()
-   at System.Windows.UIElement.UpdateLayout()
-   at System.Windows.Interop.HwndSource.SetLayoutSize()
-   at System.Windows.Interop.HwndSource.set_RootVisualInternal(Visual value)
-   at System.Windows.Interop.HwndSource.set_RootVisual(Visual value)
-   at System.Windows.Window.SetRootVisual()
-   at System.Windows.Window.SetRootVisualAndUpdateSTC()
-   at System.Windows.Window.SetupInitialState(Double requestedTop, Double requestedLeft, Double requestedWidth, Double requestedHeight)
-   at System.Windows.Window.CreateSourceWindow(Boolean duringShow)
-   at System.Windows.Window.CreateSourceWindowDuringShow()
-   at System.Windows.Window.SafeCreateWindowDuringShow()
-   at System.Windows.Window.ShowHelper(Object booleanBox)
-   at System.Windows.Window.Show()
-   at System.Windows.Window.ShowDialog()
-   at CPC.POS.App.OpenLoginView(Boolean ISUpdateOldUser) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 183 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-25-2013 09:24:04.757 - [10] OpenMainWindowViewSystem.Exception: Initial Sale Tax Error
-   at CPC.POS.Repository.base_SaleTaxLocationRepository.CreateDefaulSaleTaxLocation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleTaxLocationRepository.cs:line 337
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2216
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2173
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-25-2013 09:32:40.203 - [10] OpenMainWindowViewSystem.Exception: Initial Sale Tax Error
-   at CPC.POS.Repository.base_SaleTaxLocationRepository.CreateDefaulSaleTaxLocation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleTaxLocationRepository.cs:line 337
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2216
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2173
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-25-2013 09:38:24.459 - [9] OpenMainWindowViewSystem.Exception: Initial Sale Tax Error
-   at CPC.POS.Repository.base_SaleTaxLocationRepository.CreateDefaulSaleTaxLocation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleTaxLocationRepository.cs:line 337
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2216
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2173
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-25-2013 09:53:57.718 - [9] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2218
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2173
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-25-2013 10:19:54.277 - [8] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2218
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2173
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-26-2013 14:55:17.260 - [1] OpenMainWindowViewSystem.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2232
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2187
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-26-2013 15:07:47.753 - [1] OpenMainWindowViewSystem.Exception: Initial Sale Tax Error
-   at CPC.POS.Repository.base_SaleTaxLocationRepository.CreateDefaulSaleTaxLocation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_SaleTaxLocationRepository.cs:line 339
-   at CPC.POS.ViewModel.MainViewModel.LoadTaxLocationAndCode() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2230
-   at CPC.POS.ViewModel.MainViewModel.LoadStatusInformation() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 2187
-   at CPC.POS.ViewModel.MainViewModel..ctor() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\MainViewModel.cs:line 482
-   at CPC.POS.App.OpenMainWindowView() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\App.xaml.cs:line 207 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-26-2013 15:52:35.959 - [1] System.Data.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> Npgsql.NpgsqlException: ERROR: 22001: value too long for type character varying(30)
-   at Npgsql.NpgsqlState.<ProcessBackendResponses_Ver_3>d__a.MoveNext()
-   at Npgsql.ForwardsOnlyDataReader.GetNextResponseObject()
-   at Npgsql.ForwardsOnlyDataReader.GetNextRowDescription()
-   at Npgsql.ForwardsOnlyDataReader.NextResult()
-   at Npgsql.ForwardsOnlyDataReader..ctor(IEnumerable`1 dataEnumeration, CommandBehavior behavior, NpgsqlCommand command, NotificationThreadBlock threadBlock, Boolean synchOnReadError)
-   at Npgsql.NpgsqlCommand.GetReader(CommandBehavior cb)
-   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior cb)
-   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
-   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
-   at System.Data.Mapping.Update.Internal.DynamicUpdateCommand.Execute(UpdateTranslator translator, EntityConnection connection, Dictionary`2 identifierValues, List`1 generatedValues)
-   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
-   --- End of inner exception stack trace ---
-   at System.Data.Mapping.Update.Internal.UpdateTranslator.Update(IEntityStateManager stateManager, IEntityAdapter adapter)
-   at System.Data.EntityClient.EntityAdapter.Update(IEntityStateManager entityCache)
-   at System.Data.Objects.ObjectContext.SaveChanges(SaveOptions options)
-   at System.Data.Objects.ObjectContext.SaveChanges()
-   at CPC.POS.Database.UnitOfWork.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Database\UnitOfWork.cs:line 320
-   at CPC.POS.Repository.base_GuestRepository.Commit() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\Repository\base_GuestRepository.cs:line 239
-   at CPC.POS.ViewModel.CustomerViewModel.SaveNewCustomer() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Customer\CustomerViewModel.cs:line 1740
-   at CPC.POS.ViewModel.CustomerViewModel.SaveCustomer() in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Customer\CustomerViewModel.cs:line 1625 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[ERROR] 12-28-2013 12:12:22.547 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
-   at CPC.POS.ViewModel.CustomerViewModel.OnMergeCustomerCommandExecute(Object param) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\Customer\CustomerViewModel.cs:line 1259 [App]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
-
-[Begin Session - {CPCVN\Kyan Nguyen}]
-[End Session-{timestamp}]
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.GetSaleTax(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.SetSaleOrderToModel(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 691 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[ERROR] 01-15-2014 10:48:43.626 - [9] System.NullReferenceException: Object reference not set to an instance of an object.
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.<>c__DisplayClass44.<GetSaleTax>b__41(base_SaleTaxLocationModel x) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.GetSaleTax(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 982
+   at CPC.POS.ViewModel.LockSalesOrderViewModel.SetSaleOrderToModel(base_SaleOrderModel saleOrderModel) in E:\Projects\POS SOURCE\Source 2013\Project 2013\102013\POS\ViewModel\SalesOrder\LockSalesOrderViewModel.cs:line 691 [App]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 10:53:13.496]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 11:06:20.609]]
+
+[Begin Session-{CPCVN\Kyan Nguyen}]
+[End Session- [01-15-2014 11:15:04.428]]
+
+[Begin Session-{CPCVN\kyan nguyen}]
+[End Session- [01-20-2014 10:59:31.991]]

@@ -19,11 +19,9 @@ namespace CPC.POS.ViewModel
         #region Defines
 
         private base_StoreRepository _storeRepository = new base_StoreRepository();
-        private base_SaleOrderRepository _saleOrderRepository = new base_SaleOrderRepository();
         private base_SaleOrderDetailRepository _saleOrderDetailRepository = new base_SaleOrderDetailRepository();
         private base_SaleOrderShipDetailRepository _saleOrderShipDetailRepository = new base_SaleOrderShipDetailRepository();
         private base_PurchaseOrderDetailRepository _purchaseOrderDetailRepository = new base_PurchaseOrderDetailRepository();
-        private base_ProductUOMRepository _productUOMRepository = new base_ProductUOMRepository();
 
         private ICollectionView _orderDetailCollectionView;
 
@@ -261,42 +259,49 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadOnHandStoreList(base_ProductModel productModel)
         {
-            // Initial product store collection
-            ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
-
-            // Get total stores
-            int totalStores = _storeRepository.GetIQueryable().Count();
-
-            for (int storeCode = 0; storeCode < totalStores; storeCode++)
+            try
             {
-                // Create new product store model
-                base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = storeCode };
-                productStoreModel.Resource = Guid.NewGuid().ToString();
-                productStoreModel.ProductResource = productModel.Resource.ToString();
+                // Initial product store collection
+                ProductStoreCollection = new ObservableCollection<base_ProductStoreModel>();
 
-                // Get product store by store code
-                base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+                // Get total stores
+                int totalStores = _storeRepository.GetIQueryable().Count();
 
-                if (productStoreItem != null)
+                for (int storeCode = 0; storeCode < totalStores; storeCode++)
                 {
-                    productStoreModel.StoreCode = productStoreItem.StoreCode;
-                    productStoreModel.OldQuantity = productStoreItem.OldQuantity;
-                    productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
-                    productStoreModel.QuantityOnOrder = productStoreItem.QuantityOnOrder;
-                    productStoreModel.QuantityOnCustomer = productStoreItem.QuantityOnCustomer;
-                    productStoreModel.QuantityAvailable = productStoreItem.QuantityAvailable;
-                    productStoreModel.Quantity = productStoreItem.QuantityAvailable;
+                    // Create new product store model
+                    base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = storeCode };
+                    productStoreModel.Resource = Guid.NewGuid().ToString();
+                    productStoreModel.ProductResource = productModel.Resource.ToString();
+
+                    // Get product store by store code
+                    base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                    if (productStoreItem != null)
+                    {
+                        productStoreModel.StoreCode = productStoreItem.StoreCode;
+                        productStoreModel.OldQuantity = productStoreItem.OldQuantity;
+                        productStoreModel.QuantityOnHand = productStoreItem.QuantityOnHand;
+                        productStoreModel.QuantityOnOrder = productStoreItem.QuantityOnOrder;
+                        productStoreModel.QuantityOnCustomer = productStoreItem.QuantityOnCustomer;
+                        productStoreModel.QuantityAvailable = productStoreItem.QuantityAvailable;
+                        productStoreModel.Quantity = productStoreItem.QuantityAvailable;
+                    }
+
+                    // Register property changed event
+                    productStoreModel.PropertyChanged += new PropertyChangedEventHandler(productStoreItem_PropertyChanged);
+
+                    // Add product store to list
+                    ProductStoreCollection.Add(productStoreModel);
+
+                    // Get product store default by define store code
+                    if (storeCode.Equals(Define.StoreCode))
+                        ProductStoreDefault = productStoreModel;
                 }
-
-                // Register property changed event
-                productStoreModel.PropertyChanged += new PropertyChangedEventHandler(productStoreItem_PropertyChanged);
-
-                // Add product store to list
-                ProductStoreCollection.Add(productStoreModel);
-
-                // Get product store default by define store code
-                if (storeCode.Equals(Define.StoreCode))
-                    ProductStoreDefault = productStoreModel;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -306,100 +311,107 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadOrderDetailCollection(base_ProductModel productModel)
         {
-            // Get product store by store code
-            base_ProductStore productStore = productModel.base_Product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
-
-            // Get product resource
-            string productResource = productModel.Resource.ToString();
-
-            // Get sale order detail
-            IEnumerable<base_SaleOrderDetail> saleOrderDetails = _saleOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) && !x.base_SaleOrder.IsPurge &&
-                    x.base_SaleOrder.QtyDue > 0 &&
-                    x.base_SaleOrder.StoreCode.Equals(Define.StoreCode));
-
-            IEnumerable<base_SaleOrderShipDetail> saleOrderShipDetails = _saleOrderShipDetailRepository.GetAll(x => x.base_SaleOrderShip.IsShipped);
-
-            // Create sale order detail collection
-            IList<base_SaleOrderDetailModel> saleOrderDetailCollection = new List<base_SaleOrderDetailModel>();
-
-            foreach (IGrouping<long, base_SaleOrderDetail> saleOrderGroup in saleOrderDetails.GroupBy(x => x.SaleOrderId))
+            try
             {
-                // Create new sale order detail model
-                base_SaleOrderDetailModel saleOrderDetailModel = new base_SaleOrderDetailModel();
-                saleOrderDetailModel.DocType = "Sale Order";
-                saleOrderDetailModel.OrderDate = saleOrderGroup.FirstOrDefault().base_SaleOrder.OrderDate.Value;
-                saleOrderDetailModel.DocNo = saleOrderGroup.FirstOrDefault().base_SaleOrder.SONumber;
+                // Get product store by store code
+                base_ProductStore productStore = productModel.base_Product.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(Define.StoreCode));
 
-                if (productStore != null)
+                // Get product resource
+                string productResource = productModel.Resource.ToString();
+
+                // Get sale order detail
+                IEnumerable<base_SaleOrderDetail> saleOrderDetails = _saleOrderDetailRepository.
+                    GetAll(x => x.ProductResource.Equals(productResource) && !x.base_SaleOrder.IsPurge &&
+                        x.base_SaleOrder.QtyDue > 0 &&
+                        x.base_SaleOrder.StoreCode.Equals(Define.StoreCode));
+
+                IEnumerable<base_SaleOrderShipDetail> saleOrderShipDetails = _saleOrderShipDetailRepository.GetAll(x => x.base_SaleOrderShip.IsShipped);
+
+                // Create sale order detail collection
+                IList<base_SaleOrderDetailModel> saleOrderDetailCollection = new List<base_SaleOrderDetailModel>();
+
+                foreach (IGrouping<long, base_SaleOrderDetail> saleOrderGroup in saleOrderDetails.GroupBy(x => x.SaleOrderId))
                 {
-                    foreach (base_SaleOrderDetail saleOrderDetail in saleOrderGroup)
+                    // Create new sale order detail model
+                    base_SaleOrderDetailModel saleOrderDetailModel = new base_SaleOrderDetailModel();
+                    saleOrderDetailModel.DocType = "Sale Order";
+                    saleOrderDetailModel.OrderDate = saleOrderGroup.FirstOrDefault().base_SaleOrder.OrderDate.Value;
+                    saleOrderDetailModel.DocNo = saleOrderGroup.FirstOrDefault().base_SaleOrder.SONumber;
+
+                    if (productStore != null)
                     {
-                        // Get sale order detail resource
-                        string saleOrderDetailResource = saleOrderDetail.Resource.ToString();
+                        foreach (base_SaleOrderDetail saleOrderDetail in saleOrderGroup)
+                        {
+                            // Get sale order detail resource
+                            string saleOrderDetailResource = saleOrderDetail.Resource.ToString();
 
-                        // Group sale order ship detail by sale order detail resource
-                        IGrouping<string, base_SaleOrderShipDetail> saleOrderShipDetailGroup = saleOrderShipDetails.GroupBy(x => x.SaleOrderDetailResource).SingleOrDefault(x => x.Key.Equals(saleOrderDetailResource));
+                            // Group sale order ship detail by sale order detail resource
+                            IGrouping<string, base_SaleOrderShipDetail> saleOrderShipDetailGroup = saleOrderShipDetails.GroupBy(x => x.SaleOrderDetailResource).SingleOrDefault(x => x.Key.Equals(saleOrderDetailResource));
 
-                        // Calculate due quantity
-                        decimal dueQty = saleOrderDetail.Quantity;
-                        if (saleOrderShipDetailGroup != null)
-                            dueQty = saleOrderDetail.Quantity - saleOrderShipDetailGroup.Sum(x => x.PackedQty); ;
+                            // Calculate due quantity
+                            decimal dueQty = saleOrderDetail.Quantity;
+                            if (saleOrderShipDetailGroup != null)
+                                dueQty = saleOrderDetail.Quantity - saleOrderShipDetailGroup.Sum(x => x.PackedQty); ;
 
-                        // Get product UOM
-                        base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetail.UOMId));
+                            // Get product UOM
+                            base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetail.UOMId));
 
-                        if (productUOM != null)
-                            saleOrderDetailModel.Quantity += dueQty * productUOM.BaseUnitNumber;
-                        else
-                            saleOrderDetailModel.Quantity += dueQty;
+                            if (productUOM != null)
+                                saleOrderDetailModel.Quantity += dueQty * productUOM.BaseUnitNumber;
+                            else
+                                saleOrderDetailModel.Quantity += dueQty;
+                        }
                     }
+
+                    // Add new sale order detail to collection
+                    saleOrderDetailCollection.Add(saleOrderDetailModel);
                 }
 
-                // Add new sale order detail to collection
-                saleOrderDetailCollection.Add(saleOrderDetailModel);
-            }
+                // Get purchase order detail
+                IList<base_PurchaseOrderDetail> purchaseOrderDetails = _purchaseOrderDetailRepository.
+                    GetAll(x => x.ProductResource.Equals(productResource) && !x.base_PurchaseOrder.IsPurge &&
+                        x.base_PurchaseOrder.QtyDue > 0 &&
+                        x.base_PurchaseOrder.StoreCode.Equals(Define.StoreCode));
 
-            // Get purchase order detail
-            IList<base_PurchaseOrderDetail> purchaseOrderDetails = _purchaseOrderDetailRepository.
-                GetAll(x => x.ProductResource.Equals(productResource) && !x.base_PurchaseOrder.IsPurge &&
-                    x.base_PurchaseOrder.QtyDue > 0 &&
-                    x.base_PurchaseOrder.StoreCode.Equals(Define.StoreCode));
+                // Create purchase order detail collection
+                IList<base_SaleOrderDetailModel> purchaseOrderDetailCollection = new List<base_SaleOrderDetailModel>();
 
-            // Create purchase order detail collection
-            IList<base_SaleOrderDetailModel> purchaseOrderDetailCollection = new List<base_SaleOrderDetailModel>();
-
-            foreach (IGrouping<long, base_PurchaseOrderDetail> purchaseOrderGroup in purchaseOrderDetails.GroupBy(x => x.PurchaseOrderId))
-            {
-                // Create new purchase order detail model
-                base_SaleOrderDetailModel purchaseOrderDetailModel = new base_SaleOrderDetailModel();
-                purchaseOrderDetailModel.DocType = "Purchase Order";
-                purchaseOrderDetailModel.OrderDate = purchaseOrderGroup.FirstOrDefault().base_PurchaseOrder.PurchasedDate;
-                purchaseOrderDetailModel.DocNo = purchaseOrderGroup.FirstOrDefault().base_PurchaseOrder.PurchaseOrderNo;
-
-                if (productStore != null)
+                foreach (IGrouping<long, base_PurchaseOrderDetail> purchaseOrderGroup in purchaseOrderDetails.GroupBy(x => x.PurchaseOrderId))
                 {
-                    foreach (base_PurchaseOrderDetail purchaseOrderDetail in purchaseOrderGroup)
-                    {
-                        // Get product UOM
-                        base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(purchaseOrderDetail.UOMId));
+                    // Create new purchase order detail model
+                    base_SaleOrderDetailModel purchaseOrderDetailModel = new base_SaleOrderDetailModel();
+                    purchaseOrderDetailModel.DocType = "Purchase Order";
+                    purchaseOrderDetailModel.OrderDate = purchaseOrderGroup.FirstOrDefault().base_PurchaseOrder.PurchasedDate;
+                    purchaseOrderDetailModel.DocNo = purchaseOrderGroup.FirstOrDefault().base_PurchaseOrder.PurchaseOrderNo;
 
-                        if (productUOM != null)
-                            purchaseOrderDetailModel.Quantity += purchaseOrderDetail.DueQty * productUOM.BaseUnitNumber;
-                        else
-                            purchaseOrderDetailModel.Quantity += purchaseOrderDetail.DueQty;
+                    if (productStore != null)
+                    {
+                        foreach (base_PurchaseOrderDetail purchaseOrderDetail in purchaseOrderGroup)
+                        {
+                            // Get product UOM
+                            base_ProductUOM productUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(purchaseOrderDetail.UOMId));
+
+                            if (productUOM != null)
+                                purchaseOrderDetailModel.Quantity += purchaseOrderDetail.DueQty * productUOM.BaseUnitNumber;
+                            else
+                                purchaseOrderDetailModel.Quantity += purchaseOrderDetail.DueQty;
+                        }
                     }
+
+                    // Add new purchase order detail to collection
+                    purchaseOrderDetailCollection.Add(purchaseOrderDetailModel);
                 }
 
-                // Add new purchase order detail to collection
-                purchaseOrderDetailCollection.Add(purchaseOrderDetailModel);
+                // Get all order detail collection
+                OrderDetailCollection = new ObservableCollection<base_SaleOrderDetailModel>(saleOrderDetailCollection.Union(purchaseOrderDetailCollection));
+
+                // Get default view for filter
+                _orderDetailCollectionView = CollectionViewSource.GetDefaultView(OrderDetailCollection);
             }
-
-            // Get all order detail collection
-            OrderDetailCollection = new ObservableCollection<base_SaleOrderDetailModel>(saleOrderDetailCollection.Union(purchaseOrderDetailCollection));
-
-            // Get default view for filter
-            _orderDetailCollectionView = CollectionViewSource.GetDefaultView(OrderDetailCollection);
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -523,7 +535,9 @@ namespace CPC.POS.ViewModel
         {
             get
             {
-                return AllowAccessPermission && SelectedStockStatus == (short)StockStatus.OnHand;
+                return UserPermissions.AllowAccessProductPermission &&
+                    UserPermissions.AllowEditQuantity &&
+                    SelectedStockStatus == (short)StockStatus.OnHand;
             }
         }
 

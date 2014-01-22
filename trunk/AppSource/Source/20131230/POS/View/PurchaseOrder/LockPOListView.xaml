@@ -247,6 +247,9 @@
                                                               TextWrapping="NoWrap"
                                                               Watermark="Keyword"
                                                               BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}">
+                                <i:Interaction.Behaviors>
+                                    <behavior:AutoFocusBehavior />
+                                </i:Interaction.Behaviors>
                                 <xceedWpfToolkit:WatermarkTextBox.InputBindings>
                                     <KeyBinding Key="Enter"
                                                 Command="{Binding SearchPOCommand}" />
@@ -360,7 +363,7 @@
                                     Height="40"
                                     VerticalAlignment="Center"
                                     IsEnabled="{Binding ., ConverterParameter=PO100-02-07, Converter={StaticResource permissionConverter}}"
-                                    Style="{DynamicResource ButtonSystem}">
+                                    Style="{DynamicResource ButtonSystem}" ToolTip="Lock Current Item">
                                 <StackPanel x:Name="stkpBtnPOLock"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"

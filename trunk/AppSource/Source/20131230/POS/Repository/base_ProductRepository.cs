@@ -738,8 +738,6 @@ namespace CPC.POS.Repository
             }
             return null;
         }
-
-
         #endregion
 
         #endregion

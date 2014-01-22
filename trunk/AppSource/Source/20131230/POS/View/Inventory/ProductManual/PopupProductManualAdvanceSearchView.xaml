@@ -86,7 +86,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Style="{DynamicResource TextBlockNormal}"
-                           Text="Scancode"
+                           Text="Scan Code"
                            TextWrapping="NoWrap" />
                 <textBoxControl:TextBox x:Name="txtScancode"
                                         Grid.Row="1"

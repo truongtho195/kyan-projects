@@ -175,6 +175,42 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        private string _regularPriceCompareType;
+        /// <summary>
+        /// Gets or sets the RegularPriceCompareType.
+        /// </summary>
+        public string RegularPriceCompareType
+        {
+            get { return _regularPriceCompareType; }
+            set
+            {
+                if (_regularPriceCompareType != value)
+                {
+                    this.IsDirty = true;
+                    _regularPriceCompareType = value;
+                    OnPropertyChanged(() => RegularPriceCompareType);
+                }
+            }
+        }
+
+        private decimal _regularPrice;
+        /// <summary>
+        /// Gets or sets the RegularPrice.
+        /// </summary>
+        public decimal RegularPrice
+        {
+            get { return _regularPrice; }
+            set
+            {
+                if (_regularPrice != value)
+                {
+                    this.IsDirty = true;
+                    _regularPrice = value;
+                    OnPropertyChanged(() => RegularPrice);
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -258,18 +294,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            base_GuestRepository guestRepository = new base_GuestRepository();
+            try
+            {
+                base_GuestRepository guestRepository = new base_GuestRepository();
 
-            string vendorMark = MarkType.Vendor.ToDescription();
+                string vendorMark = MarkType.Vendor.ToDescription();
 
-            // Load vendor list
-            VendorList = new List<ComboItem>(guestRepository.GetAll(x => !x.IsPurged && x.Mark.Equals(vendorMark)).
-                OrderBy(x => x.Company).
-                Select(x => new ComboItem
-                {
-                    LongValue = x.Id,
-                    Text = x.Company
-                }));
+                // Load vendor list
+                VendorList = new List<ComboItem>(guestRepository.GetAll(x => !x.IsPurged && x.Mark.Equals(vendorMark)).
+                    OrderBy(x => x.Company).
+                    Select(x => new ComboItem
+                    {
+                        LongValue = x.Id,
+                        Text = x.Company
+                    }));
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -331,18 +374,39 @@ namespace CPC.POS.ViewModel
                 {
                     case ">":
                         // Get all products that QuantityOnHand greater than keyword
-                        predicate = predicate.And(x => x.base_ProductStore.
-                            Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand > OnHandQuantity));
+                        predicate = predicate.And(x => x.QuantityOnHand > OnHandQuantity);
+                        //predicate = predicate.And(x => x.base_ProductStore.
+                        //    Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand > OnHandQuantity));
                         break;
                     case "<":
                         // Get all products that QuantityOnHand less than keyword
-                        predicate = predicate.And(x => x.base_ProductStore.
-                            Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand < OnHandQuantity));
+                        predicate = predicate.And(x => x.QuantityOnHand < OnHandQuantity);
+                        //predicate = predicate.And(x => x.base_ProductStore.
+                        //    Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand < OnHandQuantity));
                         break;
                     case "=":
                         // Get all products that QuantityOnHand equal keyword
-                        predicate = predicate.And(x => x.base_ProductStore.
-                            Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand.Equals(OnHandQuantity)));
+                        predicate = predicate.And(x => x.QuantityOnHand == OnHandQuantity);
+                        //predicate = predicate.And(x => x.base_ProductStore.
+                        //    Any(y => y.StoreCode.Equals(Define.StoreCode) && y.QuantityOnHand == OnHandQuantity));
+                        break;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(RegularPriceCompareType))
+            {
+                switch (RegularPriceCompareType)
+                {
+                    case ">":
+                        // Get all products that RegularPrice greater than keyword
+                        predicate = predicate.And(x => x.RegularPrice > RegularPrice);
+                        break;
+                    case "<":
+                        // Get all products that RegularPrice less than keyword
+                        predicate = predicate.And(x => x.RegularPrice < RegularPrice);
+                        break;
+                    case "=":
+                        // Get all products that RegularPrice equal keyword
+                        predicate = predicate.And(x => x.RegularPrice == RegularPrice);
                         break;
                 }
             }

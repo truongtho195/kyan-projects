@@ -185,6 +185,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Update UserLog" + ex.ToString());
             }
         }

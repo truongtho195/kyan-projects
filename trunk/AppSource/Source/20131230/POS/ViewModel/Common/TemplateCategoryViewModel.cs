@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using CPC.Toolkit.Base;
-using System.Windows.Input;
-using CPC.Toolkit.Command;
 using System.IO;
-using CPC.POS.Repository;
-using CPC.POS.Database;
-using CPC.Helper;
-using CPC.POS.Model;
-using CPC.POS.Interfaces;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using CPC.Helper;
+using CPC.POS.Database;
+using CPC.POS.Interfaces;
+using CPC.POS.Model;
+using CPC.POS.Repository;
 using CPC.Service.FrameworkDialogs.OpenFile;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {

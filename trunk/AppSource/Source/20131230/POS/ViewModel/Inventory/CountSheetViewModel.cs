@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
-using CPC.Control;
+using System.Windows.Threading;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
 using CPC.POS.Repository;
+using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Globalization;
-using System.Threading;
 
 namespace CPC.POS.ViewModel
 {
-    class CountSheetViewModel : ViewModelBase
+    class CountSheetViewModel : ViewModelBase, IDropTarget
     {
         #region Define
         //To define command to use it in class.
@@ -28,26 +29,31 @@ namespace CPC.POS.ViewModel
         public RelayCommand DeleteCommand { get; private set; }
         public RelayCommand<object> SearchCommand { get; private set; }
         public RelayCommand<object> DoubleClickViewCommand { get; private set; }
-        public RelayCommand ApplyCommand { get; private set; }
+        public RelayCommand<object> ApplyCommand { get; private set; }
         public RelayCommand RestoreCommand { get; private set; }
-        public RelayCommand<object> FilterProductCommand { get; private set; }
         //To define repository to use it in class.
         private base_StoreRepository _storeRepository = new base_StoreRepository();
         private base_CountStockRepository _countStockRepository = new base_CountStockRepository();
         private base_CountStockDetailRepository _countStockDetailRepository = new base_CountStockDetailRepository();
-        private base_PricingManagerRepository _pricingManagerRepository = new base_PricingManagerRepository();
-        private base_ResourceNoteRepository _resourceNoteRepository = new base_ResourceNoteRepository();
         private base_ProductRepository _productRepository = new base_ProductRepository();
-        private base_PricingChangeRepository _pricingChangeRepository = new base_PricingChangeRepository();
         private base_GuestRepository _vendorRepository = new base_GuestRepository();
         private base_DepartmentRepository _departmentRepository = new base_DepartmentRepository();
         private base_ProductStoreRepository _productStoreRepository = new base_ProductStoreRepository();
         //To get type of affectpricing.
         private string _typeAffectPricing = string.Empty;
-        //To define SelectedCountStockClone to use it in class.
-        private base_CountStockModel _selectedCountStockClone { get; set; }
 
-        private bool _requireWaitingLoadStore = false;
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
+
+        private bool _isTransferFromProduct = false;
+        private object _productCloneCollection = null;
         #endregion
 
         #region Constructors
@@ -57,6 +63,14 @@ namespace CPC.POS.ViewModel
             _ownerViewModel = App.Current.MainWindow.DataContext;
             this.InitialCommand();
             this.InitialData();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         public CountSheetViewModel(bool isList, object param = null)
@@ -109,11 +123,6 @@ namespace CPC.POS.ViewModel
                     this.OnPropertyChanged(() => SelectedCountStock);
                 }
             }
-        }
-
-        private void SelectedCountStock_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
         }
         #endregion
 
@@ -230,46 +239,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region IsIncludeAccountLocked
-        protected bool _isIncludeAccountLocked;
-        /// <summary>
-        /// Property Model
-        /// <para>Gets or sets the IsIncludeAccountLocked</para>
-        /// </summary>
-        public bool IsIncludeAccountLocked
-        {
-            get { return this._isIncludeAccountLocked; }
-            set
-            {
-                if (this._isIncludeAccountLocked != value)
-                {
-                    this._isIncludeAccountLocked = value;
-                    OnPropertyChanged(() => IsIncludeAccountLocked);
-                    this.SetVisibilityData(value);
-                }
-            }
-        }
-        #endregion
-
-        #region EnableFilteringData
-        /// <summary>
-        /// To get , set value when enable colunm.
-        /// </summary>
-        private bool _enableFilteringData = true;
-        public bool EnableFilteringData
-        {
-            get { return _enableFilteringData; }
-            set
-            {
-                if (_enableFilteringData != value)
-                {
-                    _enableFilteringData = value;
-                    OnPropertyChanged(() => EnableFilteringData);
-                }
-            }
-        }
-        #endregion
-
         #region CurrentPageIndex
         /// <summary>
         /// Gets or sets the CurrentPageIndex.
@@ -325,6 +294,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                     this.Keyword = this.FilterText;
                 }
@@ -350,13 +320,6 @@ namespace CPC.POS.ViewModel
             }
         }
 
-        #endregion
-
-        #region NotePopupCollection
-        /// <summary>
-        /// Gets or sets the NotePopupCollection.
-        /// </summary>
-        public ObservableCollection<PopupContainer> NotePopupCollection { get; set; }
         #endregion
 
         #region ShowOrHiddenNote
@@ -414,14 +377,11 @@ namespace CPC.POS.ViewModel
                     _selectedStore = value;
                     this.OnPropertyChanged(() => SelectedStore);
                     this.IsSetAllQuantity = false;
-                    if (this.SelectedStore != null)
-                    {
-                        Expression<Func<base_ProductStore, bool>> predicate = PredicateBuilder.True<base_ProductStore>();
-                        predicate = this.CreateProductPredicate(this.StoreCollection.IndexOf(this.SelectedStore));
-                        this.LoadProductWithStore(predicate, true);
-                        this.SelectedCountStock.IsDirty = true;
-                        this.SelectedCountStock.IsChangeProductCollection = true;
-                    }
+                    if (this.SelectedStore != null && this.SelectedCountStock.CountStockDetailCollection != null
+                       && (this.SelectedCountStock.CountStockDetailCollection.Count == 0 || (this.SelectedCountStock.CountStockDetailCollection.Count > 0 && this.SelectedCountStock.CountStockDetailCollection.First().StoreId != this.StoreCollection.IndexOf(this.SelectedStore))))
+                        this.IsChangeStore = true;
+                    else
+                        this.IsChangeStore = false;
                 }
             }
         }
@@ -512,6 +472,27 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region IsChangeStore
+        protected bool _isChangeStore;
+        /// <summary>
+        /// Property Model
+        /// <para>Gets or sets the IsChangeStore</para>
+        /// </summary>
+        public bool IsChangeStore
+        {
+            get { return this._isChangeStore; }
+            set
+            {
+                if (this._isChangeStore != value)
+                {
+                    this._isChangeStore = value;
+                    OnPropertyChanged(() => IsChangeStore);
+
+                }
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Commands Methods
@@ -543,14 +524,12 @@ namespace CPC.POS.ViewModel
                 this.SelectedCountStock.IsLoad = true;
                 this.SelectedCountStock.Status = 1;
                 this.SelectedCountStock.DateCreated = DateTimeExt.Now;
-                this.SelectedCountStock.CountStockDetailCollection = new ObservableCollection<base_CountStockDetailModel>();
-                this.TotalProducts = this.SelectedCountStock.CountStockDetailCollection.Count;
-                _requireWaitingLoadStore = true;
-                this.SelectedStore = this.StoreCollection.ElementAt(Define.StoreCode);
-                _requireWaitingLoadStore = false;
+                if (this.StoreCollection != null)
+                    this.SelectedStore = this.StoreCollection.ElementAt(Define.StoreCode);
                 this.SelectedCountStock.IsDirty = false;
                 this.SelectedCountStock.IsLoad = false;
                 this.SelectedCountStock.IsChangeProductCollection = false;
+                this.SelectedCountStock.CountStockDetailCollection = new CollectionBase<base_CountStockDetailModel>();
                 //To set enable of detail grid.
                 this.IsSearchMode = false;
             }
@@ -564,7 +543,30 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnEditCommandCanExecute(object param)
         {
-            return this.IsValid && (this.SelectedCountStock != null && !this.SelectedCountStock.IsDirty && this.SelectedCountStock.Status == 2);
+            return (param == null || (param is ObservableCollection<object> && ((param as ObservableCollection<object>).Count == 0 || (param as ObservableCollection<object>).Count > 1))) ? false : true;
+        }
+
+        private void OnEditCommandExecute(object param)
+        {
+            try
+            {
+                this.IsSetAllQuantity = false;
+                this.SelectedStore = null;
+                this.SelectedCountStock = (param as ObservableCollection<object>)[0] as base_CountStockModel;
+                //this.SetCountSheetDetail();
+                this.SelectedCountStock.CountStockDetailCollection = new CollectionBase<base_CountStockDetailModel>();
+                this.SelectedCountStock.IsChangeProductCollection = false;
+                this.LoadSteepCountDetail();
+                this.SelectedCountStock.EndUpdate();
+                //To set enable of detail grid.
+                this.IsSearchMode = false;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Debug.WriteLine("OnDuplicateCommandExecute" + ex.ToString());
+            }
+
         }
         #endregion
 
@@ -584,41 +586,40 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                this.SelectedCountStock.Shift = Define.ShiftCode;
-                // TODO: Handle command logic here
-                if (this.SelectedCountStock.IsNew)
-                    this.Insert();
-                else
-                    this.Update();
-                this.SelectedCountStock.ToModelAndRaise();
-                this.SelectedCountStock.EndUpdate();
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+                    this.SelectedCountStock.Shift = Define.ShiftCode;
+                    // TODO: Handle command logic here
+                    if (this.SelectedCountStock.IsNew)
+                        this.Insert();
+                    else
+                        this.Update();
+                    bgWorker.ReportProgress(0, "save");
+                };
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                };
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    base.IsBusy = false;
+                    if (this.SelectedCountStock.IsNew)
+                        this.CountStockCollection.Insert(0, this.SelectedCountStock);
+                    this.SelectedCountStock.ToModelAndRaise();
+                    this.SelectedCountStock.EndUpdate();
+                    this.SelectedCountStock.IsChangeProductCollection = false;
+                    this.TotalCountSheet = this.CountStockCollection.Count;
+                    this.IsChangeStore = false;
+                };
+                bgWorker.RunWorkerAsync();
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex);
             }
-        }
-        #endregion
-
-        #region DeleteCommand
-        /// <summary>
-        /// Method to check whether the DeleteCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnDeleteCommandCanExecute()
-        {
-            if (this.SelectedCountStock != null)
-                return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Method to invoke when the DeleteCommand command is executed.
-        /// </summary>
-        private void OnDeleteCommandExecute()
-        {
-            // TODO: Handle command logic here
-            this.Delete();
         }
         #endregion
 
@@ -636,16 +637,17 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
                 // TODO: Handle command logic here
                 this.SearchAlert = string.Empty;
-                if ((param == null || string.IsNullOrWhiteSpace(param.ToString())))//Search All
+                if (string.IsNullOrWhiteSpace(Keyword))//Search All
                 {
                     Expression<Func<base_CountStock, bool>> predicate = PredicateBuilder.True<base_CountStock>();
                     this.LoadCountSheet(predicate, false, 0);
                 }
-                else if (param != null)
+                else
                 {
-                    this.Keyword = param.ToString();
                     Expression<Func<base_CountStock, bool>> predicate = this.CreateSearchPredicate(this.Keyword);
                     this.LoadCountSheet(predicate, false, 0);
                 }
@@ -662,8 +664,9 @@ namespace CPC.POS.ViewModel
                 DateTime dateTime = DateTime.Parse(this.Keyword);
                 return (!dateTime.ToString().Equals("1/1/0001") && this.Keyword.Contains("/") && this.Keyword.Length >= 8);
             }
-            catch
+            catch (Exception ex)
             {
+                _log4net.Error(ex);
                 return false;
             }
 
@@ -691,7 +694,12 @@ namespace CPC.POS.ViewModel
             if (param != null && this.IsSearchMode)
             {
                 this.IsSearchMode = false;
-                this.SetCountSheetDetail();
+                this.SelectedCountStock = param as base_CountStockModel;
+                //this.SetCountSheetDetail();
+                this.SelectedCountStock.CountStockDetailCollection = new CollectionBase<base_CountStockDetailModel>();
+                this.SelectedCountStock.IsChangeProductCollection = false;
+                this.LoadSteepCountDetail();
+                this.SelectedCountStock.EndUpdate();
             }
             else if (this.IsSearchMode)
                 //To show detail form.
@@ -715,7 +723,6 @@ namespace CPC.POS.ViewModel
         {
             return true;
         }
-
         /// <summary>
         /// Method to invoke when the LoadStep command is executed.
         /// </summary>
@@ -729,21 +736,23 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region FilterProductCommand
+        #region LoadProductByStepCommand
+
+        public RelayCommand<object> LoadProductByStepCommand { get; private set; }
         /// <summary>
-        /// Method use to filter product.
+        /// Method to check whether the LoadStep command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnFilterProductCommandCanExecute(object param)
+        private bool OnLoadProductStepCommandCanExecute(object param)
         {
-            return true;
+            return false;
         }
         /// <summary>
         /// Method to invoke when the LoadStep command is executed.
         /// </summary>
-        private void OnFilterProductCommandExecute(object param)
+        private void OnLoadProductStepCommandExecute(object param)
         {
-            bool isLoad = false;
+            this.LoadSteepCountDetail();
         }
         #endregion
 
@@ -752,14 +761,22 @@ namespace CPC.POS.ViewModel
         /// Method to check whether the ApplyCommand command can be executed.
         /// </summary>
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnApplyCommandCanExecute()
+        private bool OnApplyCommandCanExecute(object param)
         {
+            if (this.IsValid && param != null
+               && param is ObservableCollection<object>
+               && (param as ObservableCollection<object>).Count == 1)
+            {
+                base_CountStockModel model = (param as ObservableCollection<object>)[0] as base_CountStockModel;
+                if (model != null && !model.IsDirty && !model.IsNew && model.Status == 2 && model.HasValue)
+                    return true;
+            }
             return (this.SelectedCountStock != null && !this.SelectedCountStock.IsDirty && !this.SelectedCountStock.IsNew && this.SelectedCountStock.Status == 2 && this.SelectedCountStock.HasValue);
         }
         /// <summary>
         /// Method to invoke when the ApplyCommand command is executed.
         /// </summary>
-        private void OnApplyCommandExecute()
+        private void OnApplyCommandExecute(object param)
         {
             //To close product view
             if ((this._ownerViewModel as MainViewModel).IsOpenedView("Product"))
@@ -770,7 +787,12 @@ namespace CPC.POS.ViewModel
             string content = string.Format(Language.Text22);
             MessageBoxResult msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(content, Language.Information, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (msgResult.Is(MessageBoxResult.Yes))
+            {
+                //To apply that change product.
+                if (param != null && param is ObservableCollection<object>)
+                    this.SelectedCountStock = (param as ObservableCollection<object>)[0] as base_CountStockModel;
                 this.Apply();
+            }
         }
         #endregion
 
@@ -812,6 +834,98 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region SearchProductAdvanceCommand
+        /// <summary>
+        /// Gets the SearchProductAdvance Command.
+        /// <summary>
+        public RelayCommand<object> SearchProductAdvanceCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Method to check whether the SearchProductAdvance command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSearchProductAdvanceCommandCanExecute(object param)
+        {
+            return this.SelectedStore != null && this.SelectedCountStock != null && this.SelectedCountStock.CountStockDetailCollection != null && this.SelectedCountStock.Status < 3;
+        }
+        /// <summary>
+        /// Method to invoke when the SearchProductAdvance command is executed.
+        /// </summary>
+        private void OnSearchProductAdvanceCommandExecute(object param)
+        {
+            try
+            {
+                if (this.IsChangeStore)
+                {
+                    this.IsChangeStore = false;
+                    this.SelectedCountStock.CountStockDetailCollection.Clear();
+                    this.TotalProducts = 0;
+                    this.SelectedCountStock.IsChangeProductCollection = true;
+                }
+                int storeIndex = this.StoreCollection.IndexOf(this.SelectedStore);
+                ProductSearchViewModel productSearchViewModel = new ProductSearchViewModel(false, false, false, false, false, false, storeIndex);
+                bool? dialogResult = _dialogService.ShowDialog<ProductSearchView>(_ownerViewModel, productSearchViewModel, "Count Sheet");
+                string temp = string.Empty;
+                if (dialogResult == true)
+                {
+                    foreach (var item in productSearchViewModel.SelectedProducts)
+                    {
+                        string productResource = item.Resource.ToString();
+                        if (this.SelectedCountStock.CountStockDetailCollection.Count == 0
+                            || this.SelectedCountStock.CountStockDetailCollection.Count(x => x.ProductResource == productResource) == 0)
+                        {
+                            base_CountStockDetailModel model = new base_CountStockDetailModel();
+                            model.ProductId = item.Id;
+                            model.ProductCode = item.Code;
+                            model.ProductResource = item.Resource.ToString();
+                            model.StoreId = Int16.Parse(storeIndex.ToString());
+                            model.Quantity = item.QuantityOnHand;
+                            model.Attribute = item.Attribute;
+                            model.Size = item.Size;
+                            model.Description = item.Description;
+                            model.ProductName = item.ProductName;
+                            if (this.IsSetAllQuantity)
+                            {
+                                model.CountedQty = 0;
+                                model.IsSetCounted = true;
+                            }
+                            else
+                            {
+                                model.Difference = null;
+                                model.CountedQty = null;
+                            }
+                            model.IsCounted = false;
+                            model.EndUpdate();
+                            model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+                            //To add item.
+                            this.SelectedCountStock.IsDirty = true;
+                            this.SelectedCountStock.CountStockDetailCollection.Add(model);
+                            this.TotalProducts = this.SelectedCountStock.CountStockDetailCollection.Count();
+                        }
+                        else
+                        {
+                            temp += string.Format("{0},", item.ProductName);
+                        }
+                    }
+                    if (temp.Length > 0)
+                    {
+                        temp = temp.Remove(temp.Length - 1);
+                        Xceed.Wpf.Toolkit.MessageBox.Show(string.Format("{0} {1}", temp, " have(has) existed !"), "Count Sheet");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -821,12 +935,10 @@ namespace CPC.POS.ViewModel
         private void InitialData()
         {
             this.LoadStore();
-            this.NotePopupCollection = new ObservableCollection<PopupContainer>();
-            this.NotePopupCollection.CollectionChanged += (sender, e) => { OnPropertyChanged(() => ShowOrHiddenNote); };
         }
         #endregion
 
-        #region SearchPricing
+        #region SearchCountSheet
         /// <summary>
         /// Create predicate with condition for search
         /// </summary>
@@ -870,13 +982,19 @@ namespace CPC.POS.ViewModel
             }
             return predicate;
         }
-
         private Expression<Func<base_ProductStore, bool>> CreateProductPredicate(int storeId)
         {
             // Initial predicate
             Expression<Func<base_ProductStore, bool>> predicate = PredicateBuilder.True<base_ProductStore>();
             // Set conditions for predicate
+            short itemTypeGroup = (short)ItemTypes.Group;
+            short itemTypeServices = (short)ItemTypes.Services;
+            short itemInsurance = (short)ItemTypes.Insurance;
             predicate = predicate.And(x => x.StoreCode == storeId);
+            predicate = predicate.And(x => x.base_Product.ItemTypeId != itemTypeGroup
+                  && x.base_Product.ItemTypeId != itemTypeServices
+                  && x.base_Product.ItemTypeId != itemInsurance);
+            //predicate = predicate.And(x => x.base_Product.IsPurge.HasValue && !x.base_Product.IsPurge.Value);
             return predicate;
         }
         #endregion
@@ -889,36 +1007,15 @@ namespace CPC.POS.ViewModel
         {
             // Route the commands
             this.NewCommand = new RelayCommand<object>(this.OnNewCommandExecute, this.OnNewCommandCanExecute);
-            this.EditCommand = new RelayCommand<object>(this.OnDoubleClickViewCommandExecute, this.OnEditCommandCanExecute);
+            this.EditCommand = new RelayCommand<object>(this.OnEditCommandExecute, this.OnEditCommandCanExecute);
             this.SaveCommand = new RelayCommand(this.OnSaveCommandExecute, this.OnSaveCommandCanExecute);
-            this.DeleteCommand = new RelayCommand(this.OnDeleteCommandExecute, this.OnDeleteCommandCanExecute);
             this.SearchCommand = new RelayCommand<object>(this.OnSearchCommandExecute, this.OnSearchCommandCanExecute);
             this.DoubleClickViewCommand = new RelayCommand<object>(this.OnDoubleClickViewCommandExecute, this.OnDoubleClickViewCommandCanExecute);
             this.LoadStepCommand = new RelayCommand<object>(this.OnLoadStepCommandExecute, this.OnLoadStepCommandCanExecute);
-            this.FilterProductCommand = new RelayCommand<object>(this.OnFilterProductCommandExecute, this.OnFilterProductCommandCanExecute);
-            this.ApplyCommand = new RelayCommand(this.OnApplyCommandExecute, this.OnApplyCommandCanExecute);
+            this.ApplyCommand = new RelayCommand<object>(this.OnApplyCommandExecute, this.OnApplyCommandCanExecute);
             this.DeleteCountStockDetailCommand = new RelayCommand<object>(OnDeleteSaleOrderDetailCommandExecute, OnDeleteSaleOrderDetailCommandCanExecute);
-        }
-        #endregion
-
-        #region LoadProduct
-        //To load product.
-        private void LoadProduct()
-        {
-            try
-            {
-                this.ProductCollection.Clear();
-                IEnumerable<base_Product> _products = _productRepository.GetIEnumerable();
-                foreach (var item in _products)
-                {
-                    base_ProductModel _productModel = new base_ProductModel(item);
-                    this.ProductCollection.Add(_productModel);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("LoadProduct" + ex.ToString());
-            }
+            this.LoadProductByStepCommand = new RelayCommand<object>(this.OnLoadProductStepCommandExecute, this.OnLoadProductStepCommandCanExecute);
+            this.SearchProductAdvanceCommand = new RelayCommand<object>(OnSearchProductAdvanceCommandExecute, OnSearchProductAdvanceCommandCanExecute);
         }
         #endregion
 
@@ -931,7 +1028,8 @@ namespace CPC.POS.ViewModel
                 this.CountStockCollection.Clear();
             bgWorker.DoWork += (sender, e) =>
             {
-                base.IsBusy = true;
+                if (Define.DisplayLoading)
+                    IsBusy = true;
                 //To get data with range
                 int indexItem = 0;
                 if (currentIndex > 1)
@@ -944,6 +1042,7 @@ namespace CPC.POS.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    _log4net.Error(ex);
                     MessageBox.Show(ex.ToString());
                     throw;
                 }
@@ -961,73 +1060,19 @@ namespace CPC.POS.ViewModel
             };
             bgWorker.RunWorkerCompleted += (sender, e) =>
             {
-                if (this._selectedCountStockClone != null && !this.IsSearchMode)
+                //To count sheet from product.
+                if (this._isTransferFromProduct && this._productCloneCollection != null)
                 {
-                    this.SelectedCountStock = this.CountStockCollection.SingleOrDefault(x => x.Id == this._selectedCountStockClone.Id);
-                    this.SetCountSheetDetail();
-                    this._selectedCountStockClone = null;
+                    this.CountSheetFromProduct(_productCloneCollection as IEnumerable<base_ProductModel>);
+                    this._isTransferFromProduct = false;
+                    this._productCloneCollection = null;
                 }
+
                 //To count all User in Data base show on grid
                 this.TotalCountSheet = _countStockRepository.GetIQueryable().Count();
                 base.IsBusy = false;
             };
             bgWorker.RunWorkerAsync();
-        }
-        #endregion
-
-        #region LoadProductWithStore
-        //To load product with store from DB.
-        private void LoadProductWithStore(Expression<Func<base_ProductStore, bool>> predicate, bool refreshData = false, int currentIndex = 0)
-        {
-            AutoResetEvent doneEvent = null;
-            if (_requireWaitingLoadStore)
-                doneEvent = new AutoResetEvent(false);
-            BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
-            if (currentIndex == 0)
-                this.SelectedCountStock.CountStockDetailCollection.Clear();
-            bgWorker.DoWork += (sender, e) =>
-            {
-                
-                //if(refreshData)
-                //To add item.
-                short itemTypeGroup = (short)ItemTypes.Group;
-                short itemTypeServices = (short)ItemTypes.Services;
-                short itemInsurance = (short)ItemTypes.Insurance;
-                IEnumerable<base_ProductStore> productStores = _productStoreRepository.GetAll(predicate).Where(x => x.base_Product.ItemTypeId != itemTypeGroup && x.base_Product.ItemTypeId != itemTypeServices && x.base_Product.ItemTypeId != itemInsurance).OrderBy(x => x.StoreCode);
-                foreach (var productStore in productStores)
-                    bgWorker.ReportProgress(0, productStore);
-                if (_requireWaitingLoadStore)
-                    doneEvent.Set();
-            };
-            bgWorker.ProgressChanged += (sender, e) =>
-            {
-                base_ProductStore productStore = e.UserState as base_ProductStore;
-                base_CountStockDetailModel model = new base_CountStockDetailModel();
-                model.ProductId = productStore.base_Product.Id;
-                model.ProductCode = productStore.base_Product.Code;
-                model.ProductResource = productStore.base_Product.Resource.ToString();
-                model.StoreId = Int16.Parse(productStore.StoreCode.ToString());
-                model.Quantity = productStore.QuantityOnHand;
-                model.Attribute = productStore.base_Product.Attribute;
-                model.Size = productStore.base_Product.Size;
-                model.Description = productStore.base_Product.Description;
-                model.ProductName = productStore.base_Product.ProductName;
-                model.Difference = null;
-                model.IsCounted = false;
-                model.EndUpdate();
-                model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
-                this.SelectedCountStock.CountStockDetailCollection.Add(model);
-            };
-            bgWorker.RunWorkerCompleted += (sender, e) =>
-            {
-                
-                //To count all User in Data base show on grid
-                this.TotalProducts = this.SelectedCountStock.CountStockDetailCollection.Count;
-            };
-            bgWorker.RunWorkerAsync();
-
-            if (_requireWaitingLoadStore && doneEvent!=null)
-                doneEvent.WaitOne();
         }
         #endregion
 
@@ -1048,6 +1093,7 @@ namespace CPC.POS.ViewModel
                         model.CountedQuantity = model.CountedQty;
                         this.SelectedCountStock.IsDirty = true;
                         this.SelectedCountStock.IsChangeProductCollection = true;
+                        this.SelectedCountStock.IsChangeQty = true;
                         break;
                 }
         }
@@ -1094,12 +1140,10 @@ namespace CPC.POS.ViewModel
                         if (isClosing.HasValue && !isClosing.Value)
                             this.IsSearchMode = true;
                         this.SelectedCountStock = null;
-                        this._selectedCountStockClone = this.SelectedCountStock;
                     }
                     else //Old Item Rollback data
                     {
                         this.RollBackCountSheet();
-                        this._selectedCountStockClone = this.SelectedCountStock;
                     }
                 }
             }
@@ -1107,14 +1151,6 @@ namespace CPC.POS.ViewModel
             {
                 if (this.SelectedCountStock != null && this.SelectedCountStock.IsNew)
                     this.IsSearchMode = true;
-                else
-                {
-                    if (this.SelectedCountStock != null && !this.SelectedCountStock.IsNew && !this.IsSearchMode)
-                    {
-                        this._selectedCountStockClone = null;
-                        this._selectedCountStockClone = this.SelectedCountStock;
-                    }
-                }
             }
             return result;
         }
@@ -1128,14 +1164,11 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                //MessageBoxResult msgResult = MessageBoxResult.None;
-                //msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text23, Language.Warning, MessageBoxButton.YesNo);
-                //if (msgResult.Is(MessageBoxResult.Yes))
-                //{
                 this.SelectedCountStock.UserCreated = Define.USER.LoginName;
                 this.SelectedCountStock.DateCreated = DateTime.Now;
                 this.SelectedCountStock.Status = 2;
                 this.SelectedCountStock.ToEntity();
+                //To insert data into database.
                 foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
                 {
                     item.CountedQuantity = item.CountedQty;
@@ -1144,6 +1177,7 @@ namespace CPC.POS.ViewModel
                     item.IsCounted = true;
                     item.EndUpdate();
                 }
+                //To set Enable of Context Menu when user updates data.
                 if (this.SelectedCountStock.CountStockDetailCollection.Count(x => !x.Difference.HasValue) > 0)
                     this.SelectedCountStock.HasValue = false;
                 else
@@ -1151,15 +1185,12 @@ namespace CPC.POS.ViewModel
                 this._countStockRepository.Add(this.SelectedCountStock.base_CountStock);
                 this._countStockRepository.Commit();
                 this.SelectedCountStock.Id = this.SelectedCountStock.base_CountStock.Id;
-                this.CountStockCollection.Insert(0, this.SelectedCountStock);
-                this.SelectedCountStock.EndUpdate();
-                this.SelectedCountStock.IsChangeProductCollection = false;
                 App.WriteUserLog("CountStock", "User counted a stock." + this.SelectedCountStock.Id);
-                this.TotalCountSheet = this.CountStockCollection.Count;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Insert" + ex.ToString());
+                _log4net.Error(ex);
+                MessageBox.Show("Insert" + ex.ToString());
             }
         }
         #endregion
@@ -1172,47 +1203,54 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                this.SelectedCountStock.Shift = Define.ShiftCode;
-                this.SelectedCountStock.UserCounted = Define.USER.LoginName;
-                this.SelectedCountStock.CompletedDate = DateTimeExt.Now;
-                this.SelectedCountStock.Status = 3;
-                this.SelectedCountStock.ToEntity();
-                foreach (var item in this.SelectedCountStock.base_CountStock.base_CountStockDetail)
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+                bgWorker.DoWork += (sender, e) =>
                 {
-                    this._productRepository.UpdateOnHandQuantity(item.ProductResource, item.StoreId, item.Quantity, true);
-                    this._productRepository.UpdateOnHandQuantity(item.ProductResource, item.StoreId, item.CountedQuantity.Value);
-                }
-                this._pricingManagerRepository.Commit();
-                this.SelectedCountStock.EndUpdate();
-                this.SelectedCountStock.IsEnable = false;
-                this.SelectedCountStock.IsLoad = false;
-                this.SelectedCountStock.IsChangeProductCollection = false;
-                App.WriteUserLog("CountStock", "User applied stock count." + this.SelectedCountStock.Id);
+                    if (Define.DisplayLoading)
+                        IsBusy = true;
+                    try
+                    {
+                        this.SelectedCountStock.Shift = Define.ShiftCode;
+                        this.SelectedCountStock.UserCounted = Define.USER.LoginName;
+                        this.SelectedCountStock.CompletedDate = DateTimeExt.Now;
+                        this.SelectedCountStock.Status = 3;
+                        this.SelectedCountStock.ToEntity();
+                        foreach (var item in this.SelectedCountStock.base_CountStock.base_CountStockDetail)
+                        {
+                            this._productRepository.UpdateOnHandQuantity(item.ProductResource, item.StoreId, item.Quantity, true);
+                            this._productRepository.UpdateOnHandQuantity(item.ProductResource, item.StoreId, item.CountedQuantity.Value);
+                        }
+                        this._countStockRepository.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log4net.Error(ex);
+                        MessageBox.Show("Apply", ex.ToString());
+                    }
+                    bgWorker.ReportProgress(0, "Apply");
+                };
+
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+
+                };
+
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    base.IsBusy = false;
+                    this.SelectedCountStock.EndUpdate();
+                    this.SelectedCountStock.IsEnable = false;
+                    this.SelectedCountStock.IsLoad = false;
+                    this.IsChangeStore = false;
+                    this.SelectedCountStock.IsChangeProductCollection = false;
+                    App.WriteUserLog("CountStock", "User applied stock count." + this.SelectedCountStock.Id);
+                };
+                bgWorker.RunWorkerAsync();
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Update" + ex.ToString());
-            }
-        }
-        #endregion
-
-        #region Delete
-        /// <summary>
-        /// To update IsLock on base_ResoureceAccount table.
-        /// </summary>
-        private void Delete()
-        {
-            try
-            {
-                MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to lock this account?", "Notification", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Delete" + ex.ToString());
             }
         }
         #endregion
@@ -1225,39 +1263,69 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                //MessageBoxResult msgResult = MessageBoxResult.None;
-                //msgResult = Xceed.Wpf.Toolkit.MessageBox.Show(Language.Text23, Language.Warning, MessageBoxButton.YesNo);
-                //if (msgResult.Is(MessageBoxResult.Yes))
-                //{
-                this.SelectedCountStock.Shift = Define.ShiftCode;
                 this.SelectedCountStock.Status = 2;
                 this.SelectedCountStock.ToEntity();
-                if (this.SelectedCountStock.IsChangeProductCollection)
+                //To clear data in base_CountStockDetail entity when user changes the store.
+                int storeIndex = this.StoreCollection.IndexOf(this.SelectedStore);
+                if (storeIndex >= 0 && this.SelectedCountStock.base_CountStock.base_CountStockDetail.First().StoreId != storeIndex)
                 {
+                    this.IsChangeStore = true;
                     _countStockDetailRepository.Delete(this.SelectedCountStock.base_CountStock.base_CountStockDetail);
                     this.SelectedCountStock.base_CountStock.base_CountStockDetail.Clear();
-                    _pricingChangeRepository.Commit();
+                }
+
+                //To set data when user deletes data in the datagrid.
+                if (this.SelectedCountStock.CountStockDetailCollection.DeletedItems.Count > 0
+                    && this.SelectedCountStock.base_CountStock.base_CountStockDetail.Count > 0)
+                {
+                    foreach (var item in this.SelectedCountStock.CountStockDetailCollection.DeletedItems)
+                    {
+                        if (_countStockDetailRepository.Get(x => x.Id == item.base_CountStockDetail.Id) != null)
+                            _countStockDetailRepository.Delete(item.base_CountStockDetail);
+                        this.SelectedCountStock.base_CountStock.base_CountStockDetail.Remove(item.base_CountStockDetail);
+                    }
+                }
+
+                //To update data in base_CountStockDetail entity when user uses loading step in the datagrid.
+                if (this.IsSetAllQuantity && this.SelectedCountStock.base_CountStock.base_CountStockDetail != null)
+                {
+                    int skipCount = this.SelectedCountStock.CountStockDetailCollection.Count;
+                    int takeCount = this.SelectedCountStock.base_CountStock.base_CountStockDetail.Count - skipCount;
+                    IEnumerable<base_CountStockDetail> countDetails = this.SelectedCountStock.base_CountStock.base_CountStockDetail.Skip(skipCount).Take(takeCount);
+                    foreach (var item in countDetails)
+                    {
+                        item.CountStockId = this.SelectedCountStock.Id;
+                        item.CountedQuantity = 0;
+                        item.Difference = item.CountedQuantity - item.Quantity;
+                    }
+                }
+
+                //To update data in CountStockDetail Collection.
+                if (this.SelectedCountStock.IsChangeProductCollection)
+                {
                     foreach (var item in this.SelectedCountStock.CountStockDetailCollection)
                     {
+                        item.CountStockId = this.SelectedCountStock.Id;
                         item.CountedQuantity = item.CountedQty;
                         item.ToEntity();
-                        this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
+                        if (this.IsChangeStore)
+                            this.SelectedCountStock.base_CountStock.base_CountStockDetail.Add(item.base_CountStockDetail);
                         item.IsCounted = true;
                         item.EndUpdate();
                         App.WriteUserLog("CountStock", "User update stock count." + this.SelectedCountStock.Id);
                     }
                 }
-                if (this.SelectedCountStock.CountStockDetailCollection.Count(x => !x.Difference.HasValue) > 0)
+                //To set Enable of Context Menu when user updates data.
+                if (this.SelectedCountStock.base_CountStock.base_CountStockDetail.Count(x => !x.Difference.HasValue) > 0)
                     this.SelectedCountStock.HasValue = false;
                 else
                     this.SelectedCountStock.HasValue = true;
-                this._pricingManagerRepository.Commit();
-                this.SelectedCountStock.EndUpdate();
-                this.SelectedCountStock.IsChangeProductCollection = false;
-                //}
+                //To commit data.
+                this._countStockRepository.Commit();
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Update" + ex.ToString());
             }
         }
@@ -1270,146 +1338,6 @@ namespace CPC.POS.ViewModel
                 return false;
 
             return (this.SelectedCountStock.IsDirty);
-        }
-        #endregion
-
-        #region SetIsCheckedUserRight
-        /// <summary>
-        /// To set IsChecked on UserRight DataGrid.
-        /// </summary>
-        private void SetIsCheckedUserRight()
-        {
-
-        }
-        #endregion
-
-        #region SetDefaultValue
-        /// <summary>
-        /// To set default value for fields.
-        /// </summary>
-        private void SetDefaultValue()
-        {
-
-        }
-        #endregion
-
-        #region RollBackData
-        /// <summary>
-        /// To rollback data when user click Cancel.
-        /// </summary>
-        private void RollBackData(bool isChangeItem)
-        {
-
-        }
-        #endregion
-
-        #region VisibilityData
-        /// <summary>
-        ///To show item when user check into Check Box.
-        /// </summary>
-        private void SetVisibilityData(bool value)
-        {
-
-        }
-        #endregion
-
-        #region ChangeCurrentPrice
-        //To changecurrent price when user change list product.
-        private void ChangeCurrentPrice()
-        {
-
-        }
-        #endregion
-
-        #region ChangeDataOfProduct
-        /// <summary>
-        /// To change price of product.
-        /// </summary>
-        /// <param name="basePriceID"></param>
-        private void ChangeDataOfProduct(int basePriceID)
-        {
-
-        }
-        #endregion
-
-        #region CalculationData
-        /// <summary>
-        /// To calculate price of product.
-        /// </summary>
-        /// <param name="calculationType"></param>
-        /// <param name="number1"></param>
-        /// <param name="amountValue"></param>
-        /// <param name="amountUnit"></param>
-        /// <returns></returns>
-        private decimal CalculationData(short calculationType, decimal number1, decimal amountValue, short amountUnit)
-        {
-            decimal number2 = 0;
-            //To get Type of Amount ( % or $ ) 
-            if (amountUnit == 2)
-                number2 = amountValue;
-            else
-                number2 = number1 * (amountValue / 100);
-            if (number2 == 0) return 0;
-            //To get calulation.
-            if (calculationType == 1) // Plus
-                return number1 + number2;
-            else if (calculationType == 2)
-                return number1 - number2; //Subtract
-            else if (calculationType == 3)
-                return number1 * number2; //Multiple 
-            else
-                return number1 / number2;//Divide
-        }
-        #endregion
-
-        #region ReturnPrice
-        /// <summary>
-        /// To return type of price 
-        /// </summary>
-        /// <param name="priceLevel">it is string of priceLevel.</param>
-        /// <param name="product">It is a item of product.</param>
-        /// <returns></returns>
-        private decimal ReturnPrice(string priceLevel, base_ProductModel product)
-        {
-
-            return 0;
-        }
-        #endregion
-
-        #region SetProductPrice
-        /// <summary>
-        /// To set type of price 
-        /// </summary>
-        /// <param name="priceLevel">it is string of priceLevel.</param>
-        /// <param name="product">It is a item of product.</param>
-        /// <returns></returns>
-        private void SetProductPrice(base_Product product, base_ProductModel productModel)
-        {
-
-        }
-        #endregion
-
-        #region RestoreProductPrice
-        /// <summary>
-        /// To restore type of price 
-        /// </summary>
-        /// <param name="priceLevel">it is string of priceLevel.</param>
-        /// <param name="product">It is a item of product.</param>
-        /// <returns></returns>
-        private void RestoreProductPrice(base_Product product, base_PricingChange pricingChange)
-        {
-
-        }
-        #endregion
-
-        #region IsActiveChangData
-        /// <summary>
-        /// To check condition to execute method..
-        /// </summary>
-        /// <returns></returns>
-        private bool IsActiveChangData()
-        {
-            return true;
         }
         #endregion
 
@@ -1445,7 +1373,6 @@ namespace CPC.POS.ViewModel
                         if (isClosing.HasValue && !isClosing.Value)
                             this.IsSearchMode = true;
                         this.SelectedCountStock = null;
-                        this._selectedCountStockClone = this.SelectedCountStock;
                     }
                     else
                     {
@@ -1479,10 +1406,10 @@ namespace CPC.POS.ViewModel
             {
                 this.SelectedCountStock.IsLoad = true;
                 //To load CountSheetDetail.
-                this.SelectedCountStock.CountStockDetailCollection = new ObservableCollection<base_CountStockDetailModel>();
+                this.SelectedCountStock.CountStockDetailCollection = new CollectionBase<base_CountStockDetailModel>();
                 foreach (var productStore in this.SelectedCountStock.base_CountStock.base_CountStockDetail)
                 {
-                    base_Product product = _productRepository.GetIQueryable(x => x.Id == productStore.ProductId).SingleOrDefault();
+                    base_Product product = _productRepository.Get(x => x.Id == productStore.ProductId);
                     if (product != null)
                     {
                         base_CountStockDetailModel model = new base_CountStockDetailModel(productStore);
@@ -1506,6 +1433,123 @@ namespace CPC.POS.ViewModel
             }
         }
         #endregion
+
+        #region LoadSteepCountDetail
+        private void LoadSteepCountDetail()
+        {
+            if (this.SelectedCountStock != null
+                && this.SelectedCountStock.base_CountStock.base_CountStockDetail != null
+                && !this.IsChangeStore)
+            {
+                //this.SelectedCountStock.base_CountStock.base_CountStockDetail.Skip(100)
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+                bgWorker.DoWork += (sender, e) =>
+              {
+                  if (Define.DisplayLoading)
+                      IsBusy = true;
+                  //To count all User in Data base show on grid.
+                  this.TotalProducts = this.SelectedCountStock.base_CountStock.base_CountStockDetail.Count;
+                  //To get data with range.
+                  int skipCount = this.SelectedCountStock.CountStockDetailCollection.Count;
+                  int takeCount = this.NumberOfDisplayItems;
+                  IEnumerable<base_CountStockDetail> countDetails = this.SelectedCountStock.base_CountStock.base_CountStockDetail.Skip(skipCount).Take(takeCount);
+                  foreach (var item in countDetails)
+                      bgWorker.ReportProgress(0, item);
+              };
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    base_CountStockDetail countDetail = e.UserState as base_CountStockDetail;
+                    Guid productResource = Guid.Parse(countDetail.ProductResource);
+                    base_Product product = _productRepository.Get(x => x.Resource == productResource);
+                    if (product != null)
+                    {
+                        base_CountStockDetailModel model = new base_CountStockDetailModel(countDetail);
+                        model.Attribute = product.Attribute;
+                        model.Size = product.Size;
+                        model.CountedQty = model.CountedQuantity;
+                        model.Description = product.Description;
+                        model.ProductName = product.ProductName;
+                        model.ProductCode = product.Code;
+                        model.IsCounted = true;
+                        model.EndUpdate();
+                        model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+                        this.SelectedCountStock.CountStockDetailCollection.Add(model);
+                    }
+                };
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    if (this.SelectedCountStock.CountStockDetailCollection.Count(x => !x.Difference.HasValue) > 0)
+                        this.SelectedCountStock.HasValue = false;
+                    this.SelectedCountStock.IsLoad = false;
+                    if (!this.SelectedCountStock.IsChangeProductCollection)
+                        this.SelectedCountStock.EndUpdate();
+                    base.IsBusy = false;
+                };
+                bgWorker.RunWorkerAsync();
+            }
+        }
+
+        #endregion
+
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
+
+        #region CountSheetFromProduct
+        //To send product counted from ProductView.
+        private void CountSheetFromProduct(IEnumerable<base_ProductModel> productCollection)
+        {
+            //To show detail form.
+            this.OnNewCommandExecute(null);
+            foreach (var item in productCollection)
+            {
+                base_CountStockDetailModel model = new base_CountStockDetailModel();
+                model.ProductId = item.Id;
+                model.ProductCode = item.Code;
+                model.ProductResource = item.Resource.ToString();
+                model.StoreId = Int16.Parse(Define.StoreCode.ToString());
+                model.Quantity = item.QuantityOnHand;
+                model.Attribute = item.Attribute;
+                model.Size = item.Size;
+                model.Description = item.Description;
+                model.ProductName = item.ProductName;
+                model.IsCounted = false;
+                model.EndUpdate();
+                model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+                //To add item.
+                this.SelectedCountStock.IsDirty = true;
+                this.SelectedCountStock.CountStockDetailCollection.Add(model);
+                this.TotalProducts = this.SelectedCountStock.CountStockDetailCollection.Count();
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Methods
@@ -1556,8 +1600,33 @@ namespace CPC.POS.ViewModel
                         this.IsSearchMode = true;
                 }
             }
+            else
+            {
+                this._isTransferFromProduct = true;
+                this._productCloneCollection = param;
+            }
         }
         #endregion
+
+        #endregion
+
+        #region IDropTarget Members
+
+        public void DragOver(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+        }
+
+        public void Drop(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Count Sheet", dropInfo.Data);
+            }
+        }
 
         #endregion
     }

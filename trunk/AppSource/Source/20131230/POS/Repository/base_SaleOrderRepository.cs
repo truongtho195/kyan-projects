@@ -17,6 +17,7 @@ using CPC.POS.Model;
 using System.Collections.ObjectModel;
 using CPC.Helper;
 using System.ComponentModel;
+using log4net;
 
 namespace CPC.POS.Repository
 {
@@ -282,6 +283,11 @@ namespace CPC.POS.Repository
 
         #region Custom Code
 
+        #region Define
+        // Static member variables
+        protected readonly ILog _log4net = LogManager.GetLogger(typeof(App).Name);
+        #endregion
+
         /// <summary>
         /// Take a few objects in sequence was sorted by descending on server
         /// </summary>
@@ -313,6 +319,7 @@ namespace CPC.POS.Repository
                 base_GuestAddress billAdress = guestModel.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == (int)AddressType.Billing);
                 saleOrderModel.BillAddressModel = new CPC.POS.Model.base_GuestAddressModel(billAdress);
                 saleOrderModel.BillAddress = saleOrderModel.BillAddressModel.Text;
+                saleOrderModel.BillAddressId = saleOrderModel.BillAddressModel.Id;
             }
             else
             {
@@ -324,6 +331,7 @@ namespace CPC.POS.Repository
                 base_GuestAddress shippAdress = guestModel.base_Guest.base_GuestAddress.SingleOrDefault(x => x.AddressTypeId == (int)AddressType.Shipping);
                 saleOrderModel.ShipAddressModel = new CPC.POS.Model.base_GuestAddressModel(shippAdress);
                 saleOrderModel.ShipAddress = saleOrderModel.ShipAddressModel.Text;
+                saleOrderModel.ShipAddressId = saleOrderModel.ShipAddressModel.Id;
             }
             else
             {
@@ -381,50 +389,57 @@ namespace CPC.POS.Repository
         /// </summary>
         public void UpdateQtyOrderNRelate(CPC.POS.Model.base_SaleOrderModel saleOrderModel)
         {
-            decimal totalQuantityBaseUom = 0;
-            decimal totalPickQtyUom = 0;
-            foreach (CPC.POS.Model.base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderDetailCollection)
+            try
             {
-                if (saleOrderDetail.ProductModel != null && !saleOrderDetail.ProductModel.IsCoupon)
+                decimal totalQuantityBaseUom = 0;
+                decimal totalPickQtyUom = 0;
+                foreach (CPC.POS.Model.base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderDetailCollection)
                 {
-                    decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
-                    totalQuantityBaseUom += quantityBaseUnit * saleOrderDetail.Quantity;
-                }
-            }
-
-            //if (saleOrderModel.SaleOrderShippedCollection != null)
-            //{
-            //    foreach (CPC.POS.Model.base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderShippedCollection)
-            //    {
-            //        if (!saleOrderDetail.ProductModel.IsCoupon && !saleOrderDetail.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
-            //        {
-            //            decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
-            //            totalPickQtyUom += quantityBaseUnit * saleOrderDetail.PickQty;
-            //        }
-            //    }
-            //}
-
-            if (saleOrderModel.SaleOrderShipDetailCollection != null)
-            {
-                foreach (CPC.POS.Model.base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderModel.SaleOrderShipDetailCollection)
-                {
-                    //Get SaleOrderDetailModel 
-                    base_SaleOrderDetailModel saleOrderDetailModel = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
-
-                    if (!saleOrderDetailModel.ProductModel.IsCoupon && !saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
+                    if (saleOrderDetail.ProductModel != null && !saleOrderDetail.ProductModel.IsCoupon)
                     {
-                        decimal quantityBaseUnit = saleOrderDetailModel.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetailModel.UOMId)).BaseUnitNumber;
-                        totalPickQtyUom += quantityBaseUnit * saleOrderShipDetailModel.PackedQty;
+                        decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
+                        totalQuantityBaseUom += quantityBaseUnit * saleOrderDetail.Quantity;
                     }
                 }
+
+                //if (saleOrderModel.SaleOrderShippedCollection != null)
+                //{
+                //    foreach (CPC.POS.Model.base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderShippedCollection)
+                //    {
+                //        if (!saleOrderDetail.ProductModel.IsCoupon && !saleOrderDetail.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
+                //        {
+                //            decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
+                //            totalPickQtyUom += quantityBaseUnit * saleOrderDetail.PickQty;
+                //        }
+                //    }
+                //}
+
+                if (saleOrderModel.SaleOrderShipDetailCollection != null)
+                {
+                    foreach (CPC.POS.Model.base_SaleOrderShipDetailModel saleOrderShipDetailModel in saleOrderModel.SaleOrderShipDetailCollection)
+                    {
+                        //Get SaleOrderDetailModel 
+                        base_SaleOrderDetailModel saleOrderDetailModel = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderShipDetailModel.SaleOrderDetailResource));
+
+                        if (!saleOrderDetailModel.ProductModel.IsCoupon && !saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
+                        {
+                            decimal quantityBaseUnit = saleOrderDetailModel.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetailModel.UOMId)).BaseUnitNumber;
+                            totalPickQtyUom += quantityBaseUnit * saleOrderShipDetailModel.PackedQty;
+                        }
+                    }
+                }
+
+
+
+                saleOrderModel.QtyOrdered = totalQuantityBaseUom;
+                saleOrderModel.QtyReceived = totalPickQtyUom;
+                saleOrderModel.CalcDueQty();
+                saleOrderModel.CalUnfill();
             }
-
-
-
-            saleOrderModel.QtyOrdered = totalQuantityBaseUom;
-            saleOrderModel.QtyReceived = totalPickQtyUom;
-            saleOrderModel.CalcDueQty();
-            saleOrderModel.CalUnfill();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -655,7 +670,7 @@ namespace CPC.POS.Repository
             }
             else
             {
-                if (saleOrderModel.TaxLocationModel != null && Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Single))
+                if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null && Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is(SalesTaxOption.Single))
                 {
                     base_SaleTaxLocationOptionModel taxOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
                     if (taxOptionModel != null)
@@ -693,7 +708,7 @@ namespace CPC.POS.Repository
             {
                 result = 0;
             }
-            else if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel!=null)
+            else if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null)
             {
                 if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Multi))
                 {
@@ -731,31 +746,38 @@ namespace CPC.POS.Repository
         {
             decimal result = 0;
 
-            if (saleOrderModel.IsTaxExemption)
+            try
             {
-                result = 0;
+                if (saleOrderModel.IsTaxExemption)
+                {
+                    result = 0;
+                }
+                else if (saleOrderModel.TaxLocationModel != null && saleOrderModel.TaxLocationModel.TaxCodeModel != null)
+                {
+                    if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Multi))
+                    {
+                        if (!saleOrderDetailModel.ProductModel.IsCoupon)//not calculate tax for coupon
+                            result = CalcMultiTaxForItem(saleOrderModel.TaxLocationModel.SaleTaxLocationOptionCollection, amount, saleOrderDetailModel.SalePrice);
+
+                    }
+                    else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Price))
+                    {
+                        base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
+
+                        if (!saleOrderDetailModel.ProductModel.IsCoupon)
+                            result = CalcPriceDependentItem(amount, saleOrderDetailModel.SalePrice, saleTaxLocationOptionModel);
+                    }
+                    else
+                    {
+                        base_SaleTaxLocationOptionModel taxOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
+                        if (taxOptionModel != null)
+                            result = amount * taxOptionModel.TaxRate / 100;
+                    }
+                }
             }
-            else if (saleOrderModel.TaxLocationModel != null)
+            catch (Exception ex)
             {
-                if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Multi))
-                {
-                    if (!saleOrderDetailModel.ProductModel.IsCoupon)//not calculate tax for coupon
-                        result = CalcMultiTaxForItem(saleOrderModel.TaxLocationModel.SaleTaxLocationOptionCollection, amount, saleOrderDetailModel.SalePrice);
-
-                }
-                else if (Convert.ToInt32(saleOrderModel.TaxLocationModel.TaxCodeModel.TaxOption).Is((int)SalesTaxOption.Price))
-                {
-                    base_SaleTaxLocationOptionModel saleTaxLocationOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
-
-                    if (!saleOrderDetailModel.ProductModel.IsCoupon)
-                        result = CalcPriceDependentItem(amount, saleOrderDetailModel.SalePrice, saleTaxLocationOptionModel);
-                }
-                else
-                {
-                    base_SaleTaxLocationOptionModel taxOptionModel = saleOrderModel.TaxLocationModel.TaxCodeModel.SaleTaxLocationOptionCollection.FirstOrDefault();
-                    if (taxOptionModel != null)
-                        result = amount * taxOptionModel.TaxRate / 100;
-                }
+                throw ex;
             }
 
 
@@ -773,12 +795,17 @@ namespace CPC.POS.Repository
         /// <param name="saleOderDetailModel"></param>
         public void ResetProductDiscount(base_SaleOrderModel saleOrderModel, base_SaleOrderDetailModel saleOderDetailModel)
         {
-            saleOderDetailModel.DiscountPercent = 0;
-            saleOderDetailModel.UnitDiscount = Math.Round(saleOderDetailModel.RegularPrice * saleOderDetailModel.DiscountPercent, 0);
-            saleOderDetailModel.SalePrice = saleOderDetailModel.RegularPrice;
-            saleOderDetailModel.DiscountAmount = saleOderDetailModel.SalePrice;
-            saleOderDetailModel.TotalDiscount = Math.Round(saleOderDetailModel.UnitDiscount * saleOderDetailModel.Quantity, 0);
-            HandleOnSaleOrderDetailModel(saleOrderModel, saleOderDetailModel);
+            if (!saleOderDetailModel.IsManual)
+            {
+                saleOderDetailModel.DiscountPercent = 0;
+                saleOderDetailModel.UnitDiscount = Math.Round(saleOderDetailModel.RegularPrice * saleOderDetailModel.DiscountPercent, 0);
+                saleOderDetailModel.SalePrice = saleOderDetailModel.RegularPrice;
+                saleOderDetailModel.DiscountAmount = saleOderDetailModel.SalePrice;
+                saleOderDetailModel.TotalDiscount = Math.Round(saleOderDetailModel.UnitDiscount * saleOderDetailModel.Quantity, 0);
+                //saleOderDetailModel.PromotionId = 0;
+                //saleOderDetailModel.PromotionName = string.Empty;
+                HandleOnSaleOrderDetailModel(saleOrderModel, saleOderDetailModel);
+            }
         }
 
         /// <summary>
@@ -803,28 +830,35 @@ namespace CPC.POS.Repository
         /// <param name="saleOrderDetailModel"></param>
         public void CalcOnHandStore(base_SaleOrderModel saleOrderModel, base_SaleOrderDetailModel saleOrderDetailModel)
         {
-            if (Define.CONFIGURATION.IsAllowNegativeStore.HasValue && !Define.CONFIGURATION.IsAllowNegativeStore.Value && !saleOrderDetailModel.ProductModel.IsCoupon)
+            try
             {
-                decimal totalQuantityBaseUom = 0;
-                //Sum all of products in salesOrderDetail with baseUnit to "totalQuantityBaseUom"
-                foreach (base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderDetailCollection.Where(x => x.ProductResource.Equals(saleOrderDetailModel.ProductResource)))
+                if (Define.CONFIGURATION.IsAllowNegativeStore.HasValue && !Define.CONFIGURATION.IsAllowNegativeStore.Value && !saleOrderDetailModel.ProductModel.IsCoupon)
                 {
-                    decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
-                    totalQuantityBaseUom += quantityBaseUnit * saleOrderDetail.DueQty;
-                }
-                decimal quantityOnHand = GetUpdateProduct(saleOrderModel.StoreCode, saleOrderDetailModel.ProductModel);
+                    decimal totalQuantityBaseUom = 0;
+                    //Sum all of products in salesOrderDetail with baseUnit to "totalQuantityBaseUom"
+                    foreach (base_SaleOrderDetailModel saleOrderDetail in saleOrderModel.SaleOrderDetailCollection.Where(x => x.ProductResource.Equals(saleOrderDetailModel.ProductResource)))
+                    {
+                        decimal quantityBaseUnit = saleOrderDetail.ProductUOMCollection.Single(x => x.UOMId.Equals(saleOrderDetail.UOMId)).BaseUnitNumber;
+                        totalQuantityBaseUom += quantityBaseUnit * saleOrderDetail.DueQty;
+                    }
+                    decimal quantityOnHand = GetUpdateProduct(saleOrderModel.StoreCode, saleOrderDetailModel.ProductModel);
 
-                saleOrderDetailModel.OnHandQty = quantityOnHand;
-                if (totalQuantityBaseUom > quantityOnHand)
-                    saleOrderDetailModel.IsQuantityAccepted = false;
+                    saleOrderDetailModel.OnHandQty = quantityOnHand;
+                    if (totalQuantityBaseUom > quantityOnHand)
+                        saleOrderDetailModel.IsQuantityAccepted = false;
+                    else
+                        saleOrderDetailModel.IsQuantityAccepted = true;
+                }
                 else
                     saleOrderDetailModel.IsQuantityAccepted = true;
-            }
-            else
-                saleOrderDetailModel.IsQuantityAccepted = true;
 
-            if (saleOrderModel.SaleOrderDetailCollection != null)
-                saleOrderModel.IsHiddenErrorColumn = !saleOrderModel.SaleOrderDetailCollection.Any(x => !x.IsQuantityAccepted);
+                if (saleOrderModel.SaleOrderDetailCollection != null)
+                    saleOrderModel.IsHiddenErrorColumn = !saleOrderModel.SaleOrderDetailCollection.Any(x => !x.IsQuantityAccepted);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            } 
         }
 
         /// <summary>
@@ -835,29 +869,33 @@ namespace CPC.POS.Repository
         /// <param name="promotionModel"></param>
         public void CalcProductDiscount(base_SaleOrderModel saleOrderModel, base_SaleOrderDetailModel salesOrderDetailModel)
         {
-            if (salesOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && (salesOrderDetailModel.RegularPrice < salesOrderDetailModel.SalePrice || salesOrderDetailModel.ProductModel.IsCoupon))
-                return;
-
-            //group Product relation with saleoderDetailModel.product & Promotion id
-            var saleOrderDetailGroup = saleOrderModel.SaleOrderDetailCollection.Where(x => x.ProductResource.Equals(salesOrderDetailModel.ProductResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && string.IsNullOrWhiteSpace(salesOrderDetailModel.ParentResource)).GroupBy(x => x.PromotionId);
-            foreach (var saleOrderDetailCollection in saleOrderDetailGroup)
+            try
             {
-                int promotionId = saleOrderDetailCollection.Key.Value;
-                base_Promotion promotion = UnitOfWork.Get<base_Promotion>(x => x.Id.Equals(promotionId));
+                if (salesOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && (salesOrderDetailModel.RegularPrice < salesOrderDetailModel.SalePrice || salesOrderDetailModel.ProductModel.IsCoupon))
+                    return;
 
-                if (promotion == null)
-                    continue;
-
-                //Sum the same of Product & all of them more than quantity of Promotion
-                decimal sumOfItem = saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && x.UOMId.Equals(salesOrderDetailModel.ProductModel.BaseUOMId) && !x.IsManual).Sum(x => x.Quantity);
-
-                switch (promotion.PromotionTypeId)
+                //group Product relation with saleoderDetailModel.product & Promotion id
+                var saleOrderDetailGroup = saleOrderModel.SaleOrderDetailCollection.Where(x => x.ProductResource.Equals(salesOrderDetailModel.ProductResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && string.IsNullOrWhiteSpace(salesOrderDetailModel.ParentResource)).GroupBy(x => x.PromotionId);
+                foreach (var saleOrderDetailCollection in saleOrderDetailGroup)
                 {
-                    case 1: //% off
-                        foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection)
-                        {
-                            if (IsAcceptedPromotion(promotion, saleOrderModel, saleOrderDetailModel))
+                    int promotionId = saleOrderDetailCollection.Key.Value;
+                    base_Promotion promotion = UnitOfWork.Get<base_Promotion>(x => x.Id.Equals(promotionId));
+
+                    if (promotion == null)
+                        continue;
+
+                    UnitOfWork.Refresh<base_Promotion>(promotion);
+
+                    //Sum the same of Product & all of them more than quantity of Promotion
+                    decimal sumOfItem = saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && x.UOMId.Equals(salesOrderDetailModel.ProductModel.BaseUOMId) && !x.IsManual).Sum(x => x.Quantity);
+
+                    switch (promotion.PromotionTypeId)
+                    {
+                        case 1: //% off
+                            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection)
                             {
+                                //if (IsAcceptedPromotion(promotion, saleOrderModel, saleOrderDetailModel))
+                                //{
                                 if (saleOrderDetailModel.UOMId.Equals(saleOrderDetailModel.ProductModel.BaseUOMId) && !saleOrderDetailModel.IsManual)
                                 {
                                     //saleOrderDetailModel.IsManual = false;
@@ -871,20 +909,20 @@ namespace CPC.POS.Repository
                                     saleOrderDetailModel.TotalDiscount = saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity;
                                     HandleOnSaleOrderDetailModel(saleOrderModel, saleOrderDetailModel);
                                 }
-                            }
-                            else
-                            {
-                                if (!saleOrderDetailModel.IsManual)
-                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                            }
+                                //}
+                                //else
+                                //{
+                                //    if (!saleOrderDetailModel.IsManual)
+                                //        ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                //}
 
-                        }
-                        break;
-                    case 2://$ off
-                        foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection)
-                        {
-                            if (IsAcceptedPromotion(promotion, saleOrderModel, saleOrderDetailModel))
+                            }
+                            break;
+                        case 2://$ off
+                            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection)
                             {
+                                //if (IsAcceptedPromotion(promotion, saleOrderModel, saleOrderDetailModel))
+                                //{
                                 if (saleOrderDetailModel.UOMId.Equals(saleOrderDetailModel.ProductModel.BaseUOMId) && !saleOrderDetailModel.IsManual)
                                 {
                                     if (saleOrderDetailModel.RegularPrice > promotion.TakeOff)
@@ -904,68 +942,34 @@ namespace CPC.POS.Repository
                                     else
                                         ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
                                 }
+                                //}
+                                //else
+                                //{
+                                //    if (!saleOrderDetailModel.IsManual)
+                                //        ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                //}
                             }
-                            else
+                            break;
+                        case 3://Buy X for $Y
+                            #region Buy x for $Y
+                            decimal sumOfMoney = saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && x.UOMId.Equals(salesOrderDetailModel.ProductModel.BaseUOMId) && !x.IsManual).Sum(x => x.RegularPrice * x.Quantity);
+
+                            //if (IsAcceptedPromotion(promotion, saleOrderModel, salesOrderDetailModel) && sumOfItem >= promotion.BuyingQty && salesOrderDetailModel.RegularPrice >= promotion.TakeOff)
+                            //{
+                            if (sumOfItem >= promotion.BuyingQty && salesOrderDetailModel.RegularPrice >= promotion.TakeOff)
                             {
-                                if (!saleOrderDetailModel.IsManual)
-                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                            }
-                        }
-                        break;
-                    case 3://Buy X for $Y
-                        #region Buy x for $Y
-                        decimal sumOfMoney = saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && x.UOMId.Equals(salesOrderDetailModel.ProductModel.BaseUOMId) && !x.IsManual).Sum(x => x.RegularPrice * x.Quantity);
-                        if (IsAcceptedPromotion(promotion, saleOrderModel, salesOrderDetailModel) && sumOfItem >= promotion.BuyingQty && salesOrderDetailModel.RegularPrice >= promotion.TakeOff)
-                        {
-                            if (promotion.IsApplyToAboveQuantities) //apply discount when user buy more than "promotionModel.BuyingQty" 
-                            {
-                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
+                                if (promotion.IsApplyToAboveQuantities) //apply discount when user buy more than "promotionModel.BuyingQty" 
                                 {
-                                    if (saleOrderDetailModel.UOMId == saleOrderDetailModel.ProductModel.BaseUOMId && !saleOrderDetailModel.IsManual)//apply only base Units
+                                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
                                     {
-                                        //saleOrderDetailModel.PromotionId = promotionModel.Id;
-                                        //saleOrderDetailModel.IsManual = false;
-                                        //////Calculate Discount
-                                        //so tien giảm trên 1 đơn vi
-                                        saleOrderDetailModel.UnitDiscount = Math.Round(saleOrderDetailModel.RegularPrice - promotion.TakeOff, 2);
-                                        saleOrderDetailModel.DiscountPercent = saleOrderDetailModel.UnitDiscount / saleOrderDetailModel.RegularPrice;
-
-                                        //Tổng số tiền dc giảm trên tổng số sản phẩm
-                                        saleOrderDetailModel.TotalDiscount = Math.Round(saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity, 2);
-
-                                        //So tien dc giam trên 1 đợn vi
-                                        saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
-                                        saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
-                                        saleOrderDetailModel.CalcSubTotal();
-                                        saleOrderDetailModel.CalcDueQty();
-                                        saleOrderDetailModel.CalUnfill();
-                                    }
-                                }
-                            }
-                            else //IsApplyToAboveQuantities=false && seperate multi part with  promotionModel.BuyingQty
-                            {
-                                decimal numberOfItemDiscount = sumOfItem - (sumOfItem % promotion.BuyingQty);
-
-                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
-                                {
-                                    decimal quantityRemain = saleOrderDetailModel.Quantity;//back up first quantity when item remove will be lost
-                                    if (numberOfItemDiscount > 0)
-                                    {
-                                        if (saleOrderDetailModel.UOMId != saleOrderDetailModel.ProductModel.BaseUOMId || saleOrderDetailModel.Quantity == 0 || saleOrderDetailModel.IsManual)
-                                        {
-                                            if (!saleOrderDetailModel.IsManual) // not reset discount is manual
-                                                ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                                            continue;
-                                        }
-
-                                        if (saleOrderDetailModel.Quantity <= numberOfItemDiscount)
+                                        if (saleOrderDetailModel.UOMId == saleOrderDetailModel.ProductModel.BaseUOMId && !saleOrderDetailModel.IsManual)//apply only base Units
                                         {
                                             //saleOrderDetailModel.PromotionId = promotionModel.Id;
                                             //saleOrderDetailModel.IsManual = false;
                                             //////Calculate Discount
                                             //so tien giảm trên 1 đơn vi
-                                            saleOrderDetailModel.UnitDiscount = Math.Round(Math.Round(saleOrderDetailModel.RegularPrice - promotion.TakeOff, 2) - 0.01M, MidpointRounding.AwayFromZero);
-                                            saleOrderDetailModel.DiscountPercent = Math.Round(saleOrderDetailModel.UnitDiscount * 100 / saleOrderDetailModel.RegularPrice, 2);
+                                            saleOrderDetailModel.UnitDiscount = Math.Round(saleOrderDetailModel.RegularPrice - promotion.TakeOff, 2);
+                                            saleOrderDetailModel.DiscountPercent = saleOrderDetailModel.UnitDiscount / saleOrderDetailModel.RegularPrice;
 
                                             //Tổng số tiền dc giảm trên tổng số sản phẩm
                                             saleOrderDetailModel.TotalDiscount = Math.Round(saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity, 2);
@@ -973,224 +977,268 @@ namespace CPC.POS.Repository
                                             //So tien dc giam trên 1 đợn vi
                                             saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
                                             saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
-                                            HandleOnSaleOrderDetailModel(saleOrderModel, saleOrderDetailModel);
+                                            saleOrderDetailModel.CalcSubTotal();
+                                            saleOrderDetailModel.CalcDueQty();
+                                            saleOrderDetailModel.CalUnfill();
+                                        }
+                                    }
+                                }
+                                else //IsApplyToAboveQuantities=false && seperate multi part with  promotionModel.BuyingQty
+                                {
+                                    decimal numberOfItemDiscount = sumOfItem - (sumOfItem % promotion.BuyingQty);
+
+                                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
+                                    {
+                                        decimal quantityRemain = saleOrderDetailModel.Quantity;//back up first quantity when item remove will be lost
+                                        if (numberOfItemDiscount > 0)
+                                        {
+                                            if (saleOrderDetailModel.UOMId != saleOrderDetailModel.ProductModel.BaseUOMId || saleOrderDetailModel.Quantity == 0 || saleOrderDetailModel.IsManual)
+                                            {
+                                                if (!saleOrderDetailModel.IsManual) // not reset discount is manual
+                                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                                continue;
+                                            }
+
+                                            if (saleOrderDetailModel.Quantity <= numberOfItemDiscount)
+                                            {
+                                                //saleOrderDetailModel.PromotionId = promotionModel.Id;
+                                                //saleOrderDetailModel.IsManual = false;
+                                                //////Calculate Discount
+                                                //so tien giảm trên 1 đơn vi
+                                                saleOrderDetailModel.UnitDiscount = Math.Round(Math.Round(saleOrderDetailModel.RegularPrice - promotion.TakeOff, 2) - 0.01M, MidpointRounding.AwayFromZero);
+                                                saleOrderDetailModel.DiscountPercent = Math.Round(saleOrderDetailModel.UnitDiscount * 100 / saleOrderDetailModel.RegularPrice, 2);
+
+                                                //Tổng số tiền dc giảm trên tổng số sản phẩm
+                                                saleOrderDetailModel.TotalDiscount = Math.Round(saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity, 2);
+
+                                                //So tien dc giam trên 1 đợn vi
+                                                saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
+                                                saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
+                                                HandleOnSaleOrderDetailModel(saleOrderModel, saleOrderDetailModel);
+                                            }
+                                            else
+                                            {
+                                                base_SaleOrderDetailModel replaceItem = CopyNewSaleOrderDetail(saleOrderDetailModel);
+                                                //replaceItem.PromotionId = promotionModel.Id;
+                                                //replaceItem.IsManual = false;
+                                                replaceItem.Quantity = numberOfItemDiscount;
+                                                //////Calculate Discount
+                                                //so tien giảm trên 1 đơn vi
+                                                replaceItem.UnitDiscount = Math.Round(replaceItem.RegularPrice - promotion.TakeOff, 2);
+                                                replaceItem.DiscountPercent = Math.Round(Math.Round(replaceItem.UnitDiscount * 100 / replaceItem.RegularPrice, 2) - 0.01M, MidpointRounding.AwayFromZero);
+                                                //Math.Round(replaceItem.UnitDiscount / replaceItem.RegularPrice); ;
+
+                                                //Tổng số tiền dc giảm trên tổng số sản phẩm
+                                                replaceItem.TotalDiscount = Math.Round(replaceItem.UnitDiscount * replaceItem.Quantity, 2);
+
+                                                //So tien dc giam trên 1 đợn vi
+                                                replaceItem.DiscountAmount = replaceItem.RegularPrice - replaceItem.UnitDiscount;
+                                                replaceItem.SalePrice = replaceItem.DiscountAmount;
+
+                                                //Set Serial
+                                                if (!string.IsNullOrWhiteSpace(replaceItem.SerialTracking) && replaceItem.ProductModel.IsSerialTracking)
+                                                {
+                                                    IEnumerable<string> remainSerial = replaceItem.SerialTracking.Split(',').Take((int)replaceItem.Quantity);
+                                                    replaceItem.SerialTracking = string.Join(", ", remainSerial);
+                                                }
+
+                                                HandleOnSaleOrderDetailModel(saleOrderModel, replaceItem);
+
+
+                                                var deleteItem = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource == saleOrderDetailModel.Resource);
+                                                if (deleteItem != null)
+                                                {
+                                                    saleOrderModel.SaleOrderDetailCollection.Remove(deleteItem);
+                                                }
+                                                saleOrderModel.SaleOrderDetailCollection.Add(replaceItem);
+                                                decimal remainItem = quantityRemain - numberOfItemDiscount;
+                                                if (remainItem > 0)
+                                                {
+                                                    base_SaleOrderDetailModel remainSaleOrderDetail = CopyNewSaleOrderDetail(saleOrderDetailModel);
+                                                    //remainSaleOrderDetail.PromotionId = promotionModel.Id;
+                                                    //remainSaleOrderDetail.IsManual = false;
+                                                    remainSaleOrderDetail.Quantity = remainItem;
+                                                    //Reset Discount
+                                                    remainSaleOrderDetail.DiscountPercent = 0;
+                                                    remainSaleOrderDetail.UnitDiscount = Math.Round(remainSaleOrderDetail.RegularPrice * remainSaleOrderDetail.DiscountPercent, 0);
+                                                    remainSaleOrderDetail.SalePrice = remainSaleOrderDetail.RegularPrice;
+                                                    remainSaleOrderDetail.DiscountAmount = remainSaleOrderDetail.SalePrice;
+                                                    remainSaleOrderDetail.TotalDiscount = Math.Round(remainSaleOrderDetail.UnitDiscount * remainSaleOrderDetail.Quantity, 0);
+                                                    if (!string.IsNullOrWhiteSpace(remainSaleOrderDetail.SerialTracking) && saleOrderDetailModel.ProductModel.IsSerialTracking)
+                                                    {
+                                                        int skipItem = (int)replaceItem.Quantity;
+                                                        IEnumerable<string> remainSerial = remainSaleOrderDetail.SerialTracking.Split(',').Skip(skipItem).Take((int)remainSaleOrderDetail.Quantity);
+                                                        remainSaleOrderDetail.SerialTracking = string.Join(", ", remainSerial);
+                                                    }
+
+                                                    HandleOnSaleOrderDetailModel(saleOrderModel, remainSaleOrderDetail);
+
+                                                    saleOrderModel.SaleOrderDetailCollection.Add(remainSaleOrderDetail);
+                                                }
+                                            }
+                                            numberOfItemDiscount -= quantityRemain;
                                         }
                                         else
                                         {
-                                            base_SaleOrderDetailModel replaceItem = CopyNewSaleOrderDetail(saleOrderDetailModel);
-                                            //replaceItem.PromotionId = promotionModel.Id;
-                                            //replaceItem.IsManual = false;
-                                            replaceItem.Quantity = numberOfItemDiscount;
-                                            //////Calculate Discount
-                                            //so tien giảm trên 1 đơn vi
-                                            replaceItem.UnitDiscount = Math.Round(replaceItem.RegularPrice - promotion.TakeOff, 2);
-                                            replaceItem.DiscountPercent = Math.Round(Math.Round(replaceItem.UnitDiscount * 100 / replaceItem.RegularPrice, 2) - 0.01M, MidpointRounding.AwayFromZero);
-                                            //Math.Round(replaceItem.UnitDiscount / replaceItem.RegularPrice); ;
-
-                                            //Tổng số tiền dc giảm trên tổng số sản phẩm
-                                            replaceItem.TotalDiscount = Math.Round(replaceItem.UnitDiscount * replaceItem.Quantity, 2);
-
-                                            //So tien dc giam trên 1 đợn vi
-                                            replaceItem.DiscountAmount = replaceItem.RegularPrice - replaceItem.UnitDiscount;
-                                            replaceItem.SalePrice = replaceItem.DiscountAmount;
-
-                                            //Set Serial
-                                            if (!string.IsNullOrWhiteSpace(replaceItem.SerialTracking) && replaceItem.ProductModel.IsSerialTracking)
-                                            {
-                                                IEnumerable<string> remainSerial = replaceItem.SerialTracking.Split(',').Take((int)replaceItem.Quantity);
-                                                replaceItem.SerialTracking = string.Join(", ", remainSerial);
-                                            }
-
-                                            HandleOnSaleOrderDetailModel(saleOrderModel, replaceItem);
-
-
-                                            var deleteItem = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource == saleOrderDetailModel.Resource);
-                                            if (deleteItem != null)
-                                            {
-                                                saleOrderModel.SaleOrderDetailCollection.Remove(deleteItem);
-                                            }
-                                            saleOrderModel.SaleOrderDetailCollection.Add(replaceItem);
-                                            decimal remainItem = quantityRemain - numberOfItemDiscount;
-                                            if (remainItem > 0)
-                                            {
-                                                base_SaleOrderDetailModel remainSaleOrderDetail = CopyNewSaleOrderDetail(saleOrderDetailModel);
-                                                //remainSaleOrderDetail.PromotionId = promotionModel.Id;
-                                                //remainSaleOrderDetail.IsManual = false;
-                                                remainSaleOrderDetail.Quantity = remainItem;
-                                                //Reset Discount
-                                                remainSaleOrderDetail.DiscountPercent = 0;
-                                                remainSaleOrderDetail.UnitDiscount = Math.Round(remainSaleOrderDetail.RegularPrice * remainSaleOrderDetail.DiscountPercent, 0);
-                                                remainSaleOrderDetail.SalePrice = remainSaleOrderDetail.RegularPrice;
-                                                remainSaleOrderDetail.DiscountAmount = remainSaleOrderDetail.SalePrice;
-                                                remainSaleOrderDetail.TotalDiscount = Math.Round(remainSaleOrderDetail.UnitDiscount * remainSaleOrderDetail.Quantity, 0);
-                                                if (!string.IsNullOrWhiteSpace(remainSaleOrderDetail.SerialTracking) && saleOrderDetailModel.ProductModel.IsSerialTracking)
-                                                {
-                                                    int skipItem = (int)replaceItem.Quantity;
-                                                    IEnumerable<string> remainSerial = remainSaleOrderDetail.SerialTracking.Split(',').Skip(skipItem).Take((int)remainSaleOrderDetail.Quantity);
-                                                    remainSaleOrderDetail.SerialTracking = string.Join(", ", remainSerial);
-                                                }
-
-                                                HandleOnSaleOrderDetailModel(saleOrderModel, remainSaleOrderDetail);
-
-                                                saleOrderModel.SaleOrderDetailCollection.Add(remainSaleOrderDetail);
-                                            }
-                                        }
-                                        numberOfItemDiscount -= quantityRemain;
-                                    }
-                                    else
-                                    {
-                                        if (!saleOrderDetailModel.IsManual)
-                                            ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                                    }
-
-                                }
-                            }
-                        }
-                        else //! (sumOfItem >= promotionModel.BuyingQty && salesOrderDetailModel.RegularPrice >= promotionModel.TakeOff)
-                        {
-                            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => !x.IsManual))
-                                ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                        }
-                        #endregion
-                        break;
-                    case 4:
-                        #region Buy X And Get Y % Off
-                        if (IsAcceptedPromotion(promotion, saleOrderModel, salesOrderDetailModel) && sumOfItem >= promotion.BuyingQty)
-                        {
-                            if (promotion.IsApplyToAboveQuantities)
-                            {
-                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
-                                {
-                                    if (saleOrderDetailModel.UOMId == saleOrderDetailModel.ProductModel.BaseUOMId && !saleOrderDetailModel.IsManual)//apply only base Units
-                                    {
-                                        //////Calculate Discount
-                                        //so tien giảm trên 1 đơn vi
-                                        saleOrderDetailModel.UnitDiscount = saleOrderDetailModel.RegularPrice * promotion.TakeOff / 100;
-                                        saleOrderDetailModel.DiscountPercent = promotion.TakeOff;
-
-                                        //Tổng số tiền dc giảm trên tổng số sản phẩm
-                                        saleOrderDetailModel.TotalDiscount = saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity;
-
-                                        //So tien dc giam trên 1 đợn vi
-                                        saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
-                                        saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
-                                        CheckToShowDatagridRowDetail(saleOrderDetailModel);
-                                        saleOrderDetailModel.CalcSubTotal();
-                                        saleOrderDetailModel.CalcDueQty();
-                                        saleOrderDetailModel.CalUnfill();
-
-                                    }
-                                }
-                            }
-                            else//Seperate multi item
-                            {
-                                decimal numberOfItemDiscount = sumOfItem - (sumOfItem % promotion.BuyingQty);
-                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
-                                {
-                                    decimal quantityRemain = saleOrderDetailModel.Quantity;
-                                    if (numberOfItemDiscount > 0)
-                                    {
-                                        if (saleOrderDetailModel.UOMId != saleOrderDetailModel.ProductModel.BaseUOMId || saleOrderDetailModel.Quantity == 0 || saleOrderDetailModel.IsManual)
-                                        {
-                                            if (!saleOrderDetailModel.IsManual) // not reset discount is manual
+                                            if (!saleOrderDetailModel.IsManual)
                                                 ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                                            continue;
                                         }
 
-                                        if (saleOrderDetailModel.Quantity <= numberOfItemDiscount) //update salePrice discount for this item
+                                    }
+                                }
+                            }
+                            else //! (sumOfItem >= promotionModel.BuyingQty && salesOrderDetailModel.RegularPrice >= promotionModel.TakeOff)
+                            {
+                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => !x.IsManual))
+                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                            }
+                            #endregion
+                            break;
+                        case 4:
+                            #region Buy X And Get Y % Off
+                            //if (IsAcceptedPromotion(promotion, saleOrderModel, salesOrderDetailModel) && sumOfItem >= promotion.BuyingQty)
+                            //{
+                            if (sumOfItem >= promotion.BuyingQty)
+                            {
+                                if (promotion.IsApplyToAboveQuantities)
+                                {
+                                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
+                                    {
+                                        if (saleOrderDetailModel.UOMId == saleOrderDetailModel.ProductModel.BaseUOMId && !saleOrderDetailModel.IsManual)//apply only base Units
                                         {
-
                                             //////Calculate Discount
                                             //so tien giảm trên 1 đơn vi
                                             saleOrderDetailModel.UnitDiscount = saleOrderDetailModel.RegularPrice * promotion.TakeOff / 100;
                                             saleOrderDetailModel.DiscountPercent = promotion.TakeOff;
 
                                             //Tổng số tiền dc giảm trên tổng số sản phẩm
-                                            saleOrderDetailModel.TotalDiscount = Math.Round(saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity, 2);
+                                            saleOrderDetailModel.TotalDiscount = saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity;
 
                                             //So tien dc giam trên 1 đợn vi
                                             saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
                                             saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
+                                            CheckToShowDatagridRowDetail(saleOrderDetailModel);
+                                            saleOrderDetailModel.CalcSubTotal();
+                                            saleOrderDetailModel.CalcDueQty();
+                                            saleOrderDetailModel.CalUnfill();
 
-                                            HandleOnSaleOrderDetailModel(saleOrderModel, saleOrderDetailModel);
-                                            numberOfItemDiscount -= quantityRemain;
-
-                                        }
-                                        else //Separate multi item to apply discount
-                                        {
-                                            base_SaleOrderDetailModel replaceItem = CopyNewSaleOrderDetail(saleOrderDetailModel).Clone();
-                                            replaceItem.Quantity = numberOfItemDiscount;
-                                            //////Calculate Discount
-                                            //so tien giảm trên 1 đơn vi
-                                            replaceItem.UnitDiscount = Math.Round(replaceItem.RegularPrice * promotion.TakeOff / 100, 1);
-                                            replaceItem.DiscountPercent = promotion.TakeOff;
-
-                                            //Tổng số tiền dc giảm trên tổng số sản phẩm
-                                            replaceItem.TotalDiscount = Math.Round(replaceItem.UnitDiscount * replaceItem.Quantity, 1);
-
-                                            //So tien dc giam trên 1 đợn vi
-                                            replaceItem.DiscountAmount = replaceItem.RegularPrice - replaceItem.UnitDiscount;
-                                            replaceItem.SalePrice = replaceItem.DiscountAmount;
-
-                                            //Set Serial
-                                            if (!string.IsNullOrWhiteSpace(replaceItem.SerialTracking) && replaceItem.ProductModel.IsSerialTracking)
-                                            {
-                                                IEnumerable<string> remainSerial = replaceItem.SerialTracking.Split(',').Take((int)replaceItem.Quantity);
-                                                replaceItem.SerialTracking = string.Join(", ", remainSerial);
-                                            }
-
-                                            var deleteItem = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource == saleOrderDetailModel.Resource);
-                                            if (deleteItem != null)
-                                            {
-
-                                                saleOrderModel.SaleOrderDetailCollection.Remove(deleteItem);
-                                            }
-                                            HandleOnSaleOrderDetailModel(saleOrderModel, replaceItem);
-                                            saleOrderModel.SaleOrderDetailCollection.Add(replaceItem);
-                                            decimal remainItem = quantityRemain - numberOfItemDiscount;
-                                            if (remainItem > 0)
-                                            {
-                                                base_SaleOrderDetailModel remainSaleOrderDetail = CopyNewSaleOrderDetail(saleOrderDetailModel);
-                                                remainSaleOrderDetail.Quantity = remainItem;
-                                                //Reset Discount
-                                                remainSaleOrderDetail.DiscountPercent = 0;
-                                                remainSaleOrderDetail.UnitDiscount = Math.Round(remainSaleOrderDetail.RegularPrice * remainSaleOrderDetail.DiscountPercent, 0);
-                                                remainSaleOrderDetail.SalePrice = remainSaleOrderDetail.RegularPrice;
-                                                remainSaleOrderDetail.DiscountAmount = remainSaleOrderDetail.SalePrice;
-                                                remainSaleOrderDetail.TotalDiscount = Math.Round(remainSaleOrderDetail.UnitDiscount * remainSaleOrderDetail.Quantity, 0);
-
-                                                if (!string.IsNullOrWhiteSpace(remainSaleOrderDetail.SerialTracking) && saleOrderDetailModel.ProductModel.IsSerialTracking)
-                                                {
-                                                    int skipItem = (int)replaceItem.Quantity;
-                                                    IEnumerable<string> remainSerial = remainSaleOrderDetail.SerialTracking.Split(',').Skip(skipItem).Take((int)remainSaleOrderDetail.Quantity);
-                                                    remainSaleOrderDetail.SerialTracking = string.Join(", ", remainSerial);
-                                                }
-                                                HandleOnSaleOrderDetailModel(saleOrderModel, remainSaleOrderDetail);
-
-
-                                                saleOrderModel.SaleOrderDetailCollection.Add(remainSaleOrderDetail);
-                                            }
-                                            numberOfItemDiscount -= quantityRemain;
                                         }
                                     }
-                                    else // Item not apply discount (not in number of item accecpt apply)
+                                }
+                                else//Seperate multi item
+                                {
+                                    decimal numberOfItemDiscount = sumOfItem - (sumOfItem % promotion.BuyingQty);
+                                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => string.IsNullOrWhiteSpace(x.ParentResource) && !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group)))
                                     {
-                                        if (!salesOrderDetailModel.IsManual)
-                                            ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                        decimal quantityRemain = saleOrderDetailModel.Quantity;
+                                        if (numberOfItemDiscount > 0)
+                                        {
+                                            if (saleOrderDetailModel.UOMId != saleOrderDetailModel.ProductModel.BaseUOMId || saleOrderDetailModel.Quantity == 0 || saleOrderDetailModel.IsManual)
+                                            {
+                                                if (!saleOrderDetailModel.IsManual) // not reset discount is manual
+                                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                                continue;
+                                            }
+
+                                            if (saleOrderDetailModel.Quantity <= numberOfItemDiscount) //update salePrice discount for this item
+                                            {
+
+                                                //////Calculate Discount
+                                                //so tien giảm trên 1 đơn vi
+                                                saleOrderDetailModel.UnitDiscount = saleOrderDetailModel.RegularPrice * promotion.TakeOff / 100;
+                                                saleOrderDetailModel.DiscountPercent = promotion.TakeOff;
+
+                                                //Tổng số tiền dc giảm trên tổng số sản phẩm
+                                                saleOrderDetailModel.TotalDiscount = Math.Round(saleOrderDetailModel.UnitDiscount * saleOrderDetailModel.Quantity, 2);
+
+                                                //So tien dc giam trên 1 đợn vi
+                                                saleOrderDetailModel.DiscountAmount = saleOrderDetailModel.RegularPrice - saleOrderDetailModel.UnitDiscount;
+                                                saleOrderDetailModel.SalePrice = saleOrderDetailModel.DiscountAmount;
+
+                                                HandleOnSaleOrderDetailModel(saleOrderModel, saleOrderDetailModel);
+                                                numberOfItemDiscount -= quantityRemain;
+
+                                            }
+                                            else //Separate multi item to apply discount
+                                            {
+                                                base_SaleOrderDetailModel replaceItem = CopyNewSaleOrderDetail(saleOrderDetailModel).Clone();
+                                                replaceItem.Quantity = numberOfItemDiscount;
+                                                //////Calculate Discount
+                                                //so tien giảm trên 1 đơn vi
+                                                replaceItem.UnitDiscount = Math.Round(replaceItem.RegularPrice * promotion.TakeOff / 100, 1);
+                                                replaceItem.DiscountPercent = promotion.TakeOff;
+
+                                                //Tổng số tiền dc giảm trên tổng số sản phẩm
+                                                replaceItem.TotalDiscount = Math.Round(replaceItem.UnitDiscount * replaceItem.Quantity, 1);
+
+                                                //So tien dc giam trên 1 đợn vi
+                                                replaceItem.DiscountAmount = replaceItem.RegularPrice - replaceItem.UnitDiscount;
+                                                replaceItem.SalePrice = replaceItem.DiscountAmount;
+
+                                                //Set Serial
+                                                if (!string.IsNullOrWhiteSpace(replaceItem.SerialTracking) && replaceItem.ProductModel.IsSerialTracking)
+                                                {
+                                                    IEnumerable<string> remainSerial = replaceItem.SerialTracking.Split(',').Take((int)replaceItem.Quantity);
+                                                    replaceItem.SerialTracking = string.Join(", ", remainSerial);
+                                                }
+
+                                                var deleteItem = saleOrderModel.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource == saleOrderDetailModel.Resource);
+                                                if (deleteItem != null)
+                                                {
+
+                                                    saleOrderModel.SaleOrderDetailCollection.Remove(deleteItem);
+                                                }
+                                                HandleOnSaleOrderDetailModel(saleOrderModel, replaceItem);
+                                                saleOrderModel.SaleOrderDetailCollection.Add(replaceItem);
+                                                decimal remainItem = quantityRemain - numberOfItemDiscount;
+                                                if (remainItem > 0)
+                                                {
+                                                    base_SaleOrderDetailModel remainSaleOrderDetail = CopyNewSaleOrderDetail(saleOrderDetailModel);
+                                                    remainSaleOrderDetail.Quantity = remainItem;
+                                                    //Reset Discount
+                                                    remainSaleOrderDetail.DiscountPercent = 0;
+                                                    remainSaleOrderDetail.UnitDiscount = Math.Round(remainSaleOrderDetail.RegularPrice * remainSaleOrderDetail.DiscountPercent, 0);
+                                                    remainSaleOrderDetail.SalePrice = remainSaleOrderDetail.RegularPrice;
+                                                    remainSaleOrderDetail.DiscountAmount = remainSaleOrderDetail.SalePrice;
+                                                    remainSaleOrderDetail.TotalDiscount = Math.Round(remainSaleOrderDetail.UnitDiscount * remainSaleOrderDetail.Quantity, 0);
+
+                                                    if (!string.IsNullOrWhiteSpace(remainSaleOrderDetail.SerialTracking) && saleOrderDetailModel.ProductModel.IsSerialTracking)
+                                                    {
+                                                        int skipItem = (int)replaceItem.Quantity;
+                                                        IEnumerable<string> remainSerial = remainSaleOrderDetail.SerialTracking.Split(',').Skip(skipItem).Take((int)remainSaleOrderDetail.Quantity);
+                                                        remainSaleOrderDetail.SerialTracking = string.Join(", ", remainSerial);
+                                                    }
+                                                    HandleOnSaleOrderDetailModel(saleOrderModel, remainSaleOrderDetail);
+
+
+                                                    saleOrderModel.SaleOrderDetailCollection.Add(remainSaleOrderDetail);
+                                                }
+                                                numberOfItemDiscount -= quantityRemain;
+                                            }
+                                        }
+                                        else // Item not apply discount (not in number of item accecpt apply)
+                                        {
+                                            if (!salesOrderDetailModel.IsManual)
+                                                ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => !x.IsManual))
-                                ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
-                        }
-                        #endregion
-                        break;
-                    case 5://Coupon
-                        break;
+                            else
+                            {
+                                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderDetailCollection.Where(x => !x.IsManual))
+                                    ResetProductDiscount(saleOrderModel, saleOrderDetailModel);
+                            }
+                            #endregion
+                            break;
+                        case 5://Coupon
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
         #endregion
@@ -1208,66 +1256,73 @@ namespace CPC.POS.Repository
             decimal quantityOnHand = 0;
             decimal quantityOnCustomer = 0;
 
-            if (!productModel.ItemTypeId.Equals((short)ItemTypes.Group))//Product is not product Group(ProductGroup not stockable)
+            try
             {
-                base_Product productQtyOnHand = UnitOfWork.Get<base_Product>(x => x.Id.Equals(productModel.Id));
-
-                base_ProductStore productStore = UnitOfWork.Get<base_ProductStore>(x => x.ProductId.Equals(productModel.Id) && x.StoreCode.Equals(storeCode));
-                if (productStore != null)
-                    quantityOnCustomer = productStore.QuantityOnCustomer;
-
-                if (productQtyOnHand != null)
+                if (!productModel.ItemTypeId.Equals((short)ItemTypes.Group))//Product is not product Group(ProductGroup not stockable)
                 {
-                    //Update Onhand Store
-                    productModel.OnHandStore1 = productQtyOnHand.OnHandStore1;
-                    productModel.OnHandStore2 = productQtyOnHand.OnHandStore2;
-                    productModel.OnHandStore3 = productQtyOnHand.OnHandStore3;
-                    productModel.OnHandStore4 = productQtyOnHand.OnHandStore4;
-                    productModel.OnHandStore5 = productQtyOnHand.OnHandStore5;
-                    productModel.OnHandStore6 = productQtyOnHand.OnHandStore6;
-                    productModel.OnHandStore7 = productQtyOnHand.OnHandStore7;
-                    productModel.OnHandStore8 = productQtyOnHand.OnHandStore8;
-                    productModel.OnHandStore9 = productQtyOnHand.OnHandStore9;
-                    productModel.OnHandStore10 = productQtyOnHand.OnHandStore10;
-                    productModel.QuantityOnHand = productQtyOnHand.QuantityOnHand;
+                    base_Product productQtyOnHand = UnitOfWork.Get<base_Product>(x => x.Id.Equals(productModel.Id));
 
-                    switch (storeCode)
+                    base_ProductStore productStore = UnitOfWork.Get<base_ProductStore>(x => x.ProductId.Equals(productModel.Id) && x.StoreCode.Equals(storeCode));
+                    if (productStore != null)
+                        quantityOnCustomer = productStore.QuantityOnCustomer;
+
+                    if (productQtyOnHand != null)
                     {
-                        case 0:
-                            quantityOnHand = productQtyOnHand.OnHandStore1;
-                            break;
-                        case 1:
-                            quantityOnHand = productQtyOnHand.OnHandStore2;
-                            break;
-                        case 2:
-                            quantityOnHand = productQtyOnHand.OnHandStore3;
-                            break;
-                        case 3:
-                            quantityOnHand = productQtyOnHand.OnHandStore4;
-                            break;
-                        case 4:
-                            quantityOnHand = productQtyOnHand.OnHandStore5;
-                            break;
-                        case 5:
-                            quantityOnHand = productQtyOnHand.OnHandStore6;
-                            break;
-                        case 6:
-                            quantityOnHand = productQtyOnHand.OnHandStore7;
-                            break;
-                        case 7:
-                            quantityOnHand = productQtyOnHand.OnHandStore8;
-                            break;
-                        case 8:
-                            quantityOnHand = productQtyOnHand.OnHandStore9;
-                            break;
-                        case 9:
-                            quantityOnHand = productQtyOnHand.OnHandStore10;
-                            break;
+                        //Update Onhand Store
+                        productModel.OnHandStore1 = productQtyOnHand.OnHandStore1;
+                        productModel.OnHandStore2 = productQtyOnHand.OnHandStore2;
+                        productModel.OnHandStore3 = productQtyOnHand.OnHandStore3;
+                        productModel.OnHandStore4 = productQtyOnHand.OnHandStore4;
+                        productModel.OnHandStore5 = productQtyOnHand.OnHandStore5;
+                        productModel.OnHandStore6 = productQtyOnHand.OnHandStore6;
+                        productModel.OnHandStore7 = productQtyOnHand.OnHandStore7;
+                        productModel.OnHandStore8 = productQtyOnHand.OnHandStore8;
+                        productModel.OnHandStore9 = productQtyOnHand.OnHandStore9;
+                        productModel.OnHandStore10 = productQtyOnHand.OnHandStore10;
+                        productModel.QuantityOnHand = productQtyOnHand.QuantityOnHand;
 
-                        default:
-                            break;
+                        switch (storeCode)
+                        {
+                            case 0:
+                                quantityOnHand = productQtyOnHand.OnHandStore1;
+                                break;
+                            case 1:
+                                quantityOnHand = productQtyOnHand.OnHandStore2;
+                                break;
+                            case 2:
+                                quantityOnHand = productQtyOnHand.OnHandStore3;
+                                break;
+                            case 3:
+                                quantityOnHand = productQtyOnHand.OnHandStore4;
+                                break;
+                            case 4:
+                                quantityOnHand = productQtyOnHand.OnHandStore5;
+                                break;
+                            case 5:
+                                quantityOnHand = productQtyOnHand.OnHandStore6;
+                                break;
+                            case 6:
+                                quantityOnHand = productQtyOnHand.OnHandStore7;
+                                break;
+                            case 7:
+                                quantityOnHand = productQtyOnHand.OnHandStore8;
+                                break;
+                            case 8:
+                                quantityOnHand = productQtyOnHand.OnHandStore9;
+                                break;
+                            case 9:
+                                quantityOnHand = productQtyOnHand.OnHandStore10;
+                                break;
+
+                            default:
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return quantityOnHand - quantityOnCustomer;
         }
@@ -1279,33 +1334,41 @@ namespace CPC.POS.Repository
         /// <returns></returns>
         public base_ProductUOM GetProductUomOfProductInGroup(int storeCode, base_ProductGroup productGroup)
         {
-            //Get Product From ProductCollection (child product)
-            base_Product productInGroup = UnitOfWork.Get<base_Product>(x => x.Id.Equals(productGroup.base_Product.Id));
-            //Get Unit Of Product
-
             base_ProductUOM productGroupUOM = null;
-            base_ProductStore productStore;
-            if (productInGroup != null)
+            try
             {
-                productStore = productInGroup.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+                //Get Product From ProductCollection (child product)
+                base_Product productInGroup = UnitOfWork.Get<base_Product>(x => x.Id.Equals(productGroup.base_Product.Id));
+                //Get Unit Of Product
 
-                //Check ProductInGroup with default uom is a base Uom?
-                if (productGroup.UOMId.Equals(productInGroup.BaseUOMId))
+                
+                base_ProductStore productStore;
+                if (productInGroup != null)
                 {
-                    base_UOM UOM = UnitOfWork.Get<base_UOM>(x => x.Id == productInGroup.BaseUOMId);
-                    productGroupUOM = new base_ProductUOM()
+                    productStore = productInGroup.base_ProductStore.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                    //Check ProductInGroup with default uom is a base Uom?
+                    if (productGroup.UOMId.Equals(productInGroup.BaseUOMId))
                     {
-                        BaseUnitNumber = 1,
-                        QuantityOnHand = productStore != null ? productStore.QuantityOnHand : 0,
-                    };
+                        base_UOM UOM = UnitOfWork.Get<base_UOM>(x => x.Id == productInGroup.BaseUOMId);
+                        productGroupUOM = new base_ProductUOM()
+                        {
+                            BaseUnitNumber = 1,
+                            QuantityOnHand = productStore != null ? productStore.QuantityOnHand : 0,
+                        };
+                    }
+                    else
+                    {
+                        //Get product UOM with default product Item group
+                        productGroupUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(productGroup.UOMId));
+                    }
                 }
-                else
-                {
-                    //Get product UOM with default product Item group
-                    productGroupUOM = productStore.base_ProductUOM.SingleOrDefault(x => x.UOMId.Equals(productGroup.UOMId));
-                }
-            }
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return productGroupUOM;
         }
 
@@ -1321,27 +1384,34 @@ namespace CPC.POS.Repository
         /// 
         public void UpdateCustomerQuantityChanged(base_SaleOrderDetailModel saleOrderDetailModel, int storeCode)
         {
-            if (saleOrderDetailModel.ProductModel.IsCoupon || saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
-                return;
-
-            base_ProductRepository productRepository = new base_ProductRepository();
-            //Check Quantity Or Unit changed => subtract or add quantity oncustomer
-            base_ProductUOMModel unitModel = saleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetailModel.UOMId));
-            decimal baseUnitNumber = unitModel.BaseUnitNumber;
-            decimal newQuantity = saleOrderDetailModel.Quantity * baseUnitNumber;
-            if (unitModel != null)
+            try
             {
-                base_ProductUOMModel oldUnitModel = saleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetailModel.base_SaleOrderDetail.UOMId));
-                if (oldUnitModel != null)
+                if (saleOrderDetailModel.ProductModel.IsCoupon || saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
+                    return;
+
+                base_ProductRepository productRepository = new base_ProductRepository();
+                //Check Quantity Or Unit changed => subtract or add quantity oncustomer
+                base_ProductUOMModel unitModel = saleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetailModel.UOMId));
+                decimal baseUnitNumber = unitModel.BaseUnitNumber;
+                decimal newQuantity = saleOrderDetailModel.Quantity * baseUnitNumber;
+                if (unitModel != null)
                 {
-                    decimal oldQty = saleOrderDetailModel.base_SaleOrderDetail.Quantity * oldUnitModel.BaseUnitNumber;
-                    if (oldQty != newQuantity)
+                    base_ProductUOMModel oldUnitModel = saleOrderDetailModel.ProductUOMCollection.SingleOrDefault(x => x.UOMId.Equals(saleOrderDetailModel.base_SaleOrderDetail.UOMId));
+                    if (oldUnitModel != null)
                     {
-                        decimal quantity = newQuantity - oldQty;
-                        productRepository.UpdateQuantityOnCustomer(saleOrderDetailModel.ProductResource, storeCode, quantity);
-                        productRepository.Commit();
+                        decimal oldQty = saleOrderDetailModel.base_SaleOrderDetail.Quantity * oldUnitModel.BaseUnitNumber;
+                        if (oldQty != newQuantity)
+                        {
+                            decimal quantity = newQuantity - oldQty;
+                            productRepository.UpdateQuantityOnCustomer(saleOrderDetailModel.ProductResource, storeCode, quantity);
+                            productRepository.Commit();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
 
@@ -1380,9 +1450,12 @@ namespace CPC.POS.Repository
 
 
 
+
+
         #endregion
 
         #region Util Saleorder
+        BarcodeLib.Barcode _barCode = new BarcodeLib.Barcode();
         /// <summary>
         /// Generate Barcode with EAN13 Format (13 digit numberic)
         /// </summary>
@@ -1393,16 +1466,15 @@ namespace CPC.POS.Repository
         {
             try
             {
-                using (BarcodeLib.Barcode barCode = new BarcodeLib.Barcode())
-                {
-                    barCode.IncludeLabel = true;
-                    barCode.Encode(BarcodeLib.TYPE.EAN13, sOCard, 200, 70);
-                    saleOrderModel.SOCardImg = barCode.Encoded_Image_Bytes;
-                    saleOrderModel.SOCard = barCode.RawData;
-                }
+                _barCode.IncludeLabel = true;
+                _barCode.Encode(Define.CONFIGURATION.DefaultScanMethodType, sOCard, 200, 70);
+                saleOrderModel.SOCardImg = _barCode.Encoded_Image_Bytes;
+                saleOrderModel.SOCard = _barCode.RawData;
+
             }
-            catch
+            catch//(Exception ex)
             {
+                //throw ex;
             }
         }
 
@@ -1437,37 +1509,7 @@ namespace CPC.POS.Repository
             return newSaleOrderDetail;
         }
 
-
-        /// <summary>
-        /// Accepted Promotion
-        /// </summary>
-        /// <param name="promotionModel"></param>
-        /// <param name="saleOrderDetailModel"></param>
-        /// <returns></returns>
-        private bool IsAcceptedPromotion(base_Promotion promotion, base_SaleOrderModel saleOrderModel, base_SaleOrderDetailModel saleOrderDetailModel)
-        {
-            bool result = true;
-            if (promotion == null)
-                return false;
-
-            if (promotion.AffectDiscount == 0)//All Item
-            {
-                result = true;
-            }
-            else if (promotion.AffectDiscount == 1)//All Item Category
-            {
-                result = saleOrderDetailModel.ProductModel.ProductCategoryId == promotion.CategoryId;
-            }
-            else if (promotion.AffectDiscount == 2)//All item Vendor
-            {
-                result = saleOrderDetailModel.ProductModel.VendorId == promotion.VendorId;
-            }
-            else if (promotion.AffectDiscount == 3)//Custom 
-            {
-                result = promotion.base_PromotionAffect.Any(x => x.Id == saleOrderDetailModel.ProductModel.Id);
-            }
-            return result && Convert.ToInt32(saleOrderModel.PriceSchemaId).In(promotion.PriceSchemaRange.Value) && !saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && string.IsNullOrWhiteSpace(saleOrderDetailModel.ParentResource);
-        }
+       
         #endregion
 
         #endregion

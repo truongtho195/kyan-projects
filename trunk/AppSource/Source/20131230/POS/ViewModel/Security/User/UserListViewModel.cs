@@ -447,6 +447,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex);
             }
 
@@ -671,7 +672,7 @@ namespace CPC.POS.ViewModel
                 {
                     this.IsEnableUserRight = false;
                 }
-                
+
             };
             bgWorker.RunWorkerAsync();
         }
@@ -773,6 +774,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Insert" + ex.ToString());
             }
         }
@@ -833,6 +835,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Update" + ex.ToString());
             }
         }
@@ -867,6 +870,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("Delete" + ex.ToString());
             }
         }

@@ -1281,23 +1281,23 @@
 	<combo key="PurchaseStatus">
 		<item>
 			<value>1</value>
-			<name>開 zh</name>
+			<name>開</name>
 		</item>
 		<item>
 			<value>2</value>
-			<name>InProgress zh</name>
+			<name>In progress</name>
 		</item>
 		<item>
 			<value>3</value>
-			<name>完全接收 zh</name>
+			<name>完全接收</name>
 		</item>
 		<item>
 			<value>4</value>
-			<name>已全額支付 zh</name>
+			<name>已全額支付</name>
 		</item>
 		<item>
 			<value>5</value>
-			<name>關閉 zh</name>
+			<name>關閉</name>
 		</item>
 	</combo>
 	<combo key="AvailableQuantity">

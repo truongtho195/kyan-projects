@@ -2,22 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:control="clr-namespace:CPC.Control"
-			 xmlns:converter="clr-namespace:CPC.Converter"
+             xmlns:converter="clr-namespace:CPC.Converter"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Name="UserControl"
              Width="Auto"
              Height="Auto"
              Background="{DynamicResource UserControlBackground}"
              mc:Ignorable="d">
-
     <UserControl.Resources>
-
-
-
-
-
         <Style x:Key="ExpanderHeaderFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -33,7 +26,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+        <Style x:Key="ExpanderDownHeaderStyle"
+               TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -41,7 +35,8 @@
                                 Height="25"
                                 HorizontalAlignment="Left"
                                 Padding="{TemplateBinding Padding}">
-                            <Grid Background="Transparent" SnapsToDevicePixels="False">
+                            <Grid Background="Transparent"
+                                  SnapsToDevicePixels="False">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="0" />
@@ -102,8 +97,10 @@
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="arrow1" Property="RenderTransform">
+                            <Trigger Property="IsChecked"
+                                     Value="true">
+                                <Setter TargetName="arrow1"
+                                        Property="RenderTransform">
                                     <Setter.Value>
                                         <TransformGroup>
                                             <ScaleTransform />
@@ -113,7 +110,8 @@
                                         </TransformGroup>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="arrow" Property="RenderTransform">
+                                <Setter TargetName="arrow"
+                                        Property="RenderTransform">
                                     <Setter.Value>
                                         <TransformGroup>
                                             <ScaleTransform />
@@ -124,20 +122,29 @@
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="border" Property="Cursor" Value="Hand" />
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Setter TargetName="border"
+                                        Property="Cursor"
+                                        Value="Hand" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ExpanderAdvanceSearch" TargetType="{x:Type Expander}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="1" />
+        <Style x:Key="ExpanderAdvanceSearch"
+               TargetType="{x:Type Expander}">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Stretch" />
+            <Setter Property="BorderBrush"
+                    Value="Transparent" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Expander}">
@@ -161,9 +168,7 @@
                                               FontStretch="{TemplateBinding FontStretch}"
                                               FontWeight="Bold"
                                               Foreground="White"
-                                              IsChecked="{Binding IsExpanded,
-                                                                  Mode=TwoWay,
-                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                               Padding="{TemplateBinding Padding}"
                                               Style="{StaticResource ExpanderDownHeaderStyle}" />
                                 <Border x:Name="border"
@@ -175,34 +180,40 @@
                                         BorderThickness="1"
                                         DockPanel.Dock="Top"
                                         Visibility="Collapsed">
-                                    <ContentPresenter x:Name="ExpandSite" Focusable="false" />
+                                    <ContentPresenter x:Name="ExpandSite"
+                                                      Focusable="false" />
                                 </Border>
                             </DockPanel>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsExpanded" Value="true">
-                                <Setter TargetName="ExpandSite" Property="Visibility" Value="Visible" />
-                                <Setter TargetName="border" Property="Visibility" Value="Visible" />
+                            <Trigger Property="IsExpanded"
+                                     Value="true">
+                                <Setter TargetName="ExpandSite"
+                                        Property="Visibility"
+                                        Value="Visible" />
+                                <Setter TargetName="border"
+                                        Property="Visibility"
+                                        Value="Visible" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
-
     </UserControl.Resources>
-
     <Grid x:Name="GridLayout">
-        <Rectangle x:Name="UserControl_Background_Image" Fill="{DynamicResource UserControl_Background_Image}" />
+        <Rectangle x:Name="UserControl_Background_Image"
+                   Fill="{DynamicResource UserControl_Background_Image}" />
         <Grid x:Name="grdAdjustmentInformation">
             <Grid x:Name="grdSearch">
-<Grid.Visibility>
-                    <Binding Mode="OneWay"
-                             Path="IsSearchMode"
+                <Grid.Visibility>
+                    <Binding Path="IsSearchMode"
+                             Mode="OneWay"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.Converter>
                             <converter:BoolToVisibilityConverter FalseToVisibility="Collapsed" />
@@ -216,22 +227,27 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <GroupBox x:Name="gbSearch" Margin="10,10,0,0">
+                    <GroupBox x:Name="gbSearch"
+                              Margin="10,10,0,0">
                         <GroupBox.Header>
                             <TextBlock x:Name="txtblSearch"
                                        Style="{DynamicResource GroupboxTextBlock}"
                                        Text="Search"
                                        TextWrapping="NoWrap" />
                         </GroupBox.Header>
-                        <Grid x:Name="grdgbSearch" Margin="0,4,0,0">
-                            <control:FilterAdvanceSearch Visibility="Collapsed" d:LayoutOverrides="Height" />
+                        <Grid x:Name="grdgbSearch"
+                              Margin="0,4,0,0">
+                            <control:FilterAdvanceSearch Visibility="Collapsed"
+                                                         d:LayoutOverrides="Height" />
                             <Grid x:Name="grdAdvanceSearch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel x:Name="stkpContentSearch" Orientation="Vertical">
-                                    <Grid x:Name="grdSearchSheetNo" Height="25">
+                                <StackPanel x:Name="stkpContentSearch"
+                                            Orientation="Vertical">
+                                    <Grid x:Name="grdSearchSheetNo"
+                                          Height="25">
                                         <ComboBox x:Name="cmbSearchSheetNo"
                                                   Width="120"
                                                   Margin="10,0,0,0"
@@ -253,7 +269,8 @@
                                                  Padding="2,0,2,0"
                                                  TextWrapping="NoWrap" />
                                     </Grid>
-                                    <Grid x:Name="grdSearchSheetNo1" Height="25">
+                                    <Grid x:Name="grdSearchSheetNo1"
+                                          Height="25">
                                         <ComboBox x:Name="cmbSearchSheetNo1"
                                                   Width="120"
                                                   Margin="10,0,0,0"
@@ -318,15 +335,20 @@
                               IsSynchronizedWithCurrentItem="True"
                               Style="{DynamicResource DatagridWithRowHeader}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="100" Header="Adjustment #" />
-                            <DataGridTextColumn Width="110" Header="Date" />
-                            <DataGridTextColumn Width="*" Header="Reason For Adjust" />
-                            <DataGridTextColumn Width="160" Header="Location" />
-                            <DataGridTextColumn Width="80" Header="On-Hand Qty" />
-                            <DataGridTextColumn Width="70" Header="New Qty" />
-                            <DataGridTextColumn Width="70" Header="Serial #" />
-
-
+                            <DataGridTextColumn Header="Adjustment #"
+                                                Width="100" />
+                            <DataGridTextColumn Header="Date"
+                                                Width="110" />
+                            <DataGridTextColumn Header="Reason For Adjust"
+                                                Width="*" />
+                            <DataGridTextColumn Header="Location"
+                                                Width="160" />
+                            <DataGridTextColumn Header="On-Hand Qty"
+                                                Width="80" />
+                            <DataGridTextColumn Header="New Qty"
+                                                Width="70" />
+                            <DataGridTextColumn Header="Serial #"
+                                                Width="70" />
                         </DataGrid.Columns>
                         <CheckBox HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
@@ -755,7 +777,6 @@
                                    Text="0000003"
                                    TextWrapping="NoWrap" />
                     </Grid>
-
                 </Grid>
                 <Grid x:Name="grdBtnSearchBackNext"
                       Width="15"
@@ -822,10 +843,13 @@
                                   StrokeThickness="2.5">
                                 <Path.RenderTransform>
                                     <TransformGroup>
-                                        <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        <SkewTransform AngleX="0" AngleY="0" />
+                                        <ScaleTransform ScaleX="1"
+                                                        ScaleY="1" />
+                                        <SkewTransform AngleX="0"
+                                                       AngleY="0" />
                                         <RotateTransform Angle="180" />
-                                        <TranslateTransform X="0" Y="0" />
+                                        <TranslateTransform X="0"
+                                                            Y="0" />
                                     </TransformGroup>
                                 </Path.RenderTransform>
                             </Path>
@@ -835,56 +859,62 @@
             </Grid>
             <Grid x:Name="grdSubAdjustmentInformation"
                   Grid.Column="1"
-                  Margin="1,0,0,0" d:IsHidden="True">
-            	<Grid.Visibility>
-                    <Binding Mode="OneWay"
-                             Path="IsSearchMode"
+                  Margin="1,0,0,0"
+                  d:IsHidden="True">
+                <Grid.Visibility>
+                    <Binding Path="IsSearchMode"
+                             Mode="OneWay"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.Converter>
                             <converter:BoolToVisibilityConverter FalseToVisibility="Visible" />
                         </Binding.Converter>
                     </Binding>
                 </Grid.Visibility>
-            	<Grid.ColumnDefinitions>
-            		<ColumnDefinition Width="22"/>
-            		<ColumnDefinition Width="*"/>
-            	</Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                	<RowDefinition Height="60" />
-                	<RowDefinition Height="40" />
-                	<RowDefinition Height="*" />
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Button x:Name="btnBarSearch"
-            		Margin="0,3,0,0"
-            		BorderThickness="1"
-            		Style="{DynamicResource ButtonBarSearch}" Grid.RowSpan="3" Command="{Binding DoubleClickViewCommand}">
-            		<TextBlock x:Name="txtblShowSearch1"
-            			HorizontalAlignment="Center"
-            			VerticalAlignment="Center"
-            			Foreground="White"
-            			Style="{DynamicResource ButtonBarSearchTextBlock}"
-            			Text="Search"
-            			TextWrapping="NoWrap">
-            			<TextBlock.LayoutTransform>
-            				<TransformGroup>
-            					<ScaleTransform />
-            					<SkewTransform />
-            					<RotateTransform Angle="-90" />
-            					<TranslateTransform />
-            				</TransformGroup>
-            			</TextBlock.LayoutTransform>
-            		</TextBlock>
-            	</Button>
+                        Command="{Binding DoubleClickViewCommand}"
+                        Grid.RowSpan="3"
+                        Margin="0,3,0,0"
+                        BorderThickness="1"
+                        Style="{DynamicResource ButtonBarSearch}">
+                    <TextBlock x:Name="txtblShowSearch1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Style="{DynamicResource ButtonBarSearchTextBlock}"
+                               Text="Search"
+                               TextWrapping="NoWrap">
+                        <TextBlock.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-90" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Button>
                 <Rectangle x:Name="grdSpliter"
-            		Width="1"
-            		HorizontalAlignment="Left"
-            		Fill="{DynamicResource Spilter_Line_Background}" Grid.RowSpan="3" Grid.Column="1" />
+                           Grid.RowSpan="3"
+                           Grid.Column="1"
+                           Width="1"
+                           HorizontalAlignment="Left"
+                           Fill="{DynamicResource Spilter_Line_Background}" />
                 <StackPanel x:Name="stkpBtn"
+                            Grid.Column="1"
                             Height="Auto"
                             Margin="20,0,0,5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
-                            Orientation="Horizontal" Grid.Column="1">
+                            Orientation="Horizontal">
                     <Button x:Name="btnSaveNew"
                             Width="40"
                             Height="40"
@@ -1065,7 +1095,8 @@
                         <Grid x:Name="grdRemark"
                               Width="30"
                               Height="30">
-                            <Rectangle x:Name="imgRemark" Fill="{DynamicResource Remark}" />
+                            <Rectangle x:Name="imgRemark"
+                                       Fill="{DynamicResource Remark}" />
                             <TextBlock x:Name="txtblRemark"
                                        Margin="5,0,0,0"
                                        VerticalAlignment="Center"
@@ -1083,35 +1114,38 @@
                     </Button>
                 </StackPanel>
                 <TextBlock x:Name="txtblBindingAdjustment"
+                           Grid.Column="1"
                            Margin="0,0,20,7"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
                            Style="{DynamicResource TextBlockTitleFormView}"
                            Text="Adjustment"
-                           TextWrapping="NoWrap" Grid.Column="1" />
+                           TextWrapping="NoWrap" />
                 <Rectangle x:Name="Line"
                            Grid.Row="1"
+                           Grid.Column="1"
                            Height="1"
                            Margin="2,0"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Top"
-                           Fill="{DynamicResource Spilter_Line_Background}" Grid.Column="1" />
+                           Fill="{DynamicResource Spilter_Line_Background}" />
                 <Grid x:Name="grdAdjustmentInfo"
                       Grid.Row="1"
+                      Grid.Column="1"
                       Width="747"
                       Height="25"
                       Margin="0"
                       HorizontalAlignment="Left"
-                      VerticalAlignment="Bottom" Grid.Column="1">
+                      VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
-                    	<ColumnDefinition Width="90" />
-                    	<ColumnDefinition Width="100" />
-                    	<ColumnDefinition Width="65" />
-                    	<ColumnDefinition Width="0.5*" />
-                    	<ColumnDefinition Width="62" />
-                    	<ColumnDefinition Width="0.5*" />
-                    	<ColumnDefinition Width="51" />
-                    	<ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="65" />
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="62" />
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="51" />
+                        <ColumnDefinition Width="120" />
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Name="txtblAdjustmentNo"
                                Grid.Row="0"
@@ -1184,23 +1218,31 @@
                 </Grid>
                 <Border x:Name="brdAdjustment"
                         Grid.Row="2"
+                        Grid.Column="1"
                         Margin="10"
                         Background="{DynamicResource TabControlBackground}"
                         BorderBrush="{DynamicResource TabControlBorder}"
-                        BorderThickness="1" Grid.Column="1">
+                        BorderThickness="1">
                     <Grid x:Name="grdContentAdjustment">
                         <DataGrid x:Name="dtgrdAdjustment"
                                   Margin="10"
                                   IsSynchronizedWithCurrentItem="True"
                                   Style="{DynamicResource DatagridWithRowHeader}">
                             <DataGrid.Columns>
-                            	<DataGridTextColumn Width="120" Header="Item Code" />
-                            	<DataGridTextColumn Width="*" Header="Description" />
-                            	<DataGridTextColumn Width="160" Header="Location" />
-                            	<DataGridTextColumn Width="80" Header="On-Hand Qty" />
-                            	<DataGridTextColumn Width="60" Header="New Qty" />
-                            	<DataGridTextColumn Width="65" Header="Difference" />
-                            	<DataGridTextColumn Width="70" Header="Serial #" />
+                                <DataGridTextColumn Header="Item Code"
+                                                    Width="120" />
+                                <DataGridTextColumn Header="Description"
+                                                    Width="*" />
+                                <DataGridTextColumn Header="Location"
+                                                    Width="160" />
+                                <DataGridTextColumn Header="On-Hand Qty"
+                                                    Width="80" />
+                                <DataGridTextColumn Header="New Qty"
+                                                    Width="60" />
+                                <DataGridTextColumn Header="Difference"
+                                                    Width="65" />
+                                <DataGridTextColumn Header="Serial #"
+                                                    Width="70" />
                             </DataGrid.Columns>
                             <CheckBox Width="100"
                                       Height="100"
@@ -1217,19 +1259,19 @@
                               VerticalAlignment="Top"
                               d:LayoutOverrides="VerticalAlignment">
                             <Grid.ColumnDefinitions>
-                            	<ColumnDefinition Width="25" />
-                            	<ColumnDefinition Width="120" />
-                            	<ColumnDefinition Width="0.484*" />
-                            	<ColumnDefinition Width="0.516*" />
-                            	<ColumnDefinition Width="80" />
-                            	<ColumnDefinition Width="61" />
-                            	<ColumnDefinition Width="64" />
-                            	<ColumnDefinition Width="71" />
+                                <ColumnDefinition Width="25" />
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="0.484*" />
+                                <ColumnDefinition Width="0.516*" />
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="61" />
+                                <ColumnDefinition Width="64" />
+                                <ColumnDefinition Width="71" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                            	<RowDefinition Height="25" />
-                            	<RowDefinition Height="25" />
-                            	<RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
                             </Grid.RowDefinitions>
                             <Rectangle Grid.Column="1"
                                        Margin="3"
@@ -1458,10 +1500,14 @@
                                 d:IsHidden="True"
                                 Visibility="Collapsed">
                             <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="0.5" Color="#FFE2E2E2" />
-                                    <GradientStop Offset="1" Color="#FFF6F6F6" />
-                                    <GradientStop Offset="0.49" Color="#FFF6F6F6" />
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="0.5"
+                                                  Color="#FFE2E2E2" />
+                                    <GradientStop Offset="1"
+                                                  Color="#FFF6F6F6" />
+                                    <GradientStop Offset="0.49"
+                                                  Color="#FFF6F6F6" />
                                     <GradientStop Color="#FFF6F6F6" />
                                 </LinearGradientBrush>
                             </Border.Background>
@@ -1527,12 +1573,13 @@
                 </Border>
                 <Grid x:Name="grdContentAdjustmentInformation"
                       Grid.Row="1"
+                      Grid.Column="1"
                       Margin="0,0,0,10"
                       d:IsHidden="True"
-                      Visibility="Collapsed" Grid.Column="1">
+                      Visibility="Collapsed">
                     <Grid.RowDefinitions>
-                    	<RowDefinition Height="63" />
-                    	<RowDefinition />
+                        <RowDefinition Height="63" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <GroupBox x:Name="gbAdjustmentInformation"
                               Height="52"
@@ -1560,9 +1607,12 @@
                                    HorizontalAlignment="Stretch"
                                    Stroke="#FF000000">
                             <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="0" Color="#FFC5DDFE" />
-                                    <GradientStop Offset="1" Color="#FF71A7EE" />
+                                <LinearGradientBrush StartPoint="0.5,0"
+                                                     EndPoint="0.5,1">
+                                    <GradientStop Offset="0"
+                                                  Color="#FFC5DDFE" />
+                                    <GradientStop Offset="1"
+                                                  Color="#FF71A7EE" />
                                 </LinearGradientBrush>
                             </Rectangle.Fill>
                         </Rectangle>
@@ -1587,15 +1637,15 @@
                           VerticalAlignment="Top"
                           d:IsHidden="True">
                         <Grid.ColumnDefinitions>
-                        	<ColumnDefinition Width="85" />
-                        	<ColumnDefinition Width="443.841" />
+                            <ColumnDefinition Width="85" />
+                            <ColumnDefinition Width="443.841" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="24" />
-                        	<RowDefinition Height="24" />
-                        	<RowDefinition Height="24" />
-                        	<RowDefinition Height="24" />
-                        	<RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
+                            <RowDefinition Height="24" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name="txtblTemplateItem"
                                    HorizontalAlignment="Left"

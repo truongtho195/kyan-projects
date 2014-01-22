@@ -891,7 +891,7 @@ namespace CPC.POS.Model
 
         #region QtyOfPick
         private decimal _qtyOfPick;
-        
+
         /// <summary>
         /// Gets or sets the QtyOfPick.
         /// Quantity when user pick in current pick & pack process</summary>
@@ -1057,7 +1057,7 @@ namespace CPC.POS.Model
         #endregion
 
         #region IsQuantityAccepted
-        private bool _isQuantityAccepted =true;
+        private bool _isQuantityAccepted = true;
         /// <summary>
         /// Gets or sets the IsQuantityAccepted.
         /// </summary>
@@ -1077,7 +1077,7 @@ namespace CPC.POS.Model
 
 
         #region IsAllowChange
-        private bool _isAllowChange =true;
+        private bool _isAllowChange = true;
         /// <summary>
         /// Gets or sets the IsAllowChange.
         /// </summary>
@@ -1254,12 +1254,15 @@ namespace CPC.POS.Model
         /// <summary>
         /// Calculate Discount amount/Unit Discount / TotalDiscount when Sale Price Changed
         /// </summary>
-        public void SalePriceChanged()
+        public void SalePriceChanged(bool isCalcDiscPercent)
         {
-            if (_regularPrice > 0 && _regularPrice > _salePrice)
-                _discountPercent = Math.Round((_regularPrice - _salePrice) / _regularPrice * 100, 2);
-            else
-                _discountPercent = 0;
+            if (isCalcDiscPercent)
+            {
+                if (_regularPrice > 0 && _regularPrice > _salePrice)
+                    _discountPercent = Math.Round((_regularPrice - _salePrice) / _regularPrice * 100, 2);
+                else
+                    _discountPercent = 0;
+            }
 
             if (_discountPercent > 0)
             {
@@ -1280,13 +1283,18 @@ namespace CPC.POS.Model
             OnPropertyChanged(() => UnitDiscount);
         }
 
-
+        /// <summary>
+        /// Calculate Due Qty (= Qantity - PickQty)
+        /// </summary>
         public void CalcDueQty()
         {
             DueQty = Quantity - PickQty;
         }
 
-
+        /// <summary>
+        /// Copy SaleOrder detail from another saleOrder detail
+        /// </summary>
+        /// <param name="saleOrderDetailModel"></param>
         public void CopyFrom(base_SaleOrderDetailModel saleOrderDetailModel)
         {
             //this._id = saleOrderDetailModel.Id;
@@ -1326,10 +1334,37 @@ namespace CPC.POS.Model
 
         }
 
+        /// <summary>
+        /// Raise QuantityAccepted
+        /// </summary>
         public void RaiseIsQuantityAccepted()
         {
             OnPropertyChanged(() => IsQuantityAccepted);
         }
+
+        /// <summary>
+        /// Calculate discount by discount percent
+        /// </summary>
+        public void CalcDicountByPercent()
+        {
+            if (IsManual)
+            {
+                _unitDiscount = (_regularPrice * _discountPercent / 100);
+                _discountAmount = _regularPrice - _unitDiscount;
+                _salePrice = _discountAmount;
+                _salePriceChange = _salePrice;
+                _totalDiscount = _unitDiscount * _quantity;
+
+                OnPropertyChanged(() => DiscountPercent);
+                OnPropertyChanged(() => DiscountAmount);
+                OnPropertyChanged(() => TotalDiscount);
+                OnPropertyChanged(() => UnitDiscount);
+                OnPropertyChanged(() => SalePrice);
+                OnPropertyChanged(() => SalePriceChange);
+
+            }
+        }
+
         #endregion
 
         #region Override Methods
@@ -1427,7 +1462,7 @@ namespace CPC.POS.Model
 
                 if (!string.IsNullOrWhiteSpace(message))
                     return message;
-                
+
                 return null;
             }
         }

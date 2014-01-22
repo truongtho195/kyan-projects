@@ -432,8 +432,9 @@ namespace CPC.POS.ViewModel
                     {
                         Capturer.StopCapture();
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        _log4net.Error(ex);
                         SetPrompt("Can't terminate capture!");
                     }
                 }

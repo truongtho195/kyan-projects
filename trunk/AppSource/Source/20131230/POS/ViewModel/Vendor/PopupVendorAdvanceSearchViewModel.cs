@@ -300,24 +300,31 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            // Load address type list
-            AddressTypeList = new List<ComboItem>();
-            AddressTypeList.Add(new ComboItem { IntValue = 0, Text = "Home" });
-            AddressTypeList.Add(new ComboItem { IntValue = 1, Text = "Business" });
-            AddressTypeList.Add(new ComboItem { IntValue = 2, Text = "Billing" });
-            AddressTypeList.Add(new ComboItem { IntValue = 3, Text = "Shipping" });
+            try
+            {
+                // Load address type list
+                AddressTypeList = new List<ComboItem>();
+                AddressTypeList.Add(new ComboItem { IntValue = 0, Text = "Home" });
+                AddressTypeList.Add(new ComboItem { IntValue = 1, Text = "Business" });
+                AddressTypeList.Add(new ComboItem { IntValue = 2, Text = "Billing" });
+                AddressTypeList.Add(new ComboItem { IntValue = 3, Text = "Shipping" });
 
-            base_GuestGroupRepository guestGroupRepository = new base_GuestGroupRepository();
+                base_GuestGroupRepository guestGroupRepository = new base_GuestGroupRepository();
 
-            // Load group list
-            GroupList = new List<ComboItem>(guestGroupRepository.GetAll().
-                OrderBy(x => x.Name).
-                Select(x => new ComboItem
-                {
-                    ObjValue = x.Resource.ToString(),
-                    Text = x.Name
-                }));
-            GroupList.Insert(0, new ComboItem());
+                // Load group list
+                GroupList = new List<ComboItem>(guestGroupRepository.GetAll().
+                    OrderBy(x => x.Name).
+                    Select(x => new ComboItem
+                    {
+                        ObjValue = x.Resource.ToString(),
+                        Text = x.Name
+                    }));
+                GroupList.Insert(0, new ComboItem());
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>

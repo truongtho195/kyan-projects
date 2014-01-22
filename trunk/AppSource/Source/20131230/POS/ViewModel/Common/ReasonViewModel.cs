@@ -7,7 +7,6 @@ namespace CPC.POS.ViewModel
 {
     class ReasonViewModel : ViewModelBase
     {
-      
         #region Constructors
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace CPC.POS.ViewModel
 
 
         #region IsDirty
-        private bool _isDirty=false;
+        private bool _isDirty = false;
         /// <summary>
         /// Gets or sets the IsDirty.
         /// </summary>
@@ -70,7 +69,6 @@ namespace CPC.POS.ViewModel
 
 
         #endregion
-
 
         #region Command Methods
 

@@ -207,7 +207,7 @@
     <sys:String x:Key="C188">Password</sys:String>
     <sys:String x:Key="C189">Merge Item zh</sys:String>
     <sys:String x:Key="C190">Cost</sys:String>
-
+    <sys:String x:Key="C191">Address</sys:String>
     <!--Extention Common-->
     <!--Region "Title" Extention Common  -->
     <sys:String x:Key="Title_PaymentHistoryDetail">Payment history detail</sys:String>
@@ -249,7 +249,7 @@
     <sys:String x:Key="PO123">Qty Receive</sys:String>
     <sys:String x:Key="PO124">Unfilled %</sys:String>
     <sys:String x:Key="PO125">PO No</sys:String>
-    <sys:String x:Key="PO126">Barcode</sys:String>
+    <sys:String x:Key="PO126">Scan Code</sys:String>
     <sys:String x:Key="PO127">Store</sys:String>
     <sys:String x:Key="PO128">Has Return</sys:String>
     <!--  End PurchaseOrderView  -->
@@ -361,7 +361,7 @@
     <sys:String x:Key="CS178">Save Directory</sys:String>
     <!--  End CompanySettingView  -->
 
-    <!--  PricingView  -->
+    <!--  region PricingView  -->
     <sys:String x:Key="PR100">Name</sys:String>
     <sys:String x:Key="PR101">Adjustment Method</sys:String>
     <sys:String x:Key="PR102">Amount Change</sys:String>
@@ -379,6 +379,10 @@
     <sys:String x:Key="PR114">Pricing</sys:String>
     <sys:String x:Key="PR_Popup_108">Margin %</sys:String>
     <sys:String x:Key="PR_Popup_109">Markup %</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCategory">Select products to apply to this pricing zh</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByVendor">Select products to apply to this pricing zh</sys:String>
+    <sys:String x:Key="PR_Message_SelectProductByCustom">Select products to apply to this pricing zh</sys:String>
+    <!--  endregion PricingView  -->
     <!--  ReOrderStockView  -->
     <sys:String x:Key="RO100">ReOrder</sys:String>
     <sys:String x:Key="RO101">ReOrderStock</sys:String>
@@ -515,9 +519,7 @@
     <sys:String x:Key="EM_TextBlock_DOB">DOB:</sys:String>
     <sys:String x:Key="EM_TextBlock_State">State:</sys:String>
     <sys:String x:Key="EM_TextBlock_EmergencyContact">Emergency Contact</sys:String>
-    <sys:String x:Key="EM_MenuItem_NewItem">New Item</sys:String>
-    <sys:String x:Key="EM_MenuItem_EditItem">Edit Item</sys:String>
-    <sys:String x:Key="EM_MenuItem_DeleteItem">Delete Item(s)</sys:String>
+    
     <sys:String x:Key="EM_TextBlock_Account">Account # zh</sys:String>
     <sys:String x:Key="EM_Header_EmployeeNo">Employee #</sys:String>
     <sys:String x:Key="EM_Header_EmployeeType">Employee Type</sys:String>
@@ -713,7 +715,7 @@
     <sys:String x:Key="SO_TextBlock_ProductName">Product Name</sys:String>
     <sys:String x:Key="SO_TextBlock_Category">Category</sys:String>
     <sys:String x:Key="SO_TextBlock_AttributeSize">Attribute Size</sys:String>
-    <sys:String x:Key="SO_TextBlock_Barcode">Barcode</sys:String>
+    <sys:String x:Key="SO_TextBlock_Barcode">Scan Code</sys:String>
     <sys:String x:Key="SO_TextBlock_ALU">ALU</sys:String>
     <sys:String x:Key="SO_TextBlock_SelectedItem">Selected Item</sys:String>
     <sys:String x:Key="SO_TextBlock_GoToSOList">Go To SO List</sys:String>
@@ -725,6 +727,12 @@
     <sys:String x:Key="SO_TextBlock_RewardRedeemed">Reward Redeemed</sys:String>
     <sys:String x:Key="SO_TextBlock_NotAnyLayaway">Not any layaway</sys:String>
     <sys:String x:Key="SO_TextBlock_LayawayConflict">Layaway is conflict</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationDate">QO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_QuotationNumber">QO #</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayDate">LW Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_LayawayNumber">LW #</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderDate">WO Date</sys:String>
+    <sys:String x:Key="SO_TextBlock_WorkOrderNum">WO #</sys:String>
 
     <sys:String x:Key="SO_Reward_EnterIDCard">Please Enter ID Card Member</sys:String>
     <sys:String x:Key="SO_Reward_EnterRewardCode">Please Enter Reward Code</sys:String>
@@ -807,7 +815,7 @@
     <!--  #EndRegion SaleOrderView  -->
 
     <!--Begin SaleOrderSearchAdvance-->
-    <sys:String x:Key="SO_Text_Scancode">Scancode</sys:String>
+    <sys:String x:Key="SO_Text_Scancode">Scan Code</sys:String>
     <sys:String x:Key="SO_Text_DocumentNo">Document #</sys:String>
     <sys:String x:Key="SO_Text_OrderFrom">Order From</sys:String>
     <sys:String x:Key="SO_Text_OrderTo">Order To</sys:String>

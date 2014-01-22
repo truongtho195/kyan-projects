@@ -70,7 +70,6 @@ namespace CPC.POS.Database
         /// </param>
         public static void Delete<T>(T entity) where T : class
         {
-            
             _objectContext.DeleteObject(entity);
         }
 
@@ -398,10 +397,9 @@ namespace CPC.POS.Database
             }
         }
 
-
-        public static IEnumerable<object> GetUnchangedEntity<T>()
+        public static void ExecuteQuery(string query)
         {
-            return _objectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Unchanged).Select(x => x.Entity);
+            _objectContext.ExecuteStoreCommand(query, null);
         }
 
         #endregion

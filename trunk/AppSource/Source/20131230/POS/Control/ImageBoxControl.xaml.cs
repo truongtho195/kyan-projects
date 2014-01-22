@@ -2,23 +2,19 @@
 //////******** Version 1.1 , Created by Thaipn.CPC *********
 ///////////////
 using System;
-using System.Collections.ObjectModel;
+using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using System.Collections;
-using System.Threading;
 using System.Windows.Input;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Specialized;
+
 namespace CPC.Control
 {
     public enum ImageBoxControlPropertyName
@@ -28,6 +24,7 @@ namespace CPC.Control
         IsDirty = 2,
         LargePhotoFilename = 3
     }
+
     /// <summary>
     /// Interaction logic for ImageBoxControl.xaml
     /// </summary>
@@ -265,7 +262,7 @@ namespace CPC.Control
                     row.Focus();
                     row.IsSelected = true;
                     this.SelectedImage = row.Content;
-                    DragDrop.DoDragDrop((ListBox)sender, row.Content, DragDropEffects.Move);
+                    System.Windows.DragDrop.DoDragDrop((ListBox)sender, row.Content, DragDropEffects.Move);
                 }
             }
             catch (Exception ex)
@@ -421,7 +418,5 @@ namespace CPC.Control
         #endregion
 
         #endregion
-
     }
-
 }

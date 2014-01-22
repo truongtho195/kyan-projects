@@ -255,26 +255,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected short _affectDiscount;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the AffectDiscount</param>
-        /// </summary>
-        public short AffectDiscount
-        {
-            get { return this._affectDiscount; }
-            set
-            {
-                if (this._affectDiscount != value)
-                {
-                    this.IsDirty = true;
-                    this._affectDiscount = value;
-                    OnPropertyChanged(() => AffectDiscount);
-                    PropertyChangedCompleted(() => AffectDiscount);
-                }
-            }
-        }
-
         protected System.DateTime _dateCreated;
         /// <summary>
         /// Property Model
@@ -515,26 +495,6 @@ namespace CPC.POS.Model
             }
         }
 
-        protected Nullable<long> _vendorId;
-        /// <summary>
-        /// Property Model
-        /// <param>Gets or sets the VendorId</param>
-        /// </summary>
-        public Nullable<long> VendorId
-        {
-            get { return this._vendorId; }
-            set
-            {
-                if (this._vendorId != value)
-                {
-                    this.IsDirty = true;
-                    this._vendorId = value;
-                    OnPropertyChanged(() => VendorId);
-                    PropertyChangedCompleted(() => VendorId);
-                }
-            }
-        }
-
         protected string _couponBarCode;
         /// <summary>
         /// Property Model
@@ -635,6 +595,46 @@ namespace CPC.POS.Model
             }
         }
 
+        protected Nullable<System.DateTime> _startDate;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the StartDate</param>
+        /// </summary>
+        public Nullable<System.DateTime> StartDate
+        {
+            get { return this._startDate; }
+            set
+            {
+                if (this._startDate != value)
+                {
+                    this.IsDirty = true;
+                    this._startDate = value;
+                    OnPropertyChanged(() => StartDate);
+                    PropertyChangedCompleted(() => StartDate);
+                }
+            }
+        }
+
+        protected Nullable<System.DateTime> _endDate;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the EndDate</param>
+        /// </summary>
+        public Nullable<System.DateTime> EndDate
+        {
+            get { return this._endDate; }
+            set
+            {
+                if (this._endDate != value)
+                {
+                    this.IsDirty = true;
+                    this._endDate = value;
+                    OnPropertyChanged(() => EndDate);
+                    PropertyChangedCompleted(() => EndDate);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -668,7 +668,6 @@ namespace CPC.POS.Model
             this.base_Promotion.GetingValue = this.GetingValue;
             this.base_Promotion.IsApplyToAboveQuantities = this.IsApplyToAboveQuantities;
             this.base_Promotion.Status = this.Status;
-            this.base_Promotion.AffectDiscount = this.AffectDiscount;
             this.base_Promotion.DateCreated = this.DateCreated;
             if (this.UserCreated != null)
                 this.base_Promotion.UserCreated = this.UserCreated.Trim();
@@ -684,7 +683,6 @@ namespace CPC.POS.Model
             this.base_Promotion.Sold = this.Sold;
             this.base_Promotion.TotalPrice = this.TotalPrice;
             this.base_Promotion.CategoryId = this.CategoryId;
-            this.base_Promotion.VendorId = this.VendorId;
             if (this.CouponBarCode != null)
                 this.base_Promotion.CouponBarCode = this.CouponBarCode.Trim();
             if (this.BarCodeNumber != null)
@@ -693,6 +691,8 @@ namespace CPC.POS.Model
             this.base_Promotion.IsConflict = this.IsConflict;
             if (this.Shift != null)
                 this.base_Promotion.Shift = this.Shift.Trim();
+            this.base_Promotion.StartDate = this.StartDate;
+            this.base_Promotion.EndDate = this.EndDate;
         }
 
         /// <summary>
@@ -711,7 +711,6 @@ namespace CPC.POS.Model
             this._getingValue = this.base_Promotion.GetingValue;
             this._isApplyToAboveQuantities = this.base_Promotion.IsApplyToAboveQuantities;
             this._status = this.base_Promotion.Status;
-            this._affectDiscount = this.base_Promotion.AffectDiscount;
             this._dateCreated = this.base_Promotion.DateCreated;
             this._userCreated = this.base_Promotion.UserCreated;
             this._dateUpdated = this.base_Promotion.DateUpdated;
@@ -724,12 +723,13 @@ namespace CPC.POS.Model
             this._sold = this.base_Promotion.Sold;
             this._totalPrice = this.base_Promotion.TotalPrice;
             this._categoryId = this.base_Promotion.CategoryId;
-            this._vendorId = this.base_Promotion.VendorId;
             this._couponBarCode = this.base_Promotion.CouponBarCode;
             this._barCodeNumber = this.base_Promotion.BarCodeNumber;
             this._barCodeImage = this.base_Promotion.BarCodeImage;
             this._isConflict = this.base_Promotion.IsConflict;
             this._shift = this.base_Promotion.Shift;
+            this._startDate = this.base_Promotion.StartDate;
+            this._endDate = this.base_Promotion.EndDate;
         }
 
         /// <summary>
@@ -748,7 +748,6 @@ namespace CPC.POS.Model
             this.GetingValue = this.base_Promotion.GetingValue;
             this.IsApplyToAboveQuantities = this.base_Promotion.IsApplyToAboveQuantities;
             this.Status = this.base_Promotion.Status;
-            this.AffectDiscount = this.base_Promotion.AffectDiscount;
             this.DateCreated = this.base_Promotion.DateCreated;
             this.UserCreated = this.base_Promotion.UserCreated;
             this.DateUpdated = this.base_Promotion.DateUpdated;
@@ -761,12 +760,13 @@ namespace CPC.POS.Model
             this.Sold = this.base_Promotion.Sold;
             this.TotalPrice = this.base_Promotion.TotalPrice;
             this.CategoryId = this.base_Promotion.CategoryId;
-            this.VendorId = this.base_Promotion.VendorId;
             this.CouponBarCode = this.base_Promotion.CouponBarCode;
             this.BarCodeNumber = this.base_Promotion.BarCodeNumber;
             this.BarCodeImage = this.base_Promotion.BarCodeImage;
             this.IsConflict = this.base_Promotion.IsConflict;
             this.Shift = this.base_Promotion.Shift;
+            this.StartDate = this.base_Promotion.StartDate;
+            this.EndDate = this.base_Promotion.EndDate;
         }
 
         #endregion
@@ -799,43 +799,34 @@ namespace CPC.POS.Model
             }
         }
 
-        private base_PromotionScheduleModel _promotionScheduleModel;
+        private bool _expirationNoEndDate;
         /// <summary>
-        /// Gets or sets the PromotionScheduleModel.
+        /// Gets or sets the ExpirationNoEndDate.
         /// </summary>
-        public base_PromotionScheduleModel PromotionScheduleModel
+        public bool ExpirationNoEndDate
         {
-            get { return _promotionScheduleModel; }
+            get { return _expirationNoEndDate; }
             set
             {
-                if (_promotionScheduleModel != value)
+                if (_expirationNoEndDate != value)
                 {
-                    _promotionScheduleModel = value;
-                    OnPropertyChanged(() => PromotionScheduleModel);
+                    this.IsDirty = true;
+                    _expirationNoEndDate = value;
+                    OnPropertyChanged(() => ExpirationNoEndDate);
+                    if (this.ExpirationNoEndDate)
+                    {
+                        // StartDate or EndDate have no value, set default value
+                        this.StartDate = DateTimeExt.Today;
+                        this.EndDate = DateTimeExt.Today;
+                        if (this.IsNew)
+                            this.EndDate = DateTimeExt.Today.AddHours(Define.CONFIGURATION.DefautlDiscountScheduleTime);
+                    }
+                    else
+                    {
+                        this.StartDate = null;
+                        this.EndDate = null;
+                    }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the PromotionAffectList
-        /// </summary>
-        public CollectionBase<base_PromotionAffectModel> PromotionAffectList { get; set; }
-
-        /// <summary>
-        /// Gets the TotalSelectedProducts
-        /// </summary>
-        public string TotalSelectedProducts
-        {
-            get
-            {
-                int totalSelectedProducts = 0;
-                if (PromotionAffectList != null)
-                    totalSelectedProducts = PromotionAffectList.Count;
-                string product = totalSelectedProducts > 1 ? "products" : "product";
-                if (_isShowTotalProducts)
-                    return string.Format("({0} {1})", totalSelectedProducts, product);
-                else
-                    return string.Empty;
             }
         }
 
@@ -843,13 +834,10 @@ namespace CPC.POS.Model
 
         #region Methods
 
-        /// <summary>
-        /// Raise TotalSelectedProducts
-        /// </summary>
-        public void RaiseTotalSelectedProducts()
+        public void SetExpirationNoEndDate(bool value)
         {
-            _isShowTotalProducts = true;
-            OnPropertyChanged(() => TotalSelectedProducts);
+            _expirationNoEndDate = value;
+            OnPropertyChanged(() => ExpirationNoEndDate);
         }
 
         #endregion
@@ -933,26 +921,10 @@ namespace CPC.POS.Model
                     }
                     break;
                 case "AffectDiscount":
-                    switch (AffectDiscount)
-                    {
-                        case 1:
-                            _categoryId = 0;
-                            OnPropertyChanged(() => CategoryId);
-                            OnPropertyChanged(() => VendorId);
-                            break;
-                        case 2:
-                            _vendorId = 0;
-                            OnPropertyChanged(() => VendorId);
-                            OnPropertyChanged(() => CategoryId);
-                            break;
-                        case 0:
-                        case 3:
-                            _categoryId = 0;
-                            _vendorId = 0;
-                            OnPropertyChanged(() => CategoryId);
-                            OnPropertyChanged(() => VendorId);
-                            break;
-                    }
+                    OnPropertyChanged(() => CategoryId);
+                    break;
+                case "EndDate":
+                    OnPropertyChanged(() => ExpirationNoEndDate);
                     break;
             }
         }
@@ -1010,7 +982,7 @@ namespace CPC.POS.Model
                                     message = "CouponExpire is required";
                                 else if (CouponExpire.Value < DateTimeExt.Now)
                                     message = "CouponExpire must be greater than Today";
-                                else if (PromotionScheduleModel != null && CouponExpire.Value < PromotionScheduleModel.EndDate)
+                                else if (CouponExpire.Value < EndDate)
                                     message = "CouponExpire must be greater than EndDate";
                             }
                             break;
@@ -1019,12 +991,21 @@ namespace CPC.POS.Model
                                 message = "PriceSchemaRange must be selected";
                             break;
                         case "CategoryId":
-                            if (AffectDiscount == 1 && CategoryId.HasValue && CategoryId.Value == 0)
+                            if (!CategoryId.HasValue || (CategoryId.HasValue && CategoryId.Value == 0))
                                 message = "CategoryId is required";
                             break;
-                        case "VendorId":
-                            if (AffectDiscount == 2 && VendorId.HasValue && VendorId.Value == 0)
-                                message = "VendorId is required";
+                        case "ExpirationNoEndDate":
+                            if (ExpirationNoEndDate)
+                            {
+                                if (!StartDate.HasValue || !EndDate.HasValue)
+                                    message = "StartDate and EndDate is required";
+                                else if (StartDate.Value > EndDate.Value)
+                                    message = "EndDate must be greater than StartDate";
+                                else if (EndDate.Value.Subtract(StartDate.Value).TotalMinutes < Define.CONFIGURATION.DefautlDiscountScheduleTime * 60)
+                                    message = "EndDate must be greater than StartDate 12 hours";
+                                else if (EndDate.Value < DateTimeExt.Now)
+                                    message = "EndDate must be greater than Today";
+                            }
                             break;
                     }
                 }

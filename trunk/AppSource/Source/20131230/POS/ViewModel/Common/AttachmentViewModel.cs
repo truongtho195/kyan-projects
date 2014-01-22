@@ -129,9 +129,6 @@ namespace CPC.POS.ViewModel
 
             _twainInterface = new WpfTwain();
             _twainInterface.TwainTransferReady += new TwainTransferReadyHandler(TransferReady);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -656,7 +653,7 @@ namespace CPC.POS.ViewModel
                 return false;
             }
 
-            return AllowEditAttachment;
+            return UserPermissions.AllowEditAttachment;
         }
 
         #endregion
@@ -1847,72 +1844,6 @@ namespace CPC.POS.ViewModel
             }
 
             #endregion
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        private bool _allowEditAttachment = true;
-        /// <summary>
-        /// Gets or sets the AllowEditAttachment.
-        /// </summary>
-        public bool AllowEditAttachment
-        {
-            get
-            {
-                return _allowEditAttachment;
-            }
-            set
-            {
-                if (_allowEditAttachment != value)
-                {
-                    _allowEditAttachment = value;
-                    OnPropertyChanged(() => AllowEditAttachment);
-                }
-            }
-        }
-
-        private bool _allowEditDocument = true;
-        /// <summary>
-        /// Gets or sets the AllowEditDocument.
-        /// </summary>
-        public bool AllowEditDocument
-        {
-            get
-            {
-                return _allowEditDocument;
-            }
-            set
-            {
-                if (_allowEditDocument != value)
-                {
-                    _allowEditDocument = value;
-                    OnPropertyChanged(() => AllowEditDocument);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission && !IsFullPermission)
-            {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                // Get edit attachment permission
-                AllowEditAttachment = userRightCodes.Contains("CF100-01-02");
-
-                // Get edit document permission
-                AllowEditDocument = userRightCodes.Contains("CF100-01-05");
-            }
         }
 
         #endregion

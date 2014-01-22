@@ -18,7 +18,6 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:CPC.POS"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:wpfControl="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              x:Name="ucQuotationView"
@@ -602,7 +601,7 @@
                                                                   StringFormat={x:Static local:Define.DateFormat}}"
                                                 IsReadOnly="True">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource C148}" />
+                                    <TextBlock Text="{DynamicResource SO_TextBlock_QuotationDate}" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Width="100"
@@ -785,7 +784,7 @@
                                                         ConverterParameter=SO100-03-01,
                                                         Converter={StaticResource permissionConverter}}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="New Item">
                                 <StackPanel x:Name="stkpBtnNew"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
@@ -806,7 +805,7 @@
                                     Height="40"
                                     Command="{Binding SaveCommand}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="Save Current Item">
                                 <StackPanel x:Name="stkpBtnSave"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -830,7 +829,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding ConvertToSaleOrderCommand}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    Visibility="Visible">
+                                    Visibility="Visible" ToolTip="Sale Current Item">
                                 <StackPanel x:Name="stkpBtnConvertToSO"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -857,7 +856,7 @@
                                                         ConverterParameter=SO100-03-04,
                                                         Converter={StaticResource permissionConverter}}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    ToolTip="Deposit History">
+                                    ToolTip="Deposit Current Item">
                                 <StackPanel x:Name="stkpBtnPaymentHistory"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -884,7 +883,7 @@
                                                         ConverterParameter=SO100-03-05,
                                                         Converter={StaticResource permissionConverter}}"
                                     Style="{DynamicResource ButtonSystem}"
-                                    ToolTip="Refund">
+                                    ToolTip="Refund Current Item">
                                 <StackPanel x:Name="stkpBtnRefund"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -973,7 +972,7 @@
                                                                        NotifyOnValidationError=True,
                                                                        UpdateSourceTrigger=PropertyChanged,
                                                                        ValidatesOnDataErrors=True}"
-                                                         VisibilityAddItem="{Binding AllowAddCustomer,
+                                                         VisibilityAddItem="{Binding UserPermissions.AllowAddCustomer,
                                                                                      Converter={StaticResource boolToVisibilityConverter},
                                                                                      Mode=OneWay}">
                                 <i:Interaction.Behaviors>
@@ -1004,7 +1003,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="{DynamicResource SO_TextBlock_SONum}"
+                                       Text="{DynamicResource SO_TextBlock_QuotationNumber}"
                                        TextWrapping="NoWrap" />
                             <TextBlock x:Name="txtblBindingSONo"
                                        Grid.Column="7"
@@ -1097,7 +1096,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource TextBlockNormal}"
-                                       Text="{DynamicResource SO_TextBlock_SODate}"
+                                       Text="{DynamicResource SO_TextBlock_QuotationDate}"
                                        TextWrapping="NoWrap" />
                             <DatePicker x:Name="dtpOrderDate"
                                         Grid.Row="1"
@@ -1164,6 +1163,11 @@
                                                              Margin="75,0,0,0"
                                                              HorizontalAlignment="Left"
                                                              VerticalAlignment="Center"
+                                                             cpcBehavior:AutoFocusBehavior.IsFocused="{Binding IsSelected,
+                                                                                                                           ElementName=tabitemOrder,
+                                                                                                                           Mode=OneWay}"
+                                                             IsEnabled="{Binding IsAllowChangeOrder,
+                                                                                             Mode=OneWay}"
                                                              VerticalContentAlignment="Center"
                                                              BorderBrush="{DynamicResource TextBoxCanlendarComboboxBorderBrush}"
                                                              Text="{Binding BarcodeProduct,

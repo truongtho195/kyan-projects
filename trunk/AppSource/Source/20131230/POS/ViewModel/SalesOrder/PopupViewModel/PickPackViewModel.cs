@@ -7,6 +7,8 @@ using System.Windows.Data;
 using CPC.POS.Model;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
+using CPC.Helper;
+using System.Windows;
 
 namespace CPC.POS.ViewModel
 {
@@ -229,47 +231,55 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnOkCommandExecute()
         {
-            if (!IsView)
+            try
             {
-                if (IsEdit)
+                if (!IsView)
                 {
-                    foreach (var item in SaleOrderShipModel.SaleOrderShipDetailCollection.ToList())
-                        SaleOrderShipModel.SaleOrderShipDetailCollection.Remove(item);
-                }
-                else
-                {
-                    SaleOrderShipModel = new base_SaleOrderShipModel();
-                    SaleOrderShipModel.IsShipped = false;
-                    SaleOrderShipModel.BoxNo = 1;
-                    SaleOrderShipModel.ShipDate = DateTime.Today;
-                    SaleOrderShipModel.Resource = Guid.NewGuid();
-                    SaleOrderShipModel.SaleOrderShipDetailCollection = new CollectionBase<base_SaleOrderShipDetailModel>();
-                }
-
-                if (SaleOrderDetailCollection.Any(x => x.QtyOfPick > 0))
-                {
-                    //Pack item with quantity >0 & is not a Product Group
-                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SaleOrderDetailCollection.Where(x =>!x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) &&  x.QtyOfPick > 0))
+                    if (IsEdit)
                     {
-                        saleOrderDetailModel.PickQty += saleOrderDetailModel.QtyOfPick;
-                        base_SaleOrderShipDetailModel saleOrderShipDetailModel = new base_SaleOrderShipDetailModel();
-                        saleOrderShipDetailModel.Resource = Guid.NewGuid();
-                        saleOrderShipDetailModel.SaleOrderShipResource = SaleOrderShipModel.Resource.ToString();
-                        saleOrderShipDetailModel.SaleOrderDetailResource = saleOrderDetailModel.Resource.ToString();
-                        saleOrderShipDetailModel.ProductResource = saleOrderDetailModel.ProductResource;
-                        saleOrderShipDetailModel.ItemCode = saleOrderDetailModel.ItemCode;
-                        saleOrderShipDetailModel.ItemName = saleOrderDetailModel.ItemName;
-                        saleOrderShipDetailModel.ItemAtribute = saleOrderDetailModel.ItemAtribute;
-                        saleOrderShipDetailModel.ItemSize = saleOrderDetailModel.ItemSize;
-                        saleOrderShipDetailModel.PackedQty = saleOrderDetailModel.QtyOfPick;
-                        SaleOrderShipModel.SaleOrderShipDetailCollection.Add(saleOrderShipDetailModel);
+                        foreach (var item in SaleOrderShipModel.SaleOrderShipDetailCollection.ToList())
+                            SaleOrderShipModel.SaleOrderShipDetailCollection.Remove(item);
                     }
-                    SaleOrderShipModel.Remark = SaleOrderShipModel.SaleOrderShipDetailCollection.Count().ToString();
-                }
-                SaleOrderDetailList = SaleOrderDetailCollection;
-            }
+                    else
+                    {
+                        SaleOrderShipModel = new base_SaleOrderShipModel();
+                        SaleOrderShipModel.IsShipped = false;
+                        SaleOrderShipModel.BoxNo = 1;
+                        SaleOrderShipModel.ShipDate = DateTime.Today;
+                        SaleOrderShipModel.Resource = Guid.NewGuid();
+                        SaleOrderShipModel.SaleOrderShipDetailCollection = new CollectionBase<base_SaleOrderShipDetailModel>();
+                    }
 
-            FindOwnerWindow(_ownerViewModel).DialogResult = true;
+                    if (SaleOrderDetailCollection.Any(x => x.QtyOfPick > 0))
+                    {
+                        //Pack item with quantity >0 & is not a Product Group
+                        foreach (base_SaleOrderDetailModel saleOrderDetailModel in SaleOrderDetailCollection.Where(x => !x.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group) && x.QtyOfPick > 0))
+                        {
+                            saleOrderDetailModel.PickQty += saleOrderDetailModel.QtyOfPick;
+                            base_SaleOrderShipDetailModel saleOrderShipDetailModel = new base_SaleOrderShipDetailModel();
+                            saleOrderShipDetailModel.Resource = Guid.NewGuid();
+                            saleOrderShipDetailModel.SaleOrderShipResource = SaleOrderShipModel.Resource.ToString();
+                            saleOrderShipDetailModel.SaleOrderDetailResource = saleOrderDetailModel.Resource.ToString();
+                            saleOrderShipDetailModel.ProductResource = saleOrderDetailModel.ProductResource;
+                            saleOrderShipDetailModel.ItemCode = saleOrderDetailModel.ItemCode;
+                            saleOrderShipDetailModel.ItemName = saleOrderDetailModel.ItemName;
+                            saleOrderShipDetailModel.ItemAtribute = saleOrderDetailModel.ItemAtribute;
+                            saleOrderShipDetailModel.ItemSize = saleOrderDetailModel.ItemSize;
+                            saleOrderShipDetailModel.PackedQty = saleOrderDetailModel.QtyOfPick;
+                            SaleOrderShipModel.SaleOrderShipDetailCollection.Add(saleOrderShipDetailModel);
+                        }
+                        SaleOrderShipModel.Remark = SaleOrderShipModel.SaleOrderShipDetailCollection.Count().ToString();
+                    }
+                    SaleOrderDetailList = SaleOrderDetailCollection;
+                }
+
+                FindOwnerWindow(_ownerViewModel).DialogResult = true;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
           
         }
         #endregion

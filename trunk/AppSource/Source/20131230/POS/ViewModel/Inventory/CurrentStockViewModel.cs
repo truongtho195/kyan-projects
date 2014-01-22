@@ -11,6 +11,7 @@ using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using System.Diagnostics;
 using Xceed.Wpf.Toolkit;
+using System.Windows.Threading;
 
 namespace CPC.POS.ViewModel
 {
@@ -33,6 +34,16 @@ namespace CPC.POS.ViewModel
         protected string VendorType = MarkType.Vendor.ToDescription();
         //To create ResourceClone to use it in class.
         private Guid _resourceClone = Guid.Empty;
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
         #endregion
 
         #region Constructors
@@ -43,6 +54,15 @@ namespace CPC.POS.ViewModel
             this.InitialCommand();
             // Load static data
             this.LoadStaticData();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
+
         }
 
         #endregion
@@ -128,6 +148,7 @@ namespace CPC.POS.ViewModel
                 if (_keyword != value)
                 {
                     _keyword = value;
+                    ResetTimer();
                     OnPropertyChanged(() => Keyword);
 
                 }
@@ -315,6 +336,8 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
                 // TODO: Handle command logic here
                 Expression<Func<base_Product, bool>> predicate = this.CreateSearchPredicate(this.Keyword);
                 this.LoadProduct(predicate, false, 0);
@@ -494,48 +517,56 @@ namespace CPC.POS.ViewModel
         /// <param name="currentIndex"></param>
         private void LoadProduct(Expression<Func<base_Product, bool>> predicate, bool refreshData = false, int currentIndex = 0)
         {
-            BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
-            if (currentIndex == 0)
-                this.ProductCollection.Clear();
-            bgWorker.DoWork += (sender, e) =>
+            try
             {
-                base.IsBusy = true;
-                //if(refreshData)
-                //To count all User in Data base show on grid
-                this.TotalProducts = _productRepository.GetIQueryable(predicate).Count();
-                //To get data with range
-                int indexItem = 0;
-                if (currentIndex > 1)
-                    indexItem = (currentIndex - 1) * NumberOfDisplayItems;
-                IList<base_Product> transferStocks = _productRepository.GetRange(indexItem, NumberOfDisplayItems, "It.Id", predicate);
-                foreach (var item in transferStocks)
-                    bgWorker.ReportProgress(0, item);
-            };
-            bgWorker.ProgressChanged += (sender, e) =>
+                BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
+                if (currentIndex == 0)
+                    this.ProductCollection.Clear();
+                bgWorker.DoWork += (sender, e) =>
+                {
+                    base.IsBusy = true;
+                    //if(refreshData)
+                    //To count all User in Data base show on grid
+                    this.TotalProducts = _productRepository.GetIQueryable(predicate).Count();
+                    //To get data with range
+                    int indexItem = 0;
+                    if (currentIndex > 1)
+                        indexItem = (currentIndex - 1) * NumberOfDisplayItems;
+                    IList<base_Product> transferStocks = _productRepository.GetRange(indexItem, NumberOfDisplayItems, "It.Id", predicate);
+                    foreach (var item in transferStocks)
+                        bgWorker.ReportProgress(0, item);
+                };
+                bgWorker.ProgressChanged += (sender, e) =>
+                {
+                    //To add item of list.
+                    base_ProductModel model = new base_ProductModel(e.UserState as base_Product);
+                    base_Guest vendor = _guestRepository.Get(x => x.Mark.Equals(VendorType) && x.IsActived && !x.IsPurged && x.Id.Equals(model.VendorId));//.SingleOrDefault();
+                    if (vendor != null)
+                        model.VendorName = vendor.Company;
+                    var category = this._departmentRepository.Get(x => x.LevelId == 1 && x.Id == model.ProductCategoryId);//.SingleOrDefault(x => x.Id == model.ProductCategoryId);
+                    if (category != null)
+                        model.CategoryName = category.Name;
+                    var uom = this._uomRepository.Get(x => x.IsActived && x.Id == model.BaseUOMId);//.SingleOrDefault(x => x.Id == model.BaseUOMId);
+                    if (uom != null)
+                        model.UOMName = uom.Name;
+                    model.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
+                    foreach (var item in model.base_Product.base_ProductStore.OrderBy(x => x.StoreCode))
+                        model.ProductStoreCollection.Add(new base_ProductStoreModel(item));
+                    this.ProductCollection.Add(model);
+                };
+                bgWorker.RunWorkerCompleted += (sender, e) =>
+                {
+                    base.IsBusy = false;
+                    if (this._resourceClone != Guid.Empty)
+                        this.SelectedProduct = this.ProductCollection.SingleOrDefault(x => x.Resource == this._resourceClone);
+                };
+                bgWorker.RunWorkerAsync();
+            }
+            catch (Exception ex)
             {
-                //To add item of list.
-                base_ProductModel model = new base_ProductModel(e.UserState as base_Product);
-                base_Guest vendor = _guestRepository.Get(x => x.Mark.Equals(VendorType) && x.IsActived && !x.IsPurged && x.Id.Equals(model.VendorId));//.SingleOrDefault();
-                if (vendor != null)
-                    model.VendorName = vendor.Company;
-                var category = this._departmentRepository.Get(x => x.LevelId == 1 && x.Id == model.ProductCategoryId);//.SingleOrDefault(x => x.Id == model.ProductCategoryId);
-                if (category != null)
-                    model.CategoryName = category.Name;
-                var uom = this._uomRepository.Get(x => x.IsActived && x.Id == model.BaseUOMId);//.SingleOrDefault(x => x.Id == model.BaseUOMId);
-                if (uom != null)
-                    model.UOMName = uom.Name;
-                model.ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
-                foreach (var item in model.base_Product.base_ProductStore.OrderBy(x => x.StoreCode))
-                    model.ProductStoreCollection.Add(new base_ProductStoreModel(item));
-                this.ProductCollection.Add(model);
-            };
-            bgWorker.RunWorkerCompleted += (sender, e) =>
-            {
-                base.IsBusy = false;
-                if (this._resourceClone != Guid.Empty)
-                    this.SelectedProduct = this.ProductCollection.SingleOrDefault(x => x.Resource == this._resourceClone);
-            };
-            bgWorker.RunWorkerAsync();
+                _log4net.Error(ex);
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         #endregion
@@ -561,7 +592,38 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 MessageBox.Show(ex.ToString());
+            }
+        }
+        #endregion
+
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
             }
         }
         #endregion
@@ -603,6 +665,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex);
             }
 

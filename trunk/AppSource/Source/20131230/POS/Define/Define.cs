@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
-using CPC.POS.ViewModel;
-using System.Windows;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
+using CPC.POS.ViewModel;
 
 namespace CPC.POS
 {
@@ -37,6 +36,7 @@ namespace CPC.POS
                 }
             }
         }
+
         //To define userpostgres to execute data in sql.
         public static string UserPostgres = "postgres";
         // Define the messages for Messenger: Access to language XML's Messenger node.
@@ -142,5 +142,23 @@ namespace CPC.POS
         public static string ContentHappyBirthdayFile = null;
         public static string RewardContentTemplateFile = null;
         public static string EmailContentSendReportFile = string.Empty;
+
+        /// <summary>
+        /// Get Delay when user input in textbox search
+        /// </summary>
+        public static int DelaySearching = CPC.POS.Properties.Settings.Default.DelaySearching;
+
+        public static string ApplicationFolder = Application.ResourceAssembly.Location.Remove(Application.ResourceAssembly.Location.Length - Application.ResourceAssembly.Location.Split('\\').Last().Count());
+
+        public static string UpdateFileName = ApplicationFolder + "UpdateProgram.exe";
+
+        // Store web address of contact page
+        public static string ContactUsURL = CPC.POS.Properties.Settings.Default.ContactUsURL;
+
+        //Default Customer ID for GUID & GuestNo
+        public static int DefaultGuestId = 1;
+
+        // Store permissions of users
+        public static UserPermissions UserPermissions;
     }
 }

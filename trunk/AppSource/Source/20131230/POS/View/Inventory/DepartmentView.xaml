@@ -8,13 +8,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              xmlns:model="clr-namespace:CPC.POS.Model"
+             xmlns:pos="clr-namespace:CPC.POS"
              xmlns:txtToolkit="clr-namespace:CPCToolkitExt.TextBoxControl;assembly=CPCToolkitExt"
              xmlns:xceedToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
              xmlns:xceedWpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
-             xmlns:pos="clr-namespace:CPC.POS"
              x:Name="UserControl"
              Background="{DynamicResource UserControlBackground}"
              mc:Ignorable="d">
@@ -279,10 +277,10 @@
             <TextBlock Text="{DynamicResource C139}" />
         </DataTemplate>
     </UserControl.Resources>
-	<UserControl.InputBindings>
-		<KeyBinding Command="{Binding HelpCommand}"
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}"
                     Gesture="F1" />
-	</UserControl.InputBindings>
+    </UserControl.InputBindings>
     <Grid x:Name="GridLayout"
           d:LayoutOverrides="Height">
         <Rectangle x:Name="UserControl_Background_Image"
@@ -303,9 +301,8 @@
                             Command="{Binding NewCommand}"
                             Width="40"
                             Height="40"
-                            IsEnabled="{Binding AllowAddProduct, Mode=OneWay}"
                             Style="{DynamicResource ButtonSystem}"
-                            ToolTip="{DynamicResource C140}"
+                            ToolTip="New Item"
                             ToolTipService.ShowOnDisabled="True">
                         <StackPanel x:Name="stkpBtnNew"
                                     HorizontalAlignment="Center"
@@ -322,8 +319,7 @@
                             Height="40"
                             IsEnabled="{Binding ., Converter={StaticResource permissionConverter}, ConverterParameter=IV100-01-09}"
                             Style="{DynamicResource ButtonSystem}"
-                            ToolTip="{DynamicResource C141}"
-                            ToolTipService.ShowOnDisabled="True">
+                            ToolTip="Edit Current Item">
                         <StackPanel x:Name="stkpBtnEdit"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -339,8 +335,7 @@
                             Width="40"
                             Height="40"
                             Style="{DynamicResource ButtonSystem}"
-                            ToolTip="{DynamicResource C142}"
-                            ToolTipService.ShowOnDisabled="True">
+                            ToolTip="Save Current Item">
                         <StackPanel x:Name="stkpBtnSave"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
@@ -355,8 +350,7 @@
                             Width="40"
                             Height="40"
                             Style="{DynamicResource ButtonSystem}"
-                            ToolTip="{DynamicResource C143}"
-                            ToolTipService.ShowOnDisabled="True">
+                            ToolTip="Cancel Current Item">
                         <StackPanel x:Name="stkpBtnCancel"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -724,8 +718,8 @@
                                                 <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}"
                                                                     Width="*"
                                                                     HeaderTemplate="{StaticResource NameHeaderTemplate}" />
-                                                <DataGridTemplateColumn  HeaderTemplate="{StaticResource ActiveHeaderTemplate}"
-                                                                         Width="50">
+                                                <DataGridTemplateColumn Width="50"
+                                                                        HeaderTemplate="{StaticResource ActiveHeaderTemplate}">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <CheckBox HorizontalAlignment="Center"
@@ -779,8 +773,8 @@
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                                <DataGridTemplateColumn  HeaderTemplate="{StaticResource ActiveHeaderTemplate}"
-                                                                         Width="50">
+                                                <DataGridTemplateColumn Width="50"
+                                                                        HeaderTemplate="{StaticResource ActiveHeaderTemplate}">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <CheckBox HorizontalAlignment="Center"

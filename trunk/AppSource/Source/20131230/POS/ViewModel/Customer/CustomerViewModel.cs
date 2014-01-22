@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
 using CPC.Control;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -15,13 +18,10 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
-using System.Text;
-using System.Windows.Controls;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
-    class CustomerViewModel : ViewModelBase
+    class CustomerViewModel : ViewModelBase, IDragSource, IDropTarget
     {
         #region Define
         public RelayCommand NewCommand { get; private set; }
@@ -86,6 +86,16 @@ namespace CPC.POS.ViewModel
         public bool IsAdvanced { get; set; }
 
         private Expression<Func<base_Guest, bool>> AdvanceSearchPredicate;
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
         #endregion
 
         #region Constructors
@@ -99,11 +109,14 @@ namespace CPC.POS.ViewModel
             InitialStaticData();
             ChangeSearchMode(isSearchMode, param);
 
-            // Get permission
-            GetPermission();
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
-
-
 
         #endregion
 
@@ -157,7 +170,7 @@ namespace CPC.POS.ViewModel
             {
                 if (SelectedCustomer == null)
                     return false;
-                return AllowAccessSOHistory && !SelectedCustomer.IsNew;
+                return UserPermissions.AllowAccessSOHistory && !SelectedCustomer.IsNew;
             }
 
         }
@@ -268,27 +281,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region SearchOption
-        private int _searchOption;
-        /// <summary>
-        /// Gets or sets the SearchOption.
-        /// </summary>
-        public int SearchOption
-        {
-            get { return _searchOption; }
-            set
-            {
-                if (_searchOption != value)
-                {
-                    _searchOption = value;
-                    OnPropertyChanged(() => SearchOption);
-                    if (!string.IsNullOrWhiteSpace(FilterText))
-                        OnSearchCommandExecute(FilterText);
-                }
-            }
-        }
-        #endregion
-
         #region FilterText & Keyword
         private string _filterText;
         /// <summary>
@@ -304,6 +296,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                 }
             }
@@ -636,6 +629,19 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        /// <summary>
+        /// Gets or sets the AllowAccessCustomerReward.
+        /// </summary>
+        public bool AllowAccessCustomerReward
+        {
+            get
+            {
+                if (SelectedCustomer == null)
+                    return UserPermissions.AllowAccessCustomerReward;
+                return UserPermissions.AllowAccessCustomerReward && SelectedCustomer.IsRewardMember;
+            }
+        }
+
         #endregion
 
         #region Commands Methods
@@ -754,6 +760,9 @@ namespace CPC.POS.ViewModel
         {
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
+
                 IsAdvanced = false;
                 Expression<Func<base_Guest, bool>> predicate = CreateSimpleSearchPredicate(FilterText);
                 LoadDataByPredicate(predicate, false, 0);
@@ -1083,7 +1092,7 @@ namespace CPC.POS.ViewModel
         {
             if (RewardProgram == null)
                 return false;
-            return RewardProgram.Id > 0 && AllowManualReward;
+            return RewardProgram.Id > 0 && UserPermissions.AllowManualReward;
         }
 
         /// <summary>
@@ -1104,37 +1113,6 @@ namespace CPC.POS.ViewModel
                 _rewardCollectionView = null;
                 //FilterGuestReward(SelectedCustomer);
             }
-        }
-
-        #endregion
-
-        #region SaleOrderCommand
-
-        /// <summary>
-        /// Gets the SaleOrder Command.
-        /// <summary>
-        public RelayCommand<object> SaleOrderCommand { get; private set; }
-
-        /// <summary>
-        /// Method to check whether the SaleOrder command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnSaleOrderCommandCanExecute(object param)
-        {
-            return param != null && (param as ObservableCollection<object>).Count == 1 && AllowSaleFromCustomer;
-        }
-
-        /// <summary>
-        /// Method to invoke when the SaleOrder command is executed.
-        /// </summary>
-        private void OnSaleOrderCommandExecute(object param)
-        {
-            ObservableCollection<object> guestCollection = param as ObservableCollection<object>;
-            ComboItem cmbValue = new ComboItem();
-            cmbValue.Text = "Customer";
-
-            cmbValue.Detail = (guestCollection.First() as base_GuestModel).Id;
-            (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
         }
 
         #endregion
@@ -1256,7 +1234,7 @@ namespace CPC.POS.ViewModel
                     foreach (base_CustomerReminder sourceReminder in customersourceReminders)
                     {
                         sourceReminder.GuestResource = customerTarget.Resource.ToString();
-                        if (customerTarget.PersonalInfoModel!=null)
+                        if (customerTarget.PersonalInfoModel != null)
                             sourceReminder.DOB = customerTarget.PersonalInfoModel.DOB;
                         sourceReminder.Name = customerTarget.LegalName;
                         sourceReminder.Company = customerTarget.Company;
@@ -1464,6 +1442,107 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        //Sale
+
+        #region SaleOrderCommand
+
+        /// <summary>
+        /// Gets the SaleOrder Command.
+        /// <summary>
+        public RelayCommand<object> SaleOrderCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the SaleOrder command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnSaleOrderCommandCanExecute(object param)
+        {
+            return param != null && (param as ObservableCollection<object>).Count == 1 && UserPermissions.AllowSaleFromCustomer;
+        }
+
+        /// <summary>
+        /// Method to invoke when the SaleOrder command is executed.
+        /// </summary>
+        private void OnSaleOrderCommandExecute(object param)
+        {
+            ObservableCollection<object> guestCollection = param as ObservableCollection<object>;
+            ComboItem cmbValue = new ComboItem();
+            cmbValue.Text = "Customer";
+
+            cmbValue.Detail = (guestCollection.First() as base_GuestModel).Id;
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
+        }
+
+        #endregion
+
+        #region LayawayCommand
+        /// <summary>
+        /// Gets the Layaway Command.
+        /// <para>SaleOrder To Layaway</para>
+        /// <summary>
+
+        public RelayCommand<object> LayawayCommand { get; private set; }
+
+
+        /// <summary>
+        /// Method to check whether the Layaway command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnLayawayCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the Layaway command is executed.
+        /// </summary>
+        private void OnLayawayCommandExecute(object param)
+        {
+            ObservableCollection<object> guestCollection = param as ObservableCollection<object>;
+            ComboItem cmbValue = new ComboItem();
+            cmbValue.Text = "Customer";
+
+            cmbValue.Detail = (guestCollection.First() as base_GuestModel).Id;
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Layaway", cmbValue);
+        }
+        #endregion
+
+
+        #region WorkOrderCommand
+        /// <summary>
+        /// Gets the WorkOrder Command.
+        /// <summary>
+
+        public RelayCommand<object> WorkOrderCommand { get; private set; }
+
+
+
+        /// <summary>
+        /// Method to check whether the WorkOrder command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnWorkOrderCommandCanExecute(object param)
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// Method to invoke when the WorkOrder command is executed.
+        /// </summary>
+        private void OnWorkOrderCommandExecute(object param)
+        {
+            ObservableCollection<object> guestCollection = param as ObservableCollection<object>;
+            ComboItem cmbValue = new ComboItem();
+            cmbValue.Text = "Customer";
+
+            cmbValue.Detail = (guestCollection.First() as base_GuestModel).Id;
+            (_ownerViewModel as MainViewModel).OpenViewExecute("Work Order", cmbValue);
+        }
+        #endregion
+
+
         //Extent
         #region InsertDateStampCommand
         /// <summary>
@@ -1522,7 +1601,6 @@ namespace CPC.POS.ViewModel
             DeletesCommand = new RelayCommand<object>(OnDeletesCommandExecute, OnDeletesCommandCanExecute);
             IssueRewardManagerCommand = new RelayCommand<object>(OnIssueRewardManagerCommandExecute, OnIssueRewardManagerCommandCanExecute);
 
-            SaleOrderCommand = new RelayCommand<object>(OnSaleOrderCommandExecute, OnSaleOrderCommandCanExecute);
             MergeCustomerCommand = new RelayCommand<object>(OnMergeCustomerCommandExecute, OnMergeCustomerCommandCanExecute);
 
             AddNewGuestGroupCommand = new RelayCommand<object>(OnAddNewGuestGroupCommandExecute, OnAddNewGuestGroupCommandCanExecute);
@@ -1533,6 +1611,11 @@ namespace CPC.POS.ViewModel
             EditItemCommand = new RelayCommand<object>(OnEditItemCommandExecute, OnEditItemCommandCanExecute);
 
             SearchAdvanceCommand = new RelayCommand<object>(OnSearchAdvanceCommandExecute, OnSearchAdvanceCommandCanExecute);
+
+            SaleOrderCommand = new RelayCommand<object>(OnSaleOrderCommandExecute, OnSaleOrderCommandCanExecute);
+            LayawayCommand = new RelayCommand<object>(OnLayawayCommandExecute, OnLayawayCommandCanExecute);
+            WorkOrderCommand = new RelayCommand<object>(OnWorkOrderCommandExecute, OnWorkOrderCommandCanExecute);
+
         }
 
         /// <summary>
@@ -2029,7 +2112,7 @@ namespace CPC.POS.ViewModel
             else
                 SelectedCustomer.IsRewardMember = false;
 
-            OnPropertyChanged(() => AllowAccessReward);
+            OnPropertyChanged(() => AllowAccessCustomerReward);
 
             SelectedCustomer.CheckLimit = 0;
             SelectedCustomer.GuestTypeId = Common.CustomerTypes.First().Value;
@@ -2084,7 +2167,7 @@ namespace CPC.POS.ViewModel
 
 
             SelectedCustomer.PropertyChanged += new PropertyChangedEventHandler(SelectedCustomer_PropertyChanged);
-            OnPropertyChanged(() => AllowAccessReward);
+            OnPropertyChanged(() => AllowAccessCustomerReward);
             //Raise Check show SO History Tab
             OnPropertyChanged(() => IsVisibleSOHistory);
             SelectedCustomer.IsDirty = false;
@@ -2161,7 +2244,7 @@ namespace CPC.POS.ViewModel
 
                 decimal decimalValue = 0;
 
-                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue))
+                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue) && decimalValue != 0)
                 {
                     //Total Purchase
                     predicate = predicate.Or(x => x.PurchaseDuringTrackingPeriod.Equals(decimalValue));
@@ -2968,7 +3051,7 @@ namespace CPC.POS.ViewModel
 
             OnPropertyChanged(() => ContactTotalItem);
             OnPropertyChanged(() => CreditCardTotalItem);
-            OnPropertyChanged(() => AllowAccessReward);
+            OnPropertyChanged(() => AllowAccessCustomerReward);
 
 
             StickyManagementViewModel.SetParentResource(SelectedCustomer.Resource.ToString(), SelectedCustomer.ResourceNoteCollection);
@@ -3160,6 +3243,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OpenSearchAdvance()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
             CustomerAdvanceSearchViewModel viewModel = new CustomerAdvanceSearchViewModel();
             bool? dialogResult = _dialogService.ShowDialog<CustomerAdvanceSearchView>(_ownerViewModel, viewModel, Language.GetMsg("C104"));
             if (dialogResult ?? false)
@@ -3169,6 +3254,8 @@ namespace CPC.POS.ViewModel
                 LoadDataByPredicate(this.AdvanceSearchPredicate, false, 0);
             }
         }
+
+
         #endregion
 
         #region Override Methods
@@ -3229,7 +3316,7 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region PropertyChanged
+        #region PropertyChanged & Event
         private void SelectedCustomer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base_GuestModel customerModel = sender as base_GuestModel;
@@ -3240,7 +3327,7 @@ namespace CPC.POS.ViewModel
                     CheckDuplicateGuestNo(customerModel);
                     break;
                 case "IsRewardMember":
-                    OnPropertyChanged(() => AllowAccessReward);
+                    OnPropertyChanged(() => AllowAccessCustomerReward);
 
                     break;
                 case "IsActived":
@@ -3281,6 +3368,35 @@ namespace CPC.POS.ViewModel
             }
         }
 
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -3314,127 +3430,36 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region Permission
+        #region IDragSource Members
 
-        #region Properties
-
-        private bool _allowAccessPayment = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessPayment.
-        /// </summary>
-        public bool AllowAccessPayment
+        public void StartDrag(DragInfo dragInfo)
         {
-            get { return _allowAccessPayment; }
-            set
-            {
-                if (_allowAccessPayment != value)
-                {
-                    _allowAccessPayment = value;
-                    OnPropertyChanged(() => AllowAccessPayment);
-                }
-            }
-        }
+            IEnumerable<base_GuestModel> sourceItems = dragInfo.SourceItems.Cast<base_GuestModel>();
 
-        private bool _allowAccessReward = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessReward.
-        /// </summary>
-        public bool AllowAccessReward
-        {
-            get
+            if (sourceItems.Count() == 1)
             {
-                if (SelectedCustomer == null)
-                    return _allowAccessReward;
-                return _allowAccessReward && SelectedCustomer.IsRewardMember;
-            }
-            set
-            {
-                if (_allowAccessReward != value)
-                {
-                    _allowAccessReward = value;
-                    OnPropertyChanged(() => AllowAccessReward);
-                }
-            }
-        }
+                ComboItem cmbValue = new ComboItem();
+                cmbValue.Text = "Customer";
+                cmbValue.Detail = sourceItems.SingleOrDefault().Id;
 
-        private bool _allowAccessSOHistory = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessSOHistory.
-        /// </summary>
-        public bool AllowAccessSOHistory
-        {
-            get { return _allowAccessSOHistory; }
-            set
-            {
-                if (_allowAccessSOHistory != value)
-                {
-                    _allowAccessSOHistory = value;
-                    OnPropertyChanged(() => AllowAccessSOHistory);
-                }
-            }
-        }
+                dragInfo.Data = cmbValue;
 
-        private bool _allowSaleFromCustomer = true;
-        /// <summary>
-        /// Gets or sets the AllowSaleFromCustomer.
-        /// </summary>
-        public bool AllowSaleFromCustomer
-        {
-            get { return _allowSaleFromCustomer; }
-            set
-            {
-                if (_allowSaleFromCustomer != value)
-                {
-                    _allowSaleFromCustomer = value;
-                    OnPropertyChanged(() => AllowSaleFromCustomer);
-                }
-            }
-        }
-
-        private bool _allowManualReward = true;
-        /// <summary>
-        /// Gets or sets the AllowManualReward.
-        /// </summary>
-        public bool AllowManualReward
-        {
-            get { return _allowManualReward; }
-            set
-            {
-                if (_allowManualReward != value)
-                {
-                    _allowManualReward = value;
-                    OnPropertyChanged(() => AllowManualReward);
-                }
+                dragInfo.Effects = (dragInfo.Data != null) ? DragDropEffects.Move : DragDropEffects.None;
             }
         }
 
         #endregion
 
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        #region IDropTarget Members
+
+        public void DragOver(DropInfo dropInfo)
         {
-            if (!IsAdminPermission && !IsFullPermission)
-            {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
+            dropInfo.Effects = DragDropEffects.Move;
+        }
 
-                // Get access payment permission
-                AllowAccessPayment = userRightCodes.Contains("SO100-01-05");
+        public void Drop(DropInfo dropInfo)
+        {
 
-                // Get access reward permission
-                AllowAccessReward = userRightCodes.Contains("SO100-01-06");
-
-                // Get access sale order history permission
-                AllowAccessSOHistory = userRightCodes.Contains("SO100-01-07");
-
-                // Union add/copy sale order and sale from customer permission
-                AllowSaleFromCustomer = userRightCodes.Contains("SO100-04-02") && userRightCodes.Contains("SO100-01-08");
-
-                // Get allow manual reward permission
-                AllowManualReward = userRightCodes.Contains("SO100-02-02");
-            }
         }
 
         #endregion

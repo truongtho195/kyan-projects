@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CPC.Toolkit.Command;
-using CPC.Toolkit.Base;
-using System.Collections.ObjectModel;
-using CPC.POS.Model;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
+using CPC.POS.Model;
+using CPC.Toolkit.Base;
+using CPC.Toolkit.Command;
 
 namespace CPC.POS.ViewModel
 {
@@ -25,7 +22,8 @@ namespace CPC.POS.ViewModel
         {
             InitialCommand();
         }
-        public POSOPaymentHistoryDetailViewModel(base_ResourcePaymentModel paymentModel):this()
+        public POSOPaymentHistoryDetailViewModel(base_ResourcePaymentModel paymentModel)
+            : this()
         {
             if (paymentModel.PaymentDetailCollection != null)
             {
@@ -62,7 +60,7 @@ namespace CPC.POS.ViewModel
         /// <summary>
         /// Gets or sets the Totals.
         /// </summary>
-        public int  Totals
+        public int Totals
         {
             get { return _totals; }
             set
@@ -141,6 +139,4 @@ namespace CPC.POS.ViewModel
         #region Public Methods
         #endregion
     }
-
-
 }

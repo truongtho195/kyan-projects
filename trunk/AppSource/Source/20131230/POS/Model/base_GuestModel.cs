@@ -2660,6 +2660,23 @@ namespace CPC.POS.Model
         }
         #endregion
 
+        private int _numberOfWorkPermissions;
+        /// <summary>
+        /// Gets or sets the NumberOfWorkPermissions.
+        /// </summary>
+        public int NumberOfWorkPermissions
+        {
+            get { return _numberOfWorkPermissions; }
+            set
+            {
+                if (_numberOfWorkPermissions != value)
+                {
+                    _numberOfWorkPermissions = value;
+                    OnPropertyChanged(() => NumberOfWorkPermissions);
+                }
+            }
+        }
+
         #endregion
 
         #region Override Methods

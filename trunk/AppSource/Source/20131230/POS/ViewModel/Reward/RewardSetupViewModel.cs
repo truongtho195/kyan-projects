@@ -929,8 +929,6 @@ namespace CPC.POS.ViewModel
         public override void LoadData()
         {
             this.InitialData();
-            // Get permission
-            GetPermission();
         }
         #endregion
 

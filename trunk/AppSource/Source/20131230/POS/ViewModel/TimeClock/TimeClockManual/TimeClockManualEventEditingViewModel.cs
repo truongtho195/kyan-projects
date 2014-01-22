@@ -54,6 +54,22 @@ namespace CPC.POS.ViewModel
         }
 
         private string _keyword;
+        /// <summary>
+        /// Gets or sets the Keyword.
+        /// </summary>
+        public string Keyword
+        {
+            get { return _keyword; }
+            set
+            {
+                if (_keyword != value)
+                {
+                    _keyword = value;
+                    ResetTimer();
+                    OnPropertyChanged(() => Keyword);
+                }
+            }
+        }
 
         private ObservableCollection<string> _columnCollection;
         /// <summary>
@@ -217,6 +233,13 @@ namespace CPC.POS.ViewModel
             InitialCommand();
 
             LoadStaticData();
+
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new System.Windows.Threading.DispatcherTimer();
+                _waitingTimer.Interval = TimeSpan.FromSeconds(1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         #endregion
@@ -246,7 +269,8 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                _keyword = param.ToString();
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
 
                 // Load data by predicate
                 LoadDataByPredicate();
@@ -1759,6 +1783,48 @@ namespace CPC.POS.ViewModel
         {
             // Load data by predicate
             LoadDataByPredicate(true);
+        }
+
+        #endregion
+
+        #region DelaySearch Methods
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected System.Windows.Threading.DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
+
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
         }
 
         #endregion

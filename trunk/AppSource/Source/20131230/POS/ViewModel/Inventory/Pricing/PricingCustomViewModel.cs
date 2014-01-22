@@ -38,6 +38,12 @@ namespace CPC.POS.ViewModel
 
         #region Properties
 
+        #region Search
+
+        private string _keyword;
+
+        #endregion
+
         private ObservableCollection<base_ProductModel> _leftProductCollection = new ObservableCollection<base_ProductModel>();
         /// <summary>
         /// Gets or sets the LeftProductCollection.
@@ -167,67 +173,6 @@ namespace CPC.POS.ViewModel
 
         public int CurrentPageIndexLeft { get; set; }
 
-        #region Search And Filter Left
-
-        private int _searchOptionLeft;
-        /// <summary>
-        /// Gets or sets the SearchOptionLeft.
-        /// </summary>
-        public int SearchOptionLeft
-        {
-            get { return _searchOptionLeft; }
-            set
-            {
-                if (_searchOptionLeft != value)
-                {
-                    _searchOptionLeft = value;
-                    OnPropertyChanged(() => SearchOptionLeft);
-                    if (!string.IsNullOrWhiteSpace(FilterTextLeft))
-                        OnLeftSearchCommandExecute(FilterTextLeft);
-                }
-            }
-        }
-
-        private string _filterTextLeft;
-        /// <summary>
-        /// Gets or sets the FilterTextLeft.
-        /// <para>Keyword user input but not press enter</para>
-        /// <remarks>Binding in textbox keyword</remarks>
-        /// </summary>
-        public string FilterTextLeft
-        {
-            get { return _filterTextLeft; }
-            set
-            {
-                if (_filterTextLeft != value)
-                {
-                    _filterTextLeft = value;
-                    OnPropertyChanged(() => FilterTextLeft);
-                }
-            }
-        }
-
-        public string KeywordLeft { get; set; }
-
-        private string _searchAlertLeft;
-        /// <summary>
-        /// Gets or sets the SearchAlertLeft.
-        /// </summary>
-        public string SearchAlertLeft
-        {
-            get { return _searchAlertLeft; }
-            set
-            {
-                if (_searchAlertLeft != value)
-                {
-                    _searchAlertLeft = value;
-                    OnPropertyChanged(() => SearchAlertLeft);
-                }
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region Constructors
@@ -240,6 +185,12 @@ namespace CPC.POS.ViewModel
             InitialCommand();
 
         }
+
+        /// <summary>
+        /// Constructor with load data
+        /// </summary>
+        /// <param name="categoryList">Category list</param>
+        /// <param name="promotionAffectList">Promotion affect list</param>
         public PricingCustomViewModel(List<ComboItem> categoryList)
         {
             this.InitialCommand();
@@ -248,11 +199,7 @@ namespace CPC.POS.ViewModel
             this.LoadLeftDataByPredicate(true);
 
         }
-        /// <summary>
-        /// Constructor with load data
-        /// </summary>
-        /// <param name="categoryList">Category list</param>
-        /// <param name="promotionAffectList">Promotion affect list</param>
+
         #endregion
 
         #region Command Methods
@@ -271,27 +218,10 @@ namespace CPC.POS.ViewModel
         {
             try
             {
-                SearchAlertLeft = string.Empty;
-                // Search All
-                if ((param == null || string.IsNullOrWhiteSpace(param.ToString())) && SearchOptionLeft == 0)
-                {
-                    // Load data by predicate
-                    LoadLeftDataByPredicate(false);
-                }
-                else if (param != null)
-                {
-                    KeywordLeft = param.ToString();
-                    if (SearchOptionLeft == 0)
-                    {
-                        // Alert: Search option is required
-                        SearchAlertLeft = "Search Option is required";
-                    }
-                    else
-                    {
-                        // Load data by predicate
-                        LoadLeftDataByPredicate(false);
-                    }
-                }
+                _keyword = param.ToString();
+
+                // Load data by predicate
+                LoadLeftDataByPredicate();
             }
             catch (Exception ex)
             {
@@ -529,47 +459,50 @@ namespace CPC.POS.ViewModel
             // Initial predicate
             Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
+            // Set conditions for predicate
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.ToLower();
+
+                predicate = PredicateBuilder.False<base_Product>();
+
+                // Get all product that keyword contain in Code
+                predicate = predicate.Or(x => x.Code.ToLower().Contains(keyword));
+
+                // Get all product that keyword contain in product ProductName
+                predicate = predicate.Or(x => x.ProductName.ToLower().Contains(keyword));
+
+                // Get all categories that contain keyword
+                IEnumerable<ComboItem> categories = CategoryList.Where(x => x.Text.ToLower().Contains(keyword));
+                IEnumerable<int> categoryIDList = categories.Select(x => x.IntValue);
+
+                // Get all product that contain in category list
+                if (categoryIDList.Count() > 0)
+                    predicate = predicate.Or(x => categoryIDList.Contains(x.ProductCategoryId));
+            }
+
             // Get all product has not deleted
             predicate = predicate.And(x => x.IsPurge == false);
 
             // Get all product that contain in category list
-            if (this.CategoryList != null && this.CategoryList.Count() > 0)
+            if (CategoryList.Count() > 0)
             {
                 IEnumerable<int> categoryList = CategoryList.Select(x => x.IntValue);
                 predicate = predicate.And(x => categoryList.Contains(x.ProductCategoryId));
             }
-            // Set conditions for predicate
-            if (!string.IsNullOrWhiteSpace(keyword) && SearchOptionLeft > 0)
-            {
-                if (SearchOptionLeft.Has(SearchOptions.Code))
-                {
-                    predicate = predicate.And(x => x.Code.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOptionLeft.Has(SearchOptions.ItemName))
-                {
-                    predicate = predicate.And(x => x.ProductName.ToLower().Contains(keyword.ToLower()));
-                }
-                if (SearchOptionLeft.Has(SearchOptions.Category))
-                {
-                    // Get all categories that contain keyword
-                    IEnumerable<ComboItem> categories = CategoryList.Where(x => x.Text.ToLower().Contains(keyword.ToLower()));
-                    IEnumerable<int> categoryIDList = categories.Select(x => x.IntValue);
 
-                    // Get all product that category contain in category list
-                    if (categoryIDList.Count() > 0)
-                        predicate = predicate.And(x => categoryIDList.Contains(x.ProductCategoryId));
-                    else
-                        // If condition in predicate is false, GetRange function can not get data from database.
-                        // Solution for this problem is create fake condition
-                        predicate = predicate.And(x => x.Id < 0);
-                }
-            }
             // Get all productID that contain in promotion affect list
             IEnumerable<long> productIDList = this.RightProductCollection.Select(x => x.Id);
 
             // Get all product that NOT contain in promotion affect list
             if (productIDList.Count() > 0)
                 predicate = predicate.And(x => !productIDList.Contains(x.Id));
+
+            if (!IsMainStore)
+            {
+                // Get all product by store code
+                predicate = predicate.And(x => x.base_ProductStore.Any(y => y.StoreCode.Equals(Define.StoreCode)));
+            }
 
             return predicate;
         }
@@ -586,7 +519,7 @@ namespace CPC.POS.ViewModel
             if (IsBusy) return;
 
             // Create predicate
-            Expression<Func<base_Product, bool>> predicate = CreateLeftSearchPredicate(KeywordLeft);
+            Expression<Func<base_Product, bool>> predicate = CreateLeftSearchPredicate(_keyword);
 
             // Create background worker
             BackgroundWorker bgWorker = new BackgroundWorker { WorkerReportsProgress = true };
@@ -614,6 +547,7 @@ namespace CPC.POS.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    _log4net.Error(ex);
                     Console.WriteLine(ex.ToString());
                 }
             };

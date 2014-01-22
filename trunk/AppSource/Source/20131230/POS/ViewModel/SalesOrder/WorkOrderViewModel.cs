@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -13,12 +16,10 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExt.DataGridControl;
-using System.Collections.Specialized;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
-    public class WorkOrderViewModel : OrderViewModel
+    public class WorkOrderViewModel : OrderViewModel, IDropTarget
     {
         #region Define
         //Respository
@@ -35,14 +36,14 @@ namespace CPC.POS.ViewModel
 
         }
 
-        public WorkOrderViewModel(bool isList)
+        public WorkOrderViewModel(bool isList, object param)
             : base()
         {
             LoadDynamicData();
-            ChangeSearchMode(isList, null);
+            ChangeSearchMode(isList, param);
 
-            // Get permission
-            GetPermission();
+            // Get delete product in work order permission
+            AllowDeleteProduct = UserPermissions.AllowDeleteProductWorkOrder;
         }
 
         #endregion
@@ -242,6 +243,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                 }
             }
@@ -393,6 +395,9 @@ namespace CPC.POS.ViewModel
 
         protected override void OnSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             Keyword = FilterText;
             IsAdvanced = false;
 
@@ -548,7 +553,7 @@ namespace CPC.POS.ViewModel
 
         protected override void OnSearchProductCommandExecute(object param)
         {
-         
+
             short productGroupType = (short)ItemTypes.Group;
 
             base_Product product;
@@ -867,7 +872,7 @@ namespace CPC.POS.ViewModel
                 && IsOrderValid
                 && SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Open)
                 && !SelectedSaleOrder.IsConverted
-                && AllowSaleWorkOrder;
+                && UserPermissions.AllowSaleWorkOrder;
         }
 
         /// <summary>
@@ -885,7 +890,7 @@ namespace CPC.POS.ViewModel
                 ComboItem cmbValue = new ComboItem();
                 cmbValue.Text = MarkType.WorkOrder.ToDescription();
                 cmbValue.Detail = SelectedSaleOrder.Id;
-                (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
             }
 
         }
@@ -938,7 +943,7 @@ namespace CPC.POS.ViewModel
                 ComboItem cmbValue = new ComboItem();
                 cmbValue.Text = "Quotation";
                 cmbValue.Detail = SelectedSaleOrder.Id;
-                (_ownerViewModel as MainViewModel).OpenViewExecute("SalesOrder", cmbValue);
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Sales Order", cmbValue);
             }), System.Windows.Threading.DispatcherPriority.Background);
 
         }
@@ -1164,7 +1169,7 @@ namespace CPC.POS.ViewModel
                 //Search deciaml
 
                 decimal decimalValue = 0;
-                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue))
+                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue) && decimalValue != 0)
                 {
                     //Total 
                     predicate = predicate.Or(x => x.Total.Equals(decimalValue));
@@ -1226,11 +1231,19 @@ namespace CPC.POS.ViewModel
         /// <param name="isForce"></param>
         protected override void SetSaleOrderRelation(base_SaleOrderModel saleOrderModel, bool isForce = false)
         {
-            base.SetSaleOrderRelation(saleOrderModel, isForce);
+            try
+            {
+                base.SetSaleOrderRelation(saleOrderModel, isForce);
 
-            LoadPaymentCollection(saleOrderModel);
+                LoadPaymentCollection(saleOrderModel);
 
-            saleOrderModel.RaiseAnyShipped();
+                saleOrderModel.RaiseAnyShipped();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -1239,17 +1252,25 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderModel"></param>
         private void LoadPaymentCollection(base_SaleOrderModel saleOrderModel)
         {
-            // Get document resource
-            string docResource = saleOrderModel.Resource.ToString();
+            try
+            {
+                // Get document resource
+                string docResource = saleOrderModel.Resource.ToString();
 
-            // Get all payment by document resource
-            IEnumerable<base_ResourcePayment> payments = _paymentRepository.GetAll(x => x.DocumentResource.Equals(docResource));
+                // Get all payment by document resource
+                IEnumerable<base_ResourcePayment> payments = _paymentRepository.GetAll(x => x.DocumentResource.Equals(docResource));
 
-            // Load payment collection
-            saleOrderModel.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>(payments.Select(x => new base_ResourcePaymentModel(x)));
+                // Load payment collection
+                saleOrderModel.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>(payments.Select(x => new base_ResourcePaymentModel(x)));
 
-            // Check show PaymentTab
-            saleOrderModel.PaymentProcess = saleOrderModel.PaymentCollection.Any();
+                // Check show PaymentTab
+                saleOrderModel.PaymentProcess = saleOrderModel.PaymentCollection.Any();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -1257,32 +1278,133 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void InsertWorkOrder()
         {
-            if (SelectedSaleOrder.IsNew)
+            try
             {
-                UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
-                SelectedSaleOrder.BillAddressId = SelectedSaleOrder.BillAddressModel.Id;
-                UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
-                SelectedSaleOrder.ShipAddressId = SelectedSaleOrder.ShipAddressModel.Id;
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                if (SelectedSaleOrder.IsNew)
                 {
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.StoreCode, saleOrderDetailModel.Quantity);
-                    saleOrderDetailModel.ToEntity();
-                    SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
+                    SelectedSaleOrder.BillAddressId = SelectedSaleOrder.BillAddressModel.Id;
+                    UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
+                    SelectedSaleOrder.ShipAddressId = SelectedSaleOrder.ShipAddressModel.Id;
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                    {
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.StoreCode, saleOrderDetailModel.Quantity);
+                        saleOrderDetailModel.ToEntity();
+                        SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _productRepository.Commit();
+
+                    SavePaymentCollection(SelectedSaleOrder);
+
+                    SelectedSaleOrder.Shift = Define.ShiftCode;
+                    SelectedSaleOrder.DateUpdated = DateTime.Now;
+                    SelectedSaleOrder.DateCreated = DateTime.Now;
+                    SelectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                    SelectedSaleOrder.ToEntity();
+                    _saleOrderRepository.Add(SelectedSaleOrder.base_SaleOrder);
+
+                    _saleOrderRepository.Commit();
+                    SelectedSaleOrder.EndUpdate();
+                    //Set ID
+                    SelectedSaleOrder.ToModel();
+                    SelectedSaleOrder.EndUpdate();
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                    {
+                        saleOrderDetailModel.ToModel();
+                        saleOrderDetailModel.EndUpdate();
+                    }
+
+                    if (SelectedSaleOrder.PaymentCollection != null)
+                    {
+                        foreach (base_ResourcePaymentModel paymentModel in SelectedSaleOrder.PaymentCollection.Where(x => x.IsNew))
+                        {
+                            paymentModel.ToModel();
+                            //Update or Add New PaymentDetail
+                            if (paymentModel.PaymentDetailCollection != null)
+                            {
+                                foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
+                                {
+                                    paymentDetailModel.ToModel();
+                                    paymentDetailModel.EndUpdate();
+                                }
+                            }
+                            paymentModel.EndUpdate();
+                        }
+                    }
+                    SaleOrderCollection.Insert(0, SelectedSaleOrder);
+                    TotalSaleOrder++;
+                    _numberNewItem++;
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// UpdateQuote
+        /// </summary>
+        /// <param name="UpdateQtyCustomer"></param>
+        private void UpdateWorkOrder(bool UpdateQtyCustomer = false)
+        {
+            try
+            {
+                //Insert or update address for customer
+                UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
+                UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
+
+                #region SaleOrderDetail
+                //Delete SaleOrderDetail
+                if (SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems.Any())
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems)
+                    {
+                        //Get quantity from entity to substract store(avoid quantity in model is changed)
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                        _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _saleOrderDetailRepository.Commit();
+                    SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems.Clear();
+                }
+                if (SelectedSaleOrder.IsPurge)
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                    {
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                    }
+                }
+                else
+                {
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
+                    {
+                        if ((saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId) && UpdateQtyCustomer) //addition quantity
+                        {
+                            _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, SelectedSaleOrder.StoreCode);
+                        }
+
+                        saleOrderDetailModel.ToEntity();
+                        if (saleOrderDetailModel.IsNew)
+                            SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+
+                }
+
                 _productRepository.Commit();
+                #endregion
 
+                #region Payment
                 SavePaymentCollection(SelectedSaleOrder);
+                #endregion
 
-                SelectedSaleOrder.Shift = Define.ShiftCode;
                 SelectedSaleOrder.DateUpdated = DateTime.Now;
-                SelectedSaleOrder.DateCreated = DateTime.Now;
-                SelectedSaleOrder.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+                SelectedSaleOrder.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
                 SelectedSaleOrder.ToEntity();
-                _saleOrderRepository.Add(SelectedSaleOrder.base_SaleOrder);
-
                 _saleOrderRepository.Commit();
-                SelectedSaleOrder.EndUpdate();
+
                 //Set ID
                 SelectedSaleOrder.ToModel();
                 SelectedSaleOrder.EndUpdate();
@@ -1292,6 +1414,7 @@ namespace CPC.POS.ViewModel
                     saleOrderDetailModel.EndUpdate();
                 }
 
+                //Update ID For Payment
                 if (SelectedSaleOrder.PaymentCollection != null)
                 {
                     foreach (base_ResourcePaymentModel paymentModel in SelectedSaleOrder.PaymentCollection.Where(x => x.IsNew))
@@ -1309,97 +1432,11 @@ namespace CPC.POS.ViewModel
                         paymentModel.EndUpdate();
                     }
                 }
-                SaleOrderCollection.Insert(0,SelectedSaleOrder);
-                TotalSaleOrder++;
-                _numberNewItem++;
             }
-        }
-
-        /// <summary>
-        /// UpdateQuote
-        /// </summary>
-        /// <param name="UpdateQtyCustomer"></param>
-        private void UpdateWorkOrder(bool UpdateQtyCustomer = false)
-        {
-            //Insert or update address for customer
-            UpdateCustomerAddress(SelectedSaleOrder.BillAddressModel);
-            UpdateCustomerAddress(SelectedSaleOrder.ShipAddressModel);
-
-            #region SaleOrderDetail
-            //Delete SaleOrderDetail
-            if (SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems.Any())
+            catch (Exception ex)
             {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems)
-                {
-                    //Get quantity from entity to substract store(avoid quantity in model is changed)
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                    _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
-                }
-                _saleOrderDetailRepository.Commit();
-                SelectedSaleOrder.SaleOrderDetailCollection.DeletedItems.Clear();
-            }
-            if (SelectedSaleOrder.IsPurge)
-            {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
-                {
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, SelectedSaleOrder.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                }
-            }
-            else
-            {
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
-                {
-                    if ((saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId) && UpdateQtyCustomer) //addition quantity
-                    {
-                        _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, SelectedSaleOrder.StoreCode);
-                    }
-
-                    saleOrderDetailModel.ToEntity();
-                    if (saleOrderDetailModel.IsNew)
-                        SelectedSaleOrder.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
-                }
-
-            }
-
-            _productRepository.Commit();
-            #endregion
-
-            #region Payment
-            SavePaymentCollection(SelectedSaleOrder);
-            #endregion
-
-            SelectedSaleOrder.DateUpdated = DateTime.Now;
-            SelectedSaleOrder.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-            SelectedSaleOrder.ToEntity();
-            _saleOrderRepository.Commit();
-
-            //Set ID
-            SelectedSaleOrder.ToModel();
-            SelectedSaleOrder.EndUpdate();
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in SelectedSaleOrder.SaleOrderDetailCollection)
-            {
-                saleOrderDetailModel.ToModel();
-                saleOrderDetailModel.EndUpdate();
-            }
-
-            //Update ID For Payment
-            if (SelectedSaleOrder.PaymentCollection != null)
-            {
-                foreach (base_ResourcePaymentModel paymentModel in SelectedSaleOrder.PaymentCollection.Where(x => x.IsNew))
-                {
-                    paymentModel.ToModel();
-                    //Update or Add New PaymentDetail
-                    if (paymentModel.PaymentDetailCollection != null)
-                    {
-                        foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
-                        {
-                            paymentDetailModel.ToModel();
-                            paymentDetailModel.EndUpdate();
-                        }
-                    }
-                    paymentModel.EndUpdate();
-                }
+                _log4net.Error(ex);
+                throw ex;
             }
         }
 
@@ -1502,21 +1539,29 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void StoreChanged()
         {
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+            try
             {
-                SetPriceUOM(saleOrderDetailModel);
+                foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+                {
+                    SetPriceUOM(saleOrderDetailModel);
 
-                CalculateDiscount(saleOrderDetailModel);
+                    CalculateDiscount(saleOrderDetailModel);
 
-                _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                    _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
 
-                saleOrderDetailModel.CalcSubTotal();
+                    saleOrderDetailModel.CalcSubTotal();
 
-                saleOrderDetailModel.CalcDueQty();
+                    saleOrderDetailModel.CalcDueQty();
 
-                saleOrderDetailModel.CalUnfill();
+                    saleOrderDetailModel.CalUnfill();
+                }
+                SelectedSaleOrder.CalcSubTotal();
             }
-            SelectedSaleOrder.CalcSubTotal();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -1524,29 +1569,37 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void DepositProcess()
         {
-            if (SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Quote) || SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Layaway))
-                SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
-
-            decimal balance = SelectedSaleOrder.RewardAmount - SelectedSaleOrder.Deposit.Value;
-            decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-            
-            //Show Payment
-            SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, depositTaken,0);
-            bool? dialogResult = _dialogService.ShowDialog<DepositPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Deposit"));
-            if (dialogResult == true)
+            try
             {
-                if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
-                    paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
+                if (SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Quote) || SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Layaway))
+                    SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
 
-                if (SelectedSaleOrder.PaymentCollection == null)
-                    SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+                decimal balance = SelectedSaleOrder.RewardAmount - SelectedSaleOrder.Deposit.Value;
+                decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
 
-                SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
-                SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-                SelectedSaleOrder.CalcSubTotal();
+                //Show Payment
+                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, depositTaken, 0);
+                bool? dialogResult = _dialogService.ShowDialog<DepositPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Deposit"));
+                if (dialogResult == true)
+                {
+                    if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
+                        paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
+
+                    if (SelectedSaleOrder.PaymentCollection == null)
+                        SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+
+                    SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
+                    SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                    SelectedSaleOrder.CalcSubTotal();
+                }
+
+                SelectedSaleOrder.PaymentProcess = SelectedSaleOrder.PaymentCollection.Any();
             }
-
-            SelectedSaleOrder.PaymentProcess = SelectedSaleOrder.PaymentCollection.Any();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -1571,26 +1624,34 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void DepositHistoryProcess()
         {
-            SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
-            decimal balance = SelectedSaleOrder.RewardAmount - (SelectedSaleOrder.Deposit.Value + SelectedSaleOrder.Paid);
-            decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-
-            QuotationPaymentHistoryViewModel viewModel = new QuotationPaymentHistoryViewModel(SelectedSaleOrder, balance, depositTaken);
-
-            string title = Language.GetMsg("SO_Tite_PaymentHistory");
-
-            bool? dialogResult = _dialogService.ShowDialog<QuotationPaymentHistoryView>(_ownerViewModel, viewModel, title);
-
-            if (dialogResult == true)
+            try
             {
-                switch (viewModel.ViewActionType)
+                SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
+                decimal balance = SelectedSaleOrder.RewardAmount - (SelectedSaleOrder.Deposit.Value + SelectedSaleOrder.Paid);
+                decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+
+                QuotationPaymentHistoryViewModel viewModel = new QuotationPaymentHistoryViewModel(SelectedSaleOrder, balance, depositTaken);
+
+                string title = Language.GetMsg("SO_Tite_PaymentHistory");
+
+                bool? dialogResult = _dialogService.ShowDialog<QuotationPaymentHistoryView>(_ownerViewModel, viewModel, title);
+
+                if (dialogResult == true)
                 {
-                    case QuotationPaymentHistoryViewModel.PopupType.Deposit:
-                        DepositProcess();
-                        break;
-                    case QuotationPaymentHistoryViewModel.PopupType.Refund:
-                        break;
+                    switch (viewModel.ViewActionType)
+                    {
+                        case QuotationPaymentHistoryViewModel.PopupType.Deposit:
+                            DepositProcess();
+                            break;
+                        case QuotationPaymentHistoryViewModel.PopupType.Refund:
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -1600,15 +1661,23 @@ namespace CPC.POS.ViewModel
         /// <param name="saleOrderDetailModel"></param>
         private void UpdatePickQtyForParent(base_SaleOrderDetailModel saleOrderDetailModel)
         {
-            if (!string.IsNullOrWhiteSpace(saleOrderDetailModel.ParentResource))//ChildOf ProductGroup
+            try
             {
-                //Get Parent Item for update
-                base_SaleOrderDetailModel parentSaleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderDetailModel.ParentResource));
-                var childGroupList = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ParentResource.Equals(saleOrderDetailModel.ParentResource));
-                decimal totalQty = childGroupList.Sum(x => x.Quantity);
-                decimal totalOfPick = childGroupList.Sum(x => x.PickQty);
-                decimal parentPickQty = totalOfPick * parentSaleOrderDetailModel.Quantity / totalQty;
-                parentSaleOrderDetailModel.PickQty = Math.Round(parentPickQty, 2);
+                if (!string.IsNullOrWhiteSpace(saleOrderDetailModel.ParentResource))//ChildOf ProductGroup
+                {
+                    //Get Parent Item for update
+                    base_SaleOrderDetailModel parentSaleOrderDetailModel = SelectedSaleOrder.SaleOrderDetailCollection.SingleOrDefault(x => x.Resource.ToString().Equals(saleOrderDetailModel.ParentResource));
+                    var childGroupList = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ParentResource.Equals(saleOrderDetailModel.ParentResource));
+                    decimal totalQty = childGroupList.Sum(x => x.Quantity);
+                    decimal totalOfPick = childGroupList.Sum(x => x.PickQty);
+                    decimal parentPickQty = totalOfPick * parentSaleOrderDetailModel.Quantity / totalQty;
+                    parentSaleOrderDetailModel.PickQty = Math.Round(parentPickQty, 2);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -1616,153 +1685,169 @@ namespace CPC.POS.ViewModel
         #region PropertyChanged
         private void SelectedSaleOrder_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            base_SaleOrderModel saleOrderModel = sender as base_SaleOrderModel;
-            switch (e.PropertyName)
+            try
             {
-                case "SONumber":
-                    CheckDuplicateSoNum(saleOrderModel);
-                    break;
-                case "SubTotal":
-                    CalculateAllTax(saleOrderModel);
-                    saleOrderModel.CalcDiscountAmount();
-                    break;
-                case "Total":
-                    saleOrderModel.RewardAmount = saleOrderModel.Total;
-                    saleOrderModel.CalcBalance();
-                    break;
-                case "RewardAmount":
-                case "Deposit":
-                    saleOrderModel.CalcBalance();
-                    break;
-                case "Paid":
-                    saleOrderModel.CalcBalance();
-                    break;
-                case "Shipping":
-                    saleOrderModel.ShipTaxAmount = CalcShipTaxAmount(saleOrderModel);
-                    saleOrderModel.CalcTotal();
-                    break;
-                case "ProductTaxAmount":
-                case "ShipTaxAmount":
-                    if (saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
-                        saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
-                    else
-                        saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
-
-                    break;
-                case "TaxAmount":
-                    saleOrderModel.CalcTotal();
-                    break;
-                case "DiscountAmount":
-                    saleOrderModel.CalcDiscountPercent();
-                    saleOrderModel.SkipDisc = false;
-                    if (saleOrderModel.TaxLocationModel.TaxCodeModel != null)
-                    {
+                base_SaleOrderModel saleOrderModel = sender as base_SaleOrderModel;
+                switch (e.PropertyName)
+                {
+                    case "SONumber":
+                        CheckDuplicateSoNum(saleOrderModel);
+                        break;
+                    case "SubTotal":
+                        CalculateAllTax(saleOrderModel);
+                        saleOrderModel.CalcDiscountAmount();
+                        break;
+                    case "Total":
+                        saleOrderModel.RewardAmount = saleOrderModel.Total;
+                        saleOrderModel.CalcBalance();
+                        break;
+                    case "RewardAmount":
+                    case "Deposit":
+                        saleOrderModel.CalcBalance();
+                        break;
+                    case "Paid":
+                        saleOrderModel.CalcBalance();
+                        break;
+                    case "Shipping":
+                        saleOrderModel.ShipTaxAmount = CalcShipTaxAmount(saleOrderModel);
+                        saleOrderModel.CalcTotal();
+                        break;
+                    case "ProductTaxAmount":
+                    case "ShipTaxAmount":
                         if (saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
                             saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
                         else
                             saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
-                    }
-                    saleOrderModel.CalcTotal();
 
-                    break;
-                case "DiscountPercent":
-                    saleOrderModel.CalcDiscountAmount();
-                    saleOrderModel.SkipDisc = false;
-                    break;
-                case "PriceSchemaId"://Update Price When Price Schema Changed
-                    PriceSchemaChanged();
-                    break;
-                case "IsConverted":
-                    SetAllowChangeOrder(saleOrderModel);
-                    break;
-                case "OrderStatus":
-                    SetAllowChangeOrder(saleOrderModel);
-                    break;
-                case "StoreCode":
-                    StoreChanged();
-                    break;
-                case "TotalPaid":
+                        break;
+                    case "TaxAmount":
+                        saleOrderModel.CalcTotal();
+                        break;
+                    case "DiscountAmount":
+                        saleOrderModel.CalcDiscountPercent();
+                        saleOrderModel.SkipDisc = false;
+                        if (saleOrderModel.TaxLocationModel.TaxCodeModel != null)
+                        {
+                            if (saleOrderModel.TaxLocationModel.TaxCodeModel.IsTaxAfterDiscount)
+                                saleOrderModel.TaxAmount = saleOrderModel.ProductTaxAmount + saleOrderModel.ShipTaxAmount - saleOrderModel.DiscountAmount;
+                            else
+                                saleOrderModel.TaxAmount = saleOrderModel.ShipTaxAmount + saleOrderModel.ProductTaxAmount;
+                        }
+                        saleOrderModel.CalcTotal();
 
-                    break;
+                        break;
+                    case "DiscountPercent":
+                        saleOrderModel.CalcDiscountAmount();
+                        saleOrderModel.SkipDisc = false;
+                        break;
+                    case "PriceSchemaId"://Update Price When Price Schema Changed
+                        PriceSchemaChanged();
+                        break;
+                    case "IsConverted":
+                        SetAllowChangeOrder(saleOrderModel);
+                        break;
+                    case "OrderStatus":
+                        SetAllowChangeOrder(saleOrderModel);
+                        break;
+                    case "StoreCode":
+                        StoreChanged();
+                        break;
+                    case "TotalPaid":
+
+                        break;
 
 
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         protected override void SaleOrderDetailModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (BreakSODetailChange)
-                return;
-            base_SaleOrderDetailModel saleOrderDetailModel = sender as base_SaleOrderDetailModel;
-            switch (e.PropertyName)
+            try
             {
-                case "SalePrice":
-                    saleOrderDetailModel.SalePriceChanged();
-                    saleOrderDetailModel.CalcSubTotal();
-                    CalculateMultiNPriceTax();
-                    _saleOrderRepository.CheckToShowDatagridRowDetail(saleOrderDetailModel);
-                    break;
-                case "Quantity":
-                    //Update child quantity when parent change (apply only for Product Group)
+                if (BreakSODetailChange)
+                    return;
+                base_SaleOrderDetailModel saleOrderDetailModel = sender as base_SaleOrderDetailModel;
+                switch (e.PropertyName)
+                {
+                    case "SalePrice":
+                        saleOrderDetailModel.SalePriceChanged(false);
+                        saleOrderDetailModel.CalcSubTotal();
+                        CalculateMultiNPriceTax();
+                        _saleOrderRepository.CheckToShowDatagridRowDetail(saleOrderDetailModel);
+                        break;
+                    case "Quantity":
+                        //Update child quantity when parent change (apply only for Product Group)
 
-                    if (saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
-                    {
-                        var childInGroup = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ParentResource.Equals(saleOrderDetailModel.Resource.ToString()));
-                        if (childInGroup.Any())//Is a group 
+                        if (saleOrderDetailModel.ProductModel.ItemTypeId.Equals((short)ItemTypes.Group))
                         {
-                            foreach (base_SaleOrderDetailModel saleOrderDetaiInGrouplModel in childInGroup)
+                            var childInGroup = SelectedSaleOrder.SaleOrderDetailCollection.Where(x => x.ParentResource.Equals(saleOrderDetailModel.Resource.ToString()));
+                            if (childInGroup.Any())//Is a group 
                             {
-                                saleOrderDetaiInGrouplModel.Quantity = saleOrderDetaiInGrouplModel.ProductGroupItem.Quantity * saleOrderDetailModel.Quantity;
-                                //Update Parent Pick Qty
-                                UpdatePickQtyForParent(saleOrderDetaiInGrouplModel);
-                                if (saleOrderDetaiInGrouplModel.ProductModel.IsSerialTracking)
-                                    OpenTrackingSerialNumber(saleOrderDetaiInGrouplModel, true, true);
+                                foreach (base_SaleOrderDetailModel saleOrderDetaiInGrouplModel in childInGroup)
+                                {
+                                    saleOrderDetaiInGrouplModel.Quantity = saleOrderDetaiInGrouplModel.ProductGroupItem.Quantity * saleOrderDetailModel.Quantity;
+                                    //Update Parent Pick Qty
+                                    UpdatePickQtyForParent(saleOrderDetaiInGrouplModel);
+                                    if (saleOrderDetaiInGrouplModel.ProductModel.IsSerialTracking)
+                                        OpenTrackingSerialNumber(saleOrderDetaiInGrouplModel, true, true);
+                                }
                             }
                         }
-                    }
-                    else//Child of Product Group Change Quanity
+                        else//Child of Product Group Change Quanity
+                            UpdatePickQtyForParent(saleOrderDetailModel);
+                        saleOrderDetailModel.CalcDueQty();
+                        saleOrderDetailModel.CalcSubTotal();
+                        if (!saleOrderDetailModel.ProductModel.IsSerialTracking)
+                        {
+                            BreakSODetailChange = true;
+                            _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
+                            BreakSODetailChange = false;
+                        }
+
+                        CalculateMultiNPriceTax();
+                        SelectedSaleOrder.CalcSubTotal();
+                        _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                        _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
+                        break;
+                    case "DueQty":
+                        saleOrderDetailModel.CalUnfill();
+                        break;
+                    case "PickQty":
+                        //Calc PickQty for parent if pickqty change is a child of ProductGroup
                         UpdatePickQtyForParent(saleOrderDetailModel);
-                    saleOrderDetailModel.CalcDueQty();
-                    saleOrderDetailModel.CalcSubTotal();
-                    if (!saleOrderDetailModel.ProductModel.IsSerialTracking)
-                    {
+
+                        saleOrderDetailModel.CalcDueQty();
+                        break;
+                    case "UOMId":
+                        SetPriceUOM(saleOrderDetailModel);
+
                         BreakSODetailChange = true;
                         _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
                         BreakSODetailChange = false;
-                    }
 
-                    CalculateMultiNPriceTax();
-                    SelectedSaleOrder.CalcSubTotal();
-                    _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
-                    _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
-                    break;
-                case "DueQty":
-                    saleOrderDetailModel.CalUnfill();
-                    break;
-                case "PickQty":
-                    //Calc PickQty for parent if pickqty change is a child of ProductGroup
-                    UpdatePickQtyForParent(saleOrderDetailModel);
+                        _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
 
-                    saleOrderDetailModel.CalcDueQty();
-                    break;
-                case "UOMId":
-                    SetPriceUOM(saleOrderDetailModel);
-
-                    BreakSODetailChange = true;
-                    _saleOrderRepository.CalcProductDiscount(SelectedSaleOrder, saleOrderDetailModel);
-                    BreakSODetailChange = false;
-
-                    _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
-
-                    _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
-                    break;
-                case "SubTotal":
-                    SelectedSaleOrder.CalcSubTotal();
-                    break;
-                case "IsQuantityAccepted":
-                    if (SelectedSaleOrder.SaleOrderDetailCollection != null)
-                        SelectedSaleOrder.IsHiddenErrorColumn = !SelectedSaleOrder.SaleOrderDetailCollection.Any(x => !x.IsQuantityAccepted);
-                    break;
+                        _saleOrderRepository.UpdateQtyOrderNRelate(SelectedSaleOrder);
+                        break;
+                    case "SubTotal":
+                        SelectedSaleOrder.CalcSubTotal();
+                        break;
+                    case "IsQuantityAccepted":
+                        if (SelectedSaleOrder.SaleOrderDetailCollection != null)
+                            SelectedSaleOrder.IsHiddenErrorColumn = !SelectedSaleOrder.SaleOrderDetailCollection.Any(x => !x.IsQuantityAccepted);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -1796,7 +1881,7 @@ namespace CPC.POS.ViewModel
             bg.DoWork += (sender, e) =>
             {
                 IsBusy = true;
-               
+
                 _numberNewItem = 0;
                 //Flag When Existed view Call LoadDynamicData Data
                 if (_viewExisted)
@@ -1846,6 +1931,25 @@ namespace CPC.POS.ViewModel
                         IsSearchMode = true;
                 }
             }
+            else
+            {
+                if (param is ComboItem)
+                {
+
+                    //Currently form is be called from another form, bellow methods get param & set Id to temparate variable(SaleOrderId).
+                    //if param has not isChecked(form is Actived), form with be load again. after form loaded, set SelectedSaleOrder item base one temp variable(SaleOrderId)
+                    //Otherwise,LoadData method won't be loaded, need to set selectedSaleOrder after recived value
+
+                    ComboItem cmbValue = param as ComboItem;
+                    if (cmbValue.Text.Equals("Customer"))//Create SaleOrder With Customer
+                    {
+                        CreateNewSaleOrder();
+                        long customerId = Convert.ToInt64(cmbValue.Detail);
+                        SelectedCustomer = CustomerCollection.SingleOrDefault(x => x.Id.Equals(customerId));
+                        this.IsSearchMode = false;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -1890,53 +1994,21 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-        #region Permission
+        #region IDropTarget Members
 
-        #region Properties
-
-        private bool _allowSaleWorkOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowSaleWorkOrder.
-        /// </summary>
-        public bool AllowSaleWorkOrder
+        public void DragOver(DropInfo dropInfo)
         {
-            get
+            if (dropInfo.Data is ComboItem)
             {
-                return _allowSaleWorkOrder;
-            }
-            set
-            {
-                if (_allowSaleWorkOrder != value)
-                {
-                    _allowSaleWorkOrder = value;
-                    OnPropertyChanged(() => AllowSaleWorkOrder);
-                }
+                dropInfo.Effects = DragDropEffects.Move;
             }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        public void Drop(DropInfo dropInfo)
         {
-            if (!IsAdminPermission && !IsFullPermission)
+            if (dropInfo.Data is ComboItem)
             {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                // Get add/copy sale order permission
-                AllowAddSaleOrder = userRightCodes.Contains("SO100-04-02");
-
-                // Union sale work order and add/copy sale order permission
-                AllowSaleWorkOrder = userRightCodes.Contains("SO100-06-04") && AllowAddSaleOrder;
-
-                // Get add/copy customer permission
-                AllowAddCustomer = userRightCodes.Contains("SO100-01-01");
-
-                // Get delete product permission
-                AllowDeleteProduct = userRightCodes.Contains("SO100-06-08");
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Work Order", dropInfo.Data);
             }
         }
 

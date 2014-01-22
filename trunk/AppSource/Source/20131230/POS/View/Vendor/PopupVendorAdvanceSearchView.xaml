@@ -122,11 +122,11 @@
                           Margin="10,2"
                           DisplayMemberPath="Text"
                           Foreground="White"
+                          ItemContainerStyle="{DynamicResource ComboBoxItemAddress}"
                           ItemsSource="{Binding AddressTypeList}"
                           SelectedValue="{Binding AddressTypeID}"
                           SelectedValuePath="IntValue"
-                          Style="{DynamicResource AddressComboStyle}"
-						  ItemContainerStyle="{DynamicResource ComboBoxItemAddress}" />
+                          Style="{DynamicResource AddressComboStyle}" />
                 <textBoxControl:TextBox x:Name="txtAddress"
                                         Grid.Row="3"
                                         Grid.Column="1"

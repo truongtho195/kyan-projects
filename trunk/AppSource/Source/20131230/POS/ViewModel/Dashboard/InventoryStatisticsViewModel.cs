@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using CPC.Toolkit.Base;
-using CPC.POS.Interfaces;
-using System.Xml.Linq;
 using System.Windows;
+using System.Xml.Linq;
 using CPC.Helper;
+using CPC.POS.Interfaces;
 using CPC.POS.Repository;
+using CPC.Toolkit.Base;
 
 namespace CPC.POS.ViewModel
 {

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using CPC.POS.Database;
 using CPC.POS.Model;
 using CPC.POS.Repository;
 using CPC.Toolkit.Base;
@@ -16,7 +15,6 @@ namespace CPC.POS.ViewModel
         #region Defines
 
         private base_PromotionRepository _promotionRepository = new base_PromotionRepository();
-        private base_PromotionAffectRepository _promotionAffectRepository = new base_PromotionAffectRepository();
 
         private PriceTypes _priceSchemaID = 0;
         private bool _raiseCurrentPrice = true;
@@ -201,9 +199,16 @@ namespace CPC.POS.ViewModel
                     _selectedPromotion = PromotionCollection.FirstOrDefault();
                     OnPropertyChanged(() => SelectedPromotion);
 
+                    // Turn on/off discount manual
+                    IsDiscountManual = SelectedPromotion.Id == 0;
+
                     if (SelectedPromotion.Id == 0)
                     {
-                        _discountPercent = 100 - Math.Round(SelectedProduct.CurrentPrice * 100 / SelectedProduct.RegularPrice, 2);
+                        // Update discount percent
+                        if (SelectedProduct.RegularPrice != 0)
+                            _discountPercent = 100 - Math.Round(SelectedProduct.CurrentPrice * 100 / SelectedProduct.RegularPrice, 2);
+                        else
+                            _discountPercent = 0;
                         OnPropertyChanged(() => DiscountPercent);
                     }
                 }
@@ -309,42 +314,19 @@ namespace CPC.POS.ViewModel
                 // Initial promotion collection
                 PromotionCollection = new ObservableCollection<base_PromotionModel>();
 
-                foreach (base_PromotionModel promotionItem in _promotionRepository.GetAll(x => x.Status == (short)StatusBasic.Active).OrderByDescending(x => x.DateUpdated).Select(x => new base_PromotionModel(x)))
+                foreach (base_PromotionModel promotionItem in _promotionRepository.GetAll(x => x.Status == (short)StatusBasic.Active && x.CategoryId.Value.Equals(productModel.ProductCategoryId)).OrderByDescending(x => x.DateUpdated).Select(x => new base_PromotionModel(x)))
                 {
-                    // Check selected product is affected by promotion
-                    bool isAffected = false;
-                    switch (promotionItem.AffectDiscount)
-                    {
-                        case 0:
-                            isAffected = true;
-                            break;
-                        case 1:
-                            if (productModel.ProductCategoryId.Equals(promotionItem.CategoryId))
-                                isAffected = true;
-                            break;
-                        case 2:
-                            if (productModel.VendorId.Equals(promotionItem.VendorId))
-                                isAffected = true;
-                            break;
-                        case 3:
-                            base_PromotionAffect promotionAffect = _promotionAffectRepository.Get(x => x.ItemId.Equals(productModel.Id));
-                            if (promotionAffect != null)
-                                isAffected = true;
-                            break;
-                    }
-
                     // Check promotion is expired
                     bool isExpired = false;
-                    promotionItem.PromotionScheduleModel = new base_PromotionScheduleModel(promotionItem.base_Promotion.base_PromotionSchedule.SingleOrDefault());
-                    if (promotionItem.PromotionScheduleModel.EndDate != null)
+                    if (promotionItem.EndDate != null)
                     {
                         DateTime today = DateTimeExt.Now;
-                        if (promotionItem.PromotionScheduleModel.StartDate.Value > today || today > promotionItem.PromotionScheduleModel.EndDate.Value)
+                        if (promotionItem.StartDate.Value > today || today > promotionItem.EndDate.Value)
                             isExpired = true;
                     }
 
                     // Check selected price schema id have in selected promotion range
-                    if (isAffected && !isExpired && _priceSchemaID.In(promotionItem.PriceSchemaRange))
+                    if (!isExpired && _priceSchemaID.In(promotionItem.PriceSchemaRange))
                         PromotionCollection.Add(promotionItem);
                 }
 

@@ -292,5 +292,29 @@ namespace CPC.POS.Properties {
                 this["NumberOfDisplayItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int DelaySearching {
+            get {
+                return ((int)(this["DelaySearching"]));
+            }
+            set {
+                this["DelaySearching"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://newsmartpos.com/en/contact")]
+        public string ContactUsURL {
+            get {
+                return ((string)(this["ContactUsURL"]));
+            }
+            set {
+                this["ContactUsURL"] = value;
+            }
+        }
     }
 }

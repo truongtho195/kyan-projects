@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -13,16 +16,13 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExt.DataGridControl;
-using CPCToolkitExtLibraries;
-using System.Collections.Specialized;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
     /// <summary>
     /// Using for Layaway
     /// </summary>
-    public class LayawayViewModel : OrderViewModel
+    public class LayawayViewModel : OrderViewModel, IDropTarget
     {
         #region Define
 
@@ -37,15 +37,15 @@ namespace CPC.POS.ViewModel
 
         #region Constructors
 
-        public LayawayViewModel(bool isList)
+        public LayawayViewModel(bool isList, object param)
             : base()
         {
             LoadDynamicData();
 
-            ChangeSearchMode(isList, null);
+            ChangeSearchMode(isList, param);
 
-            // Get permission
-            GetPermission();
+            // Get delete product in layaway permission
+            AllowDeleteProduct = UserPermissions.AllowDeleteProductLayaway;
         }
 
         #endregion
@@ -168,6 +168,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                 }
             }
@@ -265,7 +266,7 @@ namespace CPC.POS.ViewModel
         #region NewCommand
         protected override bool OnNewCommandCanExecute(object param)
         {
-            return base.OnNewCommandCanExecute(param);
+            return base.OnNewCommandCanExecute(param) && UserPermissions.AllowAddLayaway;
         }
         protected override void OnNewCommandExecute(object param)
         {
@@ -359,6 +360,8 @@ namespace CPC.POS.ViewModel
 
         protected override void OnSearchCommandExecute(object param)
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
             Keyword = FilterText;
             IsAdvanced = false;
 
@@ -491,7 +494,6 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-
         #region OpenServiceFeeDetailCommand
         /// <summary>
         /// Gets the OpenServiceFeeDetail Command.
@@ -530,7 +532,7 @@ namespace CPC.POS.ViewModel
 
         protected override void OnSearchProductCommandExecute(object param)
         {
-            
+
 
             short productGroupType = (short)ItemTypes.Group;
             base_Product product;
@@ -947,7 +949,7 @@ namespace CPC.POS.ViewModel
                 //Search deciaml
 
                 decimal decimalValue = 0;
-                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue))
+                if (decimal.TryParse(keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalValue) && decimalValue != 0)
                 {
                     //Total 
                     predicate = predicate.Or(x => x.Total.Equals(decimalValue));
@@ -1100,22 +1102,30 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void CreateNewLayawayModel()
         {
-            _isForceFocused = false;
-            CreateNewSaleOrder();
+            try
+            {
+                _isForceFocused = false;
+                CreateNewSaleOrder();
 
-            if (NotifyLayawayManager(SelectedSaleOrder, out LayawayInfo))
-            {
-                LayawayManagerModel = new base_LayawayManagerModel(LayawayManagerCollection.FirstOrDefault());
-                SelectedSaleOrder.OpenACFee = LayawayManagerModel.OpenACFee;
-                SelectedSaleOrder.SaleReference = LayawayManagerModel.Resource.ToString();
-                SelectedSaleOrder.IsDirty = false;
-                IsSearchMode = false;
-                IsForceFocused = true;
+                if (NotifyLayawayManager(SelectedSaleOrder, out LayawayInfo))
+                {
+                    LayawayManagerModel = new base_LayawayManagerModel(LayawayManagerCollection.FirstOrDefault());
+                    SelectedSaleOrder.OpenACFee = LayawayManagerModel.OpenACFee;
+                    SelectedSaleOrder.SaleReference = LayawayManagerModel.Resource.ToString();
+                    SelectedSaleOrder.IsDirty = false;
+                    IsSearchMode = false;
+                    IsForceFocused = true;
+                }
+                else
+                {
+                    _selectedSaleOrder = null;
+                    IsSearchMode = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _selectedSaleOrder = null;
-                IsSearchMode = true;
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -1124,33 +1134,148 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void InsertLayaway(base_SaleOrderModel saleOrderModel)
         {
-            if (saleOrderModel.IsNew)
+            try
             {
-                UpdateCustomerAddress(saleOrderModel.BillAddressModel);
-                saleOrderModel.BillAddressId = saleOrderModel.BillAddressModel.Id;
-                UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
-                saleOrderModel.ShipAddressId = saleOrderModel.ShipAddressModel.Id;
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                if (saleOrderModel.IsNew)
                 {
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity);
-                    saleOrderDetailModel.ToEntity();
-                    saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    UpdateCustomerAddress(saleOrderModel.BillAddressModel);
+                    saleOrderModel.BillAddressId = saleOrderModel.BillAddressModel.Id;
+                    UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
+                    saleOrderModel.ShipAddressId = saleOrderModel.ShipAddressModel.Id;
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    {
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity);
+                        saleOrderDetailModel.ToEntity();
+                        saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _productRepository.Commit();
+
+                    SavePaymentCollection(saleOrderModel);
+
+                    saleOrderModel.Shift = Define.ShiftCode;
+                    saleOrderModel.DateUpdated = DateTime.Now;
+                    saleOrderModel.DateCreated = DateTime.Now;
+                    saleOrderModel.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
+
+                    saleOrderModel.ToEntity();
+                    _saleOrderRepository.Add(saleOrderModel.base_SaleOrder);
+
+                    _saleOrderRepository.Commit();
+                    saleOrderModel.EndUpdate();
+                    //Set ID
+                    saleOrderModel.ToModel();
+                    saleOrderModel.EndUpdate();
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    {
+                        saleOrderDetailModel.ToModel();
+                        saleOrderDetailModel.EndUpdate();
+                    }
+
+                    if (saleOrderModel.PaymentCollection != null)
+                    {
+                        foreach (base_ResourcePaymentModel paymentModel in saleOrderModel.PaymentCollection.Where(x => x.IsNew))
+                        {
+                            paymentModel.ToModel();
+                            //Update or Add New PaymentDetail
+                            if (paymentModel.PaymentDetailCollection != null)
+                            {
+                                foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
+                                {
+                                    paymentDetailModel.ToModel();
+                                    paymentDetailModel.EndUpdate();
+                                }
+                            }
+                            paymentModel.EndUpdate();
+                        }
+                    }
+                    SaleOrderCollection.Insert(0, saleOrderModel);
+                    _numberNewItem++;
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// UpdateLayaway
+        /// </summary>
+        /// <param name="UpdateQtyCustomer"></param>
+        private void UpdateLayaway(base_SaleOrderModel saleOrderModel)
+        {
+            try
+            {
+                //Insert or update address for customer
+                UpdateCustomerAddress(saleOrderModel.BillAddressModel);
+                UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
+
+                #region SaleOrderDetail
+                //Delete SaleOrderDetail
+                if (saleOrderModel.SaleOrderDetailCollection.DeletedItems.Any())
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.DeletedItems)
+                    {
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity, false/*=Descrease*/);
+                        _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+                    _saleOrderDetailRepository.Commit();
+                    saleOrderModel.SaleOrderDetailCollection.DeletedItems.Clear();
+                }
+                if (saleOrderModel.IsVoided)
+                {
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    {
+                        _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
+                    }
+                }
+                else
+                {
+                    //Sale Order Detail Model
+                    foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
+                    {
+                        if (saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId)
+                        {
+                            _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, saleOrderModel.StoreCode);
+                        }
+                        saleOrderDetailModel.ToEntity();
+                        if (saleOrderDetailModel.IsNew)
+                            saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
+                    }
+
+                }
+
                 _productRepository.Commit();
+                #endregion
 
+                //Save ShipColletion
+                SaveSaleOrderShipCollection(saleOrderModel);
+
+                #region Payment
                 SavePaymentCollection(saleOrderModel);
+                #endregion
 
-                saleOrderModel.Shift = Define.ShiftCode;
+                #region Commission
+                if (saleOrderModel.CommissionCollection != null && saleOrderModel.CommissionCollection.Any())
+                {
+                    foreach (base_SaleCommissionModel saleCommissionModel in saleOrderModel.CommissionCollection)
+                    {
+                        saleCommissionModel.ToEntity();
+                        if (saleCommissionModel.IsNew)
+                            _saleCommissionRepository.Add(saleCommissionModel.base_SaleCommission);
+                    }
+                    _saleCommissionRepository.Commit();
+                    saleOrderModel.CommissionCollection.Clear();
+                }
+                #endregion
+
                 saleOrderModel.DateUpdated = DateTime.Now;
-                saleOrderModel.DateCreated = DateTime.Now;
-                saleOrderModel.UserCreated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-
+                saleOrderModel.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
                 saleOrderModel.ToEntity();
-                _saleOrderRepository.Add(saleOrderModel.base_SaleOrder);
-
                 _saleOrderRepository.Commit();
-                saleOrderModel.EndUpdate();
+
                 //Set ID
                 saleOrderModel.ToModel();
                 saleOrderModel.EndUpdate();
@@ -1160,6 +1285,7 @@ namespace CPC.POS.ViewModel
                     saleOrderDetailModel.EndUpdate();
                 }
 
+                //Update ID For Payment
                 if (saleOrderModel.PaymentCollection != null)
                 {
                     foreach (base_ResourcePaymentModel paymentModel in saleOrderModel.PaymentCollection.Where(x => x.IsNew))
@@ -1177,111 +1303,11 @@ namespace CPC.POS.ViewModel
                         paymentModel.EndUpdate();
                     }
                 }
-                SaleOrderCollection.Insert(0, saleOrderModel);
-                _numberNewItem++;
             }
-        }
-
-        /// <summary>
-        /// UpdateLayaway
-        /// </summary>
-        /// <param name="UpdateQtyCustomer"></param>
-        private void UpdateLayaway(base_SaleOrderModel saleOrderModel)
-        {
-            //Insert or update address for customer
-            UpdateCustomerAddress(saleOrderModel.BillAddressModel);
-            UpdateCustomerAddress(saleOrderModel.ShipAddressModel);
-
-            #region SaleOrderDetail
-            //Delete SaleOrderDetail
-            if (saleOrderModel.SaleOrderDetailCollection.DeletedItems.Any())
+            catch (Exception ex)
             {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection.DeletedItems)
-                {
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.StoreCode, saleOrderDetailModel.Quantity, false/*=Descrease*/);
-                    _saleOrderDetailRepository.Delete(saleOrderDetailModel.base_SaleOrderDetail);
-                }
-                _saleOrderDetailRepository.Commit();
-                saleOrderModel.SaleOrderDetailCollection.DeletedItems.Clear();
-            }
-            if (saleOrderModel.IsVoided)
-            {
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
-                {
-                    _saleOrderRepository.UpdateCustomerQuantity(saleOrderDetailModel, saleOrderModel.base_SaleOrder.StoreCode, saleOrderDetailModel.base_SaleOrderDetail.Quantity, false/*descrease quantity*/);
-                }
-            }
-            else
-            {
-                //Sale Order Detail Model
-                foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
-                {
-                    if (saleOrderDetailModel.Quantity != saleOrderDetailModel.base_SaleOrderDetail.Quantity || saleOrderDetailModel.UOMId != saleOrderDetailModel.base_SaleOrderDetail.UOMId)
-                    {
-                        _saleOrderRepository.UpdateCustomerQuantityChanged(saleOrderDetailModel, saleOrderModel.StoreCode);
-                    }
-                    saleOrderDetailModel.ToEntity();
-                    if (saleOrderDetailModel.IsNew)
-                        saleOrderModel.base_SaleOrder.base_SaleOrderDetail.Add(saleOrderDetailModel.base_SaleOrderDetail);
-                }
-
-            }
-
-            _productRepository.Commit();
-            #endregion
-
-            //Save ShipColletion
-            SaveSaleOrderShipCollection(saleOrderModel);
-
-            #region Payment
-            SavePaymentCollection(saleOrderModel);
-            #endregion
-
-            #region Commission
-            if (saleOrderModel.CommissionCollection != null && saleOrderModel.CommissionCollection.Any())
-            {
-                foreach (base_SaleCommissionModel saleCommissionModel in saleOrderModel.CommissionCollection)
-                {
-                    saleCommissionModel.ToEntity();
-                    if (saleCommissionModel.IsNew)
-                        _saleCommissionRepository.Add(saleCommissionModel.base_SaleCommission);
-                }
-                _saleCommissionRepository.Commit();
-                saleOrderModel.CommissionCollection.Clear();
-            }
-            #endregion
-
-            saleOrderModel.DateUpdated = DateTime.Now;
-            saleOrderModel.UserUpdated = Define.USER != null ? Define.USER.LoginName : string.Empty;
-            saleOrderModel.ToEntity();
-            _saleOrderRepository.Commit();
-
-            //Set ID
-            saleOrderModel.ToModel();
-            saleOrderModel.EndUpdate();
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in saleOrderModel.SaleOrderDetailCollection)
-            {
-                saleOrderDetailModel.ToModel();
-                saleOrderDetailModel.EndUpdate();
-            }
-
-            //Update ID For Payment
-            if (saleOrderModel.PaymentCollection != null)
-            {
-                foreach (base_ResourcePaymentModel paymentModel in saleOrderModel.PaymentCollection.Where(x => x.IsNew))
-                {
-                    paymentModel.ToModel();
-                    //Update or Add New PaymentDetail
-                    if (paymentModel.PaymentDetailCollection != null)
-                    {
-                        foreach (base_ResourcePaymentDetailModel paymentDetailModel in paymentModel.PaymentDetailCollection.Where(x => x.IsNew))
-                        {
-                            paymentDetailModel.ToModel();
-                            paymentDetailModel.EndUpdate();
-                        }
-                    }
-                    paymentModel.EndUpdate();
-                }
+                _log4net.Error(ex);
+                throw ex;
             }
         }
 
@@ -1403,21 +1429,30 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void StoreChanged()
         {
-            foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+            try
             {
-                SetPriceUOM(saleOrderDetailModel);
+                foreach (base_SaleOrderDetailModel saleOrderDetailModel in this.SelectedSaleOrder.SaleOrderDetailCollection)
+                {
+                    SetPriceUOM(saleOrderDetailModel);
 
-                CalculateDiscount(saleOrderDetailModel);
+                    CalculateDiscount(saleOrderDetailModel);
 
-                _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
+                    _saleOrderRepository.CalcOnHandStore(SelectedSaleOrder, saleOrderDetailModel);
 
-                saleOrderDetailModel.CalcSubTotal();
+                    saleOrderDetailModel.CalcSubTotal();
 
-                saleOrderDetailModel.CalcDueQty();
+                    saleOrderDetailModel.CalcDueQty();
 
-                saleOrderDetailModel.CalUnfill();
+                    saleOrderDetailModel.CalUnfill();
+                }
+                SelectedSaleOrder.CalcSubTotal();
             }
-            SelectedSaleOrder.CalcSubTotal();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
         }
 
         /// <summary>
@@ -1425,34 +1460,42 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void DepositProcess()
         {
-            if (SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Open))
-                SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
-
-            decimal balance = SelectedSaleOrder.RewardAmount - SelectedSaleOrder.Deposit.Value;
-            decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-
-            //calculate deposit from percent
-            decimal depositAmountByPercent = (SelectedSaleOrder.Total * LayawayManagerModel.DepositPercent) / 100;
-            decimal depositRequired = (depositAmountByPercent > LayawayManagerModel.DepositAmount ? depositAmountByPercent : LayawayManagerModel.DepositAmount) - depositTaken;
-
-            //Show Payment
-            SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, depositTaken, depositRequired);
-            bool? dialogResult = _dialogService.ShowDialog<DepositPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Deposit"));
-            if (dialogResult == true)
+            try
             {
-                if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
-                    paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
-                paymentViewModel.PaymentModel.Shift = Define.ShiftCode;
+                if (SelectedSaleOrder.OrderStatus.Equals((short)SaleOrderStatus.Open))
+                    SelectedSaleOrder.RewardAmount = SelectedSaleOrder.Total;
 
-                if (SelectedSaleOrder.PaymentCollection == null)
-                    SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+                decimal balance = SelectedSaleOrder.RewardAmount - SelectedSaleOrder.Deposit.Value;
+                decimal depositTaken = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
 
-                SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
-                SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
-                SelectedSaleOrder.CalcSubTotal();
+                //calculate deposit from percent
+                decimal depositAmountByPercent = (SelectedSaleOrder.Total * LayawayManagerModel.DepositPercent) / 100;
+                decimal depositRequired = (depositAmountByPercent > LayawayManagerModel.DepositAmount ? depositAmountByPercent : LayawayManagerModel.DepositAmount) - depositTaken;
+
+                //Show Payment
+                SalesOrderPaymenViewModel paymentViewModel = new SalesOrderPaymenViewModel(SelectedSaleOrder, balance, depositTaken, depositRequired);
+                bool? dialogResult = _dialogService.ShowDialog<DepositPaymentView>(_ownerViewModel, paymentViewModel, Language.GetMsg("SO_Title_Deposit"));
+                if (dialogResult == true)
+                {
+                    if (Define.CONFIGURATION.DefaultCashiedUserName.HasValue && Define.CONFIGURATION.DefaultCashiedUserName.Value)
+                        paymentViewModel.PaymentModel.Cashier = Define.USER.LoginName;
+                    paymentViewModel.PaymentModel.Shift = Define.ShiftCode;
+
+                    if (SelectedSaleOrder.PaymentCollection == null)
+                        SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+
+                    SelectedSaleOrder.PaymentCollection.Add(paymentViewModel.PaymentModel);
+                    SelectedSaleOrder.Deposit = SelectedSaleOrder.PaymentCollection.Where(x => x.IsDeposit.Value).Sum(x => x.TotalPaid);
+                    SelectedSaleOrder.CalcSubTotal();
+                }
+
+                SelectedSaleOrder.PaymentProcess = SelectedSaleOrder.PaymentCollection.Any();
             }
-
-            SelectedSaleOrder.PaymentProcess = SelectedSaleOrder.PaymentCollection.Any();
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -1460,6 +1503,8 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OpenSOAdvanceSearch()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
             _salesOrderAdvanceSearchViewModel.CustomerCollection = this.CustomerCollection.ToList();
             _salesOrderAdvanceSearchViewModel.LoadData("Layaway");
             bool? dialogResult = _dialogService.ShowDialog<SalesOrderAdvanceSearchView>(_ownerViewModel, _salesOrderAdvanceSearchViewModel, Language.GetMsg("C104"));
@@ -1495,34 +1540,42 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LayawayPaymentProcess()
         {
-            if (LayawayManagerModel == null)
+            try
             {
-                Xceed.Wpf.Toolkit.MessageBox.Show(this.LayawayInfo, Language.POS, MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
-                return;
-            }
-
-            if (SelectedSaleOrder.PaymentCollection == null)
-                SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
-
-            //Check minumum purchase need to paid
-            if (CheckLayawayMinimumPurchase(SelectedSaleOrder))
-            {
-                LayawayPaymentViewModel viewModel = new LayawayPaymentViewModel(SelectedSaleOrder, LayawayManagerModel);
-                bool? dialogResult = _dialogService.ShowDialog<LayawayPaymentView>(_ownerViewModel, viewModel, "Layaway Payment");
-                if (dialogResult ?? false)
+                if (LayawayManagerModel == null)
                 {
-                    SelectedSaleOrder.CalcBalance();
-
-                    //Set Status For Layaway
-                    SetLayawayStatus(SelectedSaleOrder);
-
-                    if (SelectedSaleOrder.Balance <= 0)//Full payment
-                        SaveSaleCommission(SelectedSaleOrder);
-
-                    SetAllowChangeOrder(SelectedSaleOrder);
-
-                    SaveLayaway(SelectedSaleOrder);
+                    Xceed.Wpf.Toolkit.MessageBox.Show(this.LayawayInfo, Language.POS, MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
+                    return;
                 }
+
+                if (SelectedSaleOrder.PaymentCollection == null)
+                    SelectedSaleOrder.PaymentCollection = new ObservableCollection<base_ResourcePaymentModel>();
+
+                //Check minumum purchase need to paid
+                if (CheckLayawayMinimumPurchase(SelectedSaleOrder))
+                {
+                    LayawayPaymentViewModel viewModel = new LayawayPaymentViewModel(SelectedSaleOrder, LayawayManagerModel);
+                    bool? dialogResult = _dialogService.ShowDialog<LayawayPaymentView>(_ownerViewModel, viewModel, "Layaway Payment");
+                    if (dialogResult ?? false)
+                    {
+                        SelectedSaleOrder.CalcBalance();
+
+                        //Set Status For Layaway
+                        SetLayawayStatus(SelectedSaleOrder);
+
+                        if (SelectedSaleOrder.Balance <= 0)//Full payment
+                            SaveSaleCommission(SelectedSaleOrder);
+
+                        SetAllowChangeOrder(SelectedSaleOrder);
+
+                        SaveLayaway(SelectedSaleOrder);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -1571,7 +1624,7 @@ namespace CPC.POS.ViewModel
         {
             if (!saleOrderModel.PaymentCollection.Any() && saleOrderModel.Total < LayawayManagerModel.MinimumPurchase)
             {
-                string info = string.Format(Language.GetMsg("SO_Message_LW_NotSmallerMinimumPurchase")+" ", string.Format(Define.ConverterCulture, Define.CurrencyFormat, LayawayManagerModel.MinimumPurchase));
+                string info = string.Format(Language.GetMsg("SO_Message_LW_NotSmallerMinimumPurchase") + " ", string.Format(Define.ConverterCulture, Define.CurrencyFormat, LayawayManagerModel.MinimumPurchase));
                 Xceed.Wpf.Toolkit.MessageBox.Show(info, Language.GetMsg("POSCaption"), MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK);
                 return false;
             }
@@ -1761,7 +1814,7 @@ namespace CPC.POS.ViewModel
             switch (e.PropertyName)
             {
                 case "SalePrice":
-                    saleOrderDetailModel.SalePriceChanged();
+                    saleOrderDetailModel.SalePriceChanged(false);
                     saleOrderDetailModel.CalcSubTotal();
                     CalculateMultiNPriceTax();
                     _saleOrderRepository.CheckToShowDatagridRowDetail(saleOrderDetailModel);
@@ -1876,21 +1929,21 @@ namespace CPC.POS.ViewModel
 
                 LoadDataByPredicate(predicate);
 
-                if (_viewExisted && SelectedSaleOrder != null)
-                {
-                    if (SelectedSaleOrder.IsNew)
-                    {
-                        if (!NotifyLayawayManager(SelectedSaleOrder, out LayawayInfo))
-                        {
-                            _selectedSaleOrder = null;
-                            IsSearchMode = true;
-                        }
-                        else
-                        {
-                            IsSearchMode = false;
-                        }
-                    }
-                }
+                //if (_viewExisted && SelectedSaleOrder != null)
+                //{
+                //    if (SelectedSaleOrder.IsNew)
+                //    {
+                //        if (!NotifyLayawayManager(SelectedSaleOrder, out LayawayInfo))
+                //        {
+                //            _selectedSaleOrder = null;
+                //            IsSearchMode = true;
+                //        }
+                //        else
+                //        {
+                //            IsSearchMode = false;
+                //        }
+                //    }
+                //}
 
                 _viewExisted = true;
             };
@@ -1900,10 +1953,18 @@ namespace CPC.POS.ViewModel
 
         protected override void LoadDynamicData()
         {
-            base.LoadDynamicData();
+            try
+            {
+                base.LoadDynamicData();
 
-            //Load Layaway Setup
-            LoadLayawayManagerCollection();
+                //Load Layaway Setup
+                LoadLayawayManagerCollection();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         protected override bool OnViewChangingCommandCanExecute(bool isClosing)
@@ -1929,6 +1990,28 @@ namespace CPC.POS.ViewModel
                     }
                     else
                         IsSearchMode = true;
+                }
+            }
+            else
+            {
+                if (param is ComboItem)
+                {
+
+                    //Currently form is be called from another form, bellow methods get param & set Id to temparate variable(SaleOrderId).
+                    //if param has not isChecked(form is Actived), form with be load again. after form loaded, set SelectedSaleOrder item base one temp variable(SaleOrderId)
+                    //Otherwise,LoadData method won't be loaded, need to set selectedSaleOrder after recived value
+
+                    ComboItem cmbValue = param as ComboItem;
+                    if (cmbValue.Text.Equals("Customer"))//Create SaleOrder With Customer
+                    {
+                        CreateNewLayawayModel();
+                        if (_selectedSaleOrder != null)
+                        {
+                            long customerId = Convert.ToInt64(cmbValue.Detail);
+                            SelectedCustomer = CustomerCollection.SingleOrDefault(x => x.Id.Equals(customerId));
+                            this.IsSearchMode = false;
+                        }
+                    }
                 }
             }
         }
@@ -1980,50 +2063,21 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region Permission
+        #region IDropTarget Members
 
-        #region Properties
-
-        private bool _allowAddLayaway = true;
-        /// <summary>
-        /// Gets or sets the AllowAddLayaway.
-        /// </summary>
-        public bool AllowAddLayaway
+        public void DragOver(DropInfo dropInfo)
         {
-            get
+            if (dropInfo.Data is ComboItem)
             {
-                return _allowAddLayaway;
-            }
-            set
-            {
-                if (_allowAddLayaway != value)
-                {
-                    _allowAddLayaway = value;
-                    OnPropertyChanged(() => AllowAddLayaway);
-                }
+                dropInfo.Effects = DragDropEffects.Move;
             }
         }
 
-        #endregion
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        public void Drop(DropInfo dropInfo)
         {
-            if (!IsAdminPermission && !IsFullPermission)
+            if (dropInfo.Data is ComboItem)
             {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                // Get add/copy layaway permission
-                AllowAddLayaway = userRightCodes.Contains("SO100-05-02");
-
-                // Get add/copy customer permission
-                AllowAddCustomer = userRightCodes.Contains("SO100-01-01");
-
-                // Get delete product in layaway permission
-                AllowDeleteProduct = userRightCodes.Contains("SO100-05-08");
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Layaway", dropInfo.Data);
             }
         }
 

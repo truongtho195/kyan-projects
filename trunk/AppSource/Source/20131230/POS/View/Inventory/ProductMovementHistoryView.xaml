@@ -4,15 +4,12 @@
              xmlns:cpcControl="clr-namespace:CPC.Control"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Controls_Ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Name="UserControl"
              Background="{DynamicResource UserControlBackground}"
              mc:Ignorable="d">
     <Grid x:Name="grdMovementHistory">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
-
         <Grid x:Name="grdContentMovementHistory"
               Margin="10">
             <Grid.RowDefinitions>
@@ -193,24 +190,24 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Width="100"
-                                        Header="Trans Type" />
-                    <DataGridTextColumn Width="100"
-                                        Header="Item Code" />
-                    <DataGridTextColumn Width="*"
-                                        Header="Description" />
-                    <DataGridTextColumn Width="150"
-                                        Header="Trans Date" />
-                    <DataGridTextColumn Width="100"
-                                        Header="Qty" />
-                    <DataGridTextColumn Width="100"
-                                        Header="From Location" />
-                    <DataGridTextColumn Width="100"
-                                        Header="To Location" />
-                    <DataGridTextColumn Width="100"
-                                        Header="Reference #" />
-                    <DataGridTextColumn Width="100"
-                                        Header="User" />
+                    <DataGridTextColumn Header="Trans Type"
+                                        Width="100" />
+                    <DataGridTextColumn Header="Item Code"
+                                        Width="100" />
+                    <DataGridTextColumn Header="Description"
+                                        Width="*" />
+                    <DataGridTextColumn Header="Trans Date"
+                                        Width="150" />
+                    <DataGridTextColumn Header="Qty"
+                                        Width="100" />
+                    <DataGridTextColumn Header="From Location"
+                                        Width="100" />
+                    <DataGridTextColumn Header="To Location"
+                                        Width="100" />
+                    <DataGridTextColumn Header="Reference #"
+                                        Width="100" />
+                    <DataGridTextColumn Header="User"
+                                        Width="100" />
                 </DataGrid.Columns>
                 <CheckBox Width="100"
                           Height="100"
@@ -560,16 +557,8 @@
                                 Margin="0,2"
                                 HorizontalAlignment="Left"
                                 BorderBrush="#FF9C9C9C"
-                                IsEnabled="{Binding SelectedItem.IsNew,
-                                                    ElementName=lstSearchInventory}"
-                                SelectedDate="{Binding SelectedItem.DocumentDate,
-                                                       ElementName=lstSearchInventory,
-                                                       Mode=TwoWay,
-                                                       NotifyOnValidationError=True,
-                                                       StringFormat=\{0:d\},
-                                                       UpdateSourceTrigger=PropertyChanged,
-                                                       ValidatesOnDataErrors=True,
-                                                       ValidatesOnExceptions=True}"
+                                IsEnabled="{Binding SelectedItem.IsNew, ElementName=lstSearchInventory}"
+                                SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                                 TabIndex="{Binding TabIndexControl}"
                                 Text="" />
                 </Grid>
@@ -607,24 +596,24 @@
                         </LinearGradientBrush>
                     </DataGrid.AlternatingRowBackground>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="75"
-                                            Header="Item #" />
-                        <DataGridTextColumn Width="180"
-                                            Header="Description" />
-                        <DataGridTextColumn Width="40"
-                                            Header="Qty" />
-                        <DataGridTextColumn Width="70"
-                                            Header="Price" />
-                        <DataGridTextColumn Width="70"
-                                            Header="Qty Rec'd" />
-                        <DataGridTextColumn Width="90"
-                                            Header="Unfilled Qty" />
-                        <DataGridTextColumn Width="50"
-                                            Header="Disc" />
-                        <DataGridTextColumn Width="40"
-                                            Header="Tax" />
-                        <DataGridTextColumn Width="120"
-                                            Header="Amount" />
+                        <DataGridTextColumn Header="Item #"
+                                            Width="75" />
+                        <DataGridTextColumn Header="Description"
+                                            Width="180" />
+                        <DataGridTextColumn Header="Qty"
+                                            Width="40" />
+                        <DataGridTextColumn Header="Price"
+                                            Width="70" />
+                        <DataGridTextColumn Header="Qty Rec'd"
+                                            Width="70" />
+                        <DataGridTextColumn Header="Unfilled Qty"
+                                            Width="90" />
+                        <DataGridTextColumn Header="Disc"
+                                            Width="50" />
+                        <DataGridTextColumn Header="Tax"
+                                            Width="40" />
+                        <DataGridTextColumn Header="Amount"
+                                            Width="120" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid x:Name="dtgrdPOItem4"
@@ -1317,22 +1306,22 @@
                         </LinearGradientBrush>
                     </DataGrid.AlternatingRowBackground>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="75"
-                                            Header="Item #" />
-                        <DataGridTextColumn Width="250"
-                                            Header="Description" />
-                        <DataGridTextColumn Width="40"
-                                            Header="Qty" />
-                        <DataGridTextColumn Width="70"
-                                            Header="Price" />
-                        <DataGridTextColumn Width="90"
-                                            Header="Qty On-Hand" />
-                        <DataGridTextColumn Width="50"
-                                            Header="Disc" />
-                        <DataGridTextColumn Width="40"
-                                            Header="Tax" />
-                        <DataGridTextColumn Width="120"
-                                            Header="Amount" />
+                        <DataGridTextColumn Header="Item #"
+                                            Width="75" />
+                        <DataGridTextColumn Header="Description"
+                                            Width="250" />
+                        <DataGridTextColumn Header="Qty"
+                                            Width="40" />
+                        <DataGridTextColumn Header="Price"
+                                            Width="70" />
+                        <DataGridTextColumn Header="Qty On-Hand"
+                                            Width="90" />
+                        <DataGridTextColumn Header="Disc"
+                                            Width="50" />
+                        <DataGridTextColumn Header="Tax"
+                                            Width="40" />
+                        <DataGridTextColumn Header="Amount"
+                                            Width="120" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid x:Name="dtgrdInvoiceItem5"

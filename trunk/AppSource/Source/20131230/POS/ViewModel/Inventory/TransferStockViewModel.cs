@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Threading;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -15,11 +18,10 @@ using CPC.POS.View;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExtLibraries;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
-    class TransferStockViewModel : ViewModelBase
+    class TransferStockViewModel : ViewModelBase, IDropTarget
     {
         #region Define
         //To define repositories to use them in class.
@@ -80,6 +82,18 @@ namespace CPC.POS.ViewModel
         }
         private bool _isTransferFromProduct = false;
         private object _productCloneCollection = null;
+
+
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
+
         #endregion
 
         #region Constructors
@@ -89,6 +103,14 @@ namespace CPC.POS.ViewModel
             _ownerViewModel = App.Current.MainWindow.DataContext;
             this.InitialCommand();
             this.LoadStaticData();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         public TransferStockViewModel(bool isList, object param = null)
@@ -373,6 +395,7 @@ namespace CPC.POS.ViewModel
                 if (_filterText != value)
                 {
                     _filterText = value;
+                    ResetTimer();
                     OnPropertyChanged(() => FilterText);
                     this.Keyword = this.FilterText;
                 }
@@ -581,6 +604,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("SaveCommand" + ex.ToString());
             }
         }
@@ -620,15 +644,18 @@ namespace CPC.POS.ViewModel
             // TODO: Handle command logic here
             try
             {
+                if (_waitingTimer != null)
+                    _waitingTimer.Stop();
+
                 this.SearchAlert = string.Empty;
-                if ((param == null || string.IsNullOrWhiteSpace(param.ToString())))//Search All
+
+                if (string.IsNullOrWhiteSpace(this.Keyword))//Search All
                 {
                     Expression<Func<base_TransferStock, bool>> predicate = PredicateBuilder.True<base_TransferStock>();
                     this.LoadTransferStock(predicate, false, 0);
                 }
-                else if (param != null)
+                else
                 {
-                    this.Keyword = param.ToString();
                     Expression<Func<base_TransferStock, bool>> predicate = this.CreateSearchPredicate(this.Keyword);
                     this.LoadTransferStock(predicate, false, 0);
                 }
@@ -856,6 +883,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnTransferCommandExecute" + ex);
             }
         }
@@ -902,6 +930,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("OnRevertCommandExecute" + ex);
             }
 
@@ -981,6 +1010,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -1266,6 +1296,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("TransferStock" + ex.ToString());
             }
         }
@@ -1306,6 +1337,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("RevertStock" + ex.ToString());
             }
         }
@@ -1340,6 +1372,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("ChangeDataToStore" + ex);
             }
 
@@ -1417,6 +1450,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine(ex);
             }
         }
@@ -1552,6 +1586,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
+                _log4net.Error(ex);
                 Debug.WriteLine("SelectedProductChanged" + ex.ToString());
             }
         }
@@ -1855,6 +1890,36 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                OnSearchCommandExecute(null);
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Methods
@@ -1915,6 +1980,26 @@ namespace CPC.POS.ViewModel
             this.LoadTransferStock(predicate, true);
         }
         #endregion
+
+        #endregion
+
+        #region IDropTarget Members
+
+        public void DragOver(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+        }
+
+        public void Drop(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Transfer Stock", dropInfo.Data);
+            }
+        }
 
         #endregion
     }

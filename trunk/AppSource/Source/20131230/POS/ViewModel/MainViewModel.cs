@@ -132,7 +132,7 @@ namespace CPC.POS.ViewModel
                         HiddenHostList.RemoveAt(index);
                         var host = _hostList.ElementAt(_hostList.Count - 1 - index);
                         ChangeLayoutItem(host.Container.btnImageIcon);
-                        HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).Container.btnTitle.Content.ToString());
+                        HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).KeyName);
                     }
                 }
             }
@@ -390,7 +390,7 @@ namespace CPC.POS.ViewModel
 
         #region SelectedLanguage
 
-        private string _iconLanguagePath = @"/Image/RibbonImages/RibbonLanguage.png";
+        private string _iconLanguagePath = @"/Image/RibbonImages/RibbonLanguageEN.png";
         /// <summary>
         /// Gets or sets the IconLanguagePath.
         /// </summary>
@@ -484,9 +484,6 @@ namespace CPC.POS.ViewModel
             SelectedSkin = Skins.Grey;
             SelectedLanguage = Common.Languages.FirstOrDefault(x => x.Code.Equals(Define.CONFIGURATION.DefaultLanguage));
 
-            // Get permission
-            GetPermission();
-
             Initialize();
         }
 
@@ -534,7 +531,7 @@ namespace CPC.POS.ViewModel
             if (HiddenHostList.Count > 0)
             {
                 HiddenHostList.RemoveAt(0);
-                HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).Container.btnTitle.Content.ToString());
+                HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).KeyName);
             }
             var host = _hostList.LastOrDefault();
             if (host != null)
@@ -990,60 +987,6 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
-        #region -Help Command-
-
-        /// <summary>
-        /// Gets the HelpCommand command.
-        /// </summary>
-        public RelayCommand HelpCommand
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Method to check whether the HelpCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnHelpCommandCanExecute()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the HelpCommand command is executed.
-        /// </summary>
-        public void OnHelpCommandExecute()
-        {
-            OpenHelpFile();
-        }
-
-        /// <summary>
-        /// Open help file
-        /// </summary>
-        private void OpenHelpFile()
-        {
-            try
-            {
-                // Help file path
-                string helpFilePath = @"Language/Help/test.chm";
-                if (curViewName.Length == 0)
-                {
-                    System.Windows.Forms.Help.ShowHelp(null, helpFilePath);
-                }
-                else
-                {
-                    System.Windows.Forms.Help.ShowHelp(null, helpFilePath, System.Windows.Forms.HelpNavigator.KeywordIndex, curViewName);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-        }
-
-        #endregion
-
         #region DataCommand
 
         /// <summary>
@@ -1333,6 +1276,86 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region Help Command
+
+        /// <summary>
+        /// Gets the HelpCommand command.
+        /// </summary>
+        public RelayCommand HelpCommand
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Method to check whether the HelpCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnHelpCommandCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the HelpCommand command is executed.
+        /// </summary>
+        public void OnHelpCommandExecute()
+        {
+            OpenHelpFile();
+        }
+
+        /// <summary>
+        /// Open help file
+        /// </summary>
+        private void OpenHelpFile()
+        {
+            try
+            {
+                // Help file path
+                string helpFilePath = @"Language/Help/test.chm";
+                if (curViewName.Length == 0)
+                {
+                    System.Windows.Forms.Help.ShowHelp(null, helpFilePath);
+                }
+                else
+                {
+                    System.Windows.Forms.Help.ShowHelp(null, helpFilePath, System.Windows.Forms.HelpNavigator.KeywordIndex, curViewName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        #endregion
+
+        #region ContactUsCommand
+
+        /// <summary>
+        /// Gets the ContactUsCommand command.
+        /// </summary>
+        public ICommand ContactUsCommand { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the ContactUsCommand command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnContactUsCommandCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Method to invoke when the ContactUsCommand command is executed.
+        /// </summary>
+        private void OnContactUsCommandExecute()
+        {
+            Process.Start(Define.ContactUsURL);
+        }
+
+        #endregion
+
         #endregion
 
         #region Layout Methods
@@ -1391,7 +1414,7 @@ namespace CPC.POS.ViewModel
 
                     if (_hostList.Count > _rowNumbers + 1)
                     {
-                        HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).Container.btnTitle.Content.ToString());
+                        HiddenHostList.Add(_hostList.ElementAt(_rowNumbers + 1).KeyName);
                         OnPropertyChanged(() => HiddenHostVisibility);
                     }
                 }
@@ -1453,13 +1476,13 @@ namespace CPC.POS.ViewModel
 
                 case "CashIn":
                     if (_dialogService.ShowDialog<CashInView>(this, new CashInViewModel(), null).Value)
-                        GetCashInOutPermission();
+                        UserPermissions.GetCashInOutPermission();
                     showPopup = true;
                     break;
 
                 case "CashOut":
                     if (_dialogService.ShowDialog<CashOutView>(this, new CashOutViewModel(), null).Value)
-                        GetCashInOutPermission();
+                        UserPermissions.GetCashInOutPermission();
                     showPopup = true;
                     break;
 
@@ -1502,7 +1525,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "Layaway":
                     view = new LayawayView();
-                    viewModel = new LayawayViewModel(host.IsOpenList);
+                    viewModel = new LayawayViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "SalesOrder":
                     view = new SalesOrderView();
@@ -1578,11 +1601,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "CountSheet":
                     view = new CountSheetView();
-                    viewModel = new CountSheetViewModel(host.IsOpenList);
-                    break;
-                case "CountSheetList":
-                    view = new CountSheetView();
-                    viewModel = new CountSheetViewModel();
+                    viewModel = new CountSheetViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "StockAdjustment":
                     view = new AdjustmentInformationView();
@@ -1602,7 +1621,7 @@ namespace CPC.POS.ViewModel
                     break;
                 case "WorkOrder":
                     view = new WorkOrderView();
-                    viewModel = new WorkOrderViewModel(host.IsOpenList);
+                    viewModel = new WorkOrderViewModel(host.IsOpenList, host.Tag);
                     break;
                 case "CostAdjustment":
                     view = new CostAdjustmentHistoryView();
@@ -1704,6 +1723,13 @@ namespace CPC.POS.ViewModel
                     showPopup = true;
                     break;
                 #endregion
+
+                case "Update":
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = Define.UpdateFileName;
+                    Process.Start(startInfo);
+                    showPopup = true;
+                    break;
             }
 
             host.DataContext = viewModel;
@@ -2024,8 +2050,9 @@ namespace CPC.POS.ViewModel
             ExitCommand = new RelayCommand(OnExitCommandExecute, OnExitCommandCanExecute);
             SwitchDatabaseCommand = new RelayCommand(OnSwitchDatabaseCommandExecute, OnSwitchDatabaseCommandCanExecute);
             ChangeLanguageCommand = new RelayCommand<object>(OnChangeLanguageCommandExecute, OnChangeLanguageCommandCanExecute);
-            this.CloseDayCommand = new RelayCommand(OnCloseDayCommandExecute, OnCloseDayCommandCanExecute);
+            CloseDayCommand = new RelayCommand(OnCloseDayCommandExecute, OnCloseDayCommandCanExecute);
             HelpCommand = new RelayCommand(OnHelpCommandExecute, OnHelpCommandCanExecute);
+            ContactUsCommand = new RelayCommand(OnContactUsCommandExecute, OnContactUsCommandCanExecute);
         }
 
         /// <summary>
@@ -2376,912 +2403,6 @@ namespace CPC.POS.ViewModel
 
                 return message;
             }
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        #region Application Menu
-
-        private bool _allowAccessCashIn;
-        /// <summary>
-        /// Gets or sets the AllowAccessCashIn.
-        /// </summary>
-        public bool AllowAccessCashIn
-        {
-            get
-            {
-                return _allowAccessCashIn;
-            }
-            set
-            {
-                if (_allowAccessCashIn != value)
-                {
-                    _allowAccessCashIn = value;
-                    OnPropertyChanged(() => AllowAccessCashIn);
-                }
-            }
-        }
-
-        private bool _allowAccessCashOut;
-        /// <summary>
-        /// Gets or sets the AllowAccessCashOut.
-        /// </summary>
-        public bool AllowAccessCashOut
-        {
-            get
-            {
-                return _allowAccessCashOut;
-            }
-            set
-            {
-                if (_allowAccessCashOut != value)
-                {
-                    _allowAccessCashOut = value;
-                    OnPropertyChanged(() => AllowAccessCashOut);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Sale Module
-
-        private bool _allowAccessSaleModule = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessSaleModule.
-        /// </summary>
-        public bool AllowAccessSaleModule
-        {
-            get
-            {
-                return _allowAccessSaleModule;
-            }
-            set
-            {
-                if (_allowAccessSaleModule != value)
-                {
-                    _allowAccessSaleModule = value;
-                    OnPropertyChanged(() => AllowAccessSaleModule);
-                }
-            }
-        }
-
-        private bool _allowAccessCustomer = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessCustomer.
-        /// </summary>
-        public bool AllowAccessCustomer
-        {
-            get
-            {
-                return _allowAccessCustomer;
-            }
-            set
-            {
-                if (_allowAccessCustomer != value)
-                {
-                    _allowAccessCustomer = value;
-                    OnPropertyChanged(() => AllowAccessCustomer);
-                }
-            }
-        }
-
-        private bool _allowAddCustomer = true;
-        /// <summary>
-        /// Gets or sets the AllowAddCustomer.
-        /// </summary>
-        public bool AllowAddCustomer
-        {
-            get
-            {
-                return _allowAddCustomer;
-            }
-            set
-            {
-                if (_allowAddCustomer != value)
-                {
-                    _allowAddCustomer = value;
-                    OnPropertyChanged(() => AllowAddCustomer);
-                }
-            }
-        }
-
-        private bool _allowAccessReward = true;
-        /// <summary>
-        /// Gets or sets the AllowAddReward.
-        /// </summary>
-        public bool AllowAccessReward
-        {
-            get
-            {
-                return _allowAccessReward;
-            }
-            set
-            {
-                if (_allowAccessReward != value)
-                {
-                    _allowAccessReward = value;
-                    OnPropertyChanged(() => AllowAccessReward);
-                }
-            }
-        }
-
-        private bool _allowAccessSaleQuotation = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessSaleQuotation.
-        /// </summary>
-        public bool AllowAccessSaleQuotation
-        {
-            get
-            {
-                return _allowAccessSaleQuotation;
-            }
-            set
-            {
-                if (_allowAccessSaleQuotation != value)
-                {
-                    _allowAccessSaleQuotation = value;
-                    OnPropertyChanged(() => AllowAccessSaleQuotation);
-                }
-            }
-        }
-
-        private bool _allowAddSaleQuotation = true;
-        /// <summary>
-        /// Gets or sets the AllowAddSaleQuotation.
-        /// </summary>
-        public bool AllowAddSaleQuotation
-        {
-            get
-            {
-                return _allowAddSaleQuotation;
-            }
-            set
-            {
-                if (_allowAddSaleQuotation != value)
-                {
-                    _allowAddSaleQuotation = value;
-                    OnPropertyChanged(() => AllowAddSaleQuotation);
-                }
-            }
-        }
-
-        private bool _allowAccessLayaway = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessLayaway.
-        /// </summary>
-        public bool AllowAccessLayaway
-        {
-            get
-            {
-                return _allowAccessLayaway;
-            }
-            set
-            {
-                if (_allowAccessLayaway != value)
-                {
-                    _allowAccessLayaway = value;
-                    OnPropertyChanged(() => AllowAccessLayaway);
-                }
-            }
-        }
-
-        private bool _allowAddLayaway = true;
-        /// <summary>
-        /// Gets or sets the AllowAddLayaway.
-        /// </summary>
-        public bool AllowAddLayaway
-        {
-            get
-            {
-                return _allowAddLayaway;
-            }
-            set
-            {
-                if (_allowAddLayaway != value)
-                {
-                    _allowAddLayaway = value;
-                    OnPropertyChanged(() => AllowAddLayaway);
-                }
-            }
-        }
-
-        private bool _allowAccessWorkOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessWorkOrder.
-        /// </summary>
-        public bool AllowAccessWorkOrder
-        {
-            get
-            {
-                return _allowAccessWorkOrder;
-            }
-            set
-            {
-                if (_allowAccessWorkOrder != value)
-                {
-                    _allowAccessWorkOrder = value;
-                    OnPropertyChanged(() => AllowAccessWorkOrder);
-                }
-            }
-        }
-
-        private bool _allowAddWorkOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowAddWorkOrder.
-        /// </summary>
-        public bool AllowAddWorkOrder
-        {
-            get
-            {
-                return _allowAddWorkOrder;
-            }
-            set
-            {
-                if (_allowAddWorkOrder != value)
-                {
-                    _allowAddWorkOrder = value;
-                    OnPropertyChanged(() => AllowAddWorkOrder);
-                }
-            }
-        }
-
-        private bool _allowAccessSaleOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessSaleOrder.
-        /// </summary>
-        public bool AllowAccessSaleOrder
-        {
-            get
-            {
-                return _allowAccessSaleOrder;
-            }
-            set
-            {
-                if (_allowAccessSaleOrder != value)
-                {
-                    _allowAccessSaleOrder = value;
-                    OnPropertyChanged(() => AllowAccessSaleOrder);
-                }
-            }
-        }
-
-        private bool _allowAddSaleOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowAddSaleOrder.
-        /// </summary>
-        public bool AllowAddSaleOrder
-        {
-            get
-            {
-                return _allowAddSaleOrder;
-            }
-            set
-            {
-                if (_allowAddSaleOrder != value)
-                {
-                    _allowAddSaleOrder = value;
-                    OnPropertyChanged(() => AllowAddSaleOrder);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Purchase Module
-
-        private bool _allowAccessPurchaseModule = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessPurchaseModule.
-        /// </summary>
-        public bool AllowAccessPurchaseModule
-        {
-            get
-            {
-                return _allowAccessPurchaseModule;
-            }
-            set
-            {
-                if (_allowAccessPurchaseModule != value)
-                {
-                    _allowAccessPurchaseModule = value;
-                    OnPropertyChanged(() => AllowAccessPurchaseModule);
-                }
-            }
-        }
-
-        private bool _allowAccessVendor = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessVendor.
-        /// </summary>
-        public bool AllowAccessVendor
-        {
-            get
-            {
-                return _allowAccessVendor;
-            }
-            set
-            {
-                if (_allowAccessVendor != value)
-                {
-                    _allowAccessVendor = value;
-                    OnPropertyChanged(() => AllowAccessVendor);
-                }
-            }
-        }
-
-        private bool _allowAddVendor = true;
-        /// <summary>
-        /// Gets or sets the AllowAddVendor.
-        /// </summary>
-        public bool AllowAddVendor
-        {
-            get
-            {
-                return _allowAddVendor;
-            }
-            set
-            {
-                if (_allowAddVendor != value)
-                {
-                    _allowAddVendor = value;
-                    OnPropertyChanged(() => AllowAddVendor);
-                }
-            }
-        }
-
-        private bool _allowAccessPurchaseOrder = true;
-        /// <summary>
-        /// Gets or sets the allowAccessPurchaseOrder.
-        /// </summary>
-        public bool AllowAccessPurchaseOrder
-        {
-            get
-            {
-                return _allowAccessPurchaseOrder;
-            }
-            set
-            {
-                if (_allowAccessPurchaseOrder != value)
-                {
-                    _allowAccessPurchaseOrder = value;
-                    OnPropertyChanged(() => AllowAccessPurchaseOrder);
-                }
-            }
-        }
-
-        private bool _allowAddPurchaseOrder = true;
-        /// <summary>
-        /// Gets or sets the AllowAddPO.
-        /// </summary>
-        public bool AllowAddPurchaseOrder
-        {
-            get
-            {
-                return _allowAddPurchaseOrder;
-            }
-            set
-            {
-                if (_allowAddPurchaseOrder != value)
-                {
-                    _allowAddPurchaseOrder = value;
-                    OnPropertyChanged(() => AllowAddPurchaseOrder);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Inventory Module
-
-        private bool _allowAccessInventoryModule = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessProductModule.
-        /// </summary>
-        public bool AllowAccessInventoryModule
-        {
-            get
-            {
-                return _allowAccessInventoryModule;
-            }
-            set
-            {
-                if (_allowAccessInventoryModule != value)
-                {
-                    _allowAccessInventoryModule = value;
-                    OnPropertyChanged(() => AllowAccessInventoryModule);
-                }
-            }
-        }
-
-        private bool _allowAccessProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessProduct.
-        /// </summary>
-        public bool AllowAccessProduct
-        {
-            get
-            {
-                return _allowAccessProduct;
-            }
-            set
-            {
-                if (_allowAccessProduct != value)
-                {
-                    _allowAccessProduct = value;
-                    OnPropertyChanged(() => AllowAccessProduct);
-                }
-            }
-        }
-
-        private bool _allowAddProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowAddProduct.
-        /// </summary>
-        public bool AllowAddProduct
-        {
-            get
-            {
-                return _allowAddProduct;
-            }
-            set
-            {
-                if (_allowAddProduct != value)
-                {
-                    _allowAddProduct = value;
-                    OnPropertyChanged(() => AllowAddProduct);
-                }
-            }
-        }
-
-        private bool _allowAddDepartment = true;
-        /// <summary>
-        /// Gets or sets the AllowAddDepartment.
-        /// </summary>
-        public bool AllowAddDepartment
-        {
-            get
-            {
-                return _allowAddDepartment;
-            }
-            set
-            {
-                if (_allowAddDepartment != value)
-                {
-                    _allowAddDepartment = value;
-                    OnPropertyChanged(() => AllowAddDepartment);
-                }
-            }
-        }
-
-        private bool _allowAccessPricing = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessPricing.
-        /// </summary>
-        public bool AllowAccessPricing
-        {
-            get
-            {
-                return _allowAccessPricing;
-            }
-            set
-            {
-                if (_allowAccessPricing != value)
-                {
-                    _allowAccessPricing = value;
-                    OnPropertyChanged(() => AllowAccessPricing);
-                }
-            }
-        }
-
-        private bool _allowAddPricing = true;
-        /// <summary>
-        /// Gets or sets the AllowAddPricing.
-        /// </summary>
-        public bool AllowAddPricing
-        {
-            get
-            {
-                return _allowAddPricing;
-            }
-            set
-            {
-                if (_allowAddPricing != value)
-                {
-                    _allowAddPricing = value;
-                    OnPropertyChanged(() => AllowAddPricing);
-                }
-            }
-        }
-
-        private bool _allowAccessDiscountProgram = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessDiscountProgram.
-        /// </summary>
-        public bool AllowAccessDiscountProgram
-        {
-            get
-            {
-                return _allowAccessDiscountProgram;
-            }
-            set
-            {
-                if (_allowAccessDiscountProgram != value)
-                {
-                    _allowAccessDiscountProgram = value;
-                    OnPropertyChanged(() => AllowAccessDiscountProgram);
-                }
-            }
-        }
-
-        private bool _allowAddPromotion = true;
-        /// <summary>
-        /// Gets or sets the AllowAddPromotion.
-        /// </summary>
-        public bool AllowAddPromotion
-        {
-            get
-            {
-                return _allowAddPromotion;
-            }
-            set
-            {
-                if (_allowAddPromotion != value)
-                {
-                    _allowAddPromotion = value;
-                    OnPropertyChanged(() => AllowAddPromotion);
-                }
-            }
-        }
-
-        private bool _allowAccessStock = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessCurrentStock.
-        /// </summary>
-        public bool AllowAccessStock
-        {
-            get
-            {
-                return _allowAccessStock;
-            }
-            set
-            {
-                if (_allowAccessStock != value)
-                {
-                    _allowAccessStock = value;
-                    OnPropertyChanged(() => AllowAccessStock);
-                }
-            }
-        }
-
-        private bool _allowViewCurrentStock = true;
-        /// <summary>
-        /// Gets or sets the AllowViewCurrentStock.
-        /// </summary>
-        public bool AllowViewCurrentStock
-        {
-            get
-            {
-                return _allowViewCurrentStock;
-            }
-            set
-            {
-                if (_allowViewCurrentStock != value)
-                {
-                    _allowViewCurrentStock = value;
-                    OnPropertyChanged(() => AllowViewCurrentStock);
-                }
-            }
-        }
-
-        private bool _allowAddCountSheet = true;
-        /// <summary>
-        /// Gets or sets the AllowAddCountSheet.
-        /// </summary>
-        public bool AllowAddCountSheet
-        {
-            get
-            {
-                return _allowAddCountSheet;
-            }
-            set
-            {
-                if (_allowAddCountSheet != value)
-                {
-                    _allowAddCountSheet = value;
-                    OnPropertyChanged(() => AllowAddCountSheet);
-                }
-            }
-        }
-
-        private bool _allowAddTransferStock = true;
-        /// <summary>
-        /// Gets or sets the AllowAddTransferStock.
-        /// </summary>
-        public bool AllowAddTransferStock
-        {
-            get
-            {
-                return _allowAddTransferStock;
-            }
-            set
-            {
-                if (_allowAddTransferStock != value)
-                {
-                    _allowAddTransferStock = value;
-                    OnPropertyChanged(() => AllowAddTransferStock);
-                }
-            }
-        }
-
-        private bool _allowAccessAdjustHistory = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessAdjustHistory.
-        /// </summary>
-        public bool AllowAccessAdjustHistory
-        {
-            get
-            {
-                return _allowAccessAdjustHistory;
-            }
-            set
-            {
-                if (_allowAccessAdjustHistory != value)
-                {
-                    _allowAccessAdjustHistory = value;
-                    OnPropertyChanged(() => AllowAccessAdjustHistory);
-                }
-            }
-        }
-
-        private bool _allowAccessCostAdjustment = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessCostAdjustment.
-        /// </summary>
-        public bool AllowAccessCostAdjustment
-        {
-            get
-            {
-                return _allowAccessCostAdjustment;
-            }
-            set
-            {
-                if (_allowAccessCostAdjustment != value)
-                {
-                    _allowAccessCostAdjustment = value;
-                    OnPropertyChanged(() => AllowAccessCostAdjustment);
-                }
-            }
-        }
-
-        private bool _allowAccessQuantityAdjustment = true;
-        /// <summary>
-        /// Gets or sets the AllowAccessQuantityAdjustment.
-        /// </summary>
-        public bool AllowAccessQuantityAdjustment
-        {
-            get
-            {
-                return _allowAccessQuantityAdjustment;
-            }
-            set
-            {
-                if (_allowAccessQuantityAdjustment != value)
-                {
-                    _allowAccessQuantityAdjustment = value;
-                    OnPropertyChanged(() => AllowAccessQuantityAdjustment);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Configuration Module
-
-        private bool _allowChangeConfiguration = true;
-        /// <summary>
-        /// Gets or sets the AllowChangeConfiguration.
-        /// </summary>
-        public bool AllowChangeConfiguration
-        {
-            get
-            {
-                return _allowChangeConfiguration;
-            }
-            set
-            {
-                if (_allowChangeConfiguration != value)
-                {
-                    _allowChangeConfiguration = value;
-                    OnPropertyChanged(() => AllowChangeConfiguration);
-                }
-            }
-        }
-
-        #endregion
-
-        #endregion
-
-        /// <summary>
-        /// Get permission for CashIn or CashOut
-        /// </summary>
-        private void GetCashInOutPermission()
-        {
-            base_CashFlowRepository cashFlowRepository = new base_CashFlowRepository();
-            DateTime current = DateTime.Now.Date;
-
-            // Get cash flow by user and shift
-            base_CashFlow cashFlow = null;
-            if (Define.ShiftCode == null)
-                cashFlow = cashFlowRepository.Get(x => x.CashierResource == Define.USER.UserResource && x.OpenDate == current);
-            else
-                cashFlow = cashFlowRepository.Get(x => x.CashierResource == Define.USER.UserResource && x.OpenDate == current && x.Shift.Equals(Define.ShiftCode));
-
-            AllowAccessCashIn = false;
-            AllowAccessCashOut = false;
-
-            if (cashFlow == null)
-            {
-                AllowAccessCashIn = !IsAdminPermission;
-            }
-            else if (!cashFlow.IsCashOut)
-            {
-                AllowAccessCashOut = !IsAdminPermission;
-            }
-        }
-
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
-        {
-            GetCashInOutPermission();
-
-            if (!IsAdminPermission)
-            {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAccessReward = IsMainStore;
-
-                    AllowAddPurchaseOrder = IsMainStore;
-
-                    AllowAddProduct = IsMainStore;
-                    AllowAddPricing = IsMainStore;
-                    AllowAddPromotion = IsMainStore;
-                    AllowAccessCostAdjustment = IsMainStore;
-                    AllowAccessQuantityAdjustment = IsMainStore;
-
-                    AllowChangeConfiguration = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                    #region Sale Module
-
-                    // Get access sale module permission
-                    AllowAccessSaleModule = userRightCodes.Contains("SO100");
-
-                    // Get access customer permission
-                    AllowAccessCustomer = userRightCodes.Contains("SO100-01") && AllowAccessSaleModule;
-
-                    // Get add/copy customer permission
-                    AllowAddCustomer = userRightCodes.Contains("SO100-01-01") && AllowAccessCustomer;
-
-                    // Get access reward permission
-                    AllowAccessReward = userRightCodes.Contains("SO100-02") && AllowAccessSaleModule && IsMainStore;
-
-                    // Get access sale quotation permission
-                    AllowAccessSaleQuotation = userRightCodes.Contains("SO100-03") && AllowAccessSaleModule;
-
-                    // Get add/copy sale quotation permission
-                    AllowAddSaleQuotation = userRightCodes.Contains("SO100-03-01") && AllowAccessSaleQuotation;
-
-                    // Get access layaway permission
-                    AllowAccessLayaway = userRightCodes.Contains("SO100-05") && AllowAccessSaleModule;
-
-                    // Get add/copy layaway permission
-                    AllowAddLayaway = userRightCodes.Contains("SO100-05-02") && AllowAccessLayaway;
-
-                    // Get access work order permission
-                    AllowAccessWorkOrder = userRightCodes.Contains("SO100-06") && AllowAccessSaleModule;
-
-                    // Get add/copy work order permission
-                    AllowAddWorkOrder = userRightCodes.Contains("SO100-06-02") && AllowAccessWorkOrder;
-
-                    // Get access sale order permission
-                    AllowAccessSaleOrder = userRightCodes.Contains("SO100-04") && AllowAccessSaleModule;
-
-                    // Get add/copy sale order permission
-                    AllowAddSaleOrder = userRightCodes.Contains("SO100-04-02") && AllowAccessSaleOrder;
-
-                    #endregion
-
-                    #region Purchase Module
-
-                    // Get access purchase module permission
-                    AllowAccessPurchaseModule = userRightCodes.Contains("PO100");
-
-                    // Get access vendor permission
-                    AllowAccessVendor = userRightCodes.Contains("PO100-01") && AllowAccessPurchaseModule;
-
-                    // Get add/copy vendor permission
-                    AllowAddVendor = userRightCodes.Contains("PO100-01-01") && AllowAccessVendor;
-
-                    // Get access purchase order permission
-                    AllowAccessPurchaseOrder = userRightCodes.Contains("PO100-02") && AllowAccessPurchaseModule;
-
-                    // Get add purchase order permission
-                    AllowAddPurchaseOrder = userRightCodes.Contains("PO100-02-02") && AllowAccessPurchaseOrder && IsMainStore;
-
-                    #endregion
-
-                    #region Inventory Module
-
-                    // Get access inventory module permission
-                    AllowAccessInventoryModule = userRightCodes.Contains("IV100");
-
-                    // Get access product permission
-                    AllowAccessProduct = userRightCodes.Contains("IV100-01") && AllowAccessInventoryModule;
-
-                    // Get add/copy product permission
-                    AllowAddProduct = userRightCodes.Contains("IV100-01-01") && AllowAccessProduct && IsMainStore;
-
-                    // Get add/copy department permission
-                    AllowAddDepartment = userRightCodes.Contains("IV100-01-03") && AllowAccessProduct;
-
-                    // Get access pricing permission
-                    AllowAccessPricing = userRightCodes.Contains("IV100-02") && AllowAccessInventoryModule;
-
-                    // Get add/copy pricing permission
-                    AllowAddPricing = userRightCodes.Contains("IV100-02-01") && AllowAccessPricing && IsMainStore;
-
-                    // Get access discount program permission
-                    AllowAccessDiscountProgram = userRightCodes.Contains("IV100-03") && AllowAccessInventoryModule;
-
-                    // Get add/copy promotion permission
-                    AllowAddPromotion = userRightCodes.Contains("IV100-03-01") && AllowAccessDiscountProgram && IsMainStore;
-
-                    // Get access stock permission
-                    AllowAccessStock = userRightCodes.Contains("IV100-04") && AllowAccessInventoryModule;
-
-                    // Get view current stock permission
-                    AllowViewCurrentStock = userRightCodes.Contains("IV100-04-01") && AllowAccessStock;
-
-                    // Get add count sheet permission
-                    AllowAddCountSheet = userRightCodes.Contains("IV100-04-02") && AllowAccessStock;
-
-                    // Get add transfer stock permission
-                    AllowAddTransferStock = userRightCodes.Contains("IV100-04-05") && AllowAccessStock;
-
-                    // Get access adjust history permission
-                    AllowAccessAdjustHistory = userRightCodes.Contains("IV100-05") && AllowAccessInventoryModule;
-
-                    // Get access cost adjustment permission
-                    AllowAccessCostAdjustment = userRightCodes.Contains("IV100-05-01") && AllowAccessAdjustHistory && IsMainStore;
-
-                    // Get access quantity adjustment permission
-                    AllowAccessQuantityAdjustment = userRightCodes.Contains("IV100-05-02") && AllowAccessAdjustHistory && IsMainStore;
-
-                    #endregion
-
-                    #region Configuration Module
-
-                    // Get change configuration permission
-                    AllowChangeConfiguration = userRightCodes.Contains("CF100-05") && IsMainStore;
-
-                    #endregion
-                }
-            }
-
-            //// Marge allow add layaway permission
-            //AllowAddLayaway &= _layawayManagerRepository.GetIQueryable(x => x.Status.Equals((short)StatusBasic.Active)).Count() > 0;
         }
 
         #endregion
@@ -4768,7 +3889,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OpenAlarmList()
         {
-            bool? result = _dialogService.ShowDialog<TaskListReminderView>(App.Current.MainWindow.DataContext, new TaskListReminderViewModel(ReminderList), "Alarm List");
+            bool? result = _dialogService.ShowDialog<TaskListReminderView>(App.Current.MainWindow.DataContext, new TaskListReminderViewModel(ReminderList), "Task reminder");
             if (result == true)
             {
                 CountTask();
@@ -4784,7 +3905,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OpenAlarmBirthday()
         {
-            bool? result = _dialogService.ShowDialog<CustomerReminderView>(App.Current.MainWindow.DataContext, new CustomerReminderViewModel(_customerReminderList), "Alarm List");
+            bool? result = _dialogService.ShowDialog<CustomerReminderView>(App.Current.MainWindow.DataContext, new CustomerReminderViewModel(_customerReminderList), "Birthday reminder");
             if (result == true)
             {
                 CountTask();

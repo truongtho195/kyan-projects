@@ -73,7 +73,6 @@ namespace CPC.POS.ViewModel
         }
         #endregion
 
-
         public int CurrentPageIndexLeft { get; set; }
 
 
@@ -96,70 +95,9 @@ namespace CPC.POS.ViewModel
             this.LoadCategory();
         }
 
-        /// <summary>
-        /// Constructor with load data
-        /// </summary>
-        /// <param name="categoryList">Category list</param>
-        /// <param name="promotionAffectList">Promotion affect list</param>
-        public PricingCategoryViewModel(List<ComboItem> categoryList, CollectionBase<base_PromotionAffectModel> promotionAffectList)
-            : this()
-        {
-
-        }
-
         #endregion
 
         #region Command Methods
-
-        #region LeftSearchCommand
-
-        /// <summary>
-        /// Gets the LeftSearchCommand command.
-        /// </summary>
-        public ICommand LeftSearchCommand { get; private set; }
-
-        /// <summary>
-        /// Method to invoke when the LeftSearchCommand command is executed.
-        /// </summary>
-        private void OnLeftSearchCommandExecute(object param)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                _log4net.Error(ex);
-                throw;
-            }
-        }
-        #endregion
-
-        #region MoveCommand
-
-        /// <summary>
-        /// Gets the MoveCommand command.
-        /// </summary>
-        public ICommand MoveCommand { get; private set; }
-
-        /// <summary>
-        /// Method to check whether the MoveCommand command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnMoveCommandCanExecute()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Method to invoke when the MoveCommand command is executed.
-        /// </summary>
-        private void OnMoveCommandExecute()
-        {
-
-        }
-
-        #endregion
 
         #region OkCommand
 
@@ -182,11 +120,19 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnOkCommandExecute()
         {
-            this.CategoryList = new List<ComboItem>();
-            foreach (var item in this.CategoryCollection.Where(x => x.IsChecked))
-                this.CategoryList.Add(new ComboItem { IntValue = item.Id });
-            Window window = FindOwnerWindow(this);
-            window.DialogResult = true;
+
+            try
+            {
+                this.CategoryList = new List<ComboItem>();
+                foreach (var item in this.CategoryCollection.Where(x => x.IsChecked))
+                    this.CategoryList.Add(new ComboItem { IntValue = item.Id });
+                Window window = FindOwnerWindow(this);
+                window.DialogResult = true;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         #endregion
@@ -230,6 +176,7 @@ namespace CPC.POS.ViewModel
             OkCommand = new RelayCommand(OnOkCommandExecute, OnOkCommandCanExecute);
             CancelCommand = new RelayCommand(OnCancelCommandExecute, OnCancelCommandCanExecute);
         }
+
         private void LoadCategory()
         {
             this.CategoryCollection = new ObservableCollection<base_DepartmentModel>();

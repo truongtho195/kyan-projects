@@ -7,6 +7,7 @@ using CPC.POS.Model;
 using CPC.Toolkit.Command;
 using System.Collections.ObjectModel;
 using CPC.Helper;
+using System.Windows;
 
 namespace CPC.POS.ViewModel
 {
@@ -239,17 +240,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnFillMoneyCommandExecute(object param)
         {
-            decimal _remainTotal = 0;
-            _remainTotal = Balance - PaymentModel.PaymentDetailCollection.Where(x => !x.PaymentMethodId.Equals(PaymentDetailMethod.PaymentMethodId)).Sum(x => x.Paid) - PaymentCardCollection.Sum(x => x.Paid);
-
-            if (SelectedPaymentDetail != null && SelectedPaymentDetail.Paid == 0)
+            try
             {
-                App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 2;
-                    SelectedPaymentDetail.Paid = _remainTotal > 0 ? Math.Round(_remainTotal, decimalPlace) : 0;
+                decimal _remainTotal = 0;
+                _remainTotal = Balance - PaymentModel.PaymentDetailCollection.Where(x => !x.PaymentMethodId.Equals(PaymentDetailMethod.PaymentMethodId)).Sum(x => x.Paid) - PaymentCardCollection.Sum(x => x.Paid);
 
-                }), System.Windows.Threading.DispatcherPriority.Background);
+                if (SelectedPaymentDetail != null && SelectedPaymentDetail.Paid == 0)
+                {
+                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        int decimalPlace = Define.CONFIGURATION.DecimalPlaces.HasValue ? Define.CONFIGURATION.DecimalPlaces.Value : 2;
+                        SelectedPaymentDetail.Paid = _remainTotal > 0 ? Math.Round(_remainTotal, decimalPlace) : 0;
+
+                    }), System.Windows.Threading.DispatcherPriority.Background);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                Xceed.Wpf.Toolkit.MessageBox.Show(ex.Message, Language.GetMsg("ErrorCaption"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion

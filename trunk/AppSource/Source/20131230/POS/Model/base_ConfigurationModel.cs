@@ -1955,6 +1955,26 @@ namespace CPC.POS.Model
             }
         }
 
+        protected bool _isAutoSearch;
+        /// <summary>
+        /// Property Model
+        /// <param>Gets or sets the IsAutoSearch</param>
+        /// </summary>
+        public bool IsAutoSearch
+        {
+            get { return this._isAutoSearch; }
+            set
+            {
+                if (this._isAutoSearch != value)
+                {
+                    this.IsDirty = true;
+                    this._isAutoSearch = value;
+                    OnPropertyChanged(() => IsAutoSearch);
+                    PropertyChangedCompleted(() => IsAutoSearch);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -2096,6 +2116,7 @@ namespace CPC.POS.Model
             this.base_Configuration.WeekHour = this.WeekHour;
             this.base_Configuration.RefundVoucherThresHold = this.RefundVoucherThresHold;
             this.base_Configuration.SysDate = this.SysDate;
+            this.base_Configuration.IsAutoSearch = this.IsAutoSearch;
         }
 
         /// <summary>
@@ -2199,6 +2220,7 @@ namespace CPC.POS.Model
             this._weekHour = this.base_Configuration.WeekHour;
             this._refundVoucherThresHold = this.base_Configuration.RefundVoucherThresHold;
             this._sysDate = this.base_Configuration.SysDate;
+            this._isAutoSearch = this.base_Configuration.IsAutoSearch;
         }
 
         /// <summary>
@@ -2302,6 +2324,7 @@ namespace CPC.POS.Model
             this.WeekHour = this.base_Configuration.WeekHour;
             this.RefundVoucherThresHold = this.base_Configuration.RefundVoucherThresHold;
             this.SysDate = this.base_Configuration.SysDate;
+            this.IsAutoSearch = this.base_Configuration.IsAutoSearch;
         }
 
         #endregion
@@ -2805,15 +2828,35 @@ namespace CPC.POS.Model
             {
                 if (_photoCollection == null)
                 {
-                    _photoCollection = new CollectionBase<base_ResourcePhotoModel>
+                    if (_logo != null)
                     {
-                        new base_ResourcePhotoModel{ ImageBinary = Logo, IsNew = false, IsDirty = false }
-                    };
+                        _photoCollection = new CollectionBase<base_ResourcePhotoModel>
+                        {
+                            new base_ResourcePhotoModel{ ImageBinary = Logo, IsNew = false, IsDirty = false }
+                        };
+                    }
+                    else
+                    {
+                        _photoCollection = new CollectionBase<base_ResourcePhotoModel>();
+                    }
                 }
                 return _photoCollection;
             }
         }
 
+        #endregion
+
+
+        #region DefaultScanMethodType
+
+        /// <summary>
+        /// Default Scan Method from config
+        /// if null default type :BarcodeLib.TYPE.EAN13
+        /// </summary>
+        public BarcodeLib.TYPE DefaultScanMethodType
+        {
+            get { return GetBarcodeScanCodeDefault(); }
+        }
         #endregion
 
         #endregion
@@ -2898,6 +2941,32 @@ namespace CPC.POS.Model
 
         #endregion
 
+
+        #region Get Barcode scan default
+        private BarcodeLib.TYPE GetBarcodeScanCodeDefault()
+        {
+            BarcodeLib.TYPE result = BarcodeLib.TYPE.EAN13;
+
+            if (DefaultScanMethod.HasValue)
+            {
+                switch (DefaultScanMethod.Value)
+                {
+                    case 1: // UPC-A  (Length == 11 or Length== 12)
+                        result = BarcodeLib.TYPE.UPCA;
+                        break;
+                    case 2: // EAN-13 (Length >= 12)
+                        result = BarcodeLib.TYPE.EAN13;
+                        break;
+                    case 3: // Code 128 (Length >= 1)
+                        result = BarcodeLib.TYPE.CODE128;
+                        break;
+                }
+            }
+            return result;
+        }
+        #endregion
+
+
         #endregion
 
         #region Override Methods
@@ -2952,11 +3021,10 @@ namespace CPC.POS.Model
                 #endregion
 
                 #region DefaultPriceSchema
-
+                case "IsManualPriceCalculation":
                 case "DefaultPriceSchema":
 
                     IsPricingDirty = true;
-
                     break;
 
                 #endregion
@@ -2968,7 +3036,6 @@ namespace CPC.POS.Model
                 case "DefaultPaymentMethod":
                 case "TipPercent":
                 case "AcceptedGiftCardMethod":
-                case "IsManualPriceCalculation":
                 case "IsAllowAntiExemptionTax":
 
                     IsSalesDirty = true;
@@ -3131,7 +3198,7 @@ namespace CPC.POS.Model
                 case "IsManualGenerate":
                 case "IsAllowFirstCap":
                 case "IsSendEmailCustomer":
-
+                case "IsAutoSearch":
                     IsGeneralDirty = true;
 
                     break;
@@ -3210,6 +3277,13 @@ namespace CPC.POS.Model
 
                     IsVoucherDirty = true;
 
+                    break;
+
+                #endregion
+
+                #region DefaultScanMethod
+                 case "DefaultScanMethod":
+                    IsInventoryDirty = true;
                     break;
 
                 #endregion

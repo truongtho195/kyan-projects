@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
+using BarcodeLib;
+using CPC.DragDrop;
 using CPC.Helper;
 using CPC.POS.Database;
 using CPC.POS.Model;
@@ -18,8 +22,6 @@ using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
 using CPCToolkitExt.DataGridControl;
 using CPCToolkitExtLibraries;
-using BarcodeLib;
-using System.Globalization;
 
 namespace CPC.POS.ViewModel
 {
@@ -74,6 +76,16 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private Guid _vendorResource = Guid.Empty;
 
+        /// <summary>
+        /// Timer for searching
+        /// </summary>
+        protected DispatcherTimer _waitingTimer;
+
+        /// <summary>
+        /// Flag for count timer user input value
+        /// </summary>
+        protected int _timerCounter = 0;
+
         #endregion
 
         #region Contructors
@@ -106,8 +118,14 @@ namespace CPC.POS.ViewModel
             _backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
             _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkerRunWorkerCompleted);
 
-            // Get permission
-            GetPermission();
+
+            //Initial Auto Complete Search
+            if (Define.CONFIGURATION.IsAutoSearch)
+            {
+                _waitingTimer = new DispatcherTimer();
+                _waitingTimer.Interval = new TimeSpan(0, 0, 0, 1);
+                _waitingTimer.Tick += new EventHandler(_waitingTimer_Tick);
+            }
         }
 
         #endregion
@@ -155,6 +173,7 @@ namespace CPC.POS.ViewModel
                 if (_keyword != value)
                 {
                     _keyword = value;
+                    ResetTimer();
                     OnPropertyChanged(() => Keyword);
                 }
             }
@@ -1087,6 +1106,26 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region ShowPaymentHistoryDetailCommand
+
+        private ICommand _showPaymentHistoryDetailCommand;
+        /// <summary>
+        /// Show detail of payment history.
+        /// </summary>
+        public ICommand ShowPaymentHistoryDetailCommand
+        {
+            get
+            {
+                if (_showPaymentHistoryDetailCommand == null)
+                {
+                    _showPaymentHistoryDetailCommand = new RelayCommand<base_ResourcePaymentModel>(ShowPaymentHistoryDetailExecute);
+                }
+                return _showPaymentHistoryDetailCommand;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Command Methods
@@ -1210,7 +1249,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void DeletePurchaseOrderDetailExecute()
         {
-            if (AllowDeleteProduct)
+            if (UserPermissions.AllowDeleteProductPurchaseOrder)
             {
                 DeletePurchaseOrderDetail();
             }
@@ -1231,7 +1270,7 @@ namespace CPC.POS.ViewModel
                 return false;
             }
 
-            return AllowDeleteProduct;
+            return UserPermissions.AllowDeleteProductPurchaseOrder;
         }
 
         #endregion
@@ -1366,7 +1405,7 @@ namespace CPC.POS.ViewModel
                 return false;
             }
 
-            return AllowAddPO;
+            return UserPermissions.AllowAddPurchaseOrder;
         }
 
         #endregion
@@ -1529,7 +1568,7 @@ namespace CPC.POS.ViewModel
                 return false;
             }
 
-            return AllowAddPO;
+            return UserPermissions.AllowAddPurchaseOrder;
         }
 
         #endregion
@@ -1870,6 +1909,18 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region ShowPaymentHistoryDetailExecute
+
+        /// <summary>
+        /// Show detail of payment history.
+        /// </summary>
+        private void ShowPaymentHistoryDetailExecute(base_ResourcePaymentModel resourcePaymentModel)
+        {
+            ShowPaymentHistoryDetail(resourcePaymentModel);
+        }
+
+        #endregion
+
         #endregion
 
         #region Property Changed Methods
@@ -2086,7 +2137,6 @@ namespace CPC.POS.ViewModel
                         {
                             _predicate = PredicateBuilder.True<base_PurchaseOrder>();
                             Expression<Func<base_PurchaseOrder, bool>> predicateChild = PredicateBuilder.True<base_PurchaseOrder>();
-
                             if (!string.IsNullOrWhiteSpace(_keyword))
                             {
                                 predicateChild = PredicateBuilder.False<base_PurchaseOrder>();
@@ -2110,7 +2160,7 @@ namespace CPC.POS.ViewModel
                                 predicateChild = predicateChild.Or(x => statusIDList.Contains(x.Status));
 
                                 decimal decimalKey;
-                                if (decimal.TryParse(_keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKey))
+                                if (decimal.TryParse(_keyword, NumberStyles.Number, Define.ConverterCulture.NumberFormat, out decimalKey) && decimalKey != 0)
                                 {
                                     // QtyOrdered.
                                     predicateChild = predicateChild.Or(x => x.QtyOrdered == decimalKey);
@@ -2309,7 +2359,7 @@ namespace CPC.POS.ViewModel
             _currentTabItem = (int)TabItems.Order;
             OnPropertyChanged(() => CurrentTabItem);
             OnPropertyChanged(() => AllowPurchaseReceive);
-            OnPropertyChanged(() => AllowPOReturn);
+            OnPropertyChanged(() => AllowPurchaseOrderReturn);
         }
 
         #endregion
@@ -2987,6 +3037,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SearchPO()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             _hasUsedAdvanceSearch = false;
             _backgroundWorker.RunWorkerAsync("Load");
         }
@@ -3000,6 +3053,9 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SearchPOAdvance()
         {
+            if (_waitingTimer != null)
+                _waitingTimer.Stop();
+
             POAdvanceSearchViewModel POAdvanceSearchViewModel = new POAdvanceSearchViewModel(_vendorCollection);
             bool? dialogResult = _dialogService.ShowDialog<POAdvanceSearchView>(_ownerViewModel, POAdvanceSearchViewModel, "Advance Search");
             if (dialogResult == true)
@@ -3884,7 +3940,7 @@ namespace CPC.POS.ViewModel
             GetMoreInformation();
             FocusDefaultElement();
 
-            OnPropertyChanged(() => AllowPOReturn);
+            OnPropertyChanged(() => AllowPurchaseOrderReturn);
             OnPropertyChanged(() => AllowPurchaseReceive);
         }
 
@@ -4765,7 +4821,7 @@ namespace CPC.POS.ViewModel
                 {
                     _currentTabItem = 3;
                     OnPropertyChanged(() => CurrentTabItem);
-                    OnPropertyChanged(() => AllowPOReturn);
+                    OnPropertyChanged(() => AllowPurchaseOrderReturn);
                     OnPropertyChanged(() => AllowPurchaseReceive);
                 }
             }
@@ -5058,6 +5114,39 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region ShowPaymentHistoryDetail
+
+        /// <summary>
+        /// Show detail of payment history.
+        /// </summary>
+        private void ShowPaymentHistoryDetail(base_ResourcePaymentModel resourcePaymentModel)
+        {
+            try
+            {
+                if (resourcePaymentModel == null)
+                {
+                    return;
+                }
+
+                if (resourcePaymentModel.PaymentDetailCollection == null)
+                {
+                    base_ResourcePaymentDetailRepository resourcePaymentDetailRepository = new base_ResourcePaymentDetailRepository();
+                    resourcePaymentModel.PaymentDetailCollection = new CollectionBase<base_ResourcePaymentDetailModel>(resourcePaymentDetailRepository.GetAll(x =>
+                        x.ResourcePaymentId == resourcePaymentModel.Id).Select(x => new base_ResourcePaymentDetailModel(x)));
+                }
+
+                POSOPaymentHistoryDetailViewModel viewModel = new POSOPaymentHistoryDetailViewModel(resourcePaymentModel);
+                bool? dialogResult = _dialogService.ShowDialog<POSOPaymentHistoryDetailView>(_ownerViewModel, viewModel, Language.GetMsg("Title_PaymentHistoryDetail"));
+            }
+            catch (Exception exception)
+            {
+                WriteLog(exception);
+                Xceed.Wpf.Toolkit.MessageBox.Show(exception.Message, Language.Warning, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Override Methods
@@ -5262,7 +5351,7 @@ namespace CPC.POS.ViewModel
 
                 case "CanReceive":
                     OnPropertyChanged(() => AllowPurchaseReceive);
-                    OnPropertyChanged(() => AllowPOReturn);
+                    OnPropertyChanged(() => AllowPurchaseOrderReturn);
                     break;
 
                 case "SubTotal":
@@ -5761,6 +5850,36 @@ namespace CPC.POS.ViewModel
 
         #endregion
 
+        #region Auto Searching
+        /// <summary>
+        /// Event Tick for search ching
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected virtual void _waitingTimer_Tick(object sender, EventArgs e)
+        {
+            _timerCounter++;
+            if (_timerCounter == Define.DelaySearching)
+            {
+                SearchPO();
+                _waitingTimer.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Reset timer for Auto complete search
+        /// </summary>
+        protected virtual void ResetTimer()
+        {
+            if (Define.CONFIGURATION.IsAutoSearch && this._waitingTimer != null)
+            {
+                this._waitingTimer.Stop();
+                this._waitingTimer.Start();
+                _timerCounter = 0;
+            }
+        }
+        #endregion
+
         #endregion
 
         #region BackgroundWorker Events
@@ -5841,150 +5960,64 @@ namespace CPC.POS.ViewModel
         #endregion
     }
 
-    public partial class PurchaseOrderViewModel : ViewModelBase
+    public partial class PurchaseOrderViewModel : ViewModelBase, IDropTarget
     {
         #region Properties
 
-        private bool _allowPurchaseReceive = true;
         /// <summary>
-        /// Gets or sets the AllowPurchaseReceive.
+        /// Gets the AllowPurchaseReceive.
         /// </summary>
         public bool AllowPurchaseReceive
         {
             get
             {
                 if (SelectedPurchaseOrder == null)
-                    return _allowPurchaseReceive;
-                return _allowPurchaseReceive && SelectedPurchaseOrder.CanReceive;
-            }
-            set
-            {
-                if (_allowPurchaseReceive != value)
-                {
-                    _allowPurchaseReceive = value;
-                    OnPropertyChanged(() => AllowPurchaseReceive);
-                }
+                    return UserPermissions.AllowPurchaseReceive;
+                return UserPermissions.AllowPurchaseReceive && SelectedPurchaseOrder.CanReceive;
             }
         }
 
-        private bool _allowPOReturn = true;
         /// <summary>
-        /// Gets or sets the AllowPOReturn.
+        /// Gets the AllowPurchaseOrderReturn.
         /// </summary>
-        public bool AllowPOReturn
+        public bool AllowPurchaseOrderReturn
         {
             get
             {
                 if (SelectedPurchaseOrder == null)
-                    return _allowPOReturn;
-                return _allowPOReturn && SelectedPurchaseOrder.CanReceive;
-            }
-            set
-            {
-                if (_allowPOReturn != value)
-                {
-                    _allowPOReturn = value;
-                    OnPropertyChanged(() => AllowPOReturn);
-                }
-            }
-        }
-
-        private bool _allowAddPO = true;
-        /// <summary>
-        /// Gets or sets the AllowAddPO.
-        /// </summary>
-        public bool AllowAddPO
-        {
-            get
-            {
-                return _allowAddPO;
-            }
-            set
-            {
-                if (_allowAddPO != value)
-                {
-                    _allowAddPO = value;
-                    OnPropertyChanged(() => AllowAddPO);
-                }
-            }
-        }
-
-        private bool _allowAddVendor = true;
-        /// <summary>
-        /// Gets or sets the AllowAddVendor.
-        /// </summary>
-        public bool AllowAddVendor
-        {
-            get
-            {
-                return _allowAddVendor;
-            }
-            set
-            {
-                if (_allowAddVendor != value)
-                {
-                    _allowAddVendor = value;
-                    OnPropertyChanged(() => AllowAddVendor);
-                }
-            }
-        }
-
-        private bool _allowDeleteProduct = true;
-        /// <summary>
-        /// Gets or sets the AllowDeleteProduct.
-        /// </summary>
-        public bool AllowDeleteProduct
-        {
-            get
-            {
-                return _allowDeleteProduct;
-            }
-            set
-            {
-                if (_allowDeleteProduct != value)
-                {
-                    _allowDeleteProduct = value;
-                    OnPropertyChanged(() => AllowDeleteProduct);
-                }
+                    return UserPermissions.AllowPurchaseOrderReturn;
+                return UserPermissions.AllowPurchaseOrderReturn && SelectedPurchaseOrder.CanReceive;
             }
         }
 
         #endregion
 
-        /// <summary>
-        /// Get permissions
-        /// </summary>
-        public override void GetPermission()
+        #region IDropTarget Members
+
+        public void DragOver(DropInfo dropInfo)
         {
-            if (!IsAdminPermission)
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
             {
-                if (IsFullPermission)
-                {
-                    // Set default permission
-                    AllowAddPO = IsMainStore;
-                    AllowAddVendor = IsMainStore;
-                }
-                else
-                {
-                    // Get all user rights
-                    IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                    // Get purchase order receive permission
-                    AllowPurchaseReceive = userRightCodes.Contains("PO100-02-04");
-
-                    // Get purchase order return permission
-                    AllowPOReturn = userRightCodes.Contains("PO100-02-05");
-
-                    // Get add purchase order permission
-                    AllowAddPO = userRightCodes.Contains("PO100-02-02") && IsMainStore;
-
-                    // Get add vendor permission
-                    AllowAddVendor = userRightCodes.Contains("PO100-01-01") && IsMainStore;
-
-                    // Get delete product in sale order permission
-                    AllowDeleteProduct = userRightCodes.Contains("PO100-02-10");
-                }
+                dropInfo.Effects = DragDropEffects.Move;
+            }
+            else if (dropInfo.Data is Guid)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
             }
         }
+
+        public void Drop(DropInfo dropInfo)
+        {
+            if (dropInfo.Data is base_ProductModel || dropInfo.Data is IEnumerable<base_ProductModel>)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", dropInfo.Data);
+            }
+            else if (dropInfo.Data is Guid)
+            {
+                (_ownerViewModel as MainViewModel).OpenViewExecute("Purchase Order", dropInfo.Data);
+            }
+        }
+
+        #endregion
     }
 }

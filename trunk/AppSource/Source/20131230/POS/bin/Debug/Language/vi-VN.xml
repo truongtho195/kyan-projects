@@ -1033,7 +1033,7 @@
 		</item>
 		<item>
 			<value>2</value>
-			<name>Inactive vi</name>
+			<name>Ngừng hoạt động</name>
 			<backcolor>Red</backcolor>
 			<forecolor>Black</forecolor>
 		</item>
@@ -1270,31 +1270,31 @@
 	<combo key="SaleStatus">
 		<item>
 			<value>1</value>
-			<name>Tạo mới</name>
+			<name>Open</name>
 		</item>
 		<item>
 			<value>2</value>
-			<name>Đang nhận hàng</name>
+			<name>Shipping</name>
 		</item>
 		<item>
 			<value>3</value>
-			<name>Đã nhận đủ</name>
+			<name>Shipped</name>
 		</item>
 		<item>
 			<value>4</value>
-			<name>Lập hóa đơn</name>
+			<name>Invoiced</name>
 		</item>
 		<item>
 			<value>5</value>
-			<name>Hủy</name>
+			<name>Canceled</name>
 		</item>
 		<item>
 			<value>6</value>
-			<name>Đã thanh toán</name>
+			<name>Paid</name>
 		</item>
 		<item>
 			<value>7</value>
-			<name>Trích dẫn</name>
+			<name>Quote</name>
 		</item>
 		<item>
 			<value>8</value>
@@ -1306,34 +1306,34 @@
 		</item>
     <item>
       <value>10</value>
-      <name>In Process</name>
+      <name>In progress</name>
     </item>
     <item>
       <value>11</value>
-      <name>Void</name>
+      <name>Voided</name>
     </item>
 
 	</combo>
 	<combo key="PurchaseStatus">
 		<item>
 			<value>1</value>
-			<name>Mở</name>
+			<name>Open</name>
 		</item>
 		<item>
 			<value>2</value>
-			<name>InProgress vi</name>
+			<name>InProgress</name>
 		</item>
 		<item>
 			<value>3</value>
-			<name>Fully Received vi</name>
+			<name>Received</name>
 		</item>
 		<item>
 			<value>4</value>
-			<name>Paid In Full vi</name>
+			<name>Paid</name>
 		</item>
 		<item>
 			<value>5</value>
-			<name>Đóng</name>
+			<name>Closed</name>
 		</item>
 	</combo>
 	<combo key="AvailableQuantity">

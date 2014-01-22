@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -382,18 +383,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveSticky(base_ResourceNoteModel resourceNoteModel)
         {
-            // Map data from model to entity
-            resourceNoteModel.ToEntity();
+            try
+            {
+                // Map data from model to entity
+                resourceNoteModel.ToEntity();
 
-            // Add new note to database
-            if (resourceNoteModel.IsNew)
-                _resourceNoteRepository.Add(resourceNoteModel.base_ResourceNote);
+                // Add new note to database
+                if (resourceNoteModel.IsNew)
+                    _resourceNoteRepository.Add(resourceNoteModel.base_ResourceNote);
 
-            // Accept changes
-            _resourceNoteRepository.Commit();
+                // Accept changes
+                _resourceNoteRepository.Commit();
 
-            // Turn off IsDirty & IsNew
-            resourceNoteModel.EndUpdate();
+                // Turn off IsDirty & IsNew
+                resourceNoteModel.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -401,25 +409,32 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void DeleteSticky(base_ResourceNoteModel resourceNoteModel)
         {
-            _popupStickyView.Owner.Activate();
-
-            // Close popup sticky view
-            _popupStickyView.Close();
-
-            if (!resourceNoteModel.IsNew)
+            try
             {
-                // Delete resource note from database
-                _resourceNoteRepository.Delete(resourceNoteModel.base_ResourceNote);
+                _popupStickyView.Owner.Activate();
 
-                // Accept changes
-                _resourceNoteRepository.Commit();
+                // Close popup sticky view
+                _popupStickyView.Close();
+
+                if (!resourceNoteModel.IsNew)
+                {
+                    // Delete resource note from database
+                    _resourceNoteRepository.Delete(resourceNoteModel.base_ResourceNote);
+
+                    // Accept changes
+                    _resourceNoteRepository.Commit();
+                }
+
+                // Remove resource note from collection
+                ResourceNoteCollection.Remove(resourceNoteModel);
+
+                // Remove popup sticky from collection
+                PopupStickyCollection.Remove(_popupStickyView);
             }
-
-            // Remove resource note from collection
-            ResourceNoteCollection.Remove(resourceNoteModel);
-
-            // Remove popup sticky from collection
-            PopupStickyCollection.Remove(_popupStickyView);
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         #endregion
@@ -455,18 +470,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public void DeleteAllResourceNote()
         {
-            // Close all popup sticky
-            CloseAllPopupSticky();
+            try
+            {
+                // Close all popup sticky
+                CloseAllPopupSticky();
 
-            // Delete resource note from database
-            foreach (base_ResourceNoteModel resourceNoteItem in ResourceNoteCollection)
-                _resourceNoteRepository.Delete(resourceNoteItem.base_ResourceNote);
+                // Delete resource note from database
+                foreach (base_ResourceNoteModel resourceNoteItem in ResourceNoteCollection)
+                    _resourceNoteRepository.Delete(resourceNoteItem.base_ResourceNote);
 
-            // Clear resource note collection
-            ResourceNoteCollection.Clear();
+                // Clear resource note collection
+                ResourceNoteCollection.Clear();
 
-            // Accept changes
-            _resourceNoteRepository.Commit();
+                // Accept changes
+                _resourceNoteRepository.Commit();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -474,18 +496,25 @@ namespace CPC.POS.ViewModel
         /// </summary>
         public void DeleteAllResourceNote(CollectionBase<base_ResourceNoteModel> resourceNoteCollection)
         {
-            // Close all popup sticky
-            CloseAllPopupSticky();
+            try
+            {
+                // Close all popup sticky
+                CloseAllPopupSticky();
 
-            // Delete resource note from database
-            foreach (base_ResourceNoteModel resourceNoteItem in resourceNoteCollection)
-                _resourceNoteRepository.Delete(resourceNoteItem.base_ResourceNote);
+                // Delete resource note from database
+                foreach (base_ResourceNoteModel resourceNoteItem in resourceNoteCollection)
+                    _resourceNoteRepository.Delete(resourceNoteItem.base_ResourceNote);
 
-            // Clear resource note collection
-            resourceNoteCollection.Clear();
+                // Clear resource note collection
+                resourceNoteCollection.Clear();
 
-            // Accept changes
-            _resourceNoteRepository.Commit();
+                // Accept changes
+                _resourceNoteRepository.Commit();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         #endregion

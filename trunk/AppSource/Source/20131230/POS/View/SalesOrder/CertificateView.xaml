@@ -124,7 +124,7 @@
                             Height="40"
                             Width="40"
                             Margin="0"
-                            Command="{Binding NewCommand}">
+                            Command="{Binding NewCommand}" ToolTip="New Item">
                         <StackPanel HorizontalAlignment="Center"
                                     x:Name="stkpBtnNew"
                                     VerticalAlignment="Center">
@@ -145,7 +145,7 @@
                             x:Name="btnSave"
                             Height="40"
                             Width="40"
-                            Command="{Binding SaveCommand}">
+                            Command="{Binding SaveCommand}" ToolTip="Save Current Item">
                         <StackPanel HorizontalAlignment="Center"
                                     x:Name="stkpBtnSave"
                                     VerticalAlignment="Center"
@@ -168,7 +168,7 @@
                             x:Name="btnDelete"
                             Height="40"
                             Width="40"
-                            Command="{Binding DeleteCommand}">
+                            Command="{Binding DeleteCommand}" ToolTip="Delete Current Item">
                         <StackPanel HorizontalAlignment="Center"
                                     x:Name="stkpBtnDelete"
                                     VerticalAlignment="Center"
@@ -192,7 +192,7 @@
                             Width="40"
                             VerticalAlignment="Center"
                             Height="40"
-                            Command="{Binding PrintCommand}">
+                            Command="{Binding PrintCommand}" ToolTip="Print Current Item">
                         <StackPanel HorizontalAlignment="Center"
                                     x:Name="stkpBtnPrint"
                                     VerticalAlignment="Center"

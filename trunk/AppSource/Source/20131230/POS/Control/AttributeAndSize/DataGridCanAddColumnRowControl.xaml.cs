@@ -172,7 +172,7 @@ namespace CPC.Control
             txtHeaderName.SetValue(CPCToolkitExt.TextBoxControl.TextBox.MaxLengthProperty, this.FindResource("AttributeMaxLength"));
 
             // Set main store permission
-            Binding isMainStoreBinding = new Binding("DataContext.AllowAccessPermission");
+            Binding isMainStoreBinding = new Binding("DataContext.UserPermissions.AllowAccessProductPermission");
             isMainStoreBinding.RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(UserControl), 1);
             isMainStoreBinding.Mode = BindingMode.OneWay;
             txtHeaderName.SetBinding(CPCToolkitExt.TextBoxControl.TextBox.IsEnabledProperty, isMainStoreBinding);

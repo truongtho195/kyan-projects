@@ -240,19 +240,27 @@ namespace CPC.POS.ViewModel
         /// <returns></returns>
         private bool IsDuplicateProduct(base_ProductModel productModel)
         {
-            // Create predicate
-            Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
+            try
+            {
+                // Create predicate
+                Expression<Func<base_Product, bool>> predicate = PredicateBuilder.True<base_Product>();
 
-            // Get all products that IsPurge is false
-            predicate = predicate.And(x => x.IsPurge == false);
+                // Get all products that IsPurge is false
+                predicate = predicate.And(x => x.IsPurge == false);
 
-            // Get all products that duplicate name
-            predicate = predicate.And(x => x.ProductName.Equals(productModel.ProductName));
+                // Get all products that duplicate name
+                predicate = predicate.And(x => x.ProductName.Equals(productModel.ProductName));
 
-            // Get all products that duplicate category
-            predicate = predicate.And(x => x.ProductCategoryId.Equals(productModel.ProductCategoryId));
+                // Get all products that duplicate category
+                predicate = predicate.And(x => x.ProductCategoryId.Equals(productModel.ProductCategoryId));
 
-            return _productRepository.GetIQueryable(predicate).Count() > 0;
+                return _productRepository.GetIQueryable(predicate).Count() > 0;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+                return true;
+            }
         }
 
         /// <summary>
@@ -447,59 +455,66 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveProduct(base_ProductModel productModel)
         {
-            // Map data from model to entity
-            productModel.ToEntity();
+            try
+            {
+                // Map data from model to entity
+                productModel.ToEntity();
 
-            // Save photo collection
-            SavePhotoCollection(productModel);
+                // Save photo collection
+                SavePhotoCollection(productModel);
 
-            // Save product store default
-            SaveProductStoreCollection(productModel);
+                // Save product store default
+                SaveProductStoreCollection(productModel);
 
-            // Save product UOM collection
-            SaveProductUOMCollection(productModel, Define.StoreCode);
+                // Save product UOM collection
+                SaveProductUOMCollection(productModel, Define.StoreCode);
 
-            // Save product group collection
-            SaveProductGroupCollection(productModel);
+                // Save product group collection
+                SaveProductGroupCollection(productModel);
 
-            // Save vendor product collection
-            SaveVendorProductCollection(productModel);
+                // Save vendor product collection
+                SaveVendorProductCollection(productModel);
 
-            // Add new product to repository
-            _productRepository.Add(productModel.base_Product);
+                // Add new product to repository
+                _productRepository.Add(productModel.base_Product);
 
-            // Accept changes
-            _productRepository.Commit();
+                // Accept changes
+                _productRepository.Commit();
 
-            // Update ID from entity to model
-            productModel.Id = productModel.base_Product.Id;
+                // Update ID from entity to model
+                productModel.Id = productModel.base_Product.Id;
 
-            // Update product store id
-            UpdateProductStoreID(productModel, Define.StoreCode);
+                // Update product store id
+                UpdateProductStoreID(productModel, Define.StoreCode);
 
-            // Update product UOM id
-            UpdateProductUOMID(productModel);
+                // Update product UOM id
+                UpdateProductUOMID(productModel);
 
-            // Update product group id
-            UpdateProductGroupID(productModel);
+                // Update product group id
+                UpdateProductGroupID(productModel);
 
-            // Update vendor product id
-            UpdateVendorProductID(productModel);
+                // Update vendor product id
+                UpdateVendorProductID(productModel);
 
-            // Update default photo if it is deleted
-            productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
+                // Update default photo if it is deleted
+                productModel.PhotoDefault = productModel.PhotoCollection.FirstOrDefault();
 
-            // Clear product UOM collection to refresh
-            productModel.ProductUOMCollection = null;
+                // Clear product UOM collection to refresh
+                productModel.ProductUOMCollection = null;
 
-            // Unregister property changed event
-            productModel.PropertyChanged -= new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
+                // Unregister property changed event
+                productModel.PropertyChanged -= new PropertyChangedEventHandler(SelectedProduct_PropertyChanged);
 
-            // Update ItemType
-            productModel.ItemTypeItem = Common.ItemTypes.SingleOrDefault(x => x.Value.Equals(productModel.ItemTypeId));
+                // Update ItemType
+                productModel.ItemTypeItem = Common.ItemTypes.SingleOrDefault(x => x.Value.Equals(productModel.ItemTypeId));
 
-            // Turn off IsDirty & IsNew
-            productModel.EndUpdate();
+                // Turn off IsDirty & IsNew
+                productModel.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>
@@ -507,43 +522,50 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SavePhotoCollection(base_ProductModel productModel)
         {
-            if (productModel.PhotoCollection != null)
+            try
             {
-                foreach (base_ResourcePhotoModel photoItem in productModel.PhotoCollection.DeletedItems)
+                if (productModel.PhotoCollection != null)
                 {
-                    // Delete photo from database
-                    _photoRepository.Delete(photoItem.base_ResourcePhoto);
+                    foreach (base_ResourcePhotoModel photoItem in productModel.PhotoCollection.DeletedItems)
+                    {
+                        // Delete photo from database
+                        _photoRepository.Delete(photoItem.base_ResourcePhoto);
+                    }
+
+                    // Clear deleted photos
+                    productModel.PhotoCollection.DeletedItems.Clear();
+
+                    foreach (base_ResourcePhotoModel photoModel in productModel.PhotoCollection.Where(x => x.IsDirty))
+                    {
+                        // Get photo filename by format
+                        string dateTime = DateTimeExt.Now.ToString(Define.GuestNoFormat);
+                        string guid = Guid.NewGuid().ToString().Substring(0, 8);
+                        string ext = new FileInfo(photoModel.ImagePath).Extension;
+
+                        // Rename photo
+                        photoModel.LargePhotoFilename = string.Format("{0}{1}{2}", dateTime, guid, ext);
+
+                        // Update resource photo
+                        if (string.IsNullOrWhiteSpace(photoModel.Resource))
+                            photoModel.Resource = productModel.Resource.ToString();
+
+                        // Map data from model to entity
+                        photoModel.ToEntity();
+
+                        if (photoModel.IsNew)
+                            _photoRepository.Add(photoModel.base_ResourcePhoto);
+
+                        // Copy image from client to server
+                        SaveImage(photoModel, productModel.Code);
+
+                        // Turn off IsDirty & IsNew
+                        photoModel.EndUpdate();
+                    }
                 }
-
-                // Clear deleted photos
-                productModel.PhotoCollection.DeletedItems.Clear();
-
-                foreach (base_ResourcePhotoModel photoModel in productModel.PhotoCollection.Where(x => x.IsDirty))
-                {
-                    // Get photo filename by format
-                    string dateTime = DateTimeExt.Now.ToString(Define.GuestNoFormat);
-                    string guid = Guid.NewGuid().ToString().Substring(0, 8);
-                    string ext = new FileInfo(photoModel.ImagePath).Extension;
-
-                    // Rename photo
-                    photoModel.LargePhotoFilename = string.Format("{0}{1}{2}", dateTime, guid, ext);
-
-                    // Update resource photo
-                    if (string.IsNullOrWhiteSpace(photoModel.Resource))
-                        photoModel.Resource = productModel.Resource.ToString();
-
-                    // Map data from model to entity
-                    photoModel.ToEntity();
-
-                    if (photoModel.IsNew)
-                        _photoRepository.Add(photoModel.base_ResourcePhoto);
-
-                    // Copy image from client to server
-                    SaveImage(photoModel, productModel.Code);
-
-                    // Turn off IsDirty & IsNew
-                    photoModel.EndUpdate();
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -554,28 +576,35 @@ namespace CPC.POS.ViewModel
         /// <param name="storeCode"></param>
         private void SaveProductStoreCollection(base_ProductModel productModel)
         {
-            foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
+            try
             {
-                // Update quantity in product
-                productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
-
-                // Backup quantity value
-                if (!productStoreItem.IsNew)
-                    productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
-
-                // Map data from model to entity
-                productStoreItem.ToEntity();
-
-                if (productStoreItem.IsNew)
+                foreach (base_ProductStoreModel productStoreItem in productModel.ProductStoreCollection)
                 {
-                    // Add new product store to database
-                    productModel.base_Product.base_ProductStore.Add(productStoreItem.base_ProductStore);
+                    // Update quantity in product
+                    productModel.SetOnHandToStore(productStoreItem.QuantityOnHand, productStoreItem.StoreCode);
+
+                    // Backup quantity value
+                    if (!productStoreItem.IsNew)
+                        productStoreItem.OldQuantity = productStoreItem.base_ProductStore.QuantityOnHand;
+
+                    // Map data from model to entity
+                    productStoreItem.ToEntity();
+
+                    if (productStoreItem.IsNew)
+                    {
+                        // Add new product store to database
+                        productModel.base_Product.base_ProductStore.Add(productStoreItem.base_ProductStore);
+                    }
+                    else
+                    {
+                        // Turn off IsDirty & IsNew
+                        productStoreItem.EndUpdate();
+                    }
                 }
-                else
-                {
-                    // Turn off IsDirty & IsNew
-                    productStoreItem.EndUpdate();
-                }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -584,44 +613,51 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void SaveProductUOMCollection(base_ProductModel productModel, int storeCode)
         {
-            if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
+            try
             {
-                foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
+                if (IsAllowMutilUOM(productModel) && productModel.ProductUOMCollection != null)
                 {
-                    if (productUOMItem.UOMId > 0)
+                    foreach (base_ProductUOMModel productUOMItem in productModel.ProductUOMCollection)
                     {
-                        // Update quantity on hand for other UOM
-                        productUOMItem.UpdateQuantityOnHand(productModel.ProductStoreDefault.QuantityOnHand);
-
-                        // Map data from model to entity
-                        productUOMItem.ToEntity();
-
-                        if (productUOMItem.Id == 0)
+                        if (productUOMItem.UOMId > 0)
                         {
-                            // Add new product UOM to database
-                            productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
-                        }
-                        else if (productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Count(x => x.Id.Equals(productUOMItem.Id)) == 0)
-                        {
-                            // Add new product UOM to database
-                            productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
-                        }
-                    }
-                    else if (productUOMItem.Id > 0)
-                    {
-                        // Get deleted product UOM
-                        base_ProductUOM productUOM = productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.SingleOrDefault(x => x.Id.Equals(productUOMItem.Id));
+                            // Update quantity on hand for other UOM
+                            productUOMItem.UpdateQuantityOnHand(productModel.ProductStoreDefault.QuantityOnHand);
 
-                        if (productUOM != null)
-                        {
-                            // Delete product UOM from database
-                            _productUOMRepository.Delete(productUOM);
-                        }
+                            // Map data from model to entity
+                            productUOMItem.ToEntity();
 
-                        // Delete entity of product UOM
-                        productUOMItem.ClearEntity();
+                            if (productUOMItem.Id == 0)
+                            {
+                                // Add new product UOM to database
+                                productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
+                            }
+                            else if (productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Count(x => x.Id.Equals(productUOMItem.Id)) == 0)
+                            {
+                                // Add new product UOM to database
+                                productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.Add(productUOMItem.base_ProductUOM);
+                            }
+                        }
+                        else if (productUOMItem.Id > 0)
+                        {
+                            // Get deleted product UOM
+                            base_ProductUOM productUOM = productModel.ProductStoreDefault.base_ProductStore.base_ProductUOM.SingleOrDefault(x => x.Id.Equals(productUOMItem.Id));
+
+                            if (productUOM != null)
+                            {
+                                // Delete product UOM from database
+                                _productUOMRepository.Delete(productUOM);
+                            }
+
+                            // Delete entity of product UOM
+                            productUOMItem.ClearEntity();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -631,19 +667,26 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void SaveProductGroupCollection(base_ProductModel productModel)
         {
-            if (productModel.ProductGroupCollection != null)
+            try
             {
-                foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection)
+                if (productModel.ProductGroupCollection != null)
                 {
-                    // Map data from model to entity
-                    productGroupItem.ToEntity();
+                    foreach (base_ProductGroupModel productGroupItem in productModel.ProductGroupCollection)
+                    {
+                        // Map data from model to entity
+                        productGroupItem.ToEntity();
 
-                    // Add new vendor product to database
-                    productModel.base_Product.base_ProductGroup1.Add(productGroupItem.base_ProductGroup);
+                        // Add new vendor product to database
+                        productModel.base_Product.base_ProductGroup1.Add(productGroupItem.base_ProductGroup);
 
-                    // Turn off IsDirty & IsNew
-                    productGroupItem.EndUpdate();
+                        // Turn off IsDirty & IsNew
+                        productGroupItem.EndUpdate();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -653,33 +696,40 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void SaveVendorProductCollection(base_ProductModel productModel)
         {
-            if (productModel.VendorProductCollection != null)
+            try
             {
-                foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.DeletedItems)
+                if (productModel.VendorProductCollection != null)
                 {
-                    // Delete item from database
-                    _vendorProductRepository.Delete(vendorProductItem.base_VendorProduct);
-                }
-
-                // Clear deleted items
-                productModel.VendorProductCollection.DeletedItems.Clear();
-
-                foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.Where(x => x.IsDirty))
-                {
-                    // Map data from model to entity
-                    vendorProductItem.ToEntity();
-
-                    if (vendorProductItem.IsNew)
+                    foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.DeletedItems)
                     {
-                        // Add new vendor product to database
-                        _vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
+                        // Delete item from database
+                        _vendorProductRepository.Delete(vendorProductItem.base_VendorProduct);
                     }
-                    else
+
+                    // Clear deleted items
+                    productModel.VendorProductCollection.DeletedItems.Clear();
+
+                    foreach (base_VendorProductModel vendorProductItem in productModel.VendorProductCollection.Where(x => x.IsDirty))
                     {
-                        // Turn off IsDirty & IsNew
-                        vendorProductItem.EndUpdate();
+                        // Map data from model to entity
+                        vendorProductItem.ToEntity();
+
+                        if (vendorProductItem.IsNew)
+                        {
+                            // Add new vendor product to database
+                            _vendorProductRepository.Add(vendorProductItem.base_VendorProduct);
+                        }
+                        else
+                        {
+                            // Turn off IsDirty & IsNew
+                            vendorProductItem.EndUpdate();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 
@@ -855,7 +905,7 @@ namespace CPC.POS.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Save Image" + ex.ToString());
+                _log4net.Error(ex);
             }
         }
 

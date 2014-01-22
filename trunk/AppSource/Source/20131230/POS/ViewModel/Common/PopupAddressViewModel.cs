@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
+using CPC.Helper;
+using CPC.POS.Database;
 using CPC.POS.Model;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Collections.ObjectModel;
-using CPC.POS.Database;
 using CPCToolkitExtLibraries;
-using CPC.Helper;
-using System.Windows;
 
 namespace CPC.POS.ViewModel
 {
@@ -223,7 +222,7 @@ namespace CPC.POS.ViewModel
             window.DialogResult = false;
         }
         #endregion
-        
+
         #endregion
 
         #region Private Methods

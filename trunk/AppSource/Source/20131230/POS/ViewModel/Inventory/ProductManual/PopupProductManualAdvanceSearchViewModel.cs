@@ -309,52 +309,59 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void LoadStaticData()
         {
-            base_GuestRepository guestRepository = new base_GuestRepository();
-            base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
-            base_SaleTaxLocationRepository saleTaxLocationRepository = new base_SaleTaxLocationRepository();
-            base_UOMRepository uomRepository = new base_UOMRepository();
-
-            string vendorMark = MarkType.Vendor.ToDescription();
-
-            // Load vendor list
-            VendorList = new List<ComboItem>(guestRepository.GetAll(x => !x.IsPurged && x.Mark.Equals(vendorMark)).
-                OrderBy(x => x.Company).
-                Select(x => new ComboItem
-                {
-                    LongValue = x.Id,
-                    Text = x.Company
-                }));
-
-            // Load category list
-            CategoryList = new List<ComboItem>(departmentRepository.GetAll(x => x.IsActived == true && x.LevelId == 1).
-                OrderBy(x => x.Name).
-                Select(x => new ComboItem
-                {
-                    IntValue = x.Id,
-                    Text = x.Name
-                }));
-            CategoryList.Insert(0, new ComboItem());
-
-            // Load sale tax location list
-            base_SaleTaxLocation taxLocationPrimary = saleTaxLocationRepository.Get(x => x.ParentId == 0 && x.IsPrimary);
-            if (taxLocationPrimary != null)
+            try
             {
-                SaleTaxLocationList = new List<string>(saleTaxLocationRepository.
-                    GetIQueryable(x => x.ParentId > 0 && x.ParentId.Equals(taxLocationPrimary.Id)).
-                    OrderBy(x => x.TaxCode).
-                    Select(x => x.TaxCode));
-            }
-            SaleTaxLocationList.Insert(0, string.Empty);
+                base_GuestRepository guestRepository = new base_GuestRepository();
+                base_DepartmentRepository departmentRepository = new base_DepartmentRepository();
+                base_SaleTaxLocationRepository saleTaxLocationRepository = new base_SaleTaxLocationRepository();
+                base_UOMRepository uomRepository = new base_UOMRepository();
 
-            // Load UOM list
-            UOMList = new List<ComboItem>(uomRepository.GetAll(x => x.IsActived).
-                OrderBy(x => x.Name).
-                Select(x => new ComboItem
+                string vendorMark = MarkType.Vendor.ToDescription();
+
+                // Load vendor list
+                VendorList = new List<ComboItem>(guestRepository.GetAll(x => !x.IsPurged && x.Mark.Equals(vendorMark)).
+                    OrderBy(x => x.Company).
+                    Select(x => new ComboItem
+                    {
+                        LongValue = x.Id,
+                        Text = x.Company
+                    }));
+
+                // Load category list
+                CategoryList = new List<ComboItem>(departmentRepository.GetAll(x => x.IsActived == true && x.LevelId == 1).
+                    OrderBy(x => x.Name).
+                    Select(x => new ComboItem
+                    {
+                        IntValue = x.Id,
+                        Text = x.Name
+                    }));
+                CategoryList.Insert(0, new ComboItem());
+
+                // Load sale tax location list
+                base_SaleTaxLocation taxLocationPrimary = saleTaxLocationRepository.Get(x => x.ParentId == 0 && x.IsPrimary);
+                if (taxLocationPrimary != null)
                 {
-                    IntValue = x.Id,
-                    Text = x.Name
-                }));
-            UOMList.Insert(0, new ComboItem());
+                    SaleTaxLocationList = new List<string>(saleTaxLocationRepository.
+                        GetIQueryable(x => x.ParentId > 0 && x.ParentId.Equals(taxLocationPrimary.Id)).
+                        OrderBy(x => x.TaxCode).
+                        Select(x => x.TaxCode));
+                }
+                SaleTaxLocationList.Insert(0, string.Empty);
+
+                // Load UOM list
+                UOMList = new List<ComboItem>(uomRepository.GetAll(x => x.IsActived).
+                    OrderBy(x => x.Name).
+                    Select(x => new ComboItem
+                    {
+                        IntValue = x.Id,
+                        Text = x.Name
+                    }));
+                UOMList.Insert(0, new ComboItem());
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
+            }
         }
 
         /// <summary>

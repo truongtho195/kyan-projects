@@ -422,21 +422,20 @@ namespace CPC.POS.ViewModel
                 }
 
                 // Total.
-                if (Total != 0)
+
+                if (_totalCompareType == (int)CompareType.GreaterThan)
                 {
-                    if (_totalCompareType == (int)CompareType.GreaterThan)
-                    {
-                        _Predicate = _Predicate.And(x => x.Total > _total);
-                    }
-                    else if (_totalCompareType == (int)CompareType.LessThan)
-                    {
-                        _Predicate = _Predicate.And(x => x.Total < _total);
-                    }
-                    else if (_totalCompareType == (int)CompareType.Equal)
-                    {
-                        _Predicate = _Predicate.And(x => x.Total == _total);
-                    }
+                    _Predicate = _Predicate.And(x => x.Total > _total);
                 }
+                else if (_totalCompareType == (int)CompareType.LessThan)
+                {
+                    _Predicate = _Predicate.And(x => x.Total < _total);
+                }
+                else if (_totalCompareType == (int)CompareType.Equal)
+                {
+                    _Predicate = _Predicate.And(x => x.Total == _total);
+                }
+
 
                 // Status.
                 if (_status != (short)CPC.POS.PurchaseStatus.None)

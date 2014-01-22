@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -10,7 +11,6 @@ using CPC.POS.Model;
 using CPC.POS.Repository;
 using CPC.Toolkit.Base;
 using CPC.Toolkit.Command;
-using System.Collections.ObjectModel;
 
 namespace CPC.POS.ViewModel
 {
@@ -403,38 +403,38 @@ namespace CPC.POS.ViewModel
             if (!string.IsNullOrWhiteSpace(FirstName))
                 // Get all empployee that FirstName contain keyword
                 predicate = predicate.And(x => x.FirstName.ToLower().Contains(FirstName.ToLower()));
-            
+
             //Seach empployee By LastName
             if (!string.IsNullOrWhiteSpace(LastName))
                 // Get all empployee that FirstName contain keyword
                 predicate = predicate.And(x => x.LastName.ToLower().Contains(LastName.ToLower()));
-            
+
 
             //Seach empployee By Phone
             if (!string.IsNullOrWhiteSpace(Phone))
                 // Get all empployee that Phone contain keyword
                 predicate = predicate.And(x => x.Phone1.ToLower().Contains(Phone.ToLower()));
-            
+
             //Seach empployee By Email
             if (!string.IsNullOrWhiteSpace(Email))
                 // Get all empployee that Email contain keyword
                 predicate = predicate.And(x => x.Email.ToLower().Contains(Email.ToLower()));
-            
+
             //Search empployee by Status
             if (this.Status > 0)
                 // Get all empployee that Status equal keyword
                 predicate = predicate.And(x => x.IsActived.Equals(Status == 1));
-            
+
             //Search empployee by JobTitle
             if (this.PositionId.HasValue && this.PositionId.Value > 0)
                 // Get all empployee that Group equal keyword
                 predicate = predicate.And(x => x.PositionId.HasValue && x.PositionId.Value == PositionId);
-            
+
             //Search empployee by SSN
             if (!string.IsNullOrWhiteSpace(this.SSN))
                 // Get all empployee that SSN equal keyword
                 predicate = predicate.And(x => x.base_GuestProfile.Count() > 0 && x.base_GuestProfile.FirstOrDefault().SSN.ToLower().Contains(this.SSN.ToLower()));
-            
+
             //Search empployee by ID
             if (!string.IsNullOrWhiteSpace(this.ID))
                 // Get all empployee that ID equal keyword
@@ -444,12 +444,12 @@ namespace CPC.POS.ViewModel
             if (this.PositionId.HasValue && this.PositionId.Value > 0)
                 // Get all empployee that Group equal keyword
                 predicate = predicate.And(x => x.PositionId.HasValue && x.PositionId.Value == PositionId);
-            
+
             //Search empployee by Address Type
             if (this.AddressTypeId > 0)
                 // Get all empployee that AddressTypeID equal keyword
                 predicate = predicate.And(x => x.base_GuestAddress.Any(y => y.AddressTypeId == AddressTypeId));
-            
+
 
             // Search customer by address
             if (!string.IsNullOrWhiteSpace(Address))

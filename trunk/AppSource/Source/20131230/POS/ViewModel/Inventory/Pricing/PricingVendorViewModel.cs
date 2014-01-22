@@ -109,17 +109,6 @@ namespace CPC.POS.ViewModel
             this.LoadVendor();
         }
 
-        /// <summary>
-        /// Constructor with load data
-        /// </summary>
-        /// <param name="categoryList">Category list</param>
-        /// <param name="promotionAffectList">Promotion affect list</param>
-        public PricingVendorViewModel(List<ComboItem> categoryList, CollectionBase<base_PromotionAffectModel> promotionAffectList)
-            : this()
-        {
-
-        }
-
         #endregion
 
         #region Command Methods

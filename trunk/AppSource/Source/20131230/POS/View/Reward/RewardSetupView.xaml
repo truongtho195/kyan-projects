@@ -213,7 +213,7 @@
                             Command="{Binding SaveCommand}"
                             Width="40"
                             Height="40"
-                            Style="{DynamicResource ButtonSystem}">
+                            Style="{DynamicResource ButtonSystem}" ToolTip="Save Current Item">
                         <StackPanel x:Name="stkpBtnSave"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -235,7 +235,7 @@
                             Command="{Binding CancelCommand}"
                             Width="40"
                             Height="40"
-                            Style="{DynamicResource ButtonSystem}">
+                            Style="{DynamicResource ButtonSystem}" ToolTip="Cancel Current Item">
                         <StackPanel x:Name="stkpBtnCancel"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -254,6 +254,9 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
+				<TextBlock x:Name="txtblBindingRewardSetup"
+						Text="Reward Setup"
+						TextWrapping="NoWrap" Margin="0,0,20,7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{DynamicResource TextBlockTitleFormView}" />
                 <Rectangle x:Name="Line"
                            Grid.Row="1"
                            Height="1"
@@ -344,7 +347,7 @@
                                            VerticalAlignment="Center"
                                            Style="{DynamicResource TextBlockNormal}"
                                            Text="{DynamicResource RW_TextBlock_StartDate}"
-                                           TextWrapping="Wrap" />
+                                           />
                                 <DatePicker x:Name="dtpStartDate"
                                             Width="90"
                                             Height="21"

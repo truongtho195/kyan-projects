@@ -179,7 +179,7 @@
                                Width="20" />
                     <TextBlock Margin="5,0,0,0"
                                VerticalAlignment="Center"
-                               Text="{DynamicResource Button_Content_OK}"
+                               Text="{DynamicResource Button_Ok}"
                                TextWrapping="NoWrap"
                                x:Name="txtblOK"
                                Foreground="White"
@@ -202,7 +202,7 @@
                     <TextBlock Margin="5,0,0,0"
                                x:Name="txtblExit"
                                VerticalAlignment="Center"
-                               Text="{DynamicResource Button_Content_Cancel}"
+                               Text="{DynamicResource Button_Cancel}"
                                TextWrapping="NoWrap"
                                Foreground="White"
                                Style="{DynamicResource ButtonTextBlock}" />

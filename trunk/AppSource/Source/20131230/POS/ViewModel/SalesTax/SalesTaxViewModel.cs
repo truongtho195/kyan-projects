@@ -41,9 +41,6 @@ namespace CPC.POS.ViewModel
             InitialCommand();
             Console.WriteLine("=========== Show Configuration  ===========");
             Console.WriteLine(Define.CONFIGURATION.DefaultSaleTaxLocation + " " + Define.CONFIGURATION.DefaultTaxCodeNewDepartment);
-
-            // Get permission
-            GetPermission();
         }
 
         #endregion
@@ -310,7 +307,7 @@ namespace CPC.POS.ViewModel
         /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
         private bool OnNewCommandCanExecute(object param)
         {
-            return AllowEditSaleTax;
+            return UserPermissions.AllowEditSaleTax;
         }
 
         /// <summary>
@@ -360,8 +357,8 @@ namespace CPC.POS.ViewModel
             SelectedSaleTaxLocation.RaiseProperyChanged("HasTaxCodeOption");
         }
 
-      
-      
+
+
 
         #endregion
 
@@ -376,7 +373,7 @@ namespace CPC.POS.ViewModel
             if (param == null)
                 return false;
             base_SaleTaxLocationModel deletedItem = (param as base_SaleTaxLocationModel);
-            return !IsDirty && AllowDeleteSaleTax &&
+            return !IsDirty && UserPermissions.AllowDeleteSaleTax &&
                 ((deletedItem.ParentId == 0 && !deletedItem.IsPrimary) ||
                 (deletedItem.ParentId != 0 && SaleTaxLocationCollection.Count(x => x.ParentId == deletedItem.ParentId) > 1));
         }
@@ -386,7 +383,7 @@ namespace CPC.POS.ViewModel
         /// </summary>
         private void OnDeleteCommandExecute(object param)
         {
-            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete", "POS", MessageBoxButton.YesNo,MessageBoxImage.Warning,MessageBoxResult.Yes);
+            MessageBoxResult result = Xceed.Wpf.Toolkit.MessageBox.Show("Do you want to delete", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
             if (result.Is(MessageBoxResult.Yes))
             {
                 SelectedSaleTaxLocation = (param as base_SaleTaxLocationModel);
@@ -423,7 +420,7 @@ namespace CPC.POS.ViewModel
 
                 SelectedSaleTaxLocation = SaleTaxLocationCollection.First();
                 GetDefaultTaxLocationTaxCodeCollection();
-              
+
                 EnableSelection = true;
                 SelectedSaleTaxLocation.IsSelected = true;
             }
@@ -552,7 +549,7 @@ namespace CPC.POS.ViewModel
             if (param == null || SelectedSaleTaxLocation == null)
                 return false;
 
-            if (!AllowEditSaleTax)
+            if (!UserPermissions.AllowEditSaleTax)
                 return SelectedSaleTaxLocation.ParentId != 0 &&
                     ((SalesTaxOption)param).Is((SalesTaxOption)SelectedSaleTaxLocation.TaxOption);
 
@@ -568,7 +565,7 @@ namespace CPC.POS.ViewModel
             {
                 int option = (int)param;
                 TaxOptionViewModel taxOptionViewModel = new TaxOptionViewModel();
-                taxOptionViewModel.AllowEditSaleTax = AllowEditSaleTax;
+                taxOptionViewModel.AllowEditSaleTax = UserPermissions.AllowEditSaleTax;
                 if (option.Is(SalesTaxOption.Single))
                 {
                     taxOptionViewModel.TaxOption = SalesTaxOption.Single;
@@ -753,61 +750,67 @@ namespace CPC.POS.ViewModel
         /// <param name="saleTaxLocationModel"></param>
         private void UpdateSaleTax(base_SaleTaxLocationModel saleTaxLocationModel)
         {
-            if (saleTaxLocationModel.ParentId != 0)//Tax Code
+            if (saleTaxLocationModel.IsDirty
+                || (saleTaxLocationModel.SaleTaxLocationOptionCollection != null
+                    && (saleTaxLocationModel.SaleTaxLocationOptionCollection.Any(x => x.IsDirty)
+                        || saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems.Any())))
             {
-                if (!saleTaxLocationModel.TaxCode.Equals(saleTaxLocationModel.base_SaleTaxLocation.TaxCode))
+                if (saleTaxLocationModel.ParentId != 0)//Tax Code
                 {
-                    UpdateDepartment(saleTaxLocationModel.base_SaleTaxLocation.TaxCode, saleTaxLocationModel.TaxCode);
-                }
-                saleTaxLocationModel.Name = saleTaxLocationModel.TaxCode;
-                //Set For Tax Code Option
-                if (saleTaxLocationModel.SaleTaxLocationOptionCollection != null)
-                {
-                    //Remove taxcode new delete
-                    if (saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems != null && saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems.Count > 0)
+                    if (!saleTaxLocationModel.TaxCode.Equals(saleTaxLocationModel.base_SaleTaxLocation.TaxCode))
                     {
-                        foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems)
+                        UpdateDepartment(saleTaxLocationModel.base_SaleTaxLocation.TaxCode, saleTaxLocationModel.TaxCode);
+                    }
+                    saleTaxLocationModel.Name = saleTaxLocationModel.TaxCode;
+                    //Set For Tax Code Option
+                    if (saleTaxLocationModel.SaleTaxLocationOptionCollection != null)
+                    {
+                        //Remove taxcode new delete
+                        if (saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems != null && saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems.Count > 0)
                         {
-                            _saleTaxOptionRespository.Delete(taxCodeOptionModel.base_SaleTaxLocationOption);
-                            _saleTaxOptionRespository.Commit();
+                            foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems)
+                            {
+                                _saleTaxOptionRespository.Delete(taxCodeOptionModel.base_SaleTaxLocationOption);
+                                _saleTaxOptionRespository.Commit();
+                            }
+                            saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems.Clear();
                         }
-                        saleTaxLocationModel.SaleTaxLocationOptionCollection.DeletedItems.Clear();
+
+                        foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection)
+                        {
+                            taxCodeOptionModel.ToEntity();
+                            if (taxCodeOptionModel.IsNew)
+                                saleTaxLocationModel.base_SaleTaxLocation.base_SaleTaxLocationOption.Add(taxCodeOptionModel.base_SaleTaxLocationOption);
+                            taxCodeOptionModel.EndUpdate();
+                        }
                     }
 
-                    foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection)
+                    if (saleTaxLocationModel.IsDirty) //If Tax code has Changed => update item has the same name with tax code
                     {
-                        taxCodeOptionModel.ToEntity();
-                        if (taxCodeOptionModel.IsNew)
-                            saleTaxLocationModel.base_SaleTaxLocation.base_SaleTaxLocationOption.Add(taxCodeOptionModel.base_SaleTaxLocationOption);
+                        foreach (base_SaleTaxLocationModel taxCodeModel in SaleTaxLocationCollection.Where(x => x.ParentId != 0 && x.TaxCode.Equals(saleTaxLocationModel.base_SaleTaxLocation.TaxCode)))
+                        {
+                            taxCodeModel.UpdateFrom(saleTaxLocationModel);
+                            taxCodeModel.ToEntity();
+                            taxCodeModel.EndUpdate();
+                        }
+                    }
+                }
+
+                saleTaxLocationModel.ToEntity();
+                _saleTaxRespository.Commit();
+
+                //Set Id For Tax Option
+                if (saleTaxLocationModel.SaleTaxLocationOptionCollection != null)
+                {
+                    foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection.Where(x => x.Id == 0))
+                    {
+                        taxCodeOptionModel.Id = taxCodeOptionModel.base_SaleTaxLocationOption.Id;
+                        taxCodeOptionModel.SaleTaxLocationId = taxCodeOptionModel.base_SaleTaxLocationOption.SaleTaxLocationId;
                         taxCodeOptionModel.EndUpdate();
                     }
                 }
-
-                if (saleTaxLocationModel.IsDirty) //If Tax code has Changed => update item has the same name with tax code
-                {
-                    foreach (base_SaleTaxLocationModel taxCodeModel in SaleTaxLocationCollection.Where(x => x.ParentId != 0 && x.TaxCode.Equals(saleTaxLocationModel.base_SaleTaxLocation.TaxCode)))
-                    {
-                        taxCodeModel.UpdateFrom(saleTaxLocationModel);
-                        taxCodeModel.ToEntity();
-                        taxCodeModel.EndUpdate();
-                    }
-                }
+                saleTaxLocationModel.EndUpdate();
             }
-
-            saleTaxLocationModel.ToEntity();
-            _saleTaxRespository.Commit();
-
-            //Set Id For Tax Option
-            if (saleTaxLocationModel.SaleTaxLocationOptionCollection != null)
-            {
-                foreach (base_SaleTaxLocationOptionModel taxCodeOptionModel in saleTaxLocationModel.SaleTaxLocationOptionCollection.Where(x => x.Id == 0))
-                {
-                    taxCodeOptionModel.Id = taxCodeOptionModel.base_SaleTaxLocationOption.Id;
-                    taxCodeOptionModel.SaleTaxLocationId = taxCodeOptionModel.base_SaleTaxLocationOption.SaleTaxLocationId;
-                    taxCodeOptionModel.EndUpdate();
-                }
-            }
-            saleTaxLocationModel.EndUpdate();
         }
 
         /// <summary>
@@ -905,9 +908,12 @@ namespace CPC.POS.ViewModel
                         taxCodeOptionModel.EndUpdate();
                     }
                 }
-                saleTaxCodeModel.ToModel();
+                saleTaxModel.ToModel();
                 saleTaxModel.EndUpdate();
             }
+
+
+
             saleTaxCodeModel.EndUpdate();
             SaleTaxLocationCollection.Add(saleTaxCodeModel);
         }
@@ -1116,7 +1122,7 @@ namespace CPC.POS.ViewModel
             if (this.IsDirty)
             {
                 MessageBoxResult msgResult = MessageBoxResult.None;
-                msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo,MessageBoxImage.Warning,MessageBoxResult.Yes);
+                msgResult = Xceed.Wpf.Toolkit.MessageBox.Show("Some data has changed. Do you want to save?", "POS", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
                 if (msgResult.Is(MessageBoxResult.Yes))
                 {
                     if (OnSaveCommandCanExecute())
@@ -1201,7 +1207,7 @@ namespace CPC.POS.ViewModel
             {
                 if (taxCodeModel.ParentId > 0)
                 {
-                    base_SaleTaxLocationModel taxLocationModel= SaleTaxLocationCollection.SingleOrDefault(x => x.Id.Equals(taxCodeModel.ParentId));
+                    base_SaleTaxLocationModel taxLocationModel = SaleTaxLocationCollection.SingleOrDefault(x => x.Id.Equals(taxCodeModel.ParentId));
                     decimal taxRate = 0;
                     IEnumerable<base_GuestAdditional> guestAdditionalCollection = _guestAdditionalRepository.GetAll(x => x.SaleTaxLocation.Equals(taxLocationModel.Id));
                     if (DefaultTaxCode != null && DefaultTaxCode.TaxOption != (int)SalesTaxOption.Multi && DefaultTaxCode.base_SaleTaxLocation.base_SaleTaxLocationOption.Any())
@@ -1297,66 +1303,6 @@ namespace CPC.POS.ViewModel
             if (!isClosing && SelectedSaleTaxLocation != null)
                 _selectedId = SelectedSaleTaxLocation.Id;
             return ChangeViewExecute(isClosing);
-        }
-
-        #endregion
-
-        #region Permission
-
-        #region Properties
-
-        private bool _allowDeleteSaleTax = true;
-        /// <summary>
-        /// Gets or sets the AllowDeleteSaleTax.
-        /// </summary>
-        public bool AllowDeleteSaleTax
-        {
-            get { return _allowDeleteSaleTax; }
-            set
-            {
-                if (_allowDeleteSaleTax != value)
-                {
-                    _allowDeleteSaleTax = value;
-                    OnPropertyChanged(() => AllowDeleteSaleTax);
-                }
-            }
-        }
-
-        private bool _allowEditSaleTax = true;
-        /// <summary>
-        /// Gets or sets the AllowEditSaleTax.
-        /// </summary>
-        public bool AllowEditSaleTax
-        {
-            get { return _allowEditSaleTax; }
-            set
-            {
-                if (_allowEditSaleTax != value)
-                {
-                    _allowEditSaleTax = value;
-                    OnPropertyChanged(() => AllowEditSaleTax);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Get permission
-        /// </summary>
-        public override void GetPermission()
-        {
-            if (!IsAdminPermission && !IsFullPermission)
-            {
-                // Get all user rights
-                IEnumerable<string> userRightCodes = Define.USER_AUTHORIZATION.Select(x => x.Code);
-
-                // Get edit sale tax permission
-                AllowEditSaleTax = userRightCodes.Contains("CF100-02-01");
-
-                // Get delete sale tax permission
-                AllowDeleteSaleTax = userRightCodes.Contains("CF100-02-02");
-            }
         }
 
         #endregion

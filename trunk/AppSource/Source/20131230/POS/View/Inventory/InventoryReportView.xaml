@@ -3,14 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
              x:Name="UserControl"
              Width="770"
              Height="555"
              Background="{DynamicResource UserControlBackground}"
              mc:Ignorable="d">
     <UserControl.Resources />
-
     <Grid x:Name="LayoutRoot">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
@@ -65,16 +63,8 @@
                             Width="140"
                             Margin="0,2"
                             HorizontalAlignment="Left"
-                            IsEnabled="{Binding SelectedItem.IsNew,
-                                                ElementName=lstSearchInventory}"
-                            SelectedDate="{Binding SelectedItem.DocumentDate,
-                                                   ElementName=lstSearchInventory,
-                                                   Mode=TwoWay,
-                                                   NotifyOnValidationError=True,
-                                                   StringFormat=\{0:d\},
-                                                   UpdateSourceTrigger=PropertyChanged,
-                                                   ValidatesOnDataErrors=True,
-                                                   ValidatesOnExceptions=True}"
+                            IsEnabled="{Binding SelectedItem.IsNew, ElementName=lstSearchInventory}"
+                            SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                             TabIndex="{Binding TabIndexControl}"
                             Text="" />
                 <TextBlock x:Name="txtblReportToDate"
@@ -92,16 +82,8 @@
                             Width="140"
                             Margin="215,2,0,2"
                             HorizontalAlignment="Left"
-                            IsEnabled="{Binding SelectedItem.IsNew,
-                                                ElementName=lstSearchInventory}"
-                            SelectedDate="{Binding SelectedItem.DocumentDate,
-                                                   ElementName=lstSearchInventory,
-                                                   Mode=TwoWay,
-                                                   NotifyOnValidationError=True,
-                                                   StringFormat=\{0:d\},
-                                                   UpdateSourceTrigger=PropertyChanged,
-                                                   ValidatesOnDataErrors=True,
-                                                   ValidatesOnExceptions=True}"
+                            IsEnabled="{Binding SelectedItem.IsNew, ElementName=lstSearchInventory}"
+                            SelectedDate="{Binding SelectedItem.DocumentDate, ElementName=lstSearchInventory, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:d\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                             TabIndex="{Binding TabIndexControl}"
                             Text="" />
                 <TextBlock x:Name="txtblDepartment"

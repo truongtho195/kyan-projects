@@ -221,6 +221,12 @@
         <DataTemplate x:Key="NameHeaderTemplate">
             <TextBlock Text="{DynamicResource C178}" />
         </DataTemplate>
+        <DataTemplate x:Key="AddressHeaderTemplate">
+            <TextBlock Text="{DynamicResource C191}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CityHeaderTemplate">
+            <TextBlock Text="{DynamicResource C180}" />
+        </DataTemplate>
         <Style TargetType="{x:Type CheckBox}">
             <Setter Property="Foreground"
                     Value="{DynamicResource ChechboxRadiobutton_Foreground}" />
@@ -396,10 +402,10 @@
         </Style>
 
     </UserControl.Resources>
-	<UserControl.InputBindings>
-		<KeyBinding Command="{Binding HelpCommand}"
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding HelpCommand}"
                     Gesture="F1" />
-	</UserControl.InputBindings>
+    </UserControl.InputBindings>
     <Grid x:Name="GridLayout">
         <Rectangle x:Name="UserControl_Background_Image"
                    Fill="{DynamicResource UserControl_Background_Image}" />
@@ -420,7 +426,8 @@
                         Command="{Binding SaveCommand}"
                         Width="40"
                         Height="40"
-                        Style="{DynamicResource ButtonSystem}">
+                        Style="{DynamicResource ButtonSystem}"
+                        ToolTip="Save Current Item">
                     <StackPanel x:Name="stkpBtnSave"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -442,7 +449,8 @@
                         Command="{Binding CancelCommand}"
                         Width="40"
                         Height="40"
-                        Style="{DynamicResource ButtonSystem}">
+                        Style="{DynamicResource ButtonSystem}"
+                        ToolTip="Cancel Current Item">
                     <StackPanel x:Name="stkpBtnCancel"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -501,7 +509,7 @@
                           Grid.Column="1">
                         <!--  General  -->
                         <Grid x:Name="grdGeneral"
-                              Visibility="{Binding GridGeneralVisibility, Mode=OneWay}">
+                              Visibility="{Binding GridGeneralVisibility, Mode=OneWay}" d:IsHidden="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="186.402" />
                                 <RowDefinition Height="176" />
@@ -521,7 +529,7 @@
                                 <Grid x:Name="grdContentOptionDefault"
                                       Margin="0,4,0,0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="160" />
+                                        <ColumnDefinition Width="180" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -642,7 +650,7 @@
                                               Grid.Row="5"
                                               Margin="10,0,0,0" />
                                     <CheckBox x:Name="cbAllowViewStateCode"
-                                              Content="Allow View State Code"
+                                              Content="Use state code"
                                               Grid.Column="1"
                                               Grid.Row="3"
                                               HorizontalAlignment="Left"
@@ -650,7 +658,7 @@
                                               Margin="0"
                                               IsChecked="{Binding ConfigurationModel.IsStateCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbGenerateCodeManual"
-                                              Content="Generate Code Manual"
+                                              Content="Generate code manual"
                                               Grid.Column="1"
                                               Grid.Row="4"
                                               HorizontalAlignment="Left"
@@ -658,7 +666,7 @@
                                               Margin="0"
                                               IsChecked="{Binding ConfigurationModel.IsManualGenerate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbTheFristLetterCaption"
-                                              Content="The Frist Letter Caption"
+                                              Content="The frist letter caption"
                                               Grid.Column="1"
                                               Grid.Row="5"
                                               HorizontalAlignment="Left"
@@ -666,13 +674,21 @@
                                               Margin="0"
                                               IsChecked="{Binding ConfigurationModel.IsAllowFirstCap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="cbSendEmailtoCustomer"
-                                              Content="Send Email to Customer"
+                                              Content="Send email to customer"
                                               Grid.Column="1"
                                               Grid.Row="3"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               Margin="150,0,0,0"
                                               IsChecked="{Binding ConfigurationModel.IsSendEmailCustomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="cbValueChangeWhenKeyPress"
+                                              Content="Value change when key pressed"
+                                              IsChecked="{Binding ConfigurationModel.IsAutoSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Grid.Column="1"
+                                              Grid.Row="4"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="150,0,0,0" />
 
                                 </Grid>
                             </GroupBox>
@@ -849,7 +865,7 @@
                                               DisplayMemberPath="Value"
                                               SelectedValue="{Binding ConfigurationModel.NegativeNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock x:Name="txtblTextNumberAlignment"
-                                               Text="Text Number Alignment"
+                                               Text="Text number alignment"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                Style="{DynamicResource TextBlockNormal}"
@@ -961,13 +977,6 @@
                         <Grid x:Name="grdStoreInfo"
                               Visibility="{Binding GridStoreInfoVisibility, Mode=OneWay}"
                               d:IsHidden="True">
-                            <cpcControl:ImageControl Width="160"
-                                                     Height="150"
-                                                     Margin="384,20,0,0"
-                                                     HorizontalAlignment="Left"
-                                                     VerticalAlignment="Top"
-                                                     DisplayMemberPath="ImageBinary"
-                                                     ItemsSource="{Binding ConfigurationModel.PhotoCollection}" />
                             <GroupBox x:Name="gbCompanyInfo"
                                       Grid.Row="1"
                                       Width="360"
@@ -1193,66 +1202,14 @@
                                                             TextWrapping="NoWrap" />
                                 </Grid>
                             </GroupBox>
-                            
-                            <!--<Border x:Name="brdImage"
-                                    Width="155"
-                                    Height="155"
-                                    Margin="384,20,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    BorderBrush="White"
-                                    BorderThickness="1">
-                                <Image Source="{Binding ConfigurationModel.Logo, Converter={StaticResource ByteArrayToBitmapImageConverter}, Mode=OneWay}"
-                                       Stretch="Fill" />
-                            </Border>-->
-                            <!--<StackPanel x:Name="stkpImageCompany"
-                                        Width="155"
-                                        Margin="384,177,0,0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Orientation="Horizontal">
-                                <Button x:Name="btnBrowse"
-                                        Command="{Binding ChangeLogoCommand}"
-                                        Width="75"
-                                        Height="24">
-                                    <StackPanel x:Name="stkpBtnBrowse"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                        <Rectangle x:Name="imgBrowse"
-                                                   Width="20"
-                                                   Height="20"
-                                                   Fill="{DynamicResource Browse}" />
-                                        <TextBlock x:Name="txtblBrowse"
-                                                   Margin="5,0,0,0"
-                                                   VerticalAlignment="Center"
-                                                   Style="{DynamicResource ButtonTextBlock}"
-                                                   Text="{DynamicResource C186}"
-                                                   TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                                <Button x:Name="btnClear1"
-                                        Command="{Binding ClearLogoCommand}"
-                                        Width="75"
-                                        Height="24"
-                                        Margin="5,0,0,0">
-                                    <StackPanel x:Name="stkpBtnClear1"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                        <Rectangle x:Name="imgClear1"
-                                                   Width="20"
-                                                   Height="20"
-                                                   Fill="{DynamicResource Clear}" />
-                                        <TextBlock x:Name="txtblClear1"
-                                                   Margin="5,0,0,0"
-                                                   VerticalAlignment="Center"
-                                                   Style="{DynamicResource ButtonTextBlock}"
-                                                   Text="{DynamicResource C187}"
-                                                   TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>-->
+                            <cpcControl:ImageControl Width="155"
+                                                     Height="155"
+                                                     Margin="384,20,0,0"
+                                                     HorizontalAlignment="Left"
+                                                     VerticalAlignment="Top"
+                                                     DisplayMemberPath="ImageBinary"
+                                                     Foreground="{x:Null}"
+                                                     ItemsSource="{Binding ConfigurationModel.PhotoCollection}" />
                         </Grid>
                         <!--  CustomField  -->
                         <Grid x:Name="grdCustomField"
@@ -1361,7 +1318,7 @@
                                     <helper:RowDataInfoValidationRule ValidationStep="UpdatedValue" />
                                 </cpcDataGridToolkit:DataGridControl.RowValidationRules>
                                 <cpcDataGridToolkit:DataGridControl.Columns>
-                                    <DataGridTemplateColumn Width="250"
+                                    <DataGridTemplateColumn Width="100"
                                                             IsReadOnly="True"
                                                             HeaderTemplate="{StaticResource CodeHeaderTemplate}"
                                                             SortMemberPath="Code">
@@ -1377,7 +1334,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>-->
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Width="250"
+                                    <DataGridTemplateColumn Width="200"
                                                             HeaderTemplate="{StaticResource NameHeaderTemplate}"
                                                             CellStyle="{StaticResource AutoFocusDataGridCellStyle}"
                                                             SortMemberPath="Name">
@@ -1394,49 +1351,101 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                            HeaderTemplate="{StaticResource AddressHeaderTemplate}"
+                                                            CellStyle="{StaticResource AutoFocusDataGridCellStyle}"
+                                                            SortMemberPath="Street">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Street, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxToolkit:TextBox MaxLength="{StaticResource NameStoreMaxLength}"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Width="*"
+                                                            HeaderTemplate="{StaticResource CityHeaderTemplate}"
+                                                            CellStyle="{StaticResource AutoFocusDataGridCellStyle}"
+                                                            SortMemberPath="City">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding City, Mode=OneWay}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <textBoxToolkit:TextBox MaxLength="{StaticResource NameStoreMaxLength}"
+                                                                        Style="{DynamicResource TextBoxInsideDataGridStyle}"
+                                                                        Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
                                 </cpcDataGridToolkit:DataGridControl.Columns>
                             </cpcDataGridToolkit:DataGridControl>
                         </Grid>
                         <!--  Inventory  -->
                         <Grid x:Name="grdInventory"
-                              Visibility="{Binding GridInventoryVisibility, Mode=OneWay}"
-                              d:IsHidden="True">
-                            <GroupBox x:Name="gbInventory"
-                                      Width="529"
-                                      Margin="10,10,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      d:LayoutOverrides="GridBox">
-                                <GroupBox.Header>
-                                    <TextBlock x:Name="txtblInventory"
-                                               Style="{DynamicResource GroupboxTextBlock}"
-                                               Text="Inventory"
-                                               TextWrapping="NoWrap" />
-                                </GroupBox.Header>
-                                <Grid x:Name="grdContentInventory"
-                                      Margin="0,4,0,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="0" />
-                                    </Grid.RowDefinitions>
-                                    <CheckBox x:Name="cbAllowNegativeStore"
-                                              Margin="10,0,0,0"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Content="{DynamicResource CS141}"
-                                              IsChecked="{Binding ConfigurationModel.IsAllowNegativeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              IsEnabled="False"
-                                              IsThreeState="False" />
-                                    <CheckBox x:Name="cbAllowAutoupdateProduct"
-                                              VerticalAlignment="Center"
-                                              Content="Allow autoupdate product group's price"
-                                              Margin="10,0,0,0"
-                                              HorizontalAlignment="Left"
-                                              Grid.Row="1"
-                                              IsChecked="{Binding ConfigurationModel.IsAUPPG, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </GroupBox>
+                              Visibility="{Binding GridInventoryVisibility, Mode=OneWay}">
+                        	<Grid.RowDefinitions>
+									<RowDefinition Height="35"/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+                            <TextBlock x:Name="txtblScanMethod"
+                        		Text="Scan Method"
+                        		TextWrapping="NoWrap"
+                        		VerticalAlignment="Bottom"
+                        		HorizontalAlignment="Left"
+                        		Margin="10,0,0,6"
+                        		Style="{DynamicResource TextBlockNormal}" />
+                        	<ComboBox VerticalAlignment="Bottom"
+                        		Margin="82,0,0,2"
+                        		x:Name="cmbScanMethod"
+                        		HorizontalAlignment="Left"
+                                ItemsSource="{x:Static helper:Common.ScanMethods}"              
+                        		DisplayMemberPath="Text"
+                        		SelectedValuePath="Value"
+                        		SelectedValue="{Binding ConfigurationModel.DefaultScanMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        		Width="136.473" Height="21" />
+                        	<GroupBox x:Name="gbInventory"
+                        		Width="529"
+                        		Margin="10,5,0,0"
+                        		HorizontalAlignment="Left"
+                        		VerticalAlignment="Top" Grid.Row="1">
+                        		<GroupBox.Header>
+                        			<TextBlock x:Name="txtblInventory"
+                        				Style="{DynamicResource GroupboxTextBlock}"
+                        				Text="Inventory"
+                        				TextWrapping="NoWrap" />
+                        		</GroupBox.Header>
+                        		<Grid x:Name="grdContentInventory"
+                        			Margin="0,4,0,0">
+                        			<Grid.RowDefinitions>
+                        				<RowDefinition Height="25" />
+                        				<RowDefinition Height="25" />
+                        				<RowDefinition Height="0" />
+                        			</Grid.RowDefinitions>
+                        			<CheckBox x:Name="cbAllowNegativeStore"
+                        				Margin="10,0,0,0"
+                        				HorizontalAlignment="Left"
+                        				VerticalAlignment="Center"
+                        				Content="{DynamicResource CS141}"
+                        				IsChecked="{Binding ConfigurationModel.IsAllowNegativeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        				IsEnabled="False"
+                        				IsThreeState="False" />
+                        			<CheckBox x:Name="cbAllowAutoupdateProduct"
+                        				VerticalAlignment="Center"
+                        				Content="Allow autoupdate product group's price"
+                        				Margin="10,0,0,0"
+                        				HorizontalAlignment="Left"
+                        				Grid.Row="1"
+                        				IsChecked="{Binding ConfigurationModel.IsAUPPG, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        		</Grid>
+                        	</GroupBox>
                         </Grid>
                         <!--  Unit Of Measure  -->
                         <Grid x:Name="grdUnitOfMeasure"
@@ -1576,16 +1585,24 @@
                         </Grid>
                         <!--  Pricing  -->
                         <Grid x:Name="grdPricing"
-                              d:IsHidden="True"
-                              Visibility="{Binding GridPricingVisibility, Mode=OneWay}">
+                              Visibility="{Binding GridPricingVisibility, Mode=OneWay}"
+                              d:IsHidden="True">
                             <Grid x:Name="grdContentPricing"
                                   Visibility="{Binding Visibility, ElementName=grdPricing, Mode=OneWay}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="90" />
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="80" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
+                                <CheckBox x:Name="cbManualPriceCaculation"
+                                          Content="Manual Price Caculation"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding ConfigurationModel.IsManualPriceCalculation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Margin="10,0,0,0" />
                                 <GroupBox x:Name="gbDefaultPrice"
-                                          Margin="10,10,10,0">
+                                          Margin="10,0"
+                                          Grid.Row="1">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblDefaultPrice"
                                                    FontWeight="Bold"
@@ -1617,7 +1634,7 @@
                                     </Grid>
                                 </GroupBox>
                                 <GroupBox x:Name="gbPriceLevel"
-                                          Grid.Row="1"
+                                          Grid.Row="2"
                                           Margin="10">
                                     <GroupBox.Header>
                                         <TextBlock x:Name="txtblPriceLevel"
@@ -1918,22 +1935,16 @@
                                       Margin="0,4,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="23" />
-                                        <RowDefinition Height="23" />
+                                        <RowDefinition Height="0" />
                                     </Grid.RowDefinitions>
-                                    <CheckBox x:Name="cbManualPriceCaculation"
-                                              Content="Manual Price Caculation"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{Binding ConfigurationModel.IsManualPriceCalculation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Margin="10,0,0,0" />
+
                                     <CheckBox x:Name="cbAllowTaxExemption"
-                                              Content="Allow Tax Exemption"
+                                              Content="Allow tax exemption"
                                               Grid.Column="1"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
                                               Margin="10,0,0,0"
-                                              IsChecked="{Binding ConfigurationModel.IsAllowAntiExemptionTax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Grid.Row="1" />
+                                              IsChecked="{Binding ConfigurationModel.IsAllowAntiExemptionTax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
                             </GroupBox>
                         </Grid>
@@ -2085,7 +2096,7 @@
                                     </Grid.RowDefinitions>
                                     <CheckBox x:Name="cbAllowApplyReward"
                                               VerticalAlignment="Center"
-                                              Content="Allow apply reward if discount on Sale Order"
+                                              Content="Allow apply reward if discount on sale"
                                               Margin="10,0,0,0"
                                               HorizontalAlignment="Left"
                                               Grid.Row="2"
@@ -2472,7 +2483,8 @@
                         <!--  Timeclock  -->
                         <Grid x:Name="grdTimeclock"
                               Visibility="{Binding GridTimeclockVisibility, Mode=OneWay}"
-                              d:LayoutOverrides="Width" d:IsHidden="True">
+                              d:LayoutOverrides="Width"
+                              d:IsHidden="True">
                             <GroupBox x:Name="gbTimeclock"
                                       Width="529"
                                       Margin="10,10,0,0"
@@ -2539,7 +2551,7 @@
                                         <sys:Int16>24</sys:Int16>
                                     </ComboBox>
                                     <TextBlock x:Name="txtblTotalHours"
-                                               Text="Total Hours"
+                                               Text="Total hours"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                Style="{DynamicResource TextBlockNormal}"
@@ -2661,7 +2673,8 @@
                                                                                   IsSelectTimeMode="True"
                                                                                   IsDisplayDayOfWeek="False"
                                                                                   RealTime="{Binding From, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                                  Margin="0,2" Background="White" />
+                                                                                  Margin="0,2"
+                                                                                  Background="White" />
 
                                                     <TimePicker:TimePickerControl Grid.Column="2"
                                                                                   Width="55"
@@ -2677,7 +2690,8 @@
                                                                                   IsDisplayDayOfWeek="False"
                                                                                   RealTime="{Binding To, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
                                                                                   Tag="{Binding From, Converter={StaticResource NullToDefaultValueConverterWithRequired}, Mode=OneWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"
-                                                                                  Margin="0,2" Background="White" />
+                                                                                  Margin="0,2"
+                                                                                  Background="White" />
 
                                                 </Grid>
 

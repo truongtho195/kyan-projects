@@ -147,7 +147,7 @@
                                                 Width="140"
                                                 Margin="0,2"
                                                 HorizontalAlignment="Left"
-                                                IsEnabled="{Binding AllowAccessPermission, Mode=OneWay}"
+                                                IsEnabled="{Binding UserPermissions.AllowAccessProductPermission, Mode=OneWay}"
                                                 MaxLength="{StaticResource ItemNameMaxLength}"
                                                 Padding="2,0,2,0"
                                                 Text="{Binding SelectedProduct.ProductName, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"

@@ -76,7 +76,8 @@ namespace CPC.POS.ViewModel
             : this()
         {
             // Update company reorder point
-            CompanyReorderPoint = productModel.CompanyReOrderPoint;
+            _companyReorderPoint = productModel.CompanyReOrderPoint;
+            OnPropertyChanged(() => CompanyReorderPoint);
 
             // Load product store collection
             LoadProductStoreCollection(productModel);
@@ -171,33 +172,40 @@ namespace CPC.POS.ViewModel
         /// <param name="productModel"></param>
         private void LoadProductStoreCollection(base_ProductModel productModel)
         {
-            // Initial product store collection
-            ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
-
-            for (short storeCode = 0; storeCode < _storeRepository.GetIQueryable().Count(); storeCode++)
+            try
             {
-                // Create new product store model
-                base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = storeCode };
-                productStoreModel.Resource = Guid.NewGuid().ToString();
-                productStoreModel.ProductResource = productModel.Resource.ToString();
+                // Initial product store collection
+                ProductStoreCollection = new CollectionBase<base_ProductStoreModel>();
 
-                // Get product store by store code
-                base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
-
-                if (productStoreItem != null)
+                for (short storeCode = 0; storeCode < _storeRepository.GetIQueryable().Count(); storeCode++)
                 {
-                    // Update reorder point
-                    productStoreModel.ReorderPoint = productStoreItem.ReorderPoint;
+                    // Create new product store model
+                    base_ProductStoreModel productStoreModel = new base_ProductStoreModel { StoreCode = storeCode };
+                    productStoreModel.Resource = Guid.NewGuid().ToString();
+                    productStoreModel.ProductResource = productModel.Resource.ToString();
+
+                    // Get product store by store code
+                    base_ProductStoreModel productStoreItem = productModel.ProductStoreCollection.SingleOrDefault(x => x.StoreCode.Equals(storeCode));
+
+                    if (productStoreItem != null)
+                    {
+                        // Update reorder point
+                        productStoreModel.ReorderPoint = productStoreItem.ReorderPoint;
+                    }
+
+                    // Register property changed event
+                    productStoreModel.PropertyChanged += new PropertyChangedEventHandler(productStoreItem_PropertyChanged);
+
+                    // Add product store to list
+                    ProductStoreCollection.Add(productStoreModel);
+
+                    // Turn off IsDirty
+                    productStoreModel.IsDirty = false;
                 }
-
-                // Register property changed event
-                productStoreModel.PropertyChanged += new PropertyChangedEventHandler(productStoreItem_PropertyChanged);
-
-                // Add product store to list
-                ProductStoreCollection.Add(productStoreModel);
-
-                // Turn off IsDirty
-                productStoreModel.IsDirty = false;
+            }
+            catch (Exception ex)
+            {
+                _log4net.Error(ex);
             }
         }
 

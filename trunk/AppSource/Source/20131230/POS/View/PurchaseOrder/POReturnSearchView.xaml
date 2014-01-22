@@ -182,7 +182,7 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock x:Name="txtblScancode"
-                                               Text="Scancode"
+                                               Text="Scan Code"
                                                TextWrapping="NoWrap"
                                                HorizontalAlignment="Left"
                                                Style="{DynamicResource TextBlockNormal}"

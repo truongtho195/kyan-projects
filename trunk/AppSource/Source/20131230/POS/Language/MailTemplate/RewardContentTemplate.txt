@@ -17,7 +17,7 @@
 </div>
 
 <br><br><img src=cid:imageBarcode></br>
-<br><b>Barcode:</b> @barcode</br>
+<br><b>Scan Code:</b> @barcode</br>
 <br><b>Reward Amount:</b> @rewardAmount</br>
 <br><b>Active Date:</b> @activeDate</br>
 <br><b>Exp Date:</b> @expDate</br>

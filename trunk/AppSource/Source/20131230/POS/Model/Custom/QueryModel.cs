@@ -61,5 +61,59 @@ namespace CPC.POS.Model
             }
         }
         #endregion
+
+        #region Table
+        private string _table;
+        /// <summary>
+        /// Gets or sets the Table.
+        /// </summary>
+        public string Table
+        {
+            get { return _table; }
+            set
+            {
+                if (_table != value)
+                {
+                    _table = value;
+                }
+            }
+        }
+        #endregion
+
+        #region IsActive
+        private bool _isActive;
+        /// <summary>
+        /// Gets or sets the IsActive.
+        /// </summary>
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                }
+            }
+        }
+        #endregion
+
+        #region StoreCode
+        private int _storeCode;
+        /// <summary>
+        /// Gets or sets the StoreCode.
+        /// </summary>
+        public int StoreCode
+        {
+            get { return _storeCode; }
+            set
+            {
+                if (_storeCode != value)
+                {
+                    _storeCode = value;
+                }
+            }
+        }
+        #endregion
     }
 }
